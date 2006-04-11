@@ -1,9 +1,9 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <script type="text/javascript">
-var version = {major: 1, minor: 2, revision: 23, extensions: {}};
+var version = {major: 1, minor: 2, revision: 24, extensions: {}};
 </script>
 <!--
-TiddlyWiki 1.2.23 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
+TiddlyWiki 1.2.24 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
 
 Published under a BSD open source license
 Incorporating improvements by Isao Sonobe, http://www-gauge.scphys.kyoto-u.ac.jp/~sonobe/OgreKit/OgreKitWiki.html
@@ -73,6 +73,19 @@ var config = {
 		refreshStory,
 		refreshTabs
 		],
+	// Shadow tiddlers for emergencies
+	shadowTiddlers: {
+		AdvancedOptions: "<<option chkOpenInNewWindow>> OpenLinksInNewWindow\n<<option chkSaveEmptyTemplate>> SaveEmptyTemplate",
+		OptionsPanel: "These InterfaceOptions for customising TiddlyWiki are saved in your browser\n\nYour username for signing your edits. Write it as a WikiWord (eg JoeBloggs)\n\n<<option txtUserName>>\n<<option chkSaveBackups>> SaveBackups\n<<option chkAutoSave>> AutoSave\n<<option chkGenerateAnRssFeed>> GenerateAnRssFeed\n<<option chkRegExpSearch>> RegExpSearch\n<<option chkCaseSensitiveSearch>> CaseSensitiveSearch\n<<option chkAnimate>> EnableAnimations\n\nSee AdvancedOptions",
+		SideBarOptions: "<<search>><<closeAll>><<permaview>><<saveChanges>><<slider chkSliderOptionsPanel OptionsPanel options 'Change TiddlyWiki advanced options'>>",
+		SideBarTabs: "<<tabs txtMainTab Timeline Timeline TabTimeline Tags 'All tags' TabTags More 'More lists' TabMore>>",
+		TabTags: "<<allTags>>",
+		TabTimeline: "<<timeline>>",
+		TabMore: "<<tabs txtMoreTab All 'All tiddlers' TabMoreAll Missing 'Missing tiddlers' TabMoreMissing Orphans 'Orphaned tiddlers' TabMoreOrphans>>",
+		TabMoreAll: "<<list all>>",
+		TabMoreMissing: "<<list missing>>",
+		TabMoreOrphans: "<<list orphans>>"
+		},
 	// Miscellaneous options
 	numRssItems: 20, // Number of items in the RSS feed
 	animFast: 0.12, // Speed for animations (lower == slower)
@@ -627,7 +640,7 @@ function Tiddler()
 // Load a tiddler from an HTML DIV
 Tiddler.prototype.loadFromDiv = function(divRef,title)
 {
-	var text = this.unescapeLineBreaks(divRef.firstChild ? divRef.firstChild.nodeValue : "");
+	var text = Tiddler.unescapeLineBreaks(divRef.firstChild ? divRef.firstChild.nodeValue : "");
 	var modifier = divRef.getAttribute("modifier");
 	var modified = Date.convertFromYYYYMMDDHHMM(divRef.getAttribute("modified"));
 	var tags = divRef.getAttribute("tags");
@@ -662,16 +675,16 @@ Tiddler.prototype.saveToRss = function(url)
 // Change the text and other attributes of a tiddler
 Tiddler.prototype.set = function(title,text,modifier,modified,tags)
 {
-	if(title)
+	if(title != undefined)
 		this.title = title;
-	if(text)
+	if(text != undefined)
 		this.text = text;
-	if(modifier)
+	if(modifier != undefined)
 		this.modifier = modifier;
-	if(modified)
+	if(modified != undefined)
 		this.modified = modified;
-	if(tags)
-		this.tags = tags.readBracketedList();
+	if(tags != undefined)
+		this.tags = (typeof tags == "string") ? tags.readBracketedList() : tags;
 	else
 		this.tags = [];
 	this.changed();
@@ -698,11 +711,13 @@ var regexpBackSlashEss = new RegExp("\\\\s","mg");
 var regexpNewLine = new RegExp("\n","mg");
 var regexpCarriageReturn = new RegExp("\r","mg");
 
-// Convert "\n" to newlines, "\s" to "\"
-Tiddler.prototype.unescapeLineBreaks = function(text)
+// Static method to Convert "\n" to newlines, "\s" to "\"
+Tiddler.unescapeLineBreaks = function(text)
 {
-	if(!text) var text = this.text;
-	return text.replace(regexpBackSlashEn,"\n").replace(regexpBackSlashEss,"\\").replace(regexpCarriageReturn,"");
+	if(text && text != "")
+		return text.replace(regexpBackSlashEn,"\n").replace(regexpBackSlashEss,"\\").replace(regexpCarriageReturn,"");
+	else
+		return "";
 }
 
 // Convert newlines to "\n", "\" to "\s"
@@ -759,20 +774,23 @@ function TiddlyWiki()
 TiddlyWiki.prototype.notify = function(title,doBlanket)
 {
 	var notification = this.namedNotifications[title];
-	var tiddler = this.tiddlers[title];
 	if(notification)
 		for(var t=0; t<notification.length; t++)
-			notification[t](tiddler);
-	if(doBlanket == undefined || doBlanket == true)
+			notification[t](title);
+	if(doBlanket)
 		for(var n=0; n<this.blanketNotifications.length; n++)
-			this.blanketNotifications[n](tiddler);
+			this.blanketNotifications[n](title);
 }
 
 // Invoke the notification handlers for all tiddlers
 TiddlyWiki.prototype.notifyAll = function()
 {
-	for(var notifyTiddler in this.tiddlers)
-		this.notify(notifyTiddler,false);
+	var notifyTitle;
+	for(notifyTitle in this.tiddlers)
+		this.notify(notifyTitle,false);
+	for(notifyTitle in config.shadowTiddlers)
+		if(this.tiddlers[notifyTitle] == undefined)
+			this.notify(notifyTitle,false);
 	for(var n=0; n<this.blanketNotifications.length; n++)
 		this.blanketNotifications[n]();
 }
@@ -807,17 +825,21 @@ TiddlyWiki.prototype.removeTiddler = function(title)
 	var tiddler = this.tiddlers[title];
 	if(tiddler)
 		{
-		this.notify(title);
 		delete this.tiddlers[title];
+		this.notify(title,true);
 		}
 }
 
 TiddlyWiki.prototype.getTiddlerText = function(title,defaultText)
 {
+	if(!title)
+		return(defaultText);
 	var tiddler = this.tiddlers[title];
 	if(tiddler)
 		return tiddler.text;
-	if(defaultText)
+	else if(config.shadowTiddlers[title])
+		return config.shadowTiddlers[title];
+	else if(defaultText)
 		return defaultText;
 	else
 		return null;
@@ -865,8 +887,8 @@ TiddlyWiki.prototype.saveTiddler = function(title,newTitle,newBody,modifier,modi
 	tiddler.set(newTitle,newBody,modifier,modified,tags);
 	this.tiddlers[newTitle] = tiddler;
 	if(title != newTitle)
-		this.notify(title);
-	this.notify(newTitle);
+		this.notify(title,true);
+	this.notify(newTitle,true);
 	return tiddler;
 }
 
@@ -1251,10 +1273,8 @@ function createTiddlerViewer(title,highlightText,highlightCaseSensitive)
 	if(theBody)
 		{
 		var tiddler = store.tiddlers[title];
-		var tiddlerText;
-		if(tiddler)
-			tiddlerText = store.getTiddlerText(title);
-		else
+		var tiddlerText = store.getTiddlerText(title);
+		if(tiddlerText == null)
 			tiddlerText = config.views.wikified.defaultText;
 		var theViewer = createTiddlyElement(theBody,"div","viewer" + title,"viewer",null);
 		if(tiddler)
@@ -2025,9 +2045,8 @@ function clearMessage()
 // Menu and sidebar functions
 // ---------------------------------------------------------------------------------
 
-function refreshStory(tiddler)
+function refreshStory(hint)
 {
-	var hint = tiddler ? tiddler.title : null;
 	var hits = hint ? store.getReferringTiddlers(hint) : null;
 	var displayNodes = document.getElementById("tiddlerDisplay").childNodes;
 	for(var t=0;t<displayNodes.length;t++)
@@ -2051,25 +2070,25 @@ function refreshStory(tiddler)
 		}
 }
 
-function refreshTabs(tiddler)
+function refreshTabs(hint)
 {
-	refreshSpecialItem("sidebarTabs",store.tiddlers["SideBarTabs"],"SideBarTabs");
+	refreshSpecialItem("sidebarTabs","SideBarTabs","SideBarTabs");
 }
 
-function refreshMenu(tiddler)
+function refreshMenu(title)
 {
-	refreshSpecialItem("mainMenu",tiddler,"MainMenu");
+	refreshSpecialItem("mainMenu",title,"MainMenu");
 }
 
-function refreshTitle(tiddler)
+function refreshTitle(title)
 {
-	refreshSpecialItem("siteTitle",tiddler,"SiteTitle");
+	refreshSpecialItem("siteTitle",title,"SiteTitle");
 	refreshPageTitle();
 }
 
-function refreshSubtitle(tiddler)
+function refreshSubtitle(title)
 {
-	refreshSpecialItem("siteSubtitle",tiddler,"SiteSubtitle");
+	refreshSpecialItem("siteSubtitle",title,"SiteSubtitle");
 	refreshPageTitle();
 }
 
@@ -2078,22 +2097,21 @@ function refreshPageTitle()
 	document.title = getElementText("siteTitle") + " - " + getElementText("siteSubtitle");
 }
 
-function refreshSidebar(tiddler)
+function refreshSidebar(title)
 {
-	refreshSpecialItem("sidebarOptions",tiddler,"SideBarOptions");
+	refreshSpecialItem("sidebarOptions",title,"SideBarOptions");
 }
 
-function refreshSpecialItem(elementID,tiddler,defaultText)
+function refreshSpecialItem(elementID,title,defaultText)
 {
 	var place = document.getElementById(elementID);
 	removeChildren(place);
-	var text = (tiddler && tiddler.text) ? tiddler.text : defaultText;
-	wikify(text,place,null,null);
+	wikify(store.getTiddlerText(title,defaultText),place,null,null);
 }
 
-function refreshStyles(tiddler)
+function refreshStyles(title)
 {
-	setStylesheet(tiddler == null ? "" : store.getRecursiveTiddlerText(tiddler.title));
+	setStylesheet(title == null ? "" : store.getRecursiveTiddlerText(title));
 }
 
 // ---------------------------------------------------------------------------------
@@ -2245,7 +2263,7 @@ function generateRss()
 	var d = new Date();
 	var u = store.getTiddlerText("SiteUrl","");
 	// Assemble the header
-	s.push("<?xml version=\"1.0\"?>");
+	s.push("<" + "?xml version=\"1.0\"?" + ">");
 	s.push("<rss version=\"2.0\">");
 	s.push("<channel>");
 	s.push("<title>" + store.getTiddlerText("SiteTitle","") + "</title>");
@@ -3424,6 +3442,14 @@ a:hover, a:active {
 	padding: 2px 2px 2px 2px;
 }
 
+.tabSelected {
+	background-color: #eeeeaa;
+}
+
+.tabUnselected {
+	background-color: #cc9900;
+}
+
 .tab:hover {
 }
 
@@ -3432,6 +3458,7 @@ a:hover, a:active {
 
 .tabContents {
 	padding: 0.5em 0.5em 0.5em 0.5em;
+	background-color: #eeeeaa;
 }
 
 .tiddler {
@@ -3714,6 +3741,7 @@ a:hover, a:active {
 #sidebarOptions .sliderPanel {
 	padding: 0.5em 0.5em 0.5em 0.5em;
 	font-size: 7pt;
+	background-color: #eeeeaa;
 }
 
 #sidebarOptions .sliderPanel A {
@@ -3820,6 +3848,7 @@ a:hover, a:active {
 .sparkline {
 	background-color: #eeeeaa;
 	border: none;
+	line-height: 100%;
 }
 
 .sparktick {
@@ -3881,20 +3910,10 @@ a:hover, a:active {
 			<div id="tiddlerDisplay"></div>
 		</div>
 	</div>
-	<div id="storeArea"><div tiddler="AdvancedOptions" modified="200507121322" modifier="JeremyRuston" tags="systemTiddlers">&lt;&lt;option chkOpenInNewWindow&gt;&gt; OpenLinksInNewWindow\n&lt;&lt;option chkSaveEmptyTemplate&gt;&gt; SaveEmptyTemplate</div>
-<div tiddler="DefaultTiddlers" modified="200507121657" modifier="JeremyRuston" tags="systemTiddlers">HelloThere LatestStuff MainFeatures TiddlyWikiExamples</div>
+	<div id="storeArea"><div tiddler="DefaultTiddlers" modified="200507121657" modifier="JeremyRuston" tags="systemTiddlers">HelloThere LatestStuff MainFeatures TiddlyWikiExamples</div>
 <div tiddler="MainMenu" modified="200507121650" modifier="JeremyRuston" tags="systemTiddlers">HelloThere\nLatestStuff\nTiddlyWiki\nUsingThisSite\nReusingThisSite\n[[Community]]\nDownloadSoftware\nHowToUpgrade\nRssFeed\n[[Donations]]\n\n&#169; [[osmosoft|http://www.osmosoft.com]] 2005\n\n&lt;&lt;newTiddler&gt;&gt;\n&lt;&lt;newJournal &quot;DD MMM YYYY&quot;&gt;&gt;\n</div>
-<div tiddler="OptionsPanel" modified="200507121322" modifier="JeremyRuston" tags="systemTiddlers">These InterfaceOptions for customising TiddlyWiki are saved in your browser\n\nYour username for signing your edits. Write it as a WikiWord (eg JoeBloggs)\n\n&lt;&lt;option txtUserName&gt;&gt;\n&lt;&lt;option chkSaveBackups&gt;&gt; SaveBackups\n&lt;&lt;option chkAutoSave&gt;&gt; AutoSave\n&lt;&lt;option chkGenerateAnRssFeed&gt;&gt; GenerateAnRssFeed\n&lt;&lt;option chkRegExpSearch&gt;&gt; RegExpSearch\n&lt;&lt;option chkCaseSensitiveSearch&gt;&gt; CaseSensitiveSearch\n&lt;&lt;option chkAnimate&gt;&gt; EnableAnimations\n\nSee AdvancedOptions</div>
-<div tiddler="SideBarOptions" modified="200507121320" modifier="JeremyRuston" tags="systemTiddlers">&lt;&lt;search&gt;&gt;&lt;&lt;closeAll&gt;&gt;&lt;&lt;permaview&gt;&gt;&lt;&lt;saveChanges&gt;&gt;&lt;&lt;slider chkSliderOptionsPanel OptionsPanel options &quot;Change TiddlyWiki advanced options&quot;&gt;&gt;</div>
-<div tiddler="SideBarTabs" modified="200507121320" modifier="JeremyRuston" tags="systemTiddlers">&lt;&lt;tabs txtMainTab\nTimeline Timeline TabTimeline\nTags &quot;All tags&quot; TabTags\nMore &quot;More lists&quot; TabMore\n&gt;&gt;</div>
 <div tiddler="SiteSubtitle" modified="200507121318" modifier="JeremyRuston" tags="systemTiddlers">a reusable non-linear personal web notebook</div>
 <div tiddler="SiteTitle" modified="200507121318" modifier="JeremyRuston" tags="systemTiddlers">TiddlyWiki</div>
-<div tiddler="SiteUrl" modified="200507121318" modifier="JeremyRuston" tags="systemTiddlers">http://www.tiddlywiki.com/</div>
-<div tiddler="TabMore" modified="200507121323" modifier="JeremyRuston" tags="systemTiddlers">&lt;&lt;tabs txtMoreTab\nAll &quot;All tiddlers&quot; TabMoreAll\nMissing &quot;Missing tiddlers&quot; TabMoreMissing\nOrphans &quot;Orphaned tiddlers&quot; TabMoreOrphans\n&gt;&gt;</div>
-<div tiddler="TabMoreAll" modified="200507121322" modifier="JeremyRuston" tags="systemTiddlers">&lt;&lt;list all&gt;&gt;</div>
-<div tiddler="TabMoreMissing" modified="200507121322" modifier="JeremyRuston" tags="systemTiddlers">&lt;&lt;list missing&gt;&gt;</div>
-<div tiddler="TabMoreOrphans" modified="200507121322" modifier="JeremyRuston" tags="systemTiddlers">&lt;&lt;list orphans&gt;&gt;</div>
-<div tiddler="TabTags" modified="200507121322" modifier="JeremyRuston" tags="systemTiddlers">&lt;&lt;allTags&gt;&gt;</div>
-<div tiddler="TabTimeline" modified="200507121322" modifier="JeremyRuston" tags="systemTiddlers">&lt;&lt;timeline&gt;&gt;</div></div>
+<div tiddler="SiteUrl" modified="200507121318" modifier="JeremyRuston" tags="systemTiddlers">http://www.tiddlywiki.com/</div></div>
 	</body>
 </html>
