@@ -1,9 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <script type="text/javascript">
-var version = {major: 1, minor: 2, revision: 37, date: new Date("Oct 30, 2005"), extensions: {}};
+var version = {major: 1, minor: 2, revision: 38, date: new Date("Nov 8, 2005"), extensions: {}};
 </script>
 <!--
-TiddlyWiki 1.2.37 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
+TiddlyWiki 1.2.38 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
 
 Published under a BSD open source license
 
@@ -165,9 +165,34 @@ var config = {
 	textPrimitives: {}
 };
 
-config.textPrimitives.upperLetter = "[A-Z\u00c0-\u00de\u0150\u0170]";
-config.textPrimitives.lowerLetter = "[a-z\u00df-\u00ff_0-9\\-\u0151\u0171]";
-config.textPrimitives.anyLetter = "[A-Za-z\u00c0-\u00de\u00df-\u00ff_0-9\\-\u0150\u0170\u0151\u0171]";
+
+// ---------------------------------------------------------------------------------
+// Browser detection... In a very few places, there's nothing else for it but to
+// know what browser we're using.
+// ---------------------------------------------------------------------------------
+
+config.userAgent = navigator.userAgent.toLowerCase();
+config.browser = {
+	isIE: config.userAgent.indexOf("msie") != -1 && config.userAgent.indexOf("opera") == -1,
+	isBadSafari: config.userAgent.indexOf("applewebkit/416.11") != -1
+	};
+
+// ---------------------------------------------------------------------------------
+// Basic regular expressions
+// ---------------------------------------------------------------------------------
+
+if(config.browser.isBadSafari)
+	{
+	config.textPrimitives.upperLetter = "[A-Z\u00c0-\u00de]";
+	config.textPrimitives.lowerLetter = "[a-z\u00df-\u00ff_0-9\\-]";
+	config.textPrimitives.anyLetter = "[A-Za-z\u00c0-\u00de\u00df-\u00ff_0-9\\-]";
+	}
+else
+	{
+	config.textPrimitives.upperLetter = "[A-Z\u00c0-\u00de\u0150\u0170]";
+	config.textPrimitives.lowerLetter = "[a-z\u00df-\u00ff_0-9\\-\u0151\u0171]";
+	config.textPrimitives.anyLetter = "[A-Za-z\u00c0-\u00de\u00df-\u00ff_0-9\\-\u0150\u0170\u0151\u0171]";
+	}
 config.textPrimitives.anyDigit = "[0-9]";
 config.textPrimitives.anyNumberChar = "[0-9\\.E]";
 config.textPrimitives.urlPattern = "(?:http|https|mailto|ftp):[^\\s'\"]+(?:/|\\b)";
@@ -201,7 +226,6 @@ var readOnly = false;
 // Starting up
 function main()
 {
-	browserTests();
 	addEvent(document,"click",Popup.onDocumentClick);
 	saveTest();
 	loadOptionsCookie();
@@ -222,15 +246,6 @@ function restart()
 		displayTiddlers(null,convertUTF8ToUnicode(decodeURI(window.location.hash.substr(1))),1,null,null);
 	else if(start)
 		displayTiddlers(null,start,1,null,null);
-}
-
-// Shame...
-function browserTests()
-{
-	var a = navigator.userAgent.toLowerCase();
-	config.browser = {
-		isIE: a.indexOf("msie") != -1 && a.indexOf("opera") == -1
-		};
 }
 
 function saveTest()
@@ -3999,7 +4014,7 @@ function setStylesheet(s,id)
 			<div id="tiddlerDisplay"></div>
 		</div>
 	</div>
-	<div id="storeArea"><div tiddler="DefaultTiddlers" modified="200510302113" modifier="JeremyRuston" tags="systemTiddlers">HelloThere [[30 October 2005]] [[29 October 2005]] [[26 October 2005]] [[18 October 2005]] [[3 October 2005]] [[28 September 2005]] [[27 September 2005]]</div>
+	<div id="storeArea"><div tiddler="DefaultTiddlers" modified="200511100024" modifier="JeremyRuston" tags="systemTiddlers">HelloThere [[10 November 2005]] [[30 October 2005]] [[29 October 2005]] [[26 October 2005]] [[18 October 2005]] [[3 October 2005]] [[28 September 2005]] [[27 September 2005]]</div>
 <div tiddler="MainMenu" modified="200510302117" modifier="JeremyRuston" tags="systemTiddlers">HelloThere\nTiddlyWiki\nMainFeatures\n[[TiddlyWiki/Dev]]\nGettingStarted\nUsingThisSite\n[[Community]]\nDownloadSoftware\nPluginsAndMacros\n[[ThankYou]]\n[[RSS|RssFeed]]\n\n© [[osmosoft|http://www.osmosoft.com]] 2005\n\n\n&lt;&lt;newTiddler&gt;&gt;\n&lt;&lt;newJournal &quot;DD MMM YYYY&quot;&gt;&gt;</div>
 <div tiddler="SiteSubtitle" modified="200507121318" modifier="JeremyRuston" tags="systemTiddlers">a reusable non-linear personal web notebook</div>
 <div tiddler="SiteTitle" modified="200509212109" modifier="JeremyRuston" tags="systemTiddlers">TiddlyWiki</div>
