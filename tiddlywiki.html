@@ -1,9 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <script type="text/javascript">
-var version = {major: 1, minor: 2, revision: 27, date: new Date(2005,7,20), extensions: {}};
+var version = {major: 1, minor: 2, revision: 28, date: new Date(2005,7,22), extensions: {}};
 </script>
 <!--
-TiddlyWiki 1.2.27 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
+TiddlyWiki 1.2.28 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
 
 Published under a BSD open source license
 Incorporating improvements by Isao Sonobe, http://www-gauge.scphys.kyoto-u.ac.jp/~sonobe/OgreKit/OgreKitWiki.html
@@ -76,12 +76,12 @@ var config = {
 		],
 	// Shadow tiddlers for emergencies
 	shadowTiddlers: {
-		AdvancedOptions: "<<option chkOpenInNewWindow>> OpenLinksInNewWindow\n<<option chkSaveEmptyTemplate>> SaveEmptyTemplate\n<<option chkToggleLinks>> Clicking on links to tiddlers that are already open causes them to close\n^^(override with Control or other modifier key)^^",
-		OptionsPanel: "These InterfaceOptions for customising TiddlyWiki are saved in your browser\n\nYour username for signing your edits. Write it as a WikiWord (eg JoeBloggs)\n\n<<option txtUserName>>\n<<option chkSaveBackups>> SaveBackups\n<<option chkAutoSave>> AutoSave\n<<option chkGenerateAnRssFeed>> GenerateAnRssFeed\n<<option chkRegExpSearch>> RegExpSearch\n<<option chkCaseSensitiveSearch>> CaseSensitiveSearch\n<<option chkAnimate>> EnableAnimations\n\nSee AdvancedOptions",
 		SideBarOptions: "<<search>><<closeAll>><<permaview>><<saveChanges>><<slider chkSliderOptionsPanel OptionsPanel options 'Change TiddlyWiki advanced options'>>",
+		OptionsPanel: "These InterfaceOptions for customising TiddlyWiki are saved in your browser\n\nYour username for signing your edits. Write it as a WikiWord (eg JoeBloggs)\n\n<<option txtUserName>>\n<<option chkSaveBackups>> SaveBackups\n<<option chkAutoSave>> AutoSave\n<<option chkGenerateAnRssFeed>> GenerateAnRssFeed\n<<option chkRegExpSearch>> RegExpSearch\n<<option chkCaseSensitiveSearch>> CaseSensitiveSearch\n<<option chkAnimate>> EnableAnimations\n\nSee AdvancedOptions",
+		AdvancedOptions: "<<option chkOpenInNewWindow>> OpenLinksInNewWindow\n<<option chkSaveEmptyTemplate>> SaveEmptyTemplate\n<<option chkToggleLinks>> Clicking on links to tiddlers that are already open causes them to close\n^^(override with Control or other modifier key)^^",
 		SideBarTabs: "<<tabs txtMainTab Timeline Timeline TabTimeline Tags 'All tags' TabTags More 'More lists' TabMore>>",
-		TabTags: "<<allTags>>",
 		TabTimeline: "<<timeline>>",
+		TabTags: "<<allTags>>",
 		TabMore: "<<tabs txtMoreTab All 'All tiddlers' TabMoreAll Missing 'Missing tiddlers' TabMoreMissing Orphans 'Orphaned tiddlers' TabMoreOrphans>>",
 		TabMoreAll: "<<list all>>",
 		TabMoreMissing: "<<list missing>>",
@@ -93,51 +93,56 @@ var config = {
 	animSlow: 0.01, // Speed for EasterEgg animations
 	// Messages
 	messages: {
-		customConfigError: "Error in customConfig - ",
+		customConfigError: "Error in customConfig - %0",
 		savedSnapshotError: "It appears that this TiddlyWiki has been incorrectly saved. Please see http://www.tiddlywiki.com/#DownloadSoftware for details",
 		subtitleUnknown: "(unknown)",
-		undefinedTiddlerToolTip: " doesn't yet exist",
-		externalLinkTooltip: "External link to ",
+		undefinedTiddlerToolTip: "The tiddler '%0' doesn't yet exist",
+		externalLinkTooltip: "External link to %0",
 		noTags: "There are no tagged tiddlers",
 		notFileUrlError: "You need to save this TiddlyWiki to a file before you can save changes",
 		cantSaveError: "It's not possible to save changes using this browser. Use FireFox if you can",
-		invalidFileError: "The original file does not appear to be a TiddlyWiki: ",
-		backupSaved: "Backup saved as ",
+		invalidFileError: "The original file '%0' does not appear to be a valid TiddlyWiki",
+		backupSaved: "Backup saved: ",
 		backupFailed: "Failed to save backup file",
-		rssSaved: "RSS feed saved as ",
+		rssSaved: "RSS feed saved: ",
 		rssFailed: "Failed to save RSS feed file",
-		emptySaved: "Empty template saved as ",
+		emptySaved: "Empty template saved: ",
 		emptyFailed: "Failed to save empty template file",
-		mainSaved: "Main TiddlyWiki file saved as ",
+		mainSaved: "Main TiddlyWiki file saved: ",
 		mainFailed: "Failed to save main TiddlyWiki file. Your changes have not been saved",
-		macroError: "Error executing macro "
+		macroError: "Error executing macro '%0'",
+		unsavedChangesWarning: "WARNING! There are unsaved changes\n\nChoose OK to save\nChoose CANCEL to discard",
+		dates: {
+			months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November","December"],
+			days: ["Sunday", "Monday","Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+			}
 		},
 	views: {
 		wikified: {
-			tag: {labelNoTags: "no tags", labelTags: "tags: ", tooltip: "Show tiddlers tagged with ", openAllText: "Open all tiddlers tagged with ", openAllTooltip: "Open all of these tiddlers", popupNone: "No other tiddlers tagged with "},
+			tag: {labelNoTags: "no tags", labelTags: "tags: ", tooltip: "Show tiddlers tagged with '%0'", openAllText: "Open all tiddlers tagged with '%0'", openAllTooltip: "Open all of these tiddlers", popupNone: "No other tiddlers tagged with '%0'"},
 			toolbarClose: {text: "close", tooltip: "Close this tiddler"},
 			toolbarEdit: {text: "edit", tooltip: "Edit this tiddler"},
 			toolbarPermalink: {text: "permalink", tooltip: "Permalink for this tiddler"},
 			toolbarReferences: {text: "references", tooltip: "Show tiddlers that link to this one", popupNone: "No references"},
-			defaultText: "This tiddler doesn't yet exist. Double-click to create it"
+			defaultText: "The tiddler '%0' doesn't yet exist. Double-click to create it"
 			},
 		editor: {
-			tagPrompt: "Type tags separated with spaces, [[use double square brackets]] if necessary, or",
-			tagChooser: {text: "add existing tags", tooltip: "Choose existing tags to add to this tiddler", popupNone: "There are no tags defined", tagTooltip: "Add the tag "},
+			tagPrompt: "Type tags separated with spaces, [[use double square brackets]] if necessary, or add existing",
+			tagChooser: {text: "tags", tooltip: "Choose existing tags to add to this tiddler", popupNone: "There are no tags defined", tagTooltip: "Add the tag '%0'"},
 			toolbarDone: {text: "done", tooltip: "Save changes to this tiddler"},
 			toolbarCancel: {text: "cancel", tooltip: "Undo changes to this tiddler"},
 			toolbarDelete: {text: "delete", tooltip: "Delete this tiddler"},
-			defaultText: "Type the text for "
+			defaultText: "Type the text for '%0'"
 			}
 		},
 	macros: { // Each has a 'handler' member that is inserted later
 		today: {},
 		version: {},
-		search: {label: "search", prompt: "Search this TiddlyWiki", sizeTextbox: 15, successMsg: " tiddlers found matching: ", failureMsg: "No tiddlers found matching: "},
+		search: {label: "search", prompt: "Search this TiddlyWiki", sizeTextbox: 15, successMsg: "%0 tiddlers found matching %1", failureMsg: "No tiddlers found matching %0"},
 		tiddler: {},
 		tag: {},
-		timeline: {},
-		allTags: {tooltip: "Show tiddlers tagged with ", noTags: "There are no tagged tiddlers"},
+		timeline: {dateFormat: "DD MMM YYYY"},
+		allTags: {tooltip: "Show tiddlers tagged with '%0'", noTags: "There are no tagged tiddlers"},
 		list: {
 			all: {prompt: "All tiddlers in alphabetical order"},
 			missing: {prompt: "Tiddlers that have links to them but are not defined"},
@@ -149,8 +154,7 @@ var config = {
 		slider: {},
 		option: {},
 		newTiddler: {label: "new tiddler", prompt: "Create a new tiddler"},
-		newJournal: {label: "new journal", prompt: "Create a new tiddler from the current date and time",
-			months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November","December"]},
+		newJournal: {label: "new journal", prompt: "Create a new tiddler from the current date and time"},
 		sparkline: {},
 		tabs: {}
 		}
@@ -183,7 +187,7 @@ function main()
 		{
 		var ex = processConfig(configTiddlers[t].text);
 		if(ex)
-			displayMessage(config.messages.customConfigError + ex);
+			displayMessage(config.messages.customConfigError.format([ex]));
 		}
 	store.notifyAll();
 	var start = store.getTiddlerText("DefaultTiddlers");
@@ -255,7 +259,7 @@ config.macros.allTags.handler = function(place,macroName,params)
 		createTiddlyElement(place,"div",null,null,this.noTags);
 	for (t=0; t<tags.length; t++)
 		{
-		var theTag = createTiddlyButton(place,tags[t][0] + " (" + tags[t][1] + ")",this.tooltip + tags[t][0],onClickTag);
+		var theTag = createTiddlyButton(place,tags[t][0] + " (" + tags[t][1] + ")",this.tooltip.format([tags[t][0]]),onClickTag);
 		theTag.setAttribute("tag",tags[t][0]);
 		place.appendChild(document.createElement("br"));
 		}
@@ -272,7 +276,7 @@ config.macros.timeline.handler = function(place,macroName,params)
 		if(theDay != lastDay)
 			{
 			var theDateElement = document.createElement("span");
-			var theDateCaption = tiddler.modified.toLocaleDateString();
+			var theDateCaption = tiddler.modified.formatString(this.dateFormat);
 			theDateElement.appendChild(document.createTextNode(theDateCaption));
 			place.appendChild(theDateElement);
 			place.appendChild(document.createElement("br"));
@@ -294,12 +298,12 @@ config.macros.search.handler = function(place,macroName,params)
 		closeAllTiddlers();
 		var matches = store.search(txt.value,config.options.chkCaseSensitiveSearch,config.options.chkRegExpSearch,"title","excludeSearch");
 		for(var t=matches.length-1; t>=0; t--)
-			displayTiddler(null,matches[t].title,1,txt.value,config.options.chkCaseSensitiveSearch,false,false);
+			displayTiddler(null,matches[t].title,0,txt.value,config.options.chkCaseSensitiveSearch,false,false);
 		var q = config.options.chkRegExpSearch ? "/" : "'";
 		if(matches.length > 0)
-			displayMessage(matches.length + config.macros.search.successMsg + q + txt.value + q);
+			displayMessage(config.macros.search.successMsg.format([matches.length.toString(),q + txt.value + q]));
 		else
-			displayMessage(config.macros.search.failureMsg + q + txt.value + q);
+			displayMessage(config.macros.search.failureMsg.format([q + txt.value + q]));
 		lastSearchText = txt.value;
 		};
 	var clickHandler = function(e)
@@ -463,18 +467,15 @@ config.macros.newTiddler.handler = function(place)
 
 config.macros.newJournal.handler = function(place,macroName,params)
 {
-	var title = params[0].trim();
 	var now = new Date();
-	title = title.replace("YYYY",now.getFullYear());
-	title = title.replace("YY",String.zeroPad(now.getFullYear()-2000,2));
-	title = title.replace("MMM",this.months[now.getMonth()]);
-	title = title.replace("0MM",String.zeroPad(now.getMonth()+1,2));
-	title = title.replace("MM",now.getMonth()+1);
-	title = title.replace("0DD",String.zeroPad(now.getDate(),2));
-	title = title.replace("DD",now.getDate());
-	title = title.replace("hh",now.getHours());
-	title = title.replace("mm",now.getMinutes());
-	createTiddlyButton(place,this.label,this.prompt,function() {displayTiddler(null,title,2,null,null,false,false);});
+	var title = now.formatString(params[0].trim());
+	var createJournal = function() {
+		displayTiddler(null,title,2,null,null,false,false);
+		var tagsBox = document.getElementById("editorTags" + title);
+		if(tagsBox && params[1])
+			tagsBox.value += " " + String.encodeTiddlyLink(params[1]);
+		};
+	createTiddlyButton(place,this.label,this.prompt,createJournal);
 }
 
 config.macros.sparkline.handler = function(place,macroName,params)
@@ -598,20 +599,7 @@ function processConfig(customConfig)
 // Render a macro
 function insertMacro(place,macroName,macroParams)
 {
-	var regexpMacroParam = new RegExp("(?:\\s*)(?:(?:\"([^\"]*)\")|(?:'([^']*)')|([^\"'\\s]\\S*))","mg");
-	var params = [];
-	do {
-		var match = regexpMacroParam.exec(macroParams);
-		if(match)
-			{
-			if(match[1]) // Double quoted
-				params.push(match[1]);
-			else if(match[2]) // Single quoted
-				params.push(match[2]);
-			else if(match[3]) // Unquoted
-				params.push(match[3]);
-			}
-	} while(match);
+	var params = macroParams.readMacroParams();
 	try
 		{
 		var macro = config.macros[macroName];
@@ -622,7 +610,7 @@ function insertMacro(place,macroName,macroParams)
 		}
 	catch(e)
 		{
-		displayMessage(config.messages.macroError + macroName);
+		displayMessage(config.messages.macroError.format([macroName]));
 		displayMessage(e.toString());
 		}
 }
@@ -776,6 +764,12 @@ function TiddlyWiki()
 	this.dirty = false;
 }
 
+// Set the dirty flag
+TiddlyWiki.prototype.setDirty = function(dirty)
+{
+	this.dirty = dirty;
+}
+
 // Invoke the notification handlers for a particular tiddler
 TiddlyWiki.prototype.notify = function(title,doBlanket)
 {
@@ -824,6 +818,7 @@ TiddlyWiki.prototype.addNotification = function(title,fn)
 TiddlyWiki.prototype.clear = function(src)
 {
 	this.tiddlers = {};
+	this.dirty = false;
 }
 
 TiddlyWiki.prototype.removeTiddler = function(title)
@@ -833,6 +828,7 @@ TiddlyWiki.prototype.removeTiddler = function(title)
 		{
 		delete this.tiddlers[title];
 		this.notify(title,true);
+		this.dirty = true;
 		}
 }
 
@@ -895,6 +891,7 @@ TiddlyWiki.prototype.saveTiddler = function(title,newTitle,newBody,modifier,modi
 	if(title != newTitle)
 		this.notify(title,true);
 	this.notify(newTitle,true);
+	this.dirty = true;
 	return tiddler;
 }
 
@@ -905,6 +902,7 @@ TiddlyWiki.prototype.createTiddler = function(title)
 		{
 		tiddler = new Tiddler();
 		this.tiddlers[title] = tiddler;
+		this.dirty = true;
 		}
 	return tiddler;
 }
@@ -1104,7 +1102,7 @@ function createTiddler(place,before,title,state,highlightText,highlightCaseSensi
 	var theTiddler = createTiddlerSkeleton(place,before,title);
 	createTiddlerTitle(title,highlightText,highlightCaseSensitive);
 	var theViewer = document.getElementById("viewer" + title);
-	var theEditor = document.getElementById("editor" + title);
+	var theEditor = document.getElementById("editorWrapper" + title);
 	switch(state)
 		{
 		case 0:
@@ -1280,13 +1278,14 @@ function createTiddlerViewer(title,highlightText,highlightCaseSensitive)
 		{
 		var tiddler = store.tiddlers[title];
 		var tiddlerText = store.getTiddlerText(title);
-		if(tiddlerText == null)
-			tiddlerText = config.views.wikified.defaultText;
 		var theViewer = createTiddlyElement(theBody,"div","viewer" + title,"viewer",null);
 		if(tiddler)
 			theViewer.setAttribute("tags",tiddler.tags.join(" "));
-		else
+		if(tiddlerText == null)
+			{
+			tiddlerText = config.views.wikified.defaultText.format([title]);
 			theViewer.style.fontStyle = "italic";
+			}
 		wikify(tiddlerText,theViewer,highlightText,highlightCaseSensitive);
 		}
 }
@@ -1320,7 +1319,7 @@ function createTiddlerFooter(title,isEditor)
 // Create a button for a tag with a popup listing all the tiddlers that it tags
 function createTagButton(place,tag,excludeTiddler)
 {
-	var theTag = createTiddlyButton(place,tag,config.views.wikified.tag.tooltip + tag,onClickTag);
+	var theTag = createTiddlyButton(place,tag,config.views.wikified.tag.tooltip.format([tag]),onClickTag);
 	theTag.setAttribute("tag",tag);
 	if(excludeTiddler)
 		theTag.setAttribute("tiddler",excludeTiddler);
@@ -1336,8 +1335,8 @@ function createTiddlerEditor(title)
 		var tiddlerText = store.getTiddlerText(title);
 		var tiddlerExists = (tiddlerText != null);
 		if(!tiddlerExists)
-			tiddlerText = config.views.editor.defaultText + title;
-		var theEditor = createTiddlyElement(theBody,"div","editor" + title,"editor",null);
+			tiddlerText = config.views.editor.defaultText.format([title]);
+		var theEditor = createTiddlyElement(theBody,"div","editorWrapper" + title,"editor",null);
 		theEditor.onkeypress = onEditKey;
 		var theTitleBox = createTiddlyElement(theEditor,"input","editorTitle" + title,null,null);
 		theTitleBox.setAttribute("type","text");
@@ -1379,19 +1378,6 @@ function saveTiddler(title)
 		}
 	if(config.options.chkAutoSave)
 		saveChanges();
-}
-
-function searchTiddlers(searchText,caseSensitive,useRegExp)
-{
-	closeAllTiddlers();
-	var matches = store.search(searchText,caseSensitive,useRegExp,"title","excludeSearch");
-	for(var t=max; t>=0;t--)
-		displayTiddler(null,matches[t].title,1,searchText,caseSensitive,false,false);
-	var q = useRegExp ? "/" : "'";
-	if(matches.length > 0)
-		displayMessage(matches.length + config.messages.searchSuccess + q + searchText + q);
-	else
-		displayMessage(config.messages.searchFailure + q + searchText + q);
 }
 
 function selectTiddler(title)
@@ -1456,7 +1442,7 @@ function closeAllTiddlers()
 			if(tiddler.id.substr(0,7) == "tiddler")
 				{
 				var title = tiddler.id.substr(7);
-				if(!document.getElementById("editor" + title))
+				if(!document.getElementById("editorWrapper" + title))
 					place.removeChild(tiddler);
 				}
 		tiddler = nextTiddler;
@@ -1467,9 +1453,9 @@ function closeAllTiddlers()
 // Regular expression stuff
 // ---------------------------------------------------------------------------------
 
-var upperLetter = "[A-ZÀ-ÞŐŰ]";
-var lowerLetter = "[a-zß-ÿ_0-9\\-őű]";
-var anyLetter = "[A-Za-zÀ-Þß-ÿ_0-9\\-ŐŰőű]";
+var upperLetter = "[A-Z\u00c0-\u00de\u0150\u0170]";
+var lowerLetter = "[a-z\u00df-\u00ff_0-9\\-\u0151\u0171]";
+var anyLetter = "[A-Za-z\u00c0-\u00de\u00df-\u00ff_0-9\\-\u0150\u0170\u0151\u0171]";
 var anyDigit = "[0-9]";
 var anyNumberChar = "[0-9\\.E]";
 var wikiNamePattern = "(~?)((?:" + upperLetter + "+" + lowerLetter + "+" + upperLetter + anyLetter + "*)|(?:" + upperLetter + "{2,}" + lowerLetter + "+))";
@@ -2171,6 +2157,16 @@ function saveOptionCookie(name)
 var startSaveArea = '<div id="' + 'storeArea">'; // Split up into two so that indexOf() of this source doesn't find it
 var endSaveArea = '</d' + 'iv>';
 
+// Check if there any unsaved changes before exitting
+function checkUnsavedChanges()
+{
+	if(store.dirty)
+		{
+		if(confirm(config.messages.unsavedChangesWarning))
+			saveChanges();
+		}
+}
+
 // Save this tiddlywiki with the pending changes
 function saveChanges()
 {
@@ -2215,7 +2211,7 @@ function saveChanges()
 	var posClosingDiv = original.lastIndexOf(endSaveArea);
 	if((posOpeningDiv == -1) || (posClosingDiv == -1))
 		{
-		alert(config.messages.invalidFileError + localPath);
+		alert(config.messages.invalidFileError.format([localPath]));
 		return;
 		}
 	// Save the backup
@@ -2261,7 +2257,10 @@ function saveChanges()
 				original.substr(posClosingDiv);
 	var save = saveFile(localPath,revised);
 	if(save)
+		{
 		displayMessage(config.messages.mainSaved,"file://" + localPath);
+		store.setDirty(false);
+		}
 	else
 		alert(config.messages.mainFailed);
 }
@@ -2270,20 +2269,21 @@ function generateRss()
 {
 	var s = [];
 	var d = new Date();
-	var u = store.getTiddlerText("SiteUrl","");
+	var u = store.getTiddlerText("SiteUrl",null);
 	// Assemble the header
 	s.push("<" + "?xml version=\"1.0\"?" + ">");
 	s.push("<rss version=\"2.0\">");
 	s.push("<channel>");
-	s.push("<title>" + store.getTiddlerText("SiteTitle","") + "</title>");
-	s.push("<link>" + u + "</link>");
-	s.push("<description>" + store.getTiddlerText("SiteSubtitle","") + "</description>");
+	s.push("<title>" + store.getTiddlerText("SiteTitle","").htmlEncode() + "</title>");
+	if(u)
+		s.push("<link>" + u.htmlEncode() + "</link>");
+	s.push("<description>" + store.getTiddlerText("SiteSubtitle","").htmlEncode() + "</description>");
 	s.push("<language>en-us</language>");
 	s.push("<copyright>Copyright " + d.getFullYear() + " " + config.options.txtUserName.htmlEncode() + "</copyright>");
 	s.push("<pubDate>" + d.toGMTString() + "</pubDate>");
 	s.push("<lastBuildDate>" + d.toGMTString() + "</lastBuildDate>");
 	s.push("<docs>http://blogs.law.harvard.edu/tech/rss</docs>");
-	s.push("<generator>TiddlyWiki</generator>");
+	s.push("<generator>TiddlyWiki " + version.major + "." + version.minor + "." + version.revision + "</generator>");
 	// The body
 	var tiddlers = store.getTiddlers("modified");
 	var n = config.numRssItems > tiddlers.length ? tiddlers.length : tiddlers.length-config.numRssItems;
@@ -2346,16 +2346,16 @@ function convertUTF8ToUnicode(u)
 
 function convertUnicodeToUTF8(s)
 {
-	var u = "";
+	var u = [];
 	for(var t=0;t<s.length;t++)
 		{
 		var c = s.charCodeAt(t);
 		if(c <= 0x7F)
-			u += String.fromCharCode(c);
+			u.push(String.fromCharCode(c));
 		else
-			u += "&#" + c.toString() + ";";
+			u.push("&#" + c.toString() + ";");
 		}
-	return(u);
+	return(u.join(""));
 }
 
 function saveFile(fileUrl, content)
@@ -2475,16 +2475,16 @@ function onEditKey(e)
 		case 13: // Ctrl-Enter
 		case 10: // Ctrl-Enter on IE PC
 		case 77: // Ctrl-Enter is "M" on some platforms
-			if(e.ctrlKey && this.id && this.id.substr(0,6) == "editor")
+			if(e.ctrlKey && this.id && this.id.substr(0,13) == "editorWrapper")
 				{
-				saveTiddler(this.id.substr(6));
+				saveTiddler(this.id.substr(13));
 				consume = true;
 				}
 			break;
 		case 27: // Escape
-			if(this.id && this.id.substr(0,6) == "editor")
+			if(this.id && this.id.substr(0,13) == "editorWrapper")
 				{
-				displayTiddler(null,this.id.substr(6),1,null,null,false,false);
+				displayTiddler(null,this.id.substr(13),1,null,null,false,false);
 				consume = true;
 				}
 			break;
@@ -2636,12 +2636,12 @@ function onClickTag(e)
 		if(c)
 			{
 			popup.insertBefore(document.createElement("hr"),popup.firstChild);
-			var openAll = createTiddlyButton(null,lingo.openAllText + tag,lingo.openAllTooltip,onClickTagOpenAll);
+			var openAll = createTiddlyButton(null,lingo.openAllText.format([tag]),lingo.openAllTooltip,onClickTagOpenAll);
 			openAll.setAttribute("tag",tag);
 			popup.insertBefore(openAll,popup.firstChild);
 			}
 		else
-			popup.appendChild(document.createTextNode(lingo.popupNone + tag));
+			popup.appendChild(document.createTextNode(lingo.popupNone.format([tag])));
 		}
 	e.cancelBubble = true;
 	if (e.stopPropagation) e.stopPropagation();
@@ -2674,7 +2674,7 @@ function onClickAddTag(e)
 		createTiddlyElement(popup,"div",null,null,lingo.popupNone);
 	for (t=0; t<tags.length; t++)
 		{
-		var theTag = createTiddlyButton(popup,tags[t][0],lingo.tagTooltip + tags[t][0],onClickAddTagPopup);
+		var theTag = createTiddlyButton(popup,tags[t][0],lingo.tagTooltip.format([tags[t][0]]),onClickAddTagPopup);
 		theTag.setAttribute("tag",tags[t][0]);
 		theTag.setAttribute("tiddler",tiddler);
 		}
@@ -2946,6 +2946,27 @@ String.prototype.trim = function()
 	return(this.replace(regexpTrim,"$1"));
 }
 
+// Substitute substrings from an array into a format string that includes '%1'-type specifiers
+String.prototype.format = function(substrings)
+{
+	var subRegExp = new RegExp("(?:%(\\d+))","mg");
+	var currPos = 0;
+	var r = [];
+	do {
+		var match = subRegExp.exec(this);
+		if(match && match[1])
+			{
+			if(match.index > currPos)
+				r.push(this.substring(currPos,match.index));
+			r.push(substrings[parseInt(match[1])]);
+			currPos = subRegExp.lastIndex;
+			}
+	} while(match);
+	if(currPos < this.length)
+		r.push(this.substring(currPos,this.length));
+	return r.join("");
+}
+
 // Escape any special RegExp characters with that character preceded by a backslash
 String.prototype.escapeRegExp = function()
 {
@@ -2962,7 +2983,29 @@ String.prototype.htmlEncode = function()
 	return(this.replace(regexpAmp,"&amp;").replace(regexpLessThan,"&lt;").replace(regexpGreaterThan,"&gt;").replace(regexpQuote,"&quot;"));
 }
 
-// Process a string list tiddler names into an array. Tiddler names that have spaces in them must be [[bracketed]]
+// Process a string list of macro parameters into an array. Parameters can be quoted with "", '', [[]] or left unquoted (and therefore space-separated)
+String.prototype.readMacroParams = function()
+{
+	var regexpMacroParam = new RegExp("(?:\\s*)(?:(?:\"([^\"]*)\")|(?:'([^']*)')|(?:\\[\\[([^\\]]*)\\]\\])|([^\"'\\s]\\S*))","mg");
+	var params = [];
+	do {
+		var match = regexpMacroParam.exec(this);
+		if(match)
+			{
+			if(match[1]) // Double quoted
+				params.push(match[1]);
+			else if(match[2]) // Single quoted
+				params.push(match[2]);
+			else if(match[3]) // Double-square-bracket quoted
+				params.push(match[3]);
+			else if(match[4]) // Unquoted
+				params.push(match[4]);
+			}
+	} while(match);
+	return params;
+}
+
+// Process a string list of tiddler names into an array. Tiddler names that have spaces in them must be [[bracketed]]
 String.prototype.readBracketedList = function(unique)
 {
 	var bracketedPattern = "\\[\\[([^\\]]+)\\]\\]";
@@ -3064,6 +3107,23 @@ RGB.prototype.toString = function()
 // Augmented methods for the JavaScript Date() object
 // ---------------------------------------------------------------------------------
 
+// Substitute date components into a string
+Date.prototype.formatString = function(template)
+{
+	template = template.replace("YYYY",this.getFullYear());
+	template = template.replace("YY",String.zeroPad(this.getFullYear()-2000,2));
+	template = template.replace("MMM",config.messages.dates.months[this.getMonth()]);
+	template = template.replace("0MM",String.zeroPad(this.getMonth()+1,2));
+	template = template.replace("MM",this.getMonth()+1);
+	template = template.replace("DDD",config.messages.dates.days[this.getDay()]);
+	template = template.replace("0DD",String.zeroPad(this.getDate(),2));
+	template = template.replace("DD",this.getDate());
+	template = template.replace("hh",this.getHours());
+	template = template.replace("mm",this.getMinutes());
+	template = template.replace("ss",this.getSeconds());
+	return template;
+}
+
 // Convert a date to UTC YYYYMMDDHHMM string format
 Date.prototype.convertToYYYYMMDDHHMM = function()
 {
@@ -3134,7 +3194,7 @@ function createTiddlyLink(place,title,includeText)
 	if(tiddler)
 		subTitle = tiddler.getSubtitle();
 	else
-		subTitle = title + config.messages.undefinedTiddlerToolTip;
+		subTitle = config.messages.undefinedTiddlerToolTip.format([title]);
 	var theClass = tiddler ? "tiddlyLinkExisting tiddlyLink" : "tiddlyLinkNonExisting tiddlyLink";
 	var btn = createTiddlyButton(place,text,subTitle,onClickTiddlerLink,theClass);
 	btn.setAttribute("tiddlyLink",title);
@@ -3146,7 +3206,7 @@ function createExternalLink(place,url)
 	var theLink = document.createElement("a");
 	theLink.className = "externalLink";
 	theLink.href = url;
-	theLink.title = config.messages.externalLinkTooltip + url;
+	theLink.title = config.messages.externalLinkTooltip.format([url]);
 	if(config.options.chkOpenInNewWindow)
 		theLink.target = "_blank";
 	place.appendChild(theLink);
@@ -3897,7 +3957,7 @@ a:hover, a:active {
 
 </style>
 </head>
-<body onload="main()">
+<body onload="main();" onunload="checkUnsavedChanges();">
 	<div id="copyright">
 	Welcome to TiddlyWiki by Jeremy Ruston, Copyright &copy; 2005 Osmosoft Limited
 	</div>
