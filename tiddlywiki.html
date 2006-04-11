@@ -1,9 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <script type="text/javascript">
-var version = {major: 1, minor: 2, revision: 26, date: new Date(2005,7,18), extensions: {}};
+var version = {major: 1, minor: 2, revision: 27, date: new Date(2005,7,20), extensions: {}};
 </script>
 <!--
-TiddlyWiki 1.2.26 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
+TiddlyWiki 1.2.27 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
 
 Published under a BSD open source license
 Incorporating improvements by Isao Sonobe, http://www-gauge.scphys.kyoto-u.ac.jp/~sonobe/OgreKit/OgreKitWiki.html
@@ -76,7 +76,7 @@ var config = {
 		],
 	// Shadow tiddlers for emergencies
 	shadowTiddlers: {
-		AdvancedOptions: "<<option chkOpenInNewWindow>> OpenLinksInNewWindow\n<<option chkSaveEmptyTemplate>> SaveEmptyTemplate",
+		AdvancedOptions: "<<option chkOpenInNewWindow>> OpenLinksInNewWindow\n<<option chkSaveEmptyTemplate>> SaveEmptyTemplate\n<<option chkToggleLinks>> Clicking on links to tiddlers that are already open causes them to close\n^^(override with Control or other modifier key)^^",
 		OptionsPanel: "These InterfaceOptions for customising TiddlyWiki are saved in your browser\n\nYour username for signing your edits. Write it as a WikiWord (eg JoeBloggs)\n\n<<option txtUserName>>\n<<option chkSaveBackups>> SaveBackups\n<<option chkAutoSave>> AutoSave\n<<option chkGenerateAnRssFeed>> GenerateAnRssFeed\n<<option chkRegExpSearch>> RegExpSearch\n<<option chkCaseSensitiveSearch>> CaseSensitiveSearch\n<<option chkAnimate>> EnableAnimations\n\nSee AdvancedOptions",
 		SideBarOptions: "<<search>><<closeAll>><<permaview>><<saveChanges>><<slider chkSliderOptionsPanel OptionsPanel options 'Change TiddlyWiki advanced options'>>",
 		SideBarTabs: "<<tabs txtMainTab Timeline Timeline TabTimeline Tags 'All tags' TabTags More 'More lists' TabMore>>",
@@ -1234,8 +1234,8 @@ function createTiddlerPopup(srcElement)
 	if(popup)
 		popup.parentNode.removeChild(popup);
 	popup = createTiddlyElement(null,"div","popup",null,null);
-	popup.style.left = srcElement.offsetLeft + "px";
-	popup.style.top = srcElement.offsetTop + srcElement.offsetHeight + "px";
+	popup.style.left = findPosX(srcElement) + "px";
+	popup.style.top = findPosY(srcElement) + srcElement.offsetHeight + "px";
 	popup.style.display = "block";
 	srcElement.onmouseout = onMouseOutTiddlerPopup;
 	srcElement.appendChild(popup);
