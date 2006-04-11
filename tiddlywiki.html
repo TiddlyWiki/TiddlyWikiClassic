@@ -25,7 +25,7 @@ function restart()
     refreshAll();
     var start;
     if(window.location.hash)
-        displayTiddlers(null,decodeURI(window.location.hash).substr(1),1,null,null);
+        displayTiddlers(null,decodeURI(window.location.hash.substr(1)),1,null,null);
     else if(start = getTiddlerText("DefaultTiddlers"))
         displayTiddlers(null,start,1,null,null);
 }
@@ -198,11 +198,10 @@ function createTiddlerToolbar(title,editor)
                            "Edit this tiddler",
                            onClickToolbarEdit);
         insertSpacer(theToolbar);
-        var permaLink = createTiddlyButton(theToolbar,
-                                            "permalink",
-                                            "Permalink for this tiddler",
-                                            null);
-        permaLink.href = window.location.protocol + window.location.host + window.location.pathname + "#" + title;
+        createTiddlyButton(theToolbar,
+                            "permalink",
+                            "Permalink for this tiddler",
+                            onClickToolbarPermaLink);
         insertSpacer(theToolbar);
         createTiddlyButton(theToolbar,
                            "references",
@@ -841,6 +840,13 @@ function onClickToolbarClose(e)
 		closeTiddler(this.parentNode.id.substr(7),e.shiftKey || e.altKey);
 }
 
+// Event handler for clicking on toolbar permalink
+function onClickToolbarPermaLink(e)
+{
+    if(this.parentNode.id)
+        window.location.hash = encodeURIComponent(this.parentNode.id.substr(7));
+}
+
 // Event handler for clicking on toolbar close
 function onClickToolbarDelete(e)
 {
@@ -998,7 +1004,7 @@ function startZoomer(e,start,target,slowly)
     stopZoomer();
     zoomerElement = e;
     zoomerStart = start;
-    zoomerStartScroll = window.scrollY;
+    zoomerStartScroll = findScrollY();
     zoomerTargetScroll = ensureVisible(target);
     zoomerTarget = target;
     zoomerProgress = 0;
@@ -1129,19 +1135,30 @@ function ensureVisible(e)
 {
     var posTop = findPosY(e);
     var posBot = posTop + e.offsetHeight;
-    var winTop = window.scrollY;
-    var winBot = winTop + window.innerHeight;
+    var winTop = findScrollY();
+    var winHeight = findWindowHeight();
+    var winBot = winTop + winHeight;
     if(posTop < winTop)
         return(posTop);
     else if(posBot > winBot)
         {
-        if(e.offsetHeight < window.innerHeight)
-            return(posTop - (window.innerHeight - e.offsetHeight));
+        if(e.offsetHeight < winHeight)
+            return(posTop - (winHeight - e.offsetHeight));
         else
             return(posTop);
         }
     else
         return(winTop);
+}
+
+function findWindowHeight()
+{
+	return(window.innerHeight ? window.innerHeight : document.body.clientHeight);
+}
+
+function findScrollY()
+{
+	return(window.scrollY ? window.scrollY : document.body.scrollTop);
 }
 
 // From QuirksMode.com
@@ -1561,7 +1578,10 @@ a:hover, a:active {
 
 
 
+
+
     <DIV id="storeWikiWord" modified="200409072350" modifier="JeremyRuston">A WikiWord is a word composed of a bunch of other words slammed together with each of their first letters capitalised. WikiWord notation in a WikiWikiWeb is used to name individual pages. Furthermore, referring to a page automatically creates a link to it. Clicking on a link jumps to that page or, if it doesn't exist, to an editor to create it. TiddlyWiki uses WikiWord titles for smaller chunks of MicroContent.</DIV>
+
 
 
 
@@ -1591,6 +1611,7 @@ a:hover, a:active {
 
 
 
+
     <DIV id="storeSiteTitle" modified="200409161548" modifier="JeremyRuston">TiddlyWiki</DIV>
 
 
@@ -1606,7 +1627,9 @@ a:hover, a:active {
 
 
 
+
     <DIV id="storeSiteSubtitle" modified="200409171651" modifier="JeremyRuston">a reusable non-linear personal web notebook</DIV>
+
 
 
 
@@ -1646,7 +1669,9 @@ a:hover, a:active {
 
 
 
+
     <DIV id="storeWikiWikiWeb" modified="200409201307" modifier="JeremyRuston">A Wiki is a widely-used, mature way of building collaborative websites. It's based on the ideas of easy editting of pages and the use of special WikiWord notation to automagically create links between pages. See Wikipedia for more details: http://en.wikipedia.org/wiki/Wiki . TiddlyWiki is different from a conventional Wiki because it is not based on entire pages of content, but rather items of MicroContent that are referred to as 'tiddlers'.</DIV>
+
 
 
 
@@ -1676,7 +1701,9 @@ a:hover, a:active {
 
 
 
+
     <DIV id="storeSubEthaEdit" modified="200409201316" modifier="JeremyRuston">SubEthaEdit at http://www.codingmonkeys.de/subethaedit/ is an amazing piece of software for Mac OS X. It's a neat little basic text editor with a few nicities such as colour-coding, but it's main reason for existence is the brilliantly implemented network-based collaborative editing features.</DIV>
+
 
 
 
@@ -1706,6 +1733,7 @@ a:hover, a:active {
 
 
 
+
     <DIV id="storeUsingThisSite" modified="200409201442" modifier="JeremyRuston">Hopefully, reading a TiddlyWiki is fairly self explanatory. Within the main story column, click on bold links to read a linked tiddler. Click on italic links to create a new tiddler. When you hover the mouse over a tiddler it's highlighted and some extra options appear by the title: 'close' just closes the tiddler in question, 'link' does the opposite by closing all other tiddlers. Finally, 'edit' allows you to edit the text of any tiddler; changes are not reflected back to the server, though. See SavingStuff for more details.</DIV>
 
 
@@ -1721,7 +1749,9 @@ a:hover, a:active {
 
 
 
+
     <DIV id="storeSavingStuff" modified="200409201443" modifier="JeremyRuston">There's no funky ServerSide to TiddlyWiki yet; I'm just posting up a single, static HTML file. As a consequence it is impossible to permanently save changes to a TiddlyWiki back to the web server. Instead, you have to manually save changes using the 'Save all' link at the top right.</DIV>
+
 
 
 
@@ -1758,6 +1788,7 @@ a:hover, a:active {
 
 
 
+
                 
 
 
@@ -1766,6 +1797,7 @@ a:hover, a:active {
 
 
     <DIV id="storeInterruptedEdits" modified="200409201456" modifier="JeremyRuston">TiddlyWiki is great at throwing away the content of outstanding, unsaved, edits. You can do it by clicking on the top-left logo, or by using 'refresh' in the browser. Ideally, I'd be trapping various events to save all edits as soon as they are made, and maintain older versions for undo purposes.</DIV>
+
 
 
 
@@ -1795,7 +1827,9 @@ a:hover, a:active {
 
 
 
+
     <DIV id="storeLinkDifferentiation" modified="200409201458" modifier="JeremyRuston">It'd be great if links that you had already visited looked different, particularly in the right hand menu.</DIV>
+
 
 
 
@@ -1825,7 +1859,9 @@ a:hover, a:active {
 
 
 
+
     <DIV id="storeMissingFeatures" modified="200409201459" modifier="JeremyRuston">New features that I'm thinking about for TiddlyWiki include LinkDifferentiation, SpecialLinkNames, SavingStuff, IncrementalSearch and implementing a ServerSide. I haven't really begun to think about VersionTracking or DifferencingDisplay. There's also some bugs like InterruptedEdits, CrazyScrolling, LinkRefreshing.</DIV>
+
 
 
 
@@ -1873,6 +1909,7 @@ a:hover, a:active {
 
 
 
+
                  <DIV id="storeEasierReading" modified="200409211832" modifier="JeremyRuston">To make it easier to read a TiddlyWiki that you're interested in as it evolves, I plan to keep track of which tiddlers you've already read in a client-side cookie. Then, on the first visit when it creates the cookie, TiddlyWiki would open with WelcomeNewcomer. On subsequent visits, it would display the changed tiddlers in reverse date order, just like a blog.</DIV>
 
 
@@ -1888,7 +1925,9 @@ a:hover, a:active {
 
 
 
+
                  <DIV id="storeDesignGoals" modified="200409211832" modifier="JeremyRuston">I want to make it as easy to read a TiddlyWiki as a blog: 'push' notification of changes in an RSS reader, and EasierReading that lets you sort through the stuff you've already read from the stuff you haven't. It won't be possible to do all of that without some ServerSide logic.</DIV>
+
 
 
 
@@ -1935,6 +1974,7 @@ a:hover, a:active {
 
 
 
+
     <DIV id="storeMicroContent" modified="200409251844" modifier="JeremyRuston">MicroContent being a fashionable word for self-contained fragments of content that are typically smaller than entire pages. Often MicroContent is presented via some kind of aggregation that reduces the perceptual shock and resource cost of context switching (eg Blogs aggregating several entries onto a page or Flickr presenting photos in an album). This TiddlyWiki aggregates MicroContent items that I call 'tiddlers' into pages that are loaded in one gulp and progressively displayed as the user clicks hypertext links to read them.</DIV>
 
 
@@ -1949,7 +1989,9 @@ a:hover, a:active {
 
 
 
+
     <DIV id="storeTiddlyWiki" modified="200409251845" modifier="JeremyRuston">A TiddlyWiki is like a blog because it's divided up into neat little chunks, but it encourages you to read it by hyperlinking rather than sequentially: if you like, a non-linear blog analogue that binds the individual microcontent items into a cohesive whole. I think that TiddlyWiki represents a novel medium for writing, and will promote it's own distinctive WritingStyle. This is the first version of TiddlyWiki and so, as discussed in TiddlyWikiDev, it's bound to be FullOfBugs, have many MissingFeatures and fail to meet all of the DesignGoals. And of course there's NoWarranty, and it might be judged a StupidName.</DIV>
+
 
 
 
@@ -1983,10 +2025,12 @@ a:hover, a:active {
 
 
 
+
                 
 
     
     <DIV id="storeJeremyRuston" modified="200410011740" modifier="JeremyRuston">I'm Jeremy Ruston, a ChiefTechnologyOfficer based in London. I currently work for a small self-funded startup doing cool stuff for big financial institutions. Previously, I've worked for two VentureCapital backed startups as CTO, Interactive1 and Infuzer. Before that I did a stint in the City of London as Global Head of E-Commerce for a big european investment bank. Long, long ago I used to write computer books and do some computer animation for BBC Television. If you've got any comments or suggestions on this site, do please EmailMe.</DIV>
+
 
 
 
@@ -2012,7 +2056,9 @@ a:hover, a:active {
 
 
 
+
     <DIV id="storeTiddlyWikiFiction" modified="200410151411" modifier="JeremyRuston">TiddlyWiki lends itself quite well to the presentation of hypertext fiction. GinaTrapani did the first that I saw at http://scribbling.net/tiddlywiki-and-non-linear-fiction There's also the astonishing "Die, Vampire! Die!" from DavidVanWert at http://www.davidvanwert.com/wiki/dievampiredie.html</DIV>
+
 
 
 
@@ -2034,6 +2080,7 @@ a:hover, a:active {
 
 
 
+
     
 
 
@@ -2043,6 +2090,7 @@ a:hover, a:active {
 
 
     <DIV id="storeOtherTiddlyWikis" modified="200410151422" modifier="JeremyRuston">I know of several people ReusingThisSite, generally either for TiddlyWikiFiction or TechnicalDocumentation like OgreKit and WakabaAndKareha. Astonishingly, there's also at least two Japanese versions of TiddlyWiki with their own content at http://www.100shiki.com/tw.html (although I found that in Safari I had to manually set the text encoding to 'Japanese Shift JIS' before it displays properly) and http://www.geocities.co.jp/SiliconValley-Cupertino/6478/TiddlyWiki.jp.html.txt from YosukeTakasaki. Not that I have any idea what either one is saying, of course. Then there's KazuhiroKusuyama's site at http://pilotweb.comsq.com/~kusuyama/tiddlywiki/ which is a translation of this original TiddlyWiki text.</DIV>
+
 
 
 
@@ -2079,6 +2127,7 @@ a:hover, a:active {
 
 
 
+
     
     
 
@@ -2087,6 +2136,7 @@ a:hover, a:active {
 
 
     <DIV id="storeReferencesButton" modified="200412151753" modifier="JeremyRuston">The references button displays all the tiddlers that link to a particular tiddler. It appears on a little toolbar when you move the mouse over any tiddler that is not being editted. This is one of the NewFeatures that has been requested a couple of times, and does indeed make it a lot easier to explore a TiddlyWiki.</DIV>
+
 
 
 
@@ -2105,10 +2155,11 @@ a:hover, a:active {
 
 
 
+
     
 
 
-    <DIV id="storeSmoothScrolling" modified="200412151804" modifier="JeremyRuston">If you click on a link to a tiddler that is already open, TiddlyWiki will if necessary now smoothly scroll to bring it into view. This is one of the NewFeatures that actually isn't so new at all; I took it out at the last minute before the first release because it was ridiculously buggy.</DIV>
+    
 
 
 
@@ -2125,7 +2176,9 @@ a:hover, a:active {
 
 
 
+
     <DIV id="storePermaLinkButton" modified="200412161818" modifier="JeremyRuston">The permalink button is more of a fixed feature than one of the NewFeatures. It gives you a link back to a particular tiddler within TiddlyWiki, just like a permalink for a blog entry.</DIV>
+
 
 
 
@@ -2137,13 +2190,16 @@ a:hover, a:active {
 
 
 
+
     <DIV id="storeImprovedSidebar" modified="200412161821" modifier="JeremyRuston">The sidebar now features a tab control to switch between a timeline and alphabetic view of all the open tiddlers. I have plans for more tabs that will offer further navigation methods.</DIV>
 
 
 
 
 
+
     <DIV id="storeCloseButton" modified="200412161822" modifier="JeremyRuston">The close button appears when the mouse is over a tiddler; it just closes the tiddler in question, now accompanied by a little animation to make it clearer what's going on.</DIV>
+
 
 
 
@@ -2157,7 +2213,9 @@ a:hover, a:active {
 
 
 
+
     <DIV id="storeSpecialTiddlers" modified="200412161830" modifier="JeremyRuston">TiddlyWiki uses several special tiddlers to hold the text used for the MainMenu, the SiteTitle and the SiteSubtitle. DefaultTiddlers is used to store the titles of the tiddlers that are shown at startup. Go ahead and edit them and see the results.</DIV>
+
 
 
 
@@ -2173,6 +2231,7 @@ a:hover, a:active {
 
 
 
+
     
 
     <DIV id="storeHelloThere" modified="200412182236" modifier="JeremyRuston">Welcome to the SecondVersion of TiddlyWiki, an experimental MicroContent WikiWikiWeb built by JeremyRuston. It's written in HTML and JavaScript to run on any modern browser without needing any ServerSide logic. It allows anyone to create SelfContained hypertext documents that can be posted to any web server, or sent by email. If you like it, do please EmailMe and let me know.</DIV>
@@ -2180,9 +2239,11 @@ a:hover, a:active {
 
 
 
+
     <DIV id="storeMainMenu" modified="200412182236" modifier="JeremyRuston">HelloThere UsingThisSite ReusingThisSite AdaptingThisSite NewFeatures TiddlyWiki TiddlyWikiDev
 
 Copyright 2004 JeremyRuston</DIV>
+
 
 
 
@@ -2197,7 +2258,9 @@ Copyright 2004 JeremyRuston</DIV>
     <DIV id="storeStartupBehaviour" modified="200412192141" modifier="JeremyRuston">When it loads, TiddlyWiki looks for the names of tiddlers to open as a space-separated list after the # in the URL. If there are no tiddlers in the URL it instead loads the tiddlers named in DefaultTiddlers, one of the SpecialTiddlers.</DIV>
 
 
+
     <DIV id="storeDefaultTiddlers" modified="200412192142" modifier="JeremyRuston">HelloThere NewFeatures</DIV>
+
 
 
     <DIV id="storeAdaptingThisSite" modified="200412192143" modifier="JeremyRuston">I've published TiddlyWiki under a CreativeCommonsLicense, so anyone is free to adapt it, as long as you give me credit. PatrickCurry and GabrielJeffrey have done a storming job of adapting TiddlyWiki by adding a ServerSide in PHP: http://www.patrickcurry.com/tiddly/ Really nicely done, and they put it up within hours of my posting the original TiddlyWiki. Thanks guys. Also check out an elegant adaptation at OgreKit and another sophisticated PHP ServerSide from Henrik Aasted Sorensen at http://aasted.org/wiki . IvanMetalnikov from Russia has done a neat adaptation at http://tiddlywiki.nm.ru/ .</DIV>
@@ -2205,16 +2268,26 @@ Copyright 2004 JeremyRuston</DIV>
 
 
 
+
                 <DIV id="storeNewFeatures" modified="200412271631" modifier="JeremyRuston">This SecondVersion of TiddlyWiki adds IncrementalSearch, the ReferencesButton, the PermaLinkButton, PermaView, CloseAll, SmoothScrolling, an ImprovedSidebar, an animation for the CloseButton and last but not least a tiny EasterEgg in homage to Macintosh OS X. I've also changed the ReadingExperience and the StartupBehaviour.</DIV>
 
+
     <DIV id="storeSecondVersion" modified="200412271631" modifier="JeremyRuston">This is an improved version of TiddlyWiki, with several NewFeatures, BugFixes, a new SiteDesign and the OldFeatures still present and correct. It still doesn't have a ServerSide, by far the most requested feature, so SavingStuff is still troublesome. I do have a ServerSide under development which I'll finish when I get EnoughTime, but in the meantime there are several interesting OtherTiddlyWikis that do allow saving already.</DIV>
+
 
     <DIV id="storeBugFixes" modified="200412271632" modifier="JeremyRuston">There's lots of bug fixes in this second version of TiddlyWiki, but they're fairly well balanced by the new bugs I've introduced. IsaoSonobe has already stepped in to tell me about several problems, and do please EmailMe if you have other BugReports.</DIV>
 
 
 
 
+
                 <DIV id="storeEasterEgg" modified="200412281215" modifier="JeremyRuston">Try holding down the shift key while clicking on a link to a tiddler, or on the CloseButton for a tiddler. Kind of a respectful homage to Mac OS X, which does something similar for many of its system animations. (On browsers like InternetExplorer that use the shift key to open a new window, you can use the alt key instead).</DIV>
+
+
+
+
+                <DIV id="storeSmoothScrolling" modified="200412311335" modifier="JeremyRuston">If you click on a link to a tiddler that is already open, TiddlyWiki will if necessary now smoothly scroll to bring it into view. This is one of the NewFeatures that actually isn't so new at all; I took it out at the last minute before the first release because it was ridiculously buggy. (And now I've just found out it was still broken on InternetExplorer in the first revision of this SecondVersion; I'm hoping it's now finally fixed).</DIV>
+
 
 
 <!-- ********************************************************************* -->
