@@ -872,6 +872,7 @@ img {
     border-bottom: 2px solid #4d5577;
     background-color: #a2b3f9;
     font-size: 16pt;
+    text-shadow: #4d5577 3px 3px 8px;
 }
 
 #headerTitle {
@@ -961,6 +962,7 @@ img {
     color: #5d1914;
     font-weight: bold;
     display: inline;
+    text-shadow: #AAAAAA 3px 3px 3px;
 }
 
 .body {
@@ -989,6 +991,7 @@ img {
 }
 
 .toolbar {
+    text-shadow: none;
     font-weight: normal;
     font-size: 8pt;
     margin-left: 6px;
@@ -1091,12 +1094,16 @@ This work is licensed under a <br> Creative Commons License</a>
 
 
 
+
+
     <DIV id="storeWikiWord" modified="200409072350" modifier="JeremyRuston">A WikiWord is a word composed of a bunch of other words slammed together with each of their first letters capitalised. WikiWord notation in a WikiWikiWeb is used to name individual pages. Furthermore, referring to a page automatically creates a link to it. Clicking on a link jumps to that page or, if it doesn't exist, to an editor to create it. TiddlyWiki uses WikiWord titles for smaller chunks of MicroContent.</DIV>
 
 
 
 
+
     <DIV id="storeEmailMe" modified="200409072350" modifier="JeremyRuston">My email address is jeremy (at) osmosoft (dot) com</DIV>
+
 
 
 
@@ -1109,7 +1116,9 @@ This work is licensed under a <br> Creative Commons License</a>
 
 
 
+
                 <DIV id="storeSiteSubtitle" modified="200409171651" modifier="JeremyRuston">a reusable non-linear personal web notebook</DIV>
+
 
 
     <DIV id="storeMainMenu" modified="200409171655" modifier="JeremyRuston">StartHere UsingThisSite ReusingThisSite TiddlyWiki TiddlyWikiDev
@@ -1118,10 +1127,13 @@ This work is licensed under a <br> Creative Commons License</a>
 Copyright 2004 JeremyRuston</DIV>
 
 
+
     <DIV id="storeWishList" modified="200409181508" modifier="JeremyRuston">If you enjoy using TiddlyWiki, and are feel like being generous, it would be churlish of me to refuse anything that you might buy me from my Amazon wishlist http://www.amazon.co.uk/exec/obidos/registry/4PC7T6O1UEX0/ref=wl_em_to</DIV>
 
 
+
                 <DIV id="storeMicroContent" modified="200409181618" modifier="JeremyRuston">MicroContent being a fashionable word for self-contained fragments of content that are typically smaller than entire pages. Often MicroContent is presented via some kind of aggregation that reduces the perceptual shock and resource cost of context switching (eg Blogs aggregating several entries onto a page or Flickr presenting photos in an album). This TiddlyWiki aggregates MicroContent into pages that are loaded in one gulp and progressively displayed as the user uses hypertext links to read them.</DIV>
+
 
 
 
@@ -1146,7 +1158,9 @@ Copyright 2004 JeremyRuston</DIV>
 
 
 
+
     <DIV id="storeReusingThisSite" modified="200409201254" modifier="JeremyRuston">You can fairly easily take this TiddlyWiki, put in your own content and distribute it by email or by posting it on a web site. If you do, please EmailMe and let me know. Anyway, to get your own content together all you need to do is CreateTiddlers, EditTiddlers and DeleteTiddlers. Then click the 'Save all' link at the top right of the page, and follow the instructions (glossing over the SkeletonInTheCloset). And, hey presto, you've got your own self contained TiddlyWiki.</DIV>
+
 
 
 
@@ -1164,10 +1178,12 @@ Copyright 2004 JeremyRuston</DIV>
 
 
 
+
     
 
 
     <DIV id="storeTiddlyWikiDev" modified="200409201308" modifier="JeremyRuston">TiddlyWiki is my first serious piece of web client-side development. It makes extensive use of DynamicHTML, CascadingStyleSheets and JavaScript. I first developed it for Safari on Mac OS X, using SubEthaEdit as my text editor, and then tweaked it a bit to work in IE6 on Windows. It's not finished, and has many important MissingFeatures. I don't mind people ReusingThisSite, but do please EmailMe and let me know how you get on.</DIV>
+
 
 
 
@@ -1183,7 +1199,9 @@ Copyright 2004 JeremyRuston</DIV>
 
 
 
+
                 <DIV id="storeTiddlyWiki" modified="200409201436" modifier="JeremyRuston">A TiddlyWiki is like a blog because it's divided up into neat little chunks, but it encourages you to read it by hyperlinking rather than sequentially: if you like, a non-linear blog analogue that binds the individual microcontent items into a cohesive whole. I think that TiddlyWiki represents a novel medium for writing, and will promote it's own distinctive WritingStyle. This is the first version of TiddlyWiki and so, as discussed in TiddlyWikiDev, it's bound to be FullOfBugs and have many MissingFeatures. And of course there's NoWarranty.</DIV>
+
 
 
 
@@ -1191,11 +1209,14 @@ Copyright 2004 JeremyRuston</DIV>
 
 
 
+
     <DIV id="storeUsingThisSite" modified="200409201442" modifier="JeremyRuston">Hopefully, reading a TiddlyWiki is fairly self explanatory. Within the main story column, click on bold links to read a linked tiddler. Click on italic links to create a new tiddler. When you hover the mouse over a tiddler it's highlighted and some extra options appear by the title: 'close' just closes the tiddler in question, 'link' does the opposite by closing all other tiddlers. Finally, 'edit' allows you to edit the text of any tiddler; changes are not reflected back to the server, though. See SavingStuff for more details.</DIV>
 
 
 
+
     <DIV id="storeSavingStuff" modified="200409201443" modifier="JeremyRuston">There's no funky ServerSide to TiddlyWiki yet; I'm just posting up a single, static HTML file. As a consequence it is impossible to permanently save changes to a TiddlyWiki back to the web server. Instead, you have to manually save changes using the 'Save all' link at the top right.</DIV>
+
 
 
 
@@ -1205,37 +1226,48 @@ Copyright 2004 JeremyRuston</DIV>
 
 
 
+
                 <DIV id="storeSelfContained" modified="200409201452" modifier="JeremyRuston">One of the neatest features of TiddlyWiki is that it is entirely self-contained in a single HTML file. It contains the actual hypertext document, and the JavaScript, CascadingStyleSheets and HTML necessary to both view and edit the document. This means that it is trivial to host a TiddlyWiki on a website, or to distribute one by email. And anyone with a reasonably recent web browser will be able to read and edit it.</DIV>
+
 
 
     <DIV id="storeCascadingStyleSheets" modified="200409201453" modifier="JeremyRuston">I'm no expert on CascadingStyleSheets so I suspect that much of my code could be improved in terms of correctness, compatibility and aesthetics. I'd love any feedback on making it work better across different browsers, and generally making it a little bit more elegant.</DIV>
 
 
+
     <DIV id="storeInterruptedEdits" modified="200409201456" modifier="JeremyRuston">TiddlyWiki is great at throwing away the content of outstanding, unsaved, edits. You can do it by clicking on the top-left logo, or by using 'refresh' in the browser. Ideally, I'd be trapping various events to save all edits as soon as they are made, and maintain older versions for undo purposes.</DIV>
+
 
 
     <DIV id="storeJavaScript" modified="200409201457" modifier="JeremyRuston">Before TiddlyWiki I hadn't really done any serious development in JavaScript. After all the horror stories that I've read, I was very pleasantly surprised by how straightforward it is to use JavaScript. Using it rather reminds me of BBC Basic on the TheBBCMicro; it exploits it's interpreted nature beautifully. The most useful resource I've found is this article: http://www.crockford.com/javascript/survey.html</DIV>
 
 
-    <DIV id="storeJeremyRuston" modified="200409201458" modifier="JeremyRuston">I'm a ChiefTechnologyOfficer based in London. I currently work for a small self-funded startup doing cool stuff for big financial institutions. Previously, I've worked for two VentureCapital backed startups, Interactive1 and Infuzer. Before that I did a stint in the City of London as 'Global Head of Ecommerce' for a big european investment bank. Long, long ago I used to write computer books and do some computer animation for BBC Television. I also wrote various bits of shrink-wrapped software for ComputerConcepts: FastBasic for the Atari ST and a BASIC compiler for the BBC Micro called AcceleratorBasic. If you've got any comments or suggestions on this site, do please EmailMe or if you're feeling kind, you could always drop me something from my WishList.</DIV>
+
+    
 
 
     <DIV id="storeLinkDifferentiation" modified="200409201458" modifier="JeremyRuston">It'd be great if links that you had already visited looked different, particularly in the right hand menu.</DIV>
 
 
+
     <DIV id="storeLinkRefreshing" modified="200409201458" modifier="JeremyRuston">When you create a new tiddler, references to it in the menus automatically change from italic to bold, but references in other open tiddlers do not.</DIV>
+
 
 
     <DIV id="storeMissingFeatures" modified="200409201459" modifier="JeremyRuston">New features that I'm thinking about for TiddlyWiki include LinkDifferentiation, SpecialLinkNames, SavingStuff, IncrementalSearch and implementing a ServerSide. I haven't really begun to think about VersionTracking or DifferencingDisplay. There's also some bugs like InterruptedEdits, CrazyScrolling, LinkRefreshing.</DIV>
 
 
+
     <DIV id="storeServerSide" modified="200409201500" modifier="JeremyRuston">TiddlyWiki doesn't have a server-side component at the moment. That means, amongst other things, that SavingStuff is hard. When I do implement a ServerSide, TiddlyWiki will lose the rather nice quality of being a SelfContained HTML file. Instead, though, I'll be able to add features like RssFeeds, PublicEditting, IncomingHyperlinks.</DIV>
+
 
 
     <DIV id="storeSpecialLinkNames" modified="200409201500" modifier="JeremyRuston">The idea with special link names is that a link in a certain format to a nonexistent tiddler, will create a page that's named with a variant of the link name. For example, a link to JournalEntry#now would create a journal entry with todays date appended. Other keywords could include #next (uses lowest available integer appendage), #me (uses username of logged in user). They'd appear as the name of the tiddler they would create if they were clicked (eg JournalEntry20040615 or ResumeJeremyRuston). These are not to be confused with SpecialTiddlers which are used to let you edit the menus and titles of a TiddlyWiki.</DIV>
 
 
+
     <DIV id="storeSpecialTiddlers" modified="200409201501" modifier="JeremyRuston">TiddlyWiki uses several special tiddlers to hold the text used for the MainMenu, the SiteTitle and the SiteSubtitle. Go ahead and edit them and see the results.</DIV>
+
 
 
 
@@ -1244,15 +1276,19 @@ Copyright 2004 JeremyRuston</DIV>
 
 
 
-                <DIV id="storeWritingStyle" modified="200409211824" modifier="JeremyRuston">
-I'm expecting that after using TiddlyWiki for a while a new WritingStyle will emerge that is appropriate for this medium.  Jakob Neilsen wrote an article about writing styles for MicroContent back in 1998 that seems surprisingly relevant: http://www.useit.com/alertbox/980906.html</DIV>
-    <DIV id="storeStartHere" modified="200409211824" modifier="JeremyRuston">
-Welcome to TiddlyWiki, an experimental MicroContent WikiWikiWeb built by JeremyRuston. It's written in HTML and JavaScript to run on any browser without needing any ServerSide logic. It allows anyone to create SelfContained hypertext documents that can be posted to any web server, or sent by email. If you like it, do please EmailMe and let me know. DesignGoals</DIV>
-    <DIV id="storeEasierReading" modified="200409211832" modifier="JeremyRuston">
-To make it easier to read a TiddlyWiki that you're interested in as it evolves, I plan to keep track of which tiddlers you've already read in a client-side cookie. Then, on the first visit when it creates the cookie, TiddlyWiki would open with WelcomeNewcomer. On subsequent visits, it would display the changed tiddlers in reverse date order, just like a blog.</DIV>
+                <DIV id="storeWritingStyle" modified="200409211824" modifier="JeremyRuston">I'm expecting that after using TiddlyWiki for a while a new WritingStyle will emerge that is appropriate for this medium.  Jakob Neilsen wrote an article about writing styles for MicroContent back in 1998 that seems surprisingly relevant: http://www.useit.com/alertbox/980906.html</DIV>
+
+    <DIV id="storeStartHere" modified="200409211824" modifier="JeremyRuston">Welcome to TiddlyWiki, an experimental MicroContent WikiWikiWeb built by JeremyRuston. It's written in HTML and JavaScript to run on any browser without needing any ServerSide logic. It allows anyone to create SelfContained hypertext documents that can be posted to any web server, or sent by email. If you like it, do please EmailMe and let me know. DesignGoals</DIV>
+
+    <DIV id="storeEasierReading" modified="200409211832" modifier="JeremyRuston">To make it easier to read a TiddlyWiki that you're interested in as it evolves, I plan to keep track of which tiddlers you've already read in a client-side cookie. Then, on the first visit when it creates the cookie, TiddlyWiki would open with WelcomeNewcomer. On subsequent visits, it would display the changed tiddlers in reverse date order, just like a blog.</DIV>
+
     <DIV id="storeDesignGoals" modified="200409211832" modifier="JeremyRuston">I want to make it as easy to read a TiddlyWiki as a blog: 'push' notification of changes in an RSS reader, and EasierReading that lets you sort through the stuff you've already read from the stuff you haven't. It won't be possible to do all of that without some ServerSide logic.</DIV>
 
 
+
+
+
+                <DIV id="storeJeremyRuston" modified="200409212302" modifier="JeremyRuston">I'm a ChiefTechnologyOfficer based in London. I currently work for a small self-funded startup doing cool stuff for big financial institutions. Previously, I've worked for two VentureCapital backed startups as CTO, Interactive1 and Infuzer. Before that I did a stint in the City of London as Global Head of E-Commerce for a big european investment bank. Long, long ago I used to write computer books and do some computer animation for BBC Television. If you've got any comments or suggestions on this site, do please EmailMe.</DIV>
 
 <!-- ********************************************************************* -->
 <!-- Paste your TiddlyWiki content between this marker and the one above   -->
