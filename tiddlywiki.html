@@ -1,9 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <script type="text/javascript">
-var version = {major: 1, minor: 2, revision: 34, date: new Date("Sep 28, 2005"), extensions: {}};
+var version = {major: 1, minor: 2, revision: 35, date: new Date("Sep 29, 2005"), extensions: {}};
 </script>
 <!--
-TiddlyWiki 1.2.34 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
+TiddlyWiki 1.2.35 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
 
 Published under a BSD open source license
 
@@ -91,7 +91,7 @@ var config = {
 	animSlow: 0.01, // Speed for EasterEgg animations
 	// Messages
 	messages: {
-		customConfigError: "Error in customConfig - %0",
+		customConfigError: "Error in systemConfig tiddler '%1' - %0",
 		savedSnapshotError: "It appears that this TiddlyWiki has been incorrectly saved. Please see http://www.tiddlywiki.com/#DownloadSoftware for details",
 		subtitleUnknown: "(unknown)",
 		undefinedTiddlerToolTip: "The tiddler '%0' doesn't yet exist",
@@ -190,6 +190,7 @@ var readOnly = false;
 // Starting up
 function main()
 {
+	browserTests();
 	readOnly = (document.location.toString().substr(0,7) == "http://") ? config.options.chkHttpReadOnly : false;
 	saveTest();
 	loadOptionsCookie();
@@ -211,6 +212,15 @@ function restart()
 		displayTiddlers(null,start,1,null,null);
 }
 
+// Shame...
+function browserTests()
+{
+	var a = navigator.userAgent.toLowerCase();
+	config.browser = {
+		isIE: a.indexOf("msie") != -1 && a.indexOf("opera") == -1
+		};
+}
+
 function saveTest()
 {
 	var saveTest = document.getElementById("saveTest");
@@ -226,7 +236,7 @@ function loadSystemConfig()
 		{
 		var ex = processConfig(configTiddlers[t].text);
 		if(ex)
-			displayMessage(config.messages.customConfigError.format([ex]));
+			displayMessage(config.messages.customConfigError.format([ex,configTiddlers[t].title]));
 		}
 }
 
@@ -291,6 +301,21 @@ config.formatterHelpers = {
 				}
 		} while(gotMatch);
 		return styles;
+	},
+
+	monospacedByLineHelper: function(w)
+	{
+		var lookaheadRegExp = new RegExp(this.lookahead,"mg");
+		lookaheadRegExp.lastIndex = w.matchStart;
+		var lookaheadMatch = lookaheadRegExp.exec(w.source);
+		if(lookaheadMatch && lookaheadMatch.index == w.matchStart)
+			{
+			var text = lookaheadMatch[1];
+			if(config.browser.isIE)
+				text = text.replace(/\n/g,"\r");
+			var e = createTiddlyElement(w.output,"pre",null,null,text);
+			w.nextMatch = lookaheadMatch.index + lookaheadMatch[0].length;
+			}
 	}
 
 };
@@ -444,17 +469,23 @@ config.formatters = [
 	name: "monospacedByLine",
 	match: "^\\{\\{\\{\\n",
 	lookahead: "^\\{\\{\\{\\n((?:^[^\\n]*\\n)+?)(^\\}\\}\\}$\\n?)",
+	handler: config.formatterHelpers.monospacedByLineHelper
+},
+
+{
+	name: "monospacedByLineForPlugin",
+	match: "^//\\{\\{\\{\\n",
+	lookahead: "^//\\{\\{\\{\\n\\n*((?:^[^\\n]*\\n)+?)(\\n*^//\\}\\}\\}$\\n?)",
+	handler: config.formatterHelpers.monospacedByLineHelper
+},
+
+{
+	name: "wikifyCommentForPlugin", 
+	match: "^/\\*\\*\\*\\n",
+	terminator: "^\\*\\*\\*/\\n",
 	handler: function(w)
 	{
-		var lookaheadRegExp = new RegExp(this.lookahead,"mg");
-		lookaheadRegExp.lastIndex = w.matchStart;
-		var lookaheadMatch = lookaheadRegExp.exec(w.source)
-		if(lookaheadMatch && lookaheadMatch.index == w.matchStart)
-			{
-			var text = lookaheadMatch[1].replace(/\n/g,"\r\n");
-			var e = createTiddlyElement(w.output,"pre",null,null,text);
-			w.nextMatch = lookaheadMatch.index + lookaheadMatch[0].length;
-			}
+		w.subWikify(w.output,this.terminator);
 	}
 },
 
@@ -561,12 +592,20 @@ config.formatters = [
 {
 	name: "wikiLink",
 	match: config.textPrimitives.wikiLink,
+	badPrefix: config.textPrimitives.anyLetter,
 	handler: function(w)
 	{
-		if(w.matchText.substr(0,1) == config.textPrimitives.unWikiLink)
+		var preRegExp = new RegExp(config.textPrimitives.anyLetter,"mg");
+		var preMatch = null;
+		if(w.matchStart > 0)
 			{
-			w.outputText(w.output,w.matchStart + 1,w.nextMatch);
+			preRegExp.lastIndex = w.matchStart-1;
+			preMatch = preRegExp.exec(w.source);
 			}
+		if(preMatch && preMatch.index == w.matchStart-1)
+			w.outputText(w.output,w.matchStart,w.nextMatch);
+		else if(w.matchText.substr(0,1) == config.textPrimitives.unWikiLink)
+			w.outputText(w.output,w.matchStart + 1,w.nextMatch);
 		else
 			{
 			var link = createTiddlyLink(w.output,w.matchText,false);
@@ -812,7 +851,8 @@ function Wikifier(source,output,formatters,highlightText,highlightCaseSensitive)
 		this.highlightRegExp = new RegExp(highlightText,highlightCaseSensitive ? "mg" : "img");
 		this.highlightMatch = this.highlightRegExp.exec(this.source);
 		}
-	this.subWikify(output,null);
+	if(source && source != "")
+		this.subWikify(output,null);
 	return this;
 }
 
@@ -1032,7 +1072,7 @@ config.macros.search.handler = function(place,macroName,params)
 			if(searchTimeout)
 				clearTimeout(searchTimeout);
 			var txt = this;
-			searchTimeout = setTimeout(function() {doSearch(txt);},200);
+			searchTimeout = setTimeout(function() {doSearch(txt);},500);
 			}
 		};
 	var focusHandler = function(e)
@@ -1507,9 +1547,7 @@ TiddlyWiki.prototype.notifyAll = function()
 
 // Add a notification handler to a tiddler
 TiddlyWiki.prototype.addNotification = function(title,fn)
-{
-	this.namedNotifications.push({name: title, notify: fn});
-	return this;
+{	for (var i=0; i<this.namedNotifications.length; i++)		if((this.namedNotifications[i].name == title) && (this.namedNotifications[i].notify == fn))			return this;	this.namedNotifications.push({name: title, notify: fn});	return this;
 }
 
 // Clear a TiddlyWiki so that it contains no tiddlers
@@ -2020,7 +2058,7 @@ function createTiddlerFooter(title,isEditor)
 			for(var t=0; t<tiddler.tags.length; t++)
 				{
 				var theTag = createTagButton(theTags,tiddler.tags[t],tiddler.title);
-				insertSpacer(theTags);
+				createTiddlyText(theTags," ");
 				}
 			}
 		}
@@ -2542,16 +2580,8 @@ function convertUnicodeToUTF8(s)
 
 function manualConvertUnicodeToUTF8(s)
 {
-	var u = [];
-	for(var t=0;t<s.length;t++)
-		{
-		var c = s.charCodeAt(t);
-		if(c <= 0x7F)
-			u.push(String.fromCharCode(c));
-		else
-			u.push("&#" + c.toString() + ";");
-		}
-	return(u.join(""));
+	var re = /[^\u0000-\u007F]/g ;
+	return s.replace(re, function($0) {return("&#" + $0.charCodeAt(0).toString() + ";");})
 }
 
 function mozConvertUnicodeToUTF8(s)
@@ -2619,15 +2649,15 @@ function ieLoadFile(filePath)
 	try
 		{
 		var fso = new ActiveXObject("Scripting.FileSystemObject");
+		var file = fso.OpenTextFile(filePath,1);
+		var content = file.ReadAll();
+		file.Close();
 		}
 	catch(e)
 		{
 		//alert("Exception while attempting to load\n\n" + e.toString());
 		return(null);
 		}
-	var file = fso.OpenTextFile(filePath,1);
-	var content = file.ReadAll();
-	file.Close();
 	return(content);
 }
 
@@ -2692,7 +2722,8 @@ function operaSaveFile(filePath, content)
 		}
 	catch(e)
 		{
-		opera.postError(e);
+		if(opera)
+			opera.postError(e);
 		return null;
 		}
 	return true;
@@ -2711,7 +2742,8 @@ function operaLoadFile(filePath)
 		}
 	catch(e)
 		{
-		opera.postError(e);
+		if(opera)
+			opera.postError(e);
 		return null;
 		}
 	return content.join("\n");
@@ -3130,14 +3162,14 @@ function Zoomer(text,startElement,targetElement,slowly)
 	this.targetHeight = this.targetElement.offsetHeight;
 	this.progress = 0;
 	this.step = slowly ? config.animSlow : config.animFast;
-	this.targetElement.style.opacity = 0;
+	//this.targetElement.style.opacity = 0;
 	return this;
 }
 
 Zoomer.prototype.stop = function()
 {
 	this.element.parentNode.removeChild(this.element);
-	this.targetElement.style.opacity = 1;
+	//this.targetElement.style.opacity = 1;
 }
 
 Zoomer.prototype.tick = function()
@@ -3148,7 +3180,7 @@ Zoomer.prototype.tick = function()
 	this.element.style.width = this.startWidth + (this.targetWidth-this.startWidth) * f + "px";
 	this.element.style.height = this.startHeight + (this.targetHeight-this.startHeight) * f + "px";
 	this.element.style.display = "block";
-	this.targetElement.style.opacity = this.progress;
+	//this.targetElement.style.opacity = this.progress;
 	//this.targetElement.style.filter = "alpha(opacity:" + this.progress * 100 + ")";
 }
 
@@ -3253,14 +3285,28 @@ Number.prototype.clamp = function(min,max)
 // Find an entry in an array. Returns the array index or null
 Array.prototype.find = function(item)
 {
-	var p = null;
 	for(var t=0; t<this.length; t++)
 		if(this[t] == item)
-			{
-			p = t;
-			break;
-			}
-	return p;
+			return t;
+	return null;
+}
+
+// Find an entry in an array by the value of one of it's members. Returns the array index or null
+Array.prototype.findByMember = function(member,value)
+{
+	for(var t=0; t<this.length; t++)
+		if(this[t][member] == value)
+			return t;
+	return null;
+}
+
+// Get an item in an array by the value of a particular member of the item. Returns the item or null
+Array.prototype.get = function(member,value)
+{
+	for(t=0; t<this.length; t++)
+		if(this[t][members] == value)
+			return this[t];
+	return null;
 }
 
 // Push a new value into an array only if it is not already present in the array. If the optional unique parameter is false, it reverts to a normal push
@@ -3287,7 +3333,7 @@ String.prototype.right = function(n)
 // Trim whitespace from both ends of a string
 String.prototype.trim = function()
 {
-	var regexpTrim = new RegExp("^\\s*(.*)\\s*$","mg");
+	var regexpTrim = new RegExp("^\\s*(.*?)\\s*$","mg");
 	return(this.replace(regexpTrim,"$1"));
 }
 
@@ -4477,7 +4523,7 @@ a:hover, a:active {
 			<div id="tiddlerDisplay"></div>
 		</div>
 	</div>
-	<div id="storeArea"><div tiddler="DefaultTiddlers" modified="200509272234" modifier="JeremyRuston" tags="systemTiddlers">HelloThere [[28 September 2005]] [[27 September 2005]] NewFeatures MainFeatures TiddlyWikiExamples</div>
+	<div id="storeArea"><div tiddler="DefaultTiddlers" modified="200510031529" modifier="JeremyRuston" tags="systemTiddlers">HelloThere [[3 October 2005]] [[28 September 2005]] [[27 September 2005]] NewFeatures MainFeatures TiddlyWikiExamples</div>
 <div tiddler="MainMenu" modified="200509272228" modifier="JeremyRuston" tags="systemTiddlers">HelloThere\nTiddlyWiki\n[[TiddlyWiki/Dev]]\nGettingStarted\nUsingThisSite\n[[Community]]\nDownloadSoftware\nPluginsAndMacros\n[[ThankYou]]\n[[RSS|RssFeed]]\n\n© [[osmosoft|http://www.osmosoft.com]] 2005\n\n\n&lt;&lt;newTiddler&gt;&gt;\n&lt;&lt;newJournal &quot;DD MMM YYYY&quot;&gt;&gt;</div>
 <div tiddler="SiteSubtitle" modified="200507121318" modifier="JeremyRuston" tags="systemTiddlers">a reusable non-linear personal web notebook</div>
 <div tiddler="SiteTitle" modified="200509212109" modifier="JeremyRuston" tags="systemTiddlers">TiddlyWiki</div>
