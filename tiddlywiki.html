@@ -1,9 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <script type="text/javascript">
-var version = {major: 1, minor: 2, revision: 33, date: new Date("Sep 27, 2005"), extensions: {}};
+var version = {major: 1, minor: 2, revision: 34, date: new Date("Sep 28, 2005"), extensions: {}};
 </script>
 <!--
-TiddlyWiki 1.2.33 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
+TiddlyWiki 1.2.34 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
 
 Published under a BSD open source license
 
@@ -37,7 +37,7 @@ DAMAGE.
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
-<title>TiddlyWiki</title>
+<title>TiddlyWiki - a reusable non-linear personal web notebook</title>
 <script type="text/javascript">
 
 // ---------------------------------------------------------------------------------
@@ -261,7 +261,7 @@ config.formatterHelpers = {
 	inlineCssHelper:  function(w)
 	{
 		var styles = [];
-		var lookahead = "(?:([^\\(\\|@]+)\\(([^\\)\\|]+)(?:\\):))|(?:([^:@\\|]+):([^;\\|]+);)";
+		var lookahead = "(?:(" + config.textPrimitives.anyLetter + "+)\\(([^\\)\\|\\n]+)(?:\\):))|(?:(" + config.textPrimitives.anyLetter + "+):([^;\\|\\n]+);)";
 		var lookaheadRegExp = new RegExp(lookahead,"mg");
 		var hadStyle = false;
 		do {
@@ -564,7 +564,9 @@ config.formatters = [
 	handler: function(w)
 	{
 		if(w.matchText.substr(0,1) == config.textPrimitives.unWikiLink)
-			w.nextMatch = w.matchStart + 1;
+			{
+			w.outputText(w.output,w.matchStart + 1,w.nextMatch);
+			}
 		else
 			{
 			var link = createTiddlyLink(w.output,w.matchText,false);
@@ -1304,28 +1306,18 @@ config.macros.gradient.handler = function(place,macroName,params,wikifier)
 	var panel = createTiddlyElement(place,"div",null,"gradient",null);
 	panel.style.position = "relative";
 	panel.style.overflow = "hidden";
-	var horiz = params[0] != "vert";
-	var colourPoints = [];
-	for(var t=1; t<params.length; t++)
+	var styles = config.formatterHelpers.inlineCssHelper(wikifier);
+	var t;
+	for(t=0; t<styles.length; t++)
+		panel.style[styles[t].style] = styles[t].value;
+	var colours = [];
+	for(t=1; t<params.length; t++)
 		{
 		var c = new RGB(params[t]);
 		if(c)
-			colourPoints.push(c);
+			colours.push(c);
 		}
-	for(var t=0; t<= 100; t+=2)
-		{
-		var bar = document.createElement("div");
-		panel.appendChild(bar);
-		bar.style.position = "absolute";
-		bar.style.left = horiz ? t + "%" : 0;
-		bar.style.top = horiz ? 0 : t + "%";
-		bar.style.width = horiz ? (101-t) + "%" : "100%";
-		bar.style.height = horiz ? "100%" : (101-t) + "%";
-		bar.style.zIndex = -1;
-		var f = t/100;
-		var p = f*(colourPoints.length-1);
-		bar.style.backgroundColor = colourPoints[Math.floor(p)].mix(colourPoints[Math.ceil(p)],p-Math.floor(p)).toString();
-		}
+	drawGradient(panel,params[0] != "vert",colours);
 	wikifier.subWikify(panel,terminator);
 	if(document.all)
 		{
@@ -2447,7 +2439,7 @@ function saveChanges()
 	var revised = original.substr(0,posOpeningDiv + startSaveArea.length) + 
 				convertUnicodeToUTF8(allTiddlersAsHtml()) + "\n\t\t" +
 				original.substr(posClosingDiv);
-	var newSiteTitle = convertUnicodeToUTF8(store.getTiddlerText("SiteTitle","TiddlyWiki").htmlEncode());
+	var newSiteTitle = convertUnicodeToUTF8((getElementText("siteTitle") + " - " + getElementText("siteSubtitle")).htmlEncode());
 	revised = revised.replace(new RegExp("<title>[^<]*</title>", "im"),"<title>"+ newSiteTitle +"</title>");
 	var save = saveFile(localPath,revised);
 	if(save)
@@ -3514,6 +3506,24 @@ Date.convertFromYYYYMMDDHHMM = function(d)
 // DOM utilities - many derived from www.quirksmode.org 
 // ---------------------------------------------------------------------------------
 
+function drawGradient(place,horiz,colours)
+{
+	for(var t=0; t<= 100; t+=2)
+		{
+		var bar = document.createElement("div");
+		place.appendChild(bar);
+		bar.style.position = "absolute";
+		bar.style.left = horiz ? t + "%" : 0;
+		bar.style.top = horiz ? 0 : t + "%";
+		bar.style.width = horiz ? (101-t) + "%" : "100%";
+		bar.style.height = horiz ? "100%" : (101-t) + "%";
+		bar.style.zIndex = -1;
+		var f = t/100;
+		var p = f*(colours.length-1);
+		bar.style.backgroundColor = colours[Math.floor(p)].mix(colours[Math.ceil(p)],p-Math.floor(p)).toString();
+		}
+}
+
 function createTiddlyText(theParent,theText)
 {
 	return theParent.appendChild(document.createTextNode(theText));
@@ -4467,8 +4477,8 @@ a:hover, a:active {
 			<div id="tiddlerDisplay"></div>
 		</div>
 	</div>
-	<div id="storeArea"><div tiddler="DefaultTiddlers" modified="200509262318" modifier="JeremyRuston" tags="systemTiddlers">HelloThere [[27 September 2005]] NewFeatures MainFeatures TiddlyWikiExamples</div>
-<div tiddler="MainMenu" modified="200508181501" modifier="JeremyRuston" tags="systemTiddlers">HelloThere\nTiddlyWiki\nGettingStarted\nUsingThisSite\n[[Community]]\nDownloadSoftware\nPluginsAndMacros\n[[ThankYou]]\n[[RSS|RssFeed]]\n\n© [[osmosoft|http://www.osmosoft.com]] 2005\n\n\n&lt;&lt;newTiddler&gt;&gt;\n&lt;&lt;newJournal &quot;DD MMM YYYY&quot;&gt;&gt;</div>
+	<div id="storeArea"><div tiddler="DefaultTiddlers" modified="200509272234" modifier="JeremyRuston" tags="systemTiddlers">HelloThere [[28 September 2005]] [[27 September 2005]] NewFeatures MainFeatures TiddlyWikiExamples</div>
+<div tiddler="MainMenu" modified="200509272228" modifier="JeremyRuston" tags="systemTiddlers">HelloThere\nTiddlyWiki\n[[TiddlyWiki/Dev]]\nGettingStarted\nUsingThisSite\n[[Community]]\nDownloadSoftware\nPluginsAndMacros\n[[ThankYou]]\n[[RSS|RssFeed]]\n\n© [[osmosoft|http://www.osmosoft.com]] 2005\n\n\n&lt;&lt;newTiddler&gt;&gt;\n&lt;&lt;newJournal &quot;DD MMM YYYY&quot;&gt;&gt;</div>
 <div tiddler="SiteSubtitle" modified="200507121318" modifier="JeremyRuston" tags="systemTiddlers">a reusable non-linear personal web notebook</div>
 <div tiddler="SiteTitle" modified="200509212109" modifier="JeremyRuston" tags="systemTiddlers">TiddlyWiki</div>
 <div tiddler="SiteUrl" modified="200507121318" modifier="JeremyRuston" tags="systemTiddlers">http://www.tiddlywiki.com/</div></div>
