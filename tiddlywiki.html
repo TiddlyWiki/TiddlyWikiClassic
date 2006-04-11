@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <!--
-TiddlyWiki 1.2.7 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
+TiddlyWiki 1.2.8 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
 Incorporating improvements by Isao Sonobe, http://www-gauge.scphys.kyoto-u.ac.jp/~sonobe/OgreKit/OgreKitWiki.html
 
 Copyright (c) Osmosoft Limited, 14 April 2005
@@ -54,6 +54,9 @@ options.chkAutoSave = false;
 // Starting up
 function main()
 {
+    var css = getTiddlerText("StyleSheet");
+    if(css)
+        addStylesheet(css);
     loadOptionsCookie();
     setupOptionsPanel();
     setupRegexp();
@@ -2080,6 +2083,31 @@ function removeChildren(e)
         e.removeChild(e.firstChild);
 }
 
+
+// Add a stylesheet
+function addStylesheet(s)
+{
+    try
+        {
+        if(document.createStyleSheet)
+            { 
+            document.createStyleSheet("javascript:'" + escape(s) + "'"); 
+            }
+        else
+            { 
+            var n = document.createElement("link"); 
+            n.rel = "stylesheet"; 
+            n.href = "data:text/css," + escape(s); 
+            document.getElementsByTagName("head")[0].appendChild(n);
+            }
+        }
+    catch(e)
+        {
+        clearMessage();
+        displayMessage("Error in StyleSheet: " + e.toString());
+        }
+}
+
 // ---------------------------------------------------------------------------------
 // End of scripts
 // ---------------------------------------------------------------------------------
@@ -2651,8 +2679,11 @@ a:hover, a:active {
 <div id="storeInterfaceOptions" modified="200505141248" modifier="JeremyRuston">InterfaceOptions are displayed when you click the 'options' button on the right. They are saved in a cookie on your browser, making them sticky between visits. RegExpSearch allows more complex search expressions; CaseSensitiveSearch does as it's name implies. The user name for edits should be set //before// starting to edit things (ouch. another bug). AutoSave and SaveBackups give the option of automatically saving changes and whether to generate backup files.</div>
 <div id="storeMainFeatures" modified="200505141248" modifier="JeremyRuston">This ThirdVersion of TiddlyWiki offers the following features:\n* compatibility with most modern browsers (although you can only SaveChanges on FireFox and InternetExplorer under Windows)\n* more slickness and InterfaceOptions concerned with whether to SaveBackups and the ability to AutoSave\n* a new liquid CSS layout that fills the width of the browser window\n* InterfaceOptions revealed by clicking the new 'options' button on the right\n* KeyboardShortcuts so you can finish editing a tiddler with Control-Enter or abandon it with Escape\n* a more flexible OpenSourceLicense\n* a bunch of features from IsaoSonobe's [[adaptation|http://www-gauge.scphys.kyoto-u.ac.jp/~sonobe/OgreKit/OgreKitWiki.html]] of TiddlyWiki including ExtendedFormatting, NonWikiWordLinks, PrettyLinks, SubHeadings, BulletPoints, NumberedLists, HtmlTables, BlockQuotes, HorizontalRules and...\n* ...EmbeddedImages:\n[img[brixhamharbour.jpg]]\n* some BugFixes balanced some KnownBugs</div>
 <div id="storeKnownBugs" modified="200505141249" modifier="JeremyRuston">This list is probably dwarfed by the UnknownBugs, but anyway, I'm planning to fix these:\n* InternetExplorer on Windows has a habit of merging consecutive spaces into one. This normally doesn't matter too much, but would trip you up if you tried to use NonWikiWordLinks to create a tiddler title with multiple consecutive spaces.\n* Interleaving lists of BulletPoints with SubHeadings doesn't work properly\n* "Highlighted" and Hexadecimal coloured text formatting is broken\n* WIN/IE 6 messes up list items when you edit a Tiddler with multiple headings\n* There's some problems with HTML encoding during saves which means that you can't have HTML tags in tiddlers\n</div>
-<div id="storeRevisionHistory" modified="200505141250" modifier="JeremyRuston">Revision history for the ThirdVersion:\n* Revision 1.2.7, 14 May 2005\n** Removed annoying confirmation alert()'s on a successful save, replaced with a more polished status area including links to the saved files\n** Added options for whether to SaveBackups and to AutoSave every time you edit a tiddler\n* Revision 1.2.6, 6 May 2005\n** Added CSS stylesheet to suppress menu and sidebar when printing\n** Fixed saving to network shares on FireFox on Windows\n** Fixed use of NonWikiWordLinks in DefaultTiddlers and PermaView\n** Fixed problem with clicking more than once on the PermaLinkButton\n** Added EnableAnimations to the InterfaceOptions\n* Revision 1.2.5, 19 April 2005\n** Fixed problem with the search results summary message\n** Fixed problem with clicking on highlighted links\n** Fixed problem with non-ANSI unicode characters in permalinks\n* Revision 1.2.4, 17 April 2005\n** Fixed Control-Enter on IE PC\n** Fixed UTF-8 encoding on SaveChanges\n** Fixed regular expressions to permit basic accented characters in WikiWords\n** Fixed problem with completely blank tiddlers\n** Added set focus on edit tiddler\n* Revision 1.2.3, 15 April 2005\n** Fixed problem with positioning of tiddlers opened from last displayed tiddler\n** Added KeyboardShortcuts\n* Revision 1.2.2, 14 April 2005 \n** No code changes\n* Revision 1.2.1, 14 April 2005\n** Fixed problem with spaces in pathnames on Mac/Unix\n* Revision 1.2.0, 14 April 2005\n** No code changes</div>
 <div id="storeHelloThere" modified="200505141251" modifier="JeremyRuston">Welcome to the improved ThirdVersion of TiddlyWiki, an experimental MicroContent WikiWikiWeb built by JeremyRuston. It's written in HTML, CSS and JavaScript to run on any modern browser without needing any ServerSide logic. It allows anyone to create personal SelfContained hypertext documents that can be posted to any web server, sent by email or kept on a USB thumb drive to make a WikiOnAStick. If you like it, do please EmailMe and let me know.</div>
-<div id="storeLatestStuff" modified="200505141252" modifier="JeremyRuston">Triggered by NathanBower's GTDTiddlyWiki, there's been a rush of activity around TiddlyWiki over the last few days. From my perspective, there's suddenly an extraordinary, passionate community spontaneously emerging around it. Mundanely, that's perhaps just what the Internet does, I guess, but it's still a pretty amazing experience.\n\nMy first response to all the excitement has been the only natural one for a geek: I've been furiously programming some BugFixes and new features. See the RevisionHistory for details. WorkInProgress includes a new RssFeed facility, which I hope to publish in the next couple of days.\n\nThere's a few questions that crop up all the time from TiddlyWiki users that it's worth addressing here: SafariSupport and compatibility with GreaseMonkey. Also, if you're still trying to get your head around what TiddlyWiki is all about, you might enjoy this [[tutorial|http://www.blogjones.com/TiddlyWikiTutorial.html]].</div></div>
+<div id="storeLatestStuff" modified="200505152327" modifier="JeremyRuston">Triggered by NathanBower's GTDTiddlyWiki, there's been a rush of activity around TiddlyWiki over the last few days. My first response to all the excitement has been the only natural one for a geek: I've been furiously programming some BugFixes and new features. See the RevisionHistory for details. I'm still working on a new RssFeed facility, but in the meantime I've added a CustomStyleSheet feature that lets you customise the colour and positions of the TiddlyWiki screen elements with a certain amount of CSS knowledge.\n\nThere's a few questions that crop up frequently from TiddlyWiki users that it's worth addressing here: SafariSupport and compatibility with GreaseMonkey. Also, if you're still trying to get your head around what TiddlyWiki is all about, you might enjoy this [[tutorial|http://www.blogjones.com/TiddlyWikiTutorial.html]].</div>
+<div id="storeEarlyRevisionHistory" modified="200505152349" modifier="JeremyRuston">See RevisionHistory for the more recent revisions.\n\n* Revision 1.2.5, 19 April 2005\n** Fixed problem with the search results summary message\n** Fixed problem with clicking on highlighted links\n** Fixed problem with non-ANSI unicode characters in permalinks\n* Revision 1.2.4, 17 April 2005\n** Fixed Control-Enter on IE PC\n** Fixed UTF-8 encoding on SaveChanges\n** Fixed regular expressions to permit basic accented characters in WikiWords\n** Fixed problem with completely blank tiddlers\n** Added set focus on edit tiddler\n* Revision 1.2.3, 15 April 2005\n** Fixed problem with positioning of tiddlers opened from last displayed tiddler\n** Added KeyboardShortcuts\n* Revision 1.2.2, 14 April 2005 \n** No code changes\n* Revision 1.2.1, 14 April 2005\n** Fixed problem with spaces in pathnames on Mac/Unix\n* Revision 1.2.0, 14 April 2005\n** No code changes</div>
+<div id="storeRevisionHistory" modified="200505152350" modifier="JeremyRuston">Revision history for the ThirdVersion:\n* Revision 1.2.8, 16 May 2005\n** Added option of a CustomStyleSheet\n* Revision 1.2.7, 14 May 2005\n** Removed annoying confirmation alert()'s on a successful save, replaced with a more polished status area including links to the saved files\n** Added options for whether to SaveBackups and to AutoSave every time you edit a tiddler\n* Revision 1.2.6, 6 May 2005\n** Added CSS stylesheet to suppress menu and sidebar when printing\n** Fixed saving to network shares on FireFox on Windows\n** Fixed use of NonWikiWordLinks in DefaultTiddlers and PermaView\n** Fixed problem with clicking more than once on the PermaLinkButton\n** Added EnableAnimations to the InterfaceOptions\n\nSee EarlyRevisionHistory for older revisions.</div>
+<div id="storeCustomStyleSheet" modified="200505160747" modifier="JeremyRuston">Starting with this revision, you can skin TiddlyWiki with a special StyleSheet tiddler containing your own CSS style sheet declarations. Unlike hacking the HTML directly, the StyleSheet tiddler withstands upgrading to a new version of the TiddlyWiki code (see HowToUpgrade).\n\nThe ExampleStyleSheet shows some of the basic options you can control. SaveChanges and then click refresh in your browser to see StyleSheet changes. Any errors in your CSS syntax will be caught and displayed, but they shouldn't stop TiddlyWiki from working. Having said that, this feature does not seem to work properly in Safari just yet.</div>
+<div id="storeExampleStyleSheet" modified="200505160748" modifier="JeremyRuston">#displayArea {beackground-color: #ffccff; }\n#mainMenu {border: 1px solid #ffff88; }\n#commandPanel {beackground-color: #008800; }</div></div>
     </body>
 </html>
