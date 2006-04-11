@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <!--
-TiddlyWiki 1.2.15 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
+TiddlyWiki 1.2.16 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
 
 Published under a BSD open source license
 Incorporating improvements by Isao Sonobe, http://www-gauge.scphys.kyoto-u.ac.jp/~sonobe/OgreKit/OgreKitWiki.html
@@ -108,7 +108,7 @@ function Tiddler()
 Tiddler.prototype.loadFromDiv = function(divRef,idPrefix)
 {
     this.title = divRef.id.substr(idPrefix.length);
-    this.text = divRef.firstChild.nodeValue;
+    this.text = divRef.firstChild ? divRef.firstChild.nodeValue : "";
     this.text = this.unescapeLineBreaks();
     this.modifier = divRef.getAttribute("modifier");
     this.modified = divRef.getAttribute("modified");
@@ -524,7 +524,11 @@ function createTiddlerEditor(title)
         theTitleBox.setAttribute("size","40");
         var theBodyBox = createTiddlyElement(theEditor,"textarea","editorBody" + title,null,null);
         theBodyBox.value = tiddlerText;
-        theBodyBox.setAttribute("rows","10");
+        var rows = 10;
+        var lines = tiddlerText.match( regexpNewLine );
+        if ( lines != null && lines.length > rows )
+            rows = lines.length + 5;
+        theBodyBox.setAttribute("rows",rows);
         theBodyBox.style.width = "100%";
         //theBodyBox.setAttribute("cols","80");
         theBodyBox.focus();
@@ -640,7 +644,7 @@ var anyLetter = "[A-Za-zÀ-Þß-ÿ_0-9\\-]";
 var anyDigit = "[0-9]";
 var anyNumberChar = "[0-9\\.E]";
 var wikiNamePattern = "(?:" + upperLetter + "+" + lowerLetter + "+" + upperLetter + anyLetter + "*)|(?:" + upperLetter + "{2,}" + lowerLetter + "+)";
-var urlPattern = "(?:http|https|mailto|ftp):[^\\s\"']*";
+var urlPattern = "(?:http|https|mailto|ftp):[^\\s'\"]+(?:/|\\b)";
 var explicitLinkPattern = "\\[\\[([^\\[\\]\\|]+)\\|([^\\[\\]\\|]+)\\]\\]";
 var bracketNamePattern = "\\[\\[([^\\]]+)\\]\\]";
 
@@ -1985,7 +1989,7 @@ function onClickTab(e)
 
 var lastSearchText = ""; // For keeping track of when the search text actually changes
 
-function onSearch(e)
+function onSearchKey(e)
 {
     var text = document.getElementById("searchText").value;
     if((text.length > 2) && (text != lastSearchText))
@@ -1993,6 +1997,13 @@ function onSearch(e)
         searchTiddlers(text,options.chkCaseSens,options.chkRegExp);
         lastSearchText = text;
         }
+}
+
+function onClickSearch(e)
+{
+    var text = document.getElementById("searchText").value;
+    searchTiddlers(text,options.chkCaseSens,options.chkRegExp,false);
+    lastSearchText = text;
 }
 
 function onClearSearch()
@@ -2830,8 +2841,8 @@ a:hover, a:active {
     </div>
     <div id="sidebar">
         <div id="commandPanel">
-            <a href="JavaScript:;" onclick="onSearch()">search</a>
-            <input id="searchText" size=15 onKeyUp="onSearch()" autocomplete=off>
+            <a href="JavaScript:;" onclick="onClickSearch()">search</a>
+            <input id="searchText" size=15 onKeyUp="onSearchKey()" autocomplete=off>
             <a href="javascript:;" onclick="closeAllTiddlers(event)" title="Close all displayed tiddlers (except any that are being edited)">close all</a>
             <a href="javascript:;" onclick="onClickPermaView(event)" title="Link to an URL that retrieves all the currently displayed tiddlers">permaview</a>
             <a href="javascript:;" onclick="saveChanges(event)" title="Save all tiddlers to create a new TiddlyWiki">save changes</a>
@@ -2961,13 +2972,13 @@ a:hover, a:active {
 <div id="storeOpenSourceLicense" modified="200505271556" modifier="JeremyRuston">TiddlyWiki is published under a BSD OpenSourceLicense that gives you the freedom to use it pretty much however you want, including for commercial purposes, as long as you keep my copyright notice. I'd appreciate a link back to http://www.tiddlywiki.com as well.\n\nThat license covers the TiddlyWiki //code//, any content you create when you are ReusingThisSite is as much yours as if you'd written it using MicrosoftWord.</div>
 <div id="storeSaveUnpredictabilities" modified="200505271611" modifier="JeremyRuston">Several people have reported problems with reusing TiddlyWiki when they have used the File/Save command of their browser to save it. The issue is that some browsers (notably FireFox) don't save the text of the HTML file exactly as it appears on the server, but rather save a snapshot of the current state of the page. In the case of a highly dynamic page like TiddlyWiki, this leads to all sorts of peculiarness...\n\nTiddlyWiki now displays a warning if it thinks that it has been saved wrongly.</div>
 <div id="storeTiddlyWikiAdaptations" modified="200506052000" modifier="JeremyRuston">The first and original was [[PhpTiddlyWiki|http://www.patrickcurry.com/tiddly/]] from PatrickCurry and GabrielJeffrey that adds a simple ServerSide in PHP with MySQL. Patrick's site allows anyone to create and edit tiddlers, and has become the de facto community site around TiddlyWiki.\n\nI'm barely managing to keep up with all the adaptations out there; EmailMe if you've done one and you want it listed here.\n\nSome of the other adaptations include:\n* PhonoHawk's PerlTiddlyWiki at http://ccm.sherry.jp/tiddly/\n* NathanBower's GTDTiddlyWiki at http://shared.snapgrid.com/gtd_tiddlywiki.html\n* SimonBaird's homepage at http://homes.jcu.edu.au/~ccscb/ with various enhancements including a SortableGrid\n* GeetDuggal's PileTiddly at http://www.geetduggal.com/PileTiddly/\n* DanPhiffer's TiddlyWikiRemote at http://phiffer.org/tiddly/\n* JonnyLeRoy's TiddlyTagWiki at http://www.digitaldimsum.co.uk/\n* JodyFoo's TagglyWiki at http://informationality.com/tagglywiki/tagglywiki.html\n* KamiWiki at http://rakusai.org/kamiwiki/\n* HenrikAastedSorensen's at http://aasted.org/wiki\n* IsaoSonobe's OgreKitWiki at http://www-gauge.scphys.kyoto-u.ac.jp/~sonobe/OgreKit/OgreKitWiki.html \n* JacquesTurb&#233;'s TidliPo, in French at http://avm.free.fr/IMG/html/carnet_gt_BigCo.html\n* ChristianHauck's at http://www.christianhauck.net/html/14300.html\n* TonyLownds's TiddlyHacks at http://tony.lownds.com/tiddly/dev/cgi/index.cgi\n* PoulStaugaard and IvanMetalnikov's at http://poul.staugaard.dk/IeWiki.htm\n* AlanHecht's QwikiWeb at http://www.personal.psu.edu/ach12/tiddlywiki\n* TimCuthbertson and MattGiuca's TiddlyWikiCSS at http://codestar.lidonet.net/misc/tiddlywikicss.html\n\n* There's also KevemBuangga's TiddlyWikiClone at http://www.kevembuangga.com/hwk/hailiwiki.htm</div>
-<div id="storeTiddlyWikiExamples" modified="200506052004" modifier="JeremyRuston">TiddlyWiki is now being used by many people for all kinds of things, and not just for keeping todo lists. A small sample includes:\n\nCharlesStross, a celebrated British ScienceFiction writer, has used TiddlyWiki for his 'Tough Guide to the Rapture of the Nerds' at http://www.antipope.org/charlie/toughguide.html\n\nKristofferNilausOlsen, a member of the Danish Student Group of Amnesty International, has used TiddlyWiki to collate reports of breaches of human rights. His site is at http://www.resultat.dk/sg/tw/students.html\n\nEliseSpringer, a philospher at Wesleyan University in Connecticut, USA, is using TiddlyWiki for her homepage at http://espringer.web.wesleyan.edu/\n\nMartinSilcock, an independent marketing and branding consultant, is using TiddlyWiki for his homepage at http://www.explorate.co.uk/</div>
 <div id="storeHowToUpgrade" modified="200506052024" modifier="JeremyRuston">As you can see in the RevisionHistory, I've been occasionally updating TiddlyWiki with bug fixes and minor new features. If you've been using an earlier revision of TiddlyWiki, here's how to upgrade to the latest version:\n* Open your TiddlyWiki file in FireFox (say it's called &quot;mystuff.html&quot;)\n* SaveChanges to make sure that you've got a backup of it\n* Without closing that page, right-click on [[this link|http://www.tiddlywiki.com/empty.html]], select 'Save target' or 'Save link' and save it as &quot;mystuff.html&quot;, replacing your existing file\n* Now go back to the previously opened copy of &quot;mystuff.html&quot; in your browser and SaveChanges again. It will inherit the newly saved code\n* Refresh the page in the browser to verify that the upgrade has worked</div>
 <div id="storeMissingTab" modified="200506052300" modifier="JeremyRuston">The 'Missing' tab shows you the names of tiddlers that you've referred to but not gone ahead to define. It can be useful during writing sessions to keep track of things you need to come back and fill out.\n\nThe MissingTab was requested by several users of TiddlyWiki, and was a motivation for rewriting the StorageModel.</div>
 <div id="storeStorageModel" modified="200506052301" modifier="JeremyRuston">Earlier versions of TiddlyWiki used a series of hidden DIV tags to store tiddlers (as can be seen by inspecting view/source in your browser). This mechanism was used both for the initial delivery of the content and for transient, working storage. This meant that operations like 'search' involved extensive HTML DOM manipulations to access the content.\n\nThis new version of TiddlyWiki still uses DIV tags to deliver content to the browser, but immediately loads the text of all tiddlers into a JavaScript data object model. This makes the content much easier to manipulate, and has enabled efficient implementation of the MissingTab. It's also intended to serve as a better basis for future improvements like tagging.</div>
 <div id="storeFireFox" modified="200506060007" modifier="JeremyRuston">FireFox lets you SaveChanges in TiddlyWiki, but you will see up to three dialogs asking your permission for the local file operations. You must allow all three operations for it to work properly. Note that you can select the //Remember this decision// option to avoid seeing the dialogs in future.\n\nThe FireFox4KbLimitation is a KnownBug with FireFox that prevents you from having more than 4096 characters in a tiddler.</div>
 <div id="storeLatestStuff" modified="200506060021" modifier="JeremyRuston">It's hard to keep up with the flow of excellent TiddlyWikiAdaptations. Just added is PerlTiddlyWiki, a very promising Perl-based ServerSide version of TiddlyWiki, joining other recent adaptations incorporating features like tagging and sortable tables.\n\nBehind the scenes, there's been lots of changes to incorporate a new StorageModel. Right now the only visible change is the new MissingTab, but it's the precursor to a number of more interesting capabilities. There's a couple of other minor changes too; see the RevisionHistory for details. Amongst recent bug fixes are several issues with InternetExplorer, so do see HowToUpgrade if you're using an earlier version of TiddlyWiki.\n\nThere's also a new listing of TiddlyWikiExamples showing how people are using TiddlyWiki in areas as diverse as human rights, philosophy and sci-fi.\n\nIf you're still trying to get your head around what TiddlyWiki is all about, there is this [[tutorial|http://www.blogjones.com/TiddlyWikiTutorial.html]].</div>
-<div id="storeRevisionHistory" modified="200506060026" modifier="JeremyRuston">Revision history for the ThirdVersion:\n* Revision 1.2.15, 6 June 2005\n** Completely rewritten StorageModel\n** Added MissingTab\n** Added StickyTabs that use a cookie to remember your current tab between sessions\n** Fixed problem with @@highlighted text@@, thanks to KamalFarizMahyuddin\n* Revision 1.2.14, 27 May 2005\n** Fixed problem with saving Unicode characters that aren't in the ANSI subset in InternetExplorer. This is particularly helpful when importing text from MicrosoftWord, which tends to replace normal ANSI quotes with fancy 'directional' ones like this one: &#8217;\n** Added warning if TiddlyWiki has been saved using File/Save in the browser, as discussed in SaveUnpredictabilities\n* Revision 1.2.13, 26 May 2005\n** Fixed problem with custom StyleSheet on InternetExplorer (associated with a //Unterminated String Contstant// error)\n** Adjusted size of table text to match main body text\n* Revision 1.2.12, 25 May 2005\n** Added support for MonospacedText\n** Fixed problem with saving backslashes that was introduced in 1.2.10\n** Applied fix for some unwanted screen redraw artefacts (contributed by NathanBower)\n* Revision 1.2.11, 24 May 2005\n** Fixed problem with superfluous square brackets in PermaView and missing ones in PermaLinks\n** Fixed problem with '&#223;' being wrongly classified as uppercase for WikiWord purposes\n** Needing further verification, a fix for some InternetExplorer formatting problems with lists, headings and tables\n* Revision 1.2.10, 23 May 2005\n** Added SaveEmptyTemplate option\n\nSee EarlyRevisionHistory for older revisions.</div>
-<div id="storeKnownBugs" modified="200506060029" modifier="JeremyRuston">This list is probably dwarfed by the UnknownBugs, but anyway, I'm planning to fix these:\n* InternetExplorer on Windows has a habit of merging consecutive spaces into one. This normally doesn't matter too much, but would trip you up if you tried to use NonWikiWordLinks to create a tiddler title with multiple consecutive spaces.\n* Interleaving lists of BulletPoints with SubHeadings doesn't work properly\n* Hexadecimal coloured text formatting is broken\n\nIt's not really a bug in TiddlyWiki, but you might need to know about the FireFox4KbLimitation.</div></div>
+<div id="storeKnownBugs" modified="200506060029" modifier="JeremyRuston">This list is probably dwarfed by the UnknownBugs, but anyway, I'm planning to fix these:\n* InternetExplorer on Windows has a habit of merging consecutive spaces into one. This normally doesn't matter too much, but would trip you up if you tried to use NonWikiWordLinks to create a tiddler title with multiple consecutive spaces.\n* Interleaving lists of BulletPoints with SubHeadings doesn't work properly\n* Hexadecimal coloured text formatting is broken\n\nIt's not really a bug in TiddlyWiki, but you might need to know about the FireFox4KbLimitation.</div>
+<div id="storeRevisionHistory" modified="200506062320" modifier="JeremyRuston">Revision history for the ThirdVersion:\n* Revision 1.2.16, 6 June 2005\n** Fixed problem with blank tiddlers\n** A number of bug-fixes from PhilipHellyer:\n*** Improved URL detection for automatic linking\n*** More intelligent setting of the height of a tiddler edit box\n*** Fixed problem with the search button not responding unless the search text has changed\n* Revision 1.2.15, 6 June 2005\n** Completely rewritten StorageModel\n** Added MissingTab\n** Added StickyTabs that use a cookie to remember your current tab between sessions\n** Fixed problem with @@highlighted text@@, thanks to KamalFarizMahyuddin\n* Revision 1.2.14, 27 May 2005\n** Fixed problem with saving Unicode characters that aren't in the ANSI subset in InternetExplorer. This is particularly helpful when importing text from MicrosoftWord, which tends to replace normal ANSI quotes with fancy 'directional' ones like this one: &#8217;\n** Added warning if TiddlyWiki has been saved using File/Save in the browser, as discussed in SaveUnpredictabilities\n* Revision 1.2.13, 26 May 2005\n** Fixed problem with custom StyleSheet on InternetExplorer (associated with a //Unterminated String Contstant// error)\n** Adjusted size of table text to match main body text\n* Revision 1.2.12, 25 May 2005\n** Added support for MonospacedText\n** Fixed problem with saving backslashes that was introduced in 1.2.10\n** Applied fix for some unwanted screen redraw artefacts (contributed by NathanBower)\n* Revision 1.2.11, 24 May 2005\n** Fixed problem with superfluous square brackets in PermaView and missing ones in PermaLinks\n** Fixed problem with '&#223;' being wrongly classified as uppercase for WikiWord purposes\n** Needing further verification, a fix for some InternetExplorer formatting problems with lists, headings and tables\n* Revision 1.2.10, 23 May 2005\n** Added SaveEmptyTemplate option\n\nSee EarlyRevisionHistory for older revisions.</div>
+<div id="storeTiddlyWikiExamples" modified="200506062322" modifier="JeremyRuston">TiddlyWiki is now being used by many people for all kinds of things, and not just for keeping todo lists. A small sample includes:\n\nCharlesStross, a celebrated British ScienceFiction writer, has used TiddlyWiki for his 'Tough Guide to the Rapture of the Nerds' at http://www.antipope.org/charlie/toughguide.html.\n\nKristofferNilausOlsen, a member of the Danish Student Group of Amnesty International, has used TiddlyWiki to collate reports of breaches of human rights. His site is at http://www.resultat.dk/sg/tw/students.html.\n\nEliseSpringer, a philospher at Wesleyan University in Connecticut, USA, is using TiddlyWiki for her homepage at http://espringer.web.wesleyan.edu/.\n\nMartinSilcock, an brand researcher working with Millward Brown, is using TiddlyWiki for his homepage at http://www.explorate.co.uk/.</div></div>
     </body>
 </html>
