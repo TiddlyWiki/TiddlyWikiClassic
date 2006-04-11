@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <!--
-TiddlyWiki 1.2.18 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
+TiddlyWiki 1.2.19 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
 
 Published under a BSD open source license
 Incorporating improvements by Isao Sonobe, http://www-gauge.scphys.kyoto-u.ac.jp/~sonobe/OgreKit/OgreKitWiki.html
@@ -237,14 +237,20 @@ TiddlyWiki.prototype.getTiddlerText = function(title,defaultText)
         return null;
 }
 
+TiddlyWiki.prototype.createTiddler = function(title,body,modifier,modified)
+{
+    this.tiddlers[title] = new Tiddler();
+    return this.setTiddler(title,title,body,modifier,modified);
+}
+
 TiddlyWiki.prototype.setTiddler = function(title,newTitle,newBody,modifier,modified)
 {
-    var tiddler = store.tiddlers[title];
+    var tiddler = this.tiddlers[title];
     if(tiddler)
         delete this.tiddlers[title];
     tiddler = new Tiddler();
     tiddler.set(newTitle,newBody,modifier,modified)
-    store.tiddlers[newTitle] = tiddler;
+    this.tiddlers[newTitle] = tiddler;
     return tiddler;
 }
 
@@ -617,7 +623,7 @@ function saveTiddler(title)
         var oldTiddler = document.getElementById("tiddler" + title);
         oldTiddler.parentNode.removeChild(oldTiddler);
         }
-    refreshAll();
+    refreshAll(title);
     if(options.chkAutoSave)
         saveChanges();
 }
@@ -652,7 +658,7 @@ function deleteTiddler(title)
 {
     closeTiddler(title,false);
     store.removeTiddler(title);
-    refreshAll();
+    refreshAll(title);
     // Autosave
     if(options.chkAutoSave)
         saveChanges();
@@ -1380,20 +1386,37 @@ function clearMessage()
 // Menu and sidebar functions
 // ---------------------------------------------------------------------------------
 
-function refreshAll()
+function refreshAll(hint) // Optional name of the tiddler that's changed
 {
     refreshHeader();
     refreshMenu();
     refreshSidebar();
-    refreshDisplay();
+    refreshDisplay(hint);
 }
 
-function refreshDisplay()
+function refreshDisplay(hint)
 {
+    var hits = hint ? store.getReferringTiddlers(hint) : null;
     var displayNodes = document.getElementById("tiddlerDisplay").childNodes;
     for(var t=0;t<displayNodes.length;t++)
-        if(displayNodes[t].id && displayNodes[t].id.substr(0,7) == "tiddler")
-            refreshTiddler(displayNodes[t].id.substr(7));
+        {
+        var theId = displayNodes[t].id;
+        if(theId && theId.substr(0,7) == "tiddler")
+            {
+            var title = theId.substr(7);
+            if(hint)
+                {
+                var f = false;
+                for(var h=0; h<hits.length; h++)
+                    if(hits[h].title == title)
+                        f = true
+                if(f)
+                    refreshTiddler(title);
+                }
+            else
+                refreshTiddler(title);
+            }
+        }
 }
 
 // Refresh all parts of the header
@@ -2765,7 +2788,6 @@ a:hover, a:active {
     margin-top: 0.8em;
     margin-bottom: 0.8em;
     font-size: 100%;
-    width: 90%;
 }
 
 .viewer th {
