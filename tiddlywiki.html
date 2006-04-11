@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <!--
-TiddlyWiki 1.2.21 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
+TiddlyWiki 1.2.22 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
 
 Published under a BSD open source license
 Incorporating improvements by Isao Sonobe, http://www-gauge.scphys.kyoto-u.ac.jp/~sonobe/OgreKit/OgreKitWiki.html
@@ -37,7 +37,7 @@ DAMAGE.
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
 <title>TiddlyWiki</title>
 <script type="text/javascript">
-
+ 
 // ---------------------------------------------------------------------------------
 // Main
 // ---------------------------------------------------------------------------------
@@ -722,7 +722,7 @@ function searchTiddlers(searchText,caseSensitive,useRegExp)
     var matches = store.search(searchText,caseSensitive,useRegExp);
     if(store.tiddlers[searchText])
         displayTiddler(null,searchText,1,searchText,caseSensitive,false); // Special case of searching for a tiddler title
-    for(var t=0;t<matches.length;t++)
+    for(var t=matches.length-1; t>=0;t--)
         displayTiddler(null,matches[t].title,1,searchText,caseSensitive,false);
     var q = useRegExp ? "/" : "'";
     displayMessage(matches.length + " tiddlers found matching " + q + searchText + q);
@@ -1675,7 +1675,8 @@ function refreshTabMore()
             results = store.getOrphans();
             break;
         case "moreTabSpecial":
-            results = specialTiddlers;
+            results = specialTiddlers.slice(0);
+            results.sort();
             break;
         }
     for (t = 0; t < results.length; t++)
@@ -3037,6 +3038,7 @@ a:hover, a:active {
     color: #000000;
     font-size: 8pt;
     background-color: #ffffff;
+    position: relative;
 }
 
 .sidebarSubHeading {
