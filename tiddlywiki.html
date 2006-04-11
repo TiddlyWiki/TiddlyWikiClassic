@@ -1,9 +1,9 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <script type="text/javascript">
-var version = {major: 2, minor: 0, revision: 0, date: new Date("Jan 5, 2006"), extensions: {}};
+var version = {major: 2, minor: 0, revision: 1, date: new Date("Jan 6, 2006"), extensions: {}};
 </script>
 <!--
-TiddlyWiki 2.0.0 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
+TiddlyWiki 2.0.1 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
 
 Copyright (c) Osmosoft Limited 2004-2006
 
@@ -1762,6 +1762,8 @@ config.commands.deleteTiddler.handler = function(event,src,title)
 		{
 		store.removeTiddler(title);
 		story.closeTiddler(title,true,event.shiftKey || event.altKey);
+		if(config.options.chkAutoSave)
+			saveChanges();
 		}
 	return false;
 }
