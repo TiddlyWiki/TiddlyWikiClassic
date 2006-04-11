@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <!--
-TiddlyWiki 1.2.9 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
+TiddlyWiki 1.2.10 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
 
 Published under a BSD open source license
 Incorporating improvements by Isao Sonobe, http://www-gauge.scphys.kyoto-u.ac.jp/~sonobe/OgreKit/OgreKitWiki.html
@@ -51,9 +51,13 @@ options.txtUserName = "YourName";
 options.chkSaveBackups = true;
 options.chkAutoSave = false;
 options.chkGenerateAnRssFeed = false;
+options.chkSaveEmptyTemplate = false;
 
 // Number of items in the RSS feed
 var numRssItems = 20;
+
+// Special tiddlers
+var specialTiddlers = ["SiteTitle","SiteSubtitle","MainMenu","DefaulTiddlers","SaveChanges"];
 
 // Starting up
 function main()
@@ -1408,14 +1412,31 @@ function saveChanges()
             alert("Couldn't save backup file");
         }
     // Save Rss
-    var rssPath = localPath.substr(0,localPath.lastIndexOf(".")) + ".xml";
     if(options.chkGenerateAnRssFeed)
         {
+        var rssPath = localPath.substr(0,localPath.lastIndexOf(".")) + ".xml";
         var rssSave = saveFile(rssPath,convertUnicodeToUTF8(generateRss()));
         if(rssSave)
             displayMessage("RSS feed saved as ","file://" + rssPath);
         else
             alert("Failed to save RSS feed");
+        }
+    // Save empty template
+    if(options.chkSaveEmptyTemplate)
+        {
+        var emptyPath,p;
+        if((p = localPath.lastIndexOf("/")) != -1)
+            emptyPath = localPath.substr(0,p) + "/empty.html";
+        else if((p = localPath.lastIndexOf("\\")) != -1)
+            emptyPath = localPath.substr(0,p) + "\\empty.html";
+        else
+            emptyPath = localPath + ".empty.html";
+        var empty = original.substr(0,posOpeningDiv + startSaveArea.length) + convertUnicodeToUTF8(generateEmpty()) + original.substr(posClosingDiv);
+        var emptySave = saveFile(emptyPath,empty);
+        if(emptySave)
+            displayMessage("Empty template saved as ","file://" + emptyPath);
+        else
+            alert("Failed to save empty template feed");
         }
     // Save new file
     var revised = original.substr(0,posOpeningDiv + startSaveArea.length) + convertUnicodeToUTF8(allTiddlersAsHtml()) + original.substr(posClosingDiv);
@@ -1463,25 +1484,27 @@ function generateRss()
     return s.join("\n");
 }
 
+function generateEmpty()
+{
+    var savedTiddlers = new Array();
+    var tiddlers = getTiddlers(-1,"date");
+    for (var s = 0; s < specialTiddlers.length; s++)
+        for(var t = 0; t < tiddlers.length; t++)
+            if(tiddlers[t][0] == specialTiddlers[s])
+                savedTiddlers.push("<div id=\"store" + tiddlers[t][0] + "\" modified=\"" +
+                                    tiddlers[t][1] + "\" modifier=\"" + tiddlers[t][2] + "\">" +
+                                    htmlEncode(getTiddlerText(tiddlers[t][0])) + "</div>");
+    return savedTiddlers.join("\n");
+}
+
 function allTiddlersAsHtml()
 {
-    var storeNodes = document.getElementById("storeArea").childNodes;
     var savedTiddlers = new Array();
-    for (var t = 0; t < storeNodes.length; t++)
-        {
-        var n = storeNodes[t];
-        if(n.id)
-            if(n.id.substr(0,5) == "store")
-                {
-                var title = n.id.substr(5);
-                var text = "";
-                if(n.firstChild)
-                    text = n.firstChild.nodeValue;
-                savedTiddlers.push("<div id=\"store" + title + "\" modified=\"" +
-                                    n.getAttribute("modified") + "\" modifier=\"" + n.getAttribute("modifier") + "\">" +
-                                    htmlEncode(text) + "</div>");
-                }
-        }
+    var tiddlers = getTiddlers(-1,"date");
+    for (var t = 0; t < tiddlers.length; t++)
+        savedTiddlers.push("<div id=\"store" + tiddlers[t][0] + "\" modified=\"" +
+                            tiddlers[t][1] + "\" modifier=\"" + tiddlers[t][2] + "\">" +
+                            htmlEncode(getTiddlerText(tiddlers[t][0])) + "</div>");
     return savedTiddlers.join("\n");
 }
 
@@ -2667,6 +2690,9 @@ a:hover, a:active {
             <div class="optionsItem"><input type=checkbox onclick="onChangeOption(event);" id="chkGenerateAnRssFeed">
                 <a href="javascript:;" tiddlyLink="GenerateAnRssFeed" onclick="onClickTiddlerLink(event);">GenerateAnRssFeed</a>
             </div>
+            <div class="optionsItem"><input type=checkbox onclick="onChangeOption(event);" id="chkSaveEmptyTemplate">
+                <a href="javascript:;" tiddlyLink="SaveEmptyTemplate" onclick="onClickTiddlerLink(event);">SaveEmptyTemplate</a>
+            </div>
             <div class="optionsItem"><input type=checkbox onclick="onChangeOption(event);" id="chkRegExp">
                 <a href="javascript:;" tiddlyLink="RegExpSearch" onclick="onClickTiddlerLink(event);">RegExpSearch</a>
             </div>
@@ -2696,78 +2722,294 @@ a:hover, a:active {
         &nbsp;
         <div id="floater">&nbsp;</div>
     </div>
-    <div id="storeArea"><div id="storeEmailMe" modified="200409072350" modifier="JeremyRuston">My email address is jeremy (at) osmosoft (dot) com</div>
-<div id="storeSiteTitle" modified="200409161548" modifier="JeremyRuston">TiddlyWiki</div>
-<div id="storeSiteSubtitle" modified="200409171651" modifier="JeremyRuston">a reusable non-linear personal web notebook</div>
-<div id="storeSelfContained" modified="200409201452" modifier="JeremyRuston">One of the neatest features of TiddlyWiki is that it is entirely self-contained in a single HTML file. It contains the actual hypertext document, and the JavaScript, CascadingStyleSheets and HTML necessary to both view and edit the document. This means that it is trivial to host a TiddlyWiki on a website, or to distribute one by email. And anyone with a reasonably recent web browser will be able to read and edit it.</div>
-<div id="storeMicroContent" modified="200409251844" modifier="JeremyRuston">MicroContent being a fashionable word for self-contained fragments of content that are typically smaller than entire pages. Often MicroContent is presented via some kind of aggregation that reduces the perceptual shock and resource cost of context switching (eg Blogs aggregating several entries onto a page or Flickr presenting photos in an album). This TiddlyWiki aggregates MicroContent items that I call 'tiddlers' into pages that are loaded in one gulp and progressively displayed as the user clicks hypertext links to read them.</div>
-<div id="storeStartupBehaviour" modified="200412192141" modifier="JeremyRuston">When it loads, TiddlyWiki looks for the names of tiddlers to open as a space-separated list after the # in the URL. If there are no tiddlers in the URL it instead loads the tiddlers named in DefaultTiddlers, one of the SpecialTiddlers.</div>
-<div id="storeExtendedFormatting" modified="200503112345" modifier="JeremyRuston">''Bold''\n==Strike==\n__Underline__\n//Italic//\n2^^3^^=8\na~~ij~~ = -a~~ji~~\n@@highlight@@\n@@color(green):green colored@@\n@@bgcolor(#ff0000):color(#ffffff):red colored@@</div>
-<div id="storeHorizontalRules" modified="200503120015" modifier="JeremyRuston">You can divide a tiddler into\n----\nsections by typing four dashes on a line by themselves</div>
-<div id="storeTiddlyWikiPod" modified="200503232231" modifier="JeremyRuston">IsaoSonobe's TiddlyWikiPod is a nifty utility for Mac OS X that copies the content of a TiddlyWiki to an iPod where it can be read, and links followed, using the touch wheel. Isao has also added the ability to link to songs from the TiddlyWiki text which enables some interesting applications. At the moment, it only works with the older SecondVersion of TiddlyWiki. It can be found at http://www8.ocn.ne.jp/~sonoisa/TiddlyWikiPod/index.html</div>
-<div id="storeSubHeadings" modified="200503311852" modifier="JeremyRuston">!Header 1\n!!Header 2\n!!!Header 3\n!!!!Header 4\n!!!!!Header 5\n</div>
-<div id="storeNumberedLists" modified="200503311852" modifier="JeremyRuston">start\n#item1\n#item2\n##item2.1\n##item2.2\n##item2.3\n#item3\n##item3.1\n###item3.1.1\n###item3.1.2\n\nend</div>
-<div id="storeWikiOnAStick" modified="200504081823" modifier="JeremyRuston">Putting TiddlyWiki on a USB thumb drive lets you carry around a SelfContained notebook that you can update wherever there's a reasonably modern computer, whether it's a Mac, Linux or a PC. (To be even more independent you can [[install FireFox on the drive|http://www.mozilla.org/support/firefox/tips#oth_usb]] as well).</div>
-<div id="storeBulletPoints" modified="200504091848" modifier="JeremyRuston">Edit this tiddler to see how to create BulletPoints\n* Like this one\n* And this one\n** And this second-level one\n* And a final one</div>
-<div id="storeFireFox" modified="200504091848" modifier="JeremyRuston">FireFox lets you SaveChanges in TiddlyWiki, but you will see up to three dialogs asking your permission for the local file operations. You must allow all three operations for it to work properly. Note that you can select the //Remember this decision// option to avoid seeing the dialogs in future.  </div>
-<div id="storeOpenSourceLicense" modified="200504091859" modifier="JeremyRuston">TiddlyWiki is published under a BSD OpenSourceLicense that gives you the freedom to use it pretty much however you want, including for commercial purposes, as long as you keep my copyright notice. I'd appreciate a link back to http://www.tiddlywiki.com as well. </div>
-<div id="storeJeremyRuston" modified="200504100122" modifier="JeremyRuston">I'm Jeremy Ruston, a technologist based in London. I do consultancy work through my company [[Osmosoft|http://www.osmosoft.com]], as well as pursuing some independent projects like TiddlyWiki.</div>
-<div id="storeNoWarranty" modified="200504100156" modifier="JeremyRuston">TiddlyWiki is a spare time project that I'm making available under an OpenSourceLicense. Accordingly, there's no warranty on it, and you can only use it at your own risk. I am interested in hearing about new bugs to add to the rather rapidly growing pile; just EmailMe.</div>
-<div id="storeFirstVersion" modified="200504100201" modifier="JeremyRuston">Released in September 2004, the [[first version|firstversion.html]] was pretty basic, weighing in at 52KB.</div>
-<div id="storeSecondVersion" modified="200504100203" modifier="JeremyRuston">Released in December 2004, the [[second version|secondversion.html]] of TiddlyWiki grew 50% over the FirstVersion to 76KB. It added IncrementalSearch, the ReferencesButton, the PermaLinkButton, PermaView, CloseAll, SmoothScrolling, an ImprovedSidebar, an animation for the CloseButton and a tiny EasterEgg in homage to Macintosh OS X. It also introduced a new SiteDesign.</div>
-<div id="storeInternetExplorer" modified="200504120008" modifier="JeremyRuston">InternetExplorer on Windows allows you to SaveChanges in TiddlyWiki. It will give you an ActiveX warning, and ask for your permission to proceed each time. It should work from version 4, but I have only extensively tested against version 6. I have found some annoying difficulties with XpServicePack2, but there's always FireFox.</div>
-<div id="storeWikiWord" modified="200504132135" modifier="JeremyRuston">A WikiWord is a word composed of a bunch of other words slammed together with each of their first letters capitalised. WikiWord notation in a conventional WikiWikiWeb is used to name individual pages while TiddlyWiki uses WikiWord titles for smaller chunks of MicroContent. Referring to a page with a WikiWord automatically creates a link to it. Clicking on a link jumps to that page or, if it doesn't exist, to an editor to create it. This ThirdVersion of TiddlyWiki also adds NonWikiWordLinks.</div>
-<div id="storeNonWikiWordLinks" modified="200504132137" modifier="JeremyRuston">To make a tiddler that doesn't have a WikiWord as it's name, you can enclose the name in [[double square brackets]] - edit this tiddler to see an example. After saving the tiddler you can then click on the link to create the new tiddler. NonWikiWordLinks permits tiddlers to be created with names that are made from character sets that don't have upper and lower case.</div>
-<div id="storeThankYou" modified="200504132138" modifier="JeremyRuston">Thank you to everybody who has helped me with support and suggestions for TiddlyWiki, but especially IsaoSonobe for his cunning regular expression code, and to my friend RebeccaWelby for the SiteDesign.</div>
-<div id="storeWikiWikiWeb" modified="200504132139" modifier="JeremyRuston">A Wiki is a popular way of building collaborative websites. It's based on the ideas of easy editing of pages and the use of special WikiWord notation to automagically create links between pages. See Wikipedia for [[more details|http://en.wikipedia.org/wiki/Wiki]]. TiddlyWiki is different from a conventional Wiki because it is not based on entire pages of content, but rather items of MicroContent that are referred to as 'tiddlers'.</div>
-<div id="storeToolbarButtons" modified="200504132148" modifier="JeremyRuston">A row of ToolbarButtons appears to the right of a tiddler title when the mouse is hovered over it. The buttons are:\n* ''close'' - close the current tiddler\n* ''edit'' - edit the current tiddler\n* ''permalink'' - puts a link direct to the current tiddler into the address bar\n* ''references'' - displays all the tiddlers that link to the current tiddler\n* ''done'' - save changes to a tiddler being editted\n* ''cancel'' - cancel changes to a tiddler being editted\n* ''delete'' - delete the current tiddler</div>
-<div id="storeWritingStyle" modified="200504132150" modifier="JeremyRuston">I'm hoping that after using TiddlyWiki for a while a new WritingStyle will emerge that is appropriate for this medium.  Jakob Neilsen wrote an article about [[writing styles|http://www.useit.com/alertbox/980906.html]] for MicroContent back in 1998 that still seems surprisingly relevant.</div>
-<div id="storeServerSide" modified="200504132225" modifier="JeremyRuston">TiddlyWiki doesn't have a server-side back end at the moment, so when you SaveChanges you're saving the whole document, as you would with Microsoft Word. That means that it is essentially only really a SingleUser thing (unless it gets passed round as a ChainTiddlyWiki). There are several TiddlyWikiAdaptations that //do// have a ServerSide, though.</div>
-<div id="storeReusingThisSite" modified="200504132235" modifier="JeremyRuston">It's easy to make your own TiddlyWiki that you can publish yourself - see how to SaveChanges for details. If you want to change the layout or the colour scheme, you'll need some basic HTML and CSS knowledge.</div>
-<div id="storeServicePack2Problems" modified="200504132259" modifier="JeremyRuston">Internet Explorer Windows XP SP2 seems to have a magical ability to keep track of html files that have been downloaded from the internet and saved on an NTFS drive. By storing additional data in an [[alternate data stream|http://www.jsware.net/jsware/sviewer.html]], it manages to keep them in the 'Internet Zone' regardless of attempts to rename or modify the file. But, in order to be able to SaveChanges, TiddlyWiki needs to run in the 'My Computer Zone'.\n\nThere are a couple of ways around the problem:\n* save the TiddlyWiki HTML file to a FAT drive (eg a USB thumb drive)\n* open the downloaded file with a text editor and save it again under a different name\n\nIn either case, The new file will open in 'My Computer Zone', which in turn causes Internet Explorer to put up it's information bar asking you whether you want to run it. You need to 'Allow blocked content' to let TiddlyWiki do it's stuff.\n\nThis is all a bit frustrating. An easy alternative is to use FireFox, which seems to do the trick on all platforms.</div>
-<div id="storeSpecialTiddlers" modified="200504132300" modifier="JeremyRuston">TiddlyWiki uses several special tiddlers to hold the text used for the MainMenu, the SiteTitle and the SiteSubtitle. DefaultTiddlers is used to store the titles of the tiddlers that are shown at startup. SaveChanges is automatically displayed if there's a problem with saving. Any of them can be editted with the changes taking effect immediately.</div>
-<div id="storeTiddlyWiki" modified="200504132300" modifier="JeremyRuston">A TiddlyWiki is like a blog because it's divided up into neat little chunks, but it encourages you to read it by hyperlinking rather than sequentially: if you like, a non-linear blog analogue that binds the individual microcontent items into a cohesive whole. I think that TiddlyWiki represents a novel medium for writing, and will promote it's own distinctive WritingStyle. This is the ThirdVersion of TiddlyWiki, which adds several NewFeatures. There are also several TiddlyWikiAdaptations by other developers based on earlier versions.</div>
+    <div id="storeArea"><div id="storeEmptyTiddlyWiki" modified="200505230023" modifier="JeremyRuston">There's now an [[empty TiddlyWiki|empty.html]] to make it easier for people ReusingThisSite. It contains the bare minimum content to enable TiddlyWiki to work.</div>
+<div id="storeLatestStuff" modified="200505230021" modifier="JeremyRuston">Triggered by NathanBower's GTDTiddlyWiki, there's been a rush of activity around TiddlyWiki over the last few weeks. Being a geek, my response has been to furiously program BugFixes and new features including an RssFeed and a CustomStyleSheet hack. A new SaveEmptyTemplate option means that there's now an EmptyTiddlyWiki to use as as a template. See the RevisionHistory for details of all changes.
+
+There's been a few questions from TiddlyWiki users about SafariSupport and GreaseMonkey. If you're still trying to get your head around what TiddlyWiki is all about, there is this [[tutorial|http://www.blogjones.com/TiddlyWikiTutorial.html]]. Finally, people have been saying &quot;Yes, but IsItAjax?&quot;.</div>
+<div id="storeDownloadSoftware" modified="200505230013" modifier="JeremyRuston">Because TiddlyWiki is a single HTML file, you've actually already downloaded the entire software just by viewing this site. If you want to be able to SaveChanges, you can save your own blank TiddlyWiki to your local drive by right clicking on [[this link|empty.html]] and selecting 'Save link as...' or 'Save target as...'. You can choose where to save the file, and what to call it (but keep the .HTML extension).
+
+Do ''not'' use the File/Save command in your browser to save TiddlyWiki, because of SaveUnpredictabilities.</div>
+<div id="storeSaveChanges" modified="200505230013" modifier="JeremyRuston">You can SaveChanges if you're using FireFox or InternetExplorer:
+# if you're using Windows XP you might run into ServicePack2Problems
+# right click on [[this link|empty.html]] and select 'Save link as...' or 'Save target as...'
+** do ''not'' try to use the File/Save command in your browser because of SaveUnpredictabilities.
+** choose where to save the file, and what to call it (but keep the .HTML extension)
+# open the newly downloaded file in your browser
+# click the 'options' button on the right to set your username
+# edit, create and delete the tiddlers you want
+** you can change the SpecialTiddlers to change the SiteTitle and MainMenu etc.
+# click the 'save changes' button on the right to save your changes
+# TiddlyWiki will make a backup copy of the existing file, and then replace it with the new version
+</div>
+<div id="storeRevisionHistory" modified="200505230012" modifier="JeremyRuston">Revision history for the ThirdVersion:
+* Revision 1.2.10, 23 May 2005
+** Added SaveEmptyTemplate option
+* Revision 1.2.9, 17 May 2005
+** Fixed problem with encoding HTML entities in tiddlers (now you can say &lt;div&gt; with impunity)
+** Fixed problem with CustomStyleSheet and Safari
+** Added AutoSave support on deleting a tiddler
+** Added option to GenerateAnRssFeed
+* Revision 1.2.8, 16 May 2005
+** Added option of a CustomStyleSheet
+* Revision 1.2.7, 14 May 2005
+** Removed annoying confirmation alert()'s on a successful save, replaced with a more polished status area including links to the saved files
+** Added options for whether to SaveBackups and to AutoSave every time you edit a tiddler
+* Revision 1.2.6, 6 May 2005
+** Added CSS stylesheet to suppress menu and sidebar when printing
+** Fixed saving to network shares on FireFox on Windows
+** Fixed use of NonWikiWordLinks in DefaultTiddlers and PermaView
+** Fixed problem with clicking more than once on the PermaLinkButton
+** Added EnableAnimations to the InterfaceOptions
+
+See EarlyRevisionHistory for older revisions.</div>
+<div id="storeSaveEmptyTemplate" modified="200505222353" modifier="JeremyRuston">This causes a blank, template TiddlyWiki to be saved alongside your file when you SaveChanges. It's intended to help people who are distributing TiddlyWikiAdaptations, and isn't needed when you're just using TiddlyWiki.
+
+The template TiddlyWiki is always called 'empty.html'.</div>
+<div id="storeSaveUnpredictabilities" modified="200505200823" modifier="JeremyRuston">Several people have reported problems with reusing TiddlyWiki when they have used the File/Save command of their browser to save it. The issue is that some browsers (notably FireFox) don't save the text of the HTML file exactly as it appears on the server, but rather save a snapshot of the current state of the page. In the case of a highly dynamic page like TiddlyWiki, this leads to all sorts of peculiarness...</div>
+<div id="storeTiddlyWikiAdaptations" modified="200505190725" modifier="JeremyRuston">The first and original was [[PhpTiddlyWiki|http://www.patrickcurry.com/tiddly/]] from PatrickCurry and GabrielJeffrey that adds a simple ServerSide in PHP with MySQL. Patrick's site allows anyone to create and edit tiddlers, and has become the de facto community site around TiddlyWiki.
+
+I'm barely managing to keep up with all the adaptations out there; EmailMe if you've done one and you want it listed here.
+
+Some of the other adaptations include:
+* NathanBower's GTDTiddlyWiki at http://shared.snapgrid.com/gtd_tiddlywiki.html
+* DanPhiffer's TiddlyWikiRemote at http://phiffer.org/tiddly/
+* KamiWiki at http://rakusai.org/kamiwiki/
+* HenrikAastedSorensen's at http://aasted.org/wiki
+* IsaoSonobe's OgreKitWiki at http://www-gauge.scphys.kyoto-u.ac.jp/~sonobe/OgreKit/OgreKitWiki.html 
+* JacquesTurbé's TidliPo, in French at http://avm.free.fr/IMG/html/carnet_gt_BigCo.html
+* ChristianHauck's at http://www.christianhauck.net/html/14300.html
+* TonyLownds's at http://tony.lownds.com/home/
+* PoulStaugaard and IvanMetalnikov's at http://poul.staugaard.dk/IeWiki.htm
+* AlanHecht's QwikiWeb at http://www.personal.psu.edu/ach12/tiddlywiki
+* TimCuthbertson and MattGiuca's TiddlyWikiCSS at http://codestar.lidonet.net/misc/tiddlywikicss.html
+
+* There's also KevemBuangga's TiddlyWikiClone at http://www.kevembuangga.com/hwk/hailiwiki.htm</div>
+<div id="storeRssFeed" modified="200505172323" modifier="JeremyRuston">TiddlyWiki's RSS feed is available [[here|http://www.tiddlywiki.com/index.xml]]. RSS support is a WorkInProgress and lacks some niceties at the moment (in particular, the feed is plain text rather than incorporating links and formatting), but at least makes it easier to track changes. You can generate an RSS feed for your own TiddlyWiki using the new GenerateAnRssFeed option.</div>
+<div id="storeKnownBugs" modified="200505172322" modifier="JeremyRuston">This list is probably dwarfed by the UnknownBugs, but anyway, I'm planning to fix these:
+* InternetExplorer on Windows has a habit of merging consecutive spaces into one. This normally doesn't matter too much, but would trip you up if you tried to use NonWikiWordLinks to create a tiddler title with multiple consecutive spaces.
+* Interleaving lists of BulletPoints with SubHeadings doesn't work properly
+* &quot;Highlighted&quot; and Hexadecimal coloured text formatting is broken
+* WIN/IE 6 messes up list items when you edit a Tiddler with multiple headings</div>
+<div id="storeMainFeatures" modified="200505172320" modifier="JeremyRuston">This ThirdVersion of TiddlyWiki offers the following features:
+* compatibility with most modern browsers (although you can only SaveChanges on FireFox and InternetExplorer under Windows)
+* the option to GenerateAnRssFeed
+* more slickness and InterfaceOptions concerned with whether to SaveBackups and the ability to AutoSave
+* a new liquid CSS layout that fills the width of the browser window
+* InterfaceOptions revealed by clicking the new 'options' button on the right
+* KeyboardShortcuts so you can finish editing a tiddler with Control-Enter or abandon it with Escape
+* a more flexible OpenSourceLicense
+* a bunch of features from IsaoSonobe's [[adaptation|http://www-gauge.scphys.kyoto-u.ac.jp/~sonobe/OgreKit/OgreKitWiki.html]] of TiddlyWiki including ExtendedFormatting, NonWikiWordLinks, PrettyLinks, SubHeadings, BulletPoints, NumberedLists, HtmlTables, BlockQuotes, HorizontalRules and...
+* ...EmbeddedImages:
+[img[brixhamharbour.jpg]]
+* some BugFixes balanced by some KnownBugs</div>
+<div id="storeInterfaceOptions" modified="200505171919" modifier="JeremyRuston">InterfaceOptions are displayed when you click the 'options' button on the right. They are saved in a cookie on your browser, making them sticky between visits. RegExpSearch allows more complex search expressions; CaseSensitiveSearch does as it's name implies. The user name for edits should be set //before// starting to edit things (ouch. another bug). AutoSave and SaveBackups give the option of automatically saving changes and whether to generate backup files. You can also choose to GenerateAnRssFeed.</div>
+<div id="storeGenerateAnRssFeed" modified="200505171918" modifier="JeremyRuston">A new feature for the ThirdVersion of TiddlyWiki is the ability to generate an RssFeed of it's content. You can flick it on with a new addition to the InterfaceOptions. If enabled, it automatically saves an RSS 2.0 format file with the last few changed tiddlers in it. It's given the same filename as the TiddlyWiki file but with the &quot;.xml&quot; extension. Like all TiddlyWiki features, it's experimental, and will probably be a bit temperamental in your feedreader until the bugs are ironed out.
+
+Note that you must set the tiddler SiteUrl to be the URL where your TiddlyWiki will be published. (Don't put leading spaces or line breaks before or after the URL).</div>
+<div id="storeMainMenu" modified="200505171916" modifier="JeremyRuston">HelloThere
+LatestStuff
+TiddlyWiki
+UsingThisSite
+ReusingThisSite
+DownloadSoftware
+HowToUpgrade
+RssFeed
+
+© [[osmosoft|http://www.osmosoft.com]] 2005</div>
+<div id="storeCustomStyleSheet" modified="200505171736" modifier="JeremyRuston">Starting with this revision, you can skin TiddlyWiki with a special StyleSheet tiddler containing your own CSS style sheet declarations. Unlike hacking the HTML directly, the StyleSheet tiddler withstands upgrading to a new version of the TiddlyWiki code (see HowToUpgrade).
+
+The ExampleStyleSheet shows some of the basic options you can control. SaveChanges and then click refresh in your browser to see StyleSheet changes. Any errors in your CSS syntax will be caught and displayed, but they shouldn't stop TiddlyWiki from working.</div>
+<div id="storeExampleStyleSheet" modified="200505171727" modifier="JeremyRuston">#displayArea {background-color: #ffccff; }
+#mainMenu {border: 1px solid #ffff88; }
+#commandPanel {background-color: #008800; }</div>
+<div id="storeIsItAjax" modified="200505171726" modifier="JeremyRuston">AJAX is an acronym standing for Asynchronous JavaScript and XML. Although TiddlyWiki uses JavaScript extensively, it doesn't do anything with XML or XMLHttpRequest, so it doesn't really fit the category.</div>
+<div id="storeGTDTiddlyWiki" modified="200505171721" modifier="JeremyRuston">NathanBower's GTDTiddlyWiki is an adaptation of TiddlyWiki that's geared towards DavidAllen's GettingThingsDone methodology for personal productivity. It features a funky new look and feel and a few enhancements that haven't yet made it into this 'official' version. It's available [[here|http://shared.snapgrid.com/gtd_tiddlywiki.html]] and Nathan is also hosting a forum for discussions about it [[on his site|http://shared.snapgrid.com/gtd-forum/]].</div>
+<div id="storeSafariSupport" modified="200505171716" modifier="JeremyRuston">On the Mac, I use Safari by choice and it's a nuisance having to switch over to FireFox to save TiddlyWiki. Unfortunately, I haven't been able to find an easy way to get Safari to do the necessary file operations (except as a DashboardWidget, but that's another story). I'm hopeful that it'll get fixed but in the meantime there's an answer in JonathanPaisley's [[Safari plug-in|http://www.dcs.gla.ac.uk/~jp/tiddlywiki/]] and associated adaptation of GTDTiddlyWiki. it's a great piece of work (although I'd still love to find a Safari solution that doesn't break TiddlyWiki's all-in-one-ness).</div>
+<div id="storeEarlyRevisionHistory" modified="200505152349" modifier="JeremyRuston">See RevisionHistory for the more recent revisions.
+
+* Revision 1.2.5, 19 April 2005
+** Fixed problem with the search results summary message
+** Fixed problem with clicking on highlighted links
+** Fixed problem with non-ANSI unicode characters in permalinks
+* Revision 1.2.4, 17 April 2005
+** Fixed Control-Enter on IE PC
+** Fixed UTF-8 encoding on SaveChanges
+** Fixed regular expressions to permit basic accented characters in WikiWords
+** Fixed problem with completely blank tiddlers
+** Added set focus on edit tiddler
+* Revision 1.2.3, 15 April 2005
+** Fixed problem with positioning of tiddlers opened from last displayed tiddler
+** Added KeyboardShortcuts
+* Revision 1.2.2, 14 April 2005 
+** No code changes
+* Revision 1.2.1, 14 April 2005
+** Fixed problem with spaces in pathnames on Mac/Unix
+* Revision 1.2.0, 14 April 2005
+** No code changes</div>
+<div id="storeHelloThere" modified="200505141251" modifier="JeremyRuston">Welcome to the improved ThirdVersion of TiddlyWiki, an experimental MicroContent WikiWikiWeb built by JeremyRuston. It's written in HTML, CSS and JavaScript to run on any modern browser without needing any ServerSide logic. It allows anyone to create personal SelfContained hypertext documents that can be posted to any web server, sent by email or kept on a USB thumb drive to make a WikiOnAStick. If you like it, do please EmailMe and let me know.</div>
+<div id="storeSaveBackups" modified="200505141154" modifier="JeremyRuston">This is one of the InterfaceOptions you can use to customize TiddlyWiki. It determines whether TiddlyWiki creates a backup file each time you SaveChanges. I'd suggest keeping it switched on for safety!</div>
+<div id="storeAutoSave" modified="200505141150" modifier="JeremyRuston">The addition of AutoSave to the InterfaceOptions causes TiddlyWiki to automatically perform a SaveChanges each time you edit a tiddler, making it a good deal harder to accidentally lose information. However, if you also choose to SaveBackups you will end up generating an awful lot of files...</div>
+<div id="storeGreaseMonkey" modified="200505131743" modifier="JeremyRuston">Several popular GreaseMonkey scripts can cause some or all features of TiddlyWiki to stop working - the default Linkify script seems to be particularly troublesome. There doesn't seem to be a //solid// way to disable GreaseMonkey from within TiddlyWiki (which is technically entirely understandable but does lead to a fairly grim user experience).</div>
+<div id="storeLinkToFolders" modified="200505131554" modifier="JeremyRuston">The format for PrettyLinks allows for links that open local or network folders. Depending on your browser and operating system, the folders are opened in Windows Explorer, the OS X Finder, or the browser itself.
+
+Edit this tiddler to see [[this link to a Windows network share|file://///server/share/folder/path/name]], [[this link to a Windows drive-mapped folder|file:///c:/folder/path/name]] and [[this link to a Unix-style folder|file:///folder/path/name]].</div>
+<div id="storeDefaultTiddlers" modified="200505121952" modifier="JeremyRuston">HelloThere LatestStuff MainFeatures</div>
+<div id="storeSiteUrl" modified="200505100122" modifier="JeremyRuston">http://www.tiddlywiki.com/</div>
+<div id="storeHowToUpgrade" modified="200505071038" modifier="JeremyRuston">As you can see in the RevisionHistory, I've been occasionally updating TiddlyWiki with bug fixes and minor new features. If you've been using an earlier revision of TiddlyWiki, here's how to upgrade to the latest version:
+* Open your TiddlyWiki file in FireFox (say it's called &quot;mystuff.html&quot;)
+* SaveChanges to make sure that you've got a backup of it
+* Without closing that page, right-click on [[this link|http://www.tiddlywiki.com]], select 'Save target' or 'Save link' and save it as &quot;mystuff.html&quot;, replacing your existing file
+* Now go back to the previously opened copy of &quot;mystuff.html&quot; in your browser and SaveChanges again. It will inherit the newly saved code
+* Refresh the page in the browser to verify that the upgrade has worked</div>
+<div id="storeThirdVersion" modified="200505071030" modifier="JeremyRuston">This is the ThirdVersion of TiddlyWiki, released in April 2005. The SecondVersion was released in December 2004, and before that the FirstVersion in September 2004.
+
+See the RevisionHistory for details of minor changes and bug-fixes since the ThirdVersion. See HowToUpgrade an earlier version of TiddlyWiki to the latest revision.</div>
+<div id="storeEmbeddedImages" modified="200505061929" modifier="JeremyRuston">Edit this tiddler to see how to insert images.
+[img[Fractal vegetable|fractalveg.jpg]]
+(This curious vegetable is called 'Romanesque broccoli' and is one of [[my photos|http://www.flickr.com/photos/jermy/]])</div>
+<div id="storeEnableAnimations" modified="200505061919" modifier="JeremyRuston">There's now an option under InterfaceOptions to allow TiddlyWiki's animation effects to be turned off.</div>
+<div id="storePrettyLinks" modified="200504192115" modifier="JeremyRuston">You can now link to [[external sites|http://www.osmosoft.com]] with ordinary words, without the messiness of the full URL appearing. Edit this tiddler to see how.
+
+You can also LinkToFolders.</div>
+<div id="storeHtmlTables" modified="200504170138" modifier="JeremyRuston">*sample:
+|!th1111111111|!th2222222222|
+|&gt;| colspan |
+| rowspan |left|
+|~| right|
+|bgcolor(#a0ffa0):colored| center |
+|caption|c
+*another sample: see PeriodicTable.
+</div>
+<div id="storePeriodicTable" modified="200504170138" modifier="JeremyRuston">|Standard Periodic Table (ref. Wikipedia)|c
+|| !1 | !2 |!| !3 | !4 | !5 | !6 | !7 | !8 | !9 | !10 | !11 | !12 | !13 | !14 | !15 | !16 | !17 | !18 |
+|!1|bgcolor(#a0ffa0): @@color(red):H@@ |&gt;|&gt;|&gt;|&gt;|&gt;|&gt;|&gt;|&gt;|&gt;|&gt;|&gt;|&gt;|&gt;|&gt;|&gt;|&gt;||bgcolor(#c0ffff): @@color(red):He@@ |
+|!2|bgcolor(#ff6666): Li |bgcolor(#ffdead): Be |&gt;|&gt;|&gt;|&gt;|&gt;|&gt;|&gt;|&gt;|&gt;|&gt;||bgcolor(#cccc99): B |bgcolor(#a0ffa0): C |bgcolor(#a0ffa0): @@color(red):N@@ |bgcolor(#a0ffa0): @@color(red):O@@ |bgcolor(#ffff99): @@color(red):F@@ |bgcolor(#c0ffff): @@color(red):Ne@@ |
+|!3|bgcolor(#ff6666): Na |bgcolor(#ffdead): Mg |&gt;|&gt;|&gt;|&gt;|&gt;|&gt;|&gt;|&gt;|&gt;|&gt;||bgcolor(#cccccc): Al |bgcolor(#cccc99): Si |bgcolor(#a0ffa0): P |bgcolor(#a0ffa0): S |bgcolor(#ffff99): @@color(red):Cl@@ |bgcolor(#c0ffff): @@color(red):Ar@@ |
+|!4|bgcolor(#ff6666): K |bgcolor(#ffdead): Ca ||bgcolor(#ffc0c0): Sc |bgcolor(#ffc0c0): Ti |bgcolor(#ffc0c0): V |bgcolor(#ffc0c0): Cr |bgcolor(#ffc0c0): Mn |bgcolor(#ffc0c0): Fe |bgcolor(#ffc0c0): Co |bgcolor(#ffc0c0): Ni |bgcolor(#ffc0c0): Cu |bgcolor(#ffc0c0): Zn |bgcolor(#cccccc): Ga |bgcolor(#cccc99): Ge |bgcolor(#cccc99): As |bgcolor(#a0ffa0): Se |bgcolor(#ffff99): @@color(green):Br@@ |bgcolor(#c0ffff): @@color(red):Kr@@ |
+|!5|bgcolor(#ff6666): Rb |bgcolor(#ffdead): Sr ||bgcolor(#ffc0c0): Y |bgcolor(#ffc0c0): Zr |bgcolor(#ffc0c0): Nb |bgcolor(#ffc0c0): Mo |bgcolor(#ffc0c0): Tc |bgcolor(#ffc0c0): Ru |bgcolor(#ffc0c0): Rh |bgcolor(#ffc0c0): Pd |bgcolor(#ffc0c0): Ag |bgcolor(#ffc0c0): Cd |bgcolor(#cccccc): In |bgcolor(#cccccc): Sn |bgcolor(#cccc99): Sb |bgcolor(#cccc99): Te |bgcolor(#ffff99): I |bgcolor(#c0ffff): @@color(red):Xe@@ |
+|!6|bgcolor(#ff6666): Cs |bgcolor(#ffdead): Ba |bgcolor(#ffbfff):^^*1^^|bgcolor(#ffc0c0): Lu |bgcolor(#ffc0c0): Hf |bgcolor(#ffc0c0): Ta |bgcolor(#ffc0c0): W |bgcolor(#ffc0c0): Re |bgcolor(#ffc0c0): Os |bgcolor(#ffc0c0): Ir |bgcolor(#ffc0c0): Pt |bgcolor(#ffc0c0): Au |bgcolor(#ffc0c0): @@color(green):Hg@@ |bgcolor(#cccccc): Tl |bgcolor(#cccccc): Pb |bgcolor(#cccccc): Bi |bgcolor(#cccc99): Po |bgcolor(#ffff99): At |bgcolor(#c0ffff): @@color(red):Rn@@ |
+|!7|bgcolor(#ff6666): Fr |bgcolor(#ffdead): Ra |bgcolor(#ff99cc):^^*2^^|bgcolor(#ffc0c0): Lr |bgcolor(#ffc0c0): Rf |bgcolor(#ffc0c0): Db |bgcolor(#ffc0c0): Sq |bgcolor(#ffc0c0): Bh |bgcolor(#ffc0c0): Hs |bgcolor(#ffc0c0): Mt |bgcolor(#ffc0c0): Ds |bgcolor(#ffc0c0): Rg |bgcolor(#ffc0c0): @@color(green):Uub@@ |bgcolor(#cccccc): Uut |bgcolor(#cccccc): Uuq |bgcolor(#cccccc): Uup |bgcolor(#cccccc): Uuh |bgcolor(#fcfecc): @@color(#cccccc):Uus@@ |bgcolor(#ecfefc): @@color(#cccccc):Uuo@@ |
+
+| !Lanthanides^^*1^^|bgcolor(#ffbfff): La |bgcolor(#ffbfff): Ce |bgcolor(#ffbfff): Pr |bgcolor(#ffbfff): Nd |bgcolor(#ffbfff): Pm |bgcolor(#ffbfff): Sm |bgcolor(#ffbfff): Eu |bgcolor(#ffbfff): Gd |bgcolor(#ffbfff): Tb |bgcolor(#ffbfff): Dy |bgcolor(#ffbfff): Ho |bgcolor(#ffbfff): Er |bgcolor(#ffbfff): Tm |bgcolor(#ffbfff): Yb |
+| !Actinides^^*2^^|bgcolor(#ff99cc): Ac |bgcolor(#ff99cc): Th |bgcolor(#ff99cc): Pa |bgcolor(#ff99cc): U |bgcolor(#ff99cc): Np |bgcolor(#ff99cc): Pu |bgcolor(#ff99cc): Am |bgcolor(#ff99cc): Cm |bgcolor(#ff99cc): Bk |bgcolor(#ff99cc): Cf |bgcolor(#ff99cc): Es |bgcolor(#ff99cc): Fm |bgcolor(#ff99cc): Md |bgcolor(#ff99cc): No |
+
+*Chemical Series of the Periodic Table
+**@@bgcolor(#ff6666): Alkali metals@@
+**@@bgcolor(#ffdead): Alkaline earth metals@@
+**@@bgcolor(#ffbfff): Lanthanides@@
+**@@bgcolor(#ff99cc): Actinides@@
+**@@bgcolor(#ffc0c0): Transition metals@@
+**@@bgcolor(#cccccc): Poor metals@@
+**@@bgcolor(#cccc99): Metalloids@@
+**@@bgcolor(#a0ffa0): Nonmetals@@
+**@@bgcolor(#ffff99): Halogens@@
+**@@bgcolor(#c0ffff): Noble gases@@
+
+*State at standard temperature and pressure
+**those in @@color(red):red@@ are gases
+**those in @@color(green):green@@ are liquids
+**those in black are solids
+</div>
+<div id="storeBugFixes" modified="200504170119" modifier="JeremyRuston">This ThirdVersion of TiddlyWiki fixes a problem with line breaks within tiddlers under InternetExplorer. It also tries to avoid closing tiddlers while they are being edited. There's a bunch of smaller BugFixes as well, but they are somewhat balanced by the KnownBugs.</div>
+<div id="storeUsingThisSite" modified="200504170106" modifier="JeremyRuston">Within the main story column you can click on bold links to read a linked tiddler. Click on italic links to create a new tiddler. When you hover the mouse over a tiddler several ToolbarButtons appear. You can edit the text of any tiddler by double-clicking on it (or selecting 'edit' from the toolbar), but your changes won't get saved permanently until you make your own copy of TiddlyWiki, as described in SaveChanges.</div>
+<div id="storeKeyboardShortcuts" modified="200504150035" modifier="JeremyRuston">While editing a tiddler:
+* Control-Enter accepts your changes and switches out of editing mode
+* Escape abandons your changes and reverts the tiddler to it's previous state</div>
+<div id="storeBlockQuotes" modified="200504140131" modifier="JeremyRuston">JeremyRuston said:
+&lt;&lt;&lt;
+A TiddlyWiki is like a blog because it's divided up into neat little chunks, but it encourages you to read it by hyperlinking rather than sequentially: if you like, a non-linear blog analogue that binds the individual microcontent items into a cohesive whole. I think that TiddlyWiki represents a novel medium for writing, and will promote it's own distinctive WritingStyle. This is the first version of TiddlyWiki and so, as discussed in TiddlyWikiDev, it's bound to be FullOfBugs, have many MissingFeatures and fail to meet all of the DesignGoals. And of course there's NoWarranty, and it might be judged a StupidName.
+&lt;&lt;&lt;
+
+&gt;level 1
+&gt;level 1
+&gt;&gt;level 2
+&gt;&gt;level 2
+&gt;&gt;&gt;level 3
+&gt;&gt;&gt;level 3
+&gt;&gt;level 2
+&gt;level 1
+</div>
+<div id="storeRegExpSearch" modified="200504132345" modifier="JeremyRuston">RegExpSearch uses JavaScript's [[RegExp syntax|http://www.programmershelp.co.uk/docs/javascript/regexp.html#1193188]] to allow flexible searches.</div>
+<div id="storeEasterEgg" modified="200504132334" modifier="JeremyRuston">Try holding down the alt- or shift-key while clicking on a link to a tiddler, on the 'options' button or on the CloseButton for a tiddler. Kind of a respectful homage to Mac OS X, which does something similar for many of its system animations. (On browsers like InternetExplorer that use the shift key to open a new window, it's best to use the alt-key).</div>
+<div id="storeReadingExperience" modified="200504132333" modifier="JeremyRuston">The rules governing where a tiddler is displayed sound complicated written down. When you click on a tiddler link within another tiddler, the new one is opened immediately below the current one. If the target tiddler is already open, TiddlyWiki just uses SmoothScrolling to bring it into view. More or less the same thing happens when clicking on a tiddler link within the menu or sidebar, except that the tiddler opens at the top of the page if it is not already open.</div>
 <div id="storePermaView" modified="200504132301" modifier="JeremyRuston">I think this feature from the SecondVersion of TiddlyWiki is quite original. It's a button in the right-hand sidebar that sets the browser address bar to a URL embodying all the currently open tiddlers in the order that they are currently shown. To use it, arrange the open tiddlers that you want, click the permaview button, copy the URL from the browser address bar, and then paste it into an email, web page or whatever.</div>
 <div id="storeIncrementalSearch" modified="200504132301" modifier="JeremyRuston">When you type more than three characters in the search box at the upper right, any matching tiddlers are automatically displayed with the text highlighted. There's a couple of minor issues: the highlights don't get removed when you clear the search, and occasionally, on some browsers, keystrokes get missed if you type quickly so you may need to click the 'search' button to manually trigger the search.</div>
 <div id="storeTiddlyWikiFiction" modified="200504132301" modifier="JeremyRuston">TiddlyWiki has been used as the basis of a couple of experiments in hypertext fiction. GinaTrapani created [[Baby Dog Sitter|http://scribbling.net/tiddlywiki-and-non-linear-fiction]] with the FirstVersion of TiddlyWiki, followed by &quot;[[Die, Vampire! Die!|http://www.davidvanwert.com/wiki/dievampiredie.html]]&quot; from DavidVanWert.</div>
-<div id="storeReadingExperience" modified="200504132333" modifier="JeremyRuston">The rules governing where a tiddler is displayed sound complicated written down. When you click on a tiddler link within another tiddler, the new one is opened immediately below the current one. If the target tiddler is already open, TiddlyWiki just uses SmoothScrolling to bring it into view. More or less the same thing happens when clicking on a tiddler link within the menu or sidebar, except that the tiddler opens at the top of the page if it is not already open.</div>
-<div id="storeEasterEgg" modified="200504132334" modifier="JeremyRuston">Try holding down the alt- or shift-key while clicking on a link to a tiddler, on the 'options' button or on the CloseButton for a tiddler. Kind of a respectful homage to Mac OS X, which does something similar for many of its system animations. (On browsers like InternetExplorer that use the shift key to open a new window, it's best to use the alt-key).</div>
-<div id="storeRegExpSearch" modified="200504132345" modifier="JeremyRuston">RegExpSearch uses JavaScript's [[RegExp syntax|http://www.programmershelp.co.uk/docs/javascript/regexp.html#1193188]] to allow flexible searches.</div>
-<div id="storeBlockQuotes" modified="200504140131" modifier="JeremyRuston">JeremyRuston said:\n&lt;&lt;&lt;\nA TiddlyWiki is like a blog because it's divided up into neat little chunks, but it encourages you to read it by hyperlinking rather than sequentially: if you like, a non-linear blog analogue that binds the individual microcontent items into a cohesive whole. I think that TiddlyWiki represents a novel medium for writing, and will promote it's own distinctive WritingStyle. This is the first version of TiddlyWiki and so, as discussed in TiddlyWikiDev, it's bound to be FullOfBugs, have many MissingFeatures and fail to meet all of the DesignGoals. And of course there's NoWarranty, and it might be judged a StupidName.\n&lt;&lt;&lt;\n\n&gt;level 1\n&gt;level 1\n&gt;&gt;level 2\n&gt;&gt;level 2\n&gt;&gt;&gt;level 3\n&gt;&gt;&gt;level 3\n&gt;&gt;level 2\n&gt;level 1\n</div>
-<div id="storeKeyboardShortcuts" modified="200504150035" modifier="JeremyRuston">While editing a tiddler:\n* Control-Enter accepts your changes and switches out of editing mode\n* Escape abandons your changes and reverts the tiddler to it's previous state</div>
-<div id="storeUsingThisSite" modified="200504170106" modifier="JeremyRuston">Within the main story column you can click on bold links to read a linked tiddler. Click on italic links to create a new tiddler. When you hover the mouse over a tiddler several ToolbarButtons appear. You can edit the text of any tiddler by double-clicking on it (or selecting 'edit' from the toolbar), but your changes won't get saved permanently until you make your own copy of TiddlyWiki, as described in SaveChanges.</div>
-<div id="storeBugFixes" modified="200504170119" modifier="JeremyRuston">This ThirdVersion of TiddlyWiki fixes a problem with line breaks within tiddlers under InternetExplorer. It also tries to avoid closing tiddlers while they are being edited. There's a bunch of smaller BugFixes as well, but they are somewhat balanced by the KnownBugs.</div>
-<div id="storeHtmlTables" modified="200504170138" modifier="JeremyRuston">*sample:\n|!th1111111111|!th2222222222|\n|&gt;| colspan |\n| rowspan |left|\n|~| right|\n|bgcolor(#a0ffa0):colored| center |\n|caption|c\n*another sample: see PeriodicTable.\n</div>
-<div id="storePeriodicTable" modified="200504170138" modifier="JeremyRuston">|Standard Periodic Table (ref. Wikipedia)|c\n|| !1 | !2 |!| !3 | !4 | !5 | !6 | !7 | !8 | !9 | !10 | !11 | !12 | !13 | !14 | !15 | !16 | !17 | !18 |\n|!1|bgcolor(#a0ffa0): @@color(red):H@@ |&gt;|&gt;|&gt;|&gt;|&gt;|&gt;|&gt;|&gt;|&gt;|&gt;|&gt;|&gt;|&gt;|&gt;|&gt;|&gt;||bgcolor(#c0ffff): @@color(red):He@@ |\n|!2|bgcolor(#ff6666): Li |bgcolor(#ffdead): Be |&gt;|&gt;|&gt;|&gt;|&gt;|&gt;|&gt;|&gt;|&gt;|&gt;||bgcolor(#cccc99): B |bgcolor(#a0ffa0): C |bgcolor(#a0ffa0): @@color(red):N@@ |bgcolor(#a0ffa0): @@color(red):O@@ |bgcolor(#ffff99): @@color(red):F@@ |bgcolor(#c0ffff): @@color(red):Ne@@ |\n|!3|bgcolor(#ff6666): Na |bgcolor(#ffdead): Mg |&gt;|&gt;|&gt;|&gt;|&gt;|&gt;|&gt;|&gt;|&gt;|&gt;||bgcolor(#cccccc): Al |bgcolor(#cccc99): Si |bgcolor(#a0ffa0): P |bgcolor(#a0ffa0): S |bgcolor(#ffff99): @@color(red):Cl@@ |bgcolor(#c0ffff): @@color(red):Ar@@ |\n|!4|bgcolor(#ff6666): K |bgcolor(#ffdead): Ca ||bgcolor(#ffc0c0): Sc |bgcolor(#ffc0c0): Ti |bgcolor(#ffc0c0): V |bgcolor(#ffc0c0): Cr |bgcolor(#ffc0c0): Mn |bgcolor(#ffc0c0): Fe |bgcolor(#ffc0c0): Co |bgcolor(#ffc0c0): Ni |bgcolor(#ffc0c0): Cu |bgcolor(#ffc0c0): Zn |bgcolor(#cccccc): Ga |bgcolor(#cccc99): Ge |bgcolor(#cccc99): As |bgcolor(#a0ffa0): Se |bgcolor(#ffff99): @@color(green):Br@@ |bgcolor(#c0ffff): @@color(red):Kr@@ |\n|!5|bgcolor(#ff6666): Rb |bgcolor(#ffdead): Sr ||bgcolor(#ffc0c0): Y |bgcolor(#ffc0c0): Zr |bgcolor(#ffc0c0): Nb |bgcolor(#ffc0c0): Mo |bgcolor(#ffc0c0): Tc |bgcolor(#ffc0c0): Ru |bgcolor(#ffc0c0): Rh |bgcolor(#ffc0c0): Pd |bgcolor(#ffc0c0): Ag |bgcolor(#ffc0c0): Cd |bgcolor(#cccccc): In |bgcolor(#cccccc): Sn |bgcolor(#cccc99): Sb |bgcolor(#cccc99): Te |bgcolor(#ffff99): I |bgcolor(#c0ffff): @@color(red):Xe@@ |\n|!6|bgcolor(#ff6666): Cs |bgcolor(#ffdead): Ba |bgcolor(#ffbfff):^^*1^^|bgcolor(#ffc0c0): Lu |bgcolor(#ffc0c0): Hf |bgcolor(#ffc0c0): Ta |bgcolor(#ffc0c0): W |bgcolor(#ffc0c0): Re |bgcolor(#ffc0c0): Os |bgcolor(#ffc0c0): Ir |bgcolor(#ffc0c0): Pt |bgcolor(#ffc0c0): Au |bgcolor(#ffc0c0): @@color(green):Hg@@ |bgcolor(#cccccc): Tl |bgcolor(#cccccc): Pb |bgcolor(#cccccc): Bi |bgcolor(#cccc99): Po |bgcolor(#ffff99): At |bgcolor(#c0ffff): @@color(red):Rn@@ |\n|!7|bgcolor(#ff6666): Fr |bgcolor(#ffdead): Ra |bgcolor(#ff99cc):^^*2^^|bgcolor(#ffc0c0): Lr |bgcolor(#ffc0c0): Rf |bgcolor(#ffc0c0): Db |bgcolor(#ffc0c0): Sq |bgcolor(#ffc0c0): Bh |bgcolor(#ffc0c0): Hs |bgcolor(#ffc0c0): Mt |bgcolor(#ffc0c0): Ds |bgcolor(#ffc0c0): Rg |bgcolor(#ffc0c0): @@color(green):Uub@@ |bgcolor(#cccccc): Uut |bgcolor(#cccccc): Uuq |bgcolor(#cccccc): Uup |bgcolor(#cccccc): Uuh |bgcolor(#fcfecc): @@color(#cccccc):Uus@@ |bgcolor(#ecfefc): @@color(#cccccc):Uuo@@ |\n\n| !Lanthanides^^*1^^|bgcolor(#ffbfff): La |bgcolor(#ffbfff): Ce |bgcolor(#ffbfff): Pr |bgcolor(#ffbfff): Nd |bgcolor(#ffbfff): Pm |bgcolor(#ffbfff): Sm |bgcolor(#ffbfff): Eu |bgcolor(#ffbfff): Gd |bgcolor(#ffbfff): Tb |bgcolor(#ffbfff): Dy |bgcolor(#ffbfff): Ho |bgcolor(#ffbfff): Er |bgcolor(#ffbfff): Tm |bgcolor(#ffbfff): Yb |\n| !Actinides^^*2^^|bgcolor(#ff99cc): Ac |bgcolor(#ff99cc): Th |bgcolor(#ff99cc): Pa |bgcolor(#ff99cc): U |bgcolor(#ff99cc): Np |bgcolor(#ff99cc): Pu |bgcolor(#ff99cc): Am |bgcolor(#ff99cc): Cm |bgcolor(#ff99cc): Bk |bgcolor(#ff99cc): Cf |bgcolor(#ff99cc): Es |bgcolor(#ff99cc): Fm |bgcolor(#ff99cc): Md |bgcolor(#ff99cc): No |\n\n*Chemical Series of the Periodic Table\n**@@bgcolor(#ff6666): Alkali metals@@\n**@@bgcolor(#ffdead): Alkaline earth metals@@\n**@@bgcolor(#ffbfff): Lanthanides@@\n**@@bgcolor(#ff99cc): Actinides@@\n**@@bgcolor(#ffc0c0): Transition metals@@\n**@@bgcolor(#cccccc): Poor metals@@\n**@@bgcolor(#cccc99): Metalloids@@\n**@@bgcolor(#a0ffa0): Nonmetals@@\n**@@bgcolor(#ffff99): Halogens@@\n**@@bgcolor(#c0ffff): Noble gases@@\n\n*State at standard temperature and pressure\n**those in @@color(red):red@@ are gases\n**those in @@color(green):green@@ are liquids\n**those in black are solids\n</div>
-<div id="storePrettyLinks" modified="200504192115" modifier="JeremyRuston">You can now link to [[external sites|http://www.osmosoft.com]] with ordinary words, without the messiness of the full URL appearing. Edit this tiddler to see how.\n\nYou can also LinkToFolders.</div>
-<div id="storeEnableAnimations" modified="200505061919" modifier="JeremyRuston">There's now an option under InterfaceOptions to allow TiddlyWiki's animation effects to be turned off.</div>
-<div id="storeEmbeddedImages" modified="200505061929" modifier="JeremyRuston">Edit this tiddler to see how to insert images.\n[img[Fractal vegetable|fractalveg.jpg]]\n(This curious vegetable is called 'Romanesque broccoli' and is one of [[my photos|http://www.flickr.com/photos/jermy/]])</div>
-<div id="storeThirdVersion" modified="200505071030" modifier="JeremyRuston">This is the ThirdVersion of TiddlyWiki, released in April 2005. The SecondVersion was released in December 2004, and before that the FirstVersion in September 2004.\n\nSee the RevisionHistory for details of minor changes and bug-fixes since the ThirdVersion. See HowToUpgrade an earlier version of TiddlyWiki to the latest revision.</div>
-<div id="storeHowToUpgrade" modified="200505071038" modifier="JeremyRuston">As you can see in the RevisionHistory, I've been occasionally updating TiddlyWiki with bug fixes and minor new features. If you've been using an earlier revision of TiddlyWiki, here's how to upgrade to the latest version:\n* Open your TiddlyWiki file in FireFox (say it's called &quot;mystuff.html&quot;)\n* SaveChanges to make sure that you've got a backup of it\n* Without closing that page, right-click on [[this link|http://www.tiddlywiki.com]], select 'Save target' or 'Save link' and save it as &quot;mystuff.html&quot;, replacing your existing file\n* Now go back to the previously opened copy of &quot;mystuff.html&quot; in your browser and SaveChanges again. It will inherit the newly saved code\n* Refresh the page in the browser to verify that the upgrade has worked</div>
-<div id="storeSiteUrl" modified="200505100122" modifier="JeremyRuston">http://www.tiddlywiki.com/</div>
-<div id="storeDefaultTiddlers" modified="200505121952" modifier="JeremyRuston">HelloThere LatestStuff MainFeatures</div>
-<div id="storeLinkToFolders" modified="200505131554" modifier="JeremyRuston">The format for PrettyLinks allows for links that open local or network folders. Depending on your browser and operating system, the folders are opened in Windows Explorer, the OS X Finder, or the browser itself.\n\nEdit this tiddler to see [[this link to a Windows network share|file://///server/share/folder/path/name]], [[this link to a Windows drive-mapped folder|file:///c:/folder/path/name]] and [[this link to a Unix-style folder|file:///folder/path/name]].</div>
-<div id="storeGreaseMonkey" modified="200505131743" modifier="JeremyRuston">Several popular GreaseMonkey scripts can cause some or all features of TiddlyWiki to stop working - the default Linkify script seems to be particularly troublesome. There doesn't seem to be a //solid// way to disable GreaseMonkey from within TiddlyWiki (which is technically entirely understandable but does lead to a fairly grim user experience).</div>
-<div id="storeAutoSave" modified="200505141150" modifier="JeremyRuston">The addition of AutoSave to the InterfaceOptions causes TiddlyWiki to automatically perform a SaveChanges each time you edit a tiddler, making it a good deal harder to accidentally lose information. However, if you also choose to SaveBackups you will end up generating an awful lot of files...</div>
-<div id="storeSaveBackups" modified="200505141154" modifier="JeremyRuston">This is one of the InterfaceOptions you can use to customize TiddlyWiki. It determines whether TiddlyWiki creates a backup file each time you SaveChanges. I'd suggest keeping it switched on for safety!</div>
-<div id="storeHelloThere" modified="200505141251" modifier="JeremyRuston">Welcome to the improved ThirdVersion of TiddlyWiki, an experimental MicroContent WikiWikiWeb built by JeremyRuston. It's written in HTML, CSS and JavaScript to run on any modern browser without needing any ServerSide logic. It allows anyone to create personal SelfContained hypertext documents that can be posted to any web server, sent by email or kept on a USB thumb drive to make a WikiOnAStick. If you like it, do please EmailMe and let me know.</div>
-<div id="storeEarlyRevisionHistory" modified="200505152349" modifier="JeremyRuston">See RevisionHistory for the more recent revisions.\n\n* Revision 1.2.5, 19 April 2005\n** Fixed problem with the search results summary message\n** Fixed problem with clicking on highlighted links\n** Fixed problem with non-ANSI unicode characters in permalinks\n* Revision 1.2.4, 17 April 2005\n** Fixed Control-Enter on IE PC\n** Fixed UTF-8 encoding on SaveChanges\n** Fixed regular expressions to permit basic accented characters in WikiWords\n** Fixed problem with completely blank tiddlers\n** Added set focus on edit tiddler\n* Revision 1.2.3, 15 April 2005\n** Fixed problem with positioning of tiddlers opened from last displayed tiddler\n** Added KeyboardShortcuts\n* Revision 1.2.2, 14 April 2005 \n** No code changes\n* Revision 1.2.1, 14 April 2005\n** Fixed problem with spaces in pathnames on Mac/Unix\n* Revision 1.2.0, 14 April 2005\n** No code changes</div>
-<div id="storeSafariSupport" modified="200505171716" modifier="JeremyRuston">On the Mac, I use Safari by choice and it's a nuisance having to switch over to FireFox to save TiddlyWiki. Unfortunately, I haven't been able to find an easy way to get Safari to do the necessary file operations (except as a DashboardWidget, but that's another story). I'm hopeful that it'll get fixed but in the meantime there's an answer in JonathanPaisley's [[Safari plug-in|http://www.dcs.gla.ac.uk/~jp/tiddlywiki/]] and associated adaptation of GTDTiddlyWiki. it's a great piece of work (although I'd still love to find a Safari solution that doesn't break TiddlyWiki's all-in-one-ness).</div>
-<div id="storeGTDTiddlyWiki" modified="200505171721" modifier="JeremyRuston">NathanBower's GTDTiddlyWiki is an adaptation of TiddlyWiki that's geared towards DavidAllen's GettingThingsDone methodology for personal productivity. It features a funky new look and feel and a few enhancements that haven't yet made it into this 'official' version. It's available [[here|http://shared.snapgrid.com/gtd_tiddlywiki.html]] and Nathan is also hosting a forum for discussions about it [[on his site|http://shared.snapgrid.com/gtd-forum/]].</div>
-<div id="storeIsItAjax" modified="200505171726" modifier="JeremyRuston">AJAX is an acronym standing for Asynchronous JavaScript and XML. Although TiddlyWiki uses JavaScript extensively, it doesn't do anything with XML or XMLHttpRequest, so it doesn't really fit the category.</div>
-<div id="storeExampleStyleSheet" modified="200505171727" modifier="JeremyRuston">#displayArea {background-color: #ffccff; }\n#mainMenu {border: 1px solid #ffff88; }\n#commandPanel {background-color: #008800; }</div>
-<div id="storeCustomStyleSheet" modified="200505171736" modifier="JeremyRuston">Starting with this revision, you can skin TiddlyWiki with a special StyleSheet tiddler containing your own CSS style sheet declarations. Unlike hacking the HTML directly, the StyleSheet tiddler withstands upgrading to a new version of the TiddlyWiki code (see HowToUpgrade).\n\nThe ExampleStyleSheet shows some of the basic options you can control. SaveChanges and then click refresh in your browser to see StyleSheet changes. Any errors in your CSS syntax will be caught and displayed, but they shouldn't stop TiddlyWiki from working.</div>
-<div id="storeMainMenu" modified="200505171916" modifier="JeremyRuston">HelloThere\nLatestStuff\nTiddlyWiki\nUsingThisSite\nReusingThisSite\nDownloadSoftware\nHowToUpgrade\nRssFeed\n\n© [[osmosoft|http://www.osmosoft.com]] 2005</div>
-<div id="storeGenerateAnRssFeed" modified="200505171918" modifier="JeremyRuston">A new feature for the ThirdVersion of TiddlyWiki is the ability to generate an RssFeed of it's content. You can flick it on with a new addition to the InterfaceOptions. If enabled, it automatically saves an RSS 2.0 format file with the last few changed tiddlers in it. It's given the same filename as the TiddlyWiki file but with the &quot;.xml&quot; extension. Like all TiddlyWiki features, it's experimental, and will probably be a bit temperamental in your feedreader until the bugs are ironed out.\n\nNote that you must set the tiddler SiteUrl to be the URL where your TiddlyWiki will be published. (Don't put leading spaces or line breaks before or after the URL).</div>
-<div id="storeInterfaceOptions" modified="200505171919" modifier="JeremyRuston">InterfaceOptions are displayed when you click the 'options' button on the right. They are saved in a cookie on your browser, making them sticky between visits. RegExpSearch allows more complex search expressions; CaseSensitiveSearch does as it's name implies. The user name for edits should be set //before// starting to edit things (ouch. another bug). AutoSave and SaveBackups give the option of automatically saving changes and whether to generate backup files. You can also choose to GenerateAnRssFeed.</div>
-<div id="storeLatestStuff" modified="200505171919" modifier="JeremyRuston">Triggered by NathanBower's GTDTiddlyWiki, there's been a rush of activity around TiddlyWiki over the last few days. My first response to all the excitement has been the only natural one for a geek: I've been furiously programming some BugFixes and new features including an RssFeed. See the RevisionHistory for details. I'm still working on a new RssFeed facility, but in the meantime I've added a CustomStyleSheet feature that lets you customise the colour and positions of the TiddlyWiki screen elements with a certain amount of CSS knowledge.\n\nThere's a few questions that crop up frequently from TiddlyWiki users that it's worth addressing here: SafariSupport and compatibility with GreaseMonkey. Also, if you're still trying to get your head around what TiddlyWiki is all about, you might enjoy this [[tutorial|http://www.blogjones.com/TiddlyWikiTutorial.html]]. Finally, people have been saying &quot;Yes, but IsItAjax?&quot;.</div>
-<div id="storeRevisionHistory" modified="200505172013" modifier="JeremyRuston">Revision history for the ThirdVersion:\n* Revision 1.2.9, 17 May 2005\n** Fixed problem with encoding HTML entities in tiddlers (now you can say &lt;div&gt; with impunity)\n** Fixed problem with CustomStyleSheet and Safari\n** Added AutoSave support on deleting a tiddler\n** Added option to GenerateAnRssFeed\n* Revision 1.2.8, 16 May 2005\n** Added option of a CustomStyleSheet\n* Revision 1.2.7, 14 May 2005\n** Removed annoying confirmation alert()'s on a successful save, replaced with a more polished status area including links to the saved files\n** Added options for whether to SaveBackups and to AutoSave every time you edit a tiddler\n* Revision 1.2.6, 6 May 2005\n** Added CSS stylesheet to suppress menu and sidebar when printing\n** Fixed saving to network shares on FireFox on Windows\n** Fixed use of NonWikiWordLinks in DefaultTiddlers and PermaView\n** Fixed problem with clicking more than once on the PermaLinkButton\n** Added EnableAnimations to the InterfaceOptions\n\nSee EarlyRevisionHistory for older revisions.</div>
-<div id="storeMainFeatures" modified="200505172320" modifier="JeremyRuston">This ThirdVersion of TiddlyWiki offers the following features:\n* compatibility with most modern browsers (although you can only SaveChanges on FireFox and InternetExplorer under Windows)\n* the option to GenerateAnRssFeed\n* more slickness and InterfaceOptions concerned with whether to SaveBackups and the ability to AutoSave\n* a new liquid CSS layout that fills the width of the browser window\n* InterfaceOptions revealed by clicking the new 'options' button on the right\n* KeyboardShortcuts so you can finish editing a tiddler with Control-Enter or abandon it with Escape\n* a more flexible OpenSourceLicense\n* a bunch of features from IsaoSonobe's [[adaptation|http://www-gauge.scphys.kyoto-u.ac.jp/~sonobe/OgreKit/OgreKitWiki.html]] of TiddlyWiki including ExtendedFormatting, NonWikiWordLinks, PrettyLinks, SubHeadings, BulletPoints, NumberedLists, HtmlTables, BlockQuotes, HorizontalRules and...\n* ...EmbeddedImages:\n[img[brixhamharbour.jpg]]\n* some BugFixes balanced by some KnownBugs</div>
-<div id="storeKnownBugs" modified="200505172322" modifier="JeremyRuston">This list is probably dwarfed by the UnknownBugs, but anyway, I'm planning to fix these:\n* InternetExplorer on Windows has a habit of merging consecutive spaces into one. This normally doesn't matter too much, but would trip you up if you tried to use NonWikiWordLinks to create a tiddler title with multiple consecutive spaces.\n* Interleaving lists of BulletPoints with SubHeadings doesn't work properly\n* &quot;Highlighted&quot; and Hexadecimal coloured text formatting is broken\n* WIN/IE 6 messes up list items when you edit a Tiddler with multiple headings</div>
-<div id="storeRssFeed" modified="200505172323" modifier="JeremyRuston">TiddlyWiki's RSS feed is available [[here|http://www.tiddlywiki.com/index.xml]]. RSS support is a WorkInProgress and lacks some niceties at the moment (in particular, the feed is plain text rather than incorporating links and formatting), but at least makes it easier to track changes. You can generate an RSS feed for your own TiddlyWiki using the new GenerateAnRssFeed option.</div>
-<div id="storeTiddlyWikiAdaptations" modified="200505190725" modifier="JeremyRuston">The first and original was [[PhpTiddlyWiki|http://www.patrickcurry.com/tiddly/]] from PatrickCurry and GabrielJeffrey that adds a simple ServerSide in PHP with MySQL. Patrick's site allows anyone to create and edit tiddlers, and has become the de facto community site around TiddlyWiki.\n\nI'm barely managing to keep up with all the adaptations out there; EmailMe if you've done one and you want it listed here.\n\nSome of the other adaptations include:\n* NathanBower's GTDTiddlyWiki at http://shared.snapgrid.com/gtd_tiddlywiki.html\n* DanPhiffer's TiddlyWikiRemote at http://phiffer.org/tiddly/\n* KamiWiki at http://rakusai.org/kamiwiki/\n* HenrikAastedSorensen's at http://aasted.org/wiki\n* IsaoSonobe's OgreKitWiki at http://www-gauge.scphys.kyoto-u.ac.jp/~sonobe/OgreKit/OgreKitWiki.html \n* JacquesTurbé's TidliPo, in French at http://avm.free.fr/IMG/html/carnet_gt_BigCo.html\n* ChristianHauck's at http://www.christianhauck.net/html/14300.html\n* TonyLownds's at http://tony.lownds.com/home/\n* PoulStaugaard and IvanMetalnikov's at http://poul.staugaard.dk/IeWiki.htm\n* AlanHecht's QwikiWeb at http://www.personal.psu.edu/ach12/tiddlywiki\n* TimCuthbertson and MattGiuca's TiddlyWikiCSS at http://codestar.lidonet.net/misc/tiddlywikicss.html\n\n* There's also KevemBuangga's TiddlyWikiClone at http://www.kevembuangga.com/hwk/hailiwiki.htm</div>
-<div id="storeDownloadSoftware" modified="200505191821" modifier="JeremyRuston">Because TiddlyWiki is a single HTML file, you've actually already downloaded the entire software just by viewing this site. If you want to be able to SaveChanges, you can save your own TiddlyWiki to your local drive by right clicking on [[this link|#]] and selecting 'Save link as...' or 'Save target as...'. You can choose where to save the file, and what to call it (but keep the .HTML extension).\n\nDo ''not'' use the File/Save command in your browser to save TiddlyWiki, because of SaveUnpredictabilities.</div>
-<div id="storeSaveChanges" modified="200505191821" modifier="JeremyRuston">You can SaveChanges if you're using FireFox or InternetExplorer:\n# if you're using Windows XP you might run into ServicePack2Problems\n# right click on [[this link|#]] and select 'Save link as...' or 'Save target as...'\n** do ''not'' try to use the File/Save command in your browser because of SaveUnpredictabilities.\n** choose where to save the file, and what to call it (but keep the .HTML extension)\n# open the newly downloaded file in your browser\n# click the 'options' button on the right to set your username\n# edit, create and delete the tiddlers you want\n** you can change the SpecialTiddlers to change the SiteTitle and MainMenu etc.\n# click the 'save changes' button on the right to save your changes\n# TiddlyWiki will make a backup copy of the existing file, and then replace it with the new version\n</div>
-<div id="storeSaveUnpredictabilities" modified="200505200823" modifier="JeremyRuston">Several people have reported problems with reusing TiddlyWiki when they have used the File/Save command of their browser to save it. The issue is that some browsers (notably FireFox) don't save the text of the HTML file exactly as it appears on the server, but rather save a snapshot of the current state of the page. In the case of a highly dynamic page like TiddlyWiki, this leads to all sorts of peculiarness...</div></div>
+<div id="storeTiddlyWiki" modified="200504132300" modifier="JeremyRuston">A TiddlyWiki is like a blog because it's divided up into neat little chunks, but it encourages you to read it by hyperlinking rather than sequentially: if you like, a non-linear blog analogue that binds the individual microcontent items into a cohesive whole. I think that TiddlyWiki represents a novel medium for writing, and will promote it's own distinctive WritingStyle. This is the ThirdVersion of TiddlyWiki, which adds several NewFeatures. There are also several TiddlyWikiAdaptations by other developers based on earlier versions.</div>
+<div id="storeSpecialTiddlers" modified="200504132300" modifier="JeremyRuston">TiddlyWiki uses several special tiddlers to hold the text used for the MainMenu, the SiteTitle and the SiteSubtitle. DefaultTiddlers is used to store the titles of the tiddlers that are shown at startup. SaveChanges is automatically displayed if there's a problem with saving. Any of them can be editted with the changes taking effect immediately.</div>
+<div id="storeServicePack2Problems" modified="200504132259" modifier="JeremyRuston">Internet Explorer Windows XP SP2 seems to have a magical ability to keep track of html files that have been downloaded from the internet and saved on an NTFS drive. By storing additional data in an [[alternate data stream|http://www.jsware.net/jsware/sviewer.html]], it manages to keep them in the 'Internet Zone' regardless of attempts to rename or modify the file. But, in order to be able to SaveChanges, TiddlyWiki needs to run in the 'My Computer Zone'.
+
+There are a couple of ways around the problem:
+* save the TiddlyWiki HTML file to a FAT drive (eg a USB thumb drive)
+* open the downloaded file with a text editor and save it again under a different name
+
+In either case, The new file will open in 'My Computer Zone', which in turn causes Internet Explorer to put up it's information bar asking you whether you want to run it. You need to 'Allow blocked content' to let TiddlyWiki do it's stuff.
+
+This is all a bit frustrating. An easy alternative is to use FireFox, which seems to do the trick on all platforms.</div>
+<div id="storeReusingThisSite" modified="200504132235" modifier="JeremyRuston">It's easy to make your own TiddlyWiki that you can publish yourself - see how to SaveChanges for details. If you want to change the layout or the colour scheme, you'll need some basic HTML and CSS knowledge.</div>
+<div id="storeServerSide" modified="200504132225" modifier="JeremyRuston">TiddlyWiki doesn't have a server-side back end at the moment, so when you SaveChanges you're saving the whole document, as you would with Microsoft Word. That means that it is essentially only really a SingleUser thing (unless it gets passed round as a ChainTiddlyWiki). There are several TiddlyWikiAdaptations that //do// have a ServerSide, though.</div>
+<div id="storeWritingStyle" modified="200504132150" modifier="JeremyRuston">I'm hoping that after using TiddlyWiki for a while a new WritingStyle will emerge that is appropriate for this medium.  Jakob Neilsen wrote an article about [[writing styles|http://www.useit.com/alertbox/980906.html]] for MicroContent back in 1998 that still seems surprisingly relevant.</div>
+<div id="storeToolbarButtons" modified="200504132148" modifier="JeremyRuston">A row of ToolbarButtons appears to the right of a tiddler title when the mouse is hovered over it. The buttons are:
+* ''close'' - close the current tiddler
+* ''edit'' - edit the current tiddler
+* ''permalink'' - puts a link direct to the current tiddler into the address bar
+* ''references'' - displays all the tiddlers that link to the current tiddler
+* ''done'' - save changes to a tiddler being editted
+* ''cancel'' - cancel changes to a tiddler being editted
+* ''delete'' - delete the current tiddler</div>
+<div id="storeWikiWikiWeb" modified="200504132139" modifier="JeremyRuston">A Wiki is a popular way of building collaborative websites. It's based on the ideas of easy editing of pages and the use of special WikiWord notation to automagically create links between pages. See Wikipedia for [[more details|http://en.wikipedia.org/wiki/Wiki]]. TiddlyWiki is different from a conventional Wiki because it is not based on entire pages of content, but rather items of MicroContent that are referred to as 'tiddlers'.</div>
+<div id="storeThankYou" modified="200504132138" modifier="JeremyRuston">Thank you to everybody who has helped me with support and suggestions for TiddlyWiki, but especially IsaoSonobe for his cunning regular expression code, and to my friend RebeccaWelby for the SiteDesign.</div>
+<div id="storeNonWikiWordLinks" modified="200504132137" modifier="JeremyRuston">To make a tiddler that doesn't have a WikiWord as it's name, you can enclose the name in [[double square brackets]] - edit this tiddler to see an example. After saving the tiddler you can then click on the link to create the new tiddler. NonWikiWordLinks permits tiddlers to be created with names that are made from character sets that don't have upper and lower case.</div>
+<div id="storeWikiWord" modified="200504132135" modifier="JeremyRuston">A WikiWord is a word composed of a bunch of other words slammed together with each of their first letters capitalised. WikiWord notation in a conventional WikiWikiWeb is used to name individual pages while TiddlyWiki uses WikiWord titles for smaller chunks of MicroContent. Referring to a page with a WikiWord automatically creates a link to it. Clicking on a link jumps to that page or, if it doesn't exist, to an editor to create it. This ThirdVersion of TiddlyWiki also adds NonWikiWordLinks.</div>
+<div id="storeInternetExplorer" modified="200504120008" modifier="JeremyRuston">InternetExplorer on Windows allows you to SaveChanges in TiddlyWiki. It will give you an ActiveX warning, and ask for your permission to proceed each time. It should work from version 4, but I have only extensively tested against version 6. I have found some annoying difficulties with XpServicePack2, but there's always FireFox.</div>
+<div id="storeSecondVersion" modified="200504100203" modifier="JeremyRuston">Released in December 2004, the [[second version|secondversion.html]] of TiddlyWiki grew 50% over the FirstVersion to 76KB. It added IncrementalSearch, the ReferencesButton, the PermaLinkButton, PermaView, CloseAll, SmoothScrolling, an ImprovedSidebar, an animation for the CloseButton and a tiny EasterEgg in homage to Macintosh OS X. It also introduced a new SiteDesign.</div>
+<div id="storeFirstVersion" modified="200504100201" modifier="JeremyRuston">Released in September 2004, the [[first version|firstversion.html]] was pretty basic, weighing in at 52KB.</div>
+<div id="storeNoWarranty" modified="200504100156" modifier="JeremyRuston">TiddlyWiki is a spare time project that I'm making available under an OpenSourceLicense. Accordingly, there's no warranty on it, and you can only use it at your own risk. I am interested in hearing about new bugs to add to the rather rapidly growing pile; just EmailMe.</div>
+<div id="storeJeremyRuston" modified="200504100122" modifier="JeremyRuston">I'm Jeremy Ruston, a technologist based in London. I do consultancy work through my company [[Osmosoft|http://www.osmosoft.com]], as well as pursuing some independent projects like TiddlyWiki.</div>
+<div id="storeOpenSourceLicense" modified="200504091859" modifier="JeremyRuston">TiddlyWiki is published under a BSD OpenSourceLicense that gives you the freedom to use it pretty much however you want, including for commercial purposes, as long as you keep my copyright notice. I'd appreciate a link back to http://www.tiddlywiki.com as well. </div>
+<div id="storeBulletPoints" modified="200504091848" modifier="JeremyRuston">Edit this tiddler to see how to create BulletPoints
+* Like this one
+* And this one
+** And this second-level one
+* And a final one</div>
+<div id="storeFireFox" modified="200504091848" modifier="JeremyRuston">FireFox lets you SaveChanges in TiddlyWiki, but you will see up to three dialogs asking your permission for the local file operations. You must allow all three operations for it to work properly. Note that you can select the //Remember this decision// option to avoid seeing the dialogs in future.  </div>
+<div id="storeWikiOnAStick" modified="200504081823" modifier="JeremyRuston">Putting TiddlyWiki on a USB thumb drive lets you carry around a SelfContained notebook that you can update wherever there's a reasonably modern computer, whether it's a Mac, Linux or a PC. (To be even more independent you can [[install FireFox on the drive|http://www.mozilla.org/support/firefox/tips#oth_usb]] as well).</div>
+<div id="storeSubHeadings" modified="200503311852" modifier="JeremyRuston">!Header 1
+!!Header 2
+!!!Header 3
+!!!!Header 4
+!!!!!Header 5
+</div>
+<div id="storeNumberedLists" modified="200503311852" modifier="JeremyRuston">start
+#item1
+#item2
+##item2.1
+##item2.2
+##item2.3
+#item3
+##item3.1
+###item3.1.1
+###item3.1.2
+
+end</div>
+<div id="storeTiddlyWikiPod" modified="200503232231" modifier="JeremyRuston">IsaoSonobe's TiddlyWikiPod is a nifty utility for Mac OS X that copies the content of a TiddlyWiki to an iPod where it can be read, and links followed, using the touch wheel. Isao has also added the ability to link to songs from the TiddlyWiki text which enables some interesting applications. At the moment, it only works with the older SecondVersion of TiddlyWiki. It can be found at http://www8.ocn.ne.jp/~sonoisa/TiddlyWikiPod/index.html</div>
+<div id="storeHorizontalRules" modified="200503120015" modifier="JeremyRuston">You can divide a tiddler into
+----
+sections by typing four dashes on a line by themselves</div>
+<div id="storeExtendedFormatting" modified="200503112345" modifier="JeremyRuston">''Bold''
+==Strike==
+__Underline__
+//Italic//
+2^^3^^=8
+a~~ij~~ = -a~~ji~~
+@@highlight@@
+@@color(green):green colored@@
+@@bgcolor(#ff0000):color(#ffffff):red colored@@</div>
+<div id="storeStartupBehaviour" modified="200412192141" modifier="JeremyRuston">When it loads, TiddlyWiki looks for the names of tiddlers to open as a space-separated list after the # in the URL. If there are no tiddlers in the URL it instead loads the tiddlers named in DefaultTiddlers, one of the SpecialTiddlers.</div>
+<div id="storeMicroContent" modified="200409251844" modifier="JeremyRuston">MicroContent being a fashionable word for self-contained fragments of content that are typically smaller than entire pages. Often MicroContent is presented via some kind of aggregation that reduces the perceptual shock and resource cost of context switching (eg Blogs aggregating several entries onto a page or Flickr presenting photos in an album). This TiddlyWiki aggregates MicroContent items that I call 'tiddlers' into pages that are loaded in one gulp and progressively displayed as the user clicks hypertext links to read them.</div>
+<div id="storeSelfContained" modified="200409201452" modifier="JeremyRuston">One of the neatest features of TiddlyWiki is that it is entirely self-contained in a single HTML file. It contains the actual hypertext document, and the JavaScript, CascadingStyleSheets and HTML necessary to both view and edit the document. This means that it is trivial to host a TiddlyWiki on a website, or to distribute one by email. And anyone with a reasonably recent web browser will be able to read and edit it.</div>
+<div id="storeSiteSubtitle" modified="200409171651" modifier="JeremyRuston">a reusable non-linear personal web notebook</div>
+<div id="storeSiteTitle" modified="200409161548" modifier="JeremyRuston">TiddlyWiki</div>
+<div id="storeEmailMe" modified="200409072350" modifier="JeremyRuston">My email address is jeremy (at) osmosoft (dot) com</div></div>
     </body>
 </html>
