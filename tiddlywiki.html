@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <!--
-TiddlyWiki 1.2.19 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
+TiddlyWiki 1.2.20 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
 
 Published under a BSD open source license
 Incorporating improvements by Isao Sonobe, http://www-gauge.scphys.kyoto-u.ac.jp/~sonobe/OgreKit/OgreKitWiki.html
@@ -299,9 +299,10 @@ TiddlyWiki.prototype.getReferringTiddlers = function(title,sortField)
         {
         var tiddler = this.tiddlers[t];
         var f = false;
-        for(var link=0; link<tiddler.links.length; link++)
-            if(tiddler.links[link] == title)
-                f = true;
+        if(tiddler.title != title)
+            for(var link=0; link<tiddler.links.length; link++)
+                if(tiddler.links[link] == title)
+                    f = true;
         if(f)
             results.push(tiddler);
         }
@@ -738,7 +739,12 @@ function setupRegexp()
     var rowPattern = "^\\|([^\\n]*\\|)([fhc]?)$";
     tableRegExp = new RegExp(rowPattern,"mg");
     // Table columns pattern
-    var elementPattern = "(?:(?:BGCOLOR|bgcolor)\\(([^\\)]+)\\):)?([^\\|]*)\\|";
+    var elementPattern = "(?:(?:BGCOLOR|bgcolor)\\(([^\\)]+)\\):)?" +
+        "("+
+        "("+explicitLinkPattern+")?"+
+        "("+bracketNamePattern+")?" +
+        "[^\\|]*"+
+        ")\\|";
     tableRowColRegExp = new RegExp(elementPattern,"g");
     // Link patterns
     wikiNamePatterns = "(" + wikiNamePattern + 
@@ -756,7 +762,7 @@ function setupRegexp()
     var numberedListItemPattern = "^#+";
     var tablePattern = "(?:^\\|[^\\n]*$\\n?)+";
     var blockquotePattern = "(?:^>[^\\n]*$\\n?)+";
-    var blockquotePattern2 = "^<<<\\n((?:^[^\\n]*\\n)+)(^<<<$\\n?)";
+    var blockquotePattern2 = "^<<<\\n((?:^(?!<<<)[^\\n]*\\n)+)(^<<<$\\n?)";
     var imagePattern = "\\[[Ii][Mm][Gg]\\[(?:([^\\|]+)\\|)?([^\\[\\]\\|]+)\\]\\]";
     var verbatimPattern = "^\\{\\{\\{\\n((?:^[^\\n]*\\n)+?)(^\\}\\}\\}$\\n?)";
     structurePatterns = "(" + breakPattern + 
@@ -771,7 +777,7 @@ function setupRegexp()
         ")|(?:" + verbatimPattern + 
         ")";
     // Style patterns
-    var boldPattern = "''([^']+)''";
+    var boldPattern = "''((?:[^']+(?:'[^'])?)+)''";
     var strikePattern = "==([^=]+)==";
     var underlinePattern = "__([^_]+)__";
     var italicPattern = "//([^/]+)//";
@@ -1803,7 +1809,8 @@ function generateEmpty()
     for(var s=0; s<specialTiddlers.length; s++)
         {
         var tiddler = store.tiddlers[specialTiddlers[s]];
-        savedTiddlers.push(tiddler.saveToDiv());
+        if(tiddler)
+            savedTiddlers.push(tiddler.saveToDiv());
         }
     return savedTiddlers.join("\n");
 }
