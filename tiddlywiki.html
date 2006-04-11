@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <!--
-TiddlyWiki 1.2.17 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
+TiddlyWiki 1.2.18 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
 
 Published under a BSD open source license
 Incorporating improvements by Isao Sonobe, http://www-gauge.scphys.kyoto-u.ac.jp/~sonobe/OgreKit/OgreKitWiki.html
@@ -450,6 +450,16 @@ function createTiddler(place,before,title,state,highlightText,highlightCaseSensi
             break;
         }
     return(theTiddler);
+}
+
+function refreshTiddler(title)
+{
+    var theViewer = document.getElementById("viewer" + title);
+    if(theViewer)
+        {
+        theViewer.parentNode.removeChild(theViewer);
+        createTiddlerViewer(title,null,null);
+        }
 }
 
 function createTiddlerSkeleton(place,before,title)
@@ -1375,6 +1385,15 @@ function refreshAll()
     refreshHeader();
     refreshMenu();
     refreshSidebar();
+    refreshDisplay();
+}
+
+function refreshDisplay()
+{
+    var displayNodes = document.getElementById("tiddlerDisplay").childNodes;
+    for(var t=0;t<displayNodes.length;t++)
+        if(displayNodes[t].id && displayNodes[t].id.substr(0,7) == "tiddler")
+            refreshTiddler(displayNodes[t].id.substr(7));
 }
 
 // Refresh all parts of the header
@@ -2132,18 +2151,20 @@ function onClickOptions(e)
 }
 
 var lastSearchText = ""; // For keeping track of when the search text actually changes
+var searchTimeout = null;
 
 function onSearchKey(e)
 {
     var text = document.getElementById("searchText").value;
     if((text.length > 2) && (text != lastSearchText))
         {
-        searchTiddlers(text,options.chkCaseSens,options.chkRegExp);
-        lastSearchText = text;
+        if(searchTimeout)
+            clearTimeout(searchTimeout);
+        searchTimeout = setTimeout("doSearch();",200);
         }
 }
 
-function onClickSearch(e)
+function doSearch()
 {
     var text = document.getElementById("searchText").value;
     searchTiddlers(text,options.chkCaseSens,options.chkRegExp,false);
@@ -2654,21 +2675,21 @@ a:hover, a:active {
     top: 10px;
     left: 10px;
     font-size: 8pt;
-    background-color: #eeeeaa;
-    color: #330000;
+    color: #ccff66;
+    background-color: #993300;
     padding: 0.25em 0.25em 0.25em 0.25em;
-    border-right: 2px solid #996633;
-    border-bottom: 2px solid #996633;
+    border-right: 1px solid #330000;
+    border-bottom: 1px solid #330000;
 }
 
 #popup a {
     display: block;
-    color: #330000;
+    color: #ccff66;
 }
 
 #popup a:hover {
-    background-color: #330000;
-    color: #eeeeaa;
+    background-color: #ccff66;
+    color: #330000;
 }
 
 .body {
@@ -2744,6 +2765,7 @@ a:hover, a:active {
     margin-top: 0.8em;
     margin-bottom: 0.8em;
     font-size: 100%;
+    width: 90%;
 }
 
 .viewer th {
@@ -3016,7 +3038,7 @@ a:hover, a:active {
     </div>
     <div id="sidebar">
         <div id="commandPanel">
-            <a href="JavaScript:;" onclick="onClickSearch()">search</a>
+            <a href="JavaScript:;" onclick="doSearch()">search</a>
             <input id="searchText" size=15 onKeyUp="onSearchKey()" autocomplete=off>
             <a href="javascript:;" onclick="closeAllTiddlers(event)" title="Close all displayed tiddlers (except any that are being edited)">close all</a>
             <a href="javascript:;" onclick="onClickPermaView(event)" title="Link to an URL that retrieves all the currently displayed tiddlers">permaview</a>
