@@ -1,9 +1,9 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <script type="text/javascript">
-var version = {major: 2, minor: 0, revision: 7, date: new Date("Mar 31, 2006"), extensions: {}};
+var version = {major: 2, minor: 0, revision: 8, date: new Date("Apr 7, 2006"), extensions: {}};
 </script>
 <!--
-TiddlyWiki 2.0.7 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
+TiddlyWiki 2.0.8 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
 
 Copyright (c) Osmosoft Limited 2004-2006
 
@@ -668,7 +668,7 @@ config.formatters = [
 
 {
 	name: "rule",
-	match: "^----$\\n?",
+	match: "^----+$\\n?",
 	handler: function(w)
 	{
 		createTiddlyElement(w.output,"hr");
@@ -1389,7 +1389,7 @@ config.macros.search.doSearch = function(txt)
 
 config.macros.search.onClick = function(e)
 {
-	doSearch(this.nextSibling);
+	config.macros.search.doSearch(this.nextSibling);
 	return false;
 }
 
@@ -1469,12 +1469,15 @@ config.macros.tags.handler = function(place,macroName,params,wikifier,paramStrin
 config.macros.tagging.handler = function(place,macroName,params,wikifier,paramString,tiddler)
 {
 	var theList = createTiddlyElement(place,"ul");
-	if(params[0] && store.tiddlerExists(params[0]))
-		tiddler = store.getTiddler(params[0]);
-	theList.setAttribute("title",this.tooltip.format([tiddler.title]));
-	var tagged = store.getTaggedTiddlers(tiddler.title);
+	var title = "";
+	if(tiddler instanceof Tiddler)
+        title = tiddler.title;
+	if(params[0])
+        title = params[0];
+	theList.setAttribute("title",this.tooltip.format([title]));
+	var tagged = store.getTaggedTiddlers(title);
 	var prompt = tagged.length == 0 ? this.labelNotTag : this.label;
-	createTiddlyElement(theList,"li",null,"listTitle",prompt.format([tiddler.title]));
+	createTiddlyElement(theList,"li",null,"listTitle",prompt.format([title]));
 	for(var t=0; t<tagged.length; t++)
 		createTiddlyLink(createTiddlyElement(theList,"li"),tagged[t].title,true);
 }
@@ -4336,6 +4339,30 @@ Array.prototype.find = function(item)
 			return t;
 	return null;
 }
+
+// Return whether an entry exists in an array
+Array.prototype.contains = function(item)
+{
+    return this.find(item) != null;
+};
+
+// Return whether one of a list of values exists in an array
+Array.prototype.containsAny = function(items)
+{
+    for(var i=0; i<items.length; i++)
+        if (this.contains(items[i]))
+            return true;
+    return false;
+};
+
+// Return wheter all of a list of values exists in an array
+Array.prototype.containsAll = function(items)
+{
+    for (var i = 0; i<items.length; i++)
+        if (!this.contains(items[i]))
+            return false;
+    return true;
+};
 
 // Push a new value into an array only if it is not already present in the array. If the optional unique parameter is false, it reverts to a normal push
 Array.prototype.pushUnique = function(item,unique)
