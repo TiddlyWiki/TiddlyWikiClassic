@@ -1,9 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <script type="text/javascript">
-var version = {major: 1, minor: 2, revision: 29, date: new Date(2005,7-1,27), extensions: {}};
+var version = {major: 1, minor: 2, revision: 30, date: new Date(2005,8-1,5), extensions: {}};
 </script>
 <!--
-TiddlyWiki 1.2.29 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
+TiddlyWiki 1.2.30 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
 
 Published under a BSD open source license
 Incorporating improvements by Isao Sonobe, http://www-gauge.scphys.kyoto-u.ac.jp/~sonobe/OgreKit/OgreKitWiki.html
@@ -102,13 +102,13 @@ var config = {
 		notFileUrlError: "You need to save this TiddlyWiki to a file before you can save changes",
 		cantSaveError: "It's not possible to save changes using this browser. Use FireFox if you can",
 		invalidFileError: "The original file '%0' does not appear to be a valid TiddlyWiki",
-		backupSaved: "Backup saved: ",
+		backupSaved: "Backup saved",
 		backupFailed: "Failed to save backup file",
-		rssSaved: "RSS feed saved: ",
+		rssSaved: "RSS feed saved",
 		rssFailed: "Failed to save RSS feed file",
-		emptySaved: "Empty template saved: ",
+		emptySaved: "Empty template saved",
 		emptyFailed: "Failed to save empty template file",
-		mainSaved: "Main TiddlyWiki file saved: ",
+		mainSaved: "Main TiddlyWiki file saved",
 		mainFailed: "Failed to save main TiddlyWiki file. Your changes have not been saved",
 		macroError: "Error executing macro '%0'",
 		overwriteWarning: "A tiddler named '%0' already exists. Choose OK to overwrite it",
@@ -154,7 +154,7 @@ var config = {
 		saveChanges: {label: "save changes", prompt: "Save all tiddlers to create a new TiddlyWiki"},
 		slider: {},
 		option: {},
-		newTiddler: {label: "new tiddler", prompt: "Create a new tiddler"},
+		newTiddler: {label: "new tiddler", prompt: "Create a new tiddler", title: "New Tiddler"},
 		newJournal: {label: "new journal", prompt: "Create a new tiddler from the current date and time"},
 		sparkline: {},
 		tabs: {}
@@ -265,7 +265,7 @@ config.macros.allTags.handler = function(place,macroName,params)
 	for (t=0; t<tags.length; t++)
 		{
 		var theListItem =createTiddlyElement(theDateList,"li",null,null,null);
-		var theTag = createTiddlyButton(theListItem,tags[t][0] + " (" + tags[t][1] + ")",this.tooltip + tags[t][0],onClickTag);
+		var theTag = createTiddlyButton(theListItem,tags[t][0] + " (" + tags[t][1] + ")",this.tooltip.format([tags[t][0]]),onClickTag);
 		theTag.setAttribute("tag",tags[t][0]);
 		}
 }
@@ -463,9 +463,8 @@ config.macros.option.handler = function(place,macroName,params)
 
 config.macros.newTiddler.onClick = function()
 {
-	var title = "New Tiddler";
-	displayTiddler(null,title,2,null,null,false,false);
-	var e = document.getElementById("editorTitle" + title);
+	displayTiddler(null,config.macros.newTiddler.title,2,null,null,false,false);
+	var e = document.getElementById("editorTitle" + config.macros.newTiddler.title);
 	e.focus();
 	e.select();
 }
@@ -1093,10 +1092,7 @@ function displayTiddler(src,title,state,highlightText,highlightCaseSensitive,ani
 	if(src)
 		{
 		if(config.options.chkAnimate && (animate == undefined || animate == true))
-			{
-			theTiddler.style.opacity = 0;
-			anim.startAnimating(new Zoomer(title,src,theTiddler,slowly));
-			}
+			anim.startAnimating(new Zoomer(title,src,theTiddler,slowly),new Scroller(theTiddler,slowly));
 		else
 			window.scrollTo(0,ensureVisible(theTiddler));
 		}
@@ -1250,6 +1246,14 @@ function createTiddlerPopup(srcElement)
 	srcElement.onmouseout = onMouseOutTiddlerPopup;
 	srcElement.appendChild(popup);
 	return popup;
+}
+
+function scrollToTiddlerPopup(popup,slowly)
+{
+	if(config.options.chkAnimate)
+		anim.startAnimating(new Scroller(popup,slowly));
+	else
+		window.scrollTo(0,ensureVisible(popup));
 }
 
 function onMouseOutTiddlerPopup(e)
@@ -2043,14 +2047,17 @@ function subWikify(parent,text,startPos,endPos,highlightRegExp,highlightMatch)
 function displayMessage(text,linkText)
 {
 	var msgArea = document.getElementById("messageArea");
-	var msg = createTiddlyElement(msgArea,"div",null,null,text);
-	msgArea.style.display = "block";
+	var msg;
 	if(linkText)
 		{
-		var link = createTiddlyElement(msg,"a",null,null,linkText);
+		msg = createTiddlyElement(msgArea,"div",null,null,null);
+		var link = createTiddlyElement(msg,"a",null,null,text);
 		link.href = linkText;
 		link.target = "_blank";
 		}
+	else
+		msg = createTiddlyElement(msgArea,"div",null,null,text);
+	msgArea.style.display = "block";
 }
 
 function clearMessage()
@@ -2180,6 +2187,7 @@ function saveOptionCookie(name)
 // Saving
 // ---------------------------------------------------------------------------------
 
+var saveUsingSafari = false;
 var startSaveArea = '<div id="' + 'storeArea">'; // Split up into two so that indexOf() of this source doesn't find it
 var endSaveArea = '</d' + 'iv>';
 
@@ -2222,6 +2230,7 @@ function saveChanges()
 		localPath = "\\\\" + unescape(originalPath.substr(10)).replace(new RegExp("/","g"),"\\");
 	else if(originalPath.indexOf("file:///") == 0) // mac/unix local file
 		localPath = unescape(originalPath.substr(7));
+	else if(originalPath.indexOf("file:/") == 0) // mac/unix local file		localPath = unescape(originalPath.substr(5));
 	else // pc network file
 		localPath = "\\\\" + unescape(originalPath.substr(7)).replace(new RegExp("/","g"),"\\");
 	// Load the original file
@@ -2407,7 +2416,11 @@ function mozConvertUnicodeToUTF8(s)
 
 function saveFile(fileUrl, content)
 {
-	var r = mozillaSaveFile(fileUrl, content);
+	var r = null;
+	if(saveUsingSafari)
+		r = safariSaveFile(fileUrl, content);
+	if((r == null) || (r == false))
+		r = mozillaSaveFile(fileUrl, content);
 	if((r == null) || (r == false))
 		r = ieSaveFile(fileUrl, content);
 	return(r);
@@ -2415,7 +2428,11 @@ function saveFile(fileUrl, content)
 
 function loadFile(fileUrl)
 {
-	var r = mozillaLoadFile(fileUrl);
+	var r = null;
+	if(saveUsingSafari)
+		r = safariLoadFile(fileUrl);
+	if((r == null) || (r == false))
+		r = mozillaLoadFile(fileUrl);
 	if((r == null) || (r == false))
 		r = ieLoadFile(fileUrl);
 	return(r);
@@ -2507,6 +2524,13 @@ function mozillaLoadFile(filePath)
 			}
 	return(null);
 }
+
+function safariFilenameToUrl(filename) {	return ("file://" + filename);}function safariLoadFile(url){	url = safariFilenameToUrl(url);	var plugin = document.embeds["tiddlyWikiSafariSaver"];	return plugin.readURL(url);}function safariSaveFile(url,content){	url = safariFilenameToUrl(url);	var plugin = document.embeds["tiddlyWikiSafariSaver"];	return plugin.writeStringToURL(content,url);}// Lifted from http://developer.apple.com/internet/webcontent/detectplugins.htmlfunction detectPlugin()
+{	var daPlugins = detectPlugin.arguments;	var pluginFound = false;	if (navigator.plugins && navigator.plugins.length > 0)
+		{		var pluginsArrayLength = navigator.plugins.length;		for (pluginsArrayCounter=0; pluginsArrayCounter < pluginsArrayLength; pluginsArrayCounter++ )
+			{			var numFound = 0;			for(namesCounter=0; namesCounter < daPlugins.length; namesCounter++)
+				{				if( (navigator.plugins[pluginsArrayCounter].name.indexOf(daPlugins[namesCounter]) >= 0) || 						(navigator.plugins[pluginsArrayCounter].description.indexOf(daPlugins[namesCounter]) >= 0) )					numFound++;				}			if(numFound == daPlugins.length)
+				{				pluginFound = true;				break;				}			}	}	return pluginFound;} // detectPlugin
 
 // ---------------------------------------------------------------------------------
 // Event handlers
@@ -2656,6 +2680,7 @@ function onClickToolbarReferences(e)
 		if(!c)
 			popup.appendChild(document.createTextNode(config.views.wikified.toolbarReferences.popupNone));
 		}
+	scrollToTiddlerPopup(popup,false);
 	e.cancelBubble = true;
 	if (e.stopPropagation) e.stopPropagation();
 	return(false);
@@ -2690,6 +2715,7 @@ function onClickTag(e)
 		else
 			popup.appendChild(document.createTextNode(lingo.popupNone.format([tag])));
 		}
+	scrollToTiddlerPopup(popup,false);
 	e.cancelBubble = true;
 	if (e.stopPropagation) e.stopPropagation();
 	return(false);
@@ -2725,6 +2751,7 @@ function onClickAddTag(e)
 		theTag.setAttribute("tag",tags[t][0]);
 		theTag.setAttribute("tiddler",tiddler);
 		}
+	window.scrollTo(0,ensureVisible(popup));
 	e.cancelBubble = true;
 	if (e.stopPropagation) e.stopPropagation();
 	return(false);
@@ -2793,14 +2820,16 @@ function Animator()
 }
 
 // Start animation engine
-Animator.prototype.startAnimating = function(animation)
+Animator.prototype.startAnimating = function() // Variable number of arguments
 {
-	this.animations.push(animation);
-	if(this.running++ == 0)
+	for(var t=0; t<arguments.length; t++)
+		this.animations.push(arguments[t]);
+	if(this.running == 0)
 		{
 		var me = this;
 		this.timerID = window.setInterval(function() {me.doAnimate(me);},25);
 		}
+	this.running += arguments.length;
 }
 
 // Perform an animation engine tick, calling each of the known animation modules
@@ -2838,24 +2867,23 @@ Animator.slowInSlowOut = function(progress)
 
 function Zoomer(text,startElement,targetElement,slowly)
 {
-	this.element = document.createElement("div"); // Element being zoomed
+	this.element = document.createElement("div");
 	this.element.appendChild(document.createTextNode(text));
 	this.element.className = "zoomer";
 	document.body.appendChild(this.element);
-	this.startElement = startElement; // Where we're shifting from
+	this.startElement = startElement;
 	this.startLeft = findPosX(this.startElement);
 	this.startTop = findPosY(this.startElement);
 	this.startWidth = this.startElement.offsetWidth;
 	this.startHeight = this.startElement.offsetHeight;
-	this.targetElement = targetElement; // Where we're shifting to
+	this.targetElement = targetElement;
 	this.targetLeft = findPosX(this.targetElement);
 	this.targetTop = findPosY(this.targetElement);
 	this.targetWidth = this.targetElement.offsetWidth;
 	this.targetHeight = this.targetElement.offsetHeight;
-	this.startScroll = findScrollY(); // Where we're scrolling from
-	this.targetScroll = ensureVisible(targetElement); // Where we're scrolling to
-	this.progress = 0; // 0..1 of how far we are
-	this.step = slowly ? config.animSlow : config.animFast; // 0..1 of how much to shift each step
+	this.progress = 0;
+	this.step = slowly ? config.animSlow : config.animFast;
+	this.targetElement.style.opacity = 0;
 	return this;
 }
 
@@ -2863,7 +2891,6 @@ Zoomer.prototype.stop = function()
 {
 	this.element.parentNode.removeChild(this.element);
 	this.targetElement.style.opacity = 1;
-	window.scrollTo(0,this.targetScroll);
 }
 
 Zoomer.prototype.tick = function()
@@ -2876,6 +2903,30 @@ Zoomer.prototype.tick = function()
 	this.element.style.display = "block";
 	this.targetElement.style.opacity = this.progress;
 	this.targetElement.style.filter = "alpha(opacity:" + this.progress * 100 + ")";
+}
+
+// ---------------------------------------------------------------------------------
+// Scroller animation
+// ---------------------------------------------------------------------------------
+
+function Scroller(targetElement,slowly)
+{
+	this.targetElement = targetElement;
+	this.startScroll = findScrollY();
+	this.targetScroll = ensureVisible(targetElement);
+	this.progress = 0;
+	this.step = slowly ? config.animSlow : config.animFast;
+	return this;
+}
+
+Scroller.prototype.stop = function()
+{
+	window.scrollTo(0,this.targetScroll);
+}
+
+Scroller.prototype.tick = function()
+{
+	var f = Animator.slowInSlowOut(this.progress);
 	window.scrollTo(0,this.startScroll + (this.targetScroll-this.startScroll) * f);
 }
 
@@ -4033,11 +4084,34 @@ a:hover, a:active {
 }
 
 </style>
+<noscript><style type="text/css">
+#contentWrapper {
+	display: none;
+}
+
+#storeArea {
+	display: block;
+	margin: 4em 17em 3em 17em;
+}
+
+#storeArea div { padding: 0.5em; 0.5em; 0.5em; 0.5em; margin: 1em 0em 0em 0em; border-color: #f0f0f0 #606060 #404040 #d0d0d0; border-style: solid; border-width: 2px; height: 7em; overflow: auto;}
+
+#javascriptWarning {
+	width: 100%;
+	text-align: center;
+	font-weight: bold;	background-color: #dd1100;
+	color: #ffffff;
+	padding:1em 0em 1em 0em;
+}
+</style></noscript>
 </head>
 <body onload="main();" onunload="checkUnsavedChanges();">
+	<script>	if (detectPlugin("TiddlyWiki Saver"))
+		{		document.write('<embed style="display: none" name="tiddlyWikiSafariSaver" width="0" height="0" type="application/x-webkit-tiddlywiki-saver"></embed>'); 		saveUsingSafari = true;		}	</script>
 	<div id="copyright">
 	Welcome to TiddlyWiki by Jeremy Ruston, Copyright &copy; 2005 Osmosoft Limited
 	</div>
+	<noscript>		<div id="javascriptWarning">This page requires JavaScript to function properly</div>	</noscript>
 	<div id="saveTest"></div>
 	<div id="contentWrapper">
 		<div id="header">
@@ -4056,7 +4130,7 @@ a:hover, a:active {
 			<div id="tiddlerDisplay"></div>
 		</div>
 	</div>
-	<div id="storeArea"><div tiddler="DefaultTiddlers" modified="200507121657" modifier="JeremyRuston" tags="systemTiddlers">HelloThere LatestStuff MainFeatures TiddlyWikiExamples</div>
+	<div id="storeArea"><div tiddler="DefaultTiddlers" modified="200508050110" modifier="JeremyRuston" tags="systemTiddlers">HelloThere [[5 August 2005]] [[27 July 2005]] MainFeatures TiddlyWikiExamples</div>
 <div tiddler="MainMenu" modified="200507121650" modifier="JeremyRuston" tags="systemTiddlers">HelloThere\nLatestStuff\nTiddlyWiki\nUsingThisSite\nReusingThisSite\n[[Community]]\nDownloadSoftware\nHowToUpgrade\nRssFeed\n[[Donations]]\n\n© [[osmosoft|http://www.osmosoft.com]] 2005\n\n&lt;&lt;newTiddler&gt;&gt;\n&lt;&lt;newJournal &quot;DD MMM YYYY&quot;&gt;&gt;\n</div>
 <div tiddler="SiteSubtitle" modified="200507121318" modifier="JeremyRuston" tags="systemTiddlers">a reusable non-linear personal web notebook</div>
 <div tiddler="SiteTitle" modified="200507121318" modifier="JeremyRuston" tags="systemTiddlers">TiddlyWiki</div>
