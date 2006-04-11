@@ -1,9 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <script type="text/javascript">
-var version = {major: 1, minor: 2, revision: 35, date: new Date("Sep 29, 2005"), extensions: {}};
+var version = {major: 1, minor: 2, revision: 36, date: new Date("Oct 18, 2005"), extensions: {}};
 </script>
 <!--
-TiddlyWiki 1.2.35 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
+TiddlyWiki 1.2.36 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
 
 Published under a BSD open source license
 
@@ -168,12 +168,12 @@ config.textPrimitives.anyDigit = "[0-9]";
 config.textPrimitives.anyNumberChar = "[0-9\\.E]";
 config.textPrimitives.urlPattern = "(?:http|https|mailto|ftp):[^\\s'\"]+(?:/|\\b)";
 config.textPrimitives.unWikiLink = "~";
-config.textPrimitives.wikiLink = "(?:" + config.textPrimitives.unWikiLink + "?)(?:" + config.textPrimitives.upperLetter + "+" +
+config.textPrimitives.wikiLink = "(?:" + config.textPrimitives.unWikiLink + "{0,1})(?:(?:" + config.textPrimitives.upperLetter + "+" +
 											   config.textPrimitives.lowerLetter + "+" +
 											   config.textPrimitives.upperLetter +
 											   config.textPrimitives.anyLetter + "*)|(?:" +
 											   config.textPrimitives.upperLetter + "{2,}" +
-											   config.textPrimitives.lowerLetter + "+)";
+											   config.textPrimitives.lowerLetter + "+))";
 
 // ---------------------------------------------------------------------------------
 // Main
@@ -191,13 +191,14 @@ var readOnly = false;
 function main()
 {
 	browserTests();
-	readOnly = (document.location.toString().substr(0,7) == "http://") ? config.options.chkHttpReadOnly : false;
+	addEvent(document,"click",Popup.onDocumentClick);
 	saveTest();
 	loadOptionsCookie();
 	for(var s=0; s<config.notifyTiddlers.length; s++)
 		store.addNotification(config.notifyTiddlers[s].name,config.notifyTiddlers[s].notify);
 	store.loadFromDiv("storeArea","store");
 	loadSystemConfig();
+	readOnly = (document.location.toString().substr(0,7) == "http://") ? config.options.chkHttpReadOnly : false;
 	store.notifyAll();
 	restart();
 }
@@ -656,7 +657,7 @@ config.formatters = [
 {
 	name: "image",
 	match: "\\[(?:[<]{0,1})(?:[>]{0,1})[Ii][Mm][Gg]\\[",
-	lookahead: "\\[([<]{0,1})([>]{0,1})[Ii][Mm][Gg]\\[(?:([^\\|]+)\\|)?([^\\[\\]\\|]+)\\](?:\\[([^\\]]*)\\]?)?\\]",
+	lookahead: "\\[([<]{0,1})([>]{0,1})[Ii][Mm][Gg]\\[(?:([^\\|\\]]+)\\|)?([^\\[\\]\\|]+)\\](?:\\[([^\\]]*)\\]?)?(\\])",
 	handler: function(w)
 	{
 		var lookaheadRegExp = new RegExp(this.lookahead,"mg");
@@ -1547,7 +1548,12 @@ TiddlyWiki.prototype.notifyAll = function()
 
 // Add a notification handler to a tiddler
 TiddlyWiki.prototype.addNotification = function(title,fn)
-{	for (var i=0; i<this.namedNotifications.length; i++)		if((this.namedNotifications[i].name == title) && (this.namedNotifications[i].notify == fn))			return this;	this.namedNotifications.push({name: title, notify: fn});	return this;
+{
+	for (var i=0; i<this.namedNotifications.length; i++)
+		if((this.namedNotifications[i].name == title) && (this.namedNotifications[i].notify == fn))
+			return this;
+	this.namedNotifications.push({name: title, notify: fn});
+	return this;
 }
 
 // Clear a TiddlyWiki so that it contains no tiddlers
@@ -1710,7 +1716,7 @@ TiddlyWiki.prototype.getTags = function()
 				results.push([tag,1]);
 			}
 		}
-	results.sort(function (a,b) {if(a[0] == b[0]) return(0); else return (a[0] < b[0]) ? -1 : +1; });
+	results.sort(function (a,b) {if(a[0].toLowerCase() == b[0].toLowerCase()) return(0); else return (a[0].toLowerCase() < b[0].toLowerCase()) ? -1 : +1; });
 	return results;
 }
 
@@ -1951,72 +1957,6 @@ function createTiddlerToolbar(title,isEditor)
 		}
 }
 
-function createTiddlerPopup(srcElement)
-{
-	var popup = document.getElementById("popup");
-	if(popup && popup.nextSibling == srcElement)
-		{
-		hideTiddlerPopup();
-		return null;
-		}
-	if(popup)
-		popup.parentNode.removeChild(popup);
-	popup = createTiddlyElement(null,"div","popup",null,null);
-	var leftPx = srcElement.offsetLeft;
-	var topPx = srcElement.offsetTop;
-	var heightPx = srcElement.offsetHeight;
-	if (leftPx <= 1 && srcElement.parentNode.offsetLeft > 0)
-		leftPx = srcElement.parentNode.offsetLeft;
-	if (topPx <= 1 && srcElement.parentNode.offsetTop > 0)
-		topPx = srcElement.parentNode.offsetTop;
-	if (heightPx <= 1 && srcElement.parentNode.offsetHeight > 0)
-		heightPx = srcElement.parentNode.offsetHeight;
-	popup.style.left = leftPx + "px";
-	popup.style.top = topPx + heightPx + "px";
-	popup.style.display = "block";
-	srcElement.onmouseout = onMouseOutTiddlerPopup;
-	srcElement.appendChild(popup);
-	return popup;
-}
-
-function scrollToTiddlerPopup(popup,slowly)
-{
-	if(config.options.chkAnimate)
-		anim.startAnimating(new Scroller(popup,slowly));
-	else
-		window.scrollTo(0,ensureVisible(popup));
-}
-
-function onMouseOutTiddlerPopup(e)
-{
-	if (!e) var e = window.event;
-	var related = (e.relatedTarget) ? e.relatedTarget : e.toElement;
-	try
-		{
-		while (related != this && related && related.nodeName && related.nodeName.toLowerCase() != "body")
-			related = related.parentNode;
-		}
-	catch(e)
-		{
-		related = null;
-		}
-	if(related != this)
-		{
-		this.onmouseout = null;
-		hideTiddlerPopup();
-		}
-	e.cancelBubble = true;
-	if (e.stopPropagation) e.stopPropagation();
-	return(false);
-}
-
-function hideTiddlerPopup()
-{
-	var popup = document.getElementById("popup");
-	if(popup)
-		popup.parentNode.removeChild(popup);
-}
-
 // Create the body section of a read-only tiddler
 function createTiddlerViewer(title,highlightText,highlightCaseSensitive)
 {
@@ -2027,7 +1967,7 @@ function createTiddlerViewer(title,highlightText,highlightCaseSensitive)
 		var theViewer = createTiddlyElement(theBody,"div","viewer" + title,"viewer",null);
 		if(store.tiddlerExists(title))
 			theViewer.setAttribute("tags",tiddler.tags.join(" "));
-		if(!tiddlerText)
+		if(tiddlerText == null)
 			{
 			tiddlerText = config.views.wikified.defaultText.format([title]);
 			theViewer.style.fontStyle = "italic";
@@ -2116,7 +2056,7 @@ function createTiddlerEditor(title)
 function saveTiddler(title,minorUpdate)
 {
 	var titleBox = document.getElementById("editorTitle" + title);
-	var newTitle = titleBox.value;
+	var newTitle = titleBox.value.trim();
 	if(store.tiddlerExists(newTitle))
 		{
 		if(newTitle != title && !confirm(config.messages.overwriteWarning.format([newTitle.toString()])))
@@ -2712,17 +2652,28 @@ function mozillaLoadFile(filePath)
 	return(null);
 }
 
+function operaUrlToFilename(url)
+{
+	var f = "//localhost";
+	if(url.indexOf(f) == 0)
+		return url.substring(f.length);
+	var i = url.indexOf(":");
+	if(i > 0)
+		return url.substring(i-1);
+	return url;
+}
+
 function operaSaveFile(filePath, content)
 {
 	try
 		{
-		var s = new java.io.PrintStream(new java.io.FileOutputStream(filePath));
+		var s = new java.io.PrintStream(new java.io.FileOutputStream(operaUrlToFilename(filePath)));
 		s.print(content);
 		s.close();
 		}
 	catch(e)
 		{
-		if(opera)
+		if(window.opera)
 			opera.postError(e);
 		return null;
 		}
@@ -2732,17 +2683,18 @@ function operaSaveFile(filePath, content)
 function operaLoadFile(filePath)
 {
 	var content = [];
+	alert(operaUrlToFilename(filePath));
 	try
 		{
-		var r = new java.io.BufferedReader(new java.io.FileReader(filePath));
+		var r = new java.io.BufferedReader(new java.io.FileReader(operaUrlToFilename(filePath)));
 		var line;
 		while ((line = r.readLine()) != null)
-			content.push(line);
+			content.push(new String(line));
 		r.close();
 		}
 	catch(e)
 		{
-		if(opera)
+		if(window.opera)
 			opera.postError(e);
 		return null;
 		}
@@ -2854,8 +2806,6 @@ function onClickTiddlerLink(e)
 			displayTiddler(theTarget,title,0,null,null,true,e.shiftKey || e.altKey);
 		}
 	clearMessage();
-	e.cancelBubble = true;
-	if (e.stopPropagation) e.stopPropagation();
 	return(false);
 }
 
@@ -2907,8 +2857,6 @@ function onClickToolbarClose(e)
 	clearMessage();
 	if(this.parentNode.id)
 		closeTiddler(this.parentNode.id.substr(7),e.shiftKey || e.altKey);
-	e.cancelBubble = true;
-	if (e.stopPropagation) e.stopPropagation();
 	return(false);
 }
 
@@ -2948,11 +2896,11 @@ function onClickToolbarReferences(e)
 		for(var r=0; r<references.length; r++)
 			if(references[r].title != title)
 				{
-				createTiddlyLink(popup,references[r].title,true);
+				createTiddlyLink(createTiddlyElement(popup,"li"),references[r].title,true);
 				c = true;
 				}
 		if(!c)
-			popup.appendChild(document.createTextNode(config.views.wikified.toolbarReferences.popupNone));
+			createTiddlyText(createTiddlyElement(popup,"li",null,"disabled"),config.views.wikified.toolbarReferences.popupNone);
 		}
 	scrollToTiddlerPopup(popup,false);
 	e.cancelBubble = true;
@@ -2971,23 +2919,24 @@ function onClickTag(e)
 	if(popup && tag)
 		{
 		var tagged = store.getTaggedTiddlers(tag);
-		var c = false;
-		for(var r=0;r<tagged.length;r++)
+		var titles = [];
+		var li,r;
+		for(r=0;r<tagged.length;r++)
 			if(tagged[r].title != title)
-				{
-				createTiddlyLink(popup,tagged[r].title,true);
-				c = true;
-				}
+				titles.push(tagged[r].title);
 		var lingo = config.views.wikified.tag;
-		if(c)
+		if(titles.length > 0)
 			{
-			popup.insertBefore(document.createElement("hr"),popup.firstChild);
-			var openAll = createTiddlyButton(null,lingo.openAllText.format([tag]),lingo.openAllTooltip,onClickTagOpenAll);
+			var openAll = createTiddlyButton(createTiddlyElement(popup,"li"),lingo.openAllText.format([tag]),lingo.openAllTooltip,onClickTagOpenAll);
 			openAll.setAttribute("tag",tag);
-			popup.insertBefore(openAll,popup.firstChild);
+			createTiddlyElement(createTiddlyElement(popup,"li"),"hr");
+			for(r=0; r<titles.length; r++)
+				{
+				createTiddlyLink(createTiddlyElement(popup,"li"),titles[r],true);
+				}
 			}
 		else
-			popup.appendChild(document.createTextNode(lingo.popupNone.format([tag])));
+			createTiddlyText(createTiddlyElement(popup,"li",null,"disabled"),lingo.popupNone.format([tag]));
 		}
 	scrollToTiddlerPopup(popup,false);
 	e.cancelBubble = true;
@@ -3003,8 +2952,6 @@ function onClickTagOpenAll(e)
 	var tagged = store.getTaggedTiddlers(tag);
 	for(var t=tagged.length-1; t>=0; t--)
 		displayTiddler(this,tagged[t].title,0,null,null,false,e.shiftKey || e.altKey);
-	e.cancelBubble = true;
-	if (e.stopPropagation) e.stopPropagation();
 	return(false);
 }
 
@@ -3018,10 +2965,10 @@ function onClickAddTag(e)
 	var tags = store.getTags();
 	var lingo = config.views.editor.tagChooser;
 	if(tags.length == 0)
-		createTiddlyElement(popup,"div",null,null,lingo.popupNone);
+		createTiddlyText(createTiddlyElement(popup,"li"),lingo.popupNone);
 	for (t=0; t<tags.length; t++)
 		{
-		var theTag = createTiddlyButton(popup,tags[t][0],lingo.tagTooltip.format([tags[t][0]]),onClickAddTagPopup);
+		var theTag = createTiddlyButton(createTiddlyElement(popup,"li"),tags[t][0],lingo.tagTooltip.format([tags[t][0]]),onClickAddTagPopup);
 		theTag.setAttribute("tag",tags[t][0]);
 		theTag.setAttribute("tiddler",tiddler);
 		}
@@ -3041,8 +2988,6 @@ function onClickAddTagPopup(e)
 	var tagsBox = document.getElementById("editorTags" + tiddler);
 	if(tagsBox)
 		tagsBox.value += " " + String.encodeTiddlyLink(tag);
-	e.cancelBubble = true;
-	if (e.stopPropagation) e.stopPropagation();
 	return(false);
 }
 
@@ -3266,6 +3211,79 @@ Slider.prototype.tick = function()
 	this.element.style.height = h + "px";
 	this.element.style.opacity = f;
 }
+
+// ---------------------------------------------------------------------------------
+// Popup menu
+// ---------------------------------------------------------------------------------
+
+var Popup = {
+	stack: [] // Array of objects with members root: and popup:
+	};
+
+Popup.create = function(root)
+{
+	Popup.remove();
+	var popup = createTiddlyElement(document.body,"ol","popup","popup",null);
+	Popup.stack.push({root: root, popup: popup});
+	return popup;
+}
+
+Popup.onDocumentClick = function(e)
+{
+	if (!e) var e = window.event;
+	var target = resolveTarget(e);
+	if(e.eventPhase == undefined)
+		Popup.remove();
+	else if(e.eventPhase == Event.BUBBLING_PHASE || e.eventPhase == Event.AT_TARGET)
+		Popup.remove();
+	return true;
+}
+
+Popup.show = function(unused,slowly)
+{
+	var curr = Popup.stack[Popup.stack.length-1];
+	var rootLeft = findPosX(curr.root);
+	var rootTop = findPosY(curr.root);
+	var rootHeight = curr.root.offsetHeight;
+	var popupLeft = rootLeft;
+	var popupTop = rootTop + rootHeight;
+	var popupWidth = curr.popup.offsetWidth;
+	var winWidth = findWindowWidth();
+	if(popupLeft + popupWidth > winWidth)
+		popupLeft = winWidth - popupWidth;
+	curr.popup.style.left = popupLeft + "px";
+	curr.popup.style.top = popupTop + "px";
+	curr.popup.style.display = "block";
+	addClass(curr.root,"highlight");
+	if(config.options.chkAnimate)
+		anim.startAnimating(new Scroller(curr.popup,slowly));
+	else
+		window.scrollTo(0,ensureVisible(curr.popup));
+}
+
+Popup.remove = function()
+{
+	if(Popup.stack.length > 0)
+		{
+		Popup.removeFrom(0);
+		}
+}
+
+Popup.removeFrom = function(from)
+{
+	for(var t=Popup.stack.length-1; t>=from; t--)
+		{
+		var p = Popup.stack[t];
+		removeClass(p.root,"highlight");
+		p.popup.parentNode.removeChild(p.popup);
+		}
+	Popup.stack = Popup.stack.slice(0,from);
+}
+
+// Backwards compatibility
+var createTiddlerPopup = Popup.create;
+var scrollToTiddlerPopup = Popup.show;
+var hideTiddlerPopup = Popup.remove;
 
 // ---------------------------------------------------------------------------------
 // Augmented methods for the JavaScript Number(), Array() and String() objects
@@ -3677,21 +3695,28 @@ function removeEvent(element,type,fn)
 		return false;
 }
 
+function addClass(e,theClass)
+{
+	removeClass(e,theClass);
+	e.className += " " + theClass;
+}
+
+function removeClass(e,theClass)
+{
+	var newClass = [];
+	var currClass = e.className.split(" ");
+	for(var t=0; t<currClass.length; t++)
+		if(currClass[t] != theClass)
+			newClass.push(currClass[t]);
+	e.className = newClass.join(" ");
+}
+
 // Find the tiddler instance (if any) containing a specified element
 function findContainingTiddler(e)
 {
-	if(e == null)
-		return(null);
-	do {
-		if(e != document)
-			{
-			if(e.id)
-				if(e.id.substr(0,7) == "tiddler")
-					return(e);
-			}
+	while(e && e.className != "tiddler")
 		e = e.parentNode;
-	} while(e != document);
-	return(null);
+	return(e);
 }
 
 // Resolve the target object of an event
@@ -3738,6 +3763,12 @@ function ensureVisible(e)
 		}
 	else
 		return(winTop);
+}
+
+// Get the current width of the display window
+function findWindowWidth()
+{
+	return(window.innerWidth ? window.innerWidth : document.body.clientWidth);
 }
 
 // Get the current height of the display window
@@ -3880,7 +3911,7 @@ a:hover, a:active {
 	line-height: 166%;
 	padding: 1.5em 0.5em 0.5em 0.5em;
 	font-size: 10pt;
-	color: black;
+	color: #000000;
 	text-align: right;
 }
 
@@ -3940,39 +3971,47 @@ a:hover, a:active {
 	color: #ffffff;
 }
 
-#popup {
-	display: none;
-	position: absolute;
-	line-height: 110%;
+.popup {
 	font-size: 8pt;
-	color: #ccff66;
-	background-color: #993300;
-	padding: 0.25em 0.25em 0.25em 0.25em;
-	border-right: 1px solid #330000;
-	border-bottom: 1px solid #330000;
-	z-index: 10;
+	position: absolute;
+	list-style: none;
+	padding: 0.2em 0.2em 0.2em 0.2em;
+	margin: 0em 0em 0em 0em;
+	background-color: #eeeeaa;
+	border: 1px solid #993300;
 }
 
-#popup a {
+.popup hr {
 	display: block;
-	color: #ccff66;
-	padding: 1px 1px 1px 1px;
-}
-
-#popup a:hover {
-	background-color: #ccff66;
-	color: #330000;
-}
-
-#popup hr {
-	border-top: solid 1px #ccff66;
-	border-left: none;
-	border-right: none;
-	border-bottom: none;
 	height: 1px;
-	width: 5em;
-	left: 0em;
-	color: #ccff66;
+	width: auto;
+	color: #996633;
+	background-color: #996633;
+	border: none 0;
+	padding: 0px 0px 0px 0px;
+	margin: 0.2em 0em 0.2em 0em;
+}
+
+.popup li {
+	display: block;
+	padding: 0em 0em 0em 0em;
+}
+
+.popup li.disabled {
+	padding: 0.2em 0.2em 0.2em 0.2em;
+	color: #bbaa99;
+}
+
+.popup li a, .popup li a:visited {
+	display: block;
+	text-decoration: none;
+	color: #330000;
+	padding: 0.2em 0.2em 0.2em 0.2em;
+}
+
+.popup li a:hover {
+	background-color: #993300;
+	color: #eeeeaa;
 }
 
 .tabset {
@@ -4120,8 +4159,8 @@ a:hover, a:active {
 	padding: 0em 0.25em 0em 0.25em;
 	background-color: #cc9900;
 	color: #330000;
-	border-right: 1px solid #33000;
-	border-bottom: 1px solid #33000;
+	border-right: 1px solid #330000;
+	border-bottom: 1px solid #330000;
 }
 
 .viewer .button:hover {
@@ -4239,14 +4278,14 @@ a:hover, a:active {
 
 .editor input {
 	display: block;
-	border: 1px solid black;
+	border: 1px solid #000000;
 	width: 100%;
 }
 
 .editor textarea {
 	display: block;
 	font: inherit;
-	border: 1px solid black;
+	border: 1px solid #000000;
 	width: 100%;
 }
 
@@ -4353,9 +4392,12 @@ a:hover, a:active {
 
 #sidebarTabs .tabContents {
 	background-color: #996633;
-	width: 16em;
-	white-space: nowrap;
+	width: 15em;
 	overflow: hidden;
+}
+
+#sidebarTabs .tabContents a {
+	white-space: nowrap;
 }
 
 #sidebarTabs .txtMoreTab .tabSelected {
@@ -4523,8 +4565,8 @@ a:hover, a:active {
 			<div id="tiddlerDisplay"></div>
 		</div>
 	</div>
-	<div id="storeArea"><div tiddler="DefaultTiddlers" modified="200510031529" modifier="JeremyRuston" tags="systemTiddlers">HelloThere [[3 October 2005]] [[28 September 2005]] [[27 September 2005]] NewFeatures MainFeatures TiddlyWikiExamples</div>
-<div tiddler="MainMenu" modified="200509272228" modifier="JeremyRuston" tags="systemTiddlers">HelloThere\nTiddlyWiki\n[[TiddlyWiki/Dev]]\nGettingStarted\nUsingThisSite\n[[Community]]\nDownloadSoftware\nPluginsAndMacros\n[[ThankYou]]\n[[RSS|RssFeed]]\n\n© [[osmosoft|http://www.osmosoft.com]] 2005\n\n\n&lt;&lt;newTiddler&gt;&gt;\n&lt;&lt;newJournal &quot;DD MMM YYYY&quot;&gt;&gt;</div>
+	<div id="storeArea"><div tiddler="DefaultTiddlers" modified="200510171917" modifier="JeremyRuston" tags="systemTiddlers">HelloThere [[18 October 2005]] [[3 October 2005]] [[28 September 2005]] [[27 September 2005]] NewFeatures MainFeatures TiddlyWikiExamples</div>
+<div tiddler="MainMenu" modified="200510171916" modifier="JeremyRuston" tags="systemTiddlers">HelloThere\nTiddlyWiki\n[[TiddlyWiki/Dev]]\nGettingStarted\nUsingThisSite\n[[Community]]\nDownloadSoftware\nPluginsAndMacros\n[[ThankYou]]\n[[RSS|RssFeed]]\n\n© [[osmosoft|http://www.osmosoft.com]] 2005\n\n\n&lt;&lt;newTiddler&gt;&gt;\n&lt;&lt;newJournal &quot;DD MMM YYYY&quot;&gt;&gt;</div>
 <div tiddler="SiteSubtitle" modified="200507121318" modifier="JeremyRuston" tags="systemTiddlers">a reusable non-linear personal web notebook</div>
 <div tiddler="SiteTitle" modified="200509212109" modifier="JeremyRuston" tags="systemTiddlers">TiddlyWiki</div>
 <div tiddler="SiteUrl" modified="200507121318" modifier="JeremyRuston" tags="systemTiddlers">http://www.tiddlywiki.com/</div></div>
