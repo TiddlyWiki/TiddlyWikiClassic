@@ -265,11 +265,11 @@ function wikify(text,parent)
                 parent.appendChild(document.createTextNode(text.substring(lastMatch,theMatch.index)));
             lastMatch = theRegExp.lastIndex;
             // Dump out the link itself in the appropriate format
-            if(theMatch[1] != "")
+            if(theMatch[1])
                 createTiddlyLink(parent,theMatch[0],true);
-            else if(theMatch[2] != "")
+            else if(theMatch[2])
                 createExternalLink(parent,theMatch[0]);
-            else if(theMatch[3] != "")
+            else if(theMatch[3])
                 parent.appendChild(document.createElement("br"));            }
         else
             {
@@ -1017,7 +1017,7 @@ img {
     color: #666666;
 }
 
-#saveMessage {
+#saveMessage, #storeArea, #copyright {
     display: none;
 }
 
@@ -1039,6 +1039,9 @@ img {
 </style>
 </head>
 <body onload="main()">
+    <div id="copyright">
+    Welcome to TiddlyWiki, Copyright &copy; 2004 Jeremy Ruston
+    </div>
     <div id="header">
         <a id="headerTitle" href="JavaScript:;" onclick="onClickLogo()"></a> <span id="headerSubtitle"></span>
     </div>
