@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <!--
-TiddlyWiki 1.2.20 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
+TiddlyWiki 1.2.21 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
 
 Published under a BSD open source license
 Incorporating improvements by Isao Sonobe, http://www-gauge.scphys.kyoto-u.ac.jp/~sonobe/OgreKit/OgreKitWiki.html
@@ -53,14 +53,14 @@ var options = {
 	 chkGenerateAnRssFeed: false,
 	 chkSaveEmptyTemplate: false,
 	 txtCurrentTab: "tabTimeline",
-	 txtTabMore: "moreTabMissing"
-	 }
+	 txtTabMore: "moreTabAll"
+	 };
 
 // Number of items in the RSS feed
 var numRssItems = 20;
 
 // Special tiddlers
-var specialTiddlers = ["SiteTitle","SiteSubtitle","MainMenu","DefaultTiddlers","SaveChanges"];
+var specialTiddlers = ["SiteTitle","SiteSubtitle","MainMenu","DefaultTiddlers","SaveChanges","SiteUrl","StyleSheet"];
 
 var store = new TiddlyWiki();
 
@@ -102,6 +102,7 @@ function Tiddler()
     this.modifier = null;
     this.modified = null;
     this.links = [];
+    this.tags = [];
     return this;
 }
 
@@ -114,6 +115,7 @@ Tiddler.prototype.loadFromDiv = function(divRef,idPrefix)
     this.modifier = divRef.getAttribute("modifier");
     this.modified = divRef.getAttribute("modified");
     if (this.modified) this.modified = convertFromYYYYMMDDHHMM(this.modified);
+    this.setTags(divRef.getAttribute("tags"));
     this.changed();
     return this;
 }
@@ -122,17 +124,18 @@ Tiddler.prototype.loadFromDiv = function(divRef,idPrefix)
 Tiddler.prototype.saveToDiv = function()
 {
     return '<div id="store' + this.title + '" modified="' +
-                            convertToYYYYMMDDHHMM(this.modified) + '" modifier="' + this.modifier + '">' +
+                            convertToYYYYMMDDHHMM(this.modified) + '" modifier="' + this.modifier + 
+                            '" tags="' + this.getTags() + '">' +
                             htmlEncode(this.escapeLineBreaks()) + '</div>';
 }
 
-// Format the text for storage in an RSS ITEM
+// Format the text for storage in an RSS item
 Tiddler.prototype.saveToRss = function(url)
 {
     var s = [];
     s.push("<item>");
     s.push("<title>" + htmlEncode(this.title) + "</title>");
-    s.push("<description>" + htmlEncode(this.escapeLineBreaks()) + "</description>");
+    s.push("<description>" + htmlEncode(this.text.replace(regexpNewLine,"<br />")) + "</description>");
     s.push("<link>" + url + "#" + encodeURIComponent(encodeTiddlyLink(this.title)) + "</link>");
     s.push("<pubDate>" + this.modified.toGMTString() + "</pubDate>");
     s.push("</item>");
@@ -154,22 +157,46 @@ Tiddler.prototype.set = function(title,text,modifier,modified)
     return this;
 }
 
+// Set the tags for a tiddler (space delimited, using [[brackets]] for tags containing spaces)
+Tiddler.prototype.setTags = function(tags)
+{
+    if(tags)
+        this.tags = readTiddlerList(tags);
+    else
+        this.tags = [];
+    return this;
+}
+
+// Get the tags for a tiddler as a string (space delimited, using [[brackets]] for tags containing spaces)
+Tiddler.prototype.getTags = function()
+{
+    if(this.tags)
+        {
+        var results = [];
+        for(var t=0; t<this.tags.length; t++)
+            results.push(encodeTiddlyLink(this.tags[t]));
+        return results.join(" ");
+        }
+    else
+        return "";
+}
+
 var regexpBackSlashEn = new RegExp("\\\\n","mg");
-var regexpSingleBackSlash = new RegExp("\\\\","mg");
-var regexpDoubleBackSlash = new RegExp("\\\\\\\\","mg");
+var regexpBackSlash = new RegExp("\\\\","mg");
+var regexpBackSlashEss = new RegExp("\\\\s","mg");
 var regexpNewLine = new RegExp("\n","mg");
 var regexpCarriageReturn = new RegExp("\r","mg");
 
-// Convert "\n" to newlines
+// Convert "\n" to newlines, "\s" to "\"
 Tiddler.prototype.unescapeLineBreaks = function()
 {
-    return this.text.replace(regexpBackSlashEn,"\n").replace(regexpSingleBackSlash,"\\\\");
+    return this.text.replace(regexpBackSlashEn,"\n").replace(regexpBackSlashEss,"\\").replace(regexpCarriageReturn,"");
 }
 
-// Convert newlines to "\n"
+// Convert newlines to "\n", "\" to "\s"
 Tiddler.prototype.escapeLineBreaks = function()
 {
-    return this.text.replace(regexpDoubleBackSlash,"\\").replace(regexpNewLine,"\\n").replace(regexpCarriageReturn,"");
+    return this.text.replace(regexpBackSlash,"\\s").replace(regexpNewLine,"\\n").replace(regexpCarriageReturn,"");
 }
 
 // Updates the secondary information (like links[] array) after a change to a tiddler
@@ -237,19 +264,20 @@ TiddlyWiki.prototype.getTiddlerText = function(title,defaultText)
         return null;
 }
 
-TiddlyWiki.prototype.createTiddler = function(title,body,modifier,modified)
+TiddlyWiki.prototype.createTiddler = function(title,body,modifier,modified,tags)
 {
     this.tiddlers[title] = new Tiddler();
-    return this.setTiddler(title,title,body,modifier,modified);
+    return this.setTiddler(title,title,body,modifier,modified,tags);
 }
 
-TiddlyWiki.prototype.setTiddler = function(title,newTitle,newBody,modifier,modified)
+TiddlyWiki.prototype.setTiddler = function(title,newTitle,newBody,modifier,modified,tags)
 {
     var tiddler = this.tiddlers[title];
     if(tiddler)
         delete this.tiddlers[title];
     tiddler = new Tiddler();
     tiddler.set(newTitle,newBody,modifier,modified)
+    tiddler.setTags(tags);
     this.tiddlers[newTitle] = tiddler;
     return tiddler;
 }
@@ -291,17 +319,54 @@ TiddlyWiki.prototype.search = function(searchText,caseSensitive,useRegExp,sortFi
     return results;
 }
 
+// Return an array of all the tags in use. Each member of the array is another array where [0] is the name of the tag and [1] is the number of occurances
+TiddlyWiki.prototype.getTags = function()
+{
+    var results = [];
+    for(var t in this.tiddlers)
+        {
+        var tiddler = this.tiddlers[t];
+        for(g=0; g<tiddler.tags.length; g++)
+            {
+            var tag = tiddler.tags[g];
+            var f = false;
+            for(var c=0; c<results.length; c++)
+                if(results[c][0] == tag)
+                    {
+                    f = true;
+                    results[c][1]++;
+                    }
+            if(!f)
+                results.push([tag,1]);
+            }
+        }
+    results.sort(function (a,b) {if(a[0] == b[0]) return(0); else return (a[0] < b[0]) ? -1 : +1; });
+    return results;
+}
+
+// Return an array of the tiddlers that are tagged with a given tag
+TiddlyWiki.prototype.getTaggedTiddlers = function(tag,exclude,sortField)
+{
+    return this.reverseLookup("tags",tag,exclude,sortField);
+}
+
 // Return an array of the tiddlers that link to a given tiddler
-TiddlyWiki.prototype.getReferringTiddlers = function(title,sortField)
+TiddlyWiki.prototype.getReferringTiddlers = function(title,exclude,sortField)
+{
+    return this.reverseLookup("links",title,exclude,sortField);
+}
+
+// Return an array of the tiddlers that have a specified entry in the specified storage array (ie, "links" or "tags")
+TiddlyWiki.prototype.reverseLookup = function(lookupField,lookupValue,exclude,sortField)
 {
     var results = [];
     for(var t in this.tiddlers)
         {
         var tiddler = this.tiddlers[t];
         var f = false;
-        if(tiddler.title != title)
-            for(var link=0; link<tiddler.links.length; link++)
-                if(tiddler.links[link] == title)
+        if(tiddler.title != exclude)
+            for(var lookup=0; lookup<tiddler[lookupField].length; lookup++)
+                if(tiddler[lookupField][lookup] == lookupValue)
                     f = true;
         if(f)
             results.push(tiddler);
@@ -366,18 +431,7 @@ TiddlyWiki.prototype.getOrphans = function()
 // Display several tiddlers from a list of space separated titles
 function displayTiddlers(src,titles,state,highlightText,highlightCaseSensitive,slowly)
 {
-    var wikiRegExp = new RegExp(wikiNamePatterns,"mg");
-    var tiddlerNames = [];
-    do {
-        var linkMatch = wikiRegExp.exec(titles);
-        if(linkMatch)
-            {
-            if(linkMatch[1]) // WikiName
-                tiddlerNames.push(linkMatch[1]);
-            else if(linkMatch[5]) // Bracketed link
-                tiddlerNames.push(linkMatch[5]);
-            }
-    } while(linkMatch);
+    var tiddlerNames = readTiddlerList(titles);
     for(var t = tiddlerNames.length-1;t>=0;t--)
         displayTiddler(src,tiddlerNames[t],state,highlightText,highlightCaseSensitive,slowly);
 }
@@ -554,9 +608,25 @@ function createTiddlerPopup(srcElement)
     popup.style.left = srcElement.offsetLeft;
     popup.style.top = srcElement.offsetTop + srcElement.offsetHeight;
     popup.style.display = "block";
-    //srcElement.parentNode.insertBefore(popup,srcElement);
+    srcElement.onmouseout = onMouseOutTiddlerPopup;
     srcElement.appendChild(popup);
     return popup;
+}
+
+function onMouseOutTiddlerPopup(e)
+{
+    if (!e) var e = window.event;
+    var related = (e.relatedTarget) ? e.relatedTarget : e.toElement;
+    while (related != this && related && related.nodeName.toLowerCase() != "body")
+        related = related.parentNode;
+    if(related != this)   
+        {
+        this.onmouseout = null;
+        hideTiddlerPopup();
+        }
+    e.cancelBubble = true;
+    if (e.stopPropagation) e.stopPropagation();
+    return(false);
 }
 
 function hideTiddlerPopup()
@@ -580,6 +650,18 @@ function createTiddlerViewer(title,highlightText,highlightCaseSensitive)
         if(!tiddlerExists)
             theViewer.style.fontStyle = "italic";
         wikify(tiddlerText,theViewer,highlightText,highlightCaseSensitive);
+        var tiddler = store.tiddlers[title];
+        if(tiddler)
+            {
+            var prompt = tiddler.tags.length == 0 ? "no tags" : "tags:";
+            var theTags = createTiddlyElement(theViewer,"div","viewerTags" + title,"tags",prompt);
+            for(var t=0; t<tiddler.tags.length; t++)
+                {
+                var theTag = createTiddlyButton(theTags,tiddler.tags[t],"Show tiddlers tagged with '" + tiddler.tags[t] + "'",onClickTag);
+                theTag.setAttribute("tag",tiddler.tags[t]);
+                insertSpacer(theTags);
+                }
+            }
         }
 }
 
@@ -602,12 +684,16 @@ function createTiddlerEditor(title)
         var theBodyBox = createTiddlyElement(theEditor,"textarea","editorBody" + title,null,null);
         theBodyBox.value = tiddlerText;
         var rows = 10;
-        var lines = tiddlerText.match( regexpNewLine );
-        if ( lines != null && lines.length > rows )
+        var lines = tiddlerText.match(regexpNewLine);
+        if(lines != null && lines.length > rows)
             rows = lines.length + 5;
         theBodyBox.setAttribute("rows",rows);
-        theBodyBox.style.width = "100%";
-        //theBodyBox.setAttribute("cols","80");
+        createTiddlyElement(theEditor,"div",null,"editorPrompt","Tags separated with spaces, [[use brackets]] for tags containing spaces");
+        var theTagsBox = createTiddlyElement(theEditor,"input","editorTags" + title,null,null);
+        theTagsBox.setAttribute("type","text");
+        var tiddler = store.tiddlers[title];
+        theTagsBox.value = tiddler ? tiddler.getTags() : "";
+        theTagsBox.setAttribute("size","40");
         theBodyBox.focus();
         }
 }
@@ -616,7 +702,8 @@ function saveTiddler(title)
 {
     var newTitle = document.getElementById("editorTitle" + title).value;
     var newBody = document.getElementById("editorBody" + title).value;
-    store.setTiddler(title,newTitle,newBody,options.txtUserName,new Date());
+    var newTags = document.getElementById("editorTags" + title).value;
+    store.setTiddler(title,newTitle,newBody,options.txtUserName,new Date(),newTags);
     displayTiddler(null,newTitle,1,null,null,null,false);
     // Close the old tiddler if this is a rename
     if(title != newTitle)
@@ -646,11 +733,17 @@ function selectTiddler(title)
     var e = document.getElementById("toolbar" + title);
     if(e != null)
         e.style.visibility = "visible";
+    e = document.getElementById("viewerTags" + title);
+    if(e != null)
+        e.style.visibility = "visible";
 }
 
 function deselectTiddler(title)
 {
     var e = document.getElementById("toolbar" + title);
+    if(e != null)
+        e.style.visibility = "hidden";
+    e = document.getElementById("viewerTags" + title);
     if(e != null)
         e.style.visibility = "hidden";
 }
@@ -1283,10 +1376,30 @@ function htmlEncode(text)
     return(text.replace(regexpAmp,"&amp;").replace(regexpLessThan,"&lt;").replace(regexpGreaterThan,"&gt;").replace(regexpQuote,"&quot;"));
 }
 
+// Process a string list tiddler names into an array. Tiddler names that are not WikiWords must be [[bracketed]]
+function readTiddlerList(titles)
+{
+    var bracketedPattern = "\\[\\[([^\\]]+)\\]\\]";
+    var unbracketedPattern = "[^\\s$]+";
+    var pattern = "(?:" + bracketedPattern + ")|(" + unbracketedPattern + ")";
+    var re = new RegExp(pattern,"mg");
+    var tiddlerNames = [];
+    do {
+        var match = re.exec(titles);
+        if(match)
+            {
+            if(match[1]) // Bracketed
+                tiddlerNames.push(match[1]);
+            else if(match[2]) // Unbracketed
+                tiddlerNames.push(match[2]);
+            }
+    } while(match);
+    return(tiddlerNames);
+}
+
 function encodeTiddlyLink(title)
 {
-    var wikiRegExp = new RegExp("^" + wikiNamePattern + "$","");
-    if(wikiRegExp.test(title))
+    if(title.indexOf(" ") == -1)
         return(title);
     else
         return("[[" + title + "]]");
@@ -1460,9 +1573,9 @@ function refreshSidebar()
             tabContent.className = "tabContentTimeline";
             refreshTabTimeline();
             break;
-        case "tabAll":
-            tabContent.className = "tabContentAll";
-            refreshTabAll();
+        case "tabTags":
+            tabContent.className = "tabContentTags";
+            refreshTabTags();
             break;
         case "tabMore":
             tabContent.className = "tabContentMore";
@@ -1509,22 +1622,27 @@ function refreshTabTimeline()
         }
 }
 
-function refreshTabAll()
+function refreshTabTags()
 {
-    var tiddlers = store.getTiddlers("title");
+    var tags = store.getTags();
     var place = document.getElementById("sidebarContent");
     while(place.firstChild != null)
         place.removeChild(place.firstChild);
-    for (t = 0; t < tiddlers.length; t++)
+    if(tags.length == 0)
+        createTiddlyElement(place,"div",null,null,"There are no tagged tiddlers");
+    for (t=0; t<tags.length; t++)
         {
-        createTiddlyLink(place,tiddlers[t].title,true);
+        var theTag = createTiddlyButton(place,tags[t][0] + " (" + tags[t][1] + ")","Show tiddlers tagged with '" + tags[t][0] + "'",onClickTag);
+        theTag.setAttribute("tag",tags[t][0]);
         place.appendChild(document.createElement("br"));
         }
 }
 
 var moreTabModes = {
+    moreTabAll: {label: "All", prompt: "All tiddlers in alphabetical order"},
     moreTabMissing: {label: "Missing", prompt: "Tiddlers that have links to them but are not defined"},
-    moreTabOrphans: {label: "Orphans", prompt: "Tiddlers that are not linked to from any other tiddlers"}
+    moreTabOrphans: {label: "Orphans", prompt: "Tiddlers that are not linked to from any other tiddlers"},
+    moreTabSpecial: {label: "Special", prompt: "Tiddlers that serve special purposes within TiddlyWiki"}
     };
 
 function refreshTabMore()
@@ -1546,17 +1664,26 @@ function refreshTabMore()
     var results;
     switch(options.txtTabMore)
         {
-        case "moreTabMissing":
+        case "moreTabAll":
         default:
+            results = store.getTiddlers("title");
+            break;
+        case "moreTabMissing":
             results = store.getMissingLinks();
             break;
         case "moreTabOrphans":
             results = store.getOrphans();
             break;
+        case "moreTabSpecial":
+            results = specialTiddlers;
+            break;
         }
     for (t = 0; t < results.length; t++)
         {
-        createTiddlyLink(place,results[t],true);
+        if(typeof results[t] == "string")
+            createTiddlyLink(place,results[t],true);
+        else
+            createTiddlyLink(place,results[t].title,true);
         place.appendChild(document.createElement("br"));
         }
 }
@@ -2100,17 +2227,16 @@ function onClickToolbarDelete(e)
         deleteTiddler(this.parentNode.id.substr(7));
 }
 
-// Event handler for mouse down on the toolbar references button
+// Event handler for clicking on the toolbar references button
 function onClickToolbarReferences(e)
 {
     if (!e) var e = window.event;
     var theTarget = resolveTarget(e);
-    clearMessage();
     var popup = createTiddlerPopup(this);
     if(popup && this.parentNode.id)
         {
-        this.onmouseout = onMouseOutToolbarReference;
-        var references = store.getReferringTiddlers(this.parentNode.id.substr(7));
+        var title = this.parentNode.id.substr(7);
+        var references = store.getReferringTiddlers(title,title);
         var c = false;
         for(var r in references)
             {
@@ -2125,16 +2251,25 @@ function onClickToolbarReferences(e)
     return(false);
 }
 
-function onMouseOutToolbarReference(e)
+// Event handler for clicking on a tiddler tag
+function onClickTag(e)
 {
     if (!e) var e = window.event;
-    var related = (e.relatedTarget) ? e.relatedTarget : e.toElement;
-    while (related != this && related && related.nodeName.toLowerCase() != "body")
-        related = related.parentNode;
-    if(related != this)   
+    var theTarget = resolveTarget(e);
+    var popup = createTiddlerPopup(this);
+    var tag = this.getAttribute("tag");
+    if(popup && tag)
         {
-        this.onmouseout = null;
-        hideTiddlerPopup();
+        var title = this.parentNode.id.substr(10);
+        var tagged = store.getTaggedTiddlers(tag,title);
+        var c = false;
+        for(var r in tagged)
+            {
+            createTiddlyLink(popup,tagged[r].title,true);
+            c = true;
+            }
+        if(!c)
+            popup.appendChild(document.createTextNode("No other tiddlers tagged with '" + tag + "'"));
         }
     e.cancelBubble = true;
     if (e.stopPropagation) e.stopPropagation();
@@ -2185,6 +2320,13 @@ var searchTimeout = null;
 
 function onSearchKey(e)
 {
+    if (!e) var e = window.event;
+    switch(e.keyCode)
+        {
+        case 27:
+            onClearSearch();
+            break;
+        }
     var text = document.getElementById("searchText").value;
     if((text.length > 2) && (text != lastSearchText))
         {
@@ -2206,6 +2348,12 @@ function onClearSearch()
     var text = document.getElementById("searchText");
     text.value = "";
     clearMessage();
+}
+
+function onFocusSearch()
+{
+    var text = document.getElementById("searchText");
+    text.select();
 }
 
 // Eek... it's bad that this is done via a function rather than a normal, copy-able href
@@ -2652,7 +2800,7 @@ a:hover, a:active {
 }
 
 .innerTiddler {
-    padding: 1em 1em 1em 1em;
+    padding: 1em 1em 0em 1em;
     font-size: 9pt;
 }
 
@@ -2715,6 +2863,7 @@ a:hover, a:active {
 #popup a {
     display: block;
     color: #ccff66;
+    line-height: 100%;
 }
 
 #popup a:hover {
@@ -2828,6 +2977,31 @@ a:hover, a:active {
     color: #666666;
 }
 
+.tags {
+    font-weight: normal;
+    font-size: 8pt;
+    margin: 0.5em 0em 0em 0em;
+    padding: 0em 0em 0em 0em;
+    color: #aaaaaa;
+    visibility: hidden;
+}
+
+.tags A {
+    padding: 0.2em 0.4em 0.2em 0.4em;
+    color: #993300;
+}
+
+.tags A:hover {
+    text-decoration: none;
+    color: #ccff66;
+    background-color: #993300;
+}
+
+.tags A:active {
+    color: #ffffff;
+    background-color: #cc9900;
+}
+
 .highlight, .marked {
     color: #000000;
     background-color: #ffe72f;
@@ -2842,12 +3016,19 @@ a:hover, a:active {
 .editor input {
     display: block;
     border: 1px solid black;
+    width: 100%;
 }
 
 .editor textarea {
     display: block;
     font: inherit;
     border: 1px solid black;
+    width: 100%;
+}
+
+.editorPrompt {
+    font-size: 8pt;
+    color: #996633;
 }
 
 #sidebar {
@@ -2947,7 +3128,7 @@ a:hover, a:active {
     margin: 0px 1px 0px 1px;
 }
 
-#tabAll {
+#tabTags {
     font-weight: bold;
     display: inline;
     background-color: #993300;
@@ -2969,10 +3150,14 @@ a:hover, a:active {
     overflow: hidden;
 }
 
-.tabContentAll {
+.tabContentTags {
     background-color: #993300;
     padding: 0.5em 0.5em 0.5em 0.5em;
     overflow: hidden;
+}
+
+.tabContentTags #popup {
+    background-color: #330000;
 }
 
 .tabContentMore {
@@ -3067,8 +3252,8 @@ a:hover, a:active {
     </div>
     <div id="sidebar">
         <div id="commandPanel">
-            <a href="JavaScript:;" onclick="doSearch()">search</a>
-            <input id="searchText" size=15 onKeyUp="onSearchKey()" autocomplete=off>
+            <a href="JavaScript:;" onclick="doSearch()" title="Search this TiddlyWiki">search</a>
+            <input id="searchText" size=15 onKeyUp="onSearchKey(event)" onfocus="onFocusSearch(event)" autocomplete=off title="Search this TiddlyWiki">
             <a href="javascript:;" onclick="closeAllTiddlers(event)" title="Close all displayed tiddlers (except any that are being edited)">close all</a>
             <a href="javascript:;" onclick="onClickPermaView(event)" title="Link to an URL that retrieves all the currently displayed tiddlers">permaview</a>
             <a href="javascript:;" onclick="saveChanges(event)" title="Save all tiddlers to create a new TiddlyWiki">save changes</a>
@@ -3111,7 +3296,7 @@ a:hover, a:active {
         </div>
         <div id="sidebarTabs">
             <a href="JavaScript:;" onclick="onClickTab(event)" id="tabTimeline">Timeline</a>
-            <a href="JavaScript:;" onclick="onClickTab(event)" id="tabAll">All</a>
+            <a href="JavaScript:;" onclick="onClickTab(event)" id="tabTags">Tags</a>
             <a href="JavaScript:;" onclick="onClickTab(event)" id="tabMore">More</a>
         </div>
         <div id="sidebarContent" class="tabContentTimeline">
@@ -3129,10 +3314,11 @@ a:hover, a:active {
         &nbsp;
         <div id="floater">&nbsp;</div>
     </div>
-    <div id="storeArea"><div id="storeSiteTitle" modified="200409161548" modifier="JeremyRuston">TiddlyWiki</div>
-<div id="storeSiteSubtitle" modified="200409171651" modifier="JeremyRuston">a reusable non-linear personal web notebook</div>
-<div id="storeMainMenu" modified="200505171916" modifier="JeremyRuston">HelloThere\nLatestStuff\nTiddlyWiki\nUsingThisSite\nReusingThisSite\nDownloadSoftware\nHowToUpgrade\nRssFeed\n\n&#169; [[osmosoft|http://www.osmosoft.com]] 2005</div>
-<div id="storeDefaultTiddlers" modified="200505121952" modifier="JeremyRuston">HelloThere LatestStuff MainFeatures</div>
-<div id="storeSaveChanges" modified="200505230013" modifier="JeremyRuston">You can SaveChanges if you're using FireFox or InternetExplorer:\n# if you're using Windows XP you might run into ServicePack2Problems\n# right click on [[this link|empty.html]] and select 'Save link as...' or 'Save target as...'\n** do ''not'' try to use the File/Save command in your browser because of SaveUnpredictabilities.\n** choose where to save the file, and what to call it (but keep the .HTML extension)\n# open the newly downloaded file in your browser\n# click the 'options' button on the right to set your username\n# edit, create and delete the tiddlers you want\n** you can change the SpecialTiddlers to change the SiteTitle and MainMenu etc.\n# click the 'save changes' button on the right to save your changes\n# TiddlyWiki will make a backup copy of the existing file, and then replace it with the new version\n</div></div>
+    <div id="storeArea"><div id="storeSiteTitle" modified="200409161548" modifier="JeremyRuston" tags="system">TiddlyWiki</div>
+<div id="storeSiteSubtitle" modified="200409171651" modifier="JeremyRuston" tags="system">a reusable non-linear personal web notebook</div>
+<div id="storeMainMenu" modified="200505171916" modifier="JeremyRuston" tags="system">HelloThere\nLatestStuff\nTiddlyWiki\nUsingThisSite\nReusingThisSite\nDownloadSoftware\nHowToUpgrade\nRssFeed\n\n&#169; [[osmosoft|http://www.osmosoft.com]] 2005</div>
+<div id="storeDefaultTiddlers" modified="200505121952" modifier="JeremyRuston" tags="system">HelloThere LatestStuff MainFeatures</div>
+<div id="storeSaveChanges" modified="200505230013" modifier="JeremyRuston" tags="features instructions">You can SaveChanges if you're using FireFox or InternetExplorer:\n# if you're using Windows XP you might run into ServicePack2Problems\n# right click on [[this link|empty.html]] and select 'Save link as...' or 'Save target as...'\n** do ''not'' try to use the File/Save command in your browser because of SaveUnpredictabilities.\n** choose where to save the file, and what to call it (but keep the .HTML extension)\n# open the newly downloaded file in your browser\n# click the 'options' button on the right to set your username\n# edit, create and delete the tiddlers you want\n** you can change the SpecialTiddlers to change the SiteTitle and MainMenu etc.\n# click the 'save changes' button on the right to save your changes\n# TiddlyWiki will make a backup copy of the existing file, and then replace it with the new version\n</div>
+<div id="storeSiteUrl" modified="200505100122" modifier="JeremyRuston" tags="system">http://www.tiddlywiki.com/</div></div>
     </body>
 </html>
