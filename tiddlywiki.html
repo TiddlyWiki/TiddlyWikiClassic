@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <!--
-TiddlyWiki 1.2.2 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
+TiddlyWiki 1.2.3 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
 Incorporating improvements by Isao Sonobe, http://www-gauge.scphys.kyoto-u.ac.jp/~sonobe/OgreKit/OgreKitWiki.html
 
 Copyright (c) Osmosoft Limited, 14 April 2005
@@ -85,7 +85,13 @@ function displayTiddler(src,title,state,highlightText,highlightCaseSensitive,slo
 {
     var place = document.getElementById("tiddlerDisplay");
     var after = findContainingTiddler(src); // Which tiddler this one will be positioned after
-    var before = after ? after.nextSibling : null;
+    var before;
+    if(after == null)
+        before = place.firstChild;
+    else if(after.nextSibling)
+        before = after.nextSibling;
+    else
+        before = null;
     var theTiddler = createTiddler(place,before,title,state,highlightText,highlightCaseSensitive);
     if(src)
         {
@@ -154,10 +160,7 @@ function createTiddlerSkeleton(place,before,title)
         var theTitle = createTiddlyElement(theInnerTiddler,"div","title" + title,"title",null);
         var theToolbar = createTiddlyElement(theInnerTiddler,"div","toolbar" + title,"toolbar", null);
         var theBody = createTiddlyElement(theInnerTiddler,"div","body" + title,"body",null);
-        if(before)
-            place.insertBefore(theTiddler,before);
-        else
-            place.insertBefore(theTiddler,place.firstChild);
+        place.insertBefore(theTiddler,before);
         }
     return(theTiddler);
 }
@@ -242,6 +245,7 @@ function createTiddlerEditor(title)
         if(!tiddlerExists)
             tiddlerText = "Type the text for '" + title + "' here.";
         var theEditor = createTiddlyElement(theBody,"div","editor" + title,"editor",null);
+        theEditor.onkeypress = onEditKey;
         var theTitleBox = createTiddlyElement(theEditor,"input","editorTitle" + title,null,null);
         theTitleBox.setAttribute("type","text");
         theTitleBox.value = title;
@@ -1452,6 +1456,36 @@ function mozillaLoadFile(filePath)
 // Event handlers
 // ---------------------------------------------------------------------------------
 
+function onEditKey(e)
+{
+    if (!e) var e = window.event;
+    hideMessage();
+    var consume = false;
+    switch(e.keyCode)
+        {
+        case 13: // Ctrl-Enter
+        case 77: // Ctrl-Enter is "M" on some platforms
+            if(e.ctrlKey && this.id && this.id.substr(0,6) == "editor")
+                {
+                saveTiddler(this.id.substr(6));
+                consume = true;
+                }
+            break;
+        case 27: // Escape
+            if(this.id && this.id.substr(0,6) == "editor")
+                {
+                displayTiddler(null,this.id.substr(6),1,null,null,false);
+                consume = true;
+                }
+            break;
+        }
+    e.cancelBubble = consume;
+    if(consume)
+        if (e.stopPropagation) e.stopPropagation();
+    return(!consume);
+
+}
+
 // Event handler for clicking on a tiddly link
 function onClickTiddlerLink(e)
 {
@@ -2411,7 +2445,6 @@ a:hover, a:active {
 <div id="storeNonWikiWordLinks" modified="200504132137" modifier="JeremyRuston">To make a tiddler that doesn't have a WikiWord as it's name, you can enclose the name in [[double square brackets]] - edit this tiddler to see an example. After saving the tiddler you can then click on the link to create the new tiddler. NonWikiWordLinks permits tiddlers to be created with names that are made from character sets that don't have upper and lower case.</div>
 <div id="storeThankYou" modified="200504132138" modifier="JeremyRuston">Thank you to everybody who has helped me with support and suggestions for TiddlyWiki, but especially IsaoSonobe for his cunning regular expression code, and to my friend RebeccaWelby for the SiteDesign.</div>
 <div id="storeWikiWikiWeb" modified="200504132139" modifier="JeremyRuston">A Wiki is a popular way of building collaborative websites. It's based on the ideas of easy editing of pages and the use of special WikiWord notation to automagically create links between pages. See Wikipedia for [[more details|http://en.wikipedia.org/wiki/Wiki]]. TiddlyWiki is different from a conventional Wiki because it is not based on entire pages of content, but rather items of MicroContent that are referred to as 'tiddlers'.</div>
-<div id="storeUsingThisSite" modified="200504132143" modifier="JeremyRuston">Reading TiddlyWiki is fairly self explanatory. Within the main story column, click on bold links to read a linked tiddler. Click on italic links to create a new tiddler. When you hover the mouse over a tiddler several ToolbarButtons appear. You can edit the text of any tiddler by double-clicking on it (or selecting 'edit' from the toolbar), but your changes won't get saved permanently until you make your own copy of TiddlyWiki, as described in SaveChanges.</div>
 <div id="storeToolbarButtons" modified="200504132148" modifier="JeremyRuston">A row of ToolbarButtons appears to the right of a tiddler title when the mouse is hovered over it. The buttons are:\n* ''close'' - close the current tiddler\n* ''edit'' - edit the current tiddler\n* ''permalink'' - puts a link direct to the current tiddler into the address bar\n* ''references'' - displays all the tiddlers that link to the current tiddler\n* ''done'' - save changes to a tiddler being editted\n* ''cancel'' - cancel changes to a tiddler being editted\n* ''delete'' - delete the current tiddler</div>
 <div id="storeWritingStyle" modified="200504132150" modifier="JeremyRuston">I'm hoping that after using TiddlyWiki for a while a new WritingStyle will emerge that is appropriate for this medium.  Jakob Neilsen wrote an article about [[writing styles|http://www.useit.com/alertbox/980906.html]] for MicroContent back in 1998 that still seems surprisingly relevant.</div>
 <div id="storeServerSide" modified="200504132225" modifier="JeremyRuston">TiddlyWiki doesn't have a server-side back end at the moment, so when you SaveChanges you're saving the whole document, as you would with Microsoft Word. That means that it is essentially only really a SingleUser thing (unless it gets passed round as a ChainTiddlyWiki). There are several TiddlyWikiAdaptations that //do// have a ServerSide, though.</div>
@@ -2427,11 +2460,13 @@ a:hover, a:active {
 <div id="storeEasterEgg" modified="200504132334" modifier="JeremyRuston">Try holding down the alt- or shift-key while clicking on a link to a tiddler, on the 'options' button or on the CloseButton for a tiddler. Kind of a respectful homage to Mac OS X, which does something similar for many of its system animations. (On browsers like InternetExplorer that use the shift key to open a new window, it's best to use the alt-key).</div>
 <div id="storeInterfaceOptions" modified="200504132338" modifier="JeremyRuston">InterfaceOptions are displayed when you click the 'options' button on the right. They are saved in a cookie on your browser, making them sticky between visits. RegExpSearch allows more complex search expressions; CaseSensitiveSearch does as it's name implies. The user name for edits should be set //before// starting to edit things (ouch. another bug).</div>
 <div id="storeRegExpSearch" modified="200504132345" modifier="JeremyRuston">RegExpSearch uses JavaScript's [[RegExp syntax|http://www.programmershelp.co.uk/docs/javascript/regexp.html#1193188]] to allow flexible searches.</div>
-<div id="storeNewFeatures" modified="200504132352" modifier="JeremyRuston">This ThirdVersion of TiddlyWiki adds:\n* the ability to easily SaveChanges on FireFox and InternetExplorer\n* a new liquid CSS layout that fills the width of the browser window \n* some BugFixes\n* a more flexible OpenSourceLicense\n* a bunch of features from IsaoSonobe's [[adaptation|http://www-gauge.scphys.kyoto-u.ac.jp/~sonobe/OgreKit/OgreKitWiki.html]] of TiddlyWiki including ExtendedFormatting, NonWikiWordLinks, PrettyLinks, SubHeadings, BulletPoints, NumberedLists, HtmlTables, BlockQuotes, HorizontalRules and...\n* ...EmbeddedImages:\n[img[brixhamharbour.jpg]]</div>
 <div id="storeBlockQuotes" modified="200504140131" modifier="JeremyRuston">JeremyRuston said:\n<<<\nA TiddlyWiki is like a blog because it's divided up into neat little chunks, but it encourages you to read it by hyperlinking rather than sequentially: if you like, a non-linear blog analogue that binds the individual microcontent items into a cohesive whole. I think that TiddlyWiki represents a novel medium for writing, and will promote it's own distinctive WritingStyle. This is the first version of TiddlyWiki and so, as discussed in TiddlyWikiDev, it's bound to be FullOfBugs, have many MissingFeatures and fail to meet all of the DesignGoals. And of course there's NoWarranty, and it might be judged a StupidName.\n<<<\n\n>level 1\n>level 1\n>>level 2\n>>level 2\n>>>level 3\n>>>level 3\n>>level 2\n>level 1\n</div>
-<div id="storeTiddlyWikiAdaptations" modified="200504141525" modifier="JeremyRuston">The first and original was [[PhpTiddlyWiki|http://www.patrickcurry.com/tiddly/]] from PatrickCurry and GabrielJeffrey that adds a simple ServerSide in PHP with MySQL. Patrick's site allows anyone to create and edit tiddlers, and has become the de facto community site around TiddlyWiki.\n\nSome of the other adaptations include:\n* HenrikAastedSorensen's at http://aasted.org/wiki\n* IsaoSonobe's OgreKit at http://www-gauge.scphys.kyoto-u.ac.jp/~sonobe/OgreKit/OgreKitWiki.html \n* [[JacquesTurbé]]'s TidliPo, in French at http://avm.free.fr/IMG/html/carnet_gt_BigCo.html\n* ChristianHauck's at http://www.christianhauck.net/html/14300.html\n* TonyLownds's at http://tony.lownds.com/home/\n* PoulStaugaard and IvanMetalnikov's at http://poul.staugaard.dk/IeWiki.htm\n\n* There's also KevemBuangga's TiddlyWikiClone at http://www.kevembuangga.com/tdw/ (caution: on Safari, it seems to get locked up with error alerts)</div>
 <div id="storeMainMenu" modified="200504141525" modifier="JeremyRuston">HelloThere TiddlyWiki NewFeatures UsingThisSite ReusingThisSite DownloadSoftware\n\n© [[osmosoft|http://www.osmosoft.com]] 2005</div>
 <div id="storeBugFixes" modified="200504141553" modifier="JeremyRuston">This ThirdVersion of TiddlyWiki fixes a problem with line breaks within tiddlers under InternetExplorer. It also tries to avoid closing tiddlers while they are being edited. There's a bunch of smaller BugFixes as well, but they are somewhat balanced by the KnownBugs.</div>
-<div id="storeKnownBugs" modified="200504141556" modifier="JeremyRuston">Depending on your browser setup, international Unicode characters don't survive SaveChanges. Very annoying, and definitely needs fixing. It appears that FireFox will always save the file in the native character set rather than UTF-8 -- do please EmailMe if you know a solution.</div></div>
+<div id="storeKnownBugs" modified="200504141556" modifier="JeremyRuston">Depending on your browser setup, international Unicode characters don't survive SaveChanges. Very annoying, and definitely needs fixing. It appears that FireFox will always save the file in the native character set rather than UTF-8 -- do please EmailMe if you know a solution.</div>
+<div id="storeKeyboardShortcuts" modified="200504150035" modifier="JeremyRuston">While editing a tiddler:\n* Control-Enter accepts your changes and switches out of editing mode\n* Escape abandons your changes and reverts the tiddler to it's previous state</div>
+<div id="storeUsingThisSite" modified="200504152212" modifier="JeremyRuston">Within the main story column you can click on bold links to read a linked tiddler. Click on italic links to create a new tiddler. When you hover the mouse over a tiddler several ToolbarButtons appear. You can edit the text of any tiddler by double-clicking on it (or selecting 'edit' from the toolbar), but your changes won't get saved permanently until you make your own copy of TiddlyWiki, as described in SaveChanges.</div>
+<div id="storeNewFeatures" modified="200504152213" modifier="JeremyRuston">This ThirdVersion of TiddlyWiki adds:\n* the ability to easily SaveChanges on FireFox and InternetExplorer\n* a new liquid CSS layout that fills the width of the browser window\n* InterfaceOptions revealed by clicking the new 'options' button on the right\n* some BugFixes\n* KeyboardShortcuts so you can finish editing a tiddler with Control-Enter or abandon it with Escape\n* a more flexible OpenSourceLicense\n* a bunch of features from IsaoSonobe's [[adaptation|http://www-gauge.scphys.kyoto-u.ac.jp/~sonobe/OgreKit/OgreKitWiki.html]] of TiddlyWiki including ExtendedFormatting, NonWikiWordLinks, PrettyLinks, SubHeadings, BulletPoints, NumberedLists, HtmlTables, BlockQuotes, HorizontalRules and...\n* ...EmbeddedImages:\n[img[brixhamharbour.jpg]]</div>
+<div id="storeTiddlyWikiAdaptations" modified="200504152214" modifier="JeremyRuston">The first and original was [[PhpTiddlyWiki|http://www.patrickcurry.com/tiddly/]] from PatrickCurry and GabrielJeffrey that adds a simple ServerSide in PHP with MySQL. Patrick's site allows anyone to create and edit tiddlers, and has become the de facto community site around TiddlyWiki.\n\nSome of the other adaptations include:\n* HenrikAastedSorensen's at http://aasted.org/wiki\n* IsaoSonobe's OgreKit at http://www-gauge.scphys.kyoto-u.ac.jp/~sonobe/OgreKit/OgreKitWiki.html \n* [[JacquesTurbé]]'s TidliPo, in French at http://avm.free.fr/IMG/html/carnet_gt_BigCo.html\n* ChristianHauck's at http://www.christianhauck.net/html/14300.html\n* TonyLownds's at http://tony.lownds.com/home/\n* PoulStaugaard and IvanMetalnikov's at http://poul.staugaard.dk/IeWiki.htm\n\n* There's also KevemBuangga's TiddlyWikiClone at http://www.kevembuangga.com/hwk/hailiwiki.htm (caution: on Safari, it seems to get locked up with error alerts)</div></div>
     </body>
 </html>
