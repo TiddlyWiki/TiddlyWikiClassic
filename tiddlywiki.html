@@ -1,4 +1,5 @@
-<!-- TiddlyWiki 1.0 copyright by Jeremy Ruston, 20 September 2004 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!-- TiddlyWiki 1.1 copyright by Jeremy Ruston, 5 December 2004 -->
 <!-- jeremy (at) osmosoft (dot) com -->
 <!-- This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike License.
      To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/2.0/ or send
@@ -14,10 +15,19 @@
 
 function main()
 {
-    // Do the header, menu and sidebar
+    restart();
+}
+
+function restart()
+{
+	closeAllTiddlers();
+    hideMessage();
     refreshAll();
-    // Display the StartHere tiddler
-    displayTiddler(null,'StartHere',1);
+    var start;
+    if(window.location.hash)
+        displayTiddlers(null,decodeURI(window.location.hash).substr(1),1,null,null);
+    else if(start = getTiddlerText("DefaultTiddlers"))
+        displayTiddlers(null,start,1,null,null);
 }
 
 // ---------------------------------------------------------------------------------
@@ -28,45 +38,53 @@ function main()
 //  src = source element object (eg link) for animation effects and positioning
 //  title = title of tiddler to display
 //  state = 0 is default or current state, 1 is read only and 2 is edittable
-function displayTiddler(src,title,state)
+//  highlightText = text to highlight in the displayed tiddler
+//  highlightCaseSensitive = flag for whether the highlight text is case sensitive
+function displayTiddler(src,title,state,highlightText,highlightCaseSensitive,slowly)
 {
     // Figure out the tiddler this one must go after
     var after = findContainingTiddler(src);
-    //alert(after);
     // Create the tiddler if needed
-    var theTiddler = createTiddler(title,state,after);
-    // Make it invisible if we got here on an event
-    if(src != null)
-        theTiddler.style.opacity = 0;
-    // Ensure the new tiddler is visible
-    ensureVisible(theTiddler);
+    var theTiddler = createTiddler(title,state,after,highlightText,highlightCaseSensitive);
     // Animate from the target of the event that followed the link
     if(src)
         {
+        // Start with the tiddler being transparent and fade it up
+        theTiddler.style.opacity = 0;
         // Set the text of the floater to match the title
         var floater = document.getElementById("floater");
         var floaterTitle = document.createTextNode(title);
         floater.replaceChild(floaterTitle,floater.firstChild);
         // Animate the floater from the link location to the location of the new tiddler  
-        startZoomer(floater,src,theTiddler);
+        startZoomer(floater,src,theTiddler,slowly);
         }
+}
+
+// Display several tiddlers from a list of space separated titles
+function displayTiddlers(src,titles,state,highlightText,highlightCaseSensitive,slowly)
+{
+    var tiddlers = titles.split(" ");
+    for(var t=tiddlers.length-1;t>=0;t--)
+        displayTiddler(src,tiddlers[t],state,highlightText,highlightCaseSensitive,slowly);
 }
 
 // Create a tiddler if it doesn't exist (with no fancy animating). The tiddler is invisible unless it was already visible
 //  title = title of tiddler to display
 //  state = 0 is default or current state, 1 is read only and 2 is edittable
 //  after = optional existing tiddler element to put the new one after
-function createTiddler(title,state,after)
+//  highlightText = text to highlight in the displayed tiddler
+//  highlightCaseSensitive = flag for whether the highlight text is case sensitive
+function createTiddler(title,state,after,highlightText,highlightCaseSensitive)
 {
     // See if the tiddler div is already there
     var theTiddler = document.getElementById("tiddler" + title);
     if(!theTiddler)
         {
         // If it's not there, create the tiddler header
-        theTiddler = createTiddlerHeader(title,after);
+        theTiddler = createTiddlerHeader(title,after,highlightText,highlightCaseSensitive);
         // Create the tiddler body appropriately
         if(state != 2)
-            createTiddlerBody(theTiddler,title);
+            createTiddlerBody(theTiddler,title,highlightText,highlightCaseSensitive);
         else
             createTiddlerEditor(theTiddler,title);
         }
@@ -85,7 +103,7 @@ function createTiddler(title,state,after)
                         {
                         if(theEditor)
                             theEditor.parentNode.removeChild(theEditor);
-                        createTiddlerBody(theTiddler,title);
+                        createTiddlerBody(theTiddler,title,highlightText,highlightCaseSensitive);
                         }
                 break;
                 case 2: // For editor state, delete any read-only body
@@ -105,7 +123,7 @@ function createTiddler(title,state,after)
 // Create an invisible common header section of a tiddler
 //  title = title of tiddler to display
 //  after = optional existing tiddler element to put the new one after
-function createTiddlerHeader(title,after)
+function createTiddlerHeader(title,after,highlightText,highlightCaseSensitive)
 {
     // Create the tiddler div
     theTiddler = createTiddlyElement(null,"div","tiddler",null);
@@ -113,9 +131,6 @@ function createTiddlerHeader(title,after)
     theTiddler.onmouseover = onMouseOverTiddler;
     theTiddler.onmouseout = onMouseOutTiddler;
     theTiddler.ondblclick = onDblClickTiddler;
-    // Get the subtitle
-    var subtitle = getTiddlerSubtitle(title);
-    theTiddler.title = subtitle;
     // Link it in
     var place = document.getElementById("tiddlerDisplay");
     if(after)
@@ -135,9 +150,23 @@ function createTiddlerHeader(title,after)
     // Create the anchor
     var theAnchor = createTiddlyElement(theTiddler,"a",null,null);
     theAnchor.setAttribute("name","link" + title);
-    // Create the title
-    var theTitle = createTiddlyElement(theTiddler,"div","title",title);
+    // Prepare the regexp for the highlighted selection in the title
+    if(highlightText == "")
+        highlightText = null;
+    var highlightRegExp,highlightMatch;
+    if(highlightText)
+        {
+        highlightRegExp = new RegExp(escapeRegExp(highlightText),highlightCaseSensitive ? "mg" : "img");
+        highlightMatch = highlightRegExp.exec(title);
+        }
+    // Create the title with optional highlight
+    var theTitle = createTiddlyElement(theTiddler,"div","title",null);
+    highlightMatch = subWikify(theTitle,title,0,title.length,highlightRegExp,highlightMatch);
+    insertSpacer(theTitle);
     theTitle.setAttribute("id","title" + title);
+    // Get the subtitle
+    var subtitle = getTiddlerSubtitle(title);
+    theTitle.title = subtitle;
     // Return the created tiddler
     return(theTiddler);
 }
@@ -151,9 +180,11 @@ function createTiddlerToolbar(title,editor)
         theToolbar.parentNode.removeChild(theToolbar);
     // Create the toolbar
     var theTitle = document.getElementById("title" + title);
-    var theToolbar = createTiddlyElement(theTitle,"div","toolbar", String.fromCharCode(160));
+    var theToolbar = createTiddlyElement(null,"div","toolbar", null);
+    theTitle.appendChild(theToolbar);
     theToolbar.setAttribute("id","toolbar" + title);
     // Create each button in turn
+    insertSpacer(theToolbar);
     if(!editor)
         {
         // Non-editor toolbar
@@ -161,16 +192,22 @@ function createTiddlerToolbar(title,editor)
                            "close",
                            "Close this tiddler",
                            onClickToolbarClose);
-        theToolbar.appendChild(document.createTextNode(String.fromCharCode(160)));
-        createTiddlyButton(theToolbar,
-                           "link",
-                           "Permalink for this tiddler",
-                           onClickToolbarLink);
-        theToolbar.appendChild(document.createTextNode(String.fromCharCode(160)));
+        insertSpacer(theToolbar);
         createTiddlyButton(theToolbar,
                            "edit",
                            "Edit this tiddler",
                            onClickToolbarEdit);
+        insertSpacer(theToolbar);
+        var permaLink = createTiddlyButton(theToolbar,
+                                            "permalink",
+                                            "Permalink for this tiddler",
+                                            null);
+        permaLink.href = window.location.protocol + window.location.host + window.location.pathname + "#" + title;
+        insertSpacer(theToolbar);
+        createTiddlyButton(theToolbar,
+                           "references",
+                           "Show tiddlers that link to this one",
+                           onClickToolbarBackLink);
         }
     else
         {
@@ -179,21 +216,22 @@ function createTiddlerToolbar(title,editor)
                            "done",
                            "Finish changing this tiddler",
                            onClickToolbarSave);
-        theToolbar.appendChild(document.createTextNode(String.fromCharCode(160)));
+        insertSpacer(theToolbar);
         createTiddlyButton(theToolbar,
                            "undo",
                            "Undo changes to this tiddler",
-                           onClickToolbarUndo);        
-        theToolbar.appendChild(document.createTextNode(String.fromCharCode(160)));
+                           onClickToolbarUndo);
+        insertSpacer(theToolbar);
         createTiddlyButton(theToolbar,
                            "delete",
                            "Delete this tiddler",
                            onClickToolbarDelete);
         }
+    insertSpacer(theToolbar);
 }
 
 // Create the body section of a read-only tiddler
-function createTiddlerBody(place,title)
+function createTiddlerBody(place,title,highlightText,highlightCaseSensitive)
 {
     // Create the toolbar
     createTiddlerToolbar(title,false);
@@ -201,14 +239,14 @@ function createTiddlerBody(place,title)
     var tiddlerText = getTiddlerText(title);
     var tiddlerExists = (tiddlerText != null);
     if(!tiddlerExists)
-        tiddlerText = "[This tiddler doesn't yet exist. Double-click to create it]";
+        tiddlerText = "This tiddler doesn't yet exist. Double-click to create it";
     // Create the body
     var theBody = createTiddlyElement(place,"div","body",null);
     theBody.setAttribute("id","body" + title);
     if(!tiddlerExists)
         theBody.style.fontStyle = "italic";
     // Add the body text wikifing the links
-    wikify(tiddlerText,theBody);
+    wikify(tiddlerText,theBody,highlightText,highlightCaseSensitive);
 }
 
 // Create the body section of a read-only tiddler
@@ -241,42 +279,85 @@ function createTiddlerEditor(place,title)
 }
 
 // Create child text nodes and link elements to represent a wiki-fied version of some text
-function wikify(text,parent)
+function wikify(text,parent,highlightText,highlightCaseSensitive)
 {
     // Link patterns
     var upperLetter = "[A-Z]";
     var lowerLetter = "[a-z]";
     var anyLetter = "[A-Za-z_0-9]";
-    var linkPattern = upperLetter + "+" + lowerLetter + "+" + upperLetter + anyLetter + "*";
-    var urlPattern = "(?:http|https|mailto|ftp):\\S*";
-    var breakPattern = "\\n";
-    // Create the RegExp object
-    var theRegExp = new RegExp("(" + linkPattern + ")|(" + urlPattern + ")|(" + breakPattern + ")","mg");
-    // Set the position after the last match
-    var lastMatch = 0;
+    var linkPattern = "(" + upperLetter + "+" + lowerLetter + "+" + upperLetter + anyLetter + "*)";
+    var urlPattern = "|((?:http|https|mailto|ftp):\\S*)";
+    var breakPattern = "|(\\n)";
+    // Create the RegExp object for matching formatting
+    var formatRegExp = new RegExp(linkPattern + urlPattern + breakPattern,"mg");
+    // The start of the fragment of the text being considered
+    var nextPos = 0;
+    // Prepare the regexp for the highlighted selection
+    if(highlightText == "")
+        highlightText = null;
+    var highlightRegExp,highlightMatch;
+    if(highlightText)
+        {
+        highlightRegExp = new RegExp(escapeRegExp(highlightText),highlightCaseSensitive ? "mg" : "img");
+        highlightMatch = highlightRegExp.exec(text);
+        }
     // Loop through the bits of the body text
     do {
-        // Get the next match
-        var theMatch = theRegExp.exec(text);
-        if(theMatch)
+        // Get the next formatting match
+        var formatMatch = formatRegExp.exec(text);
+        var matchPos = formatMatch ? formatMatch.index : text.length;
+        // Subwikify the plain text before the match
+        if(nextPos < matchPos)
+            highlightMatch = subWikify(parent,text,nextPos,matchPos,highlightRegExp,highlightMatch);
+        // Dump out the formatted match
+        if(formatMatch)
             {
-            // If so, dump out any text before the link
-            if(theMatch.index > lastMatch)
-                parent.appendChild(document.createTextNode(text.substring(lastMatch,theMatch.index)));
-            lastMatch = theRegExp.lastIndex;
             // Dump out the link itself in the appropriate format
-            if(theMatch[1])
-                createTiddlyLink(parent,theMatch[0],true);
-            else if(theMatch[2])
-                createExternalLink(parent,theMatch[0]);
-            else if(theMatch[3])
-                parent.appendChild(document.createElement("br"));            }
-        else
-            {
-            // If no match, just dump out the remaining text
-            parent.appendChild(document.createTextNode(text.substring(lastMatch)));
+            if(formatMatch[1])
+                {
+                var theLink = createTiddlyLink(parent,formatMatch[0],false);
+                highlightMatch = subWikify(theLink,text,matchPos,formatRegExp.lastIndex,highlightRegExp,highlightMatch);
+                }
+            else if(formatMatch[2])
+                {
+                var theLink = createExternalLink(parent,formatMatch[0]);
+                highlightMatch = subWikify(theLink,text,matchPos,formatRegExp.lastIndex,highlightRegExp,highlightMatch);
+                }
+            else if(formatMatch[3])
+                parent.appendChild(document.createElement("br"));
             }
-    } while(theMatch != null);
+        // Move the next position past the formatting match
+        nextPos = formatRegExp.lastIndex;
+    } while(formatMatch);
+}
+
+// Helper for wikify that handles highlights within runs of text
+function subWikify(parent,text,startPos,endPos,highlightRegExp,highlightMatch)
+{
+    // Check for highlights
+    while(highlightMatch && (!((highlightRegExp.lastIndex <= startPos) || (highlightMatch.index >= endPos))) && (startPos < endPos))
+        {
+        // Deal with the plain text before the highlight
+        if(highlightMatch.index > startPos)
+            {
+            parent.appendChild(document.createTextNode(text.substring(startPos,highlightMatch.index)));
+            startPos = highlightMatch.index;
+            }
+        // Deal with the highlight
+        var highlightEnd = Math.min(highlightRegExp.lastIndex,endPos);
+        var theHighlight = createTiddlyElement(parent,"span","highlight",text.substring(Math.max(startPos,highlightMatch.index),highlightEnd));
+        startPos = highlightEnd;
+        // Nudge along to the next highlight if we're done with this one
+        if(startPos >= highlightRegExp.lastIndex)
+            highlightMatch = highlightRegExp.exec(text);
+        }
+    // Do the unhighlighted text left over
+    if(startPos < endPos)
+        {
+        parent.appendChild(document.createTextNode(text.substring(startPos,endPos)));
+        startPos = endPos;
+        }
+    return(highlightMatch);
 }
 
 function saveTiddler(title)
@@ -296,17 +377,62 @@ function saveTiddler(title)
     storeItem.setAttribute("modified",ConvertToYYYYMMDDHHMM(now));
     storeItem.setAttribute("modifier","JeremyRuston");
     // Display the new tiddler read-only
-    displayTiddler(null,theNewTitle,1,null);
+    displayTiddler(null,theNewTitle,1,null,null,null,false);
+    // Close the old tiddler if this is a rename
+    if(title != theNewTitle)
+        {
+        var oldTiddler = document.getElementById("tiddler" + title);
+        oldTiddler.parentNode.removeChild(oldTiddler);
+        }
     // Refresh the menu and sidebars to take it into account
     refreshAll();
 }
 
+function searchTiddlers(text,caseSensitive)
+{
+    // If we're searching case insensitively, put the search text in lower case
+    if(!caseSensitive)
+        text = text.toLowerCase();
+    // Close any open tiddlers
+    closeAllTiddlers();
+    // If the search text is actually the full name of a tiddler, make sure that one is
+    // displayed first, and get a reference to it to add the other matches afterwards
+    if(document.getElementById("store" + text))
+        displayTiddler(null,text,1,text,caseSensitive,false);
+    var theTiddler = document.getElementById("tiddler" + text);
+    // Traverse through the store area looking for the text in the title or body
+    var store = document.getElementById("storeArea").childNodes;
+    var c = 0;
+    for(var t = 0; t < store.length; t++)
+        {
+        var e = store[t];
+        if(e.id)
+            if(e.id.substr(0,5) == "store")
+                {
+                if(caseSensitive)
+                    {
+                    var matchTitle = e.id.substr(5).indexOf(text);
+                    var matchBody = e.firstChild.nodeValue.indexOf(text);
+                    }
+                else
+                    {
+                    var matchTitle = e.id.substr(5).toLowerCase().indexOf(text);
+                    var matchBody = e.firstChild.nodeValue.toLowerCase().indexOf(text);
+                    }
+                if((matchTitle != -1) || (matchBody != -1))
+                    {
+                    // Display matching tiddlers
+                    displayTiddler(null,e.id.substr(5),1,text,caseSensitive,false);
+                    c++;
+                    }
+                }
+        }
+    // Jam in a message
+    displayMessage(c + " tiddlers found matching '" + text + "'");
+}
+
 function selectTiddler(title)
 {
-    // Change the background colour
-    var e = document.getElementById("tiddler" + title);
-    if(e != null)
-        e.className = "tiddlerSelected";
     // Make the toolbar visible
     e = document.getElementById("toolbar" + title);
     if(e != null)
@@ -315,10 +441,7 @@ function selectTiddler(title)
 
 function deselectTiddler(title)
 {
-    // Change the background colour
-    var e = document.getElementById("tiddler" + title);
-    if(e != null)
-        e.className = "tiddler";
+
     // Make the toolbar invisible
     e = document.getElementById("toolbar" + title);
     if(e != null)
@@ -328,7 +451,7 @@ function deselectTiddler(title)
 function deleteTiddler(title)
 {
     // Remove the tiddler from the display
-    closeTiddler(title);
+    closeTiddler(title,false);
     // Delete it from the store
     var tiddler = document.getElementById("store" + title);
     if(tiddler)
@@ -337,11 +460,14 @@ function deleteTiddler(title)
     refreshAll();
 }
 
-function closeTiddler(title)
+function closeTiddler(title,slowly)
 {
     var tiddler = document.getElementById("tiddler" + title);
     if(tiddler != null)
-        tiddler.parentNode.removeChild(tiddler);
+        {
+        tiddler.id = "";
+        startCloser(tiddler,slowly);
+        }
 }
 
 function closeAllTiddlers()
@@ -376,10 +502,10 @@ function getTiddlerSubtitle(title)
             theModifier = "(unknown)";
         var theModified = tiddlerStore.getAttribute("modified");
         if(theModified)
-            theModified = ConvertFromYYYYMMDDHHMM(theModified);
+            theModified = ConvertFromYYYYMMDDHHMM(theModified).toLocaleString();
         else
             theModified = "(unknown)";
-        return("Modified by " + theModifier + " on " + theModified);
+        return(theModifier + ", " + theModified);
         }
     else
         return(null);
@@ -400,48 +526,43 @@ function createTiddlyElement(theParent,theElement,theClass,theText)
 function createTiddlyButton(theParent,theText,theTooltip,theAction)
 {
     var theButton = document.createElement("a");
-    theButton.onclick = theAction;
-    theButton.setAttribute("href","JavaScript:;");
+    if(theAction)
+        {
+        theButton.onclick = theAction;
+        theButton.setAttribute("href","JavaScript:;");
+        }
     theButton.setAttribute("title",theTooltip);
-    theButton.appendChild(document.createTextNode(theText));
+    if(theText)
+        {
+        theButton.appendChild(document.createTextNode(theText));
+        }
     theParent.appendChild(theButton);
     return(theButton);
 }
 
-// Create a link to a tiddler
-function createTiddlyLink(place,title,styleIt)
+function createTiddlyLink(place,title,includeText)
 {
-    // Figure out if the wiki word exists
     var btn;
-    if(getTiddlerText(title) == null)
-        {
-        // If it does not exist
-        btn = createTiddlyButton(place,title,
-                           title + " doesn't yet exist",
-                           onClickTiddlerLink);
-        if(styleIt)
-            btn.style.fontStyle = "italic";
-        }
-    else
-        {
-        // If it does exist
-        btn = createTiddlyButton(place,title,
-                           getTiddlerSubtitle(title),
-                           onClickTiddlerLink);
-        if(styleIt)
-            btn.style.fontWeight = "bold";
-        }
+    var text = includeText ? title : null;
+    var subTitle = getTiddlerSubtitle(title);
+    var theClass = subTitle ? "tiddlyLinkExisting" : "tiddlyLinkNonExisting";
+    if(!subTitle)
+        subTitle = title + " doesn't yet exist";
+    var btn = createTiddlyButton(place,text,subTitle,onClickTiddlerLink);
+    btn.className = theClass;
+    btn.setAttribute("tiddlyLink",title);
+    return(btn);
 }
 
 // Create an external link
 function createExternalLink(place,url)
 {
     var theLink = document.createElement("a");
-    theLink.setAttribute("href",url);
-    theLink.setAttribute("title","External link to " + url);
-    theLink.setAttribute("target","_blank");
-    theLink.appendChild(document.createTextNode(url));
+    theLink.href = url;
+    theLink.title = "External link to " + url;
+    theLink.target = "_blank";
     place.appendChild(theLink);
+    return(theLink);
 }
 
 // Find the tiddler instance (if any) containing a specified element
@@ -461,9 +582,27 @@ function findContainingTiddler(e)
     return(null);
 }
 
+// Display some text in the message area
+function displayMessage(text)
+{
+    var msgArea = document.getElementById("messageArea");
+    var msg = document.createTextNode(text);
+    msgArea.replaceChild(msg,msgArea.firstChild);
+    msgArea.style.display = "block";
+}
+
+// Hide the message area and clear the search box
+function hideMessage()
+{
+    var msgArea = document.getElementById("messageArea");
+    msgArea.style.display = "none";
+}
+
 // ---------------------------------------------------------------------------------
 // Menu and sidebar functions
 // ---------------------------------------------------------------------------------
+
+var currentTab; // The id of the currently selected tab
 
 // Refresh everything
 function refreshAll()
@@ -478,34 +617,97 @@ function refreshHeader()
 {
     // Get the site title and subtitle
     var theTitle = getTiddlerText("SiteTitle");
+    if(!theTitle) theTitle = "SiteTitle";
     var theSubtitle = getTiddlerText("SiteSubtitle");
+    if(!theSubtitle) theSubtitle = "SiteSubtitle";
     // Set the page title
     document.title = theTitle + " - " + theSubtitle;
     // Do the title
-    var place = document.getElementById("headerTitle");
+    var place = document.getElementById("siteTitle");
     while(place.firstChild != null)
         place.removeChild(place.firstChild);
-    wikify(theTitle,place);
+    place.appendChild(document.createTextNode(theTitle));
     // Do the subtitle
-    var place = document.getElementById("headerSubtitle");
+    var place = document.getElementById("siteSubtitle");
     while(place.firstChild != null)
         place.removeChild(place.firstChild);
-    wikify(theSubtitle,place);
+    wikify(theSubtitle,place,null,null);
 }
 
 // Refresh all parts of the main menu
 function refreshMenu()
 {
-    var place = document.getElementById("leftMenuMain");
+    var place = document.getElementById("mainMenu");
     while(place.firstChild != null)
         place.removeChild(place.firstChild);
-    var theMenu = document.createElement("div");
-    place.appendChild(theMenu);
-    wikify(getTiddlerText("MainMenu"),theMenu);
+    var menu = getTiddlerText("MainMenu");
+    if(!menu) menu = "MainMenu";
+    wikify(menu,place,null,null);
 }
 
 // Refresh all parts of the sidebar
 function refreshSidebar()
+{
+    switch(currentTab)
+        {
+            case "tabTimeline":
+                refreshTabTimeline();
+                break;
+            case "tabAll":
+                refreshTabAll();
+                break;
+            case "tabTags":
+                refreshTabTags();
+                break;
+            default:
+                refreshTabTimeline();
+                break;
+        }
+}
+
+// Timeline tab
+function refreshTabTimeline()
+{
+    // Get names and dates of all tiddlers from the store
+    var allTiddlers = new Array(); // Will be an array of 2-entry arrays, where entry 0 = name, 1 = date
+    var storeNodes = document.getElementById("storeArea").childNodes;
+    for (var t = 0; t < storeNodes.length; t++)
+        {
+        var n = storeNodes[t];
+        if(n.id)
+            if(n.id.substr(0,5) == "store")
+                allTiddlers.push(new Array(n.id.substr(5),n.getAttribute("modified")));
+        }
+    // Sort the tiddlers by date
+    allTiddlers.sort(function (a,b) { if(a[1] == b[1]) return(1); else return (a[1] < b[1]) ? +1 : -1; });
+    // Delete any existing entries in the tab
+    var place = document.getElementById("sidebarContent");
+    while(place.firstChild != null)
+        place.removeChild(place.firstChild);
+    // Output the links
+    var lastDay = "";
+    for (t = 0; t < allTiddlers.length; t++)
+        {
+        var theDay = allTiddlers[t][1].substr(0,8);
+        if(theDay != lastDay)
+            {
+            var theDateElement = document.createElement("span");
+            var theDateCaption = ConvertFromYYYYMMDDHHMM(allTiddlers[t][1]).toLocaleDateString();
+            theDateElement.appendChild(document.createTextNode(theDateCaption));
+            theDateElement.className = "sidebarSubHeading";
+            place.appendChild(theDateElement);
+            place.appendChild(document.createElement("br")); 
+            lastDay = theDay;
+            }
+        place.appendChild(document.createTextNode(String.fromCharCode(160)));
+        place.appendChild(document.createTextNode(String.fromCharCode(160)));
+        createTiddlyLink(place,allTiddlers[t][0],true);
+        place.appendChild(document.createElement("br"));
+        }
+}
+
+// All tab
+function refreshTabAll()
 {
     // Get names and dates of all tiddlers from the store
     var allTiddlers = new Array(); // Will be an array of 2-entry arrays, where entry 0 = name, 1 = date
@@ -520,36 +722,20 @@ function refreshSidebar()
     // Sort the tiddlers by name
     allTiddlers.sort(function (a,b) { if(a[0] == b[0]) return(0); else return (a[0] > b[0]) ? +1 : -1; });
     // Delete any existing entries in the 'all' list
-    var place = document.getElementById("sidebarAllTiddlers");
+    var place = document.getElementById("sidebarContent");
     while(place.firstChild != null)
         place.removeChild(place.firstChild);
     // Output the links
-    var separator = false;
     for (t = 0; t < allTiddlers.length; t++)
         {
-        if(separator)
-            place.appendChild(document.createElement("br"));
-        createTiddlyLink(place,allTiddlers[t][0],false)
-        separator = true;
+        createTiddlyLink(place,allTiddlers[t][0],true);
+        place.appendChild(document.createElement("br"));
         }
-    // Sort the tiddlers by date
-    allTiddlers.sort(function (a,b) { if(a[1] == b[1]) return(1); else return (a[1] < b[1]) ? +1 : -1; });
-    // Delete any existing entries in the 'recent' list
-    var place = document.getElementById("sidebarRecentTiddlers");
-    while(place.firstChild != null)
-        place.removeChild(place.firstChild);
-    // Output the most recent few as links
-    var separator = false;
-    var inList = 5;
-    if (allTiddlers.length < inList)
-        inList = allTiddlers.length;
-    for (t = 0; t < inList; t++)
-        {
-        if(separator)
-            place.appendChild(document.createElement("br"));
-        createTiddlyLink(place,allTiddlers[t][0],false)
-        separator = true;
-        }
+}
+
+// Tags tab
+function refreshTabTags()
+{
 }
 
 // ---------------------------------------------------------------------------------
@@ -570,8 +756,7 @@ function ShowSource()
     // Get a reference to the text area
     var theTextBox = srcDocument.getElementById("source");
     // Jam in the current source
-    //theTextBox.value = "<html>\n" + window.document.getElementsByTagName("html")[0].innerHTML + "\n</html>";
-    theTextBox.value = window.document.getElementById("storeArea").innerHTML; // Optionally, add .replace(/\n+/g, "\n");
+    theTextBox.value = window.document.getElementById("storeArea").innerHTML;
     // Select the text in the textbox
     theTextBox.focus();
     theTextBox.select();
@@ -585,22 +770,19 @@ function ShowSource()
 // Event handler for clicking on the logo
 function onClickLogo(e)
 {
-	closeAllTiddlers();
-	displayTiddler(document.getElementById("headerTitle"),"StartHere",1);
+    restart();
 }
 
 // Event handler for clicking on a tiddly link
 function onClickTiddlerLink(e)
 {
+    if (!e) var e = window.event;
+    hideMessage();
 	// Get the text of the link
-	var title;
-	if(this.firstChild)
-        title = this.firstChild.nodeValue;
-    else if (this.nodeValue)
-	   title = this.nodeValue; 
+	var title = this.getAttribute("tiddlyLink");
 	// Display that tiddler
 	if(title)
-		displayTiddler(this,title,0);
+		displayTiddler(this,title,0,null,null,e.shiftKey || e.altKey);
 }
 
 // Event handler for mouse over a tiddler
@@ -630,6 +812,7 @@ function onMouseOutTiddler(e)
 // Event handler for double click on a tiddler
 function onDblClickTiddler(e)
 {
+    hideMessage();
     // Empty the current selection
     if(document.selection)
         document.selection.empty();
@@ -639,42 +822,43 @@ function onDblClickTiddler(e)
 		tiddler = this.id.substr(7);
 	// Deselect that tiddler
 	if(tiddler)
-        displayTiddler(null,tiddler,2);
+        displayTiddler(null,tiddler,2,null,null,false);
 }
 
 // Event handler for clicking on toolbar close
 function onClickToolbarClose(e)
 {
+    if (!e) var e = window.event;
 	// Close that tiddler
+    hideMessage();
 	if(this.parentNode.id)
-		closeTiddler(this.parentNode.id.substr(7));
+		closeTiddler(this.parentNode.id.substr(7),e.shiftKey || e.altKey);
 }
 
 // Event handler for clicking on toolbar close
 function onClickToolbarDelete(e)
 {
+    hideMessage();
 	// Close that tiddler
 	if(this.parentNode.id)
 		deleteTiddler(this.parentNode.id.substr(7));
 }
 
-// Event handler for clicking on toolbar link
-function onClickToolbarLink(e)
+// Event handler for clicking on the toolbar backlink
+function onClickToolbarBackLink(e)
 {
-	// Close all other tiddlers
-	if(this.parentNode.id)
-		{
-		closeAllTiddlers();
-		displayTiddler(null,this.parentNode.id.substr(7),1);
-		}
+    hideMessage();
+    if(this.parentNode.id)
+        searchTiddlers(this.parentNode.id.substr(7),true);
 }
 
 // Event handler for clicking on toolbar close
 function onClickToolbarEdit(e)
 {
+    hideMessage();
 	// Edit that tiddler
 	if(this.parentNode.id)
-		displayTiddler(null,this.parentNode.id.substr(7),2);
+		displayTiddler(null,this.parentNode.id.substr(7),2,null,null,false);
 }
 
 // Event handler for clicking on toolbar save
@@ -690,7 +874,72 @@ function onClickToolbarUndo(e)
 {
 	// Redisplay that tiddler in read-only mode
 	if(this.parentNode.id)
-		displayTiddler(null,this.parentNode.id.substr(7),1);
+		displayTiddler(null,this.parentNode.id.substr(7),1,null,null,false);
+}
+
+// Event handler for clicking on toolbar close
+function onClickTab(e)
+{
+    if (!e) var e = window.event;
+    // Get the tab
+    var theTab;
+    if (e.target)
+        theTab = e.target;
+    else if (e.srcElement)
+        theTab = e.srcElement;
+    if (theTab.nodeType == 3) // defeat Safari bug
+        theTab = theTab.parentNode;
+    // Set the current tab
+    currentTab = theTab.id;
+    // Reset the classes of the tabs
+    var tabs = document.getElementById("sidebarTabs").childNodes;
+    for(var i=0;i < tabs.length;i++)
+        if(tabs[i].id)
+            {
+            if(tabs[i].id == currentTab)
+                tabs[i].className = "tabSelected";
+            else
+                tabs[i].className = "tabUnselected";
+            }
+    // Refresh the content
+    refreshSidebar();
+}
+
+// Event handler for typing into the search box. We need to detect when the text of the control actually changes, because we get keypresses
+// for things like cursor keys that we don't want to trigger a search
+
+var lastSearchText = "";
+
+function onSearch(e)
+{
+    // Do nothing if there's less than three characters or if it hasn't changed since last time
+    var text = document.getElementById("searchText").value;
+    if((text.length > 2) && (text != lastSearchText))
+        {
+        searchTiddlers(text,false);
+        lastSearchText = text;
+        }
+}
+
+function onClearSearch()
+{
+    var text = document.getElementById("searchText");
+    text.value = "";
+    hideMessage();
+}
+
+// Eek... it's bad that this is done via a function rather than a normal, copy-able href
+function onClickPermaView()
+{
+    var tiddlerDisplay = document.getElementById("tiddlerDisplay");
+    var openTiddlers = "";
+    var separator = "";
+    for(var t=0;t<tiddlerDisplay.childNodes.length;t++)
+        {
+        openTiddlers = openTiddlers + separator + tiddlerDisplay.childNodes[t].id.substr(7);
+        separator = " ";
+        }
+    window.location.hash = encodeURIComponent(openTiddlers);
 }
 
 // ---------------------------------------------------------------------------------
@@ -700,12 +949,19 @@ function onClickToolbarUndo(e)
 // Animation housekeeping
 var animating = 0; // Incremented at start of each animation, decremented afterwards. If zero, the interval timer is disabled
 var animaterID; // ID of the timer used for animating
-// 'zoomer' module of the animation engine that smoothly moves an element from the position/size of the start element to th etarget element
+// 'zoomer' module of the animation engine smoothly moves an element from the position/size of the start element to the target element
 var zoomerElement = null; // Element being shifted; null if none
-var zoomerStart; // Where we're shifting to
+var zoomerStart; // Where we're shifting from
 var zoomerTarget; // Where we're shifting to
+var zoomerStartScroll; // Where we're scrolling from
+var zoomerTargetScroll; // Where we're scrolling to
 var zoomerProgress; // 0..1 of how far we are
 var zoomerStep; // 0..1 of how much to shift each step
+// 'closer' module of the animation engine closes an element by smoothly reducing it's height to zero
+var closerElement = null; // Element being closed; null if none
+var closerStartHeight; // Starting height
+var closerProgress; // 0..1 of how far we are
+var closerStep; // 0..1 of how much to shift each step
 
 // Start animation engine
 function startAnimating()
@@ -724,29 +980,35 @@ function stopAnimating()
 // Perform an animation engine tick, calling each of the known animation modules
 function doAnimate()
 {
-    if(zoomerElement != null)
+    if(zoomerElement)
         doZoomer();
+    if(closerElement)
+        doCloser();
 }
 
 // Start moving the element 'e' from the position of the element 'start' to the position of the element 'target'
-function startZoomer(e,start,target)
+function startZoomer(e,start,target,slowly)
 {
     stopZoomer();
     zoomerElement = e;
     zoomerStart = start;
+    zoomerStartScroll = window.scrollY;
+    zoomerTargetScroll = ensureVisible(target);
     zoomerTarget = target;
     zoomerProgress = 0;
-    zoomerStep = 0.08;
+    zoomerStep = slowly ? 0.01 : 0.12;
     startAnimating();
 }
 
 // Stop any ongoing zoomer animation
 function stopZoomer()
 {
-    if(zoomerElement != null)
+    if(zoomerElement)
         {
         stopAnimating();
-        zoomerElement.style.visibility = "hidden"; 
+        zoomerElement.style.visibility = "hidden";
+        zoomerTarget.style.opacity = 1;
+        window.scrollTo(0,zoomerTargetScroll);
         zoomerElement = null;
         }
 }
@@ -755,11 +1017,10 @@ function stopZoomer()
 function doZoomer()
 {
     zoomerProgress += zoomerStep;
-    if(zoomerProgress > 1.0)
+    if(zoomerProgress >= 1.0)
         stopZoomer();
     else
         {
-        zoomerTarget.style.opacity = zoomerProgress;
         var f = slowInSlowOut(zoomerProgress);
         var zoomerStartLeft = findPosX(zoomerStart);
         var zoomerStartTop = findPosY(zoomerStart);
@@ -774,6 +1035,52 @@ function doZoomer()
         zoomerElement.style.width = zoomerStartWidth + (zoomerTargetWidth-zoomerStartWidth) * f;
         zoomerElement.style.height = zoomerStartHeight + (zoomerTargetHeight-zoomerStartHeight) * f;
         zoomerElement.style.visibility = "visible";
+        zoomerTarget.style.opacity = zoomerProgress;
+        window.scrollTo(0,zoomerStartScroll + (zoomerTargetScroll-zoomerStartScroll) * f);
+        }
+}
+
+// Start closing an element
+function startCloser(e,slowly)
+{
+    // Stop any existing close operation
+    stopCloser();
+    // Create the wrapper div that doesn't have any padding or margins or anything to confuse offsetWidth vs. style.width
+    var wrapper = createTiddlyElement(e.parentNode,"div",null,null);
+    e.parentNode.insertBefore(wrapper,e);
+    wrapper.appendChild(e);
+    closerElement = wrapper;
+    // Save the information for the close operation
+    closerStartHeight = closerElement.offsetHeight;
+    closerProgress = 0;
+    closerStep = slowly ? 0.01 : 0.12;
+    closerElement.style.overflow = "hidden";
+    startAnimating();
+}
+
+// Stop closing the current element
+function stopCloser()
+{
+    if(closerElement)
+        {
+        stopAnimating();
+        closerElement.parentNode.removeChild(closerElement);
+        closerElement = null;
+        }
+}
+
+// Perform a tick of the closer animation
+function doCloser()
+{
+    closerProgress += closerStep;
+    if(closerProgress > 1.0)
+        stopCloser();
+    else
+        {
+        var f = slowInSlowOut(closerProgress);
+        var h = closerStartHeight * (1-f)
+        closerElement.style.height = (h <= 2) ? 2 : h;
+        closerElement.style.opacity = (1-f);
         }
 }
 
@@ -781,13 +1088,20 @@ function doZoomer()
 // Standalone utility functions
 // ---------------------------------------------------------------------------------
 
+// Escape a string to ensure it doesn't have any RegExp special characters
+function escapeRegExp(s)
+{
+    // Escape any special characters with that character preceded by a backslashes
+    return(s.replace(new RegExp("[\\\\\\^\\$\\*\\+\\?\\(\\)\\=\\!\\|\\,\\{\\}\\[\\]]","g"),"\\$&"));
+}
+
 // Return a date in UTC YYYYMMDDHHMM format
 function ConvertToYYYYMMDDHHMM(d)
 {
     return(d.getFullYear() + '' + (d.getMonth() <= 8 ? '0' : '') + (d.getMonth() + 1) + '' + (d.getDate() <= 9 ? '0' : '') + d.getDate() + (d.getHours() <= 9 ? '0' : '') + d.getHours() + (d.getMinutes() <= 9 ? '0' : '') + d.getMinutes());
 }
 
-// Convert a date in UTC YYYYMMDDHHMM format to printable local time
+// Convert a date in UTC YYYYMMDDHHMM format to date type
 function ConvertFromYYYYMMDDHHMM(d)
 {
     var theDate = new Date(parseInt(d.substr(0,4),10),
@@ -795,7 +1109,7 @@ function ConvertFromYYYYMMDDHHMM(d)
                             parseInt(d.substr(6,2),10),
                             parseInt(d.substr(8,2),10),
                             parseInt(d.substr(10,2),10),0,0);
-    return(theDate.toLocaleString());
+    return(theDate);
 }
 
 // Map a 0..1 value to 0..1, but slow down at the start and end
@@ -804,17 +1118,24 @@ function slowInSlowOut(progress)
     return(1-((Math.cos(progress * Math.PI)+1)/2));
 }
 
-// Scroll if necessary to ensure that a given element is visible
+// Get the scroll position for window.scrollTo necessary to scroll a given element into view
 function ensureVisible(e)
 {
-    // The position we're trying to scroll into view; the top of it...
-    var posY = findPosY(e);
-    // ...or, if the element will fit on the screen, the bottom of it
-    if(e.offsetHeight < window.innerHeight)
-        posY += e.offsetHeight;
-    // Make sure the chosen position is visible
-    if ((posY < window.scrollY) || (posY > (window.scrollY + window.innerHeight)))
-        window.scrollTo(0,posY);
+    var posTop = findPosY(e);
+    var posBot = posTop + e.offsetHeight;
+    var winTop = window.scrollY;
+    var winBot = winTop + window.innerHeight;
+    if(posTop < winTop)
+        return(posTop);
+    else if(posBot > winBot)
+        {
+        if(e.offsetHeight < window.innerHeight)
+            return(posTop - (window.innerHeight - e.offsetHeight));
+        else
+            return(posTop);
+        }
+    else
+        return(winTop);
 }
 
 // From QuirksMode.com
@@ -825,7 +1146,7 @@ function findPosX(obj)
         {
                 while (obj.offsetParent)
                 {
-                        curleft += obj.offsetLeft
+                        curleft += obj.offsetLeft;
                         obj = obj.offsetParent;
                 }
         }
@@ -842,13 +1163,19 @@ function findPosY(obj)
         {
                 while (obj.offsetParent)
                 {
-                        curtop += obj.offsetTop
+                        curtop += obj.offsetTop;
                         obj = obj.offsetParent;
                 }
         }
         else if (obj.y)
                 curtop += obj.y;
         return curtop;
+}
+
+// Create a non-breaking space
+function insertSpacer(place)
+{
+    place.appendChild(document.createTextNode(String.fromCharCode(160)));
 }
 
 // ---------------------------------------------------------------------------------
@@ -861,161 +1188,278 @@ function findPosY(obj)
 body {
     background-color: #ffffff;
 	font-size: 9pt;
-    font-family: tahoma,arial,helvetica;
-    margin: 0px 0px 0px 0px;
+    font-family: verdana,arial,helvetica;
+    margin: 0em 0em 0em 0em;
+    padding: 0em 0em 0em 0em;
 }
 
-img {
-	border: none;
+a:link, a:visited {
+    text-decoration: none;
+}
+
+a:hover, a:active {
+    text-decoration: underline;
 }
 
 #header {
-    width: 789px;
-    margin: 0px 16px 16px 16px;
+    width: 816px;
+    color: #ffffff;
+    background-color: #000000;
+    margin-bottom: 1em;
+    font-size: 10pt;
+    padding: 2.5em 1em 1em 1em;
+}
+
+#siteTitle {
+    font-size: 26pt;
+}
+
+#siteSubtitle {
+    padding-left: 1em;
+    font-size: 10pt;
+}
+
+#header a {
+    color: #CCFF33;
+}
+
+#mainMenu {
+    float:left;
+    width: 10em;
+    height: auto;
+    line-height: 166%;
     padding: 6px 6px 6px 6px;
-    border-bottom: 2px solid #4d5577;
-    background-color: #a2b3f9;
-    font-size: 16pt;
-    text-shadow: #4d5577 3px 3px 8px;
-}
-
-#headerTitle {
-    font-size: 30pt;
-    font-weight: bold;
-}
-
-#headerSubtitle {
-    font-family: georgia,times;
-    font-style: italic;
-    color: #4d5577;
-}
-
-#header a:link, #header a:visited {
-    text-decoration: none;
-    color: #000000;
-}
-
-#leftMenu {
-    float: left;
-    width: 127px;
-    background: #fbe9a2;
+    font-size: 10pt;
     color: black;
     text-align: right;
-    border: 1px dotted #46412d;
-    margin: 0px 6px 16px 16px;
+    border-right: 1px solid #E5E5BF;
 }
 
-#leftMenu div {
-    font-size: 10pt;
-    padding: 6px 6px 6px 6px;
-    overflow: hidden;
-    line-height: 140%;
-}
-
-#leftMenu a:link, #leftMenu a:visited {
-    text-decoration: none;
-    color: #46412d;
-}
-
-#leftMenu a:hover {
-    color: #fbe9a2;
-    background-color: #46412d;
-}
-
-#sidebar {
-    float: left;
-    width: 145px;
-    margin: 0px 0px 0px 6px;
-    padding: 6px 6px 6px 6px;
-    color: #777777;
-    font-size: 8pt;
-    background-color: #ffffff;
-    border-left: 1px solid #777777;
-}
-
-#sidebar a:link, #sidebar a:visited {
-    color: #777777;
-    text-decoration: none;
-}
-
-#sidebar a:hover {
-    color: blue;
-    text-decoration: underline;
+#mainMenu a {
+    color: #9f9f10;
 }
 
 #displayArea {
     float: left;
-    width: 511px;
+    width: 44em;
+    margin: 0em 1em 0em 1em;
+}
+
+#messageArea {
+    background-color: #999999;
+    color: #ffffff;
+    padding: 0.3em 0.3em 0.3em 0.3em;
+    margin: 0em 0em 0.6em 0em;
+    display: none;
 }
 
 .tiddler {
-    font-family: georgia,times;
-    padding: 8px 8px 8px 8px;
-    background-color: #ffffff;
+    padding: 1em 1em 1em 1em;
+    font-size: 9pt;
 }
 
-.tiddlerSelected {
-    font-family: georgia,times;
-    padding: 8px 8px 8px 8px;
-    background-color: #d5e7ff;
+#displayArea .tiddlyLinkExisting {
+    font-weight: bold;
+}
+
+#displayArea .tiddlyLinkNonExisting {
+    font-style: italic;
 }
 
 .title {
-    font-family: tahoma,arial,helvetica;
     font-size: 10pt;
-    color: #5d1914;
     font-weight: bold;
     display: inline;
-    text-shadow: #AAAAAA 3px 3px 3px;
 }
 
 .body {
-    padding-top: 2px;
-    font-size: 10pt;
+    padding-top: 0.5em;
 }
 
-.body a:link, .body a:visited {
-    color: #482d94;
-    text-decoration: underline;
+.body a {
+    color: #777700;
 }
 
-.body a:hover {
-    color: white;
-    background-color: #482d94;
-    text-decoration: none;
+.highlight {
+    color: #000000;
+    background-color: #ffe72f;
 }
 
 .editor {
     font-size: 8pt;
     color: #402C74;
     font-weight: normal;
-    padding-bottom: 0px;
-    border-bottom: 0px solid #999999;
-    margin-bottom: 0px;
 }
 
 .toolbar {
-    text-shadow: none;
     font-weight: normal;
     font-size: 8pt;
-    margin-left: 6px;
-    padding: 0px 0px 0px 0px;
+    padding: 0em 0em 0em 0em;
+    background-color: #e7e7d9;
     color: #aaaaaa;
     display: inline;
     visibility: hidden;
 }
 
 .toolbar A {
-    color: #888888;
-    text-decoration: none;
+    margin: 1px 1px 1px 1px;
+    padding: 0.1em 0.2em 0.1em 0.2em;
+    color: #777700;
 }
 
 .toolbar A:hover {
+    margin: 0px 0px 0px 0px;
+    border: 1px solid #777700;
+    text-decoration: none;
     color: #000000;
+    background-color: #cccc99;
 }
 
 .toolbar A:active {
-    color: #666666;
+    color: #ffffff;
+    background-color: #777700;
+}
+
+#sidebar {
+    float: left;
+    width: 14em;
+    color: #CCFF33;
+    font-size: 8pt;
+    background-color: #ffffff;
+}
+
+.sidebarSubHeading {
+    font-size: 7pt;
+    color: #000000;
+}
+
+#searchPanel {
+    color: #777700;
+}
+
+#searchPanel P {
+    padding: 0em 0em 0em 0em;
+    margin: 0.4em 0em 0.4em 0em;
+}
+
+#searchPanel A {
+    padding: 0.1em 0.2em 0.1em 0.2em;
+    color: #777700;
+    border: 1px solid #ffffff;
+}
+
+#searchPanel A:hover {
+    border: 1px solid #777700;
+    text-decoration: none;
+    color: #000000;
+    background-color: #cccc99;
+}
+
+#searchPanel A:active {
+    color: #ffffff;
+    background-color: #777700;
+}
+
+#commandPanel {
+    padding: 0.5em 0em 0.5em 0em;
+}
+
+#commandPanel A {
+    display: block;
+    padding: 0.2em 0.2em 0.2em 0.2em;
+    border: 1px solid #ffffff;
+    color: #777700;
+}
+
+#commandPanel A:hover {
+    border: 1px solid #777700;
+    text-decoration: none;
+    color: #000000;
+    background-color: #cccc99;
+}
+
+#commandPanel A:active {
+    color: #ffffff;
+    background-color: #777700;
+}
+
+.tabSet {
+    padding-top: 1em;
+}
+
+.tabSet a {
+    color: #ccff66;
+}
+
+.tabSet a:hover {
+    background-color: #e7e7d9;
+    color: #777700;
+    text-decoration: none;
+}
+
+.tabSet a:active {
+    color: #000000;
+}
+
+.tabSelected {
+    font-weight: bold;
+    display: inline;
+    background-color: #999966;
+    border-left: 1px solid #777700;
+    border-top: 1px solid #777700;
+    border-right: 1px solid #777700;
+    padding: 0.3em 0.3em 0.2em 0.3em;
+    margin: 0px 1px 0px 1px;
+}
+
+.tabSelected:hover {
+    color: #000000;
+    text-decoration: none;
+}
+
+.tabUnselected {
+    font-weight: bold;
+    display: inline;
+    background-color: #666600;
+    border-left: 1px solid #777700;
+    border-top: 1px solid #777700;
+    border-right: 1px solid #777700;
+    padding: 2px 3px 1px 3px;
+    margin: 0px 1px 0px 1px;
+}
+
+.tabContent {
+    background-color: #999966;
+    border: 1px solid #777700;
+    padding: 0.5em 0.5em 0.5em 0.5em;
+}
+
+.tabContent a {
+    color: #ffffff;
+}
+
+.tabContent a:hover {
+    color: #000000;
+    background-color: #CCFF33;
+    text-decoration: none;
+}
+
+#licensePanel {
+    padding: 0.5em 0em 0.5em 0em;
+}
+
+#licensePanel A {
+    display: block;
+    padding: 0.2em 0.2em 0.2em 0.2em;
+    border: 1px solid #ffffff;
+    color: #777700;
+}
+
+#licensePanel A:hover {
+    border: 1px solid #777700;
+    text-decoration: none;
+    color: #000000;
+    background-color: #cccc99;
 }
 
 #saveMessage, #storeArea, #copyright {
@@ -1032,7 +1476,7 @@ img {
     color: white;
     background-color: #b8b896;
     position: absolute;
-    padding: 8px 8px 8px 8px;
+    padding: 1em 1em 1em 1em;
     opacity: 0.5;
     filter: alpha(opacity=50);
 }
@@ -1044,34 +1488,48 @@ img {
     Welcome to TiddlyWiki, Copyright &copy; 2004 Jeremy Ruston
     </div>
     <div id="header">
-        <a id="headerTitle" href="JavaScript:;" onclick="onClickLogo()"></a> <span id="headerSubtitle"></span>
+        <a id="siteTitle" href="JavaScript:;" onclick="onClickLogo()"></a>
+        <span id="siteSubtitle"></span>
     </div>
-    <div id="leftMenu">
-        <span id="leftMenuMain"></span>
+    <div id="mainMenu">
     </div>
     <div id="displayArea">
+        <div id="messageArea">Message Area</div>
         <div id="tiddlerDisplay"></div>
         &nbsp;
     </div>
         <div id="floater">&nbsp;</div>
     <div id="sidebar">
-        <a href="javascript:ShowSource()"><strong>Save all</strong></a>
-        <br> <br>
-        <strong>Recent tiddlers:</strong> <br>
-        <span id="sidebarRecentTiddlers"></span>
-        <br> <br>
-        <strong>All tiddlers:</strong> <br>
-        <span id="sidebarAllTiddlers"></span>
-        <br> <br>
-        <strong>License:</strong> <br>
-        <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/2.0/">
-        <!-- <img alt="Creative Commons License" border="0" src="http://creativecommons.org/images/public/somerights20.gif" /></a><br /> -->
-This work is licensed under a <br> Creative Commons License</a>
+        <div id="searchPanel">
+            <p>
+                <a href="JavaScript:;" onclick="onSearch()">search</a>
+                <a href="JavaScript:;" onclick="onClearSearch()">clear</a>
+            </p>
+            <p>
+                <input id="searchText" size=17 onKeyUp="onSearch()" autocomplete=off>
+            </p>
+        </div>
+        <div id="commandPanel">
+            <a href="javascript:closeAllTiddlers()" title="Close all displayed tiddlers">close all</a>
+            <a href="javascript:onClickPermaView()" title="Link to an URL that retrieves all the currently displayed tiddlers">permaview</a>
+            <a href="javascript:ShowSource()" title="Save all tiddlers to create a new TiddlyWiki">save changes</a>
+        </div>
+        <div id="sidebarTabs" class="tabSet">
+            <a href="JavaScript:;" onclick="onClickTab(event)" id="tabTimeline" class="tabSelected">Timeline</a>
+            <a href="JavaScript:;" onclick="onClickTab(event)" id="tabAll" class="tabUnselected">All</a>
+        </div>
+        <div id="sidebarContent" class="tabContent">
+        </div>
+        <div id="licensePanel">
+            <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/2.0/">
+                This work is licensed under a Creative Commons License
+            </a>
+        </div>
     </div>
     <div id="saveMessage">
         <span style="font-size: 10pt; font-family: tahoma,arial,helvetica;">
                 <p style="font-size: 18pt;">Ouch.</p>
-                This is a bit of a hack. In an ideal world, clicking the save button should just give you
+                This is still a bit of a hack. In an ideal world, clicking the save button should just give you
                 a file save dialogue box and let you choose where to save your spanking new personal TiddlyWiki. Unfortunately
                 doing stuff in web browsers is never that easy, and there's a couple of hoops to be jumped through. See below
                 for a quick guide. <br> <br>
@@ -1094,7 +1552,32 @@ This work is licensed under a <br> Creative Commons License</a>
 <!-- Paste your TiddlyWiki content between this marker and the one below   -->
 <!-- ********************************************************************* -->
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <DIV id="storeWikiWord" modified="200409072350" modifier="JeremyRuston">A WikiWord is a word composed of a bunch of other words slammed together with each of their first letters capitalised. WikiWord notation in a WikiWikiWeb is used to name individual pages. Furthermore, referring to a page automatically creates a link to it. Clicking on a link jumps to that page or, if it doesn't exist, to an editor to create it. TiddlyWiki uses WikiWord titles for smaller chunks of MicroContent.</DIV>
+
+
+
+
+
+
+
+
 
 
 
@@ -1104,7 +1587,23 @@ This work is licensed under a <br> Creative Commons License</a>
 
 
 
+
+
+
+
+
+
+
+
     <DIV id="storeSiteTitle" modified="200409161548" modifier="JeremyRuston">TiddlyWiki</DIV>
+
+
+
+
+
+
+
+
 
 
 
@@ -1114,7 +1613,19 @@ This work is licensed under a <br> Creative Commons License</a>
 
 
 
-                <DIV id="storeWishList" modified="200409181508" modifier="JeremyRuston">If you enjoy using TiddlyWiki, and are feel like being generous, it would be churlish of me to refuse anything that you might buy me from my Amazon wishlist http://www.amazon.co.uk/exec/obidos/registry/4PC7T6O1UEX0/ref=wl_em_to</DIV>
+
+
+
+
+
+
+
+
+                
+
+
+
+
 
 
 
@@ -1125,7 +1636,23 @@ This work is licensed under a <br> Creative Commons License</a>
 
 
 
+
+
+
+
+
+
+
+
     <DIV id="storeWikiWikiWeb" modified="200409201307" modifier="JeremyRuston">A Wiki is a widely-used, mature way of building collaborative websites. It's based on the ideas of easy editting of pages and the use of special WikiWord notation to automagically create links between pages. See Wikipedia for more details: http://en.wikipedia.org/wiki/Wiki . TiddlyWiki is different from a conventional Wiki because it is not based on entire pages of content, but rather items of MicroContent that are referred to as 'tiddlers'.</DIV>
+
+
+
+
+
+
+
+
 
 
 
@@ -1135,7 +1662,23 @@ This work is licensed under a <br> Creative Commons License</a>
 
 
 
+
+
+
+
+
+
+
+
     <DIV id="storeSubEthaEdit" modified="200409201316" modifier="JeremyRuston">SubEthaEdit at http://www.codingmonkeys.de/subethaedit/ is an amazing piece of software for Mac OS X. It's a neat little basic text editor with a few nicities such as colour-coding, but it's main reason for existence is the brilliantly implemented network-based collaborative editing features.</DIV>
+
+
+
+
+
+
+
+
 
 
 
@@ -1145,7 +1688,23 @@ This work is licensed under a <br> Creative Commons License</a>
 
 
 
+
+
+
+
+
+
+
+
     <DIV id="storeUsingThisSite" modified="200409201442" modifier="JeremyRuston">Hopefully, reading a TiddlyWiki is fairly self explanatory. Within the main story column, click on bold links to read a linked tiddler. Click on italic links to create a new tiddler. When you hover the mouse over a tiddler it's highlighted and some extra options appear by the title: 'close' just closes the tiddler in question, 'link' does the opposite by closing all other tiddlers. Finally, 'edit' allows you to edit the text of any tiddler; changes are not reflected back to the server, though. See SavingStuff for more details.</DIV>
+
+
+
+
+
+
+
+
 
 
 
@@ -1155,7 +1714,17 @@ This work is licensed under a <br> Creative Commons License</a>
 
 
 
-    <DIV id="storeIncrementalSearch" modified="200409201445" modifier="JeremyRuston">One of the MissingFeatures I'm planning to add will be a text box in the right hand menu that allows you to type an incremental search phrase. The idea is that as you type a phrase, any tiddlers including the phrase will be automatically displayed with the phrase highlighted.</DIV>
+
+
+
+
+
+
+
+
+    
+
+
 
 
 
@@ -1165,7 +1734,17 @@ This work is licensed under a <br> Creative Commons License</a>
 
 
 
-                <DIV id="storeCascadingStyleSheets" modified="200409201453" modifier="JeremyRuston">I'm no expert on CascadingStyleSheets so I suspect that much of my code could be improved in terms of correctness, compatibility and aesthetics. I'd love any feedback on making it work better across different browsers, and generally making it a little bit more elegant.</DIV>
+
+
+
+
+
+
+
+
+                
+
+
 
 
 
@@ -1175,7 +1754,23 @@ This work is licensed under a <br> Creative Commons License</a>
 
 
 
+
+
+
+
+
+
+
+
     <DIV id="storeJavaScript" modified="200409201457" modifier="JeremyRuston">Before TiddlyWiki I hadn't really done any serious development in JavaScript. After all the horror stories that I've read, I was very pleasantly surprised by how straightforward it is to use JavaScript. Using it rather reminds me of BBC Basic on the TheBBCMicro; it exploits it's interpreted nature beautifully. The most useful resource I've found is this article: http://www.crockford.com/javascript/survey.html</DIV>
+
+
+
+
+
+
+
+
 
 
 
@@ -1185,7 +1780,23 @@ This work is licensed under a <br> Creative Commons License</a>
 
 
 
+
+
+
+
+
+
+
+
     <DIV id="storeLinkRefreshing" modified="200409201458" modifier="JeremyRuston">When you create a new tiddler, references to it in the menus automatically change from italic to bold, but references in other open tiddlers do not.</DIV>
+
+
+
+
+
+
+
+
 
 
 
@@ -1195,12 +1806,28 @@ This work is licensed under a <br> Creative Commons License</a>
 
 
 
-    <DIV id="storeSpecialLinkNames" modified="200409201500" modifier="JeremyRuston">The idea with special link names is that a link in a certain format to a nonexistent tiddler, will create a page that's named with a variant of the link name. For example, a link to JournalEntry#now would create a journal entry with todays date appended. Other keywords could include #next (uses lowest available integer appendage), #me (uses username of logged in user). They'd appear as the name of the tiddler they would create if they were clicked (eg JournalEntry20040615 or ResumeJeremyRuston). These are not to be confused with SpecialTiddlers which are used to let you edit the menus and titles of a TiddlyWiki.</DIV>
 
 
 
 
-    <DIV id="storeSpecialTiddlers" modified="200409201501" modifier="JeremyRuston">TiddlyWiki uses several special tiddlers to hold the text used for the MainMenu, the SiteTitle and the SiteSubtitle. Go ahead and edit them and see the results.</DIV>
+
+
+
+
+    
+
+
+
+
+
+
+
+
+    
+
+
+
+
 
 
 
@@ -1210,12 +1837,36 @@ This work is licensed under a <br> Creative Commons License</a>
 
 
 
+
+
+
+
+
+
+
+
                  <DIV id="storeEasierReading" modified="200409211832" modifier="JeremyRuston">To make it easier to read a TiddlyWiki that you're interested in as it evolves, I plan to keep track of which tiddlers you've already read in a client-side cookie. Then, on the first visit when it creates the cookie, TiddlyWiki would open with WelcomeNewcomer. On subsequent visits, it would display the changed tiddlers in reverse date order, just like a blog.</DIV>
 
 
 
 
+
+
+
+
+
+
+
+
                  <DIV id="storeDesignGoals" modified="200409211832" modifier="JeremyRuston">I want to make it as easy to read a TiddlyWiki as a blog: 'push' notification of changes in an RSS reader, and EasierReading that lets you sort through the stuff you've already read from the stuff you haven't. It won't be possible to do all of that without some ServerSide logic.</DIV>
+
+
+
+
+
+
+
+
 
 
 
@@ -1227,10 +1878,12 @@ This work is licensed under a <br> Creative Commons License</a>
 
 
     
-    <DIV id="storeMainMenu" modified="200409241925" modifier="JeremyRuston">StartHere UsingThisSite ReusingThisSite AdaptingThisSite TiddlyWiki TiddlyWikiDev
+    
 
 
-Copyright 2004 JeremyRuston</DIV>
+
+
+
 
 
 
@@ -1240,7 +1893,23 @@ Copyright 2004 JeremyRuston</DIV>
     <DIV id="storeServerSide" modified="200409241930" modifier="JeremyRuston">TiddlyWiki doesn't have a server-side component at the moment. That means, amongst other things, that SavingStuff is hard. When I do implement a ServerSide, TiddlyWiki will lose the rather nice quality of being a SelfContained HTML file. Instead, though, I'll be able to add features like TrackBacks, RssFeeds, PublicEditting, IncomingHyperlinks, making TiddlyWiki a first-class citizen of the blogosphere. Actually, PatrickCurry and GabrielJeffrey have beaten me to it by AdaptingThisSite to incorporate a ServerSide already. Wow.</DIV>
 
 
+
+
+
+
+
+
+
+
     <DIV id="storeMicroContent" modified="200409251844" modifier="JeremyRuston">MicroContent being a fashionable word for self-contained fragments of content that are typically smaller than entire pages. Often MicroContent is presented via some kind of aggregation that reduces the perceptual shock and resource cost of context switching (eg Blogs aggregating several entries onto a page or Flickr presenting photos in an album). This TiddlyWiki aggregates MicroContent items that I call 'tiddlers' into pages that are loaded in one gulp and progressively displayed as the user clicks hypertext links to read them.</DIV>
+
+
+
+
+
+
+
+
 
 
 
@@ -1248,13 +1917,33 @@ Copyright 2004 JeremyRuston</DIV>
 
 
 
-    <DIV id="storeStupidName" modified="200409251849" modifier="JeremyRuston">In the UK at least, a 'tiddler' would be understood to be a small fish that wasn't really worth catching. By extension, something 'tiddly' is just something diminuitive. So hopefully, TiddlyWiki isn't such a stupid name - I thought it had a bit of a ring to it, and might be memorable as well as apt.</DIV>
+
+
+
+
+
+
+
+
+    
+
+
+
+
     <DIV id="storeOgreKit" modified="200409301728" modifier="JeremyRuston">OgreKit is a regular expression framework created by IsaoSonobe. He's adapted TiddlyWiki for the documentation at http://www-gauge.scphys.kyoto-u.ac.jp/~sonobe/OgreKit/OgreKitWiki.html Using his regular expression wizardry he's also made several very interesting improvements to the rather primitive markup that TiddlyWiki uses.</DIV>
 
 
 
 
-                <DIV id="storeStartHere" modified="200410011739" modifier="JeremyRuston">Welcome to TiddlyWiki, an experimental MicroContent WikiWikiWeb built by JeremyRuston. It's written in HTML and JavaScript to run on any browser without needing any ServerSide logic. It allows anyone to create SelfContained hypertext documents that can be posted to any web server, or sent by email. If you like it, do please EmailMe and let me know. If you're interested in future plans for TiddlyWiki, keep an eye on this site.</DIV>
+
+
+
+
+
+
+
+
+                
 
     
     <DIV id="storeJeremyRuston" modified="200410011740" modifier="JeremyRuston">I'm Jeremy Ruston, a ChiefTechnologyOfficer based in London. I currently work for a small self-funded startup doing cool stuff for big financial institutions. Previously, I've worked for two VentureCapital backed startups as CTO, Interactive1 and Infuzer. Before that I did a stint in the City of London as Global Head of E-Commerce for a big european investment bank. Long, long ago I used to write computer books and do some computer animation for BBC Television. If you've got any comments or suggestions on this site, do please EmailMe.</DIV>
@@ -1262,16 +1951,173 @@ Copyright 2004 JeremyRuston</DIV>
 
 
 
-                <DIV id="storeReusingThisSite" modified="200410151409" modifier="JeremyRuston">
-You can fairly easily take this TiddlyWiki, put in your own content and distribute it by email or by posting it on a web site. Anyway, to get your own content together all you need to do is CreateTiddlers, EditTiddlers and DeleteTiddlers. Then click the 'Save all' link at the top right of the page, and follow the instructions (glossing over the SkeletonInTheCloset). And, hey presto, you've got your own self contained TiddlyWiki. I'll try to collect OtherTiddlyWikis here, so do please EmailMe and let me know if you use it.</DIV>
-    <DIV id="storeTiddlyWikiFiction" modified="200410151411" modifier="JeremyRuston">
-TiddlyWiki lends itself quite well to the presentation of hypertext fiction. GinaTrapani did the first that I saw at http://scribbling.net/tiddlywiki-and-non-linear-fiction There's also the astonishing "Die, Vampire! Die!" from DavidVanWert at http://www.davidvanwert.com/wiki/dievampiredie.html</DIV>
-    <DIV id="storeWakabaAndKareha" modified="200410151416" modifier="JeremyRuston">
-DagAgren has done a neat adaptation of TiddlyWiki for some technical documentation at http://wakaba.c3.cx/docs/docs.html</DIV>
-    <DIV id="storeAdaptingThisSite" modified="200410151418" modifier="JeremyRuston">
-I've published TiddlyWiki under a CreativeCommonsLicense, so anyone is free to adapt it, as long as you give me credit. PatrickCurry and GabrielJeffrey have done a storming job of adapting TiddlyWiki by adding a ServerSide in PHP: http://www.patrickcurry.com/tiddly/ Really nicely done, and they put it up within hours of my posting the original TiddlyWiki. Thanks guys. Also check out an elegant adaptation at OgreKit and another sophisticated PHP ServerSide from Henrik Aasted Sorensen at http://aasted.org/wiki (doesn't currently work in Safari; FireFox is OK). IvanMetalnikov from Russia has done a neat adaptation at http://tiddlywiki.nm.ru/ that includes a very cool IncrementalSearch feature.</DIV>
+
+
+
+
+
+
+
+
+                <DIV id="storeReusingThisSite" modified="200410151409" modifier="JeremyRuston">You can fairly easily take this TiddlyWiki, put in your own content and distribute it by email or by posting it on a web site. Anyway, to get your own content together all you need to do is CreateTiddlers, EditTiddlers and DeleteTiddlers. Then click the 'Save all' link at the top right of the page, and follow the instructions (glossing over the SkeletonInTheCloset). And, hey presto, you've got your own self contained TiddlyWiki. I'll try to collect OtherTiddlyWikis here, so do please EmailMe and let me know if you use it.</DIV>
+
+
+
+
+
+
+
+
+    <DIV id="storeTiddlyWikiFiction" modified="200410151411" modifier="JeremyRuston">TiddlyWiki lends itself quite well to the presentation of hypertext fiction. GinaTrapani did the first that I saw at http://scribbling.net/tiddlywiki-and-non-linear-fiction There's also the astonishing "Die, Vampire! Die!" from DavidVanWert at http://www.davidvanwert.com/wiki/dievampiredie.html</DIV>
+
+
+
+
+
+
+
+
+    <DIV id="storeWakabaAndKareha" modified="200410151416" modifier="JeremyRuston">DagAgren has done a neat adaptation of TiddlyWiki for some technical documentation at http://wakaba.c3.cx/docs/docs.html</DIV>
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
     <DIV id="storeOtherTiddlyWikis" modified="200410151422" modifier="JeremyRuston">I know of several people ReusingThisSite, generally either for TiddlyWikiFiction or TechnicalDocumentation like OgreKit and WakabaAndKareha. Astonishingly, there's also at least two Japanese versions of TiddlyWiki with their own content at http://www.100shiki.com/tw.html (although I found that in Safari I had to manually set the text encoding to 'Japanese Shift JIS' before it displays properly) and http://www.geocities.co.jp/SiliconValley-Cupertino/6478/TiddlyWiki.jp.html.txt from YosukeTakasaki. Not that I have any idea what either one is saying, of course. Then there's KazuhiroKusuyama's site at http://pilotweb.comsq.com/~kusuyama/tiddlywiki/ which is a translation of this original TiddlyWiki text.</DIV>
 
+
+
+
+
+
+
+
+
+
+
+                
+    
+
+
+
+                
+
+
+
+    
+
+
+                
+
+
+    <DIV id="storeSiteDesign" modified="200412151741" modifier="JeremyRuston">The new SiteDesign is the work of my friend RebeccaWelby of Bysm. My clumsy CSS doesn't really do justice to her skills; see the Bysm site at http://www.bysm.co.uk for more of her work.</DIV>
+
+
+
+
+
+    
+    <DIV id="storeSecondVersion" modified="200412151752" modifier="JeremyRuston">This is an improved version of TiddlyWiki, with several NewFeatures, a new SiteDesign and the OldFeatures still present and correct. It still doesn't have a ServerSide, by far the most requested feature, so SavingStuff is still troublesome. I do have a ServerSide under development which I'll finish when I get EnoughTime, but in the meantime there are several interesting OtherTiddlyWikis that do allow saving already.</DIV>
+
+
+
+
+
+    <DIV id="storeReferencesButton" modified="200412151753" modifier="JeremyRuston">The references button displays all the tiddlers that link to a particular tiddler. It appears on a little toolbar when you move the mouse over any tiddler that is not being editted. This is one of the NewFeatures that has been requested a couple of times, and does indeed make it a lot easier to explore a TiddlyWiki.</DIV>
+
+
+
+
+
+    
+
+
+
+                <DIV id="storeIncrementalSearch" modified="200412151759" modifier="JeremyRuston">When you type more than three characters in the search box at the upper right, any matching tiddlers are automatically displayed with the text highlighted. There's a couple of minor problems, though: the highlights don't get removed when you clear the search, and occasionally, on some browsers, keystrokes get missed so you have to click the 'search' button to manually trigger the search. Of all the NewFeatures, this was the most troublesome to implement; the intricate complexities and interactions of my JavaScript wikify() and subWikify() functions that do the search term highlighting had me tearing my hair out.</DIV>
+
+
+
+
+    
+
+
+    <DIV id="storeSmoothScrolling" modified="200412151804" modifier="JeremyRuston">If you click on a link to a tiddler that is already open, TiddlyWiki will if necessary now smoothly scroll to bring it into view. This is one of the NewFeatures that actually isn't so new at all; I took it out at the last minute before the first release because it was ridiculously buggy.</DIV>
+
+
+
+
+    
+    
+
+
+                <DIV id="storePermaView" modified="200412161817" modifier="JeremyRuston">This is maybe the only one of the NewFeatures that might be vaguely original. It's a button in the right-hand sidebar that sets the browser address bar to a URL embodying all the currently open tiddlers in the order that they are currently shown. To use it, arrange the open tiddlers that you want, click the permaview button, copy the URL from the browser address bar, and then paste it into an email, web page or whatever.</DIV>
+
+
+
+    <DIV id="storePermaLinkButton" modified="200412161818" modifier="JeremyRuston">The permalink button is more of a fixed feature than one of the NewFeatures. It gives you a link back to a particular tiddler within TiddlyWiki, just like a permalink for a blog entry.</DIV>
+
+
+
+    <DIV id="storeCloseAll" modified="200412161819" modifier="JeremyRuston">Another of the more frequently requested NewFeatures, the 'close all' button in the right-hand sidebar just closes all the currently open tiddlers.</DIV>
+
+
+
+    <DIV id="storeImprovedSidebar" modified="200412161821" modifier="JeremyRuston">The sidebar now features a tab control to switch between a timeline and alphabetic view of all the open tiddlers. I have plans for more tabs that will offer further navigation methods.</DIV>
+
+
+
+    <DIV id="storeCloseButton" modified="200412161822" modifier="JeremyRuston">The close button appears when the mouse is over a tiddler; it just closes the tiddler in question, now accompanied by a little animation to make it clearer what's going on.</DIV>
+
+
+
+    
+    
+    <DIV id="storeStupidName" modified="200412161828" modifier="JeremyRuston">In the UK at least, a 'tiddler' would be understood to be a small fish that wasn't really worth catching. By extension, something 'tiddly' is just something diminuitive; and TiddlyWiki is really just a diminuitive WikiWikiWeb, hence the name.</DIV>
+
+
+
+    <DIV id="storeSpecialTiddlers" modified="200412161830" modifier="JeremyRuston">TiddlyWiki uses several special tiddlers to hold the text used for the MainMenu, the SiteTitle and the SiteSubtitle. DefaultTiddlers is used to store the titles of the tiddlers that are shown at startup. Go ahead and edit them and see the results.</DIV>
+
+
+
+
+
+
+                
+
+    <DIV id="storeReadingExperience" modified="200412182230" modifier="JeremyRuston">In this version of TiddlyWiki, the rules governing where a tiddler is displayed have changed slightly. They sound terribly complicated written down, but hopefully are a bit more intuitive than they were. When you click on a tiddler link within another tiddler, the new one is opened immediately below the current one. If the target tiddler is already open, TiddlyWiki just uses SmoothScrolling to bring it into view. More or less the same thing happens when clicking on a tiddler link within the menu or sidebar, except that the tiddler opens at the top of the page if it is not already open.</DIV>
+
+
+    
+
+    <DIV id="storeHelloThere" modified="200412182236" modifier="JeremyRuston">Welcome to the SecondVersion of TiddlyWiki, an experimental MicroContent WikiWikiWeb built by JeremyRuston. It's written in HTML and JavaScript to run on any modern browser without needing any ServerSide logic. It allows anyone to create SelfContained hypertext documents that can be posted to any web server, or sent by email. If you like it, do please EmailMe and let me know.</DIV>
+
+
+    <DIV id="storeMainMenu" modified="200412182236" modifier="JeremyRuston">HelloThere UsingThisSite ReusingThisSite AdaptingThisSite NewFeatures OldFeatures TiddlyWiki TiddlyWikiDev
+
+Copyright 2004 JeremyRuston</DIV>
+
+
+
+
+                <DIV id="storeEasterEgg" modified="200412182246" modifier="JeremyRuston">Try holding down the shift key while clicking on a link to a tiddler, or on the CloseButton for a tiddler. Kind of a respectful homage to Mac OS X, which does something similar for many of it's system animations. (On browsers like InternetExplorer that use the shift key to open a new window, you can use the alt key instead).</DIV>
+
+
+                <DIV id="storeNewFeatures" modified="200412192140" modifier="JeremyRuston">This version of TiddlyWiki adds IncrementalSearch, the ReferencesButton, the PermaLinkButton, PermaView, CloseAll, SmoothScrolling, an ImprovedSidebar, an animation for the CloseButton and last but not least a tiny EasterEgg in homage to Macintosh OS X. I've also changed the ReadingExperience and the StartupBehaviour.</DIV>
+    <DIV id="storeStartupBehaviour" modified="200412192141" modifier="JeremyRuston">When it loads, TiddlyWiki looks for the names of tiddlers to open as a space-separated list after the # in the URL. If there are no tiddlers in the URL it instead loads the tiddlers named in DefaultTiddlers, one of the SpecialTiddlers.</DIV>
+    <DIV id="storeDefaultTiddlers" modified="200412192142" modifier="JeremyRuston">HelloThere NewFeatures</DIV>
+    <DIV id="storeAdaptingThisSite" modified="200412192143" modifier="JeremyRuston">I've published TiddlyWiki under a CreativeCommonsLicense, so anyone is free to adapt it, as long as you give me credit. PatrickCurry and GabrielJeffrey have done a storming job of adapting TiddlyWiki by adding a ServerSide in PHP: http://www.patrickcurry.com/tiddly/ Really nicely done, and they put it up within hours of my posting the original TiddlyWiki. Thanks guys. Also check out an elegant adaptation at OgreKit and another sophisticated PHP ServerSide from Henrik Aasted Sorensen at http://aasted.org/wiki . IvanMetalnikov from Russia has done a neat adaptation at http://tiddlywiki.nm.ru/ .</DIV>
 
 <!-- ********************************************************************* -->
 <!-- Paste your TiddlyWiki content between this marker and the one above   -->
