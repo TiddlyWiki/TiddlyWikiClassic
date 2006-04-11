@@ -1,9 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <script type="text/javascript">
-var version = {major: 1, minor: 2, revision: 25, date: new Date(2005,7,15), extensions: {}};
+var version = {major: 1, minor: 2, revision: 26, date: new Date(2005,7,18), extensions: {}};
 </script>
 <!--
-TiddlyWiki 1.2.25 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
+TiddlyWiki 1.2.26 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
 
 Published under a BSD open source license
 Incorporating improvements by Isao Sonobe, http://www-gauge.scphys.kyoto-u.ac.jp/~sonobe/OgreKit/OgreKitWiki.html
@@ -57,6 +57,7 @@ var config = {
 		chkGenerateAnRssFeed: false,
 		chkSaveEmptyTemplate: false,
 		chkOpenInNewWindow: true,
+		chkToggleLinks: false,
 		txtMainTab: "tabTimeline",
 		txtMoreTab: "moreTabAll"
 		},
@@ -113,7 +114,7 @@ var config = {
 		},
 	views: {
 		wikified: {
-			tag: {tooltip: "Show tiddlers tagged with ", openAllText: "Open all tiddlers tagged with ", openAllTooltip: "Open all of these tiddlers", popupNone: "No other tiddlers tagged with "},
+			tag: {labelNoTags: "no tags", labelTags: "tags: ", tooltip: "Show tiddlers tagged with ", openAllText: "Open all tiddlers tagged with ", openAllTooltip: "Open all of these tiddlers", popupNone: "No other tiddlers tagged with "},
 			toolbarClose: {text: "close", tooltip: "Close this tiddler"},
 			toolbarEdit: {text: "edit", tooltip: "Edit this tiddler"},
 			toolbarPermalink: {text: "permalink", tooltip: "Permalink for this tiddler"},
@@ -346,9 +347,10 @@ config.macros.search.handler = function(place,macroName,params)
 
 config.macros.tiddler.handler = function(place,macroName,params)
 {
+	var wrapper = createTiddlyElement(place,"span",null,params[1] ? params[1] : null,null);
 	var text = store.getTiddlerText(params[0]);
 	if(text)
-		wikify(text,place,null,null);
+		wikify(text,wrapper,null,null);
 }
 
 config.macros.tag.handler = function(place,macroName,params)
@@ -526,8 +528,7 @@ config.macros.tabs.handler = function(place,macroName,params)
 		var label = params[t*3+1];
 		var prompt = params[t*3+2];
 		var content = params[t*3+3];
-		var tab = createTiddlyButton(tabset,label,prompt,this.onClickTab);
-		tab.className = "tab tabUnselected";
+		var tab = createTiddlyButton(tabset,label,prompt,this.onClickTab,"tab tabUnselected");
 		tab.setAttribute("href","javascript:;");
 		tab.onclick = this.onClickTab;
 		tab.setAttribute("tab",label);
@@ -741,6 +742,8 @@ Tiddler.prototype.changed = function()
 			{
 			if(!formatMatch[1] && formatMatch[2] && formatMatch[2] != this.title)
 				this.links.pushUnique(formatMatch[2]);
+			else if(formatMatch[4] && store.tiddlers[formatMatch[5]] != undefined)
+				this.links.pushUnique(formatMatch[5]);
 			else if(formatMatch[6] && formatMatch[6] != this.title)
 				this.links.pushUnique(formatMatch[6]);
 			}
@@ -1302,7 +1305,8 @@ function createTiddlerFooter(title,isEditor)
 			}
 		else
 			{
-			var prompt = tiddler.tags.length == 0 ? "no tags" : "tags: ";
+			var lingo = config.views.wikified.tag;
+			var prompt = tiddler.tags.length == 0 ? lingo.labelNoTags : lingo.labelTags;
 			var theTags = createTiddlyElement(theFooter,"div",null,null,prompt);
 			for(var t=0; t<tiddler.tags.length; t++)
 				{
@@ -2252,7 +2256,9 @@ function saveChanges()
 			alert(config.messages.emptyFailed);
 		}
 	// Save new file
-	var revised = original.substr(0,posOpeningDiv + startSaveArea.length) + convertUnicodeToUTF8(allTiddlersAsHtml()) + original.substr(posClosingDiv);
+	var revised = original.substr(0,posOpeningDiv + startSaveArea.length) + 
+				convertUnicodeToUTF8(allTiddlersAsHtml()) + "\n\t\t" +
+				original.substr(posClosingDiv);
 	var save = saveFile(localPath,revised);
 	if(save)
 		displayMessage(config.messages.mainSaved,"file://" + localPath);
@@ -2503,15 +2509,14 @@ function onClickTiddlerLink(e)
 	} while(title == null && theLink != null);
 	if(title)
 		{
+		var toggling = e.metaKey || e.ctrlKey;
+		if(config.options.chkToggleLinks)
+			toggling = !toggling;
 		var opening;
-		if(e.metaKey || e.ctrlKey)
-			opening = document.getElementById("tiddler" + title) == null;
-		else
-			opening = true;
-		if(opening)
-			displayTiddler(theTarget,title,0,null,null,true,e.shiftKey || e.altKey);
-		else
+		if(toggling && document.getElementById("tiddler" + title))
 			closeTiddler(title,e.shiftKey || e.altKey);
+		else
+			displayTiddler(theTarget,title,0,null,null,true,e.shiftKey || e.altKey);
 		}
 	clearMessage();
 	e.cancelBubble = true;
@@ -3100,7 +3105,7 @@ function createTiddlyElement(theParent,theElement,theID,theClass,theText)
 	return(e);
 }
 
-function createTiddlyButton(theParent,theText,theTooltip,theAction)
+function createTiddlyButton(theParent,theText,theTooltip,theAction,theClass,theId)
 {
 	var theButton = document.createElement("a");
 	theButton.className = "button";
@@ -3111,9 +3116,11 @@ function createTiddlyButton(theParent,theText,theTooltip,theAction)
 		}
 	theButton.setAttribute("title",theTooltip);
 	if(theText)
-		{
 		theButton.appendChild(document.createTextNode(theText));
-		}
+	if(theClass)
+		theButton.className = theClass;
+	if(theId)
+		theButton.id = theId;
 	if(theParent)
 		theParent.appendChild(theButton);
 	return(theButton);
@@ -3129,8 +3136,7 @@ function createTiddlyLink(place,title,includeText)
 	else
 		subTitle = title + config.messages.undefinedTiddlerToolTip;
 	var theClass = tiddler ? "tiddlyLinkExisting tiddlyLink" : "tiddlyLinkNonExisting tiddlyLink";
-	var btn = createTiddlyButton(place,text,subTitle,onClickTiddlerLink);
-	btn.className = theClass;
+	var btn = createTiddlyButton(place,text,subTitle,onClickTiddlerLink,theClass);
 	btn.setAttribute("tiddlyLink",title);
 	return(btn);
 }
