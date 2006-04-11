@@ -1,9 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <script type="text/javascript">
-var version = {major: 1, minor: 2, revision: 28, date: new Date(2005,7,22), extensions: {}};
+var version = {major: 1, minor: 2, revision: 29, date: new Date(2005,7-1,27), extensions: {}};
 </script>
 <!--
-TiddlyWiki 1.2.28 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
+TiddlyWiki 1.2.29 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
 
 Published under a BSD open source license
 Incorporating improvements by Isao Sonobe, http://www-gauge.scphys.kyoto-u.ac.jp/~sonobe/OgreKit/OgreKitWiki.html
@@ -111,7 +111,8 @@ var config = {
 		mainSaved: "Main TiddlyWiki file saved: ",
 		mainFailed: "Failed to save main TiddlyWiki file. Your changes have not been saved",
 		macroError: "Error executing macro '%0'",
-		unsavedChangesWarning: "WARNING! There are unsaved changes\n\nChoose OK to save\nChoose CANCEL to discard",
+		overwriteWarning: "A tiddler named '%0' already exists. Choose OK to overwrite it",
+		unsavedChangesWarning: "WARNING! There are unsaved changes in TiddlyWiki\n\nChoose OK to save\nChoose CANCEL to discard",
 		dates: {
 			months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November","December"],
 			days: ["Sunday", "Monday","Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
@@ -222,18 +223,21 @@ config.macros.version.handler = function(place)
 config.macros.list.handler = function(place,macroName,params)
 {
 	var type = params[0] ? params[0] : "all";
+	var theList = document.createElement("ul");
+	place.appendChild(theList);
 	if(this[type].prompt)
-		createTiddlyElement(place,"div",null,null,this[type].prompt);
+		createTiddlyElement(theList,"li",null,"listTitle",this[type].prompt);
 	var results;
 	if(this[type].handler)
 		results = this[type].handler(params);
 	for (t = 0; t < results.length; t++)
 		{
+		theListItem = document.createElement("li")
+		theList.appendChild(theListItem);
 		if(typeof results[t] == "string")
-			createTiddlyLink(place,results[t],true);
+			createTiddlyLink(theListItem,results[t],true);
 		else
-			createTiddlyLink(place,results[t].title,true);
-		place.appendChild(document.createElement("br"));
+			createTiddlyLink(theListItem,results[t].title,true);
 		}
 }
 
@@ -255,13 +259,14 @@ config.macros.list.orphans.handler = function(params)
 config.macros.allTags.handler = function(place,macroName,params)
 {
 	var tags = store.getTags();
+	var theDateList = createTiddlyElement(place,"ul",null,null,null);
 	if(tags.length == 0)
-		createTiddlyElement(place,"div",null,null,this.noTags);
+		createTiddlyElement(theDateList,"li",null,"listTitle",this.noTags);
 	for (t=0; t<tags.length; t++)
 		{
-		var theTag = createTiddlyButton(place,tags[t][0] + " (" + tags[t][1] + ")",this.tooltip.format([tags[t][0]]),onClickTag);
+		var theListItem =createTiddlyElement(theDateList,"li",null,null,null);
+		var theTag = createTiddlyButton(theListItem,tags[t][0] + " (" + tags[t][1] + ")",this.tooltip + tags[t][0],onClickTag);
 		theTag.setAttribute("tag",tags[t][0]);
-		place.appendChild(document.createElement("br"));
 		}
 }
 
@@ -275,17 +280,13 @@ config.macros.timeline.handler = function(place,macroName,params)
 		var theDay = tiddler.modified.convertToYYYYMMDDHHMM().substr(0,8);
 		if(theDay != lastDay)
 			{
-			var theDateElement = document.createElement("span");
-			var theDateCaption = tiddler.modified.formatString(this.dateFormat);
-			theDateElement.appendChild(document.createTextNode(theDateCaption));
-			place.appendChild(theDateElement);
-			place.appendChild(document.createElement("br"));
+			var theDateList = document.createElement("ul");
+			place.appendChild(theDateList);
+			createTiddlyElement(theDateList,"li",null,"listTitle",tiddler.modified.formatString(this.dateFormat));
 			lastDay = theDay;
 			}
-		place.appendChild(document.createTextNode(String.fromCharCode(160)));
-		place.appendChild(document.createTextNode(String.fromCharCode(160)));
-		createTiddlyLink(place,tiddler.title,true);
-		place.appendChild(document.createElement("br"));
+		var theDateListItem = createTiddlyElement(theDateList,"li",null,"listLink",null);
+		theDateListItem.appendChild(createTiddlyLink(place,tiddler.title,true));
 		}
 }
 
@@ -460,9 +461,18 @@ config.macros.option.handler = function(place,macroName,params)
 		}
 }
 
+config.macros.newTiddler.onClick = function()
+{
+	var title = "New Tiddler";
+	displayTiddler(null,title,2,null,null,false,false);
+	var e = document.getElementById("editorTitle" + title);
+	e.focus();
+	e.select();
+}
+
 config.macros.newTiddler.handler = function(place)
 {
-	createTiddlyButton(place,this.label,this.prompt,function() {displayTiddler(null,"New Tiddler",2,null,null,false,false);});
+	createTiddlyButton(place,this.label,this.prompt,this.onClick);
 }
 
 config.macros.newJournal.handler = function(place,macroName,params)
@@ -853,6 +863,8 @@ TiddlyWiki.prototype.getRecursiveTiddlerText = function(title,defaultText,ignore
 	childIgnoreList[title] = true;
 	var bracketRegExp = new RegExp("(?:\\[\\[([^\\]]+)\\]\\])","mg");
 	var text = this.getTiddlerText(title,defaultText);
+	if(text == null)
+		return "";
 	var textOut = [];
 	var lastPos = 0;
 	do {
@@ -1232,8 +1244,8 @@ function createTiddlerPopup(srcElement)
 	if(popup)
 		popup.parentNode.removeChild(popup);
 	popup = createTiddlyElement(null,"div","popup",null,null);
-	popup.style.left = findPosX(srcElement) + "px";
-	popup.style.top = findPosY(srcElement) + srcElement.offsetHeight + "px";
+	popup.style.left = srcElement.offsetLeft + "px";
+	popup.style.top = srcElement.offsetTop + srcElement.offsetHeight + "px";
 	popup.style.display = "block";
 	srcElement.onmouseout = onMouseOutTiddlerPopup;
 	srcElement.appendChild(popup);
@@ -1365,16 +1377,30 @@ function createTiddlerEditor(title)
 
 function saveTiddler(title)
 {
-	var newTitle = document.getElementById("editorTitle" + title).value;
-	var newBody = document.getElementById("editorBody" + title).value;
+	var titleBox = document.getElementById("editorTitle" + title);
+	var newTitle = titleBox.value;
+	if(store.tiddlers[newTitle])
+		{
+		if(newTitle != title && !confirm(config.messages.overwriteWarning.format([newTitle.toString()])))
+			{
+			titleBox.focus();
+			titleBox.select();
+			return;
+			}
+		}
+	var body = document.getElementById("editorBody" + title);
+	var newBody = body.value;
 	var newTags = document.getElementById("editorTags" + title).value;
+	body.focus();
+	body.blur();
 	store.saveTiddler(title,newTitle,newBody,config.options.txtUserName,new Date(),newTags);
 	displayTiddler(null,newTitle,1,null,null,null,false,false);
 	// Close the old tiddler if this is a rename
 	if(title != newTitle)
 		{
 		var oldTiddler = document.getElementById("tiddler" + title);
-		oldTiddler.parentNode.removeChild(oldTiddler);
+		var newTiddler = document.getElementById("tiddler" + newTitle);
+		oldTiddler.parentNode.replaceChild(newTiddler,oldTiddler);
 		}
 	if(config.options.chkAutoSave)
 		saveChanges();
@@ -2104,7 +2130,7 @@ function refreshSpecialItem(elementID,title,defaultText)
 
 function refreshStyles(title)
 {
-	setStylesheet(title == null ? "" : store.getRecursiveTiddlerText(title));
+	setStylesheet(title == null ? "" : store.getRecursiveTiddlerText(title,""));
 }
 
 // ---------------------------------------------------------------------------------
@@ -2346,6 +2372,14 @@ function convertUTF8ToUnicode(u)
 
 function convertUnicodeToUTF8(s)
 {
+	if(window.Components)
+		return mozConvertUnicodeToUTF8(s);
+	else
+		return manualConvertUnicodeToUTF8(s);
+}
+
+function manualConvertUnicodeToUTF8(s)
+{
 	var u = [];
 	for(var t=0;t<s.length;t++)
 		{
@@ -2356,6 +2390,19 @@ function convertUnicodeToUTF8(s)
 			u.push("&#" + c.toString() + ";");
 		}
 	return(u.join(""));
+}
+
+function mozConvertUnicodeToUTF8(s)
+{
+	netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+	var converter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"].createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
+	converter.charset = "UTF-8";
+	var u = converter.ConvertFromUnicode(s);
+	var fin = converter.Finish();
+	if(fin.length > 0)
+		return u + fin;
+	else
+		return u;
 }
 
 function saveFile(fileUrl, content)
@@ -2796,7 +2843,15 @@ function Zoomer(text,startElement,targetElement,slowly)
 	this.element.className = "zoomer";
 	document.body.appendChild(this.element);
 	this.startElement = startElement; // Where we're shifting from
+	this.startLeft = findPosX(this.startElement);
+	this.startTop = findPosY(this.startElement);
+	this.startWidth = this.startElement.offsetWidth;
+	this.startHeight = this.startElement.offsetHeight;
 	this.targetElement = targetElement; // Where we're shifting to
+	this.targetLeft = findPosX(this.targetElement);
+	this.targetTop = findPosY(this.targetElement);
+	this.targetWidth = this.targetElement.offsetWidth;
+	this.targetHeight = this.targetElement.offsetHeight;
 	this.startScroll = findScrollY(); // Where we're scrolling from
 	this.targetScroll = ensureVisible(targetElement); // Where we're scrolling to
 	this.progress = 0; // 0..1 of how far we are
@@ -2814,18 +2869,10 @@ Zoomer.prototype.stop = function()
 Zoomer.prototype.tick = function()
 {
 	var f = Animator.slowInSlowOut(this.progress);
-	var startLeft = findPosX(this.startElement);
-	var startTop = findPosY(this.startElement);
-	var startWidth = this.startElement.offsetWidth;
-	var startHeight = this.startElement.offsetHeight;
-	var targetLeft = findPosX(this.targetElement);
-	var targetTop = findPosY(this.targetElement);
-	var targetWidth = this.targetElement.offsetWidth;
-	var targetHeight = this.targetElement.offsetHeight;
-	this.element.style.left = startLeft + (targetLeft-startLeft) * f + "px";
-	this.element.style.top = startTop + (targetTop-startTop) * f + "px";
-	this.element.style.width = startWidth + (targetWidth-startWidth) * f + "px";
-	this.element.style.height = startHeight + (targetHeight-startHeight) * f + "px";
+	this.element.style.left = this.startLeft + (this.targetLeft-this.startLeft) * f + "px";
+	this.element.style.top = this.startTop + (this.targetTop-this.startTop) * f + "px";
+	this.element.style.width = this.startWidth + (this.targetWidth-this.startWidth) * f + "px";
+	this.element.style.height = this.startHeight + (this.targetHeight-this.startHeight) * f + "px";
 	this.element.style.display = "block";
 	this.targetElement.style.opacity = this.progress;
 	this.targetElement.style.filter = "alpha(opacity:" + this.progress * 100 + ")";
@@ -2886,7 +2933,7 @@ Slider.prototype.tick = function()
 {
 	var f = Animator.slowInSlowOut(this.progress);
 	var h = this.realHeight * f;
-	this.element.style.height = ((h <= 2) ? 2 : h) + "px";
+	this.element.style.height = h + "px";
 	this.element.style.opacity = f;
 }
 
@@ -3327,9 +3374,10 @@ function removeChildren(e)
 }
 
 // Add a stylesheet, replacing any previous custom stylesheet
-function setStylesheet(s)
+function setStylesheet(s,id)
 {
-	var id = "customStyleSheet";
+	if(!id)
+		id = "customStyleSheet";
 	var n = document.getElementById(id);
 	if(document.createStyleSheet) // Test for IE's non-standard createStyleSheet method
 		{
@@ -3405,7 +3453,8 @@ a:hover, a:active {
 }
 
 #mainMenu {
-	float: left;
+	position: absolute;
+	left: 0em;
 	width: 10em;
 	line-height: 166%;
 	padding: 1.5em 0.5em 0.5em 0.5em;
@@ -3473,6 +3522,7 @@ a:hover, a:active {
 #popup {
 	display: none;
 	position: absolute;
+	line-height: 110%;
 	font-size: 8pt;
 	color: #ccff66;
 	background-color: #993300;
@@ -3485,7 +3535,7 @@ a:hover, a:active {
 #popup a {
 	display: block;
 	color: #ccff66;
-	line-height: 100%;
+	padding: 1px 1px 1px 1px;
 }
 
 #popup a:hover {
@@ -3499,6 +3549,8 @@ a:hover, a:active {
 	border-right: none;
 	border-bottom: none;
 	height: 1px;
+	width: 5em;
+	left: 0em;
 	color: #ccff66;
 }
 
@@ -3528,6 +3580,19 @@ a:hover, a:active {
 .tabContents {
 	padding: 0.5em 0.5em 0.5em 0.5em;
 	background-color: #eeeeaa;
+}
+
+.tabContents ul, .tabContents ol {
+	margin: 0;
+	padding: 0;
+}
+
+.tabContents li {
+	list-style: none;
+}
+
+.tabContents li.listLink {
+   margin-left: .75em;
 }
 
 .tiddler {
@@ -3600,7 +3665,7 @@ a:hover, a:active {
 .footer {
 	font-weight: normal;
 	font-size: 8pt;
-	margin: 0.5em 0em 0em 0em;
+	margin: 0em 0em 0em 0em;
 	padding: 0em 0em 0em 0em;
 	color: #dddddd;
 }
@@ -3714,10 +3779,21 @@ a:hover, a:active {
 	padding: 3px;
 }
 
-.viewer pre, .viewer code {
+.viewer pre {
+	padding: 0.5em 0.5em 0.5em 0.5em;
+	margin-left: 0.5em;
 	font-size: 100%;
 	line-height: 1.4em;
-	color: #660000;
+	color: #000000;
+	border: 1px solid #996633;
+	background-color: #eeeeaa;
+	overflow: auto;
+}
+
+.viewer code {
+	font-size: 100%;
+	line-height: 1.4em;
+	color: #663300;
 }
 
 .viewer hr {
@@ -3776,7 +3852,8 @@ a:hover, a:active {
 }
 
 #sidebar {
-	float: right;
+	position: absolute;
+	right: 0em;
 	width: 16em;
 	color: #000000;
 	font-size: 8pt;
@@ -3933,10 +4010,10 @@ a:hover, a:active {
 .zoomer {
 	font-size: 10pt;
 	display: none;
-	color: #000000;
+	color: #996633;
 	position: absolute;
 	padding: 1em 1em 1em 1em;
-	border: 1px solid #000000;
+	border: 1px solid #996633;
 }
 
 #saveTest {
@@ -3980,7 +4057,7 @@ a:hover, a:active {
 		</div>
 	</div>
 	<div id="storeArea"><div tiddler="DefaultTiddlers" modified="200507121657" modifier="JeremyRuston" tags="systemTiddlers">HelloThere LatestStuff MainFeatures TiddlyWikiExamples</div>
-<div tiddler="MainMenu" modified="200507121650" modifier="JeremyRuston" tags="systemTiddlers">HelloThere\nLatestStuff\nTiddlyWiki\nUsingThisSite\nReusingThisSite\n[[Community]]\nDownloadSoftware\nHowToUpgrade\nRssFeed\n[[Donations]]\n\n&#169; [[osmosoft|http://www.osmosoft.com]] 2005\n\n&lt;&lt;newTiddler&gt;&gt;\n&lt;&lt;newJournal &quot;DD MMM YYYY&quot;&gt;&gt;\n</div>
+<div tiddler="MainMenu" modified="200507121650" modifier="JeremyRuston" tags="systemTiddlers">HelloThere\nLatestStuff\nTiddlyWiki\nUsingThisSite\nReusingThisSite\n[[Community]]\nDownloadSoftware\nHowToUpgrade\nRssFeed\n[[Donations]]\n\n© [[osmosoft|http://www.osmosoft.com]] 2005\n\n&lt;&lt;newTiddler&gt;&gt;\n&lt;&lt;newJournal &quot;DD MMM YYYY&quot;&gt;&gt;\n</div>
 <div tiddler="SiteSubtitle" modified="200507121318" modifier="JeremyRuston" tags="systemTiddlers">a reusable non-linear personal web notebook</div>
 <div tiddler="SiteTitle" modified="200507121318" modifier="JeremyRuston" tags="systemTiddlers">TiddlyWiki</div>
 <div tiddler="SiteUrl" modified="200507121318" modifier="JeremyRuston" tags="systemTiddlers">http://www.tiddlywiki.com/</div></div>
