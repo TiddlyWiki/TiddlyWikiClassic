@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <!--
-TiddlyWiki 1.2.4 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
+TiddlyWiki 1.2.5 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
 Incorporating improvements by Isao Sonobe, http://www-gauge.scphys.kyoto-u.ac.jp/~sonobe/OgreKit/OgreKitWiki.html
 
 Copyright (c) Osmosoft Limited, 14 April 2005
@@ -58,7 +58,7 @@ function main()
     refreshAll();
     var start = getTiddlerText("DefaultTiddlers");
     if(window.location.hash)
-        displayTiddlers(null,decodeURI(window.location.hash.substr(1)),1,null,null);
+        displayTiddlers(null,convertUTF8ToUnicode(decodeURI(window.location.hash.substr(1))),1,null,null);
     else if(start)
         displayTiddlers(null,start,1,null,null);
 }
@@ -307,10 +307,10 @@ function searchTiddlers(text,caseSensitive,useRegExp)
         if(e.id)
             if(e.id.substr(0,5) == "store")
                 {
-                var text = "";
+                var tiddlerText = "";
                 if(e.firstChild)
-                    text = unescapeTiddler(e.firstChild.nodeValue);
-                if(regExp.exec(e.id.substr(5)) || regExp.exec(text))
+                    tiddlerText = unescapeTiddler(e.firstChild.nodeValue);
+                if(regExp.exec(e.id.substr(5)) || regExp.exec(tiddlerText))
                     {
                     displayTiddler(null,e.id.substr(5),1,searchText,caseSensitive,false);
                     c++;
@@ -1558,11 +1558,16 @@ function onEditKey(e)
 function onClickTiddlerLink(e)
 {
     if (!e) var e = window.event;
-    var theLink = resolveTarget(e);
-    hideMessage();
-    var title = theLink.getAttribute("tiddlyLink");
+    var theTarget = resolveTarget(e);
+    var theLink = theTarget;
+    var title = null;
+    do {
+        title = theLink.getAttribute("tiddlyLink");
+        theLink = theLink.parentNode;
+    } while(title == null && theLink != null);
     if(title)
-        displayTiddler(theLink,title,0,null,null,e.shiftKey || e.altKey);
+        displayTiddler(theTarget,title,0,null,null,e.shiftKey || e.altKey);
+    hideMessage();
 }
 
 // Event handler for mouse over a tiddler
@@ -2491,7 +2496,6 @@ a:hover, a:active {
 <div id="storeExtendedFormatting" modified="200503112345" modifier="JeremyRuston">''Bold''\n==Strike==\n__Underline__\n//Italic//\n2^^3^^=8\na~~ij~~ = -a~~ji~~\n@@highlight@@\n@@color(green):green colored@@\n@@bgcolor(#ff0000):color(#ffffff):red colored@@</div>
 <div id="storeHorizontalRules" modified="200503120015" modifier="JeremyRuston">You can divide a tiddler into\n----\nsections by typing four dashes on a line by themselves</div>
 <div id="storeTiddlyWikiPod" modified="200503232231" modifier="JeremyRuston">IsaoSonobe's TiddlyWikiPod is a nifty utility for Mac OS X that copies the content of a TiddlyWiki to an iPod where it can be read, and links followed, using the touch wheel. Isao has also added the ability to link to songs from the TiddlyWiki text which enables some interesting applications. At the moment, it only works with the older SecondVersion of TiddlyWiki. It can be found at http://www8.ocn.ne.jp/~sonoisa/TiddlyWikiPod/index.html</div>
-<div id="storePrettyLinks" modified="200503311848" modifier="JeremyRuston">You can now link to [[external sites|http://www.osmosoft.com]] with ordinary words, without the messiness of the full URL appearing. Edit this tiddler to see how.</div>
 <div id="storeSubHeadings" modified="200503311852" modifier="JeremyRuston">!Header 1\n!!Header 2\n!!!Header 3\n!!!!Header 4\n!!!!!Header 5\n</div>
 <div id="storeNumberedLists" modified="200503311852" modifier="JeremyRuston">start\n#item1\n#item2\n##item2.1\n##item2.2\n##item2.3\n#item3\n##item3.1\n###item3.1.1\n###item3.1.2\n\nend</div>
 <div id="storeWikiOnAStick" modified="200504081823" modifier="JeremyRuston">Putting TiddlyWiki on a USB thumb drive lets you carry around a SelfContained notebook that you can update wherever there's a reasonably modern computer, whether it's a Mac, Linux or a PC. (To be even more independent you can [[install FireFox on the drive|http://www.mozilla.org/support/firefox/tips#oth_usb]] as well).</div>
@@ -2535,6 +2539,9 @@ a:hover, a:active {
 <div id="storeHtmlTables" modified="200504170138" modifier="JeremyRuston">*sample:\n|!th1111111111|!th2222222222|\n|>| colspan |\n| rowspan |left|\n|~| right|\n|bgcolor(#a0ffa0):colored| center |\n|caption|c\n*another sample: see PeriodicTable.\n</div>
 <div id="storePeriodicTable" modified="200504170138" modifier="JeremyRuston">|Standard Periodic Table (ref. Wikipedia)|c\n|| !1 | !2 |!| !3 | !4 | !5 | !6 | !7 | !8 | !9 | !10 | !11 | !12 | !13 | !14 | !15 | !16 | !17 | !18 |\n|!1|bgcolor(#a0ffa0): @@color(red):H@@ |>|>|>|>|>|>|>|>|>|>|>|>|>|>|>|>||bgcolor(#c0ffff): @@color(red):He@@ |\n|!2|bgcolor(#ff6666): Li |bgcolor(#ffdead): Be |>|>|>|>|>|>|>|>|>|>||bgcolor(#cccc99): B |bgcolor(#a0ffa0): C |bgcolor(#a0ffa0): @@color(red):N@@ |bgcolor(#a0ffa0): @@color(red):O@@ |bgcolor(#ffff99): @@color(red):F@@ |bgcolor(#c0ffff): @@color(red):Ne@@ |\n|!3|bgcolor(#ff6666): Na |bgcolor(#ffdead): Mg |>|>|>|>|>|>|>|>|>|>||bgcolor(#cccccc): Al |bgcolor(#cccc99): Si |bgcolor(#a0ffa0): P |bgcolor(#a0ffa0): S |bgcolor(#ffff99): @@color(red):Cl@@ |bgcolor(#c0ffff): @@color(red):Ar@@ |\n|!4|bgcolor(#ff6666): K |bgcolor(#ffdead): Ca ||bgcolor(#ffc0c0): Sc |bgcolor(#ffc0c0): Ti |bgcolor(#ffc0c0): V |bgcolor(#ffc0c0): Cr |bgcolor(#ffc0c0): Mn |bgcolor(#ffc0c0): Fe |bgcolor(#ffc0c0): Co |bgcolor(#ffc0c0): Ni |bgcolor(#ffc0c0): Cu |bgcolor(#ffc0c0): Zn |bgcolor(#cccccc): Ga |bgcolor(#cccc99): Ge |bgcolor(#cccc99): As |bgcolor(#a0ffa0): Se |bgcolor(#ffff99): @@color(green):Br@@ |bgcolor(#c0ffff): @@color(red):Kr@@ |\n|!5|bgcolor(#ff6666): Rb |bgcolor(#ffdead): Sr ||bgcolor(#ffc0c0): Y |bgcolor(#ffc0c0): Zr |bgcolor(#ffc0c0): Nb |bgcolor(#ffc0c0): Mo |bgcolor(#ffc0c0): Tc |bgcolor(#ffc0c0): Ru |bgcolor(#ffc0c0): Rh |bgcolor(#ffc0c0): Pd |bgcolor(#ffc0c0): Ag |bgcolor(#ffc0c0): Cd |bgcolor(#cccccc): In |bgcolor(#cccccc): Sn |bgcolor(#cccc99): Sb |bgcolor(#cccc99): Te |bgcolor(#ffff99): I |bgcolor(#c0ffff): @@color(red):Xe@@ |\n|!6|bgcolor(#ff6666): Cs |bgcolor(#ffdead): Ba |bgcolor(#ffbfff):^^*1^^|bgcolor(#ffc0c0): Lu |bgcolor(#ffc0c0): Hf |bgcolor(#ffc0c0): Ta |bgcolor(#ffc0c0): W |bgcolor(#ffc0c0): Re |bgcolor(#ffc0c0): Os |bgcolor(#ffc0c0): Ir |bgcolor(#ffc0c0): Pt |bgcolor(#ffc0c0): Au |bgcolor(#ffc0c0): @@color(green):Hg@@ |bgcolor(#cccccc): Tl |bgcolor(#cccccc): Pb |bgcolor(#cccccc): Bi |bgcolor(#cccc99): Po |bgcolor(#ffff99): At |bgcolor(#c0ffff): @@color(red):Rn@@ |\n|!7|bgcolor(#ff6666): Fr |bgcolor(#ffdead): Ra |bgcolor(#ff99cc):^^*2^^|bgcolor(#ffc0c0): Lr |bgcolor(#ffc0c0): Rf |bgcolor(#ffc0c0): Db |bgcolor(#ffc0c0): Sq |bgcolor(#ffc0c0): Bh |bgcolor(#ffc0c0): Hs |bgcolor(#ffc0c0): Mt |bgcolor(#ffc0c0): Ds |bgcolor(#ffc0c0): Rg |bgcolor(#ffc0c0): @@color(green):Uub@@ |bgcolor(#cccccc): Uut |bgcolor(#cccccc): Uuq |bgcolor(#cccccc): Uup |bgcolor(#cccccc): Uuh |bgcolor(#fcfecc): @@color(#cccccc):Uus@@ |bgcolor(#ecfefc): @@color(#cccccc):Uuo@@ |\n\n| !Lanthanides^^*1^^|bgcolor(#ffbfff): La |bgcolor(#ffbfff): Ce |bgcolor(#ffbfff): Pr |bgcolor(#ffbfff): Nd |bgcolor(#ffbfff): Pm |bgcolor(#ffbfff): Sm |bgcolor(#ffbfff): Eu |bgcolor(#ffbfff): Gd |bgcolor(#ffbfff): Tb |bgcolor(#ffbfff): Dy |bgcolor(#ffbfff): Ho |bgcolor(#ffbfff): Er |bgcolor(#ffbfff): Tm |bgcolor(#ffbfff): Yb |\n| !Actinides^^*2^^|bgcolor(#ff99cc): Ac |bgcolor(#ff99cc): Th |bgcolor(#ff99cc): Pa |bgcolor(#ff99cc): U |bgcolor(#ff99cc): Np |bgcolor(#ff99cc): Pu |bgcolor(#ff99cc): Am |bgcolor(#ff99cc): Cm |bgcolor(#ff99cc): Bk |bgcolor(#ff99cc): Cf |bgcolor(#ff99cc): Es |bgcolor(#ff99cc): Fm |bgcolor(#ff99cc): Md |bgcolor(#ff99cc): No |\n\n*Chemical Series of the Periodic Table\n**@@bgcolor(#ff6666): Alkali metals@@\n**@@bgcolor(#ffdead): Alkaline earth metals@@\n**@@bgcolor(#ffbfff): Lanthanides@@\n**@@bgcolor(#ff99cc): Actinides@@\n**@@bgcolor(#ffc0c0): Transition metals@@\n**@@bgcolor(#cccccc): Poor metals@@\n**@@bgcolor(#cccc99): Metalloids@@\n**@@bgcolor(#a0ffa0): Nonmetals@@\n**@@bgcolor(#ffff99): Halogens@@\n**@@bgcolor(#c0ffff): Noble gases@@\n\n*State at standard temperature and pressure\n**those in @@color(red):red@@ are gases\n**those in @@color(green):green@@ are liquids\n**those in black are solids\n</div>
 <div id="storeTiddlyWikiAdaptations" modified="200504170958" modifier="JeremyRuston">The first and original was [[PhpTiddlyWiki|http://www.patrickcurry.com/tiddly/]] from PatrickCurry and GabrielJeffrey that adds a simple ServerSide in PHP with MySQL. Patrick's site allows anyone to create and edit tiddlers, and has become the de facto community site around TiddlyWiki.\n\nSome of the other adaptations include:\n* HenrikAastedSorensen's at http://aasted.org/wiki\n* IsaoSonobe's OgreKitWiki at http://www-gauge.scphys.kyoto-u.ac.jp/~sonobe/OgreKit/OgreKitWiki.html \n* JacquesTurbé's TidliPo, in French at http://avm.free.fr/IMG/html/carnet_gt_BigCo.html\n* ChristianHauck's at http://www.christianhauck.net/html/14300.html\n* TonyLownds's at http://tony.lownds.com/home/\n* PoulStaugaard and IvanMetalnikov's at http://poul.staugaard.dk/IeWiki.htm\n\n* There's also KevemBuangga's TiddlyWikiClone at http://www.kevembuangga.com/hwk/hailiwiki.htm (caution: on Safari, it seems to get locked up with error alerts)</div>
-<div id="storeThirdVersion" modified="200504171000" modifier="JeremyRuston">This is the ThirdVersion of TiddlyWiki, released in April 2005. The SecondVersion was released in December 2004, and before that the FirstVersion in September 2004.\n\nRevision history for the ThirdVersion:\n* Revision 1.2.0, 14 April 2005\n** No code changes\n* Revision 1.2.1, 14 April 2005\n** Fixed problem with spaces in pathnames on Mac/Unix\n* Revision 1.2.2, 14 April 2005 \n** No code changes\n* Revision 1.2.3, 15 April 2005\n** Fixed problem with positioning of tiddlers opened from last displayed tiddler\n** Added KeyboardShortcuts\n* Revision 1.2.3, 17 April 2005\n** Fixed Control-Enter on IE PC\n** Fixed UTF-8 encoding on SaveChanges\n** Fixed regular expressions to permit basic accented characters in WikiWords\n** Fixed problem with completely blank tiddlers\n** Added set focus on edit tiddler </div></div>
+<div id="storeThirdVersion" modified="200504192108" modifier="JeremyRuston">This is the ThirdVersion of TiddlyWiki, released in April 2005. The SecondVersion was released in December 2004, and before that the FirstVersion in September 2004.\n\nSee the RevisionHistory for details of minor changes and bug-fixes since the ThirdVersion.</div>
+<div id="storePrettyLinks" modified="200504192115" modifier="JeremyRuston">You can now link to [[external sites|http://www.osmosoft.com]] with ordinary words, without the messiness of the full URL appearing. Edit this tiddler to see how.\n\nYou can also LinkToFolders.</div>
+<div id="storeLinkToFolders" modified="200504192118" modifier="JeremyRuston">The format for PrettyLinks allows for links that open local or network folders. Depending on your browser and operating system, the folders are opened in Windows Explorer, the OS X Finder, or the browser itself.\n\nEdit this tiddler to see [[this link to a Windows network share|file://server/share/folder/path/name]], [[this link to a Windows drive-mapped folder|file:///c:/folder/path/name]] and [[this link to a Unix-style folder|file:///folder/path/name]].</div>
+<div id="storeRevisionHistory" modified="200504192322" modifier="JeremyRuston">Revision history for the ThirdVersion:\n* Revision 1.2.0, 14 April 2005\n** No code changes\n* Revision 1.2.1, 14 April 2005\n** Fixed problem with spaces in pathnames on Mac/Unix\n* Revision 1.2.2, 14 April 2005 \n** No code changes\n* Revision 1.2.3, 15 April 2005\n** Fixed problem with positioning of tiddlers opened from last displayed tiddler\n** Added KeyboardShortcuts\n* Revision 1.2.4, 17 April 2005\n** Fixed Control-Enter on IE PC\n** Fixed UTF-8 encoding on SaveChanges\n** Fixed regular expressions to permit basic accented characters in WikiWords\n** Fixed problem with completely blank tiddlers\n** Added set focus on edit tiddler\n* Revision 1.2.5, 19 April 2005\n** Fixed problem with the search results summary message\n** Fixed problem with clicking on highlighted links\n** Fixed problem with non-ANSI unicode characters in permalinks</div></div>
     </body>
 </html>
