@@ -1,14 +1,13 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <script type="text/javascript">
-var version = {major: 1, minor: 2, revision: 32, date: new Date("Aug 18, 2005"), extensions: {}};
+var version = {major: 1, minor: 2, revision: 33, date: new Date("Sep 27, 2005"), extensions: {}};
 </script>
 <!--
-TiddlyWiki 1.2.32 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
+TiddlyWiki 1.2.33 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
 
 Published under a BSD open source license
-Incorporating improvements by Isao Sonobe, http://www-gauge.scphys.kyoto-u.ac.jp/~sonobe/OgreKit/OgreKitWiki.html
 
-Copyright (c) Osmosoft Limited, 14 April 2005
+Copyright (c) Osmosoft Limited 2005
 
 Redistribution and use in source and binary forms, with or without modification,
 are permitted provided that the following conditions are met:
@@ -59,27 +58,25 @@ var config = {
 		chkOpenInNewWindow: true,
 		chkToggleLinks: false,
 		chkHttpReadOnly: false,
+		chkForceMinorUpdate: false,
 		txtMainTab: "tabTimeline",
 		txtMoreTab: "moreTabAll"
 		},
-	// Hashmap of notification functions to be called when certain tiddlers are changed or deleted
-	notifyNamedTiddlers: {
-		SiteTitle: refreshTitle,
-		SiteSubtitle: refreshSubtitle,
-		SideBarOptions: refreshSidebar,
-		StyleSheet: refreshStyles
-		},
-	// List of notification functions to be called when any tiddler is changed or deleted
+	// List of notification functions to be called when certain tiddlers are changed or deleted
 	notifyTiddlers: [
-		refreshMenu,
-		refreshStory,
-		refreshTabs
+		{name: "StyleSheet", notify: refreshStyles},
+		{name: null, notify: refreshMenu},
+		{name: null, notify: refreshStory},
+		{name: null, notify: refreshTabs},
+		{name: "SiteTitle", notify: refreshTitle},
+		{name: "SiteSubtitle", notify: refreshSubtitle},
+		{name: "SideBarOptions", notify: refreshSidebar}
 		],
 	// Shadow tiddlers for emergencies
 	shadowTiddlers: {
-		SideBarOptions: "<<search>><<closeAll>><<permaview>><<saveChanges>><<slider chkSliderOptionsPanel OptionsPanel options 'Change TiddlyWiki advanced options'>>",
+		SideBarOptions: "<<gradient vert #ffffff #cc9900>><<search>><<closeAll>><<permaview>><<saveChanges>><<slider chkSliderOptionsPanel OptionsPanel options 'Change TiddlyWiki advanced options'>>>>",
 		OptionsPanel: "These InterfaceOptions for customising TiddlyWiki are saved in your browser\n\nYour username for signing your edits. Write it as a WikiWord (eg JoeBloggs)\n\n<<option txtUserName>>\n<<option chkSaveBackups>> SaveBackups\n<<option chkAutoSave>> AutoSave\n<<option chkGenerateAnRssFeed>> GenerateAnRssFeed\n<<option chkRegExpSearch>> RegExpSearch\n<<option chkCaseSensitiveSearch>> CaseSensitiveSearch\n<<option chkAnimate>> EnableAnimations\n\nSee AdvancedOptions",
-		AdvancedOptions: "<<option chkOpenInNewWindow>> OpenLinksInNewWindow\n<<option chkSaveEmptyTemplate>> SaveEmptyTemplate\n<<option chkToggleLinks>> Clicking on links to tiddlers that are already open causes them to close\n^^(override with Control or other modifier key)^^\n<<option chkHttpReadOnly>> HideEditingFeatures when viewed over HTTP",
+		AdvancedOptions: "<<option chkOpenInNewWindow>> OpenLinksInNewWindow\n<<option chkSaveEmptyTemplate>> SaveEmptyTemplate\n<<option chkToggleLinks>> Clicking on links to tiddlers that are already open causes them to close\n^^(override with Control or other modifier key)^^\n<<option chkHttpReadOnly>> HideEditingFeatures when viewed over HTTP\n<<option chkForceMinorUpdate>> Treat edits as MinorChanges by preserving date and time\n^^(override with Shift key when clicking 'done' or by pressing Ctrl-Shift-Enter^^",
 		SideBarTabs: "<<tabs txtMainTab Timeline Timeline TabTimeline All 'All tiddlers' TabAll Tags 'All tags' TabTags More 'More lists' TabMore>>",
 		TabTimeline: "<<timeline>>",
 		TabAll: "<<list all>>",
@@ -116,7 +113,7 @@ var config = {
 		unsavedChangesWarning: "WARNING! There are unsaved changes in TiddlyWiki\n\nChoose OK to save\nChoose CANCEL to discard",
 		dates: {
 			months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November","December"],
-			days: ["Sunday", "Monday","Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+			days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
 			}
 		},
 	views: {
@@ -140,7 +137,7 @@ var config = {
 	macros: { // Each has a 'handler' member that is inserted later
 		today: {},
 		version: {},
-		search: {label: "search", prompt: "Search this TiddlyWiki", sizeTextbox: 15, successMsg: "%0 tiddlers found matching %1", failureMsg: "No tiddlers found matching %0"},
+		search: {label: "search", prompt: "Search this TiddlyWiki", sizeTextbox: 15, accessKey: "F", successMsg: "%0 tiddlers found matching %1", failureMsg: "No tiddlers found matching %0"},
 		tiddler: {},
 		tag: {},
 		timeline: {dateFormat: "DD MMM YYYY"},
@@ -152,15 +149,31 @@ var config = {
 			},
 		closeAll: {label: "close all", prompt: "Close all displayed tiddlers (except any that are being edited)"},
 		permaview: {label: "permaview", prompt: "Link to an URL that retrieves all the currently displayed tiddlers"},
-		saveChanges: {label: "save changes", prompt: "Save all tiddlers to create a new TiddlyWiki"},
+		saveChanges: {label: "save changes", prompt: "Save all tiddlers to create a new TiddlyWiki", accessKey: "S"},
 		slider: {},
 		option: {},
-		newTiddler: {label: "new tiddler", prompt: "Create a new tiddler", title: "New Tiddler"},
-		newJournal: {label: "new journal", prompt: "Create a new tiddler from the current date and time"},
+		newTiddler: {label: "new tiddler", prompt: "Create a new tiddler", title: "New Tiddler", accessKey: "N"},
+		newJournal: {label: "new journal", prompt: "Create a new tiddler from the current date and time", accessKey: "J"},
 		sparkline: {},
-		tabs: {}
-		}
+		tabs: {},
+		gradient: {}
+		},
+	textPrimitives: {}
 };
+
+config.textPrimitives.upperLetter = "[A-Z\u00c0-\u00de\u0150\u0170]";
+config.textPrimitives.lowerLetter = "[a-z\u00df-\u00ff_0-9\\-\u0151\u0171]";
+config.textPrimitives.anyLetter = "[A-Za-z\u00c0-\u00de\u00df-\u00ff_0-9\\-\u0150\u0170\u0151\u0171]";
+config.textPrimitives.anyDigit = "[0-9]";
+config.textPrimitives.anyNumberChar = "[0-9\\.E]";
+config.textPrimitives.urlPattern = "(?:http|https|mailto|ftp):[^\\s'\"]+(?:/|\\b)";
+config.textPrimitives.unWikiLink = "~";
+config.textPrimitives.wikiLink = "(?:" + config.textPrimitives.unWikiLink + "?)(?:" + config.textPrimitives.upperLetter + "+" +
+											   config.textPrimitives.lowerLetter + "+" +
+											   config.textPrimitives.upperLetter +
+											   config.textPrimitives.anyLetter + "*)|(?:" +
+											   config.textPrimitives.upperLetter + "{2,}" +
+											   config.textPrimitives.lowerLetter + "+)";
 
 // ---------------------------------------------------------------------------------
 // Main
@@ -178,17 +191,19 @@ var readOnly = false;
 function main()
 {
 	readOnly = (document.location.toString().substr(0,7) == "http://") ? config.options.chkHttpReadOnly : false;
-	setupRegexp();
 	saveTest();
 	loadOptionsCookie();
-	var s;
-	for(s in config.notifyNamedTiddlers)
-		store.addNotification(s,config.notifyNamedTiddlers[s]);
-	for(s=0; s<config.notifyTiddlers.length; s++)
-		store.addNotification(null,config.notifyTiddlers[s]);
+	for(var s=0; s<config.notifyTiddlers.length; s++)
+		store.addNotification(config.notifyTiddlers[s].name,config.notifyTiddlers[s].notify);
 	store.loadFromDiv("storeArea","store");
 	loadSystemConfig();
 	store.notifyAll();
+	restart();
+}
+
+// Restarting
+function restart()
+{
 	var start = store.getTiddlerText("DefaultTiddlers");
 	if(window.location.hash)
 		displayTiddlers(null,convertUTF8ToUnicode(decodeURI(window.location.hash.substr(1))),1,null,null);
@@ -212,6 +227,685 @@ function loadSystemConfig()
 		var ex = processConfig(configTiddlers[t].text);
 		if(ex)
 			displayMessage(config.messages.customConfigError.format([ex]));
+		}
+}
+
+// Merge a custom configuration over the top of the current configuration
+// Returns a string error message or null if it went OK
+function processConfig(customConfig)
+{
+	try
+		{
+		if(customConfig && customConfig != "")
+			window.eval(customConfig);
+		}
+	catch(e)
+		{
+		return(e.toString());
+		}
+	return null;
+}
+
+// ---------------------------------------------------------------------------------
+// Formatters
+// ---------------------------------------------------------------------------------
+
+config.formatterHelpers = {
+
+	charFormatHelper: function(w)
+	{
+		var e = createTiddlyElement(w.output,this.element);
+		w.subWikify(e,this.terminator);
+	},
+	
+	inlineCssHelper:  function(w)
+	{
+		var styles = [];
+		var lookahead = "(?:([^\\(\\|@]+)\\(([^\\)\\|]+)(?:\\):))|(?:([^:@\\|]+):([^;\\|]+);)";
+		var lookaheadRegExp = new RegExp(lookahead,"mg");
+		var hadStyle = false;
+		do {
+			lookaheadRegExp.lastIndex = w.nextMatch;
+			var lookaheadMatch = lookaheadRegExp.exec(w.source);
+			var gotMatch = lookaheadMatch && lookaheadMatch.index == w.nextMatch;
+			if(gotMatch)
+				{
+				var s,v;
+				hadStyle = true;
+				if(lookaheadMatch[1])
+					{
+					s = lookaheadMatch[1].unDash();
+					v = lookaheadMatch[2];
+					}
+				else
+					{
+					s = lookaheadMatch[3].unDash();
+					v = lookaheadMatch[4];
+					}
+				switch(s)
+					{
+					case "bgcolor": s = "backgroundColor"; break;
+					}
+				styles.push({style: s, value: v});
+				w.nextMatch = lookaheadMatch.index + lookaheadMatch[0].length;
+				}
+		} while(gotMatch);
+		return styles;
+	}
+
+};
+
+config.formatters = [
+{
+	name: "table",
+	match: "^\\|(?:[^\\n]*)\\|(?:[fhc]?)$",
+	lookahead: "^\\|([^\\n]*)\\|([fhc]?)$",
+	rowTerminator: "\\|(?:[fhc]?)$\\n?",
+	cellPattern: "(?:\\|([^\\n\\|]*)\\|)|(\\|[fhc]?$\\n?)",
+	cellTerminator: "(?:\\x20*)\\|",
+	rowTypes: {"c": "caption", "h": "thead", "": "tbody", "f": "tfoot"},
+	handler: function(w)
+	{
+		var table = createTiddlyElement(w.output,"table");
+		w.nextMatch = w.matchStart;
+		var lookaheadRegExp = new RegExp(this.lookahead,"mg");
+		var currRowType = null, nextRowType;
+		var rowContainer, rowElement;
+		var prevColumns = [];
+		var rowCount = 0;
+		do {
+			lookaheadRegExp.lastIndex = w.nextMatch;
+			var lookaheadMatch = lookaheadRegExp.exec(w.source);
+			var matched = lookaheadMatch && lookaheadMatch.index == w.nextMatch;
+			if(matched)
+				{
+				nextRowType = lookaheadMatch[2];
+				if(nextRowType != currRowType)
+					rowContainer = createTiddlyElement(table,this.rowTypes[nextRowType]);
+				currRowType = nextRowType;
+				if(currRowType == "c")
+					{
+					if(rowCount == 0)
+						rowContainer.setAttribute("align","top");
+					else
+						rowContainer.setAttribute("align","bottom");
+					w.nextMatch = w.nextMatch + 1;
+					w.subWikify(rowContainer,this.rowTerminator);
+					}
+				else
+					{
+					rowElement = createTiddlyElement(rowContainer,"tr");
+					this.rowHandler(w,rowElement,prevColumns);
+					}
+				rowCount++;
+				}
+		} while(matched);
+	},
+	rowHandler: function(w,e,prevColumns)
+	{
+		var col = 0;
+		var currColCount = 1;
+		var cellRegExp = new RegExp(this.cellPattern,"mg");
+		do {
+			cellRegExp.lastIndex = w.nextMatch;
+			var cellMatch = cellRegExp.exec(w.source);
+			matched = cellMatch && cellMatch.index == w.nextMatch;
+			if(matched)
+				{
+				if(cellMatch[1] == "~")
+					{
+					var last = prevColumns[col];
+					if(last)
+						{
+						last.rowCount++;
+						last.element.setAttribute("rowSpan",last.rowCount);
+						last.element.setAttribute("rowspan",last.rowCount);
+						last.element.valign = "center";
+						}
+					w.nextMatch = cellMatch.index + cellMatch[0].length-1;
+					}
+				else if(cellMatch[1] == ">")
+					{
+					currColCount++;
+					w.nextMatch = cellMatch.index + cellMatch[0].length-1;
+					}
+				else if(cellMatch[2])
+					{
+					w.nextMatch = cellMatch.index + cellMatch[0].length;;
+					break;
+					}
+				else
+					{
+					var spaceLeft = false, spaceRight = false;
+					w.nextMatch++;
+					var styles = config.formatterHelpers.inlineCssHelper(w);
+					while(w.source.substr(w.nextMatch,1) == " ")
+						{
+						spaceLeft = true;
+						w.nextMatch++;
+						}
+					var cell;
+					if(w.source.substr(w.nextMatch,1) == "!")
+						{
+						cell = createTiddlyElement(e,"th");
+						w.nextMatch++;
+						}
+					else
+						cell = createTiddlyElement(e,"td");
+					prevColumns[col] = {rowCount: 1, element: cell};
+					lastColCount = 1;
+					lastColElement = cell;
+					if(currColCount > 1)
+						{
+						cell.setAttribute("colSpan",currColCount);
+						cell.setAttribute("colspan",currColCount);
+						currColCount = 1;
+						}
+					for(var t=0; t<styles.length; t++)
+						cell.style[styles[t].style] = styles[t].value;
+					w.subWikify(cell,this.cellTerminator);
+					if(w.matchText.substr(w.matchText.length-2,1) == " ")
+						spaceRight = true;
+					if(spaceLeft && spaceRight)
+						cell.align = "center";
+					else if (spaceLeft)
+						cell.align = "right";
+					else if (spaceRight)
+						cell.align = "left";
+					w.nextMatch = w.nextMatch-1;
+					}
+				col++;
+				}
+		} while(matched);		
+	}
+},
+
+{
+	name: "rule",
+	match: "^----$\\n?",
+	handler: function(w)
+	{
+		createTiddlyElement(w.output,"hr");
+	}
+},
+
+{
+	name: "heading",
+	match: "^!{1,5}",
+	terminator: "\\n",
+	handler: function(w)
+	{
+		var e = createTiddlyElement(w.output,"h" + w.matchLength);
+		w.subWikify(e,this.terminator);
+	}
+},
+
+{
+	name: "monospacedByLine",
+	match: "^\\{\\{\\{\\n",
+	lookahead: "^\\{\\{\\{\\n((?:^[^\\n]*\\n)+?)(^\\}\\}\\}$\\n?)",
+	handler: function(w)
+	{
+		var lookaheadRegExp = new RegExp(this.lookahead,"mg");
+		lookaheadRegExp.lastIndex = w.matchStart;
+		var lookaheadMatch = lookaheadRegExp.exec(w.source)
+		if(lookaheadMatch && lookaheadMatch.index == w.matchStart)
+			{
+			var text = lookaheadMatch[1].replace(/\n/g,"\r\n");
+			var e = createTiddlyElement(w.output,"pre",null,null,text);
+			w.nextMatch = lookaheadMatch.index + lookaheadMatch[0].length;
+			}
+	}
+},
+
+{
+	name: "quoteByBlock",
+	match: "^<<<\\n",
+	terminator: "^<<<\\n",
+	handler: function(w)
+	{
+		var e = createTiddlyElement(w.output,"blockquote");
+		w.subWikify(e,this.terminator);
+	}
+},
+
+{
+	name: "quoteByLine",
+	match: "^>+",
+	terminator: "\\n",
+	element: "blockquote",
+	handler: function(w)
+	{
+		var lookaheadRegExp = new RegExp(this.match,"mg");
+		var placeStack = [w.output];
+		var currLevel = 0;
+		var newLevel = w.matchLength;
+		var t;
+		do {
+			if(newLevel > currLevel)
+				{
+				for(t=currLevel; t<newLevel; t++)
+					placeStack.push(createTiddlyElement(placeStack[placeStack.length-1],this.element));
+				}
+			else if(newLevel < currLevel)
+				{
+				for(t=currLevel; t>newLevel; t--)
+					placeStack.pop();
+				}
+			currLevel = newLevel;
+			w.subWikify(placeStack[placeStack.length-1],this.terminator);
+			createTiddlyElement(placeStack[placeStack.length-1],"br");
+			lookaheadRegExp.lastIndex = w.nextMatch;
+			var lookaheadMatch = lookaheadRegExp.exec(w.source);
+			var matched = lookaheadMatch && lookaheadMatch.index == w.nextMatch;
+			if(matched)
+				{
+				newLevel = lookaheadMatch[0].length;
+				w.nextMatch += lookaheadMatch[0].length;
+				}
+		} while(matched);
+	}
+},
+
+{
+	name: "list",
+	match: "^(?:(?:\\*+)|(?:#+))",
+	lookahead: "^(?:(\\*+)|(#+))",
+	terminator: "\\n",
+	outerElement: "ul",
+	itemElement: "li",
+	handler: function(w)
+	{
+		var lookaheadRegExp = new RegExp(this.lookahead,"mg");
+		w.nextMatch = w.matchStart;
+		var placeStack = [w.output];
+		var currType = null, newType;
+		var currLevel = 0, newLevel;
+		var t;
+		do {
+			lookaheadRegExp.lastIndex = w.nextMatch;
+			var lookaheadMatch = lookaheadRegExp.exec(w.source);
+			var matched = lookaheadMatch && lookaheadMatch.index == w.nextMatch;
+			if(matched)
+				{
+				if(lookaheadMatch[1])
+					newType = "ul";
+				if(lookaheadMatch[2])
+					newType = "ol";
+				newLevel = lookaheadMatch[0].length;
+				w.nextMatch += lookaheadMatch[0].length;
+				if(newLevel > currLevel)
+					{
+					for(t=currLevel; t<newLevel; t++)
+						placeStack.push(createTiddlyElement(placeStack[placeStack.length-1],newType));
+					}
+				else if(newLevel < currLevel)
+					{
+					for(t=currLevel; t>newLevel; t--)
+						placeStack.pop();
+					}
+				else if(newLevel == currLevel && newType != currType)
+					{
+						placeStack.pop();
+						placeStack.push(createTiddlyElement(placeStack[placeStack.length-1],newType));
+					}
+				currLevel = newLevel;
+				currType = newType;
+				var e = createTiddlyElement(placeStack[placeStack.length-1],"li");
+				w.subWikify(e,this.terminator);
+				}
+		} while(matched);
+	}
+},
+
+{
+	name: "wikiLink",
+	match: config.textPrimitives.wikiLink,
+	handler: function(w)
+	{
+		if(w.matchText.substr(0,1) == config.textPrimitives.unWikiLink)
+			w.nextMatch = w.matchStart + 1;
+		else
+			{
+			var link = createTiddlyLink(w.output,w.matchText,false);
+			w.outputText(link,w.matchStart,w.nextMatch);
+			}
+	}
+},
+
+{
+	name: "prettyLink",
+	match: "\\[\\[",
+	lookahead: "\\[\\[([^\\|\\]]*?)(?:(\\]\\])|(\\|(.*?)\\]\\]))",
+	terminator: "\\|",
+	handler: function(w)
+	{
+		var lookaheadRegExp = new RegExp(this.lookahead,"mg");
+		lookaheadRegExp.lastIndex = w.matchStart;
+		var lookaheadMatch = lookaheadRegExp.exec(w.source)
+		if(lookaheadMatch && lookaheadMatch.index == w.matchStart && lookaheadMatch[2]) // Simple bracketted link
+			{
+			var link = createTiddlyLink(w.output,lookaheadMatch[1],false);
+			w.outputText(link,w.nextMatch,w.nextMatch + lookaheadMatch[1].length);
+			w.nextMatch += lookaheadMatch[1].length + 2;
+			}
+		else if(lookaheadMatch && lookaheadMatch.index == w.matchStart && lookaheadMatch[3]) // Pretty bracketted link
+			{
+			var e;
+			if(store.tiddlerExists(lookaheadMatch[4]))
+				e = createTiddlyLink(w.output,lookaheadMatch[4],false);
+			else
+				e = createExternalLink(w.output,lookaheadMatch[4]);
+			w.outputText(e,w.nextMatch,w.nextMatch + lookaheadMatch[1].length);
+			w.nextMatch = lookaheadMatch.index + lookaheadMatch[0].length;
+			}
+	}
+},
+
+{
+	name: "urlLink",
+	match: "(?:http|https|mailto|ftp):[^\\s'\"]+(?:/|\\b)",
+	handler: function(w)
+	{
+		var e = createExternalLink(w.output,w.matchText);
+		w.outputText(e,w.matchStart,w.nextMatch);
+	}
+},
+
+{
+	name: "image",
+	match: "\\[(?:[<]{0,1})(?:[>]{0,1})[Ii][Mm][Gg]\\[",
+	lookahead: "\\[([<]{0,1})([>]{0,1})[Ii][Mm][Gg]\\[(?:([^\\|]+)\\|)?([^\\[\\]\\|]+)\\](?:\\[([^\\]]*)\\]?)?\\]",
+	handler: function(w)
+	{
+		var lookaheadRegExp = new RegExp(this.lookahead,"mg");
+		lookaheadRegExp.lastIndex = w.matchStart;
+		var lookaheadMatch = lookaheadRegExp.exec(w.source);
+		if(lookaheadMatch && lookaheadMatch.index == w.matchStart) // Simple bracketted link
+			{
+			var e = w.output;
+			if(lookaheadMatch[5])
+				{
+				if(store.tiddlerExists(lookaheadMatch[5]))
+					e = createTiddlyLink(w.output,lookaheadMatch[5],false);
+				else
+					e = createExternalLink(w.output,lookaheadMatch[5]);
+				}
+			var img = createTiddlyElement(e,"img");
+			if(lookaheadMatch[1])
+				img.align = "left";
+			else if(lookaheadMatch[2])
+				img.align = "right";
+			if(lookaheadMatch[3])
+				img.title = lookaheadMatch[3];
+			img.src = lookaheadMatch[4];
+			w.nextMatch = lookaheadMatch.index + lookaheadMatch[0].length;
+			}
+	}
+},
+
+{
+	name: "macro",
+	match: "<<",
+	lookahead: "<<([^>\\s]+)(?:\\s*)([^>]*)>>",
+	handler: function(w)
+	{
+		var lookaheadRegExp = new RegExp(this.lookahead,"mg");
+		lookaheadRegExp.lastIndex = w.matchStart;
+		var lookaheadMatch = lookaheadRegExp.exec(w.source)
+		if(lookaheadMatch && lookaheadMatch.index == w.matchStart && lookaheadMatch[1])
+			{
+			var params = lookaheadMatch[2].readMacroParams();			
+			w.nextMatch = lookaheadMatch.index + lookaheadMatch[0].length;
+			try
+				{
+				var macro = config.macros[lookaheadMatch[1]];
+				if(macro && macro.handler)
+					macro.handler(w.output,lookaheadMatch[1],params,w);
+				else
+					createTiddlyElement(w.output,"span",null,"errorNoSuchMacro","<<" + lookaheadMatch[1] + ">>");
+				}
+			catch(e)
+				{
+				displayMessage(config.messages.macroError.format([lookaheadMatch[1]]));
+				displayMessage(e.toString());
+				}
+			}
+	}
+},
+
+{
+	name: "html",
+	match: "<[Hh][Tt][Mm][Ll]>",
+	lookahead: "<[Hh][Tt][Mm][Ll]>((?:.|\\n)*?)</[Hh][Tt][Mm][Ll]>",
+	handler: function(w)
+	{
+		var lookaheadRegExp = new RegExp(this.lookahead,"mg");
+		lookaheadRegExp.lastIndex = w.matchStart;
+		var lookaheadMatch = lookaheadRegExp.exec(w.source)
+		if(lookaheadMatch && lookaheadMatch.index == w.matchStart)
+			{
+			var e = createTiddlyElement(w.output,"span");
+			e.innerHTML = lookaheadMatch[1];
+			w.nextMatch = lookaheadMatch.index + lookaheadMatch[0].length;
+			}
+	}
+},
+
+{
+	name: "boldByChar",
+	match: "''",
+	terminator: "''",
+	element: "strong",
+	handler: config.formatterHelpers.charFormatHelper
+},
+
+{
+	name: "strikeByChar",
+	match: "==",
+	terminator: "==",
+	element: "strike",
+	handler: config.formatterHelpers.charFormatHelper
+},
+
+{
+	name: "underlineByChar",
+	match: "__",
+	terminator: "__",
+	element: "u",
+	handler: config.formatterHelpers.charFormatHelper
+},
+
+{
+	name: "italicByChar",
+	match: "//",
+	terminator: "//",
+	element: "em",
+	handler: config.formatterHelpers.charFormatHelper
+},
+
+{
+	name: "subscriptByChar",
+	match: "~~",
+	terminator: "~~",
+	element: "sub",
+	handler: config.formatterHelpers.charFormatHelper
+},
+
+{
+	name: "superscriptByChar",
+	match: "\\^\\^",
+	terminator: "\\^\\^",
+	element: "sup",
+	handler: config.formatterHelpers.charFormatHelper
+},
+
+{
+	name: "monospacedByChar",
+	match: "\\{\\{\\{",
+	lookahead: "\\{\\{\\{((?:.|\\n)*?)\\}\\}\\}",
+	handler: function(w)
+	{
+		var lookaheadRegExp = new RegExp(this.lookahead,"mg");
+		lookaheadRegExp.lastIndex = w.matchStart;
+		var lookaheadMatch = lookaheadRegExp.exec(w.source)
+		if(lookaheadMatch && lookaheadMatch.index == w.matchStart)
+			{
+			var e = createTiddlyElement(w.output,"code",null,null,lookaheadMatch[1]);
+			w.nextMatch = lookaheadMatch.index + lookaheadMatch[0].length;
+			}
+	}
+},
+
+{
+	name: "styleByChar",
+	match: "@@",
+	terminator: "@@",
+	lookahead: "(?:([^\\(@]+)\\(([^\\)]+)(?:\\):))|(?:([^:@]+):([^;]+);)",
+	handler:  function(w)
+	{
+		var e = createTiddlyElement(w.output,"span",null,null,null);
+		var styles = config.formatterHelpers.inlineCssHelper(w);
+		if(styles.length == 0)
+			e.className = "marked";
+		else
+			for(var t=0; t<styles.length; t++)
+				e.style[styles[t].style] = styles[t].value;
+		w.subWikify(e,this.terminator);
+	}
+},
+
+{
+	name: "lineBreak",
+	match: "\\n",
+	handler: function(w)
+	{
+		createTiddlyElement(w.output,"br");
+	}
+}
+];
+
+// ---------------------------------------------------------------------------------
+// Wikifier
+// ---------------------------------------------------------------------------------
+
+function wikify(source,output,highlightText,highlightCaseSensitive)
+{
+	var w = new Wikifier(source,output,config.formatters,highlightText,highlightCaseSensitive);
+}
+
+function Wikifier(source,output,formatters,highlightText,highlightCaseSensitive)
+{
+	this.source = source;
+	this.output = output;
+	this.formatters = formatters;
+	this.formatterRegExp = this.assembleFormatterMatches(formatters);
+	this.nextMatch = 0;
+	this.highlightText = highlightText;
+	this.highlightCaseSensitive = highlightCaseSensitive;
+	this.highlightRegExp = null;
+	this.highlightMatch = null;
+	if(highlightText)
+		{
+		this.highlightRegExp = new RegExp(highlightText,highlightCaseSensitive ? "mg" : "img");
+		this.highlightMatch = this.highlightRegExp.exec(this.source);
+		}
+	this.subWikify(output,null);
+	return this;
+}
+
+Wikifier.prototype.assembleFormatterMatches = function(formatters)
+{
+	var pattern = [];
+	for(var n=0; n<formatters.length; n++)
+		pattern.push("(" + formatters[n].match + ")");
+	return new RegExp(pattern.join("|"),"mg");
+}
+
+Wikifier.prototype.subWikify = function(output,terminator)
+{
+	// Temporarily replace the output pointer
+	var oldOutput = this.output;
+	this.output = output;
+	// Prepare the terminator RegExp
+	var terminatorRegExp = terminator ? new RegExp("(" + terminator + ")","mg") : null;
+	do {
+		// Prepare the RegExp match positions
+		this.formatterRegExp.lastIndex = this.nextMatch;
+		if(terminatorRegExp)
+			terminatorRegExp.lastIndex = this.nextMatch;
+		// Get the first matches
+		var formatterMatch = this.formatterRegExp.exec(this.source);
+		var terminatorMatch = terminatorRegExp ? terminatorRegExp.exec(this.source) : null;
+		// Check for a terminator match
+		if(terminatorMatch && (!formatterMatch || terminatorMatch.index <= formatterMatch.index))
+			{
+			// Output any text before the match
+			if(terminatorMatch.index > this.nextMatch)
+				this.outputText(this.output,this.nextMatch,terminatorMatch.index);
+			// Set the match parameters
+			this.matchStart = terminatorMatch.index;
+			this.matchLength = terminatorMatch[1].length;
+			this.matchText = terminatorMatch[1];
+			this.nextMatch = terminatorMatch.index + terminatorMatch[1].length;
+			// Restore the output pointer and exit
+			this.output = oldOutput;
+			return;		
+			}
+		// Check for a formatter match
+		else if(formatterMatch)
+			{
+			// Output any text before the match
+			if(formatterMatch.index > this.nextMatch)
+				this.outputText(this.output,this.nextMatch,formatterMatch.index);
+			// Set the match parameters
+			this.matchStart = formatterMatch.index;
+			this.matchLength = formatterMatch[0].length;
+			this.matchText = formatterMatch[0];
+			this.nextMatch = this.formatterRegExp.lastIndex;
+			// Figure out which formatter matched
+			var matchingformatter = -1;
+			for(var t=1; t<formatterMatch.length; t++)
+				if(formatterMatch[t])
+					matchingFormatter = t-1;
+			// Call the formatter
+			if(matchingFormatter != -1)
+				this.formatters[matchingFormatter].handler(this);
+			}
+	} while(terminatorMatch || formatterMatch);
+	// Output any text after the last match
+	if(this.nextMatch < this.source.length)
+		{
+		this.outputText(this.output,this.nextMatch,this.source.length);
+		this.nextMatch = this.source.length;
+		}
+	// Restore the output pointer
+	this.output = oldOutput;
+}
+
+Wikifier.prototype.outputText = function(place,startPos,endPos)
+{
+	// Check for highlights
+	while(this.highlightMatch && (this.highlightRegExp.lastIndex > startPos) && (this.highlightMatch.index < endPos) && (startPos < endPos))
+		{
+		// Deal with any plain text before the highlight
+		if(this.highlightMatch.index > startPos)
+			{
+			createTiddlyText(place,this.source.substring(startPos,this.highlightMatch.index));
+			startPos = this.highlightMatch.index;
+			}
+		// Deal with the highlight
+		var highlightEnd = Math.min(this.highlightRegExp.lastIndex,endPos);
+		var theHighlight = createTiddlyElement(place,"span",null,"highlight",this.source.substring(startPos,highlightEnd));
+		startPos = highlightEnd;
+		// Nudge along to the next highlight if we're done with this one
+		if(startPos >= this.highlightRegExp.lastIndex)
+			this.highlightMatch = this.highlightRegExp.exec(this.source);
+		}
+	// Do the unhighlighted text left over
+	if(startPos < endPos)
+		{
+		createTiddlyText(place,this.source.substring(startPos,endPos));
 		}
 }
 
@@ -319,6 +1013,7 @@ config.macros.search.handler = function(place,macroName,params)
 	var clickHandler = function(e)
 		{
 		doSearch(this.nextSibling);
+		return false;
 		};
 	var keyHandler = function(e)
 		{
@@ -349,6 +1044,7 @@ config.macros.search.handler = function(place,macroName,params)
 	txt.onkeyup = keyHandler;
 	txt.onfocus = focusHandler;
 	txt.setAttribute("size",this.sizeTextbox);
+	txt.setAttribute("accessKey",this.accessKey);
 	txt.setAttribute("autocomplete","off");
 	if(navigator.userAgent.toLowerCase().indexOf("safari") == -1)
 		txt.setAttribute("type","text");
@@ -364,7 +1060,7 @@ config.macros.tiddler.handler = function(place,macroName,params)
 	var wrapper = createTiddlyElement(place,"span",null,params[1] ? params[1] : null,null);
 	var text = store.getTiddlerText(params[0]);
 	if(text)
-		wikify(text,wrapper,null,null);
+		wikify(text,wrapper);
 }
 
 config.macros.tag.handler = function(place,macroName,params)
@@ -374,18 +1070,18 @@ config.macros.tag.handler = function(place,macroName,params)
 
 config.macros.closeAll.handler = function(place)
 {
-	createTiddlyButton(place,this.label,this.prompt,closeAllTiddlers);
+	createTiddlyButton(place,this.label,this.prompt,function () {closeAllTiddlers(); return false;});
 }
 
 config.macros.permaview.handler = function(place)
 {
-	createTiddlyButton(place,this.label,this.prompt,onClickPermaView);
+	createTiddlyButton(place,this.label,this.prompt,function () {onClickPermaView(); return false;});
 }
 
 config.macros.saveChanges.handler = function(place)
 {
 	if(!readOnly)
-		createTiddlyButton(place,this.label,this.prompt,saveChanges);
+		createTiddlyButton(place,this.label,this.prompt,function () {saveChanges(); return false;},null,null,this.accessKey);
 }
 
 config.macros.slider.onClickSlider = function(e)
@@ -400,6 +1096,7 @@ config.macros.slider.onClickSlider = function(e)
 		n.style.display = isOpen ? "none" : "block";
 	config.options[cookie] = !isOpen;
 	saveOptionCookie(cookie);
+	return false;
 }
 
 config.macros.slider.handler = function(place,macroName,params)
@@ -411,7 +1108,7 @@ config.macros.slider.handler = function(place,macroName,params)
 	panel.setAttribute("cookie",cookie);
 	panel.style.display = config.options[cookie] ? "block" : "none";
 	if(text)
-		wikify(text,panel,null,null);
+		wikify(text,panel);
 }
 
 config.macros.option.onChangeOption = function(e)
@@ -457,16 +1154,16 @@ config.macros.option.handler = function(place,macroName,params)
 			c.onkeyup = this.onChangeOption;
 			c.setAttribute("option",opt);
 			c.size = 15;
-			c.value = config.options[opt];
 			place.appendChild(c);
+			c.value = config.options[opt];
 			break;
 		case "chk":
 			c = document.createElement("input");
 			c.setAttribute("type","checkbox");
 			c.onclick = this.onChangeOption;
 			c.setAttribute("option",opt);
-			c.checked = config.options[opt];
 			place.appendChild(c);
+			c.checked = config.options[opt];
 			break;
 		}
 }
@@ -477,12 +1174,13 @@ config.macros.newTiddler.onClick = function()
 	var e = document.getElementById("editorTitle" + config.macros.newTiddler.title);
 	e.focus();
 	e.select();
+	return false;
 }
 
 config.macros.newTiddler.handler = function(place)
 {
 	if(!readOnly)
-		createTiddlyButton(place,this.label,this.prompt,this.onClick);
+		createTiddlyButton(place,this.label,this.prompt,this.onClick,null,null,this.accessKey);
 }
 
 config.macros.newJournal.handler = function(place,macroName,params)
@@ -496,8 +1194,9 @@ config.macros.newJournal.handler = function(place,macroName,params)
 			var tagsBox = document.getElementById("editorTags" + title);
 			if(tagsBox && params[1])
 				tagsBox.value += " " + String.encodeTiddlyLink(params[1]);
+			return false;
 			};
-		createTiddlyButton(place,this.label,this.prompt,createJournal);
+		createTiddlyButton(place,this.label,this.prompt,createJournal,null,null,this.accessKey);
 		}
 }
 
@@ -553,8 +1252,6 @@ config.macros.tabs.handler = function(place,macroName,params)
 		var prompt = params[t*3+2];
 		var content = params[t*3+3];
 		var tab = createTiddlyButton(tabset,label,prompt,this.onClickTab,"tab tabUnselected");
-		tab.setAttribute("href","javascript:;");
-		tab.onclick = this.onClickTab;
 		tab.setAttribute("tab",label);
 		tab.setAttribute("content",content);
 		tab.title = prompt;
@@ -569,6 +1266,7 @@ config.macros.tabs.handler = function(place,macroName,params)
 config.macros.tabs.onClickTab = function(e)
 {
 	config.macros.tabs.switchTab(this.parentNode,this.getAttribute("tab"));
+	return false;
 }
 
 config.macros.tabs.switchTab = function(tabset,tab)
@@ -590,7 +1288,7 @@ config.macros.tabs.switchTab = function(tabset,tab)
 			tabset.parentNode.removeChild(tabset.nextSibling);
 		var tabContent = createTiddlyElement(null,"div",null,"tabContents",null);
 		tabset.parentNode.insertBefore(tabContent,tabset.nextSibling);
-		wikify(store.getTiddlerText(theTab.getAttribute("content")),tabContent,null,null);
+		wikify(store.getTiddlerText(theTab.getAttribute("content")),tabContent);
 		if(cookie)
 			{
 			config.options[cookie] = tab;
@@ -599,42 +1297,40 @@ config.macros.tabs.switchTab = function(tabset,tab)
 		}
 }
 
-// ---------------------------------------------------------------------------------
-// Config and macro stuff
-// ---------------------------------------------------------------------------------
-
-// Merge a custom configuration over the top of the current configuration
-// Returns a string error message or null if it went OK
-function processConfig(customConfig)
+// <<gradient [[tiddler name]] vert|horiz rgb rgb rgb rgb... >>
+config.macros.gradient.handler = function(place,macroName,params,wikifier)
 {
-	try
+	var terminator = ">>";
+	var panel = createTiddlyElement(place,"div",null,"gradient",null);
+	panel.style.position = "relative";
+	panel.style.overflow = "hidden";
+	var horiz = params[0] != "vert";
+	var colourPoints = [];
+	for(var t=1; t<params.length; t++)
 		{
-		if(customConfig && customConfig != "")
-			window.eval(customConfig);
+		var c = new RGB(params[t]);
+		if(c)
+			colourPoints.push(c);
 		}
-	catch(e)
+	for(var t=0; t<= 100; t+=2)
 		{
-		return(e.toString());
+		var bar = document.createElement("div");
+		panel.appendChild(bar);
+		bar.style.position = "absolute";
+		bar.style.left = horiz ? t + "%" : 0;
+		bar.style.top = horiz ? 0 : t + "%";
+		bar.style.width = horiz ? (101-t) + "%" : "100%";
+		bar.style.height = horiz ? "100%" : (101-t) + "%";
+		bar.style.zIndex = -1;
+		var f = t/100;
+		var p = f*(colourPoints.length-1);
+		bar.style.backgroundColor = colourPoints[Math.floor(p)].mix(colourPoints[Math.ceil(p)],p-Math.floor(p)).toString();
 		}
-	return null;
-}
-
-// Render a macro
-function insertMacro(place,macroName,macroParams)
-{
-	var params = macroParams.readMacroParams();
-	try
+	wikifier.subWikify(panel,terminator);
+	if(document.all)
 		{
-		var macro = config.macros[macroName];
-		if(macro && macro.handler)
-			macro.handler(place,macroName,params);
-		else
-			createTiddlyElement(place,"span",null,"errorNoSuchMacro","<<" + macroName + ">>");
-		}
-	catch(e)
-		{
-		displayMessage(config.messages.macroError.format([macroName]));
-		displayMessage(e.toString());
+		panel.style.height = "100%";
+		panel.style.width = "100%";
 		}
 }
 
@@ -748,16 +1444,19 @@ Tiddler.prototype.changed = function()
 	this.links = [];
 	var nextPos = 0;
 	var theLink;
+	var aliasedPrettyLink = "\\[\\[([^\\[\\]\\|]+)\\|([^\\[\\]\\|]+)\\]\\]";
+	var prettyLink = "\\[\\[([^\\]]+)\\]\\]";
+	var wikiNameRegExp = new RegExp("(" + config.textPrimitives.wikiLink + ")|(?:" + aliasedPrettyLink + ")|(?:" + prettyLink + ")","mg");
 	do {
 		var formatMatch = wikiNameRegExp.exec(this.text);
 		if(formatMatch)
 			{
-			if(!formatMatch[1] && formatMatch[2] && formatMatch[2] != this.title)
-				this.links.pushUnique(formatMatch[2]);
-			else if(formatMatch[4] && store.tiddlers[formatMatch[5]] != undefined)
-				this.links.pushUnique(formatMatch[5]);
-			else if(formatMatch[6] && formatMatch[6] != this.title)
-				this.links.pushUnique(formatMatch[6]);
+			if(formatMatch[1] && formatMatch[1].substr(0,1) != config.textPrimitives.unWikiLink && formatMatch[1] != this.title)
+				this.links.pushUnique(formatMatch[1]);
+			else if(formatMatch[2] && store.tiddlerExists(formatMatch[3]))
+				this.links.pushUnique(formatMatch[3]);
+			else if(formatMatch[4] && formatMatch[4] != this.title)
+				this.links.pushUnique(formatMatch[4]);
 			}
 	} while(formatMatch);
 	return;
@@ -783,8 +1482,7 @@ Tiddler.prototype.getSubtitle = function()
 function TiddlyWiki()
 {
 	this.tiddlers = {}; // Hashmap by name of tiddlers
-	this.namedNotifications = {}; // Hashmap by name of array of notification functions
-	this.blanketNotifications = []; // Array of blanket notifications to be invoked on any change
+	this.namedNotifications = []; // Array of {name:,notify:} of notification functions
 	this.dirty = false;
 }
 
@@ -797,44 +1495,28 @@ TiddlyWiki.prototype.setDirty = function(dirty)
 // Invoke the notification handlers for a particular tiddler
 TiddlyWiki.prototype.notify = function(title,doBlanket)
 {
-	var notification = this.namedNotifications[title];
-	if(notification)
-		for(var t=0; t<notification.length; t++)
-			notification[t](title);
-	if(doBlanket)
-		for(var n=0; n<this.blanketNotifications.length; n++)
-			this.blanketNotifications[n](title);
+	for(var t=0; t<this.namedNotifications.length; t++)
+		{
+		var n = this.namedNotifications[t];
+		if((n.name == null && doBlanket) || n.name == title)
+			n.notify(title);
+		}
 }
 
 // Invoke the notification handlers for all tiddlers
 TiddlyWiki.prototype.notifyAll = function()
 {
-	var notifyTitle;
-	for(notifyTitle in this.tiddlers)
-		this.notify(notifyTitle,false);
-	for(notifyTitle in config.shadowTiddlers)
-		if(this.tiddlers[notifyTitle] == undefined)
-			this.notify(notifyTitle,false);
-	for(var n=0; n<this.blanketNotifications.length; n++)
-		this.blanketNotifications[n]();
+	for(var t=0; t<this.namedNotifications.length; t++)
+		{
+		var n = this.namedNotifications[t];
+		n.notify(n.name);
+		}
 }
 
 // Add a notification handler to a tiddler
 TiddlyWiki.prototype.addNotification = function(title,fn)
 {
-	var notification;
-	if(title)
-		{
-		notification = this.namedNotifications[title];
-		if(!notification)
-			{
-			notification = [];
-			this.namedNotifications[title] = notification;
-			}
-		}
-	else
-		notification = this.blanketNotifications;
-	notification.push(fn);
+	this.namedNotifications.push({name: title, notify: fn});
 	return this;
 }
 
@@ -856,6 +1538,13 @@ TiddlyWiki.prototype.removeTiddler = function(title)
 		}
 }
 
+TiddlyWiki.prototype.tiddlerExists = function(title)
+{
+	var t = this.tiddlers[title];
+	var s = config.shadowTiddlers[title];
+	return (t != undefined && t instanceof Tiddler) || (s != undefined && s instanceof String);
+}
+
 TiddlyWiki.prototype.getTiddlerText = function(title,defaultText)
 {
 	if(!title)
@@ -871,10 +1560,8 @@ TiddlyWiki.prototype.getTiddlerText = function(title,defaultText)
 		return null;
 }
 
-TiddlyWiki.prototype.getRecursiveTiddlerText = function(title,defaultText,ignoreList)
+TiddlyWiki.prototype.getRecursiveTiddlerText = function(title,defaultText,depth)
 {
-	var childIgnoreList = ignoreList ? ignoreList : {};
-	childIgnoreList[title] = true;
 	var bracketRegExp = new RegExp("(?:\\[\\[([^\\]]+)\\]\\])","mg");
 	var text = this.getTiddlerText(title,defaultText);
 	if(text == null)
@@ -888,20 +1575,16 @@ TiddlyWiki.prototype.getRecursiveTiddlerText = function(title,defaultText,ignore
 			textOut.push(text.substr(lastPos,match.index-lastPos));
 			if(match[1])
 				{
-				if(childIgnoreList[match[1]])
+				if(depth <= 0)
 					textOut.push(match[1]);
 				else
-					{
-					var subText = this.getRecursiveTiddlerText(match[1],match[1],childIgnoreList);
-					textOut.push(subText);
-					}
+					textOut.push(this.getRecursiveTiddlerText(match[1],match[1],depth-1));
 				}
-			lastPos = match.index + match[1].length + 4;
+			lastPos = match.index + match[0].length;
 			}
 		else
 			textOut.push(text.substr(lastPos));
 	} while(match);
-	delete childIgnoreList[title];
 	return(textOut.join(""));
 }
 
@@ -1008,7 +1691,7 @@ TiddlyWiki.prototype.getTaggedTiddlers = function(tag,sortField)
 }
 
 // Return an array of the tiddlers that link to a given tiddler
-TiddlyWiki.prototype.getReferringTiddlers = function(title,exclude,sortField)
+TiddlyWiki.prototype.getReferringTiddlers = function(title,unusedParameter,sortField)
 {
 	return this.reverseLookup("links",title,true,sortField);
 }
@@ -1194,18 +1877,9 @@ function createTiddlerTitle(title,highlightText,highlightCaseSensitive)
 	if(theTitle)
 		{
 		removeChildren(theTitle);
-		if(highlightText == "")
-			highlightText = null;
-		var highlightRegExp,highlightMatch;
-		if(highlightText)
-			{
-			highlightRegExp = new RegExp(highlightText,highlightCaseSensitive ? "mg" : "img");
-			highlightMatch = highlightRegExp.exec(title);
-			}
-		highlightMatch = subWikify(theTitle,title,0,title.length,highlightRegExp,highlightMatch);
-		var tiddler = store.tiddlers[title];
-		if(tiddler)
-			theTitle.title = tiddler.getSubtitle();
+		createTiddlyText(theTitle,title);
+		if(store.tiddlerExists(title))
+			theTitle.title = store.tiddlers[title].getSubtitle();
 		}
 }
 
@@ -1314,22 +1988,23 @@ function hideTiddlerPopup()
 }
 
 // Create the body section of a read-only tiddler
-function createTiddlerViewer(title,highlightText,highlightCaseSensitive,htmlElement)
+function createTiddlerViewer(title,highlightText,highlightCaseSensitive)
 {
 	var theBody = document.getElementById("body" + title);
 	if(theBody)
 		{
-		var tiddler = store.tiddlers[title];
 		var tiddlerText = store.getTiddlerText(title);
-		var theViewer = createTiddlyElement(theBody,htmlElement ? htmlElement : "div","viewer" + title,"viewer",null);
-		if(tiddler)
+		var theViewer = createTiddlyElement(theBody,"div","viewer" + title,"viewer",null);
+		if(store.tiddlerExists(title))
 			theViewer.setAttribute("tags",tiddler.tags.join(" "));
-		if(tiddlerText == null)
+		if(!tiddlerText)
 			{
 			tiddlerText = config.views.wikified.defaultText.format([title]);
 			theViewer.style.fontStyle = "italic";
 			}
 		wikify(tiddlerText,theViewer,highlightText,highlightCaseSensitive);
+		theViewer.style.overflow = "visible";
+		theViewer.style.height = "auto";
 		}
 }
 
@@ -1338,7 +2013,7 @@ function createTiddlerFooter(title,isEditor)
 {
 	var theFooter = document.getElementById("footer" + title);
 	var tiddler = store.tiddlers[title];
-	if(theFooter && tiddler)
+	if(theFooter && tiddler instanceof Tiddler)
 		{
 		removeChildren(theFooter);
 		insertSpacer(theFooter);
@@ -1385,6 +2060,7 @@ function createTiddlerEditor(title)
 		theTitleBox.setAttribute("type","text");
 		theTitleBox.value = title;
 		theTitleBox.setAttribute("size","40");
+		theTitleBox.setAttribute("autocomplete","off");
 		var theBodyBox = createTiddlyElement(theEditor,"textarea","editorBody" + title,null,null);
 		theBodyBox.value = tiddlerText;
 		var rows = 10;
@@ -1395,8 +2071,9 @@ function createTiddlerEditor(title)
 		var theTagsBox = createTiddlyElement(theEditor,"input","editorTags" + title,null,null);
 		theTagsBox.setAttribute("type","text");
 		var tiddler = store.tiddlers[title];
-		theTagsBox.value = tiddler ? tiddler.getTags() : "";
+		theTagsBox.value = tiddler instanceof Tiddler ? tiddler.getTags() : "";
 		theTagsBox.setAttribute("size","40");
+		theTagsBox.setAttribute("autocomplete","off");
 		var tagPrompt = createTiddlyElement(theEditor,"div",null,"editorFooter",config.views.editor.tagPrompt);
 		insertSpacer(tagPrompt);
 		var lingo = config.views.editor.tagChooser;
@@ -1406,11 +2083,11 @@ function createTiddlerEditor(title)
 		}
 }
 
-function saveTiddler(title)
+function saveTiddler(title,minorUpdate)
 {
 	var titleBox = document.getElementById("editorTitle" + title);
 	var newTitle = titleBox.value;
-	if(store.tiddlers[newTitle])
+	if(store.tiddlerExists(newTitle))
 		{
 		if(newTitle != title && !confirm(config.messages.overwriteWarning.format([newTitle.toString()])))
 			{
@@ -1421,9 +2098,13 @@ function saveTiddler(title)
 		}
 	var body = document.getElementById("editorBody" + title);
 	var newBody = body.value;
+	newBody = newBody.replace(/\r/mg,"");
 	var newTags = document.getElementById("editorTags" + title).value;
 	blurTiddler(title);
-	store.saveTiddler(title,newTitle,newBody,config.options.txtUserName,new Date(),newTags);
+	if(config.options.chkForceMinorUpdate)
+		minorUpdate = !minorUpdate;
+	var newDate = new Date();
+	store.saveTiddler(title,newTitle,newBody,config.options.txtUserName,minorUpdate ? undefined : new Date(),newTags);
 	displayTiddler(null,newTitle,1,null,null,null,false,false);
 	// Close the old tiddler if this is a rename
 	if(title != newTitle)
@@ -1453,7 +2134,7 @@ function deselectTiddler(title)
 function blurTiddler(title)
 {
 	var body = document.getElementById("editorBody" + title);
-	if(title)
+	if(body)
 		{
 		body.focus();
 		body.blur();
@@ -1513,569 +2194,6 @@ function closeAllTiddlers()
 				}
 		tiddler = nextTiddler;
 		}
-}
-
-// ---------------------------------------------------------------------------------
-// Regular expression stuff
-// ---------------------------------------------------------------------------------
-
-var upperLetter = "[A-Z\u00c0-\u00de\u0150\u0170]";
-var lowerLetter = "[a-z\u00df-\u00ff_0-9\\-\u0151\u0171]";
-var anyLetter = "[A-Za-z\u00c0-\u00de\u00df-\u00ff_0-9\\-\u0150\u0170\u0151\u0171]";
-var anyDigit = "[0-9]";
-var anyNumberChar = "[0-9\\.E]";
-var wikiNamePattern = "(~?)((?:" + upperLetter + "+" + lowerLetter + "+" + upperLetter + anyLetter + "*)|(?:" + upperLetter + "{2,}" + lowerLetter + "+))";
-var urlPattern = "((?:http|https|mailto|ftp):[^\\s'\"]+(?:/|\\b))";
-var explicitLinkPattern = "\\[\\[([^\\[\\]\\|]+)\\|([^\\[\\]\\|]+)\\]\\]";
-var bracketNamePattern = "\\[\\[([^\\]]+)\\]\\]";
-
-var wikiNamePatterns;
-var wikiNameRegExp;
-var structurePatterns;
-var stylePatterns;
-var tableRegExp;
-var tableRowColRegExp;
-var invalidPreWikiNamePattern;
-
-function setupRegexp()
-{
-	// Table rows pattern
-	var rowPattern = "^\\|([^\\n]*\\|)([fhc]?)$";
-	tableRegExp = new RegExp(rowPattern,"mg");
-	// Table columns pattern
-	var elementPattern = "(?:(?:BGCOLOR|bgcolor)\\(([^\\)]+)\\):)?" +
-		"("+
-		"("+explicitLinkPattern+")?"+
-		"("+bracketNamePattern+")?" +
-		"[^\\|]*"+
-		")\\|";
-	tableRowColRegExp = new RegExp(elementPattern,"g");
-	// Link patterns
-	wikiNamePatterns = "(?:" + wikiNamePattern +
-		")|(?:" + urlPattern +
-		")|(?:" + explicitLinkPattern +
-		")|(?:" + bracketNamePattern +
-		")";
-	wikiNameRegExp = new RegExp(wikiNamePatterns,"mg");
-	invalidPreWikiNamePattern = anyLetter;
-	// Structural patterns
-	var breakPattern = "\\n";
-	var horizontalRulePattern = "^----$\\n?";
-	var headerPattern = "^!{1,5}";
-	var bulletListItemPattern = "^\\*+";
-	var numberedListItemPattern = "^#+";
-	var tablePattern = "(?:^\\|[^\\n]*$\\n?)+";
-	var blockquotePattern = "(?:^>[^\\n]*$\\n?)+";
-	var blockquotePattern2 = "^<<<\\n((?:^(?!<<<)[^\\n]*\\n)+)(^<<<$\\n?)";
-	var imagePattern = "\\[[Ii][Mm][Gg]\\[(?:([^\\|\\]]+)\\|)?([^\\[\\]\\|]+)\\]\\]";
-	var verbatimPattern = "^\\{\\{\\{\\n((?:^[^\\n]*\\n)+?)(^\\}\\}\\}$\\n?)";
-	var macroPattern = "<<([^>\\s]+)(?:\\s*)([^>]*)>>";
-	structurePatterns = "(" + breakPattern +
-		")|(" + horizontalRulePattern +
-		")|(" + headerPattern +
-		")|(" + bulletListItemPattern +
-		")|(" + numberedListItemPattern +
-		")|(" + tablePattern +
-		")|(" + blockquotePattern +
-		")|(?:" + blockquotePattern2 +
-		")|(?:" + imagePattern +
-		")|(?:" + verbatimPattern +
-		")|(?:" + macroPattern +
-		")";
-	// Style patterns
-	var boldPattern = "''((?:[^']+(?:'[^'])?)+)''";
-	var strikePattern = "==([^=]+)==";
-	var underlinePattern = "__([^_]+)__";
-	var italicPattern = "//([^/]+)//";
-	var supPattern = "\\^\\^([^\\^]+)\\^\\^";
-	var subPattern = "~~([^~]+)~~";
-	var monoPattern = "\\{\\{\\{(.*?)\\}\\}\\}";
-	var colorPattern = "@@(?:color\\(([^\\)]+)\\):|bgcolor\\(([^\\)]+)\\):){0,2}([^@]+)@@";
-	stylePatterns = "(?:" + boldPattern +
-		")|(?:" + strikePattern +
-		")|(?:" + underlinePattern +
-		")|(?:" + italicPattern +
-		")|(?:" + supPattern +
-		")|(?:" + subPattern +
-		")|(?:" + colorPattern +
-		")|(?:" + monoPattern +
-		")";
-}
-
-// Create child text nodes and link elements to represent a wiki-fied version of some text
-function wikify(text,parent,highlightText,highlightCaseSensitive)
-{
-	// Prepare the regexp for the highlighted selection
-	if(highlightText == "")
-		highlightText = null;
-	var highlightRegExp,highlightMatch;
-	if(highlightText)
-		{
-		highlightRegExp = new RegExp(highlightText,highlightCaseSensitive ? "mg" : "img");
-		highlightMatch = highlightRegExp.exec(text);
-		}
-	wikifyStructures(parent,text,text,0,text.length,highlightRegExp,highlightMatch);
-}
-
-
-function wikifyStructures(parent,text,targetText,startPos,endPos,highlightRegExp,highlightMatch)
-{
-	var body = parent;
-	var structureRegExp = new RegExp(structurePatterns,"mg");
-	var theList = []; // theList[0]: don't use
-	var isInListMode = false;
-	var isInHeaderMode = false;
-	var isNewline = false;
-	// The start of the fragment of the text being considered
-	var nextPos = 0;
-	// Loop through the bits of the body text
-	do {
-		// Get the next formatting match
-		var formatMatch = structureRegExp.exec(targetText);
-		var matchPos = formatMatch ? formatMatch.index : targetText.length;
-		// Subwikify the plain text before the match
-		if(nextPos < matchPos)
-			{
-			isNewline = false;
-			highlightMatch = wikifyStyles(body,text,targetText.substring(nextPos,matchPos),startPos+nextPos,startPos+matchPos,highlightRegExp,highlightMatch);
-			}
-		// Dump out the formatted match
-		var level;
-		var theBlockquote;
-		if(formatMatch)
-			{
-			// Dump out the link itself in the appropriate format
-			if(formatMatch[1])
-				{
-				if(isNewline && isInListMode)
-					{
-					theList = [];
-					body = parent;
-					isInListMode = false;
-					}
-				else if(isInHeaderMode)
-					{
-					body = parent;
-					isInHeaderMode = false;
-					}
-				else
-					{
-					isNewline = true;
-					body.appendChild(document.createElement("br"));
-					}
-				}
-			else if(formatMatch[2])
-				{
-				isNewline = false;
-				body.appendChild(document.createElement("hr"));
-				}
-			else if(formatMatch[3])
-				{
-				level = formatMatch[3].length;
-				isNewline = false;
-				isInHeaderMode = true;
-				var theHeader = document.createElement("h" + level);
-				parent.appendChild(theHeader);
-				body = theHeader;
-				}
-			else if(formatMatch[4])
-				{
-				level = formatMatch[4].length;
-				isNewline = false;
-				isInListMode = true;
-				if (theList[level] == null)
-					{
-					theList[level] = document.createElement("ul");
-					body.appendChild(theList[level]);
-					}
-				theList = theList.slice(0,level + 1);
-				body = document.createElement("li");
-				theList[level].appendChild(body);
-				}
-			else if(formatMatch[5])
-				{
-				level = formatMatch[5].length;
-				isNewline = false;
-				isInListMode = true;
-				if (theList[level] == null)
-					{
-					theList[level] = document.createElement("ol");
-					body.appendChild(theList[level]);
-					}
-				theList = theList.slice(0,level + 1);
-				body = document.createElement("li");
-				theList[level].appendChild(body);
-				}
-			else if(formatMatch[6])
-				{
-				isNewline = false;
-				highlightMatch = wikifyTable(body,text,formatMatch[6],startPos+matchPos,startPos+structureRegExp.lastIndex,highlightRegExp,highlightMatch);
-				}
-			else if(formatMatch[7])
-				{
-				isNewline = false;
-				var quotedText = formatMatch[7].replace(new RegExp("^>(>*)","mg"),"$1");
-				theBlockquote = document.createElement("blockquote");
-				var newHighlightRegExp,newHighlightMatch;
-				if (highlightRegExp) {
-					newHighlightRegExp = new RegExp(highlightRegExp.toString(), "img");
-					newHighlightMatch = newHighlightRegExp.exec(quotedText);
-				}
-				wikifyStructures(theBlockquote,quotedText,quotedText,0,quotedText.length,newHighlightRegExp,newHighlightMatch);
-				body.appendChild(theBlockquote);
-				}
-			else if(formatMatch[8])
-				{
-				isNewline = false;
-				theBlockquote = document.createElement("blockquote");
-				highlightMatch = wikifyStructures(theBlockquote,text,formatMatch[8],startPos+matchPos+4,startPos+structureRegExp.lastIndex-formatMatch[9].length,highlightRegExp,highlightMatch);
-				body.appendChild(theBlockquote);
-				}
-			else if(formatMatch[11])
-				{
-				isNewline = false;
-				var theImage = document.createElement("img");
-				theImage.alt = formatMatch[10];
-				theImage.src = formatMatch[11];
-				body.appendChild(theImage);
-				}
-			else if(formatMatch[12])
-				{
-				isNewline = false;
-				var theVerbatim = document.createElement("pre");
-				out = text.substr(startPos+matchPos+4,startPos+structureRegExp.lastIndex-formatMatch[13].length-startPos-matchPos-4);
-				out = out.replace(/\n/g,"\r\n");
-				theVerbatim.appendChild(document.createTextNode(out));
-				body.appendChild(theVerbatim);
-				}
-			else if(formatMatch[14])
-				{
-				isNewline = false;
-				insertMacro(body,formatMatch[14],formatMatch[15]);
-				}
-			}
-		// Move the next position past the formatting match
-		nextPos = structureRegExp.lastIndex;
-	} while(formatMatch);
-	return highlightMatch;
-}
-
-function wikifyLinks(parent,text,targetText,startPos,endPos,highlightRegExp,highlightMatch)
-{
-	// The start of the fragment of the text being considered
-	var nextPos = 0;
-	// Loop through the bits of the body text
-	var theLink;
-	do {
-		// Get the next formatting match
-		var formatMatch = wikiNameRegExp.exec(targetText);
-		var matchPos = formatMatch ? formatMatch.index : targetText.length;
-		// Subwikify the plain text before the match
-		if(nextPos < matchPos)
-			highlightMatch = subWikify(parent,text,startPos+nextPos,startPos+matchPos,highlightRegExp,highlightMatch);
-		// Dump out the formatted match
-		if(formatMatch)
-			{
-			// Dump out the link itself in the appropriate format
-			if(formatMatch[2])
-				{
-				if(formatMatch[1])
-					{
-					theLink = parent;
-					matchPos++;
-					}
-				else if(matchPos > 0 && new RegExp(invalidPreWikiNamePattern,"").exec(targetText.charAt(matchPos - 1)))
-					theLink = parent;
-				else
-					theLink = createTiddlyLink(parent,formatMatch[2],false);
-				highlightMatch = subWikify(theLink,text,startPos+matchPos,startPos+wikiNameRegExp.lastIndex,highlightRegExp,highlightMatch);
-				}
-			else if(formatMatch[3])
-				{
-				theLink = createExternalLink(parent,formatMatch[3]);
-				highlightMatch = subWikify(theLink,text,startPos+matchPos,startPos+wikiNameRegExp.lastIndex,highlightRegExp,highlightMatch);
-				}
-			else if(formatMatch[4])
-				{
-				if(store.tiddlers[formatMatch[5]] != undefined)
-					theLink = createTiddlyLink(parent,formatMatch[5],false);
-				else
-					theLink = createExternalLink(parent,formatMatch[5]);
-				highlightMatch = subWikify(theLink,text,startPos+matchPos+2,startPos+matchPos+2+formatMatch[4].length,highlightRegExp,highlightMatch);
-				}
-			else if(formatMatch[6])
-				{
-				theLink = createTiddlyLink(parent,formatMatch[6],false);
-				highlightMatch = subWikify(theLink,text,startPos+matchPos+2,startPos+wikiNameRegExp.lastIndex-2,highlightRegExp,highlightMatch);
-				}
-			}
-		// Move the next position past the formatting match
-		nextPos = wikiNameRegExp.lastIndex;
-	} while(formatMatch);
-	return highlightMatch;
-}
-
-function wikifyStyles(parent,text,targetText,startPos,endPos,highlightRegExp,highlightMatch)
-{
-	var formatRegExp = new RegExp(stylePatterns,"mg");
-	// The start of the fragment of the text being considered
-	var nextPos = 0;
-	// Loop through the bits of the body text
-	do {
-		// Get the next formatting match
-		var formatMatch = formatRegExp.exec(targetText);
-		var matchPos = formatMatch ? formatMatch.index : targetText.length;
-		// Subwikify the plain text before the match
-		if(nextPos < matchPos)
-			highlightMatch = wikifyLinks(parent,text,targetText.substring(nextPos,matchPos),startPos+nextPos,startPos+matchPos,highlightRegExp,highlightMatch);
-		// Dump out the formatted match
-		if(formatMatch)
-			{
-			// Dump out the link itself in the appropriate format
-			if(formatMatch[1])
-				{
-				var theBold = createTiddlyElement(parent,"b",null,null,null);
-				highlightMatch = wikifyStyles(theBold,text,formatMatch[1],startPos+matchPos+2,startPos+formatRegExp.lastIndex-2,highlightRegExp,highlightMatch);
-				}
-			else if(formatMatch[2])
-				{
-				var theStrike = createTiddlyElement(parent,"strike",null,null,null);
-				highlightMatch = wikifyStyles(theStrike,text,formatMatch[2],startPos+matchPos+2,startPos+formatRegExp.lastIndex-2,highlightRegExp,highlightMatch);
-				}
-			else if(formatMatch[3])
-				{
-				var theUnderline = createTiddlyElement(parent,"u",null,null,null);
-				highlightMatch = wikifyStyles(theUnderline,text,formatMatch[3],startPos+matchPos+2,startPos+formatRegExp.lastIndex-2,highlightRegExp,highlightMatch);
-				}
-			else if(formatMatch[4])
-				{
-				var theItalic = createTiddlyElement(parent,"i",null,null,null);
-				highlightMatch = wikifyStyles(theItalic,text,formatMatch[4],startPos+matchPos+2,startPos+formatRegExp.lastIndex-2,highlightRegExp,highlightMatch);
-				}
-			else if(formatMatch[5])
-				{
-				var theSup = createTiddlyElement(parent,"sup",null,null,null);
-				highlightMatch = wikifyStyles(theSup,text,formatMatch[5],startPos+matchPos+2,startPos+formatRegExp.lastIndex-2,highlightRegExp,highlightMatch);
-				}
-			else if(formatMatch[6])
-				{
-				var theSub = createTiddlyElement(parent,"sub",null,null,null);
-				highlightMatch = wikifyStyles(theSub,text,formatMatch[6],startPos+matchPos+2,startPos+formatRegExp.lastIndex-2,highlightRegExp,highlightMatch);
-				}
-			else if(formatMatch[9])
-				{
-				var theSpan;
-				if ((formatMatch[7] == "" || formatMatch[7] == null) && (formatMatch[8] == "" || formatMatch[8] == null))
-					{
-					theSpan = createTiddlyElement(parent,"span",null,"marked",null);
-					}
-					else
-					{
-					theSpan = createTiddlyElement(parent,"span",null,null,null);
-					if (formatMatch[7] != "") theSpan.style.color = formatMatch[7];
-					if (formatMatch[8] != "") theSpan.style.background = formatMatch[8];
-					}
-				highlightMatch = wikifyStyles(theSpan,text,formatMatch[9],startPos+formatRegExp.lastIndex-2-formatMatch[9].length,startPos+formatRegExp.lastIndex-2,highlightRegExp,highlightMatch);
-				}
-			else if(formatMatch[10])
-				{
-				var theCode = createTiddlyElement(parent,"code",null,null,null);
-				highlightMatch = wikifyStyles(theCode,text,formatMatch[10],startPos+matchPos+3,startPos+formatRegExp.lastIndex-3,highlightRegExp,highlightMatch);
-				}
-			}
-		// Move the next position past the formatting match
-		nextPos = formatRegExp.lastIndex;
-	} while(formatMatch);
-	return highlightMatch;
-}
-
-// Create a table
-function wikifyTable(parent,text,targetText,startPos,endPos,highlightRegExp,highlightMatch)
-{
-	// The start of the fragment of the text being considered
-	var nextPos = 0;
-	var theTable = document.createElement("table");
-	var bodyRowLen = 0;
-	var headRowLen = 0;
-	var footRowLen = 0;
-	var bodyRows = [];
-	var headRows = [];
-	var footRows = [];
-	var theCaption = null;
-	// Loop through the bits of the body text
-	do {
-		// Get the next formatting match
-		var formatMatch = tableRegExp.exec(targetText);
-		var matchPos = formatMatch ? formatMatch.index : targetText.length;
-		// Dump out the formatted match
-		if(formatMatch) {
-			if (formatMatch[2] == "c") {
-				var cap = formatMatch[1].substring(0,formatMatch[1].length-1);
-				theCaption = document.createElement("caption");
-				highlightMatch = wikifyStyles(theCaption,text,cap,startPos+matchPos+1,startPos+cap.length,highlightRegExp,highlightMatch);
-				if (bodyRowLen == 0 && headRowLen == 0 && footRowLen == 0) {
-					theCaption.setAttribute("align", "top");
-				} else {
-					theCaption.setAttribute("align", "bottom");
-				}
-			} else if (formatMatch[2] == "h") {
-				highlightMatch = wikifyTableRow(headRows,headRowLen,text,formatMatch[1],startPos+matchPos,startPos+matchPos+formatMatch[1].length,highlightRegExp,highlightMatch);
-				headRowLen++;
-			} else if (formatMatch[2] == "f") {
-				highlightMatch = wikifyTableRow(footRows,footRowLen,text,formatMatch[1],startPos+matchPos,startPos+matchPos+formatMatch[1].length,highlightRegExp,highlightMatch);
-				footRowLen++;
-			} else {
-				highlightMatch = wikifyTableRow(bodyRows,bodyRowLen,text,formatMatch[1],startPos+matchPos,startPos+matchPos+formatMatch[1].length,highlightRegExp,highlightMatch);
-				bodyRowLen++;
-			}
-		}
-		nextPos = tableRegExp.lastIndex;
-	} while(formatMatch);
-
-	if (theCaption != null) {
-		theTable.appendChild(theCaption);
-	}
-
-	if (headRowLen > 0) {
-		var theTableHead = document.createElement("thead");
-		createTableRows(headRows,theTableHead);
-		theTable.appendChild(theTableHead);
-	}
-
-	if (bodyRowLen > 0) {
-		var theTableBody = document.createElement("tbody");
-		createTableRows(bodyRows,theTableBody);
-		theTable.appendChild(theTableBody);
-	}
-
-	if (footRowLen > 0) {
-		var theTableFoot = document.createElement("tfoot");
-		createTableRows(footRows,theTableFoot);
-		theTable.appendChild(theTableFoot);
-	}
-
-	parent.appendChild(theTable);
-	return highlightMatch;
-}
-
-function wikifyTableRow(rows,rowIndex,text,targetText,startPos,endPos,highlightRegExp,highlightMatch)
-{
-	// The start of the fragment of the text being considered
-	var eIndex = 0;
-	var elements = [];
-	// Loop through the bits of the body text
-	do {
-		// Get the next formatting match
-		var formatMatch = tableRowColRegExp.exec(targetText);
-		var matchPos = formatMatch ? formatMatch.index : targetText.length;
-		if(formatMatch) {
-			var eText = formatMatch[2];
-			if (eText == "~" || eText == ">") {
-				elements[eIndex] = eText;
-			} else {
-				var eTextLen = eText.length;
-				var align = "";
-				if (eTextLen >= 1 && eText.charAt(0) == " ") {
-					if (eTextLen >= 3 && eText.charAt(eTextLen - 1) == " ") {
-						align = "center";
-						eText = eText.substring(1,eTextLen - 1);
-						//eTextLen -= 2;
-						eTextLen--;
-					} else {
-						align = "right";
-						eText = eText.substring(1);
-						eTextLen--;
-					}
-				} else if (eTextLen >= 2 && eText.charAt(eTextLen - 1) == " ") {
-					align = "left";
-					eText = eText.substring(0,eTextLen - 1);
-					//eTextLen--;
-				}
-				var theElement;
-				if (eTextLen >= 1 && eText.charAt(0) == "!") {
-					theElement = document.createElement("th");
-					eText = eText.substring(1);
-					eTextLen--;
-				} else {
-					theElement = document.createElement("td");
-				}
-				if (align != "") {
-					theElement.align = align;
-				}
-				if (formatMatch[1]) {
-					theElement.style.background = formatMatch[1];
-				}
-				highlightMatch = wikifyStyles(theElement,text,eText,startPos+tableRowColRegExp.lastIndex-eTextLen,startPos+tableRowColRegExp.lastIndex-1,highlightRegExp,highlightMatch);
-				elements[eIndex] = theElement;
-			}
-			eIndex++;
-		}
-	} while(formatMatch);
-	rows[rowIndex] = elements;
-	return highlightMatch;
-}
-
-function createTableRows(rows,parent)
-{
-	var i, j, k, cols;
-	for (i = 0; i < rows.length; i++) {
-		cols = rows[i];
-		var theRow = document.createElement("tr");
-		for (j = 0; j < cols.length; j++) {
-			if (cols[j] == "~") continue;
-			var rowspan = 1;
-			for (k = i+1; k < rows.length; k++) {
-				if (rows[k][j] != "~") break;
-				rowspan++;
-			}
-			var colspan = 1;
-			for (; j < cols.length - 1; j++) {
-				if (cols[j] != ">") break;
-				colspan++;
-			}
-			var theElement = cols[j];
-			if (rowspan > 1) {
-				theElement.setAttribute("rowSpan",rowspan);
-				theElement.setAttribute("rowspan",rowspan);
-				theElement.valign = "center";
-			}
-			if (colspan > 1) {
-				theElement.setAttribute("colSpan",colspan);
-				theElement.setAttribute("colspan",colspan);
-			}
-			theRow.appendChild(theElement);
-		}
-		parent.appendChild(theRow);
-	}
-}
-
-// Helper for wikify that handles highlights within runs of text
-function subWikify(parent,text,startPos,endPos,highlightRegExp,highlightMatch)
-{
-	// Check for highlights
-	while(highlightMatch && (highlightRegExp.lastIndex > startPos) && (highlightMatch.index < endPos) && (startPos < endPos))
-		{
-		// Deal with the plain text before the highlight
-		if(highlightMatch.index > startPos)
-			{
-			parent.appendChild(document.createTextNode(text.substring(startPos,highlightMatch.index)));
-			startPos = highlightMatch.index;
-			}
-		// Deal with the highlight
-		var highlightEnd = Math.min(highlightRegExp.lastIndex,endPos);
-		var theHighlight = createTiddlyElement(parent,"span",null,"highlight",text.substring(startPos,highlightEnd));
-		startPos = highlightEnd;
-		// Nudge along to the next highlight if we're done with this one
-		if(startPos >= highlightRegExp.lastIndex)
-			highlightMatch = highlightRegExp.exec(text);
-		}
-	// Do the unhighlighted text left over
-	if(startPos < endPos)
-		{
-		parent.appendChild(document.createTextNode(text.substring(startPos,endPos)));
-		//startPos = endPos;
-		}
-	return(highlightMatch);
 }
 
 // ---------------------------------------------------------------------------------
@@ -2175,7 +2293,7 @@ function refreshSpecialItem(elementID,title,defaultText)
 
 function refreshStyles(title)
 {
-	setStylesheet(title == null ? "" : store.getRecursiveTiddlerText(title,""));
+	setStylesheet(title == null ? "" : store.getRecursiveTiddlerText(title,"",10));
 }
 
 // ---------------------------------------------------------------------------------
@@ -2329,7 +2447,7 @@ function saveChanges()
 	var revised = original.substr(0,posOpeningDiv + startSaveArea.length) + 
 				convertUnicodeToUTF8(allTiddlersAsHtml()) + "\n\t\t" +
 				original.substr(posClosingDiv);
-	var newSiteTitle = store.getTiddlerText("SiteTitle","TiddlyWiki").htmlEncode();
+	var newSiteTitle = convertUnicodeToUTF8(store.getTiddlerText("SiteTitle","TiddlyWiki").htmlEncode());
 	revised = revised.replace(new RegExp("<title>[^<]*</title>", "im"),"<title>"+ newSiteTitle +"</title>");
 	var save = saveFile(localPath,revised);
 	if(save)
@@ -2384,7 +2502,7 @@ function generateEmpty()
 function allTiddlersAsHtml()
 {
 	var savedTiddlers = [];
-	var tiddlers = store.getTiddlers("modified");
+	var tiddlers = store.getTiddlers("title");
 	for (var t = 0; t < tiddlers.length; t++)
 		savedTiddlers.push(tiddlers[t].saveToDiv());
 	return savedTiddlers.join("\n");
@@ -2466,6 +2584,8 @@ function saveFile(fileUrl, content)
 		r = mozillaSaveFile(fileUrl, content);
 	if((r == null) || (r == false))
 		r = ieSaveFile(fileUrl, content);
+	if((r == null) || (r == false))
+		r = operaSaveFile(fileUrl, content);
 	return(r);
 }
 
@@ -2478,6 +2598,8 @@ function loadFile(fileUrl)
 		r = mozillaLoadFile(fileUrl);
 	if((r == null) || (r == false))
 		r = ieLoadFile(fileUrl);
+	if((r == null) || (r == false))
+		r = operaLoadFile(fileUrl);
 	return(r);
 }
 
@@ -2568,6 +2690,41 @@ function mozillaLoadFile(filePath)
 	return(null);
 }
 
+function operaSaveFile(filePath, content)
+{
+	try
+		{
+		var s = new java.io.PrintStream(new java.io.FileOutputStream(filePath));
+		s.print(content);
+		s.close();
+		}
+	catch(e)
+		{
+		opera.postError(e);
+		return null;
+		}
+	return true;
+}
+
+function operaLoadFile(filePath)
+{
+	var content = [];
+	try
+		{
+		var r = new java.io.BufferedReader(new java.io.FileReader(filePath));
+		var line;
+		while ((line = r.readLine()) != null)
+			content.push(line);
+		r.close();
+		}
+	catch(e)
+		{
+		opera.postError(e);
+		return null;
+		}
+	return content.join("\n");
+}
+
 function safariFilenameToUrl(filename) {
 	return ("file://" + filename);
 }
@@ -2630,7 +2787,7 @@ function onEditKey(e)
 			if(e.ctrlKey && this.id && this.id.substr(0,13) == "editorWrapper")
 				{
 				blurTiddler(this.id.substr(13));
-				saveTiddler(this.id.substr(13));
+				saveTiddler(this.id.substr(13),e.shiftKey);
 				consume = true;
 				}
 			break;
@@ -2701,17 +2858,22 @@ function onMouseOutTiddler(e)
 // Event handler for double click on a tiddler
 function onDblClickTiddler(e)
 {
-	if(!readOnly)
+	if (!e) var e = window.event;
+	var theTarget = resolveTarget(e);
+	if(!readOnly && theTarget && theTarget.nodeName.toLowerCase() != "input" && theTarget.nodeName.toLowerCase() != "textarea")
 		{
 		clearMessage();
-		if(document.selection)
+		if(document.selection && document.selection.empty)
 			document.selection.empty();
 		var tiddler;
 		if(this.id.substr(0,7) == "tiddler")
 			tiddler = this.id.substr(7);
 		if(tiddler)
 			displayTiddler(null,tiddler,2,null,null,false,false);
+		return true;
 		}
+	else
+		return false;
 }
 
 // Event handler for clicking on toolbar close
@@ -2736,6 +2898,7 @@ function onClickToolbarPermaLink(e)
 		if(window.location.hash != t)
 			window.location.hash = t;
 		}
+	return false;
 }
 
 // Event handler for clicking on toolbar close
@@ -2744,6 +2907,7 @@ function onClickToolbarDelete(e)
 	clearMessage();
 	if(this.parentNode.id)
 		deleteTiddler(this.parentNode.id.substr(7));
+	return false;
 }
 
 // Event handler for clicking on the toolbar references button
@@ -2864,13 +3028,16 @@ function onClickToolbarEdit(e)
 	clearMessage();
 	if(this.parentNode.id)
 		displayTiddler(null,this.parentNode.id.substr(7),2,null,null,false,false);
+	return false;
 }
 
 // Event handler for clicking on toolbar save
 function onClickToolbarSave(e)
 {
+	if (!e) var e = window.event;
 	if(this.parentNode.id)
-		saveTiddler(this.parentNode.id.substr(7));
+		saveTiddler(this.parentNode.id.substr(7),e.shiftKey);
+	return false;
 }
 
 // Event handler for clicking on toolbar save
@@ -2878,6 +3045,7 @@ function onClickToolbarUndo(e)
 {
 	if(this.parentNode.id)
 		displayTiddler(null,this.parentNode.id.substr(7),1,null,null,false,false);
+	return false;
 }
 
 // Eek... it's bad that this is done via a function rather than a normal, copy-able href
@@ -2891,6 +3059,7 @@ function onClickPermaView()
 		links.push(String.encodeTiddlyLink(tiddlerName));
 		}
 	window.location.hash = encodeURIComponent(links.join(" "));
+	return false;
 }
 
 // ---------------------------------------------------------------------------------
@@ -2988,7 +3157,7 @@ Zoomer.prototype.tick = function()
 	this.element.style.height = this.startHeight + (this.targetHeight-this.startHeight) * f + "px";
 	this.element.style.display = "block";
 	this.targetElement.style.opacity = this.progress;
-	this.targetElement.style.filter = "alpha(opacity:" + this.progress * 100 + ")";
+	//this.targetElement.style.filter = "alpha(opacity:" + this.progress * 100 + ")";
 }
 
 // ---------------------------------------------------------------------------------
@@ -3128,6 +3297,16 @@ String.prototype.trim = function()
 {
 	var regexpTrim = new RegExp("^\\s*(.*)\\s*$","mg");
 	return(this.replace(regexpTrim,"$1"));
+}
+
+// Convert a string from a CSS style property name to a JavaScript style name ("background-color" -> "backgroundColor")
+String.prototype.unDash = function()
+{
+	var s = this.split("-");
+	if(s.length > 1)
+		for(var t=1; t<s.length; t++)
+			s[t] = s[t].substr(0,1).toUpperCase() + s[t].substr(1);
+	return s.join("");
 }
 
 // Substitute substrings from an array into a format string that includes '%1'-type specifiers
@@ -3294,17 +3473,17 @@ RGB.prototype.toString = function()
 // Substitute date components into a string
 Date.prototype.formatString = function(template)
 {
-	template = template.replace("YYYY",this.getFullYear());
-	template = template.replace("YY",String.zeroPad(this.getFullYear()-2000,2));
-	template = template.replace("MMM",config.messages.dates.months[this.getMonth()]);
-	template = template.replace("0MM",String.zeroPad(this.getMonth()+1,2));
-	template = template.replace("MM",this.getMonth()+1);
-	template = template.replace("DDD",config.messages.dates.days[this.getDay()]);
-	template = template.replace("0DD",String.zeroPad(this.getDate(),2));
-	template = template.replace("DD",this.getDate());
-	template = template.replace("hh",this.getHours());
-	template = template.replace("mm",this.getMinutes());
-	template = template.replace("ss",this.getSeconds());
+	template = template.replace(/YYYY/g,this.getFullYear());
+	template = template.replace(/YY/g,String.zeroPad(this.getFullYear()-2000,2));
+	template = template.replace(/MMM/g,config.messages.dates.months[this.getMonth()]);
+	template = template.replace(/0MM/g,String.zeroPad(this.getMonth()+1,2));
+	template = template.replace(/MM/g,this.getMonth()+1);
+	template = template.replace(/DDD/g,config.messages.dates.days[this.getDay()]);
+	template = template.replace(/0DD/g,String.zeroPad(this.getDate(),2));
+	template = template.replace(/DD/g,this.getDate());
+	template = template.replace(/hh/g,this.getHours());
+	template = template.replace(/mm/g,this.getMinutes());
+	template = template.replace(/ss/g,this.getSeconds());
 	return template;
 }
 
@@ -3335,6 +3514,11 @@ Date.convertFromYYYYMMDDHHMM = function(d)
 // DOM utilities - many derived from www.quirksmode.org 
 // ---------------------------------------------------------------------------------
 
+function createTiddlyText(theParent,theText)
+{
+	return theParent.appendChild(document.createTextNode(theText));
+}
+
 function createTiddlyElement(theParent,theElement,theID,theClass,theText)
 {
 	var e = document.createElement(theElement);
@@ -3349,14 +3533,14 @@ function createTiddlyElement(theParent,theElement,theID,theClass,theText)
 	return(e);
 }
 
-function createTiddlyButton(theParent,theText,theTooltip,theAction,theClass,theId)
+function createTiddlyButton(theParent,theText,theTooltip,theAction,theClass,theId,theAccessKey)
 {
 	var theButton = document.createElement("a");
 	theButton.className = "button";
 	if(theAction)
 		{
 		theButton.onclick = theAction;
-		theButton.setAttribute("href","JavaScript:;");
+		theButton.setAttribute("href","#");
 		}
 	theButton.setAttribute("title",theTooltip);
 	if(theText)
@@ -3367,19 +3551,25 @@ function createTiddlyButton(theParent,theText,theTooltip,theAction,theClass,theI
 		theButton.id = theId;
 	if(theParent)
 		theParent.appendChild(theButton);
+	if(theAccessKey)
+		theButton.setAttribute("accessKey",theAccessKey);
 	return(theButton);
 }
 
 function createTiddlyLink(place,title,includeText)
 {
 	var text = includeText ? title : null;
-	var subTitle;
-	var tiddler = store.tiddlers[title];
-	if(tiddler)
-		subTitle = tiddler.getSubtitle();
+	var subTitle, theClass;
+	if(store.tiddlerExists(title))
+		{
+		subTitle = store.tiddlers[title].getSubtitle();
+		theClass = "tiddlyLinkExisting tiddlyLink";
+		}
 	else
+		{
 		subTitle = config.messages.undefinedTiddlerToolTip.format([title]);
-	var theClass = tiddler ? "tiddlyLinkExisting tiddlyLink" : "tiddlyLinkNonExisting tiddlyLink";
+		theClass = "tiddlyLinkNonExisting tiddlyLink";
+		}
 	var btn = createTiddlyButton(place,text,subTitle,onClickTiddlerLink,theClass);
 	btn.setAttribute("tiddlyLink",title);
 	return(btn);
@@ -3395,6 +3585,40 @@ function createExternalLink(place,url)
 		theLink.target = "_blank";
 	place.appendChild(theLink);
 	return(theLink);
+}
+
+// Cross-browser event handler attachment
+function addEvent(element,type,fn)
+{
+	if (element.addEventListener)
+		{
+		element.addEventListener(type,fn,false);
+		return true;
+		}
+	else if (element.attachEvent)
+		{
+		var r = element.attachEvent("on" + type,fn);
+		return r;
+		}
+	else
+		return false;
+}
+
+// Cross-browser event handler removal
+function removeEvent(element,type,fn)
+{
+	if (element.removeEventListener)
+		{
+		element.removeEventListener(type,fn,false);
+		return true;
+		}
+	else if (element.detachEvent)
+		{
+		var r = element.detachEvent("on" + type,fn);
+		return r;
+		}
+	else
+		return false;
 }
 
 // Find the tiddler instance (if any) containing a specified element
@@ -3553,6 +3777,10 @@ body {
 	padding: 0em 0em 0em 0em;
 	position: relative;
 	z-index: 0;
+}
+
+img {
+	border: none;
 }
 
 a:link, a:visited {
@@ -3800,6 +4028,8 @@ a:hover, a:active {
 }
 
 .footer {
+	clear: left;
+	clear: right;
 	font-weight: normal;
 	font-size: 8pt;
 	margin: 0em 0em 0em 0em;
@@ -3995,7 +4225,7 @@ a:hover, a:active {
 }
 
 #sidebarOptions {
-	padding-top: 0.5em;
+	padding-top: 0em;
 	background-color: #cc9900;
 }
 
@@ -4067,6 +4297,9 @@ a:hover, a:active {
 
 #sidebarTabs .tabContents {
 	background-color: #996633;
+	width: 16em;
+	white-space: nowrap;
+	overflow: hidden;
 }
 
 #sidebarTabs .txtMoreTab .tabSelected {
@@ -4202,7 +4435,7 @@ a:hover, a:active {
 </style>
 </noscript>
 </head>
-<body onload="main();" onunload="checkUnsavedChanges();">
+<body onload="main();" onunload="if(checkUnsavedChanges) checkUnsavedChanges();">
 	<script>
 	if (detectPlugin("TiddlyWiki Saver"))
 		{
@@ -4234,10 +4467,10 @@ a:hover, a:active {
 			<div id="tiddlerDisplay"></div>
 		</div>
 	</div>
-	<div id="storeArea"><div tiddler="DefaultTiddlers" modified="200508181346" modifier="JeremyRuston" tags="systemTiddlers">HelloThere [[18 August 2005]] MainFeatures TiddlyWikiExamples</div>
+	<div id="storeArea"><div tiddler="DefaultTiddlers" modified="200509262318" modifier="JeremyRuston" tags="systemTiddlers">HelloThere [[27 September 2005]] NewFeatures MainFeatures TiddlyWikiExamples</div>
 <div tiddler="MainMenu" modified="200508181501" modifier="JeremyRuston" tags="systemTiddlers">HelloThere\nTiddlyWiki\nGettingStarted\nUsingThisSite\n[[Community]]\nDownloadSoftware\nPluginsAndMacros\n[[ThankYou]]\n[[RSS|RssFeed]]\n\n© [[osmosoft|http://www.osmosoft.com]] 2005\n\n\n&lt;&lt;newTiddler&gt;&gt;\n&lt;&lt;newJournal &quot;DD MMM YYYY&quot;&gt;&gt;</div>
 <div tiddler="SiteSubtitle" modified="200507121318" modifier="JeremyRuston" tags="systemTiddlers">a reusable non-linear personal web notebook</div>
-<div tiddler="SiteTitle" modified="200508172237" modifier="JeremyRuston" tags="systemTiddlers">TiddlyWiki</div>
+<div tiddler="SiteTitle" modified="200509212109" modifier="JeremyRuston" tags="systemTiddlers">TiddlyWiki</div>
 <div tiddler="SiteUrl" modified="200507121318" modifier="JeremyRuston" tags="systemTiddlers">http://www.tiddlywiki.com/</div></div>
 	</body>
 </html>
