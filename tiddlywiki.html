@@ -1,9 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <script type="text/javascript">
-var version = {major: 1, minor: 2, revision: 30, date: new Date(2005,8-1,5), extensions: {}};
+var version = {major: 1, minor: 2, revision: 31, date: new Date(2005,8-1,5), extensions: {}};
 </script>
 <!--
-TiddlyWiki 1.2.30 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
+TiddlyWiki 1.2.31 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
 
 Published under a BSD open source license
 Incorporating improvements by Isao Sonobe, http://www-gauge.scphys.kyoto-u.ac.jp/~sonobe/OgreKit/OgreKitWiki.html
@@ -2381,7 +2381,9 @@ function convertUTF8ToUnicode(u)
 
 function convertUnicodeToUTF8(s)
 {
-	if(window.Components)
+	if(saveUsingSafari)
+		return s;
+	else if(window.Components)
 		return mozConvertUnicodeToUTF8(s);
 	else
 		return manualConvertUnicodeToUTF8(s);
