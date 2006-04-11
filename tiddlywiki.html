@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <!--
-TiddlyWiki 1.2.10 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
+TiddlyWiki 1.2.11 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
 
 Published under a BSD open source license
 Incorporating improvements by Isao Sonobe, http://www-gauge.scphys.kyoto-u.ac.jp/~sonobe/OgreKit/OgreKitWiki.html
@@ -57,7 +57,7 @@ options.chkSaveEmptyTemplate = false;
 var numRssItems = 20;
 
 // Special tiddlers
-var specialTiddlers = ["SiteTitle","SiteSubtitle","MainMenu","DefaulTiddlers","SaveChanges"];
+var specialTiddlers = ["SiteTitle","SiteSubtitle","MainMenu","DefaultTiddlers","SaveChanges"];
 
 // Starting up
 function main()
@@ -429,9 +429,9 @@ function closeAllTiddlers()
 // Regular expression stuff
 // ---------------------------------------------------------------------------------
 
-var upperLetter = "[A-ZÀ-ß]";
-var lowerLetter = "[a-zà-ÿ_0-9\\-]";
-var anyLetter = "[A-Za-zÀ-ßà-ÿ_0-9\\-]";
+var upperLetter = "[A-ZÀ-Þ]";
+var lowerLetter = "[a-zß-ÿ_0-9\\-]";
+var anyLetter = "[A-Za-zÀ-Þß-ÿ_0-9\\-]";
 var anyDigit = "[0-9]";
 var anyNumberChar = "[0-9\\.E]";
 var wikiNamePattern = "(?:" + upperLetter + "+" + lowerLetter + "+" + upperLetter + anyLetter + "*)|(?:" + upperLetter + "{2,}" + lowerLetter + "+)";
@@ -918,10 +918,14 @@ function createTableRows(rows,parent)
             
             var theElement = cols[j];
             if (rowspan > 1) {
+                theElement.setAttribute("rowSpan",rowspan);
                 theElement.setAttribute("rowspan",rowspan);
                 theElement.valign = "center";
             }
-            if (colspan > 1) theElement.setAttribute("colspan",colspan);
+            if (colspan > 1) {
+                theElement.setAttribute("colSpan",colspan);
+                theElement.setAttribute("colspan",colspan);
+            }
             theRow.appendChild(theElement);
         }
         parent.appendChild(theRow);
@@ -981,6 +985,7 @@ var regexpBackSlashEn = new RegExp("\\\\n","mg");
 var regexpSingleBackSlash = new RegExp("\\\\","mg");
 var regexpDoubleBackSlash = new RegExp("\\\\\\\\","mg");
 var regexpNewLine = new RegExp("\n","mg");
+var regexpCarriageReturn = new RegExp("\r","mg");
 
 // Convert "\n" to newlines
 function unescapeTiddler(text)
@@ -991,7 +996,7 @@ function unescapeTiddler(text)
 // Convert newlines to "\n"
 function escapeTiddler(text)
 {
-    return(text.replace(regexpDoubleBackSlash,"\\").replace(regexpNewLine,"\\n"));
+    return(text.replace(regexpDoubleBackSlash,"\\").replace(regexpNewLine,"\\n").replace(regexpCarriageReturn,""));
 }
 
 var regexpAmp = new RegExp("&","mg");
@@ -1003,6 +1008,15 @@ var regexpQuote = new RegExp("\"","mg");
 function htmlEncode(text)
 {
     return(text.replace(regexpAmp,"&amp;").replace(regexpLessThan,"&lt;").replace(regexpGreaterThan,"&gt;").replace(regexpQuote,"&quot;"));
+}
+
+function encodeTiddlyLink(title)
+{
+    var wikiRegExp = new RegExp("^" + wikiNamePattern + "$","");
+    if(wikiRegExp.test(title))
+        return(title);
+    else
+        return("[[" + title + "]]");
 }
 
 function getTiddlerSubtitle(title)
@@ -1436,7 +1450,7 @@ function saveChanges()
         if(emptySave)
             displayMessage("Empty template saved as ","file://" + emptyPath);
         else
-            alert("Failed to save empty template feed");
+            alert("Failed to save empty template file");
         }
     // Save new file
     var revised = original.substr(0,posOpeningDiv + startSaveArea.length) + convertUnicodeToUTF8(allTiddlersAsHtml()) + original.substr(posClosingDiv);
@@ -1487,13 +1501,16 @@ function generateRss()
 function generateEmpty()
 {
     var savedTiddlers = new Array();
-    var tiddlers = getTiddlers(-1,"date");
-    for (var s = 0; s < specialTiddlers.length; s++)
-        for(var t = 0; t < tiddlers.length; t++)
-            if(tiddlers[t][0] == specialTiddlers[s])
-                savedTiddlers.push("<div id=\"store" + tiddlers[t][0] + "\" modified=\"" +
-                                    tiddlers[t][1] + "\" modifier=\"" + tiddlers[t][2] + "\">" +
-                                    htmlEncode(getTiddlerText(tiddlers[t][0])) + "</div>");
+    var s;
+    for(var s=0; s<specialTiddlers.length; s++)
+        {
+        var e = document.getElementById("store" + specialTiddlers[s]);
+        var modified = e.getAttribute("modified");
+        var modifier = e.getAttribute("modifier");
+        savedTiddlers.push('<div id="store' + specialTiddlers[s] + '" modified="' +
+                            modified + '" modifier="' + modifier + '">' +
+                            htmlEncode(getTiddlerText(specialTiddlers[s])) + '</div>');
+        }
     return savedTiddlers.join("\n");
 }
 
@@ -1765,7 +1782,8 @@ function onClickToolbarPermaLink(e)
 {
     if(this.parentNode.id)
         {
-        var t = encodeURIComponent(this.parentNode.id.substr(7));
+        var title = this.parentNode.id.substr(7);
+        var t = encodeURIComponent(encodeTiddlyLink(title));
         if(window.location.hash != t)
             window.location.hash = t;
         }
@@ -1857,20 +1875,15 @@ function onClearSearch()
 // Eek... it's bad that this is done via a function rather than a normal, copy-able href
 function onClickPermaView()
 {
-    var wikiRegExp = new RegExp("^" + wikiNamePattern + "$","g");
+    var wikiRegExp = new RegExp("^" + wikiNamePattern + "$","");
     var tiddlerDisplay = document.getElementById("tiddlerDisplay");
-    var openTiddlers = "";
-    var separator = "";
+    var links = new Array();
     for(var t=0;t<tiddlerDisplay.childNodes.length;t++)
         {
         var tiddlerName = tiddlerDisplay.childNodes[t].id.substr(7);
-        if(wikiRegExp.test(tiddlerName))
-            openTiddlers = openTiddlers + separator + tiddlerName;
-        else
-            openTiddlers = openTiddlers + separator + "[[" + tiddlerName + "]]";
-        separator = " ";
+        links.push(encodeTiddlyLink(tiddlerName));
         }
-    window.location.hash = encodeURIComponent(openTiddlers);
+    window.location.hash = encodeURIComponent(links.join(" "));
 }
 
 // ---------------------------------------------------------------------------------
@@ -2722,26 +2735,11 @@ a:hover, a:active {
         &nbsp;
         <div id="floater">&nbsp;</div>
     </div>
-    <div id="storeArea"><div id="storeEmptyTiddlyWiki" modified="200505230023" modifier="JeremyRuston">There's now an [[empty TiddlyWiki|empty.html]] to make it easier for people ReusingThisSite. It contains the bare minimum content to enable TiddlyWiki to work.</div>
-<div id="storeLatestStuff" modified="200505230021" modifier="JeremyRuston">Triggered by NathanBower's GTDTiddlyWiki, there's been a rush of activity around TiddlyWiki over the last few weeks. Being a geek, my response has been to furiously program BugFixes and new features including an RssFeed and a CustomStyleSheet hack. A new SaveEmptyTemplate option means that there's now an EmptyTiddlyWiki to use as as a template. See the RevisionHistory for details of all changes.
-
-There's been a few questions from TiddlyWiki users about SafariSupport and GreaseMonkey. If you're still trying to get your head around what TiddlyWiki is all about, there is this [[tutorial|http://www.blogjones.com/TiddlyWikiTutorial.html]]. Finally, people have been saying &quot;Yes, but IsItAjax?&quot;.</div>
-<div id="storeDownloadSoftware" modified="200505230013" modifier="JeremyRuston">Because TiddlyWiki is a single HTML file, you've actually already downloaded the entire software just by viewing this site. If you want to be able to SaveChanges, you can save your own blank TiddlyWiki to your local drive by right clicking on [[this link|empty.html]] and selecting 'Save link as...' or 'Save target as...'. You can choose where to save the file, and what to call it (but keep the .HTML extension).
-
-Do ''not'' use the File/Save command in your browser to save TiddlyWiki, because of SaveUnpredictabilities.</div>
-<div id="storeSaveChanges" modified="200505230013" modifier="JeremyRuston">You can SaveChanges if you're using FireFox or InternetExplorer:
-# if you're using Windows XP you might run into ServicePack2Problems
-# right click on [[this link|empty.html]] and select 'Save link as...' or 'Save target as...'
-** do ''not'' try to use the File/Save command in your browser because of SaveUnpredictabilities.
-** choose where to save the file, and what to call it (but keep the .HTML extension)
-# open the newly downloaded file in your browser
-# click the 'options' button on the right to set your username
-# edit, create and delete the tiddlers you want
-** you can change the SpecialTiddlers to change the SiteTitle and MainMenu etc.
-# click the 'save changes' button on the right to save your changes
-# TiddlyWiki will make a backup copy of the existing file, and then replace it with the new version
-</div>
-<div id="storeRevisionHistory" modified="200505230012" modifier="JeremyRuston">Revision history for the ThirdVersion:
+    <div id="storeArea"><div id="storeRevisionHistory" modified="200505240005" modifier="JeremyRuston">Revision history for the ThirdVersion:
+* Revision 1.2.11, 24 May 2005
+** Fixed problem with superfluous square brackets in PermaView and missing ones in PermaLinks
+** Fixed problem with 'ß' being wrongly classified as uppercase for WikiWord purposes
+** Needing further verification, a fix for some InternetExplorer formatting problems with lists, headings and tables
 * Revision 1.2.10, 23 May 2005
 ** Added SaveEmptyTemplate option
 * Revision 1.2.9, 17 May 2005
@@ -2762,17 +2760,19 @@ Do ''not'' use the File/Save command in your browser to save TiddlyWiki, because
 ** Added EnableAnimations to the InterfaceOptions
 
 See EarlyRevisionHistory for older revisions.</div>
-<div id="storeSaveEmptyTemplate" modified="200505222353" modifier="JeremyRuston">This causes a blank, template TiddlyWiki to be saved alongside your file when you SaveChanges. It's intended to help people who are distributing TiddlyWikiAdaptations, and isn't needed when you're just using TiddlyWiki.
+<div id="storeLatestStuff" modified="200505232345" modifier="JeremyRuston">Triggered by NathanBower's GTDTiddlyWiki, there's been a rush of activity around TiddlyWiki over the last few weeks. Being a geek, my response has been to busily program BugFixes and new features, including an RssFeed and a CustomStyleSheet hack. A new SaveEmptyTemplate option means that there's now an EmptyTiddlyWiki to use as as a template. See the RevisionHistory for details of changes, including details of new BugFixes.
 
-The template TiddlyWiki is always called 'empty.html'.</div>
-<div id="storeSaveUnpredictabilities" modified="200505200823" modifier="JeremyRuston">Several people have reported problems with reusing TiddlyWiki when they have used the File/Save command of their browser to save it. The issue is that some browsers (notably FireFox) don't save the text of the HTML file exactly as it appears on the server, but rather save a snapshot of the current state of the page. In the case of a highly dynamic page like TiddlyWiki, this leads to all sorts of peculiarness...</div>
-<div id="storeTiddlyWikiAdaptations" modified="200505190725" modifier="JeremyRuston">The first and original was [[PhpTiddlyWiki|http://www.patrickcurry.com/tiddly/]] from PatrickCurry and GabrielJeffrey that adds a simple ServerSide in PHP with MySQL. Patrick's site allows anyone to create and edit tiddlers, and has become the de facto community site around TiddlyWiki.
+Many other people have been busy on new TiddlyWikiAdaptations, including TagglyWiki featuring ==taggling== tagging. Other people have been asking about SafariSupport and GreaseMonkey. I've recently discovered the FireFox4KbLimitation which might be a problem for people wanting to put long tracts of text in a TiddlyWiki.
+
+If you're still trying to get your head around what TiddlyWiki is all about, there is this [[tutorial|http://www.blogjones.com/TiddlyWikiTutorial.html]]. Finally, people have been saying &quot;Yes, but IsItAjax?&quot;.</div>
+<div id="storeTiddlyWikiAdaptations" modified="200505232339" modifier="JeremyRuston">The first and original was [[PhpTiddlyWiki|http://www.patrickcurry.com/tiddly/]] from PatrickCurry and GabrielJeffrey that adds a simple ServerSide in PHP with MySQL. Patrick's site allows anyone to create and edit tiddlers, and has become the de facto community site around TiddlyWiki.
 
 I'm barely managing to keep up with all the adaptations out there; EmailMe if you've done one and you want it listed here.
 
 Some of the other adaptations include:
 * NathanBower's GTDTiddlyWiki at http://shared.snapgrid.com/gtd_tiddlywiki.html
 * DanPhiffer's TiddlyWikiRemote at http://phiffer.org/tiddly/
+* JodyFoo's TagglyWiki at http://informationality.com/tagglywiki/tagglywiki.html
 * KamiWiki at http://rakusai.org/kamiwiki/
 * HenrikAastedSorensen's at http://aasted.org/wiki
 * IsaoSonobe's OgreKitWiki at http://www-gauge.scphys.kyoto-u.ac.jp/~sonobe/OgreKit/OgreKitWiki.html 
@@ -2784,12 +2784,35 @@ Some of the other adaptations include:
 * TimCuthbertson and MattGiuca's TiddlyWikiCSS at http://codestar.lidonet.net/misc/tiddlywikicss.html
 
 * There's also KevemBuangga's TiddlyWikiClone at http://www.kevembuangga.com/hwk/hailiwiki.htm</div>
-<div id="storeRssFeed" modified="200505172323" modifier="JeremyRuston">TiddlyWiki's RSS feed is available [[here|http://www.tiddlywiki.com/index.xml]]. RSS support is a WorkInProgress and lacks some niceties at the moment (in particular, the feed is plain text rather than incorporating links and formatting), but at least makes it easier to track changes. You can generate an RSS feed for your own TiddlyWiki using the new GenerateAnRssFeed option.</div>
-<div id="storeKnownBugs" modified="200505172322" modifier="JeremyRuston">This list is probably dwarfed by the UnknownBugs, but anyway, I'm planning to fix these:
+<div id="storeFireFox4KbLimitation" modified="200505232200" modifier="JeremyRuston">When using FireFox, the maximum length of a tiddler is 4096 characters - not necessarily a problem in MicroContent oriented applications of TiddlyWiki, perhaps. It's due to what appears to be a limitation in FireFox whereby the .nodeValue property of a DIV element is truncated to 4096 when it's read from HTML.</div>
+<div id="storeKnownBugs" modified="200505232156" modifier="JeremyRuston">This list is probably dwarfed by the UnknownBugs, but anyway, I'm planning to fix these:
 * InternetExplorer on Windows has a habit of merging consecutive spaces into one. This normally doesn't matter too much, but would trip you up if you tried to use NonWikiWordLinks to create a tiddler title with multiple consecutive spaces.
 * Interleaving lists of BulletPoints with SubHeadings doesn't work properly
 * &quot;Highlighted&quot; and Hexadecimal coloured text formatting is broken
-* WIN/IE 6 messes up list items when you edit a Tiddler with multiple headings</div>
+* WIN/IE 6 messes up list items when you edit a Tiddler with multiple headings
+
+It's not really a bug in TiddlyWiki, but you might need to know about the FireFox4KbLimitation.</div>
+<div id="storeEmptyTiddlyWiki" modified="200505230023" modifier="JeremyRuston">There's now an [[empty TiddlyWiki|empty.html]] to make it easier for people ReusingThisSite. It contains the bare minimum content to enable TiddlyWiki to work.</div>
+<div id="storeDownloadSoftware" modified="200505230013" modifier="JeremyRuston">Because TiddlyWiki is a single HTML file, you've actually already downloaded the entire software just by viewing this site. If you want to be able to SaveChanges, you can save your own blank TiddlyWiki to your local drive by right clicking on [[this link|empty.html]] and selecting 'Save link as...' or 'Save target as...'. You can choose where to save the file, and what to call it (but keep the .HTML extension).
+
+Do ''not'' use the File/Save command in your browser to save TiddlyWiki, because of SaveUnpredictabilities.</div>
+<div id="storeSaveChanges" modified="200505230013" modifier="JeremyRuston">You can SaveChanges if you're using FireFox or InternetExplorer:
+# if you're using Windows XP you might run into ServicePack2Problems
+# right click on [[this link|empty.html]] and select 'Save link as...' or 'Save target as...'
+** do ''not'' try to use the File/Save command in your browser because of SaveUnpredictabilities.
+** choose where to save the file, and what to call it (but keep the .HTML extension)
+# open the newly downloaded file in your browser
+# click the 'options' button on the right to set your username
+# edit, create and delete the tiddlers you want
+** you can change the SpecialTiddlers to change the SiteTitle and MainMenu etc.
+# click the 'save changes' button on the right to save your changes
+# TiddlyWiki will make a backup copy of the existing file, and then replace it with the new version
+</div>
+<div id="storeSaveEmptyTemplate" modified="200505222353" modifier="JeremyRuston">This causes a blank, template TiddlyWiki to be saved alongside your file when you SaveChanges. It's intended to help people who are distributing TiddlyWikiAdaptations, and isn't needed when you're just using TiddlyWiki.
+
+The template TiddlyWiki is always called 'empty.html'.</div>
+<div id="storeSaveUnpredictabilities" modified="200505200823" modifier="JeremyRuston">Several people have reported problems with reusing TiddlyWiki when they have used the File/Save command of their browser to save it. The issue is that some browsers (notably FireFox) don't save the text of the HTML file exactly as it appears on the server, but rather save a snapshot of the current state of the page. In the case of a highly dynamic page like TiddlyWiki, this leads to all sorts of peculiarness...</div>
+<div id="storeRssFeed" modified="200505172323" modifier="JeremyRuston">TiddlyWiki's RSS feed is available [[here|http://www.tiddlywiki.com/index.xml]]. RSS support is a WorkInProgress and lacks some niceties at the moment (in particular, the feed is plain text rather than incorporating links and formatting), but at least makes it easier to track changes. You can generate an RSS feed for your own TiddlyWiki using the new GenerateAnRssFeed option.</div>
 <div id="storeMainFeatures" modified="200505172320" modifier="JeremyRuston">This ThirdVersion of TiddlyWiki offers the following features:
 * compatibility with most modern browsers (although you can only SaveChanges on FireFox and InternetExplorer under Windows)
 * the option to GenerateAnRssFeed
@@ -2910,7 +2933,6 @@ You can also LinkToFolders.</div>
 **those in @@color(green):green@@ are liquids
 **those in black are solids
 </div>
-<div id="storeBugFixes" modified="200504170119" modifier="JeremyRuston">This ThirdVersion of TiddlyWiki fixes a problem with line breaks within tiddlers under InternetExplorer. It also tries to avoid closing tiddlers while they are being edited. There's a bunch of smaller BugFixes as well, but they are somewhat balanced by the KnownBugs.</div>
 <div id="storeUsingThisSite" modified="200504170106" modifier="JeremyRuston">Within the main story column you can click on bold links to read a linked tiddler. Click on italic links to create a new tiddler. When you hover the mouse over a tiddler several ToolbarButtons appear. You can edit the text of any tiddler by double-clicking on it (or selecting 'edit' from the toolbar), but your changes won't get saved permanently until you make your own copy of TiddlyWiki, as described in SaveChanges.</div>
 <div id="storeKeyboardShortcuts" modified="200504150035" modifier="JeremyRuston">While editing a tiddler:
 * Control-Enter accepts your changes and switches out of editing mode
