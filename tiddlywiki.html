@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <!--
-TiddlyWiki 1.2 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
+TiddlyWiki 1.2.1 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
 Incorporating improvements by Isao Sonobe, http://www-gauge.scphys.kyoto-u.ac.jp/~sonobe/OgreKit/OgreKitWiki.html
 
 Copyright (c) Osmosoft Limited, 14 April 2005
@@ -915,10 +915,12 @@ function subWikify(parent,text,startPos,endPos,highlightRegExp,highlightMatch)
 function getTiddlerText(title)
 {
     var tiddlerStore = document.getElementById("store" + title);
-    if(tiddlerStore != null)
+    if(tiddlerStore == null)
+        return(null);
+    else if(tiddlerStore.firstChild)
         return(unescapeTiddler(tiddlerStore.firstChild.nodeValue));
     else
-        return(null);
+        return("");
 }
 
 var regexpBackSlashEn = new RegExp("\\\\n","mg");
@@ -1293,7 +1295,7 @@ function saveChanges()
     if(originalPath.charAt(9) == ":") // pc local file
         localPath = unescape(originalPath.substr(8)).replace(new RegExp("/","g"),"\\");
     else if(originalPath.charAt(7) == "/") // mac/unix local file
-        localPath = originalPath.substr(7);
+        localPath = unescape(originalPath.substr(7));
     else // pc network file
         localPath = "\\\\" + unescape(originalPath.substr(7)).replace(new RegExp("/","g"),"\\");
     // Create backup filename
@@ -2427,8 +2429,9 @@ a:hover, a:active {
 <div id="storeInterfaceOptions" modified="200504132338" modifier="JeremyRuston">InterfaceOptions are displayed when you click the 'options' button on the right. They are saved in a cookie on your browser, making them sticky between visits. RegExpSearch allows more complex search expressions; CaseSensitiveSearch does as it's name implies. The user name for edits should be set //before// starting to edit things (ouch. another bug).</div>
 <div id="storeRegExpSearch" modified="200504132345" modifier="JeremyRuston">RegExpSearch uses JavaScript's [[RegExp syntax|http://www.programmershelp.co.uk/docs/javascript/regexp.html#1193188]] to allow flexible searches.</div>
 <div id="storeNewFeatures" modified="200504132352" modifier="JeremyRuston">This ThirdVersion of TiddlyWiki adds:\n* the ability to easily SaveChanges on FireFox and InternetExplorer\n* a new liquid CSS layout that fills the width of the browser window \n* some BugFixes\n* a more flexible OpenSourceLicense\n* a bunch of features from IsaoSonobe's [[adaptation|http://www-gauge.scphys.kyoto-u.ac.jp/~sonobe/OgreKit/OgreKitWiki.html]] of TiddlyWiki including ExtendedFormatting, NonWikiWordLinks, PrettyLinks, SubHeadings, BulletPoints, NumberedLists, HtmlTables, BlockQuotes, HorizontalRules and...\n* ...EmbeddedImages:\n[img[brixhamharbour.jpg]]</div>
-<div id="storeMainMenu" modified="200504132355" modifier="JeremyRuston">HelloThere TiddlyWiki NewFeatures UsingThisSite ReusingThisSite DownloadSoftware\n\n© [[osmosoft|http://www.osmosoft.com]] 2005</div>
-<div id="storeTiddlyWikiAdaptations" modified="200504140018" modifier="JeremyRuston">The first and original was [[PhpTiddlyWiki|http://www.patrickcurry.com/tiddly/]] from PatrickCurry and GabrielJeffrey that adds a simple ServerSide in PHP with MySQL. Patrick's site allows anyone to create and edit tiddlers, and has become the de facto community site around TiddlyWiki.\n\nSome of the other adaptations include:\n* HenrikAastedSorensen's at http://aasted.org/wiki\n* IsaoSonobe's OgreKit at http://www-gauge.scphys.kyoto-u.ac.jp/~sonobe/OgreKit/OgreKitWiki.html \n* [[JacquesTurb»]]'s TidliPo, in French at http://avm.free.fr/IMG/html/carnet_gt_BigCo.html\n* ChristianHauck's at http://www.christianhauck.net/tiddly_wiki.htm\n* TonyLownds's at http://tony.lownds.com/home/\n* PoulStaugaard and IvanMetalnikov's at http://poul.staugaard.dk/IeWiki.htm\n\n* There's also KevemBuangga's TiddlyWikiClone at http://www.kevembuangga.com/tdw/ (caution: on Safari, it seems to get locked up with error alerts)</div>
-<div id="storeBlockQuotes" modified="200504140131" modifier="JeremyRuston">JeremyRuston said:\n<<<\nA TiddlyWiki is like a blog because it's divided up into neat little chunks, but it encourages you to read it by hyperlinking rather than sequentially: if you like, a non-linear blog analogue that binds the individual microcontent items into a cohesive whole. I think that TiddlyWiki represents a novel medium for writing, and will promote it's own distinctive WritingStyle. This is the first version of TiddlyWiki and so, as discussed in TiddlyWikiDev, it's bound to be FullOfBugs, have many MissingFeatures and fail to meet all of the DesignGoals. And of course there's NoWarranty, and it might be judged a StupidName.\n<<<\n\n>level 1\n>level 1\n>>level 2\n>>level 2\n>>>level 3\n>>>level 3\n>>level 2\n>level 1\n</div></div>
+<div id="storeMainMenu" modified="200504132355" modifier="JeremyRuston">HelloThere TiddlyWiki NewFeatures UsingThisSite ReusingThisSite DownloadSoftware\n\n¬© [[osmosoft|http://www.osmosoft.com]] 2005</div>
+<div id="storeTiddlyWikiAdaptations" modified="200504140018" modifier="JeremyRuston">The first and original was [[PhpTiddlyWiki|http://www.patrickcurry.com/tiddly/]] from PatrickCurry and GabrielJeffrey that adds a simple ServerSide in PHP with MySQL. Patrick's site allows anyone to create and edit tiddlers, and has become the de facto community site around TiddlyWiki.\n\nSome of the other adaptations include:\n* HenrikAastedSorensen's at http://aasted.org/wiki\n* IsaoSonobe's OgreKit at http://www-gauge.scphys.kyoto-u.ac.jp/~sonobe/OgreKit/OgreKitWiki.html \n* [[JacquesTurb¬ª]]'s TidliPo, in French at http://avm.free.fr/IMG/html/carnet_gt_BigCo.html\n* ChristianHauck's at http://www.christianhauck.net/tiddly_wiki.htm\n* TonyLownds's at http://tony.lownds.com/home/\n* PoulStaugaard and IvanMetalnikov's at http://poul.staugaard.dk/IeWiki.htm\n\n* There's also KevemBuangga's TiddlyWikiClone at http://www.kevembuangga.com/tdw/ (caution: on Safari, it seems to get locked up with error alerts)</div>
+<div id="storeBlockQuotes" modified="200504140131" modifier="JeremyRuston">JeremyRuston said:\n<<<\nA TiddlyWiki is like a blog because it's divided up into neat little chunks, but it encourages you to read it by hyperlinking rather than sequentially: if you like, a non-linear blog analogue that binds the individual microcontent items into a cohesive whole. I think that TiddlyWiki represents a novel medium for writing, and will promote it's own distinctive WritingStyle. This is the first version of TiddlyWiki and so, as discussed in TiddlyWikiDev, it's bound to be FullOfBugs, have many MissingFeatures and fail to meet all of the DesignGoals. And of course there's NoWarranty, and it might be judged a StupidName.\n<<<\n\n>level 1\n>level 1\n>>level 2\n>>level 2\n>>>level 3\n>>>level 3\n>>level 2\n>level 1\n</div>
+</div>
     </body>
 </html>
