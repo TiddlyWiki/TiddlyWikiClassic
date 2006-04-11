@@ -1,9 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <script type="text/javascript">
-var version = {major: 1, minor: 2, revision: 24, extensions: {}};
+var version = {major: 1, minor: 2, revision: 25, date: new Date(2005,7,15), extensions: {}};
 </script>
 <!--
-TiddlyWiki 1.2.24 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
+TiddlyWiki 1.2.25 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
 
 Published under a BSD open source license
 Incorporating improvements by Isao Sonobe, http://www-gauge.scphys.kyoto-u.ac.jp/~sonobe/OgreKit/OgreKitWiki.html
@@ -464,8 +464,11 @@ config.macros.newJournal.handler = function(place,macroName,params)
 	var title = params[0].trim();
 	var now = new Date();
 	title = title.replace("YYYY",now.getFullYear());
+	title = title.replace("YY",String.zeroPad(now.getFullYear()-2000,2));
 	title = title.replace("MMM",this.months[now.getMonth()]);
+	title = title.replace("0MM",String.zeroPad(now.getMonth()+1,2));
 	title = title.replace("MM",now.getMonth()+1);
+	title = title.replace("0DD",String.zeroPad(now.getDate(),2));
 	title = title.replace("DD",now.getDate());
 	title = title.replace("hh",now.getHours());
 	title = title.replace("mm",now.getMinutes());
