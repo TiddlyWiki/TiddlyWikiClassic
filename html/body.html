@@ -1,0 +1,18 @@
+<body onload="main();" onunload="if(window.checkUnsavedChanges) checkUnsavedChanges();" onbeforeunload="if(window.confirmExit) return confirmExit();">
+	<script>
+	if (detectPlugin("TiddlyWiki Saver"))
+		{
+		document.write('<embed style="display: none" name="tiddlyWikiSafariSaver" width="0" height="0" type="application/x-webkit-tiddlywiki-saver"></embed>'); 
+		saveUsingSafari = true;
+		}
+	</script>
+	<div id="copyright">
+	Welcome to TiddlyWiki by Jeremy Ruston, Copyright &copy; 2005 Osmosoft Limited
+	</div>
+	<noscript>
+		<div id="javascriptWarning">This page requires JavaScript to function properly</div>
+	</noscript>
+	<div id="saveTest"></div>
+	<div id="contentWrapper"></div>
+	<div id="contentStash"></div>
+	<div id="storeArea">
