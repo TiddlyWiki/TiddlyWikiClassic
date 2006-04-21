@@ -1,9 +1,9 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <script type="text/javascript">
-var version = {major: 2, minor: 0, revision: 8, date: new Date("Apr 7, 2006"), extensions: {}};
+var version = {major: 2, minor: 0, revision: 9, date: new Date("Apr 18, 2006"), extensions: {}};
 </script>
 <!--
-TiddlyWiki 2.0.8 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
+TiddlyWiki 2.0.9 by Jeremy Ruston, (jeremy [at] osmosoft [dot] com)
 
 Copyright (c) Osmosoft Limited 2004-2006
 
@@ -75,7 +75,7 @@ config.options = {
 	txtMoreTab: "moreTabAll",
 	txtMaxEditRows: "30"
 	};
-
+	
 // List of notification functions to be called when certain tiddlers are changed or deleted
 config.notifyTiddlers = [
 	{name: "StyleSheetLayout", notify: refreshStyles},
@@ -143,7 +143,7 @@ config.views = {
 		defaultText: "Type the text for '%0'"
 		}
 	};
-
+		
 // Macros; each has a 'handler' member that is inserted later
 config.macros = {
 	today: {},
@@ -191,7 +191,7 @@ config.commands = {
 	references: {text: "references", tooltip: "Show tiddlers that link to this one", popupNone: "No references"},
 	jump: {text: "jump", tooltip: "Jump to another open tiddler"}
 	};
-
+	
 // Browser detection... In a very few places, there's nothing else for it but to
 // know what browser we're using.
 config.userAgent = navigator.userAgent.toLowerCase();
@@ -468,7 +468,7 @@ config.formatterHelpers = {
 		var e = createTiddlyElement(w.output,this.element);
 		w.subWikify(e,this.terminator);
 	},
-
+	
 	inlineCssHelper:  function(w)
 	{
 		var styles = [];
@@ -662,7 +662,7 @@ config.formatters = [
 					}
 				col++;
 				}
-		} while(matched);
+		} while(matched);		
 	}
 },
 
@@ -696,7 +696,7 @@ config.formatters = [
 {
 	name: "monospacedByLineForCSS",
 	match: "^/\\*[\\{]{3}\\*/\\n",
-	lookahead: "/\\*[\\{]{3}\\*/\\n*((?:^[^\\n]*\\n)+?)(\\n*^/\\*[\\}]{3}\\*/$\\n?)",
+	lookahead: "/\\*[\\{]{3}\\*/\\n*((?:^[^\\n]*\\n)+?)(\\n*^/\\*[\\}]{3}\\*/$\\n?)", 
 	handler: config.formatterHelpers.monospacedByLineHelper
 },
 
@@ -710,12 +710,12 @@ config.formatters = [
 {
 	name: "monospacedByLineForTemplate",
 	match: "^<!--[\\{]{3}-->\\n",
-	lookahead: "<!--[\\{]{3}-->\\n*((?:^[^\\n]*\\n)+?)(\\n*^<!--[\\}]{3}-->$\\n?)",
+	lookahead: "<!--[\\{]{3}-->\\n*((?:^[^\\n]*\\n)+?)(\\n*^<!--[\\}]{3}-->$\\n?)", 
 	handler: config.formatterHelpers.monospacedByLineHelper
 },
 
 {
-	name: "wikifyCommentForPlugin",
+	name: "wikifyCommentForPlugin", 
 	match: "^/\\*\\*\\*\\n",
 	terminator: "^\\*\\*\\*/\\n",
 	handler: function(w)
@@ -725,10 +725,10 @@ config.formatters = [
 },
 
 {
-	name: "wikifyCommentForTemplate",
+	name: "wikifyCommentForTemplate", 
 	match: "^<!---\\n",
 	terminator: "^--->\\n",
-	handler: function(w)
+	handler: function(w) 
 	{
 		w.subWikify(w.output,this.terminator);
 	}
@@ -941,7 +941,7 @@ config.formatters = [
 		lookaheadRegExp.lastIndex = w.matchStart;
 		var lookaheadMatch = lookaheadRegExp.exec(w.source)
 		if(lookaheadMatch && lookaheadMatch.index == w.matchStart && lookaheadMatch[1])
-			{
+			{		
 			w.nextMatch = lookaheadMatch.index + lookaheadMatch[0].length;
 			invokeMacro(w.output,lookaheadMatch[1],lookaheadMatch[2],w,w.tiddler);
 			}
@@ -1150,7 +1150,7 @@ function Wikifier(source,formatter,highlightRegExp,tiddler)
 	this.formatter = formatter;
 	this.nextMatch = 0;
 	this.highlightRegExp = highlightRegExp;
-	this.highlightMatch = null;
+	this.highlightMatch = null;	
 	if(highlightRegExp)
 		{
 		highlightRegExp.lastIndex = 0;
@@ -1197,7 +1197,7 @@ Wikifier.prototype.subWikify = function(output,terminator)
 			this.nextMatch = terminatorMatch.index + terminatorMatch[1].length;
 			// Restore the output pointer and exit
 			this.output = oldOutput;
-			return;
+			return;		
 			}
 		// Check for a formatter match
 		else if(formatterMatch)
@@ -2017,7 +2017,8 @@ config.commands.editTiddler.handler = function(event,src,title)
 config.commands.saveTiddler.handler = function(event,src,title)
 {
 	var newTitle = story.saveTiddler(title,event.shiftKey);
-	story.displayTiddler(null,newTitle);
+	if(newTitle)
+	   story.displayTiddler(null,newTitle);
 	return false;
 }
 
@@ -2033,7 +2034,7 @@ config.commands.cancelTiddler.handler = function(event,src,title)
 
 config.commands.deleteTiddler.handler = function(event,src,title)
 {
-	var deleteIt = true;
+	var deleteIt = true; 
 	if (config.options.chkConfirmDelete)
 		deleteIt = confirm(this.warning.format([title]));
 	if (deleteIt)
@@ -2928,6 +2929,8 @@ Story.prototype.setTiddlerTag = function(title,tag,add)
 				{
 				var tags = c.value.readBracketedList();
 				var p = tags.find(tag);
+				if(add == 0)
+				    add = (p == null) ? +1 : -1;
 				if(add == +1)
 					{
 					if(p == null)
@@ -2937,13 +2940,6 @@ Story.prototype.setTiddlerTag = function(title,tag,add)
 					{
 					if(p != null)
 						tags.splice(p,1);
-					}
-				else if(add == 0)
-					{
-					if(p != null)
-						tags.splice(p,1);
-					else
-						tags.push(tag);
 					}
 				var result = [];
 				for(var r=0; r<tags.length; r++)
@@ -3123,7 +3119,7 @@ Story.prototype.saveTiddler = function(title,minorUpdate)
 		if(config.options.chkForceMinorUpdate)
 			minorUpdate = !minorUpdate;
 		var newDate = new Date();
-		store.saveTiddler(title,newTitle,fields.text,minorUpdate ? undefined : config.options.txtUserName,minorUpdate ? undefined : newDate,fields.tags);
+		store.saveTiddler(title,newTitle,fields.text,config.options.txtUserName,minorUpdate ? undefined : newDate,fields.tags);
 		if(config.options.chkAutoSave)
 			saveChanges();
 		return newTitle;
@@ -3192,7 +3188,7 @@ config.refreshers = {
 		var title = e.getAttribute("tiddlyLink");
 		refreshTiddlyLink(e,title);
 		},
-
+		
 	content: function(e,changeList)
 		{
 		var title = e.getAttribute("tiddler");
@@ -3278,6 +3274,7 @@ function applyPageTemplate(title)
 	applyHtmlMacros(wrapper,null);
 	refreshElements(wrapper,null);
 	display = document.getElementById("tiddlerDisplay");
+	removeChildren(display);
 	if(!display)
 		display = createTiddlyElement(wrapper,"div","tiddlerDisplay");
 	nodes = stash.childNodes;
@@ -3445,7 +3442,7 @@ function saveChanges()
 			alert(config.messages.emptyFailed);
 		}
 	// Save new file
-	var revised = original.substr(0,posOpeningDiv + startSaveArea.length) +
+	var revised = original.substr(0,posOpeningDiv + startSaveArea.length) + 
 				convertUnicodeToUTF8(allTiddlersAsHtml()) + "\n\t\t" +
 				original.substr(posClosingDiv);
 	var newSiteTitle = convertUnicodeToUTF8((wikifyPlain("SiteTitle") + " - " + wikifyPlain("SiteSubtitle")).htmlEncode());
@@ -3832,7 +3829,7 @@ function detectPlugin()
 			var numFound = 0;
 			for(var namesCounter=0; namesCounter < daPlugins.length; namesCounter++)
 				{
-				if( (navigator.plugins[pluginsArrayCounter].name.indexOf(daPlugins[namesCounter]) >= 0) ||
+				if( (navigator.plugins[pluginsArrayCounter].name.indexOf(daPlugins[namesCounter]) >= 0) || 
 						(navigator.plugins[pluginsArrayCounter].description.indexOf(daPlugins[namesCounter]) >= 0) )
 					numFound++;
 				}
@@ -4717,7 +4714,7 @@ Date.convertFromYYYYMMDDHHMM = function(d)
 }
 
 // ---------------------------------------------------------------------------------
-// DOM utilities - many derived from www.quirksmode.org
+// DOM utilities - many derived from www.quirksmode.org 
 // ---------------------------------------------------------------------------------
 
 function drawGradient(place,horiz,colours)
@@ -4997,8 +4994,8 @@ function setStylesheet(s,id)
 #storeArea div {
  padding: 0.5em;
  margin: 1em 0em 0em 0em;
- border-color: #f0f0f0 #606060 #404040 #d0d0d0;
- border-style: solid;
+ border-color: #f0f0f0 #606060 #404040 #d0d0d0; 
+ border-style: solid; 
  border-width: 2px;
  overflow: auto;
 }
@@ -5009,7 +5006,7 @@ function setStylesheet(s,id)
 	font-weight: bold;
 	background-color: #dd1100;
 	color: #fff;
-	padding:1em 0em;
+	padding:1em 0em; 
 }
 
 </style>
@@ -5025,7 +5022,7 @@ function setStylesheet(s,id)
 	<script>
 	if (detectPlugin("TiddlyWiki Saver"))
 		{
-		document.write('<embed style="display: none" name="tiddlyWikiSafariSaver" width="0" height="0" type="application/x-webkit-tiddlywiki-saver"></embed>');
+		document.write('<embed style="display: none" name="tiddlyWikiSafariSaver" width="0" height="0" type="application/x-webkit-tiddlywiki-saver"></embed>'); 
 		saveUsingSafari = true;
 		}
 	</script>
