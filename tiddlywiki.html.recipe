@@ -4,6 +4,7 @@ html/pretitle.html
 @title@
 html/prescript.html
 js/Config.js
+js/Lingo.js
 js/main.js
 js/Paramifiers.js
 js/Formatter.js
