@@ -101,4 +101,3 @@ function invokeMacro(place,macro,params,wikifier,tiddler)
 		}
 }
 
-

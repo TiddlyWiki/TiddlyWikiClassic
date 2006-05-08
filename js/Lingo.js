@@ -3,123 +3,172 @@
 // ---------------------------------------------------------------------------------
 
 // Messages
-config.messages.merge
+merge(config.messages,{
+	customConfigError: "Error in systemConfig tiddler '%1' - %0",
+	savedSnapshotError: "It appears that this TiddlyWiki has been incorrectly saved. Please see http://www.tiddlywiki.com/#DownloadSoftware for details",
+	subtitleUnknown: "(unknown)",
+	undefinedTiddlerToolTip: "The tiddler '%0' doesn't yet exist",
+	shadowedTiddlerToolTip: "The tiddler '%0' doesn't yet exist, but has a pre-defined shadow value",
+	tiddlerLinkTooltip: "%0 - %1, %2",
+	externalLinkTooltip: "External link to %0",
+	noTags: "There are no tagged tiddlers",
+	notFileUrlError: "You need to save this TiddlyWiki to a file before you can save changes",
+	cantSaveError: "It's not possible to save changes. This could be because your browser doesn't support saving (instead, use FireFox if you can), or because the pathname to your TiddlyWiki file contains illegal characters",
+	invalidFileError: "The original file '%0' does not appear to be a valid TiddlyWiki",
+	backupSaved: "Backup saved",
+	backupFailed: "Failed to save backup file",
+	rssSaved: "RSS feed saved",
+	rssFailed: "Failed to save RSS feed file",
+	emptySaved: "Empty template saved",
+	emptyFailed: "Failed to save empty template file",
+	mainSaved: "Main TiddlyWiki file saved",
+	mainFailed: "Failed to save main TiddlyWiki file. Your changes have not been saved",
+	macroError: "Error in macro <<%0>>",
+	macroErrorDetails: "Error while executing macro <<%0>>:\n%1",
+	missingMacro: "No such macro",
+	overwriteWarning: "A tiddler named '%0' already exists. Choose OK to overwrite it",
+	unsavedChangesWarning: "WARNING! There are unsaved changes in TiddlyWiki\n\nChoose OK to save\nChoose CANCEL to discard",
+	confirmExit: "--------------------------------\n\nThere are unsaved changes in TiddlyWiki. If you continue you will lose those changes\n\n--------------------------------",
+	saveInstructions: "SaveChanges"});
 
-config.messages.customConfigError = "Error in systemConfig tiddler '%1' - %0";
-config.messages.savedSnapshotError = "It appears that this TiddlyWiki has been incorrectly saved. Please see http://www.tiddlywiki.com/#DownloadSoftware for details";
-config.messages.subtitleUnknown = "(unknown)";
-config.messages.undefinedTiddlerToolTip = "The tiddler '%0' doesn't yet exist";
-config.messages.shadowedTiddlerToolTip = "The tiddler '%0' doesn't yet exist, but has a pre-defined shadow value";
-config.messages.tiddlerLinkTooltip = "%0 - %1, %2";
-config.messages.externalLinkTooltip = "External link to %0";
-config.messages.noTags = "There are no tagged tiddlers";
-config.messages.notFileUrlError = "You need to save this TiddlyWiki to a file before you can save changes";
-config.messages.cantSaveError = "It's not possible to save changes. This could be because your browser doesn't support saving (instead, use FireFox if you can), or because the pathname to your TiddlyWiki file contains illegal characters";
-config.messages.invalidFileError = "The original file '%0' does not appear to be a valid TiddlyWiki";
-config.messages.backupSaved = "Backup saved";
-config.messages.backupFailed = "Failed to save backup file";
-config.messages.rssSaved = "RSS feed saved";
-config.messages.rssFailed = "Failed to save RSS feed file";
-config.messages.emptySaved = "Empty template saved";
-config.messages.emptyFailed = "Failed to save empty template file";
-config.messages.mainSaved = "Main TiddlyWiki file saved";
-config.messages.mainFailed = "Failed to save main TiddlyWiki file. Your changes have not been saved";
-config.messages.macroError = "Error in macro <<%0>>";
-config.messages.macroErrorDetails = "Error while executing macro <<%0>>:\n%1";
-config.messages.missingMacro = "No such macro";
-config.messages.overwriteWarning = "A tiddler named '%0' already exists. Choose OK to overwrite it";
-config.messages.unsavedChangesWarning = "WARNING! There are unsaved changes in TiddlyWiki\n\nChoose OK to save\nChoose CANCEL to discard";
-config.messages.confirmExit = "--------------------------------\n\nThere are unsaved changes in TiddlyWiki. If you continue you will lose those changes\n\n--------------------------------";
-config.messages.saveInstructions = "SaveChanges";
-config.messages.messageClose.text = "close";
-config.messages.messageClose.tooltip = "close this message area";
+merge(config.messages.messageClose,{
+	text: "close",
+	tooltip: "close this message area"});
+
 config.messages.dates.months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November","December"];
 config.messages.dates.days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-config.views.wikified.tag.labelNoTags = "no tags";
-config.views.wikified.tag.labelTags = "tags: ";
-config.views.wikified.tag.openTag = "Open tag '%0'";
-config.views.wikified.tag.tooltip = "Show tiddlers tagged with '%0'";
-config.views.wikified.tag.openAllText = "Open all";
-config.views.wikified.tag.openAllTooltip = "Open all of these tiddlers";
-config.views.wikified.tag.popupNone = "No other tiddlers tagged with '%0'";
-config.views.wikified.defaultText = "The tiddler '%0' doesn't yet exist. Double-click to create it";
-config.views.wikified.defaultModifier = "(missing)";
-config.views.wikified.shadowModifier = "(shadow)";
-config.views.editor.tagPrompt = "Type tags separated with spaces, [[use double square brackets]] if necessary, or add existing";
-config.views.editor.tagChooser.text = "tags";
-config.views.editor.tagChooser.tooltip = "Choose existing tags to add to this tiddler";
-config.views.editor.tagChooser.popupNone = "There are no tags defined";
-config.views.editor.tagChooser.tagTooltip = "Add the tag '%0'";
-config.views.editor.defaultText = "Type the text for '%0'";
-config.macros.search.label = "search";
-config.macros.search.prompt = "Search this TiddlyWiki";
-config.macros.search.accessKey = "F";
-config.macros.search.successMsg = "%0 tiddlers found matching %1";
-config.macros.search.failureMsg = "No tiddlers found matching %0";
-config.macros.tagging.label = "tagging:";
-config.macros.tagging.labelNotTag = "not tagging";
-config.macros.tagging.tooltip = "List of tiddlers tagged with '%0'";
-config.macros.timeline.dateFormat = "DD MMM YYYY";
-config.macros.allTags.tooltip = "Show tiddlers tagged with '%0'";
-config.macros.allTags.noTags = "There are no tagged tiddlers";
+
+merge(config.views.wikified.tag,{
+	labelNoTags: "no tags",
+	labelTags: "tags: ",
+	openTag: "Open tag '%0'",
+	tooltip: "Show tiddlers tagged with '%0'",
+	openAllText: "Open all",
+	openAllTooltip: "Open all of these tiddlers",
+	popupNone: "No other tiddlers tagged with '%0'"});
+
+merge(config.views.wikified,{
+	defaultText: "The tiddler '%0' doesn't yet exist. Double-click to create it",
+	defaultModifier: "(missing)",
+	shadowModifier: "(shadow)"});
+
+merge(config.views.editor,{
+	tagPrompt: "Type tags separated with spaces, [[use double square brackets]] if necessary, or add existing",
+	defaultText: "Type the text for '%0'"});
+
+merge(config.views.editor.tagChooser,{
+	text: "tags",
+	tooltip: "Choose existing tags to add to this tiddler",
+	popupNone: "There are no tags defined",
+	tagTooltip: "Add the tag '%0'"});
+
+merge(config.macros.search,{
+	label: "search",
+	prompt: "Search this TiddlyWiki",
+	accessKey: "F",
+	successMsg: "%0 tiddlers found matching %1",
+	failureMsg: "No tiddlers found matching %0"});
+
+merge(config.macros.tagging,{
+	label: "tagging:",
+	labelNotTag: "not tagging",
+	tooltip: "List of tiddlers tagged with '%0'"});
+
+merge(config.macros.timeline,{
+	dateFormat: "DD MMM YYYY"});
+
+merge(config.macros.allTags,{
+	tooltip: "Show tiddlers tagged with '%0'",
+	noTags: "There are no tagged tiddlers"});
+
 config.macros.list.all.prompt = "All tiddlers in alphabetical order";
 config.macros.list.missing.prompt = "Tiddlers that have links to them but are not defined";
 config.macros.list.orphans.prompt = "Tiddlers that are not linked to from any other tiddlers";
 config.macros.list.shadowed.prompt = "Tiddlers shadowed with default contents";
-config.macros.closeAll.label = "close all";
-config.macros.closeAll.prompt = "Close all displayed tiddlers (except any that are being edited)";
-config.macros.permaview.label = "permaview";
-config.macros.permaview.prompt = "Link to an URL that retrieves all the currently displayed tiddlers";
-config.macros.saveChanges.label = "save changes";
-config.macros.saveChanges.prompt = "Save all tiddlers to create a new TiddlyWiki";
-config.macros.saveChanges.accessKey = "S";
-config.macros.newTiddler.label = "new tiddler";
-config.macros.newTiddler.prompt = "Create a new tiddler"
-config.macros.newTiddler.title = "New Tiddler";
-config.macros.newTiddler.accessKey = "N";
-config.macros.newJournal.label = "new journal";
-config.macros.newJournal.prompt = "Create a new tiddler from the current date and time";
-config.macros.newJournal.accessKey = "J";
-config.commands.closeTiddler.text = "close";
-config.commands.closeTiddler.tooltip = "Close this tiddler";
-config.commands.closeOthers.text = "close others";
-config.commands.closeOthers.tooltip = "Close all other tiddlers";
-config.commands.editTiddler.text = "edit";
-config.commands.editTiddler.tooltip = "Edit this tiddler";
-config.commands.editTiddler.readOnlyText = "view";
-config.commands.editTiddler.readOnlyTooltip = "View the source of this tiddler";
-config.commands.saveTiddler.text = "done";
-config.commands.saveTiddler.tooltip = "Save changes to this tiddler";
-config.commands.cancelTiddler.text = "cancel";
-config.commands.cancelTiddler.tooltip = "Undo changes to this tiddler";
-config.commands.cancelTiddler.warning = "Are you sure you want to abandon your changes to '%0'?";
-config.commands.cancelTiddler.readOnlyText = "done";
-config.commands.cancelTiddler.readOnlyTooltip = "View this tiddler normally";
-config.commands.deleteTiddler.text = "delete";
-config.commands.deleteTiddler.tooltip = "Delete this tiddler";
-config.commands.deleteTiddler.warning = "Are you sure you want to delete '%0'?";
-config.commands.permalink.text = "permalink";
-config.commands.permalink.tooltip = "Permalink for this tiddler";
-config.commands.references.text = "references";
-config.commands.references.tooltip = "Show tiddlers that link to this one";
-config.commands.references.popupNone = "No references";
-config.commands.jump.text = "jump";
-config.commands.jump.tooltip = "Jump to another open tiddler";
-config.shadowTiddlers.DefaultTiddlers = "GettingStarted";
-config.shadowTiddlers.MainMenu = "GettingStarted";
-config.shadowTiddlers.SiteTitle = "My TiddlyWiki";
-config.shadowTiddlers.SiteSubtitle = "a reusable non-linear personal web notebook";
-config.shadowTiddlers.SiteUrl = "http://www.tiddlywiki.com/";
-config.shadowTiddlers.GettingStarted = "To get started with this blank TiddlyWiki, you'll need to modify the following tiddlers:\n* SiteTitle & SiteSubtitle: The title and subtitle of the site, as shown above (after saving, they will also appear in the browser title bar)\n* MainMenu: The menu (usually on the left)\n* DefaultTiddlers: Contains the names of the tiddlers that you want to appear when the TiddlyWiki is opened\nYou'll also need to enter your username for signing your edits: <<option txtUserName>>";
-config.shadowTiddlers.SideBarOptions = "<<search>><<closeAll>><<permaview>><<newTiddler>><<newJournal 'DD MMM YYYY'>><<saveChanges>><<slider chkSliderOptionsPanel OptionsPanel 'options »' 'Change TiddlyWiki advanced options'>>";
-config.shadowTiddlers.OptionsPanel = "These InterfaceOptions for customising TiddlyWiki are saved in your browser\n\nYour username for signing your edits. Write it as a WikiWord (eg JoeBloggs)\n\n<<option txtUserName>>\n<<option chkSaveBackups>> SaveBackups\n<<option chkAutoSave>> AutoSave\n<<option chkRegExpSearch>> RegExpSearch\n<<option chkCaseSensitiveSearch>> CaseSensitiveSearch\n<<option chkAnimate>> EnableAnimations\n\nSee AdvancedOptions";
-config.shadowTiddlers.AdvancedOptions = "<<option chkGenerateAnRssFeed>> GenerateAnRssFeed\n<<option chkOpenInNewWindow>> OpenLinksInNewWindow\n<<option chkSaveEmptyTemplate>> SaveEmptyTemplate\n<<option chkToggleLinks>> Clicking on links to tiddlers that are already open causes them to close\n^^(override with Control or other modifier key)^^\n<<option chkHttpReadOnly>> HideEditingFeatures when viewed over HTTP\n<<option chkForceMinorUpdate>> Treat edits as MinorChanges by preserving date and time\n^^(override with Shift key when clicking 'done' or by pressing Ctrl-Shift-Enter^^\n<<option chkConfirmDelete>> ConfirmBeforeDeleting\nMaximum number of lines in a tiddler edit box: <<option txtMaxEditRows>>\nFolder name for backup files: <<option txtBackupFolder>>\n";
-config.shadowTiddlers.SideBarTabs = "<<tabs txtMainTab Timeline Timeline TabTimeline All 'All tiddlers' TabAll Tags 'All tags' TabTags More 'More lists' TabMore>>";
-config.shadowTiddlers.TabTimeline = "<<timeline>>";
-config.shadowTiddlers.TabAll = "<<list all>>";
-config.shadowTiddlers.TabTags = "<<allTags>>";
-config.shadowTiddlers.TabMore = "<<tabs txtMoreTab Missing 'Missing tiddlers' TabMoreMissing Orphans 'Orphaned tiddlers' TabMoreOrphans Shadowed 'Shadowed tiddlers' TabMoreShadowed>>";
-config.shadowTiddlers.TabMoreMissing = "<<list missing>>";
-config.shadowTiddlers.TabMoreOrphans = "<<list orphans>>";
-config.shadowTiddlers.TabMoreShadowed = "<<list shadowed>>";
+
+merge(config.macros.closeAll,{
+	label: "close all",
+	prompt: "Close all displayed tiddlers (except any that are being edited)"});
+
+merge(config.macros.permaview,{
+	label: "permaview",
+	prompt: "Link to an URL that retrieves all the currently displayed tiddlers"});
+
+merge(config.macros.saveChanges,{
+	label: "save changes",
+	prompt: "Save all tiddlers to create a new TiddlyWiki",
+	accessKey: "S"});
+
+merge(config.macros.newTiddler,{
+	label: "new tiddler",
+	prompt: "Create a new tiddler",
+	title: "New Tiddler",
+	accessKey: "N"});
+
+merge(config.macros.newJournal,{
+	label: "new journal",
+	prompt: "Create a new tiddler from the current date and time",
+	accessKey: "J"});
+
+merge(config.commands.closeTiddler,{
+	text: "close",
+	tooltip: "Close this tiddler"});
+
+merge(config.commands.closeOthers,{
+	text: "close others",
+	tooltip: "Close all other tiddlers"});
+
+merge(config.commands.editTiddler,{
+	text: "edit",
+	tooltip: "Edit this tiddler",
+	readOnlyText: "view",
+	readOnlyTooltip: "View the source of this tiddler"});
+
+merge(config.commands.saveTiddler,{
+	text: "done",
+	tooltip: "Save changes to this tiddler"});
+
+merge(config.commands.cancelTiddler,{
+	text: "cancel",
+	tooltip: "Undo changes to this tiddler",
+	warning: "Are you sure you want to abandon your changes to '%0'?",
+	readOnlyText: "done",
+	readOnlyTooltip: "View this tiddler normally"});
+
+merge(config.commands.deleteTiddler,{
+	text: "delete",
+	tooltip: "Delete this tiddler",
+	warning: "Are you sure you want to delete '%0'?"});
+
+merge(config.commands.permalink,{
+	text: "permalink",
+	tooltip: "Permalink for this tiddler"});
+
+merge(config.commands.references,{
+	text: "references",
+	tooltip: "Show tiddlers that link to this one",
+	popupNone: "No references"});
+
+merge(config.commands.jump,{
+	text: "jump",
+	tooltip: "Jump to another open tiddler"});
+
+merge(config.shadowTiddlers,{
+	DefaultTiddlers: "GettingStarted",
+	MainMenu: "GettingStarted",
+	SiteTitle: "My TiddlyWiki",
+	SiteSubtitle: "a reusable non-linear personal web notebook",
+	SiteUrl: "http://www.tiddlywiki.com/",
+	GettingStarted: "To get started with this blank TiddlyWiki, you'll need to modify the following tiddlers:\n* SiteTitle & SiteSubtitle: The title and subtitle of the site, as shown above (after saving, they will also appear in the browser title bar)\n* MainMenu: The menu (usually on the left)\n* DefaultTiddlers: Contains the names of the tiddlers that you want to appear when the TiddlyWiki is opened\nYou'll also need to enter your username for signing your edits: <<option txtUserName>>",
+	SideBarOptions: "<<search>><<closeAll>><<permaview>><<newTiddler>><<newJournal 'DD MMM YYYY'>><<saveChanges>><<slider chkSliderOptionsPanel OptionsPanel 'options »' 'Change TiddlyWiki advanced options'>>",
+	OptionsPanel: "These InterfaceOptions for customising TiddlyWiki are saved in your browser\n\nYour username for signing your edits. Write it as a WikiWord (eg JoeBloggs)\n\n<<option txtUserName>>\n<<option chkSaveBackups>> SaveBackups\n<<option chkAutoSave>> AutoSave\n<<option chkRegExpSearch>> RegExpSearch\n<<option chkCaseSensitiveSearch>> CaseSensitiveSearch\n<<option chkAnimate>> EnableAnimations\n\nSee AdvancedOptions",
+	AdvancedOptions: "<<option chkGenerateAnRssFeed>> GenerateAnRssFeed\n<<option chkOpenInNewWindow>> OpenLinksInNewWindow\n<<option chkSaveEmptyTemplate>> SaveEmptyTemplate\n<<option chkToggleLinks>> Clicking on links to tiddlers that are already open causes them to close\n^^(override with Control or other modifier key)^^\n<<option chkHttpReadOnly>> HideEditingFeatures when viewed over HTTP\n<<option chkForceMinorUpdate>> Treat edits as MinorChanges by preserving date and time\n^^(override with Shift key when clicking 'done' or by pressing Ctrl-Shift-Enter^^\n<<option chkConfirmDelete>> ConfirmBeforeDeleting\nMaximum number of lines in a tiddler edit box: <<option txtMaxEditRows>>\nFolder name for backup files: <<option txtBackupFolder>>\n",
+	SideBarTabs: "<<tabs txtMainTab Timeline Timeline TabTimeline All 'All tiddlers' TabAll Tags 'All tags' TabTags More 'More lists' TabMore>>",
+	TabTimeline: "<<timeline>>",
+	TabAll: "<<list all>>",
+	TabTags: "<<allTags>>",
+	TabMore: "<<tabs txtMoreTab Missing 'Missing tiddlers' TabMoreMissing Orphans 'Orphaned tiddlers' TabMoreOrphans Shadowed 'Shadowed tiddlers' TabMoreShadowed>>",
+	TabMoreMissing: "<<list missing>>",
+	TabMoreOrphans: "<<list orphans>>",
+	TabMoreShadowed: "<<list shadowed>>"});
 

@@ -177,4 +177,11 @@ function createTiddlyError(place,title,text)
 	if (text) btn.setAttribute("errorText",text);
 }
 
+function merge(dst,src)
+{
+	for (p in src)
+		dst[p] = src[p];
+	return dst;
+}
+
 

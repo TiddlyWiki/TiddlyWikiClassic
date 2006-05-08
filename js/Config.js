@@ -38,7 +38,7 @@ config.options = {
 	txtMoreTab: "moreTabAll",
 	txtMaxEditRows: "30"
 	};
-
+	
 // List of notification functions to be called when certain tiddlers are changed or deleted
 config.notifyTiddlers = [
 	{name: "StyleSheetLayout", notify: refreshStyles},
