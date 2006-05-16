@@ -60,7 +60,7 @@ config.tiddlerTemplates = {
 // More messages (rather a legacy layout that shouldn't really be like this)
 config.views = {
 	wikified: {
-		tag: {},
+		tag: {}
 		},
 	editor: {
 		tagChooser: {}
