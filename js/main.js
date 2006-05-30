@@ -15,6 +15,7 @@ var safeMode = false; // Disable all plugins and cookies
 // Starting up
 function main()
 {
+	var now, then = new Date();
 	params = getParameters();
 	if(params)
 		params = params.parseParams("open",null,false);
@@ -34,6 +35,9 @@ function main()
 	invokeParamifier(params,"onconfig");
 	store.notifyAll();
 	restart();
+	// Just for the beta
+	now = new Date();
+	displayMessage("TiddlyWiki startup in " + (now-then) + " milliseconds");
 }
 
 // Restarting
