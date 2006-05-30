@@ -174,6 +174,8 @@ config.macros.search.onFocus = function(e)
 config.macros.tiddler.handler = function(place,macroName,params)
 {
 	var wrapper = createTiddlyElement(place,"span",null,params[1] ? params[1] : null,null);
+	wrapper.setAttribute("refresh","content");
+	wrapper.setAttribute("tiddler",params[0]);
 	var text = store.getTiddlerText(params[0]);
 	if(text)
 		{
