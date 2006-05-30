@@ -40,9 +40,22 @@ config.paramifiers.open = {
 		}
 };
 
+config.paramifiers.story = {
+	onstart: function(v) {
+		var list = store.getTiddlerText(v,"").parseParams("open",null,false);
+		invokeParamifier(list,"onstart");
+		}
+};
+
 config.paramifiers.search = {
 	onstart: function(v) {
 		story.search(v,false,false);
+		}
+};
+
+config.paramifiers.searchRegExp = {
+	onstart: function(v) {
+		story.prototype.search(v,false,true);
 		}
 };
 
