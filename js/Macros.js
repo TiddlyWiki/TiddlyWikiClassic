@@ -205,7 +205,7 @@ config.macros.tag.handler = function(place,macroName,params)
 config.macros.tags.handler = function(place,macroName,params,wikifier,paramString,tiddler)
 {
 	var theList = createTiddlyElement(place,"ul");
-	if(params[0] && store.tiddlerExists[params[0]])
+	if(params[0] && store.tiddlerExists(params[0]))
 		tiddler = store.getTiddler(params[0]);
 	var lingo = config.views.wikified.tag;
 	var prompt = tiddler.tags.length == 0 ? lingo.labelNoTags : lingo.labelTags;
