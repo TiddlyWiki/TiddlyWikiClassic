@@ -140,7 +140,11 @@ config.macros.search.onKeyPress = function(e)
 	if (!e) var e = window.event;
 	switch(e.keyCode)
 		{
-		case 27:
+		case 13: // Ctrl-Enter
+		case 10: // Ctrl-Enter on IE PC
+		  config.macros.search.doSearch(this);
+		  break;
+		case 27: // Escape
 			this.value = "";
 			clearMessage();
 			break;
