@@ -25,8 +25,10 @@ function checkUnsavedChanges()
 }
 
 // Save this tiddlywiki with the pending changes
-function saveChanges()
+function saveChanges(onlyIfDirty)
 {
+	if(onlyIfDirty && !store.isDirty())
+		return;
 	clearMessage();
 	// Get the URL of the document
 	var originalPath = document.location.toString();
