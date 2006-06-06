@@ -120,9 +120,10 @@ config.commands = {
 config.userAgent = navigator.userAgent.toLowerCase();
 config.browser = {
 	isIE: config.userAgent.indexOf("msie") != -1 && config.userAgent.indexOf("opera") == -1,
+	ieVersion: /MSIE (\d.\d)/i.exec(config.userAgent), // config.browser.ieVersion[1], if it exists, will be the IE version string, eg "6.0"
 	isSafari: config.userAgent.indexOf("applewebkit") != -1,
 	isBadSafari: !((new RegExp("[\u0150\u0170]","g")).test("\u0150")),
-	firefoxDate: /Gecko\/(\d{8})/i.exec(config.userAgent),
+	firefoxDate: /Gecko\/(\d{8})/i.exec(config.userAgent), // config.browser.firefoxDate[1], if it exists, will be Firefox release date as "YYYYMMDD"
 	isLinux: config.userAgent.indexOf("linux") != -1,
 	isUnix: config.userAgent.indexOf("x11") != -1,
 	isMac: config.userAgent.indexOf("mac") != -1,
