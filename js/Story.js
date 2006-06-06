@@ -409,12 +409,14 @@ Story.prototype.search = function(text,useCaseSensitive,useRegExp)
 	this.closeAllTiddlers();
 	highlightHack = new RegExp(useRegExp ?	 text : text.escapeRegExp(),useCaseSensitive ? "mg" : "img");
 	var matches = store.search(highlightHack,"title","excludeSearch");
+	var titles = [];
 	for(var t=matches.length-1; t>=0; t--)
-		this.displayTiddler(null,matches[t].title);
+		titles.push(matches[t].title);
+	this.displayTiddlers(null,titles);
 	highlightHack = null;
 	var q = useRegExp ? "/" : "'";
 	if(matches.length > 0)
-		displayMessage(config.macros.search.successMsg.format([matches.length.toString(),q + text + q]));
+		displayMessage(config.macros.search.successMsg.format([titles.length.toString(),q + text + q]));
 	else
 		displayMessage(config.macros.search.failureMsg.format([q + text + q]));
 }
