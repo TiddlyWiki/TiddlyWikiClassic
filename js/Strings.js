@@ -197,6 +197,20 @@ String.encodeTiddlyLink = function(title)
 		return("[[" + title + "]]");
 }
 
+// Static method to encodeTiddlyLink for every item in an array and join them with spaces
+String.encodeTiddyLinkList = function(list)
+{
+	if(list)
+		{
+		var results = [];
+		for(var t=0; t<list.length; t++)
+			results.push(String.encodeTiddlyLink(list[t]));
+		return results.join(" ");
+		}
+	else
+		return "";
+}
+
 // Static method to left-pad a string with 0s to a certain width
 String.zeroPad = function(n,d)
 {

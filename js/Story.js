@@ -331,10 +331,7 @@ Story.prototype.setTiddlerTag = function(title,tag,add)
 					if(p != null)
 						tags.splice(p,1);
 					}
-				var result = [];
-				for(var r=0; r<tags.length; r++)
-					result.push(String.encodeTiddlyLink(tags[r]));
-				c.value = result.join(" ");
+				c.value = String.encodeTiddyLinkList(tags);
 				}
 			}
 		}
