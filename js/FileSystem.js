@@ -12,29 +12,33 @@ function convertUTF8ToUnicode(u)
 		return manualConvertUTF8ToUnicode(u);
 }
 
-function manualConvertUTF8ToUnicode(u)
+function manualConvertUTF8ToUnicode(utf)
 {
-	var s = "";
-	var t = 0;
+	var uni = utf;
+	var src = 0;
+	var dst = 0;
 	var b1, b2, b3;
-	while(t < u.length)
+	var c;
+	while(src < utf.length)
 		{
-		b1 = u.charCodeAt(t++);
+		b1 = utf.charCodeAt(src++);
 		if(b1 < 0x80)
-			s += String.fromCharCode(b1);
+			dst++;
 		else if(b1 < 0xE0)
 			{
-			b2 = u.charCodeAt(t++);
-			s += String.fromCharCode(((b1 & 0x1F) << 6) | (b2 & 0x3F));
+			b2 = utf.charCodeAt(src++);
+			c = String.fromCharCode(((b1 & 0x1F) << 6) | (b2 & 0x3F));
+			uni = uni.substring(0,dst++).concat(c,utf.substr(src));
 			}
 		else
 			{
-			b2 = u.charCodeAt(t++);
-			b3 = u.charCodeAt(t++);
-			s += String.fromCharCode(((b1 & 0xF) << 12) | ((b2 & 0x3F) << 6) | (b3 & 0x3F));
+			b2 = utf.charCodeAt(src++);
+			b3 = utf.charCodeAt(src++);
+			c = String.fromCharCode(((b1 & 0xF) << 12) | ((b2 & 0x3F) << 6) | (b3 & 0x3F));
+			uni = uni.substring(0,dst++).concat(c,utf.substr(src));
 			}
 	}
-	return(s);
+	return(uni);
 }
 
 function mozConvertUTF8ToUnicode(u)
