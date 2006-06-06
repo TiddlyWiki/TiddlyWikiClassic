@@ -450,37 +450,28 @@ Story.prototype.gatherSaveFields = function(e,fields)
 		}
 }
 
+config.editFields = {};
+config.editFields.title = {isChanged: function (tiddler, fields) {return tiddler.title != fields.title;}};
+config.editFields.text = {isChanged: function (tiddler, fields) {return tiddler.text != fields.text;}};
+config.editFields.tags = {isChanged: function (tiddler, fields) {return tiddler.getTags() != fields.tags;}};
+
 // Determine whether a tiddler has any edit fields, and if so if their values have been changed
 // title - name of tiddler
 Story.prototype.hasChanges = function(title)
 {
-	var changed = false;
 	var e = document.getElementById(this.idPrefix + title);
 	if(e != null)
 		{
 		var fields = {};
 		this.gatherSaveFields(e,fields);
 		var tiddler = store.fetchTiddler(title);
+		if (!tiddler)
+			return false;
 		for(var n in fields)
-			{
-			switch(n)
-				{
-				case "title":
-					if(tiddler && tiddler.title != fields.title)
-						changed = true;
-					break;
-				case "text":
-					if(tiddler && tiddler.text != fields.text)
-						changed = true;
-					break;
-				case "tags":
-					if(tiddler && tiddler.getTags() != fields.tags)
-						changed = true;
-					break;
-				}
-			}
+			if (config.editFields[n].isChanged  && config.editFields[n].isChanged(tiddler, fields))
+				return true;
 		}
-	return changed;
+	return false;
 }
 
 // Save any open edit fields of a tiddler and updates the display as necessary
