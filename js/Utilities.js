@@ -5,17 +5,19 @@
 function createTiddlyButton(theParent,theText,theTooltip,theAction,theClass,theId,theAccessKey)
 {
 	var theButton = document.createElement("a");
-	theButton.className = "button";
 	if(theAction)
 		{
 		theButton.onclick = theAction;
 		theButton.setAttribute("href","javascript:;");
 		}
-	theButton.setAttribute("title",theTooltip);
+	if(theTooltip)
+		theButton.setAttribute("title",theTooltip);
 	if(theText)
 		theButton.appendChild(document.createTextNode(theText));
 	if(theClass)
 		theButton.className = theClass;
+	else
+		theButton.className = "button";
 	if(theId)
 		theButton.id = theId;
 	if(theParent)
@@ -37,26 +39,31 @@ function createTiddlyLink(place,title,includeText,theClass)
 
 function refreshTiddlyLink(e,title)
 {
-	var subTitle, theClass = "tiddlyLink";
+	addClass(e,"tiddlyLink");
+	var subTitle;
 	var tiddler = store.fetchTiddler(title);
 	if(tiddler)
 		{
 		subTitle = tiddler.getSubtitle();
-		theClass += " tiddlyLinkExisting";
+		addClass(e,"tiddlyLinkExisting");
+		removeClass(e,"tiddlyLinkNonExisting");
+		removeClass(e,"shadow");
 		}
 	else
 		{
-		subTitle = config.messages.undefinedTiddlerToolTip.format([title]);
-		theClass += " tiddlyLinkNonExisting";
+		removeClass(e,"tiddlyLinkExisting");
+		addClass(e,"tiddlyLinkNonExisting");
 		if(store.isShadowTiddler(title))
 			{
 			subTitle = config.messages.shadowedTiddlerToolTip.format([title]);
-			theClass += " shadow";
+			addClass(e,"shadow");
 			}
 		else
+			{
 			subTitle = config.messages.undefinedTiddlerToolTip.format([title]);
+			removeClass(e,"shadow");
+			}
 		}
-	e.className = theClass;
 	e.title = subTitle;
 }
 
