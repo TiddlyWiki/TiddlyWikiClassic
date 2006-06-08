@@ -160,8 +160,10 @@ function onClickTagOpenAll(e)
 	if (!e) var e = window.event;
 	var tag = this.getAttribute("tag");
 	var tagged = store.getTaggedTiddlers(tag);
+	var titles = [];
 	for(var t=tagged.length-1; t>=0; t--)
-		story.displayTiddler(this,tagged[t].title,null,false,e.shiftKey || e.altKey);
+		titles.push(tagged[t].title);
+	displayTiddlers(this,titles);
 	return(false);
 }
 
