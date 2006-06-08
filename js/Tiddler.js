@@ -17,6 +17,13 @@ function Tiddler()
 // Load a tiddler from an HTML DIV. The caller should make sure to later call Tiddler.changed()
 Tiddler.prototype.loadFromDiv = function(divRef,title)
 {
+	var text= ""; 
+	var e = divRef.firstChild;
+	while (e && e.nodeName == "#text")
+		{
+		text += Tiddler.unescapeLineBreaks(e.nodeValue);
+		e = e.nextSibling;
+		}
 	var text = Tiddler.unescapeLineBreaks(divRef.firstChild ? divRef.firstChild.nodeValue : "");
 	var modifier = divRef.getAttribute("modifier");
 	var modified = Date.convertFromYYYYMMDDHHMM(divRef.getAttribute("modified"));
