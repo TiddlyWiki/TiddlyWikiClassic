@@ -59,7 +59,7 @@ config.formatterHelpers = {
 
 	applyCssHelper: function(e,styles)
 	{
-		for(var t=0; t<styles.length; t++)
+		for(var t=0; t< styles.length; t++)
 			{
 			try
 				{
