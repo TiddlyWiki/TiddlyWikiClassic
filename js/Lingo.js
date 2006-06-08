@@ -2,7 +2,10 @@
 // Translateable strings
 // ---------------------------------------------------------------------------------
 
-// Messages
+
+merge(config.options,{
+	txtUserName: "YourName"});
+
 merge(config.messages,{
 	customConfigError: "Error in systemConfig tiddler '%1' - %0",
 	savedSnapshotError: "It appears that this TiddlyWiki has been incorrectly saved. Please see http://www.tiddlywiki.com/#DownloadSoftware for details",
@@ -154,6 +157,7 @@ merge(config.commands.jump,{
 	tooltip: "Jump to another open tiddler"});
 
 merge(config.shadowTiddlers,{
+	StyleSheet: "/***\nPlace your custom CSS here\n***/\n/*{{{*/\n\n/*}}}*/\n",
 	DefaultTiddlers: "GettingStarted",
 	MainMenu: "GettingStarted",
 	SiteTitle: "My TiddlyWiki",
