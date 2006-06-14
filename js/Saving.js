@@ -96,7 +96,7 @@ function saveChanges(onlyIfDirty)
 			alert(config.messages.emptyFailed);
 		}
 	// Save new file
-	var revised = original.substr(0,posOpeningDiv + startSaveArea.length) +
+	var revised = original.substr(0,posOpeningDiv + startSaveArea.length) + "\n\t" +
 				convertUnicodeToUTF8(allTiddlersAsHtml()) + "\n\t\t" +
 				original.substr(posClosingDiv);
 	var newSiteTitle = convertUnicodeToUTF8((wikifyPlain("SiteTitle") + " - " + wikifyPlain("SiteSubtitle")).htmlEncode());
