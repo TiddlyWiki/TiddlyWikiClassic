@@ -7,6 +7,7 @@ js/Config.js
 js/Lingo.js
 js/main.js
 js/Paramifiers.js
+js/FormatterHelpers.js
 js/Formatter.js
 js/Wikifier.js
 js/Macros.js
