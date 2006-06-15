@@ -18,7 +18,7 @@ config.formatterHelpers = {
 
 	charFormatHelper: function(w)
 	{
-		w.subWikify(createTiddlyElement2(w.output,this.element),this.terminator);
+		w.subWikify(createTiddlyElement(w.output,this.element),this.terminator);
 	},
 
 	inlineCssHelper: function(w)
