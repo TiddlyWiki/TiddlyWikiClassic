@@ -8,6 +8,7 @@ js/Lingo.js
 js/main.js
 js/Paramifiers.js
 js/Formatter.js
+js/FormatterHelpers.js
 js/Wikifier.js
 js/Macros.js
 js/Commands.js
