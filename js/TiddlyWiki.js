@@ -223,6 +223,16 @@ TiddlyWiki.prototype.loadFromDiv = function(srcID,idPrefix)
 	this.setDirty(false);
 }
 
+// Return all tiddlers formatted as a sequence of HTML DIVs
+TiddlyWiki.prototype.allTiddlersAsHtml = function()
+{
+	var results = [];
+	var tiddlers = this.getTiddlers("title");
+	for (var t = 0; t < tiddlers.length; t++)
+		results.push(tiddlers[t].saveToDiv());
+	return results.join("\n");
+}
+
 // Return an array of tiddlers matching a search regular expression
 TiddlyWiki.prototype.search = function(searchRegExp,sortField,excludeTag)
 {
