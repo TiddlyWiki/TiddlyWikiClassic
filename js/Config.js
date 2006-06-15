@@ -132,17 +132,15 @@ config.browser = {
 // Basic regular expressions
 config.textPrimitives = {
 	upperLetter: "[A-Z\u00c0-\u00de\u0150\u0170]",
-	lowerLetter: "[a-z\u00df-\u00ff_0-9\\-\u0151\u0171]",
-	anyLetter: "[A-Za-z\u00c0-\u00de\u00df-\u00ff_0-9\\-\u0150\u0170\u0151\u0171]"
+	lowerLetter: "[a-z0-9\\-\u00df-\u00ff\u0151\u0171]",
+	anyLetter:   "[A-Za-z0-9\\-\u00c0-\u00de\u00df-\u00ff\u0150\u0170\u0151\u0171]"
 	};
 if(config.browser.isBadSafari)
 	config.textPrimitives = {
 		upperLetter: "[A-Z\u00c0-\u00de]",
-		lowerLetter: "[a-z\u00df-\u00ff_0-9\\-]",
-		anyLetter: "[A-Za-z\u00c0-\u00de\u00df-\u00ff_0-9\\-]"
+		lowerLetter: "[a-z0-9\\-\u00df-\u00ff]",
+		anyLetter:   "[A-Za-z0-9\\-\u00c0-\u00de\u00df-\u00ff]"
 		}
-config.textPrimitives.anyDigit = "[0-9]";
-config.textPrimitives.anyNumberChar = "[0-9\\.E]";
 config.textPrimitives.urlPattern = "(?:file|http|https|mailto|ftp):[^\\s'\"]+(?:/|\\b)";
 config.textPrimitives.unWikiLink = "~";
 config.textPrimitives.wikiLink = "(?:" + config.textPrimitives.unWikiLink + "{0,1})(?:(?:" + config.textPrimitives.upperLetter + "+" +
@@ -151,6 +149,9 @@ config.textPrimitives.wikiLink = "(?:" + config.textPrimitives.unWikiLink + "{0,
 												  config.textPrimitives.anyLetter + "*)|(?:" +
 												  config.textPrimitives.upperLetter + "{2,}" +
 												  config.textPrimitives.lowerLetter + "+))";
+
+config.textPrimitives.cssLookahead = "(?:(" + config.textPrimitives.anyLetter + "+)\\(([^\\)\\|\\n]+)(?:\\):))|(?:(" + config.textPrimitives.anyLetter + "+):([^;\\|\\n]+);)";
+config.textPrimitives.cssLookaheadRegExp = new RegExp(config.textPrimitives.cssLookahead,"mg");
 
 // ---------------------------------------------------------------------------------
 // Shadow tiddlers for emergencies
