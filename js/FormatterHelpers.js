@@ -18,42 +18,35 @@ config.formatterHelpers = {
 
 	charFormatHelper: function(w)
 	{
-		var e = createTiddlyElement(w.output,this.element);
+		var e = w.output.appendChild(document.createElement(this.element));
 		w.subWikify(e,this.terminator);
 	},
-	
-	inlineCssHelper:  function(w)
+
+	inlineCssHelper: function(w)
 	{
 		var styles = [];
-		var lookahead = "(?:(" + config.textPrimitives.anyLetter + "+)\\(([^\\)\\|\\n]+)(?:\\):))|(?:(" + config.textPrimitives.anyLetter + "+):([^;\\|\\n]+);)";
-		var lookaheadRegExp = new RegExp(lookahead,"mg");
-		var hadStyle = false;
-		do {
-			lookaheadRegExp.lastIndex = w.nextMatch;
-			var lookaheadMatch = lookaheadRegExp.exec(w.source);
-			var gotMatch = lookaheadMatch && lookaheadMatch.index == w.nextMatch;
-			if(gotMatch)
+		config.textPrimitives.cssLookaheadRegExp.lastIndex = w.nextMatch;
+		var lookaheadMatch = config.textPrimitives.cssLookaheadRegExp.exec(w.source);
+		while(lookaheadMatch && lookaheadMatch.index == w.nextMatch)
+			{
+			var s,v;
+			if(lookaheadMatch[1])
 				{
-				var s,v;
-				hadStyle = true;
-				if(lookaheadMatch[1])
-					{
-					s = lookaheadMatch[1].unDash();
-					v = lookaheadMatch[2];
-					}
-				else
-					{
-					s = lookaheadMatch[3].unDash();
-					v = lookaheadMatch[4];
-					}
-				switch(s)
-					{
-					case "bgcolor": s = "backgroundColor"; break;
-					}
-				styles.push({style: s, value: v});
-				w.nextMatch = lookaheadMatch.index + lookaheadMatch[0].length;
+				s = lookaheadMatch[1].unDash();
+				v = lookaheadMatch[2];
 				}
-		} while(gotMatch);
+			else
+				{
+				s = lookaheadMatch[3].unDash();
+				v = lookaheadMatch[4];
+				}
+			if (s=="bgcolor")
+				s = "backgroundColor";
+			styles.push({style: s, value: v});
+			w.nextMatch = lookaheadMatch.index + lookaheadMatch[0].length;
+			config.textPrimitives.cssLookaheadRegExp.lastIndex = w.nextMatch;
+			lookaheadMatch = config.textPrimitives.cssLookaheadRegExp.exec(w.source);
+			}
 		return styles;
 	},
 
