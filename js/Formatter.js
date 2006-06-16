@@ -252,52 +252,64 @@ config.formatters = [
 
 {
 	name: "list",
-	match: "^(?:(?:\\*+)|(?:#+))",
-	lookahead: "^(?:(\\*+)|(#+))",
+	match: "^(?:(?:(?:\\*)|(?:#)|(?:;)|(?::))+)",
+	lookahead: "^(?:(?:(\\*)|(#)|(;)|(:))+)",
 	terminator: "\\n",
-	outerElement: "ul",
-	itemElement: "li",
 	handler: function(w)
 	{
+		var placeStack = [w.output];
+		var currLevel = 0, currType = null;
+		var listLevel, listType, itemType;
 		var lookaheadRegExp = new RegExp(this.lookahead,"mg");
 		w.nextMatch = w.matchStart;
-		var placeStack = [w.output];
-		var currType = null, newType;
-		var currLevel = 0, newLevel;
-		var t;
-		do {
-			lookaheadRegExp.lastIndex = w.nextMatch;
-			var lookaheadMatch = lookaheadRegExp.exec(w.source);
-			var matched = lookaheadMatch && lookaheadMatch.index == w.nextMatch;
-			if(matched)
+		lookaheadRegExp.lastIndex = w.nextMatch;
+		var lookaheadMatch = lookaheadRegExp.exec(w.source);
+		while(lookaheadMatch && lookaheadMatch.index == w.nextMatch)
+			{
+			if(lookaheadMatch[1])
 				{
-				if(lookaheadMatch[1])
-					newType = "ul";
-				if(lookaheadMatch[2])
-					newType = "ol";
-				newLevel = lookaheadMatch[0].length;
-				w.nextMatch += lookaheadMatch[0].length;
-				if(newLevel > currLevel)
-					{
-					for(t=currLevel; t<newLevel; t++)
-						placeStack.push(createTiddlyElement(placeStack[placeStack.length-1],newType));
-					}
-				else if(newLevel < currLevel)
-					{
-					for(t=currLevel; t>newLevel; t--)
-						placeStack.pop();
-					}
-				else if(newLevel == currLevel && newType != currType)
-					{
-						placeStack.pop();
-						placeStack.push(createTiddlyElement(placeStack[placeStack.length-1],newType));
-					}
-				currLevel = newLevel;
-				currType = newType;
-				var e = createTiddlyElement(placeStack[placeStack.length-1],"li");
-				w.subWikify(e,this.terminator);
+				listType = "ul";
+				itemType = "li";
 				}
-		} while(matched);
+			else if(lookaheadMatch[2])
+				{
+				listType = "ol";
+				itemType = "li";
+				}
+			else if(lookaheadMatch[3])
+				{
+				listType = "dl";
+				itemType = "dt";
+				}
+			else if(lookaheadMatch[4])
+				{
+				listType = "dl";
+				itemType = "dd";
+				}
+			listLevel = lookaheadMatch[0].length;
+			w.nextMatch += lookaheadMatch[0].length;
+			if(listLevel > currLevel)
+				{
+				for(var t=currLevel; t<listLevel; t++)
+					placeStack.push(createTiddlyElement2(placeStack[placeStack.length-1],listType));
+				}
+			else if(listLevel < currLevel)
+				{
+				for(var t=currLevel; t>listLevel; t--)
+					placeStack.pop();
+				}
+			else if(listLevel == currLevel && listType != currType)
+				{
+				placeStack.pop();
+				placeStack.push(createTiddlyElement2(placeStack[placeStack.length-1],listType));
+				}
+			currLevel = listLevel;
+			currType = listType;
+			var e = createTiddlyElement2(placeStack[placeStack.length-1],itemType);
+			w.subWikify(e,this.terminator);
+			lookaheadRegExp.lastIndex = w.nextMatch;
+			lookaheadMatch = lookaheadRegExp.exec(w.source);
+		}
 	}
 },
 
