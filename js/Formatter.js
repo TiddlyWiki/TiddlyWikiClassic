@@ -291,7 +291,7 @@ config.formatters = [
 			if(listLevel > currLevel)
 				{
 				for(var t=currLevel; t<listLevel; t++)
-					placeStack.push(createTiddlyElement2(placeStack[placeStack.length-1],listType));
+					placeStack.push(createTiddlyElement(placeStack[placeStack.length-1],listType));
 				}
 			else if(listLevel < currLevel)
 				{
@@ -301,11 +301,11 @@ config.formatters = [
 			else if(listLevel == currLevel && listType != currType)
 				{
 				placeStack.pop();
-				placeStack.push(createTiddlyElement2(placeStack[placeStack.length-1],listType));
+				placeStack.push(createTiddlyElement(placeStack[placeStack.length-1],listType));
 				}
 			currLevel = listLevel;
 			currType = listType;
-			var e = createTiddlyElement2(placeStack[placeStack.length-1],itemType);
+			var e = createTiddlyElement(placeStack[placeStack.length-1],itemType);
 			w.subWikify(e,this.terminator);
 			lookaheadRegExp.lastIndex = w.nextMatch;
 			lookaheadMatch = lookaheadRegExp.exec(w.source);
