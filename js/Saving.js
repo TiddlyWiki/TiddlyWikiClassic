@@ -97,7 +97,7 @@ function saveChanges(onlyIfDirty)
 		}
 	// Save new file
 	var revised = original.substr(0,posOpeningDiv + startSaveArea.length) + "\n" +
-				convertUnicodeToUTF8(allTiddlersAsHtml()) + "\n\t\t" +
+				convertUnicodeToUTF8(store.allTiddlersAsHtml()) + "\n\t\t" +
 				original.substr(posClosingDiv);
 	var newSiteTitle = convertUnicodeToUTF8((wikifyPlain("SiteTitle") + " - " + wikifyPlain("SiteSubtitle")).htmlEncode());
 	revised = revised.replaceChunk("<title"+">","</title"+">"," " + newSiteTitle + " ");
@@ -194,11 +194,8 @@ function generateRss()
 	return s.join("\n");
 }
 
+// Deprecated; use store.allTiddlersAsHtml() instead
 function allTiddlersAsHtml()
 {
-	var savedTiddlers = [];
-	var tiddlers = store.getTiddlers("title");
-	for (var t = 0; t < tiddlers.length; t++)
-		savedTiddlers.push(tiddlers[t].saveToDiv());
-	return savedTiddlers.join("\n");
+	return store.allTiddlersAsHtml();
 }
