@@ -66,20 +66,18 @@ Wikifier.prototype.wikifyPlain = function()
 
 Wikifier.prototype.subWikify = function(output,terminator)
 {
-	// subWikify() can be indirectly recursive, so we need to save the old output pointer
-	var oldOutput = this.output;
-	this.output = output;
 	// Handle the terminated and unterminated cases separately
 	if (terminator)
 		this.subWikifyTerm(output,new RegExp("(" + terminator + ")","mg"));
 	else
 		this.subWikifyUnterm(output);
-	// Restore the output pointer
-	this.output = oldOutput;
 }
 
 Wikifier.prototype.subWikifyUnterm = function(output)
 {
+	// subWikify() can be indirectly recursive, so we need to save the old output pointer
+	var oldOutput = this.output;
+	this.output = output;
 	// Get the first match
 	this.formatter.formatterRegExp.lastIndex = this.nextMatch;
 	var formatterMatch = this.formatter.formatterRegExp.exec(this.source);
@@ -112,10 +110,15 @@ Wikifier.prototype.subWikifyUnterm = function(output)
 		this.outputText(this.output,this.nextMatch,this.source.length);
 		this.nextMatch = this.source.length;
 		}
+	// Restore the output pointer
+	this.output = oldOutput;
 }
 
 Wikifier.prototype.subWikifyTerm = function(output,terminatorRegExp)
 {
+	// subWikify() can be indirectly recursive, so we need to save the old output pointer
+	var oldOutput = this.output;
+	this.output = output;
 	// Get the first matches for the formatter and terminator RegExps
 	terminatorRegExp.lastIndex = this.nextMatch;
 	var terminatorMatch = terminatorRegExp.exec(this.source);
@@ -134,6 +137,8 @@ Wikifier.prototype.subWikifyTerm = function(output,terminatorRegExp)
 			this.matchLength = terminatorMatch[1].length;
 			this.matchStart = terminatorMatch.index;
 			this.nextMatch = this.matchStart + this.matchLength;
+			// Restore the output pointer
+			this.output = oldOutput;
 			return;
 			}
 		// It must be a formatter match; output any text before the match
@@ -165,6 +170,8 @@ Wikifier.prototype.subWikifyTerm = function(output,terminatorRegExp)
 		this.outputText(this.output,this.nextMatch,this.source.length);
 		this.nextMatch = this.source.length;
 		}
+	// Restore the output pointer
+	this.output = oldOutput;
 }
 
 Wikifier.prototype.outputText = function(place,startPos,endPos)
