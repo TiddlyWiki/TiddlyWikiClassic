@@ -31,6 +31,8 @@ function createTiddlyLink(place,title,includeText,theClass)
 {
 	var text = includeText ? title : null;
 	var btn = createTiddlyButton(place,text,null,onClickTiddlerLink,theClass);
+	if(!theClass)
+		removeClass(btn,"button");
 	btn.setAttribute("refresh","link");
 	btn.setAttribute("tiddlyLink",title);
 	refreshTiddlyLink(btn,title);
