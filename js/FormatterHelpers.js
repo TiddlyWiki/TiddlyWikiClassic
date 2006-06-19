@@ -77,6 +77,13 @@ config.formatterHelpers = {
 			var e = createTiddlyElement(w.output,"pre",null,null,text);
 			w.nextMatch = lookaheadMatch.index + lookaheadMatch[0].length;
 			}
+	},
+
+	isExternalLink: function(link)
+	{
+		var urlRegExp = new RegExp(config.textPrimitives.urlPattern,"mg");
+		urlRegExp.lastIndex = 0;
+		return urlRegExp.exec(link) ? true : false;
 	}
 
 };

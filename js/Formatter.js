@@ -348,20 +348,20 @@ config.formatters = [
 		var lookaheadRegExp = new RegExp(this.lookahead,"mg");
 		lookaheadRegExp.lastIndex = w.matchStart;
 		var lookaheadMatch = lookaheadRegExp.exec(w.source)
-		if(lookaheadMatch && lookaheadMatch.index == w.matchStart && lookaheadMatch[2]) // Simple bracketted link
-			{
-			var link = createTiddlyLink(w.output,lookaheadMatch[1],false);
-			w.outputText(link,w.nextMatch,w.nextMatch + lookaheadMatch[1].length);
-			w.nextMatch += lookaheadMatch[1].length + 2;
-			}
-		else if(lookaheadMatch && lookaheadMatch.index == w.matchStart && lookaheadMatch[3]) // Pretty bracketted link
+		if(lookaheadMatch && lookaheadMatch.index == w.matchStart)
 			{
 			var e;
-			if(store.tiddlerExists(lookaheadMatch[4]) || store.isShadowTiddler(lookaheadMatch[4]))
-				e = createTiddlyLink(w.output,lookaheadMatch[4],false);
-			else
-				e = createExternalLink(w.output,lookaheadMatch[4]);
-			w.outputText(e,w.nextMatch,w.nextMatch + lookaheadMatch[1].length);
+			var text = lookaheadMatch[1];
+			if (lookaheadMatch[2]) // Simple bracketted link
+				{
+				e = createTiddlyLink(w.output,text,false);
+				}
+			else if(lookaheadMatch[3]) // Pretty bracketted link
+				{
+				var link = lookaheadMatch[4];
+				e = config.formatterHelpers.isExternalLink(link) ? createExternalLink(w.output,link) : createTiddlyLink(w.output,link,false);
+				}
+			createTiddlyText(e,text);
 			w.nextMatch = lookaheadMatch.index + lookaheadMatch[0].length;
 			}
 	}
