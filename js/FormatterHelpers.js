@@ -81,9 +81,7 @@ config.formatterHelpers = {
 
 	isExternalLink: function(link)
 	{
-		var urlRegExp = new RegExp(config.textPrimitives.urlPattern,"mg");
-		urlRegExp.lastIndex = 0;
-		return urlRegExp.exec(link) ? true : false;
+		return store.tiddlerExists(link) || store.isShadowTiddler(link);
 	}
 
 };
