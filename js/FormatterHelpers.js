@@ -81,7 +81,7 @@ config.formatterHelpers = {
 
 	isExternalLink: function(link)
 	{
-		return store.tiddlerExists(link) || store.isShadowTiddler(link);
+		return !(store.tiddlerExists(link) || store.isShadowTiddler(link));
 	}
 
 };
