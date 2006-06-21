@@ -221,7 +221,7 @@ config.macros.tagging.handler = function(place,macroName,params,wikifier,paramSt
 	theList.setAttribute("title",this.tooltip.format([title]));
 	var tagged = store.getTaggedTiddlers(title);
 	var prompt = tagged.length == 0 ? this.labelNotTag : this.label;
-	createTiddlyElement(theList,"li",null,"listTitle",prompt.format([title]));
+	createTiddlyElement(theList,"li",null,"listTitle",prompt.format([title,tagged.length]));
 	for(var t=0; t<tagged.length; t++)
 		createTiddlyLink(createTiddlyElement(theList,"li"),tagged[t].title,true);
 }
