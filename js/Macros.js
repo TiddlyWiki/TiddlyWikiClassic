@@ -217,11 +217,7 @@ config.macros.tags.handler = function(place,macroName,params,wikifier,paramStrin
 config.macros.tagging.handler = function(place,macroName,params,wikifier,paramString,tiddler)
 {
 	var theList = createTiddlyElement(place,"ul");
-	var title = "";
-	if(tiddler instanceof Tiddler)
-        title = tiddler.title;
-	if(params[0])
-        title = params[0];
+	var title = params[0] ? params[0] : (tiddler instanceof Tiddler ? tiddler.title : "");
 	theList.setAttribute("title",this.tooltip.format([title]));
 	var tagged = store.getTaggedTiddlers(title);
 	var prompt = tagged.length == 0 ? this.labelNotTag : this.label;
