@@ -55,7 +55,8 @@ merge(config.views.wikified.tag,{
 merge(config.views.wikified,{
 	defaultText: "The tiddler '%0' doesn't yet exist. Double-click to create it",
 	defaultModifier: "(missing)",
-	shadowModifier: "(shadow)"});
+	shadowModifier: "(shadow)",
+	createdPrompt: "created"});
 
 merge(config.views.editor,{
 	tagPrompt: "Type tags separated with spaces, [[use double square brackets]] if necessary, or add existing",
