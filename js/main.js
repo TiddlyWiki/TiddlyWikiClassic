@@ -88,7 +88,7 @@ function processConfig(customConfig)
 		}
 	catch(e)
 		{
-		return(e.description ? e.description : e.toString());
+		return(exceptionText(e));
 		}
 	return null;
 }

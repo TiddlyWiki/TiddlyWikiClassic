@@ -101,9 +101,9 @@ String.prototype.parseParams = function(defaultName,defaultValue,allowEval,noNam
 				if(allowEval)
 					n = window.eval(n);
 				}
-			catch(ex)
+			catch(e)
 				{
-				throw "Unable to evaluate {{" + match[p+3] + "}}: " + ex.toString();
+				throw "Unable to evaluate {{" + match[p+3] + "}}: " + exceptionText(e);
 				}
 		else if(match[p+4]) // Unquoted
 			n = match[p+4];
