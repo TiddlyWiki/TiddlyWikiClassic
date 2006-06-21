@@ -16,6 +16,10 @@ var safeMode = false; // Disable all plugins and cookies
 function main()
 {
 	var now, then = new Date();
+	window.onbeforeunload = function(e) {if(window.confirmExit) return confirmExit();};
+	var storeArea = document.getElementById("storeArea");
+	if(storeArea)
+		storeArea.style.display = "none";
 	params = getParameters();
 	if(params)
 		params = params.parseParams("open",null,false);
