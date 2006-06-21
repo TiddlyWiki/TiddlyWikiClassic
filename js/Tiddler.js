@@ -111,7 +111,7 @@ var regexpCarriageReturn = new RegExp("\r","mg");
 // Static method to Convert "\n" to newlines, "\s" to "\"
 Tiddler.unescapeLineBreaks = function(text)
 {
-	if(text && text != "")
+	if(text)
 		return text.replace(regexpBackSlashEn,"\n").replace(regexpBackSlashEss,"\\").replace(regexpCarriageReturn,"");
 	else
 		return "";
