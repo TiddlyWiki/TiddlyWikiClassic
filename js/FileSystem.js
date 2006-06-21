@@ -165,7 +165,7 @@ function mozillaSaveFile(filePath, content)
 			if (!file.exists())
 				file.create(0, 0664);
 			var out = Components.classes["@mozilla.org/network/file-output-stream;1"].createInstance(Components.interfaces.nsIFileOutputStream);
-			out.init(file, 0x20 | 0x02, 00004);
+			out.init(file, 0x20 | 0x02, 00004,null);
 			out.write(content, content.length);
 			out.flush();
 			out.close();
