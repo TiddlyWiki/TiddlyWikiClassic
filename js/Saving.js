@@ -52,7 +52,8 @@ function saveChanges(onlyIfDirty)
 		}
 	// Locate the storeArea div's
 	var posOpeningDiv = original.indexOf(startSaveArea);
-	var posClosingDiv = original.lastIndexOf(endSaveArea);
+	var limitClosingDiv = original.indexOf("<!--POST-BODY-START--"+">");
+	var posClosingDiv = original.lastIndexOf(endSaveArea,limitClosingDiv == -1 ? original.length : limitClosingDiv);
 	if((posOpeningDiv == -1) || (posClosingDiv == -1))
 		{
 		alert(config.messages.invalidFileError.format([localPath]));
