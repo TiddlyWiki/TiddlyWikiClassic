@@ -264,14 +264,15 @@ Story.prototype.onTiddlerKeyPress = function(e)
 	return(!consume);
 };
 
-// Focus a specified tiddler. Attempts to focus the specified field, otherwise the first edit field it finds
-Story.prototype.focusTiddler = function(title,field)
+// Returns the specified field (input or textarea element) in a tiddler, otherwise the first edit field it finds
+// or null if it found no edit field at all
+Story.prototype.getTiddlerField = function(title,field)
 {
 	var tiddler = document.getElementById(this.idPrefix + title);
+	var e = null;
 	if(tiddler != null)
 		{
-		var children = tiddler.getElementsByTagName("*")
-		var e = null;
+		var children = tiddler.getElementsByTagName("*");
 		for (var t=0; t<children.length; t++)
 			{
 			var c = children[t];
@@ -283,11 +284,18 @@ Story.prototype.focusTiddler = function(title,field)
 					e = c;
 				}
 			}
-		if(e)
-			{
-			e.focus();
-			e.select();
-			}
+		}
+	return e;
+}
+
+// Focus a specified tiddler. Attempts to focus the specified field, otherwise the first edit field it finds
+Story.prototype.focusTiddler = function(title,field)
+{
+	var e = this.getTiddlerField(title,field);
+	if(e)
+		{
+		e.focus();
+		e.select();
 		}
 }
 
