@@ -9,7 +9,7 @@ var Popup = {
 Popup.create = function(root)
 {
 	Popup.remove();
-	var popup = createTiddlyElement(document.body,"ol","popup","popup",null);
+	var popup = createTiddlyElement(document.body,"ol","popup","popup");
 	Popup.stack.push({root: root, popup: popup});
 	return popup;
 }

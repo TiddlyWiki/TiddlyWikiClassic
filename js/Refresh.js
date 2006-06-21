@@ -16,7 +16,7 @@ config.refreshers = {
 		if(force != null || changeList == null || changeList.find(title) != null)
 			{
 			removeChildren(e);
-			wikify(store.getTiddlerText(title,title),e,null,null);
+			wikify(store.getTiddlerText(title,title),e);
 			}
 		}
 };
@@ -91,8 +91,8 @@ function applyPageTemplate(title)
 		title = "PageTemplate";
 	var html = store.getTiddlerText(title);
 	wrapper.innerHTML = html;
-	applyHtmlMacros(wrapper,null);
-	refreshElements(wrapper,null);
+	applyHtmlMacros(wrapper);
+	refreshElements(wrapper);
 	display = document.getElementById("tiddlerDisplay");
 	removeChildren(display);
 	if(!display)

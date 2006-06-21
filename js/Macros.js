@@ -62,12 +62,12 @@ config.macros.list.shadowed.handler = function(params)
 config.macros.allTags.handler = function(place,macroName,params)
 {
 	var tags = store.getTags();
-	var theDateList = createTiddlyElement(place,"ul",null,null,null);
+	var theDateList = createTiddlyElement(place,"ul");
 	if(tags.length == 0)
 		createTiddlyElement(theDateList,"li",null,"listTitle",this.noTags);
 	for(var t=0; t<tags.length; t++)
 		{
-		var theListItem =createTiddlyElement(theDateList,"li",null,null,null);
+		var theListItem =createTiddlyElement(theDateList,"li");
 		var theTag = createTiddlyButton(theListItem,tags[t][0] + " (" + tags[t][1] + ")",this.tooltip.format([tags[t][0]]),onClickTag);
 		theTag.setAttribute("tag",tags[t][0]);
 		}
@@ -90,7 +90,7 @@ config.macros.timeline.handler = function(place,macroName,params)
 			createTiddlyElement(theDateList,"li",null,"listTitle",tiddler[field].formatString(this.dateFormat));
 			lastDay = theDay;
 			}
-		var theDateListItem = createTiddlyElement(theDateList,"li",null,"listLink",null);
+		var theDateListItem = createTiddlyElement(theDateList,"li",null,"listLink");
 		theDateListItem.appendChild(createTiddlyLink(place,tiddler.title,true));
 		}
 }
@@ -99,7 +99,7 @@ config.macros.search.handler = function(place,macroName,params)
 {
 	var searchTimeout = null;
 	var btn = createTiddlyButton(place,this.label,this.prompt,this.onClick);
-	var txt = createTiddlyElement(place,"input",null,null,null);
+	var txt = createTiddlyElement(place,"input");
 	if(params[0])
 		txt.value = params[0];
 	txt.onkeyup = this.onKeyPress;
@@ -173,7 +173,7 @@ config.macros.search.onFocus = function(e)
 
 config.macros.tiddler.handler = function(place,macroName,params)
 {
-	var wrapper = createTiddlyElement(place,"span",null,params[1] ? params[1] : null,null);
+	var wrapper = createTiddlyElement(place,"span",null,params[1] ? params[1] : null);
 	wrapper.setAttribute("refresh","content");
 	wrapper.setAttribute("tiddler",params[0]);
 	var text = store.getTiddlerText(params[0]);
@@ -279,7 +279,7 @@ config.macros.slider.createSlider = function(place,cookie,title,tooltip)
 {
 	var cookie = cookie ? cookie : "";
 	var btn = createTiddlyButton(place,title,tooltip,this.onClickSlider);
-	var panel = createTiddlyElement(place,"div",null,"sliderPanel",null);
+	var panel = createTiddlyElement(place,"div",null,"sliderPanel");
 	panel.setAttribute("cookie",cookie);
 	panel.style.display = config.options[cookie] ? "block" : "none";
 	return panel;
@@ -428,8 +428,8 @@ config.macros.tabs.handler = function(place,macroName,params)
 {
 	var cookie = params[0];
 	var numTabs = (params.length-1)/3;
-	var wrapper = createTiddlyElement(place,"div",null,cookie,null);
-	var tabset = createTiddlyElement(wrapper,"div",null,"tabset",null);
+	var wrapper = createTiddlyElement(place,"div",null,cookie);
+	var tabset = createTiddlyElement(wrapper,"div",null,"tabset");
 	tabset.setAttribute("cookie",cookie);
 	var validTab = false;
 	for(var t=0; t<numTabs; t++)
@@ -472,7 +472,7 @@ config.macros.tabs.switchTab = function(tabset,tab)
 		{
 		if(tabset.nextSibling && tabset.nextSibling.className == "tabContents")
 			tabset.parentNode.removeChild(tabset.nextSibling);
-		var tabContent = createTiddlyElement(null,"div",null,"tabContents",null);
+		var tabContent = createTiddlyElement(null,"div",null,"tabContents");
 		tabset.parentNode.insertBefore(tabContent,tabset.nextSibling);
 		var contentTitle = theTab.getAttribute("content");
 		wikify(store.getTiddlerText(contentTitle),tabContent,null,store.getTiddler(contentTitle));
@@ -490,7 +490,7 @@ config.macros.gradient.handler = function(place,macroName,params,wikifier)
 	var terminator = ">>";
 	var panel;
 	if(wikifier)
-		panel = createTiddlyElement(place,"div",null,"gradient",null);
+		panel = createTiddlyElement(place,"div",null,"gradient");
 	else
 		panel = place;
 	panel.style.position = "relative";
@@ -580,8 +580,8 @@ config.macros.edit.handler = function(place,macroName,params,wikifier,paramStrin
 				e.setAttribute("autocomplete","off");
 				break;
 			case "text":
-				var wrapper1 = createTiddlyElement(place,"fieldset",null,"fieldsetFix",null);
-				var wrapper2 = createTiddlyElement(wrapper1,"div",null,null,null);
+				var wrapper1 = createTiddlyElement(place,"fieldset",null,"fieldsetFix");
+				var wrapper2 = createTiddlyElement(wrapper1,"div");
 				var e = createTiddlyElement(wrapper2,"textarea");
 				if(tiddler.isReadOnly())
 					e.setAttribute("readOnly","readOnly");

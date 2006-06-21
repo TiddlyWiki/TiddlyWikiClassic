@@ -119,7 +119,7 @@ Story.prototype.positionTiddler = function(srcElement)
 // template - the name of the tiddler containing the template or one of the constants DEFAULT_VIEW_TEMPLATE and DEFAULT_EDIT_TEMPLATE
 Story.prototype.createTiddler = function(place,before,title,template)
 {
-	var theTiddler = createTiddlyElement(null,"div",this.idPrefix + title,"tiddler",null);
+	var theTiddler = createTiddlyElement(null,"div",this.idPrefix + title,"tiddler");
 	place.insertBefore(theTiddler,before);
 	this.refreshTiddler(title,template);
 	return theTiddler;

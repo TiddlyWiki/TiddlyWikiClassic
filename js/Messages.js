@@ -15,7 +15,7 @@ function displayMessage(text,linkText)
 	var msg;
 	if(linkText)
 		{
-		msg = createTiddlyElement(msgArea,"div",null,null,null);
+		msg = createTiddlyElement(msgArea,"div");
 		var link = createTiddlyElement(msg,"a",null,null,text);
 		link.href = linkText;
 		link.target = "_blank";

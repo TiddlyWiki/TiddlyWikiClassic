@@ -531,7 +531,7 @@ config.formatters = [
 	lookahead: "(?:([^\\(@]+)\\(([^\\)]+)(?:\\):))|(?:([^:@]+):([^;]+);)",
 	handler:  function(w)
 	{
-		var e = createTiddlyElement(w.output,"span",null,null,null);
+		var e = createTiddlyElement(w.output,"span");
 		var styles = config.formatterHelpers.inlineCssHelper(w);
 		if(styles.length == 0)
 			e.className = "marked";

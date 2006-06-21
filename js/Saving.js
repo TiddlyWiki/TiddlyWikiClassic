@@ -168,7 +168,7 @@ function generateRss()
 {
 	var s = [];
 	var d = new Date();
-	var u = store.getTiddlerText("SiteUrl",null);
+	var u = store.getTiddlerText("SiteUrl");
 	// Assemble the header
 	s.push("<" + "?xml version=\"1.0\"?" + ">");
 	s.push("<rss version=\"2.0\">");

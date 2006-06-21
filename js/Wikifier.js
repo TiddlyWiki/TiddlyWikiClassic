@@ -7,7 +7,7 @@ function wikify(source,output,highlightRegExp,tiddler)
 	if(source && source != "")
 		{
 		var wikifier = new Wikifier(source,formatter,highlightRegExp,tiddler);
-		wikifier.subWikify(output,null);
+		wikifier.subWikify(output);
 		}
 }
 
@@ -28,7 +28,7 @@ function highlightify(source,output,highlightRegExp)
 {
 	if(source && source != "")
 		{
-		var wikifier = new Wikifier(source,formatter,highlightRegExp,null);
+		var wikifier = new Wikifier(source,formatter,highlightRegExp);
 		wikifier.outputText(output,0,source.length);
 		}
 }
@@ -58,7 +58,7 @@ Wikifier.prototype.wikifyPlain = function()
 {
 	var e = createTiddlyElement(document.body,"div");
 	e.style.display = "none";
-	this.subWikify(e,null);
+	this.subWikify(e);
 	var text = getPlainText(e);
 	e.parentNode.removeChild(e);
 	return text;
