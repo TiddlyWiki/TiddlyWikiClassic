@@ -45,6 +45,8 @@ config.notifyTiddlers = [
 	{name: "StyleSheet", notify: refreshStyles},
 	{name: "StyleSheetPrint", notify: refreshStyles},
 	{name: "PageTemplate", notify: refreshPageTemplate},
+	{name: "SiteTitle", notify: refreshPageTitle},
+	{name: "SiteSubtitle", notify: refreshPageTitle},
 	{name: null, notify: refreshDisplay}
 	];
 
