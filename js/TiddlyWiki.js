@@ -104,7 +104,7 @@ TiddlyWiki.prototype.tiddlerExists = function(title)
 TiddlyWiki.prototype.isShadowTiddler = function(title)
 {
 	var s = config.shadowTiddlers[title];
-	return (s != undefined && typeof s == "string");
+	return (typeof s == "string");
 }
 
 TiddlyWiki.prototype.getTiddler = function(title)
