@@ -1,3 +1,9 @@
+var regexpBackSlashEn = new RegExp("\\\\n","mg");
+var regexpBackSlash = new RegExp("\\\\","mg");
+var regexpBackSlashEss = new RegExp("\\\\s","mg");
+var regexpNewLine = new RegExp("\n","mg");
+var regexpCarriageReturn = new RegExp("\r","mg");
+
 // Get characters from the right end of a string
 String.prototype.right = function(n)
 {
@@ -220,3 +226,14 @@ String.zeroPad = function(n,d)
 	return(s);
 }
 
+// Convert newlines to "\n", "\" to "\s" (and removes carriage returns)
+String.prototype.escapeLineBreaks = function()
+{
+	return this.replace(regexpBackSlash,"\\s").replace(regexpNewLine,"\\n").replace(regexpCarriageReturn,"");
+}
+
+// Convert "\n" to newlines, "\s" to "\" (and removes carriage returns)
+String.prototype.unescapeLineBreaks = function(text)
+{
+	return this.replace(regexpBackSlashEn,"\n").replace(regexpBackSlashEss,"\\").replace(regexpCarriageReturn,"");
+}

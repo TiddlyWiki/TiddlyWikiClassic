@@ -102,25 +102,16 @@ Tiddler.prototype.isTagged = function(tag)
 	return this.tags.find(tag) != null;
 }
 
-var regexpBackSlashEn = new RegExp("\\\\n","mg");
-var regexpBackSlash = new RegExp("\\\\","mg");
-var regexpBackSlashEss = new RegExp("\\\\s","mg");
-var regexpNewLine = new RegExp("\n","mg");
-var regexpCarriageReturn = new RegExp("\r","mg");
-
-// Static method to Convert "\n" to newlines, "\s" to "\"
+// Static method to convert "\n" to newlines, "\s" to "\"
 Tiddler.unescapeLineBreaks = function(text)
 {
-	if(text)
-		return text.replace(regexpBackSlashEn,"\n").replace(regexpBackSlashEss,"\\").replace(regexpCarriageReturn,"");
-	else
-		return "";
+	return text ? text.unescapeLineBreaks() : "";
 }
 
 // Convert newlines to "\n", "\" to "\s"
 Tiddler.prototype.escapeLineBreaks = function()
 {
-	return this.text.replace(regexpBackSlash,"\\s").replace(regexpNewLine,"\\n").replace(regexpCarriageReturn,"");
+	return this.text.escapeLineBreaks();
 }
 
 // Updates the secondary information (like links[] array) after a change to a tiddler
