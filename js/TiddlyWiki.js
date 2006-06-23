@@ -198,8 +198,6 @@ TiddlyWiki.prototype.createTiddler = function(title)
 // Load contents of a tiddlywiki from an HTML DIV
 TiddlyWiki.prototype.loadFromDiv = function(srcID,idPrefix)
 {
-	if(document.normalize)
-		document.normalize();
 	var lenPrefix = idPrefix.length;
 	var store = document.getElementById(srcID).childNodes;
 	var tiddlers = [];
