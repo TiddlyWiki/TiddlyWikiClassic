@@ -204,7 +204,7 @@ String.encodeTiddlyLink = function(title)
 }
 
 // Static method to encodeTiddlyLink for every item in an array and join them with spaces
-String.encodeTiddyLinkList = function(list)
+String.encodeTiddlyLinkList = function(list)
 {
 	if(list)
 		{

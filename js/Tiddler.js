@@ -92,7 +92,7 @@ Tiddler.prototype.assign = function(title,text,modifier,modified,tags,created)
 // Get the tags for a tiddler as a string (space delimited, using [[brackets]] for tags containing spaces)
 Tiddler.prototype.getTags = function()
 {
-	return String.encodeTiddyLinkList(this.tags);
+	return String.encodeTiddlyLinkList(this.tags);
 }
 
 // Test if a tiddler carries a tag

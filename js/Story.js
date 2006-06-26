@@ -339,7 +339,7 @@ Story.prototype.setTiddlerTag = function(title,tag,add)
 					if(p != null)
 						tags.splice(p,1);
 					}
-				c.value = String.encodeTiddyLinkList(tags);
+				c.value = String.encodeTiddlyLinkList(tags);
 				}
 			}
 		}
