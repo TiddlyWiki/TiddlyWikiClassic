@@ -407,10 +407,8 @@ config.formatters = [
 			var e = w.output;
 			if(lookaheadMatch[5])
 				{
-				if(store.tiddlerExists(lookaheadMatch[5]) || store.isShadowTiddler(lookaheadMatch[5]))
-					e = createTiddlyLink(w.output,lookaheadMatch[5],false);
-				else
-					e = createExternalLink(w.output,lookaheadMatch[5]);
+				var link = lookaheadMatch[5];
+				e = config.formatterHelpers.isExternalLink(link) ? createExternalLink(w.output,link) : createTiddlyLink(w.output,link,false);
 				addClass(e,"imageLink");
 				}
 			var img = createTiddlyElement(e,"img");
