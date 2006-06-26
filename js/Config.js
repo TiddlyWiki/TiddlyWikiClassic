@@ -145,12 +145,12 @@ if(config.browser.isBadSafari)
 		}
 config.textPrimitives.urlPattern = "(?:file|http|https|mailto|ftp):[^\\s'\"]+(?:/|\\b)";
 config.textPrimitives.unWikiLink = "~";
-config.textPrimitives.wikiLink = "(?:" + config.textPrimitives.unWikiLink + "{0,1})(?:(?:" + config.textPrimitives.upperLetter + "+" +
-												  config.textPrimitives.lowerLetter + "+" +
-												  config.textPrimitives.upperLetter +
-												  config.textPrimitives.anyLetter + "*)|(?:" +
-												  config.textPrimitives.upperLetter + "{2,}" +
-												  config.textPrimitives.lowerLetter + "+))";
+config.textPrimitives.wikiLink = "(?:(?:" + config.textPrimitives.upperLetter + "+" +
+												config.textPrimitives.lowerLetter + "+" +
+												config.textPrimitives.upperLetter +
+												config.textPrimitives.anyLetter + "*)|(?:" +
+												config.textPrimitives.upperLetter + "{2,}" +
+												config.textPrimitives.lowerLetter + "+))";
 
 config.textPrimitives.cssLookahead = "(?:(" + config.textPrimitives.anyLetter + "+)\\(([^\\)\\|\\n]+)(?:\\):))|(?:(" + config.textPrimitives.anyLetter + "+):([^;\\|\\n]+);)";
 config.textPrimitives.cssLookaheadRegExp = new RegExp(config.textPrimitives.cssLookahead,"mg");

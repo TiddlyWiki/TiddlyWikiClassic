@@ -117,8 +117,6 @@ Tiddler.prototype.escapeLineBreaks = function()
 Tiddler.prototype.changed = function()
 {
 	this.links = [];
-	var nextPos = 0;
-	var theLink;
 	var aliasedPrettyLink = "\\[\\[([^\\[\\]\\|]+)\\|([^\\[\\]\\|]+)\\]\\]";
 	var prettyLink = "\\[\\[([^\\]]+)\\]\\]";
 	var wikiNameRegExp = new RegExp("(" + config.textPrimitives.wikiLink + ")|(?:" + aliasedPrettyLink + ")|(?:" + prettyLink + ")","mg");
@@ -126,8 +124,19 @@ Tiddler.prototype.changed = function()
 		var formatMatch = wikiNameRegExp.exec(this.text);
 		if(formatMatch)
 			{
-			if(formatMatch[1] && formatMatch[1].substr(0,1) != config.textPrimitives.unWikiLink && formatMatch[1] != this.title)
-				this.links.pushUnique(formatMatch[1]);
+			if(formatMatch[1] && formatMatch[1] != this.title)
+				{
+				if(formatMatch.index > 0)
+					{
+					var preRegExp = new RegExp(config.textPrimitives.unWikiLink+"|"+config.textPrimitives.anyLetter,"mg");
+					preRegExp.lastIndex = formatMatch.index-1;
+					preMatch = preRegExp.exec(this.text);
+					if(preMatch.index != formatMatch.index-1)
+						this.links.pushUnique(formatMatch[1]);
+					}
+				else
+					this.links.pushUnique(formatMatch[1]);
+				}
 			else if(formatMatch[2] && (store.tiddlerExists(formatMatch[3]) || store.isShadowTiddler(formatMatch[3])))
 				this.links.pushUnique(formatMatch[3]);
 			else if(formatMatch[4] && formatMatch[4] != this.title)

@@ -318,27 +318,32 @@ config.formatters = [
 },
 
 {
-	name: "wikiLink",
-	match: config.textPrimitives.wikiLink,
-	badPrefix: config.textPrimitives.anyLetter,
+	name: "unWikiLink",
+	match: config.textPrimitives.unWikiLink+config.textPrimitives.wikiLink,
 	handler: function(w)
 	{
-		var preRegExp = new RegExp(config.textPrimitives.anyLetter,"mg");
-		var preMatch = null;
+		w.outputText(w.output,w.matchStart+1,w.nextMatch);
+	}
+},
+
+{
+	name: "wikiLink",
+	match: config.textPrimitives.wikiLink,
+	handler: function(w)
+	{
 		if(w.matchStart > 0)
 			{
+			var preRegExp = new RegExp(config.textPrimitives.anyLetter,"mg");
 			preRegExp.lastIndex = w.matchStart-1;
-			preMatch = preRegExp.exec(w.source);
+			var preMatch = preRegExp.exec(w.source);
+			if(preMatch.index == w.matchStart-1)
+				{
+				w.outputText(w.output,w.matchStart,w.nextMatch);
+				return;
+				}
 			}
-		if(preMatch && preMatch.index == w.matchStart-1)
-			w.outputText(w.output,w.matchStart,w.nextMatch);
-		else if(w.matchText.substr(0,1) == config.textPrimitives.unWikiLink)
-			w.outputText(w.output,w.matchStart + 1,w.nextMatch);
-		else
-			{
-			var link = createTiddlyLink(w.output,w.matchText,false);
-			w.outputText(link,w.matchStart,w.nextMatch);
-			}
+		var link = createTiddlyLink(w.output,w.matchText,false);
+		w.outputText(link,w.matchStart,w.nextMatch);
 	}
 },
 
