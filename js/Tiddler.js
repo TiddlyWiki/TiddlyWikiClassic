@@ -124,7 +124,7 @@ Tiddler.prototype.changed = function()
 		var formatMatch = wikiNameRegExp.exec(this.text);
 		if(formatMatch)
 			{
-			if(formatMatch[1] && formatMatch[1] != this.title)
+			if(formatMatch[1] && formatMatch[1] != this.title && this.linkWikiWords())
 				{
 				if(formatMatch.index > 0)
 					{
@@ -162,5 +162,10 @@ Tiddler.prototype.getSubtitle = function()
 Tiddler.prototype.isReadOnly = function()
 {
 	return readOnly;
+}
+
+Tiddler.prototype.linkWikiWords = function()
+{
+	return this.tags.find("systemConfig") == null && this.tags.find("excludeMissing") == null;
 }
 

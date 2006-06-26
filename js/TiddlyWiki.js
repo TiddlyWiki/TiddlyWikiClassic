@@ -165,7 +165,7 @@ TiddlyWiki.prototype.saveTiddler = function(title,newTitle,newBody,modifier,modi
 	var created;
 	if(tiddler)
 		{
- 		created = tiddler.created; // preserve created date
+		created = tiddler.created; // Preserve created date
 		this.deleteTiddler(title);
 		}
 	else
@@ -319,13 +319,12 @@ TiddlyWiki.prototype.getMissingLinks = function(sortField)
 {
 	var results = [];
 	this.forEachTiddler(function (title,tiddler) {
-		if(tiddler.tags.find("systemConfig") == null && tiddler.tags.find("excludeMissing") == null)
-			for(var n=0; n<tiddler.links.length;n++)
-				{
-				var link = tiddler.links[n];
-				if(this.fetchTiddler(link) == null && !this.isShadowTiddler(link))
-					results.pushUnique(link);
-				}
+		for(var n=0; n<tiddler.links.length;n++)
+			{
+			var link = tiddler.links[n];
+			if(this.fetchTiddler(link) == null && !this.isShadowTiddler(link))
+				results.pushUnique(link);
+			}
 		});
 	results.sort();
 	return results;

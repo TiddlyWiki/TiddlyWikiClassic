@@ -342,8 +342,15 @@ config.formatters = [
 				return;
 				}
 			}
-		var link = createTiddlyLink(w.output,w.matchText,false);
-		w.outputText(link,w.matchStart,w.nextMatch);
+		if(w.linkWikiWords == true || store.isShadowTiddler(w.matchText))
+			{
+			var link = createTiddlyLink(w.output,w.matchText,false);
+			w.outputText(link,w.matchStart,w.nextMatch);
+			}
+		else
+			{
+			w.outputText(w.output,w.matchStart,w.nextMatch);
+			}
 	}
 },
 

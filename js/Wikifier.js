@@ -44,8 +44,9 @@ function Wikifier(source,formatter,highlightRegExp,tiddler)
 	this.output = null;
 	this.formatter = formatter;
 	this.nextMatch = 0;
+	this.linkWikiWords = tiddler && tiddler.linkWikiWords() == false ? false : true;
 	this.highlightRegExp = highlightRegExp;
-	this.highlightMatch = null;	
+	this.highlightMatch = null;
 	if(highlightRegExp)
 		{
 		highlightRegExp.lastIndex = 0;
