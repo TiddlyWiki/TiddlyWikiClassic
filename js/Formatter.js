@@ -395,8 +395,8 @@ config.formatters = [
 
 {
 	name: "image",
-	match: "\\[(?:[<]{0,1})(?:[>]{0,1})[Ii][Mm][Gg]\\[",
-	lookahead: "\\[([<]{0,1})([>]{0,1})[Ii][Mm][Gg]\\[(?:([^\\|\\]]+)\\|)?([^\\[\\]\\|]+)\\](?:\\[([^\\]]*)\\]?)?(\\])",
+	match: "\\[[<>]?[Ii][Mm][Gg]\\[",
+	lookahead: "\\[(<?)(>?)[Ii][Mm][Gg]\\[(?:([^\\|\\]]+)\\|)?([^\\[\\]\\|]+)\\](?:\\[([^\\]]*)\\])?\\]",
 	handler: function(w)
 	{
 		var lookaheadRegExp = new RegExp(this.lookahead,"mg");
