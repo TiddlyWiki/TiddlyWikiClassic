@@ -237,3 +237,8 @@ String.prototype.unescapeLineBreaks = function(text)
 {
 	return this.replace(regexpBackSlashEn,"\n").replace(regexpBackSlashEss,"\\").replace(regexpCarriageReturn,"");
 }
+
+String.prototype.startsWith = function(prefix) 
+{
+	return !prefix || this.substring(0,prefix.length) == prefix;
+}
