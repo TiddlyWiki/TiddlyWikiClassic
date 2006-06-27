@@ -18,10 +18,16 @@ config.formatterHelpers = {
 
 	charFormatHelper: function(w)
 	{
-		var e = w.output.appendChild(document.createElement(this.element));
+		var e = createTiddlyElement(w.output,this.element);
 		w.subWikify(e,this.terminator);
 	},
 
+	createElementAndWikify: function(w)
+	{
+		var e = createTiddlyElement(w.output,this.element);
+		w.subWikifyTerm(e,this.termRegExp);
+	},
+	
 	inlineCssHelper: function(w)
 	{
 		var styles = [];
@@ -75,6 +81,20 @@ config.formatterHelpers = {
 			if(config.browser.isIE)
 				text = text.replace(/\n/g,"\r");
 			var e = createTiddlyElement(w.output,"pre",null,null,text);
+			w.nextMatch = lookaheadMatch.index + lookaheadMatch[0].length;
+			}
+	},
+
+	enclosedTextHelper: function(w)
+	{
+		this.lookaheadRegExp.lastIndex = w.matchStart;
+		var lookaheadMatch = this.lookaheadRegExp.exec(w.source);
+		if(lookaheadMatch && lookaheadMatch.index == w.matchStart)
+			{
+			var text = lookaheadMatch[1];
+			if(config.browser.isIE)
+				text = text.replace(/\n/g,"\r");
+			var e = createTiddlyElement(w.output,this.element,null,null,text);
 			w.nextMatch = lookaheadMatch.index + lookaheadMatch[0].length;
 			}
 	},
