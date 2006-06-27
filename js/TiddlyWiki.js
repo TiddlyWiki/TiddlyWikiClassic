@@ -28,6 +28,7 @@ function TiddlyWiki()
 				callback.call(this,t,tiddler);
 			}
 		};
+	this.saver = getSaver(config.store.defaultFormat);
 }
 
 // Set the dirty flag
@@ -198,37 +199,30 @@ TiddlyWiki.prototype.createTiddler = function(title)
 // Load contents of a tiddlywiki from an HTML DIV
 TiddlyWiki.prototype.loadFromDiv = function(srcID,idPrefix)
 {
-	var lenPrefix = idPrefix.length;
-	var store = document.getElementById(srcID).childNodes;
-	var tiddlers = [];
-	for(var t = 0; t < store.length; t++)
+	try
 		{
-		var e = store[t];
-		var title = null;
-		if(e.getAttribute)
-			title = e.getAttribute("tiddler");
-		if(!title && e.id && e.id.substr(0,lenPrefix) == idPrefix)
-			title = e.id.substr(lenPrefix);
-		if(title && title != "")
-			{
-			var tiddler = this.createTiddler(title);
-			tiddler.loadFromDiv(e,title);
-			tiddlers.push(tiddler);
-			}
+		this.idPrefix = idPrefix;
+		var storeElem = document.getElementById(srcID);
+		this.loader = getLoaderForStore(storeElem);
+		var tiddlers = this.loader.loadTiddlers(this,storeElem.childNodes);
+		for(var t=0; t<tiddlers.length; t++)
+			tiddlers[t].changed();
+		this.setDirty(false);
 		}
-	for(var t = 0;t<tiddlers.length; t++)
-		tiddlers[t].changed();
-	this.setDirty(false);
+	catch (e)
+		{
+		showException(e);
+		}
+	finally
+		{
+		this.loader = null; // the loader is only defined while loading.
+		}
 }
 
 // Return all tiddlers formatted as a sequence of HTML DIVs
 TiddlyWiki.prototype.allTiddlersAsHtml = function()
 {
-	var results = [];
-	var tiddlers = this.getTiddlers("title");
-	for (var t = 0; t < tiddlers.length; t++)
-		results.push(tiddlers[t].saveToDiv());
-	return results.join("\n");
+	return store.saver.serialize(store);
 }
 
 // Return an array of tiddlers matching a search regular expression
@@ -353,3 +347,13 @@ TiddlyWiki.prototype.getShadowed = function()
 	return results;
 }
 
+// Resolves a Tiddler reference or tiddler title into a Tiddler object, or null if it doesn't exist
+TiddlyWiki.prototype.resolveTiddler = function(tiddler) 
+{
+	var t = (typeof tiddler == 'string') ? this.getTiddler(tiddler) : tiddler;
+	return t instanceof Tiddler ? t : null;
+}
+
+TiddlyWiki.prototype.getSaver = function() {
+	return this.saver;
+}

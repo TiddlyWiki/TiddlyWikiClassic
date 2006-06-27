@@ -3,7 +3,9 @@
 // ---------------------------------------------------------------------------------
 
 var saveUsingSafari = false;
-var startSaveArea = '<div id="' + 'storeArea">'; // Split up into two so that indexOf() of this source doesn't find it
+
+// Split up into two so that indexOf() of this source doesn't find it
+var startSaveAreaRE = /\<div id=\"storeArea\"( class=\"[^\"]+\")?\>/; 
 var endSaveArea = '</d' + 'iv>';
 
 // If there are unsaved changes, force the user to confirm before exitting
@@ -22,6 +24,11 @@ function checkUnsavedChanges()
 		if(confirm(config.messages.unsavedChangesWarning))
 			saveChanges();
 		}
+}
+
+function getSaveAreaStartText(formatName)
+{
+	return '<div id="' + 'storeArea" class="%0">'.format([formatName]);
 }
 
 // Save this tiddlywiki with the pending changes
@@ -51,7 +58,8 @@ function saveChanges(onlyIfDirty)
 		return;
 		}
 	// Locate the storeArea div's
-	var posOpeningDiv = original.indexOf(startSaveArea);
+	var m = original.match(startSaveAreaRE);
+	var posOpeningDiv = m ? m.index : -1;
 	var limitClosingDiv = original.indexOf("<!--POST-BODY-START--"+">");
 	var posClosingDiv = original.lastIndexOf(endSaveArea,limitClosingDiv == -1 ? original.length : limitClosingDiv);
 	if((posOpeningDiv == -1) || (posClosingDiv == -1))
@@ -89,24 +97,32 @@ function saveChanges(onlyIfDirty)
 			emptyPath = localPath.substr(0,p) + "\\empty.html";
 		else
 			emptyPath = localPath + ".empty.html";
-		var empty = original.substr(0,posOpeningDiv + startSaveArea.length) + original.substr(posClosingDiv);
+		var empty = original.substr(0,posOpeningDiv) + getSaveAreaStartText(store.saver.getFormat(store)) + original.substr(posClosingDiv);
 		var emptySave = saveFile(emptyPath,empty);
 		if(emptySave)
 			displayMessage(config.messages.emptySaved,"file://" + emptyPath);
 		else
 			alert(config.messages.emptyFailed);
 		}
-	// Save new file
-	var revised = original.substr(0,posOpeningDiv + startSaveArea.length) + "\n" +
-				convertUnicodeToUTF8(store.allTiddlersAsHtml()) + "\n\t\t" +
-				original.substr(posClosingDiv);
-	var newSiteTitle = convertUnicodeToUTF8((wikifyPlain("SiteTitle") + " - " + wikifyPlain("SiteSubtitle")).htmlEncode());
-	revised = revised.replaceChunk("<title"+">","</title"+">"," " + newSiteTitle + " ");
-	revised = revised.replaceChunk("<!--PRE-HEAD-START--"+">","<!--PRE-HEAD-END--"+">","\n" + store.getTiddlerText("MarkupPreHead","") + "\n");
-	revised = revised.replaceChunk("<!--POST-HEAD-START--"+">","<!--POST-HEAD-END--"+">","\n" + store.getTiddlerText("MarkupPostHead","") + "\n");
-	revised = revised.replaceChunk("<!--PRE-BODY-START--"+">","<!--PRE-BODY-END--"+">","\n" + store.getTiddlerText("MarkupPreBody","") + "\n");
-	revised = revised.replaceChunk("<!--POST-BODY-START--"+">","<!--POST-BODY-END--"+">","\n" + store.getTiddlerText("MarkupPostBody","") + "\n");
-	var save = saveFile(localPath,revised);
+	var save;
+	try 
+		{
+		// Save new file
+		var revised = original.substr(0,posOpeningDiv) + getSaveAreaStartText(store.saver.getFormat(store)) + 
+					convertUnicodeToUTF8(store.allTiddlersAsHtml()) + "\n\t\t" +
+					original.substr(posClosingDiv);
+		var newSiteTitle = convertUnicodeToUTF8((wikifyPlain("SiteTitle") + " - " + wikifyPlain("SiteSubtitle")).htmlEncode());
+		revised = revised.replaceChunk("<title"+">","</title"+">"," " + newSiteTitle + " ");
+		revised = revised.replaceChunk("<!--PRE-HEAD-START--"+">","<!--PRE-HEAD-END--"+">","\n" + store.getTiddlerText("MarkupPreHead","") + "\n");
+		revised = revised.replaceChunk("<!--POST-HEAD-START--"+">","<!--POST-HEAD-END--"+">","\n" + store.getTiddlerText("MarkupPostHead","") + "\n");
+		revised = revised.replaceChunk("<!--PRE-BODY-START--"+">","<!--PRE-BODY-END--"+">","\n" + store.getTiddlerText("MarkupPreBody","") + "\n");
+		revised = revised.replaceChunk("<!--POST-BODY-START--"+">","<!--POST-BODY-END--"+">","\n" + store.getTiddlerText("MarkupPostBody","") + "\n");
+		save = saveFile(localPath,revised);
+		}
+	catch (e) 
+		{
+		showException(e);
+		}
 	if(save)
 		{
 		displayMessage(config.messages.mainSaved,"file://" + localPath);

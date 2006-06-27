@@ -32,7 +32,11 @@ merge(config.messages,{
 	overwriteWarning: "A tiddler named '%0' already exists. Choose OK to overwrite it",
 	unsavedChangesWarning: "WARNING! There are unsaved changes in TiddlyWiki\n\nChoose OK to save\nChoose CANCEL to discard",
 	confirmExit: "--------------------------------\n\nThere are unsaved changes in TiddlyWiki. If you continue you will lose those changes\n\n--------------------------------",
-	saveInstructions: "SaveChanges"});
+	saveInstructions: "SaveChanges",
+	unsupportedTWFormat: "Unsupported TiddlyWiki format '%0'",
+	tiddlerSaveError: "Error when saving tiddler '%0'",
+	tiddlerLoadError: "Error when loading tiddler '%0'",
+	wrongSaveFormat: "Cannot save with storage format '%0'. Using standard format for save."});
 
 merge(config.messages.messageClose,{
 	text: "close",

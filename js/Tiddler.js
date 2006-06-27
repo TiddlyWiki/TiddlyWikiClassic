@@ -15,35 +15,17 @@ function Tiddler()
 }
 
 // Load a tiddler from an HTML DIV. The caller should make sure to later call Tiddler.changed()
+// @Deprecated
 Tiddler.prototype.loadFromDiv = function(divRef,title)
 {
-	var text= ""; 
-	var e = divRef.firstChild;
-	while(e && e.nodeName == "#text")
-		{
-		text += Tiddler.unescapeLineBreaks(e.nodeValue);
-		e = e.nextSibling;
-		}
-	var modifier = divRef.getAttribute("modifier");
-	var modified = Date.convertFromYYYYMMDDHHMM(divRef.getAttribute("modified"));
-	var c = divRef.getAttribute("created");
-	var created = c ? Date.convertFromYYYYMMDDHHMM(c) : modified;
-	var tags = divRef.getAttribute("tags");
-	this.assign(title,text,modifier,modified,tags,created);
-	return this;
+	return store.loader.initTiddler(store,this,title,divRef);
 }
 
 // Format the text for storage in an HTML DIV
+// @Deprecated Use store.getSaver().serializeTiddler instead.
 Tiddler.prototype.saveToDiv = function()
 {
-	return '<div tiddler="%0" modifier="%1" modified="%2" created="%3" tags="%4">%5</div>'.format([
-			this.title.htmlEncode(),
-			this.modifier.htmlEncode(),
-			this.modified.convertToYYYYMMDDHHMM(),
-			this.created.convertToYYYYMMDDHHMM(),
-			this.getTags().htmlEncode(),
-			this.escapeLineBreaks().htmlEncode()
-		]);
+	return store.getSaver().serializeTiddler(store,this);
 }
 
 // Format the text for storage in an RSS item
