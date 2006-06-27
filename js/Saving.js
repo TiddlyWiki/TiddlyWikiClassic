@@ -35,6 +35,15 @@ function getSaveAreaStartText(formatName)
 	return s;
 }
 
+
+function updateMarkupBlock(s,blockName,tiddlerName)
+{
+	return s.replaceChunk(
+			"<!--%0-START-->".format([blockName]),
+			"<!--%0-END-->".format([blockName]),
+			"\n" + store.getRecursiveTiddlerText(tiddlerName,"") + "\n");
+}
+
 // Save this tiddlywiki with the pending changes
 function saveChanges(onlyIfDirty)
 {
@@ -117,10 +126,10 @@ function saveChanges(onlyIfDirty)
 					original.substr(posClosingDiv);
 		var newSiteTitle = convertUnicodeToUTF8((wikifyPlain("SiteTitle") + " - " + wikifyPlain("SiteSubtitle")).htmlEncode());
 		revised = revised.replaceChunk("<title"+">","</title"+">"," " + newSiteTitle + " ");
-		revised = revised.replaceChunk("<!--PRE-HEAD-START--"+">","<!--PRE-HEAD-END--"+">","\n" + store.getTiddlerText("MarkupPreHead","") + "\n");
-		revised = revised.replaceChunk("<!--POST-HEAD-START--"+">","<!--POST-HEAD-END--"+">","\n" + store.getTiddlerText("MarkupPostHead","") + "\n");
-		revised = revised.replaceChunk("<!--PRE-BODY-START--"+">","<!--PRE-BODY-END--"+">","\n" + store.getTiddlerText("MarkupPreBody","") + "\n");
-		revised = revised.replaceChunk("<!--POST-BODY-START--"+">","<!--POST-BODY-END--"+">","\n" + store.getTiddlerText("MarkupPostBody","") + "\n");
+		revised = updateMarkupBlock(revised,"PRE-HEAD","MarkupPreHead");
+		revised = updateMarkupBlock(revised,"POST-HEAD","MarkupPostHead");
+		revised = updateMarkupBlock(revised,"PRE-BODY","MarkupPreBody");
+		revised = updateMarkupBlock(revised,"POST-BODY","MarkupPostBody");
 		save = saveFile(localPath,revised);
 		}
 	catch (e) 
