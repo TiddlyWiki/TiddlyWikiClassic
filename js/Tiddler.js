@@ -44,15 +44,15 @@ Tiddler.prototype.saveToRss = function(url)
 }
 
 // Change the text and other attributes of a tiddler
-Tiddler.prototype.set = function(title,text,modifier,modified,tags,created)
+Tiddler.prototype.set = function(title,text,modifier,modified,tags,created,metadata)
 {
-	this.assign(title,text,modifier,modified,tags,created);
+	this.assign(title,text,modifier,modified,tags,created,metadata);
 	this.changed();
 	return this;
 }
 
 // Change the text and other attributes of a tiddler without triggered a tiddler.changed() call
-Tiddler.prototype.assign = function(title,text,modifier,modified,tags,created)
+Tiddler.prototype.assign = function(title,text,modifier,modified,tags,created,metadata)
 {
 	if(title != undefined)
 		this.title = title;
@@ -64,6 +64,8 @@ Tiddler.prototype.assign = function(title,text,modifier,modified,tags,created)
 		this.modified = modified;
 	if(created != undefined)
 		this.created = created;
+	if(metadata != undefined)
+		this.metadata = metadata;
 	if(tags != undefined)
 		this.tags = (typeof tags == "string") ? tags.readBracketedList() : tags;
 	else if(this.tags == undefined)

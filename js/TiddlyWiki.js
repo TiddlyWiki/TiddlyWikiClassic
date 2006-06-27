@@ -160,7 +160,7 @@ TiddlyWiki.prototype.getRecursiveTiddlerText = function(title,defaultText,depth)
 	return(textOut.join(""));
 }
 
-TiddlyWiki.prototype.saveTiddler = function(title,newTitle,newBody,modifier,modified,tags)
+TiddlyWiki.prototype.saveTiddler = function(title,newTitle,newBody,modifier,modified,tags,metadata)
 {
 	var tiddler = this.fetchTiddler(title);
 	var created;
@@ -174,7 +174,7 @@ TiddlyWiki.prototype.saveTiddler = function(title,newTitle,newBody,modifier,modi
 		tiddler = new Tiddler();
 		created = modified;
 		}
-	tiddler.set(newTitle,newBody,modifier,modified,tags,created);
+	tiddler.set(newTitle,newBody,modifier,modified,tags,created,metadata);
 	this.addTiddler(tiddler);
 	if(title != newTitle)
 		this.notify(title,true);
@@ -203,11 +203,14 @@ TiddlyWiki.prototype.loadFromDiv = function(srcID,idPrefix)
 		{
 		this.idPrefix = idPrefix;
 		var storeElem = document.getElementById(srcID);
-		this.loader = getLoaderForStore(storeElem);
+		var format = getFormatOfStore(storeElem);
+		this.loader = getLoaderForFormat(format);
 		var tiddlers = this.loader.loadTiddlers(this,storeElem.childNodes);
 		for(var t=0; t<tiddlers.length; t++)
 			tiddlers[t].changed();
 		this.setDirty(false);
+		var saveFormat = format == config.store.LEGACY_FORMAT ? config.store.defaultFormat : format;
+		this.saver = getSaver(saveFormat);
 		}
 	catch (e)
 		{
@@ -222,7 +225,7 @@ TiddlyWiki.prototype.loadFromDiv = function(srcID,idPrefix)
 // Return all tiddlers formatted as a sequence of HTML DIVs
 TiddlyWiki.prototype.allTiddlersAsHtml = function()
 {
-	return store.saver.serialize(store);
+	return store.getSaver().serialize(store);
 }
 
 // Return an array of tiddlers matching a search regular expression
@@ -355,5 +358,5 @@ TiddlyWiki.prototype.resolveTiddler = function(tiddler)
 }
 
 TiddlyWiki.prototype.getSaver = function() {
-	return this.saver;
+	return this.requestedSaver ? this.requestedSaver : this.saver;
 }
