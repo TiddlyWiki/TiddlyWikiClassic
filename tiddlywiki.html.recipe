@@ -32,8 +32,6 @@ js/Strings.js
 js/RGB.js
 js/Dates.js
 js/Dom.js
-js/TW20Loader.js
-js/TW20Saver.js
 js/TW21Loader.js
 js/TW21Saver.js
 js/MetaData.js

@@ -48,5 +48,3 @@ TW21Loader.prototype.initTiddler = function(store, tiddler, title, data) {
 	return tiddler;
 };
 
-config.store.loader['tw21'] = TW21Loader;
-

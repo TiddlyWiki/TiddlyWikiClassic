@@ -18,7 +18,7 @@ function Tiddler()
 // @Deprecated
 Tiddler.prototype.loadFromDiv = function(divRef,title)
 {
-	return store.loader.initTiddler(store,this,title,divRef);
+	return store.getLoader().initTiddler(store,this,title,divRef);
 }
 
 // Format the text for storage in an HTML DIV

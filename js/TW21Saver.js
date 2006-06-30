@@ -40,4 +40,3 @@ TW21Saver.prototype.serializeTiddler = function(store, tiddler) {
 	}
 };
 
-config.store.saver['tw21'] = TW21Saver;

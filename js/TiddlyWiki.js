@@ -28,7 +28,6 @@ function TiddlyWiki()
 				callback.call(this,t,tiddler);
 			}
 		};
-	this.saver = getSaver(config.store.defaultFormat);
 }
 
 // Set the dirty flag
@@ -199,27 +198,12 @@ TiddlyWiki.prototype.createTiddler = function(title)
 // Load contents of a tiddlywiki from an HTML DIV
 TiddlyWiki.prototype.loadFromDiv = function(srcID,idPrefix)
 {
-	try
-		{
-		this.idPrefix = idPrefix;
-		var storeElem = document.getElementById(srcID);
-		var format = getFormatOfStore(storeElem);
-		this.loader = getLoaderForFormat(format);
-		var tiddlers = this.loader.loadTiddlers(this,storeElem.childNodes);
-		for(var t=0; t<tiddlers.length; t++)
-			tiddlers[t].changed();
-		this.setDirty(false);
-		var saveFormat = format == config.store.LEGACY_FORMAT ? config.store.defaultFormat : format;
-		this.saver = getSaver(saveFormat);
-		}
-	catch (e)
-		{
-		showException(e);
-		}
-	finally
-		{
-		this.loader = null; // the loader is only defined while loading.
-		}
+	this.idPrefix = idPrefix;
+	var storeElem = document.getElementById(srcID);
+	var tiddlers = this.getLoader().loadTiddlers(this,storeElem.childNodes);
+	for(var t=0; t<tiddlers.length; t++)
+		tiddlers[t].changed();
+	this.setDirty(false);
 }
 
 // Return all tiddlers formatted as a sequence of HTML DIVs
@@ -357,6 +341,13 @@ TiddlyWiki.prototype.resolveTiddler = function(tiddler)
 	return t instanceof Tiddler ? t : null;
 }
 
-TiddlyWiki.prototype.getSaver = function() {
-	return this.requestedSaver ? this.requestedSaver : this.saver;
+TiddlyWiki.prototype.getLoader = function() 
+{
+	return new TW21Loader();
 }
+ 
+TiddlyWiki.prototype.getSaver = function() 
+{
+	return new TW21Saver();
+}
+

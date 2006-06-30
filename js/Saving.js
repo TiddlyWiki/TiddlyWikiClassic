@@ -26,13 +26,9 @@ function checkUnsavedChanges()
 		}
 }
 
-function getSaveAreaStartText(formatName)
+function getSaveAreaStartText(store)
 {
-	var s ='<div id="' + 'storeArea"';
-	if (formatName != config.store.LEGACY_FORMAT)
-		s += ' class="%0"'.format([formatName]);
-	s += '>';
-	return s;
+	return '<div id="' + 'storeArea">';
 }
 
 
@@ -110,7 +106,7 @@ function saveChanges(onlyIfDirty)
 			emptyPath = localPath.substr(0,p) + "\\empty.html";
 		else
 			emptyPath = localPath + ".empty.html";
-		var empty = original.substr(0,posOpeningDiv) + getSaveAreaStartText(store.getSaver().getFormat(store)) + original.substr(posClosingDiv);
+		var empty = original.substr(0,posOpeningDiv) + getSaveAreaStartText(store) + original.substr(posClosingDiv);
 		var emptySave = saveFile(emptyPath,empty);
 		if(emptySave)
 			displayMessage(config.messages.emptySaved,"file://" + emptyPath);
@@ -121,7 +117,7 @@ function saveChanges(onlyIfDirty)
 	try 
 		{
 		// Save new file
-		var revised = original.substr(0,posOpeningDiv) + getSaveAreaStartText(store.getSaver().getFormat(store)) + 
+		var revised = original.substr(0,posOpeningDiv) + getSaveAreaStartText(store) + 
 					convertUnicodeToUTF8(store.allTiddlersAsHtml()) + "\n\t\t" +
 					original.substr(posClosingDiv);
 		var newSiteTitle = convertUnicodeToUTF8((wikifyPlain("SiteTitle") + " - " + wikifyPlain("SiteSubtitle")).htmlEncode());
