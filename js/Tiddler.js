@@ -103,7 +103,8 @@ Tiddler.prototype.changed = function()
 	this.links = [];
 	var aliasedPrettyLink = "\\[\\[([^\\[\\]\\|]+)\\|([^\\[\\]\\|]+)\\]\\]";
 	var prettyLink = "\\[\\[([^\\]]+)\\]\\]";
-	var wikiNameRegExp = new RegExp("(" + config.textPrimitives.wikiLink + ")|(?:" + aliasedPrettyLink + ")|(?:" + prettyLink + ")","mg");
+	var wikiNameRegExp = new RegExp("(" + config.textPrimitives.wikiLink + ")|(?:" + 
+				aliasedPrettyLink + ")|(?:" + prettyLink + ")|(?:" + config.textPrimitives.urlPattern + ")","mg");
 	do {
 		var formatMatch = wikiNameRegExp.exec(this.text);
 		if(formatMatch)
@@ -125,6 +126,7 @@ Tiddler.prototype.changed = function()
 				this.links.pushUnique(formatMatch[3]);
 			else if(formatMatch[4] && formatMatch[4] != this.title)
 				this.links.pushUnique(formatMatch[4]);
+			// Do not add link if match urlPattern (formatMatch[5])
 			}
 	} while(formatMatch);
 	return;
