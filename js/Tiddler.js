@@ -11,6 +11,7 @@ function Tiddler()
 	this.created = new Date();
 	this.links = [];
 	this.tags = [];
+	this.cacheFingerprint = null;
 	return this;
 }
 
@@ -100,6 +101,7 @@ Tiddler.prototype.escapeLineBreaks = function()
 // Updates the secondary information (like links[] array) after a change to a tiddler
 Tiddler.prototype.changed = function()
 {
+	this.cacheFingerprint = null;
 	this.links = [];
 	var aliasedPrettyLink = "\\[\\[([^\\[\\]\\|]+)\\|([^\\[\\]\\|]+)\\]\\]";
 	var prettyLink = "\\[\\[([^\\]]+)\\]\\]";
@@ -154,4 +156,12 @@ Tiddler.prototype.hasWikiLinks = function()
 {
 	return this.isTagged("systemConfig") == null && this.isTagged("excludeMissing") == null;
 }
+
+Tiddler.prototype.getFingerprint = function()
+{
+	if(!this.cacheFingerprint)
+		this.cacheFingerprint = "0x" + Hash.hexSha1Str(this.text);
+	return this.cacheFingerprint;
+}
+
 

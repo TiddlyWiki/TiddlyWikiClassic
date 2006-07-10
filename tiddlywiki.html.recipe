@@ -28,6 +28,7 @@ js/Scroller.js
 js/Slider.js
 js/Popup.js
 js/BasicTypes.js
+js/Hash.js
 js/Strings.js
 js/RGB.js
 js/Dates.js
