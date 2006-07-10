@@ -109,7 +109,7 @@ Tiddler.prototype.changed = function()
 		var formatMatch = wikiNameRegExp.exec(this.text);
 		if(formatMatch)
 			{
-			if(formatMatch[1] && formatMatch[1] != this.title && this.linkWikiWords())
+			if(formatMatch[1] && formatMatch[1] != this.title && this.hasWikiLinks())
 				{
 				if(formatMatch.index > 0)
 					{
@@ -150,7 +150,7 @@ Tiddler.prototype.isReadOnly = function()
 	return readOnly;
 }
 
-Tiddler.prototype.linkWikiWords = function()
+Tiddler.prototype.hasWikiLinks = function()
 {
 	return this.tags.find("systemConfig") == null && this.tags.find("excludeMissing") == null;
 }

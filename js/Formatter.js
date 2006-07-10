@@ -336,7 +336,7 @@ config.formatters = [
 				return;
 				}
 			}
-		if(w.linkWikiWords == true || store.isShadowTiddler(w.matchText))
+		if(w.hasWikiLinks == true || store.isShadowTiddler(w.matchText))
 			{
 			var link = createTiddlyLink(w.output,w.matchText,false);
 			w.outputText(link,w.matchStart,w.nextMatch);
