@@ -166,7 +166,7 @@ merge(config.commands.jump,{
 	tooltip: "Jump to another open tiddler"});
 
 merge(config.shadowTiddlers,{
-	StyleSheet: "/***\nPlace your custom CSS here\n***/\n/*{{{*/\n\n/*}}}*/\n",
+	StyleSheet: "/***\nPlace your custom CSS between the {{{/*{{{*/}}} and {{{/*}}}*/}}} markers\n***/\n/*{{{*/\n\n/*}}}*/\n",
 	DefaultTiddlers: "GettingStarted",
 	MainMenu: "GettingStarted",
 	SiteTitle: "My TiddlyWiki",
