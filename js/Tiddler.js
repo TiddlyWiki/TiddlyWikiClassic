@@ -152,6 +152,6 @@ Tiddler.prototype.isReadOnly = function()
 
 Tiddler.prototype.hasWikiLinks = function()
 {
-	return this.tags.find("systemConfig") == null && this.tags.find("excludeMissing") == null;
+	return this.isTagged("systemConfig") == null && this.isTagged("excludeMissing") == null;
 }
 

@@ -286,7 +286,7 @@ TiddlyWiki.prototype.getTiddlers = function(field,excludeTag)
 {
 	var results = [];
 	this.forEachTiddler(function(title,tiddler) {
-		if(excludeTag == undefined || tiddler.tags.find(excludeTag) == null)
+		if(excludeTag == undefined || tiddler.isTagged(excludeTag) == null)
 			results.push(tiddler);
 		});
 	if(field)
