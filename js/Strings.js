@@ -83,9 +83,11 @@ String.prototype.htmlDecode = function()
 // Parse a space-separated string of name:value parameters where:
 //   - the name or the value can be optional (and a separate default is used instead)
 //     - in case of ambiguity, a lone word is taken to be a value
+//     - name prefixes are not allowed if the 'noNames' parameter is true
 //   - if both the name and value are present they must be separated by a colon
 //   - the name and the value may both be quoted with single- or double-quotes, double-square brackets
 //   - names or values quoted with {{double-curly braces}} are evaluated as a JavaScript expression
+//     - as long as the 'allowEval' parameter is true
 // The result is an array of objects:
 //   result[0] = object with a member for each parameter name, value of that member being an array of values
 //   result[1..n] = one object for each parameter, with 'name' and 'value' members
