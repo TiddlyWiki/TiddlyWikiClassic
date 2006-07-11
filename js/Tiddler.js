@@ -164,4 +164,29 @@ Tiddler.prototype.getFingerprint = function()
 	return this.cacheFingerprint;
 }
 
+// Returns the chunk of text of the given name
+//#
+//# A text chunk is a substring in the tiddler's text that is defined
+//# either like this
+//#    aName:  textChunk
+//# or
+//#    |aName:| textChunk |
+//# or
+//#    |aName| textChunk |
+//#
+//# In the text the name (or name:) may be decorated with '' or //. I.e.
+//# this would also a possible text chunk:
+//#
+//#    |''aName:''| textChunk |
+//#
+//# @param name should only contain "word characters" (i.e. "a-ZA-Z_0-9")
+//# @return [may be undefined] the (trimmed) text of the specified chunk.
+Tiddler.prototype.getTextChunk = function(name)
+{
+	var reString = "(?:[\\'/]*(?:%0)[\\'/]*\\:[\\'/]*\\s*(.*?)\\s*$)|(?:\\|[\\'/]*(?:%0)\\:?[\\'/]*\\|\\s*(.*?)\\s*\\|)".format([name.escapeRegExp()]);
+	var m = this.text.match(new RegExp(reString, "m"));
+	if (!m)
+		return undefined;
+	return m[1] ? m[1] : m[2];
+}
 
