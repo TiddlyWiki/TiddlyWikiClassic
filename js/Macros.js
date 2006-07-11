@@ -171,28 +171,43 @@ config.macros.search.onFocus = function(e)
 	this.select();
 }
 
-config.macros.tiddler.handler = function(place,macroName,params)
+config.macros.tiddler.handler = function(place,macroName,params,wikifier,paramString,tiddler)
 {
-	var wrapper = createTiddlyElement(place,"span",null,params[1] ? params[1] : null);
+	var params = paramString.parseParams("name",null,true,false,true);
+	var names = params[0]["name"];
+	var tiddlerName = names[0];
+	var className = names[1] ? names[1] : null;
+	var args = params[0]["with"];
+	var wrapper = createTiddlyElement(place,"span",null,className);
 	wrapper.setAttribute("refresh","content");
-	wrapper.setAttribute("tiddler",params[0]);
-	var text = store.getTiddlerText(params[0]);
+	wrapper.setAttribute("tiddler",tiddlerName);
+	var text = store.getTiddlerText(tiddlerName);
 	if(text)
 		{
-		var tiddlerName = params[0];
 		var stack = config.macros.tiddler.tiddlerStack;
 		if(stack.find(tiddlerName) !== null)
 			return;
 		stack.push(tiddlerName);
 		try
 			{
-			wikify(text,wrapper,null,store.getTiddler(tiddlerName));
+			var n = args ? Math.min(args.length,9) : 0;
+			for(var i=0; i<n; i++) 
+				{
+				var placeholderRE = new RegExp("\\$" + (i + 1),"mg");
+				text = text.replace(placeholderRE,args[i]);
+				}
+			config.macros.tiddler.renderText(wrapper,text,tiddlerName,params);
 			}
 		finally
 			{
 			stack.pop();
 			}
 		}
+}
+
+config.macros.tiddler.renderText = function(place,text,tiddlerName,params) 
+{
+	wikify(text,place,null,store.getTiddler(tiddlerName));
 }
 
 config.macros.tiddler.tiddlerStack = [];
