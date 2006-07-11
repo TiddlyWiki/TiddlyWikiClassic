@@ -2,27 +2,36 @@
 // Message area
 // ---------------------------------------------------------------------------------
 
-function displayMessage(text,linkText)
+function getMessageDiv()
 {
 	var msgArea = document.getElementById("messageArea");
 	if(!msgArea)
+		return null;
+	if(!msgArea.hasChildNodes())
+		createTiddlyButton(createTiddlyElement(msgArea,"div",null,"messageToolbar"),
+			config.messages.messageClose.text,
+			config.messages.messageClose.tooltip,
+			clearMessage);
+	msgArea.style.display = "block";
+	return createTiddlyElement(msgArea,"div");
+}
+
+function displayMessage(text,linkText)
+{
+	var e = getMessageDiv();
+	if(!e)
 		{
 		alert(text);
 		return;
 		}
-	if(!msgArea.hasChildNodes())
-		createTiddlyButton(createTiddlyElement(msgArea,"div",null,"messageToolbar"),config.messages.messageClose.text,config.messages.messageClose.tooltip,clearMessage);
-	var msg;
 	if(linkText)
 		{
-		msg = createTiddlyElement(msgArea,"div");
-		var link = createTiddlyElement(msg,"a",null,null,text);
+		var link = createTiddlyElement(e,"a",null,null,text);
 		link.href = linkText;
 		link.target = "_blank";
 		}
 	else
-		msg = createTiddlyElement(msgArea,"div",null,null,text);
-	msgArea.style.display = "block";
+		e.appendChild(document.createTextNode(text));
 }
 
 function clearMessage()
