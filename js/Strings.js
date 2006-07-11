@@ -81,8 +81,9 @@ String.prototype.htmlDecode = function()
 }
 
 // Parse a space-separated string of name:value parameters where:
-//   - the name or the value can be optional (and a separate default is used instead)
+//   - the name or the value can be optional (in which case separate defaults are used instead)
 //     - in case of ambiguity, a lone word is taken to be a value
+//     - if 'cascadeDefaults' is set to true, then the defaults are modified by updated by each specified name or value
 //     - name prefixes are not allowed if the 'noNames' parameter is true
 //   - if both the name and value are present they must be separated by a colon
 //   - the name and the value may both be quoted with single- or double-quotes, double-square brackets
@@ -91,7 +92,7 @@ String.prototype.htmlDecode = function()
 // The result is an array of objects:
 //   result[0] = object with a member for each parameter name, value of that member being an array of values
 //   result[1..n] = one object for each parameter, with 'name' and 'value' members
-String.prototype.parseParams = function(defaultName,defaultValue,allowEval,noNames)
+String.prototype.parseParams = function(defaultName,defaultValue,allowEval,noNames,cascadeDefaults)
 {
 	var parseToken = function(match,p)
 		{
@@ -147,6 +148,11 @@ String.prototype.parseParams = function(defaultName,defaultValue,allowEval,noNam
 				else if(v == null && defaultValue)
 					v = defaultValue;
 				r.push({name: n, value: v});
+				if(cascadeDefaults)
+					{
+					defaultName = n;
+					defaultValue = v;
+					}
 				}
 			}
 	} while(match);
