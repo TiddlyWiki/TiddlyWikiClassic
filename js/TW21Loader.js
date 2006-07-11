@@ -35,9 +35,10 @@ TW21Loader.prototype.initTiddler = function(store, tiddler, title, data) {
 	var e = data.firstChild;
 	while (e && e.nodeName == "#text")
 		{
-		text += Tiddler.unescapeLineBreaks(e.nodeValue);
+		text += e.nodeValue;
 		e = e.nextSibling;
 		}
+	text = text.unescapeLineBreaks();
 	var modifier = data.getAttribute("modifier");
 	var modified = Date.convertFromYYYYMMDDHHMM(data.getAttribute("modified"));
 	var c = data.getAttribute("created");
