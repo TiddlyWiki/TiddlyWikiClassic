@@ -4,8 +4,7 @@
 
 var saveUsingSafari = false;
 
-// Split up into two so that indexOf() of this source doesn't find it
-var startSaveAreaRE = /\<div id=\"storeArea\"( class=\"[^\"]+\")?\>/; 
+var startSaveArea = '<div id="' + 'storeArea">'; // Split up into two so that indexOf() of this source doesn't find it
 var endSaveArea = '</d' + 'iv>';
 
 // If there are unsaved changes, force the user to confirm before exitting
@@ -25,12 +24,6 @@ function checkUnsavedChanges()
 			saveChanges();
 		}
 }
-
-function getSaveAreaStartText(store)
-{
-	return '<div id="' + 'storeArea">';
-}
-
 
 function updateMarkupBlock(s,blockName,tiddlerName)
 {
@@ -67,8 +60,7 @@ function saveChanges(onlyIfDirty)
 		return;
 		}
 	// Locate the storeArea div's
-	var m = original.match(startSaveAreaRE);
-	var posOpeningDiv = m ? m.index : -1;
+	var posOpeningDiv = original.indexOf(startSaveArea);
 	var limitClosingDiv = original.indexOf("<!--POST-BODY-START--"+">");
 	var posClosingDiv = original.lastIndexOf(endSaveArea,limitClosingDiv == -1 ? original.length : limitClosingDiv);
 	if((posOpeningDiv == -1) || (posClosingDiv == -1))
@@ -106,7 +98,7 @@ function saveChanges(onlyIfDirty)
 			emptyPath = localPath.substr(0,p) + "\\empty.html";
 		else
 			emptyPath = localPath + ".empty.html";
-		var empty = original.substr(0,posOpeningDiv) + getSaveAreaStartText(store) + original.substr(posClosingDiv);
+		var empty = original.substr(0,posOpeningDiv + startSaveArea.length) + original.substr(posClosingDiv);
 		var emptySave = saveFile(emptyPath,empty);
 		if(emptySave)
 			displayMessage(config.messages.emptySaved,"file://" + emptyPath);
@@ -117,7 +109,7 @@ function saveChanges(onlyIfDirty)
 	try 
 		{
 		// Save new file
-		var revised = original.substr(0,posOpeningDiv) + getSaveAreaStartText(store) + 
+		var revised = original.substr(0,posOpeningDiv + startSaveArea.length) + 
 					convertUnicodeToUTF8(store.allTiddlersAsHtml()) + "\n\t\t" +
 					original.substr(posClosingDiv);
 		var newSiteTitle = convertUnicodeToUTF8((wikifyPlain("SiteTitle") + " - " + wikifyPlain("SiteSubtitle")).htmlEncode());
