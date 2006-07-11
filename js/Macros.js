@@ -179,8 +179,11 @@ config.macros.tiddler.handler = function(place,macroName,params,wikifier,paramSt
 	var className = names[1] ? names[1] : null;
 	var args = params[0]["with"];
 	var wrapper = createTiddlyElement(place,"span",null,className);
-	wrapper.setAttribute("refresh","content");
-	wrapper.setAttribute("tiddler",tiddlerName);
+	if(!args)
+		{
+		wrapper.setAttribute("refresh","content");
+		wrapper.setAttribute("tiddler",tiddlerName);
+		}
 	var text = store.getTiddlerText(tiddlerName);
 	if(text)
 		{
