@@ -11,8 +11,17 @@ function Hash()
 Hash.strToBe32s = function(str)
 {
 	var be = Array();
-	for(var i=0;i<str.length;i++)
-		be[i>>2] |= (str.charCodeAt(i)&0xff)<<(24-(i*8)%32);
+	var len = Math.floor(str.length/4);
+	var i, j;
+	for(i=0, j=0; i<len; i++, j+=4)
+		{
+		be[i] = ((str.charCodeAt(j)&0xff) << 24)|((str.charCodeAt(j+1)&0xff) << 16)|((str.charCodeAt(j+2)&0xff) << 8)|(str.charCodeAt(j+3)&0xff);
+		}
+	while (j<str.length)
+		{
+		be[j>>2] |= (str.charCodeAt(j)&0xff)<<(24-(j*8)%32);
+		j++;
+		}
 	return be;
 }
 
