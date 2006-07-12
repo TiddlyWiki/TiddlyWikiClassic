@@ -89,7 +89,7 @@ function applyPageTemplate(title)
 	var wrapper = document.getElementById("contentWrapper");
 	if(!title)
 		title = "PageTemplate";
-	var html = store.getTiddlerText(title);
+	var html = store.getRecursiveTiddlerText(title,null,10);
 	wrapper.innerHTML = html;
 	applyHtmlMacros(wrapper);
 	refreshElements(wrapper);

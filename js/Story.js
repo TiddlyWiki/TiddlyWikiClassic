@@ -138,7 +138,7 @@ Story.prototype.chooseTemplateForTiddler = function(title,template)
 // Overridable for extracting the text of a template from a tiddler
 Story.prototype.getTemplateForTiddler = function(title,template,tiddler)
 {
-	return store.getTiddlerText(template);
+	return store.getRecursiveTiddlerText(template,null,10);
 }
 
 // Apply a template to an existing tiddler if it is not already displayed using that template
