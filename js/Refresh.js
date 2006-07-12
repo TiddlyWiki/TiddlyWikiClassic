@@ -103,6 +103,16 @@ function applyPageTemplate(title)
 	stash.parentNode.removeChild(stash);
 }
 
+function refreshEverything()
+{
+	refreshPageTemplate();
+	refreshDisplay();
+	refreshStyles("StyleSheet");
+	refreshStyles("StyleSheetColors");
+	refreshStyles("StyleSheetLayout");
+	refreshStyles("StyleSheetPrint");
+}
+
 function refreshDisplay(hint)
 {
 	var e = document.getElementById("contentWrapper");
