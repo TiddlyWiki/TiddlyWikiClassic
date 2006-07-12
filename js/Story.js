@@ -240,8 +240,17 @@ Story.prototype.onTiddlerKeyPress = function(e)
 	clearMessage();
 	var consume = false;
 	var title = this.getAttribute("tiddler");
+	var target = resolveTarget(e);
 	switch(e.keyCode)
 		{
+		case 9: // Tab
+			if(config.options.chkInsertTabs && (target.tagName.toLowerCase() == "input" || target.tagName.toLowerCase() == "textarea"))
+				{
+					alert("Got tab");
+				replaceSelection(resolveTarget(e),String.fromCharCode(9));
+				consume = true;
+				}
+			break;
 		case 13: // Ctrl-Enter
 		case 10: // Ctrl-Enter on IE PC
 		case 77: // Ctrl-Enter is "M" on some platforms

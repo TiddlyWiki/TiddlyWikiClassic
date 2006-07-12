@@ -32,6 +32,7 @@ config.options = {
 	chkHttpReadOnly: true,
 	chkForceMinorUpdate: false,
 	chkConfirmDelete: true,
+	chkInsertTabs: false,
 	txtBackupFolder: "",
 	txtMainTab: "tabTimeline",
 	txtMoreTab: "moreTabAll",

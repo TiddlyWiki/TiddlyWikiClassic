@@ -239,3 +239,30 @@ function setStylesheet(s,id)
 			}
 		}
 }
+
+// Replace the current selection of a textarea or text input and scroll it into view
+function replaceSelection(e,text)
+{
+	if (e.setSelectionRange)
+		{
+		e.value = e.value.substr(0,e.selectionStart) + text + e.value.substr(e.selectionStart);
+		e.setSelectionRange(e.selectionStart+1,e.selectionStart+1);
+		var linecount = e.value.split('\n').length;
+		var thisline = e.value.substr(0,e.selectionStart).split('\n').length-1;
+		e.scrollTop = Math.floor((thisline-e.rows/2)*e.scrollHeight/linecount);
+		}
+	else if (document.selection)
+		{
+		var range = document.selection.createRange();
+		if (range.parentElement() == e)
+			{
+			var isCollapsed = range.text == "";
+			range.text = text;
+			 if (!isCollapsed)
+				{
+				range.moveStart('character', -text.length);
+				range.select();
+				}
+			}
+		}
+}
