@@ -123,10 +123,10 @@ TiddlyWiki.prototype.getTiddlerText = function(title,defaultText)
 		return tiddler.text;
 	if(!title)
 		return defaultText;
-	var pos = title.indexOf(config.textPrimitives.sliceChar);
+	var pos = title.indexOf(config.textPrimitives.sliceSeparator);
 	if(pos != -1)
 		{
-		var slice = this.getTiddlerSlice(title.substr(0,pos),title.substr(pos+1));
+		var slice = this.getTiddlerSlice(title.substr(0,pos),title.substr(pos + config.textPrimitives.sliceSeparator.length));
 		if(slice)
 			return slice;
 		}
