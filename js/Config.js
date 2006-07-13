@@ -147,6 +147,7 @@ if(config.browser.isBadSafari)
 		}
 config.textPrimitives.urlPattern = "(?:file|http|https|mailto|ftp):[^\\s'\"]+(?:/|\\b)";
 config.textPrimitives.unWikiLink = "~";
+config.textPrimitives.sliceChar = "#";
 config.textPrimitives.wikiLink = "(?:(?:" + config.textPrimitives.upperLetter + "+" +
 												config.textPrimitives.lowerLetter + "+" +
 												config.textPrimitives.upperLetter +
