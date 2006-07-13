@@ -169,6 +169,19 @@ TiddlyWiki.prototype.getTiddlerSlice = function(title,sliceName)
 	return m[1] ? m[1] : m[2];
 }
 
+// Build an hashmap of the specified named slices of a tiddler
+TiddlyWiki.prototype.getTiddlerSlices = function(title,sliceNames)
+{
+	var r = {};
+	for(var t=0; t<sliceNames.length; t++)
+		{
+		var slice = this.getTiddlerSlice(title,sliceNames[t]);
+		if(slice)
+			r[sliceNames[t]] = slice;
+		}
+	return r;
+}
+
 TiddlyWiki.prototype.getRecursiveTiddlerText = function(title,defaultText,depth)
 {
 	var bracketRegExp = new RegExp("(?:\\[\\[([^\\]]+)\\]\\])","mg");
