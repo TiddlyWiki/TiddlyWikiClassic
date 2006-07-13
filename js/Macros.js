@@ -370,15 +370,28 @@ config.macros.option.handler = function(place,macroName,params)
 
 config.macros.newTiddler.onClick = function()
 {
-	story.displayTiddler(null,config.macros.newTiddler.title,DEFAULT_EDIT_TEMPLATE);
-	story.focusTiddler(config.macros.newTiddler.title,"title");
+	var title = this.getAttribute("newTitle");
+	var params = this.getAttribute("params").split("|");
+	var focus = this.getAttribute("newFocus");
+	story.displayTiddler(null,title,DEFAULT_EDIT_TEMPLATE);
+	for(var t=1;t<params.length;t++)
+		story.setTiddlerTag(title,params[t],+1);
+	story.focusTiddler(title,focus);
 	return false;
 }
 
-config.macros.newTiddler.handler = function(place)
+config.macros.newTiddler.handler = function(place,macroName,params)
 {
 	if(!readOnly)
-		createTiddlyButton(place,this.label,this.prompt,this.onClick,null,null,this.accessKey);
+		{
+		var title = this.title;
+		if(params[0])
+			title = params[0];
+		var btn = createTiddlyButton(place,this.label,this.prompt,this.onClick,null,null,this.accessKey);
+		btn.setAttribute("newTitle",title);
+		btn.setAttribute("params",params.join("|"));
+		btn.setAttribute("newFocus","title");
+		}
 }
 
 config.macros.newJournal.handler = function(place,macroName,params)
@@ -387,21 +400,11 @@ config.macros.newJournal.handler = function(place,macroName,params)
 		{
 		var now = new Date();
 		var title = now.formatString(params[0].trim());
-		var btn = createTiddlyButton(place,this.label,this.prompt,this.createJournal,null,null,this.accessKey);
-		btn.setAttribute("journalTitle",title);
+		var btn = createTiddlyButton(place,this.label,this.prompt,config.macros.newTiddler.onClick,null,null,this.accessKey);
+		btn.setAttribute("newTitle",title);
 		btn.setAttribute("params",params.join("|"));
+		btn.setAttribute("newFocus","text");
 		}
-}
-
-config.macros.newJournal.createJournal = function(e)
-{
-	var title = this.getAttribute("journalTitle");
-	var params = this.getAttribute("params").split("|");
-	story.displayTiddler(null,title,DEFAULT_EDIT_TEMPLATE);
-	for(var t=1;t<params.length;t++)
-		story.setTiddlerTag(title,params[t],+1);
-	story.focusTiddler(title,"text");
-	return false;
 }
 
 config.macros.sparkline.handler = function(place,macroName,params)
