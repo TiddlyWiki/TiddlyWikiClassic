@@ -7,6 +7,7 @@ function TiddlyWiki()
 	var tiddlers = {}; // Hashmap by name of tiddlers
 	this.namedNotifications = []; // Array of {name:,notify:} of notification functions
 	this.notificationLevel = 0;
+	this.sliceNameRegExpCache = {}; // Hashmap by name of regexps for getTiddlerSlice
 	this.clear = function() {
 		tiddlers = {};
 		this.setDirty(false);
@@ -117,17 +118,17 @@ TiddlyWiki.prototype.getTiddler = function(title)
 
 TiddlyWiki.prototype.getTiddlerText = function(title,defaultText)
 {
-	if(!title)
-		return(defaultText);
 	var tiddler = this.fetchTiddler(title);
 	if(tiddler)
 		return tiddler.text;
+	if(!title)
+		return defaultText;
 	var hashPos = title.indexOf("#");
 	if(hashPos != -1)
 		{
-		var chunk = this.getTiddlerChunk(title.substr(0,hashPos),title.substr(hashPos+1));
-		if(chunk)
-			return chunk;
+		var slice = this.getTiddlerSlice(title.substr(0,hashPos),title.substr(hashPos+1));
+		if(slice)
+			return slice;
 		}
 	if(this.isShadowTiddler(title))
 		return config.shadowTiddlers[title];
@@ -136,28 +137,33 @@ TiddlyWiki.prototype.getTiddlerText = function(title,defaultText)
 	return null;
 }
 
-// Returns the chunk of text of the given name
+// Returns the slice of text of the given name
 //#
-//# A text chunk is a substring in the tiddler's text that is defined
+//# A text slice is a substring in the tiddler's text that is defined
 //# either like this
-//#    aName:  textChunk
+//#    aName:  textSlice
 //# or
-//#    |aName:| textChunk |
+//#    |aName:| textSlice |
 //# or
-//#    |aName| textChunk |
+//#    |aName| textSlice |
 //#
 //# In the text the name (or name:) may be decorated with '' or //. I.e.
-//# this would also a possible text chunk:
+//# this would also a possible text slice:
 //#
-//#    |''aName:''| textChunk |
+//#    |''aName:''| textSlice |
 //#
 //# @param name should only contain "word characters" (i.e. "a-ZA-Z_0-9")
-//# @return [may be undefined] the (trimmed) text of the specified chunk.
-TiddlyWiki.prototype.getTiddlerChunk = function(title,chunkName)
+//# @return [may be undefined] the (trimmed) text of the specified slice.
+TiddlyWiki.prototype.getTiddlerSlice = function(title,sliceName)
 {
-	var reString = "(?:[\\'/]*(?:%0)[\\'/]*\\:[\\'/]*\\s*(.*?)\\s*$)|(?:\\|[\\'/]*(?:%0)\\:?[\\'/]*\\|\\s*(.*?)\\s*\\|)".format([chunkName.escapeRegExp()]);
+	var re = this.sliceNameRegExpCache[sliceName];
+	if(!re)
+		{
+	 	re = new RegExp("(?:[\\'/]*(?:%0)[\\'/]*\\:[\\'/]*\\s*(.*?)\\s*$)|(?:\\|[\\'/]*(?:%0)\\:?[\\'/]*\\|\\s*(.*?)\\s*\\|)".format([sliceName.escapeRegExp()]), "m");
+		this.sliceNameRegExpCache[sliceName] = re;
+		}
 	var text = this.getTiddlerText(title,"");
-	var m = text.match(new RegExp(reString, "m"));
+	var m = text.match(re);
 	if (!m)
 		return undefined;
 	return m[1] ? m[1] : m[2];
