@@ -18,10 +18,10 @@ ListView.create = function(place,listObject,listTemplate,callback,className)
 	for(var t=0; t<listTemplate.columns.length; t++)
 		{
 		var columnTemplate = listTemplate.columns[t];
-		var c = createTiddlyElement(r,"td");
+		var c = createTiddlyElement(r,"th");
 		var colType = ListView.columnTypes[columnTemplate.type];
 		if(colType && colType.createHeader)
-			colType.createHeader(c,columnTemplate);
+			colType.createHeader(c,columnTemplate,t);
 		}
 	var tbody = createTiddlyElement(table,"tbody");
 	for(var rc=0; rc<listObject.length; rc++)
@@ -40,7 +40,7 @@ ListView.create = function(place,listObject,listTemplate,callback,className)
 			var field = columnTemplate.field;
 			var colType = ListView.columnTypes[columnTemplate.type];
 			if(colType && colType.createItem)
-				colType.createItem(c,rowObject,field,columnTemplate);
+				colType.createItem(c,rowObject,field,columnTemplate,cc,rc);
 			}
 		}
 	if(callback && listTemplate.actions)
@@ -93,11 +93,11 @@ ListView.forEachSelector = function(view,callback)
 ListView.columnTypes = {};
 
 ListView.columnTypes.String = {
-	createHeader: function(place,columnTemplate)
+	createHeader: function(place,columnTemplate,col)
 		{
 			createTiddlyText(place,columnTemplate.title);
 		},
-	createItem: function(place,listObject,field,columnTemplate)
+	createItem: function(place,listObject,field,columnTemplate,col,row)
 		{
 			var v = listObject[field];
 			if(v != undefined)
@@ -107,7 +107,7 @@ ListView.columnTypes.String = {
 
 ListView.columnTypes.StringList = {
 	createHeader: ListView.columnTypes.String.createHeader,
-	createItem: function(place,listObject,field,columnTemplate)
+	createItem: function(place,listObject,field,columnTemplate,col,row)
 		{
 			var v = listObject[field];
 			if(v != undefined)
@@ -122,11 +122,11 @@ ListView.columnTypes.StringList = {
 };
 
 ListView.columnTypes.Selector = {
-	createHeader: function(place,columnTemplate)
+	createHeader: function(place,columnTemplate,col)
 		{
 			createTiddlyCheckbox(place,null,false,this.onHeaderChange);
 		},
-	createItem: function(place,listObject,field,columnTemplate)
+	createItem: function(place,listObject,field,columnTemplate,col,row)
 		{
 			var e = createTiddlyCheckbox(place,null,listObject[field],null);
 			e.setAttribute("rowName",listObject[columnTemplate.rowName]);
@@ -145,7 +145,7 @@ ListView.columnTypes.Selector = {
 
 ListView.columnTypes.Boolean = {
 	createHeader: ListView.columnTypes.String.createHeader,
-	createItem: function(place,listObject,field,columnTemplate)
+	createItem: function(place,listObject,field,columnTemplate,col,row)
 		{
 			if(listObject[field] == true)
 				createTiddlyText(place,columnTemplate.trueText);
@@ -156,7 +156,7 @@ ListView.columnTypes.Boolean = {
 
 ListView.columnTypes.TagCheckbox = {
 	createHeader: ListView.columnTypes.String.createHeader,
-	createItem: function(place,listObject,field,columnTemplate)
+	createItem: function(place,listObject,field,columnTemplate,col,row)
 		{
 			var e = createTiddlyCheckbox(place,null,listObject[field],this.onChange);
 			e.setAttribute("tiddler",listObject.title);
@@ -172,7 +172,7 @@ ListView.columnTypes.TagCheckbox = {
 
 ListView.columnTypes.TiddlerLink = {
 	createHeader: ListView.columnTypes.String.createHeader,
-	createItem: function(place,listObject,field,columnTemplate)
+	createItem: function(place,listObject,field,columnTemplate,col,row)
 		{
 			var v = listObject[field];
 			if(v != undefined)
