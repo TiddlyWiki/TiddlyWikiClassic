@@ -8,6 +8,16 @@ config.refreshers = {
 		var title = e.getAttribute("tiddlyLink");
 		refreshTiddlyLink(e,title);
 		},
+	
+	tiddler: function(e,changeList)
+		{
+		var title = e.getAttribute("tiddler");
+		var template = e.getAttribute("template");
+		if(changeList.find(title) != null && !story.isDirty(title))
+			story.refreshTiddler(title,template,true);
+		else
+			refreshElements(e,changeList);
+		},
 
 	content: function(e,changeList)
 		{
@@ -18,6 +28,16 @@ config.refreshers = {
 			removeChildren(e);
 			wikify(store.getTiddlerText(title,title),e);
 			}
+		},
+
+	macro: function(e,changeList)
+		{
+		var macro = e.getAttribute("macroName");
+		var params = e.getAttribute("params");
+		if(macro)
+			macro = config.macros[macro];
+		if(macro && macro.refresh)
+			macro.refresh(e,params);
 		}
 };
 
@@ -116,7 +136,9 @@ function refreshEverything()
 function refreshDisplay(hint)
 {
 	var e = document.getElementById("contentWrapper");
-	refreshElements(e,hint == null ? null : [hint]);
+	if(typeof hint == "string")
+		hint = [hint];
+	refreshElements(e,hint);
 }
 
 function refreshPageTitle()
