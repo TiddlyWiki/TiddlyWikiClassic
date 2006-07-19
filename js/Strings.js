@@ -268,3 +268,26 @@ String.prototype.startsWith = function(prefix)
 {
 	return !prefix || this.substring(0,prefix.length) == prefix;
 }
+
+// Returns the first value of the given named parameter.
+//#
+//# @param params
+//#         as returned by parseParams or null/undefined
+//# @return [may be null/undefined]
+//#
+function getParam(params, name, defaultValue) {
+	if (!params)
+		return defaultValue;
+	var p = params[0][name];
+	return p ? p[0] : defaultValue;
+}
+
+// Returns the first value of the given boolean named parameter.
+//#
+//# @param params
+//#         as returned by parseParams or null/undefined
+//#
+function getFlag(params, name, defaultValue) {
+	return !!getParam(params, name, defaultValue);
+} 
+	
