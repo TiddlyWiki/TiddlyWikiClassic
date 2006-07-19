@@ -13,7 +13,7 @@ config.refreshers = {
 		{
 		var title = e.getAttribute("tiddler");
 		var template = e.getAttribute("template");
-		if(changeList.find(title) != null && !story.isDirty(title))
+		if(changeList && changeList.find(title) != null && !story.isDirty(title))
 			story.refreshTiddler(title,template,true);
 		else
 			refreshElements(e,changeList);
@@ -121,16 +121,6 @@ function applyPageTemplate(title)
 	for(t=nodes.length-1; t>=0; t--)
 		display.appendChild(nodes[t]);
 	stash.parentNode.removeChild(stash);
-}
-
-function refreshEverything()
-{
-	refreshPageTemplate();
-	refreshDisplay();
-	refreshStyles("StyleSheet");
-	refreshStyles("StyleSheetColors");
-	refreshStyles("StyleSheetLayout");
-	refreshStyles("StyleSheetPrint");
 }
 
 function refreshDisplay(hint)

@@ -845,3 +845,19 @@ config.macros.plugins.onSelectCommand = function(command,rowNames)
 	if(config.options.chkAutoSave)
 		saveChanges(true);
 }
+
+config.macros.refreshDisplay.handler = function(place)
+{
+	createTiddlyButton(place,this.label,this.prompt,this.onClick);
+}
+
+config.macros.refreshDisplay.onClick = function(e)
+{
+	refreshPageTemplate();
+	refreshDisplay();
+	refreshStyles("StyleSheet");
+	refreshStyles("StyleSheetColors");
+	refreshStyles("StyleSheetLayout");
+	refreshStyles("StyleSheetPrint");
+	return false;
+}

@@ -152,6 +152,11 @@ merge(config.macros.plugins,{
 			]}
 	});
 
+merge(config.macros.refreshDisplay,{
+	label: "refresh",
+	prompt: "Redraw the entire TiddlyWiki display"
+	});
+
 merge(config.commands.closeTiddler,{
 	text: "close",
 	tooltip: "Close this tiddler"});

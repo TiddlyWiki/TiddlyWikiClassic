@@ -41,7 +41,6 @@ config.options = {
 	
 // List of notification functions to be called when certain tiddlers are changed or deleted
 config.notifyTiddlers = [
-	{name: "ColorPalette", notify: refreshEverything},
 	{name: "StyleSheetLayout", notify: refreshStyles},
 	{name: "StyleSheetColors", notify: refreshStyles},
 	{name: "StyleSheet", notify: refreshStyles},
@@ -103,7 +102,8 @@ config.macros = {
 	tagChooser: {},
 	toolbar: {},
 	br: {},
-	plugins: {}
+	plugins: {},
+	refreshDisplay: {}
 	};
 
 // Commands supported by the toolbar macro
@@ -164,7 +164,8 @@ config.textPrimitives.cssLookaheadRegExp = new RegExp(config.textPrimitives.cssL
 // ---------------------------------------------------------------------------------
 
 config.shadowTiddlers = {
-	ColorPalette: "Background: #fff\n" + 
+	ColorPalette: "<<refreshDisplay>>\n" +
+				  "Background: #fff\n" + 
 				  "Foreground: #000\n" +
 				  "PrimaryPale: #8cf\n" +
 				  "PrimaryLight: #18f\n" +
