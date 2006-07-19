@@ -376,12 +376,9 @@ config.macros.newTiddler.createNewTiddlerButton = function(place,title,params,la
 	for(var t=1; t<params.length; t++)
 		if((params[t].name == "anon" && t != 1) || (params[t].name == "tag"))
 			tags.push(params[t].value);
-	if(params[0]["label"])
-		label = params[0]["label"][0];
-	if(params[0]["prompt"])
-		prompt = params[0]["prompt"][0];
-	if(params[0]["accessKey"])
-		accessKey = params[0]["accessKey"][0];
+	label = getParam(params,"label",label);
+	prompt = getParam(params,"prompt",prompt);
+	accessKey = getParam(params,"accessKey",accessKey);
 	var btn = createTiddlyButton(place,label,prompt,this.onClickNewTiddler,null,null,accessKey);
 	btn.setAttribute("newTitle",title);
 	btn.setAttribute("params",tags.join("|"));
@@ -406,11 +403,8 @@ config.macros.newTiddler.handler = function(place,macroName,params,wikifier,para
 	if(!readOnly)
 		{
 		var params = paramString.parseParams("anon",null,true,false,false);
-		var title = this.title;
-		if(params[1] && params[1].name == "anon")
-			title = params[1].value;
-		if(params[0]["title"])
-			title = params[0]["title"][0];
+		var title = params[1] && params[1].name == "anon" ? params[1].value : this.title;
+		title = getParam(params,"title",title);
 		this.createNewTiddlerButton(place,title,params,this.label,this.prompt,this.accessKey,"title");
 		}
 }
@@ -421,11 +415,8 @@ config.macros.newJournal.handler = function(place,macroName,params,wikifier,para
 		{
 		var params = paramString.parseParams("anon",null,true,false,false);
 		var now = new Date();
-		var title = "";
-		if(params[1].name = "anon")
-			title = params[1].value;
-		if(params[0]["title"])
-			title = params[0]["title"][0];
+		var title = params[1] && params[1].name == "anon" ? params[1].value : "";
+		title = getParam(params,"title",title);
 		title = now.formatString(title.trim());
 		config.macros.newTiddler.createNewTiddlerButton(place,title,params,this.label,this.prompt,this.accessKey,"text");
 		}
