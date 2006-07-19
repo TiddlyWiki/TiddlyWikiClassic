@@ -73,7 +73,8 @@ TiddlyWiki.prototype.notifyAll = function()
 		for(var t=0; t<this.namedNotifications.length; t++)
 			{
 			var n = this.namedNotifications[t];
-			n.notify(n.name);
+			if (n.name)
+				n.notify(n.name);
 			}
 }
 
