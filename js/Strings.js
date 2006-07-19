@@ -189,18 +189,36 @@ String.prototype.readBracketedList = function(unique)
 	return n;
 }
 
-// Replace a chunk of a string given start and end markers
-String.prototype.replaceChunk = function(start,end,sub)
+// Returns array with start and end index of chunk between given start and end marker, or undefined.
+String.prototype.getChunkRange = function(start,end) 
 {
 	var s = this.indexOf(start);
 	if(s != -1)
 		{
+		s += start.length;
 		var e = this.indexOf(end,s + start.length);
 		if(e != -1)
-			return this.substring(0,s + start.length) + sub + this.substring(e);
+			return [s, e];
 		}
-	return this;
 }
+
+// Replace a chunk of a string given start and end markers
+String.prototype.replaceChunk = function(start,end,sub)
+{
+	var r = this.getChunkRange(start,end);
+	return r 
+		? this.substring(0,r[0]) + sub + this.substring(r[1])
+		: this;
+}
+
+// Returns a chunk of a string between start and end markers, or undefined
+String.prototype.getChunk = function(start,end)
+{
+	var r = this.getChunkRange(start,end);
+	if (r)
+		return this.substring(r[0],r[1]);
+}
+
 
 // Static method to bracket a string with double square brackets if it contains a space
 String.encodeTiddlyLink = function(title)
