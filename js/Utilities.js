@@ -182,6 +182,17 @@ function onClickError(e)
 	return false;
 }
 
+function createTiddlyDropDown(place,onchange,options)
+{
+	var sel = createTiddlyElement(place,"select");
+	sel.onchange = onchange;
+	for(var t=0; t<options.length; t++)
+		{
+		var e = createTiddlyElement(sel,"option",null,null,options[t].caption);
+		e.value = options[t].name;
+		}
+}
+
 function createTiddlyError(place,title,text)
 {
 	var btn = createTiddlyButton(place,title,null,onClickError,"errorButton");
