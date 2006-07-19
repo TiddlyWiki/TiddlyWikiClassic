@@ -266,3 +266,15 @@ function replaceSelection(e,text)
 			}
 		}
 }
+
+// Returns the text of the given (text) node, possibly merging subsequent text nodes
+function getNodeText(e)
+{
+	var t = ""; 
+	while (e && e.nodeName == "#text")
+		{
+		t += e.nodeValue;
+		e = e.nextSibling;
+		}
+	return t;
+}

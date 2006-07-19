@@ -19,14 +19,14 @@ function Tiddler()
 // @Deprecated
 Tiddler.prototype.loadFromDiv = function(divRef,title)
 {
-	return store.getLoader().initTiddler(store,this,title,divRef);
+	return store.getLoader().internalizeTiddler(store,this,title,divRef);
 }
 
 // Format the text for storage in an HTML DIV
-// @Deprecated Use store.getSaver().serializeTiddler instead.
+// @Deprecated Use store.getSaver().externalizeTiddler instead.
 Tiddler.prototype.saveToDiv = function()
 {
-	return store.getSaver().serializeTiddler(store,this);
+	return store.getSaver().externalizeTiddler(store,this);
 }
 
 // Format the text for storage in an RSS item
@@ -45,15 +45,15 @@ Tiddler.prototype.saveToRss = function(url)
 }
 
 // Change the text and other attributes of a tiddler
-Tiddler.prototype.set = function(title,text,modifier,modified,tags,created,metadata)
+Tiddler.prototype.set = function(title,text,modifier,modified,tags,created,fields)
 {
-	this.assign(title,text,modifier,modified,tags,created,metadata);
+	this.assign(title,text,modifier,modified,tags,created,fields);
 	this.changed();
 	return this;
 }
 
 // Change the text and other attributes of a tiddler without triggered a tiddler.changed() call
-Tiddler.prototype.assign = function(title,text,modifier,modified,tags,created,metadata)
+Tiddler.prototype.assign = function(title,text,modifier,modified,tags,created,fields)
 {
 	if(title != undefined)
 		this.title = title;
@@ -65,8 +65,8 @@ Tiddler.prototype.assign = function(title,text,modifier,modified,tags,created,me
 		this.modified = modified;
 	if(created != undefined)
 		this.created = created;
-	if(metadata != undefined)
-		this.metadata = metadata;
+	if(fields != undefined)
+		this.fields = fields;
 	if(tags != undefined)
 		this.tags = (typeof tags == "string") ? tags.readBracketedList() : tags;
 	else if(this.tags == undefined)

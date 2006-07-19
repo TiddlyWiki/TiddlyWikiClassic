@@ -1,11 +1,11 @@
-// Returns true if path is a valid (meta data) field name (path),
+// Returns true if path is a valid field name (path),
 // i.e. a sequence of identifiers, separated by '.'
 TiddlyWiki.isValidFieldName = function (name) {
 	var match = /[a-zA-Z_]\w*(\.[a-zA-Z_]\w*)*/.exec(name);
 	return match && (match[0] == name);
 }
 
-// Throws an exception when name is not a valid (meta data) field name.
+// Throws an exception when name is not a valid field name.
 TiddlyWiki.checkFieldName = function(name) {
 	if (!TiddlyWiki.isValidFieldName(name))
 		throw config.messages.invalidFieldName.format([name]);
@@ -38,7 +38,7 @@ function LinksFieldAccess(n) {
 	this.get = function(t)   {return String.encodeTiddlyLinkList(t[n]);}
 }
 
-TiddlyWiki.legacyFieldAccess = {
+TiddlyWiki.standardFieldAccess = {
 	// The set functions return true when setting the data has changed the value.
 	
 	"title":    new StringFieldAccess("title", true),
@@ -52,12 +52,12 @@ TiddlyWiki.legacyFieldAccess = {
 	"tags":     new LinksFieldAccess("tags")
 };
 
-TiddlyWiki.isLegacyField = function(name) {
-	return TiddlyWiki.legacyFieldAccess[name] != undefined;
+TiddlyWiki.isStandardField = function(name) {
+	return TiddlyWiki.standardFieldAccess[name] != undefined;
 }
 
-// Sets the value of the given (meta) data field of the tiddler to the value. 
-// Setting a (non-legacy) field's value to null or undefined removes the field. 
+// Sets the value of the given field of the tiddler to the value. 
+// Setting an ExtendedField's value to null or undefined removes the field. 
 // Setting a namespace to undefined removes all fields of that namespace.
 // The fieldName is case-insensitive.
 // All values will be converted to a string value.
@@ -71,27 +71,25 @@ TiddlyWiki.prototype.setValue = function(tiddler, fieldName, value) {
 
 	var isRemove = (value === undefined) || (value === null);
 
-	if (!t.metadata) 
-		t.metadata = {};
+	if (!t.fields) 
+		t.fields = {};
 		
-	// handle the legacy metadata
-	var accessor = TiddlyWiki.legacyFieldAccess[fieldName];
+	var accessor = TiddlyWiki.standardFieldAccess[fieldName];
 	if (accessor) {
 		if (isRemove)
-			// don't remove legacy fields
+			// don't remove StandardFields
 			return;
-		var h = TiddlyWiki.legacyFieldAccess[fieldName];
+		var h = TiddlyWiki.standardFieldAccess[fieldName];
 		if (!h.set(t, value))
 			return;
 
 	} else {
-		// handle the normal metadata
-		var oldValue = t.metadata[fieldName];
+		var oldValue = t.fields[fieldName];
 		
 		if (isRemove) {
 			if (oldValue !== undefined) {
 				// deletes a single field
-				delete t.metadata[fieldName];
+				delete t.fields[fieldName];
 			} else {
 				// no concrete value is defined for the fieldName
 				// so we guess this is a namespace path.
@@ -99,9 +97,9 @@ TiddlyWiki.prototype.setValue = function(tiddler, fieldName, value) {
 				// delete all fields in a namespace
 				var re = new RegExp('^'+fieldName+'\\.');
 				var dirty = false;
-				for (var n in t.metadata) {
+				for (var n in t.fields) {
 					if (n.match(re)) {
-						delete t.metadata[n];
+						delete t.fields[n];
 						dirty = true;
 					}
 				}
@@ -117,7 +115,7 @@ TiddlyWiki.prototype.setValue = function(tiddler, fieldName, value) {
 				: String(value);
 			if (oldValue == value) 
 				return;
-			t.metadata[fieldName] = value;
+			t.fields[fieldName] = value;
 		}
 	}
 	
@@ -127,7 +125,7 @@ TiddlyWiki.prototype.setValue = function(tiddler, fieldName, value) {
 		this.setDirty(true);
 }
 
-// Returns the value of the given meta data field of the tiddler. 
+// Returns the value of the given field of the tiddler. 
 // The fieldName is case-insensitive.
 // Will only return String values (or undefined).
 TiddlyWiki.prototype.getValue = function(tiddler, fieldName) {
@@ -137,17 +135,15 @@ TiddlyWiki.prototype.getValue = function(tiddler, fieldName) {
 
 	fieldName = fieldName.toLowerCase();
 
-	// handle the legacy metadata
-	var accessor = TiddlyWiki.legacyFieldAccess[fieldName];
+	var accessor = TiddlyWiki.standardFieldAccess[fieldName];
 	if (accessor) {
 		return accessor.get(t);
 	}
 	
-	// handle the 'normal' metadata
-	return t.metadata ? t.metadata[fieldName] : undefined;
+	return t.fields ? t.fields[fieldName] : undefined;
 }
 
-// Calls the callback function for every metadata field in the tiddler.
+// Calls the callback function for every field in the tiddler.
 //
 // When callback function returns a non-false value the iteration stops 
 // and that value is returned. 
@@ -156,34 +152,32 @@ TiddlyWiki.prototype.getValue = function(tiddler, fieldName) {
 // 
 // @param callback a function(tiddler, fieldName, value). 
 // 
-TiddlyWiki.prototype.forEachField = function(tiddler, callback, ignoreLegacyFields) {
+TiddlyWiki.prototype.forEachField = function(tiddler, callback, onlyExtendedFields) {
 	var t = this.resolveTiddler(tiddler);
 	if (!t)
 		return undefined;
 	
-	// handle the 'normal' metadata
-	if (t.metadata) {
-		for (var n in t.metadata) {
-			var result = callback(t, n, t.metadata[n]);
+	if (t.fields) {
+		for (var n in t.fields) {
+			var result = callback(t, n, t.fields[n]);
 			if (result)
 				return result;
 		}
 	}
 	
-	if (ignoreLegacyFields)
+	if (onlyExtendedFields)
 		return undefined;
 
-	// handle the legacy metadata
-	for (var n in TiddlyWiki.legacyFieldAccess) {
+	for (var n in TiddlyWiki.standardFieldAccess) {
 		if (n == "tiddler")
 			// even though the "title" field can also be referenced through the name "tiddler"
 			// we only visit this field once.
 			continue;
 			
-		var result = callback(t, n, TiddlyWiki.legacyFieldAccess[n].get(t));
+		var result = callback(t, n, TiddlyWiki.standardFieldAccess[n].get(t));
 		if (result)
 			return result;
 	}
 
 	return undefined;
-}
+};

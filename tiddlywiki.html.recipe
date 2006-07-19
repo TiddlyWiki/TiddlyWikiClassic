@@ -15,6 +15,7 @@ js/Commands.js
 js/LoaderSaver.js
 js/Tiddler.js
 js/TiddlyWiki.js
+js/TiddlerFields.js
 js/Story.js
 js/Messages.js
 js/Refresh.js
@@ -35,7 +36,6 @@ js/Dates.js
 js/Dom.js
 js/TW21Loader.js
 js/TW21Saver.js
-js/MetaData.js
 html/postscript.html
 html/style.html
 html/postheadstart.html
