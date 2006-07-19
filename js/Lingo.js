@@ -8,6 +8,7 @@ merge(config.options,{
 
 merge(config.messages,{
 	customConfigError: "Error in systemConfig tiddler '%1' - %0",
+	nothingSelected: "Nothing is selected. You must select one or more items first",
 	savedSnapshotError: "It appears that this TiddlyWiki has been incorrectly saved. Please see http://www.tiddlywiki.com/#DownloadSoftware for details",
 	subtitleUnknown: "(unknown)",
 	undefinedTiddlerToolTip: "The tiddler '%0' doesn't yet exist",
