@@ -30,7 +30,7 @@ js/Slider.js
 js/Popup.js
 js/ListView.js
 js/BasicTypes.js
-js/Hash.js
+js/Crypto.js
 js/Strings.js
 js/RGB.js
 js/Dates.js
