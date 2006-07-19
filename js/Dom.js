@@ -25,6 +25,18 @@ function createTiddlyText(theParent,theText)
 	return theParent.appendChild(document.createTextNode(theText));
 }
 
+function createTiddlyCheckbox(theParent,caption,checked,onChange)
+{
+	var cb = document.createElement("input");
+	cb.setAttribute("type","checkbox");
+	cb.onclick = onChange;
+	theParent.appendChild(cb);
+	cb.checked = checked;
+	if(caption)
+		createTiddlyText(theParent,caption);
+	return cb;
+}
+
 function createTiddlyElement(theParent,theElement,theID,theClass,theText)
 {
 	var e = document.createElement(theElement);
@@ -93,6 +105,18 @@ function hasClass(e,theClass)
 				return true;
 		}
 	return false;
+}
+
+// Find the closest relative with a given property value (property defaults to tagName, relative defaults to parentNode)
+function findRelated(e,value,name,relative)
+{
+	name = name ? name : "tagName";
+	relative = relative ? relative : "parentNode";
+	while(e && e[name] != value)
+		{
+		e = e[relative];
+		}
+	return e;
 }
 
 // Resolve the target object of an event
