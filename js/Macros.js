@@ -379,10 +379,14 @@ config.macros.newTiddler.createNewTiddlerButton = function(place,title,params,la
 	label = getParam(params,"label",label);
 	prompt = getParam(params,"prompt",prompt);
 	accessKey = getParam(params,"accessKey",accessKey);
+	newFocus = getParam(params,"focus",newFocus);
 	var btn = createTiddlyButton(place,label,prompt,this.onClickNewTiddler,null,null,accessKey);
 	btn.setAttribute("newTitle",title);
 	btn.setAttribute("params",tags.join("|"));
 	btn.setAttribute("newFocus",newFocus);
+	var text = getParam(params,"text");
+	if (text !== undefined) 
+		btn.setAttribute("newText",text);
 	return btn;
 }
 
@@ -392,6 +396,9 @@ config.macros.newTiddler.onClickNewTiddler = function()
 	var params = this.getAttribute("params").split("|");
 	var focus = this.getAttribute("newFocus");
 	story.displayTiddler(null,title,DEFAULT_EDIT_TEMPLATE);
+	var text = this.getAttribute("newText");
+	if (typeof text == "string")
+		story.getTiddlerField(title,"text").value = text.format([title]);
 	for(var t=0;t<params.length;t++)
 		story.setTiddlerTag(title,params[t],+1);
 	story.focusTiddler(title,focus);
