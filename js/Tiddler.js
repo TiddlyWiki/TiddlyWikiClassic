@@ -160,7 +160,7 @@ Tiddler.prototype.hasWikiLinks = function()
 Tiddler.prototype.getFingerprint = function()
 {
 	if(!this.cacheFingerprint)
-		this.cacheFingerprint = "0x" + Hash.hexSha1Str(this.text);
+		this.cacheFingerprint = "0x" + Crypto.hexSha1Str(this.text);
 	return this.cacheFingerprint;
 }
 

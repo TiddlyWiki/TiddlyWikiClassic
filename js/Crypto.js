@@ -1,14 +1,14 @@
 // ---------------------------------------------------------------------------------
-// Hash functions and associated conversion routines
+// Crypto functions and associated conversion routines
 // ---------------------------------------------------------------------------------
 
-// Hash "namespace"
-function Hash()
+// Crypto "namespace"
+function Crypto()
 {
 }
 
 // Convert a string to an array of big-endian 32-bit words
-Hash.strToBe32s = function(str)
+Crypto.strToBe32s = function(str)
 {
 	var be = Array();
 	var len = Math.floor(str.length/4);
@@ -26,7 +26,7 @@ Hash.strToBe32s = function(str)
 }
 
 // Convert an array of big-endian 32-bit words to a string
-Hash.be32sToStr = function(be)
+Crypto.be32sToStr = function(be)
 {
 	var str = "";
 	for(var i=0;i<be.length*32;i+=8)
@@ -35,7 +35,7 @@ Hash.be32sToStr = function(be)
 }
 
 // Convert an array of big-endian 32-bit words to a hex string
-Hash.be32sToHex = function(be)
+Crypto.be32sToHex = function(be)
 {
 	var hex = "0123456789ABCDEF";
 	var str = "";
@@ -45,19 +45,19 @@ Hash.be32sToHex = function(be)
 }
 
 // Return, in hex, the SHA-1 hash of a string
-Hash.hexSha1Str = function(str)
+Crypto.hexSha1Str = function(str)
 {
-	return Hash.be32sToHex(Hash.sha1Str(str));
+	return Crypto.be32sToHex(Crypto.sha1Str(str));
 }
 
 // Return the SHA-1 hash of a string
-Hash.sha1Str = function(str)
+Crypto.sha1Str = function(str)
 {
-	return Hash.sha1(Hash.strToBe32s(str),str.length);
+	return Crypto.sha1(Crypto.strToBe32s(str),str.length);
 }
 
 // Calculate the SHA-1 hash of an array of blen bytes of big-endian 32-bit words
-Hash.sha1 = function(x,blen)
+Crypto.sha1 = function(x,blen)
 {
 	// Add 32-bit integers, wrapping at 32 bits. Uses 16-bit operations internally
 	// to work around bugs in some JavaScript interpreters.
