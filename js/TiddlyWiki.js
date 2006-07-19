@@ -229,6 +229,22 @@ TiddlyWiki.prototype.getRecursiveTiddlerText = function(title,defaultText,depth)
 	return(textOut.join(""));
 }
 
+TiddlyWiki.prototype.setTiddlerTag = function(title,status,tag)
+{
+	var tiddler = this.fetchTiddler(title);
+	if(tiddler)
+		{
+		var t = tiddler.tags.find(tag);
+		if(t != null)
+			tiddler.tags.splice(t,1);
+		if(status)
+			tiddler.tags.push(tag);
+		tiddler.changed();
+		this.notify(title,true);
+		this.setDirty(true);
+		}
+}
+
 TiddlyWiki.prototype.saveTiddler = function(title,newTitle,newBody,modifier,modified,tags,fields)
 {
 	var tiddler = this.fetchTiddler(title);
