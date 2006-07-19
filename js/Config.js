@@ -102,7 +102,8 @@ config.macros = {
 	edit: {},
 	tagChooser: {},
 	toolbar: {},
-	br: {}
+	br: {},
+	plugins: {}
 	};
 
 // Commands supported by the toolbar macro

@@ -7,7 +7,7 @@ merge(config.options,{
 	txtUserName: "YourName"});
 
 merge(config.messages,{
-	customConfigError: "Error in systemConfig tiddler '%1' - %0",
+	customConfigError: "Errors were encountered loading plugins. See PluginStatus for details",
 	nothingSelected: "Nothing is selected. You must select one or more items first",
 	savedSnapshotError: "It appears that this TiddlyWiki has been incorrectly saved. Please see http://www.tiddlywiki.com/#DownloadSoftware for details",
 	subtitleUnknown: "(unknown)",
@@ -123,6 +123,35 @@ merge(config.macros.newJournal,{
 	prompt: "Create a new tiddler from the current date and time",
 	accessKey: "J"});
 
+merge(config.macros.plugins,{
+	skippedText: "(This plugin has not been executed because it was added since startup)",
+	noPluginText: "There are no plugins installed",
+	confirmDeleteText: "Are you sure you want to delete these tiddlers:\n\n%0",
+	listViewTemplate : {
+		// Fields needing localisation are: title, trueText, falseText and caption
+		columns: [
+			{name: "Selected", field: "Selected", rowName: "title", type: "Selector"},
+			{name: "Title", field: "title", tiddlerLink: "title", title: "Title", type: "TiddlerLink"},
+			{name: "Executed", field: "executed", title: "Executed?", type: "Boolean", trueText: "Yes", falseText: "No"},
+			{name: "Error", field: "error", title: "Result", type: "Boolean", trueText: "Error", falseText: "OK"},
+			{name: "Forced", field: "forced", title: "Forced", tag: "forceSystemConfig", type: "TagCheckbox"},
+			{name: "Disabled", field: "disabled", title: "Disabled", tag: "disableSystemConfig", type: "TagCheckbox"},
+			{name: "Log", field: "log", title: "Log", type: "StringList"}
+			],
+		rowClasses: [
+			{className: "error", field: "error"}
+			],
+		sort: [
+			{name: "Executed", sortType: "asc"},
+			{name: "Name", sortType: "desc"}
+			],
+		actions: [
+			{caption: "More actions...", name: ""},
+			{caption: "Remove 'systemConfig' tag", name: "remove"},
+			{caption: "Delete forever", name: "delete"}
+			]}
+	});
+
 merge(config.commands.closeTiddler,{
 	text: "close",
 	tooltip: "Close this tiddler"});
@@ -174,7 +203,7 @@ merge(config.shadowTiddlers,{
 	SiteUrl: "http://www.tiddlywiki.com/",
 	GettingStarted: "To get started with this blank TiddlyWiki, you'll need to modify the following tiddlers:\n* SiteTitle & SiteSubtitle: The title and subtitle of the site, as shown above (after saving, they will also appear in the browser title bar)\n* MainMenu: The menu (usually on the left)\n* DefaultTiddlers: Contains the names of the tiddlers that you want to appear when the TiddlyWiki is opened\nYou'll also need to enter your username for signing your edits: <<option txtUserName>>",
 	SideBarOptions: "<<search>><<closeAll>><<permaview>><<newTiddler>><<newJournal 'DD MMM YYYY'>><<saveChanges>><<slider chkSliderOptionsPanel OptionsPanel 'options »' 'Change TiddlyWiki advanced options'>>",
-	OptionsPanel: "These InterfaceOptions for customising TiddlyWiki are saved in your browser\n\nYour username for signing your edits. Write it as a WikiWord (eg JoeBloggs)\n\n<<option txtUserName>>\n<<option chkSaveBackups>> SaveBackups\n<<option chkAutoSave>> AutoSave\n<<option chkRegExpSearch>> RegExpSearch\n<<option chkCaseSensitiveSearch>> CaseSensitiveSearch\n<<option chkAnimate>> EnableAnimations\n\nSee AdvancedOptions",
+	OptionsPanel: "These InterfaceOptions for customising TiddlyWiki are saved in your browser\n\nYour username for signing your edits. Write it as a WikiWord (eg JoeBloggs)\n\n<<option txtUserName>>\n<<option chkSaveBackups>> SaveBackups\n<<option chkAutoSave>> AutoSave\n<<option chkRegExpSearch>> RegExpSearch\n<<option chkCaseSensitiveSearch>> CaseSensitiveSearch\n<<option chkAnimate>> EnableAnimations\n\nSee AdvancedOptions and PluginStatus",
 	AdvancedOptions: "<<option chkGenerateAnRssFeed>> GenerateAnRssFeed\n<<option chkOpenInNewWindow>> OpenLinksInNewWindow\n<<option chkSaveEmptyTemplate>> SaveEmptyTemplate\n<<option chkToggleLinks>> Clicking on links to tiddlers that are already open causes them to close\n^^(override with Control or other modifier key)^^\n<<option chkHttpReadOnly>> HideEditingFeatures when viewed over HTTP\n<<option chkForceMinorUpdate>> Treat edits as MinorChanges by preserving date and time\n^^(override with Shift key when clicking 'done' or by pressing Ctrl-Shift-Enter^^\n<<option chkConfirmDelete>> ConfirmBeforeDeleting\nMaximum number of lines in a tiddler edit box: <<option txtMaxEditRows>>\nFolder name for backup files: <<option txtBackupFolder>>\n<<option chkInsertTabs>> Use tab key to insert tab characters instead of jumping to next field (doesn't work in InternetExplorer)",
 	SideBarTabs: "<<tabs txtMainTab Timeline Timeline TabTimeline All 'All tiddlers' TabAll Tags 'All tags' TabTags More 'More lists' TabMore>>",
 	TabTimeline: "<<timeline>>",
@@ -183,5 +212,6 @@ merge(config.shadowTiddlers,{
 	TabMore: "<<tabs txtMoreTab Missing 'Missing tiddlers' TabMoreMissing Orphans 'Orphaned tiddlers' TabMoreOrphans Shadowed 'Shadowed tiddlers' TabMoreShadowed>>",
 	TabMoreMissing: "<<list missing>>",
 	TabMoreOrphans: "<<list orphans>>",
-	TabMoreShadowed: "<<list shadowed>>"});
+	TabMoreShadowed: "<<list shadowed>>",
+	PluginStatus: "<<plugins>>"});
 
