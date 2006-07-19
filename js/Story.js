@@ -120,6 +120,7 @@ Story.prototype.positionTiddler = function(srcElement)
 Story.prototype.createTiddler = function(place,before,title,template)
 {
 	var theTiddler = createTiddlyElement(null,"div",this.idPrefix + title,"tiddler");
+	theTiddler.setAttribute("refresh","tiddler");
 	place.insertBefore(theTiddler,before);
 	this.refreshTiddler(title,template);
 	return theTiddler;
@@ -246,7 +247,6 @@ Story.prototype.onTiddlerKeyPress = function(e)
 		case 9: // Tab
 			if(config.options.chkInsertTabs && (target.tagName.toLowerCase() == "input" || target.tagName.toLowerCase() == "textarea"))
 				{
-					alert("Got tab");
 				replaceSelection(resolveTarget(e),String.fromCharCode(9));
 				consume = true;
 				}
@@ -512,6 +512,7 @@ Story.prototype.saveTiddler = function(title,minorUpdate)
 			}
 		tiddler.id = this.idPrefix + newTitle;
 		tiddler.setAttribute("tiddler",newTitle);
+		tiddler.setAttribute("template",DEFAULT_VIEW_TEMPLATE);
 		tiddler.setAttribute("dirty","false");
 		if(config.options.chkForceMinorUpdate)
 			minorUpdate = !minorUpdate;
