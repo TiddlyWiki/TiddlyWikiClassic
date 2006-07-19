@@ -241,7 +241,7 @@ String.prototype.escapeLineBreaks = function()
 }
 
 // Convert "\n" to newlines, "\s" to "\" (and removes carriage returns)
-String.prototype.unescapeLineBreaks = function(text)
+String.prototype.unescapeLineBreaks = function()
 {
 	return this.replace(regexpBackSlashEn,"\n").replace(regexpBackSlashEss,"\\").replace(regexpCarriageReturn,"");
 }
