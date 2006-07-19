@@ -22,6 +22,15 @@ Array.prototype.find = function(item)
 	return null;
 }
 
+// Find an entry in a given field of the members of an array
+Array.prototype.findByField = function(field,value)
+{
+	for(var t=0; t<this.length; t++)
+		if(this[t][field] == value)
+			return t;
+	return null;
+}
+
 // Return whether an entry exists in an array
 Array.prototype.contains = function(item)
 {
