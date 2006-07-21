@@ -160,7 +160,7 @@ config.textPrimitives.cssLookahead = "(?:(" + config.textPrimitives.anyLetter + 
 config.textPrimitives.cssLookaheadRegExp = new RegExp(config.textPrimitives.cssLookahead,"mg");
 
 // ---------------------------------------------------------------------------------
-// Shadow tiddlers for emergencies
+// Shadow tiddlers
 // ---------------------------------------------------------------------------------
 
 config.shadowTiddlers = {
