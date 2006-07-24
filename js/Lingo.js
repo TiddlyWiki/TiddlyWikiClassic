@@ -157,12 +157,6 @@ merge(config.macros.refreshDisplay,{
 	prompt: "Redraw the entire TiddlyWiki display"
 	});
 
-merge(config.macros.importTiddlers,{
-	defaultPath: "http://essentials.tiddlywiki.com/index.html",
-	fetchLabel: "fetch",
-	fetchPrompt: "Fetch the tiddlywiki file"
-	});
-
 merge(config.commands.closeTiddler,{
 	text: "close",
 	tooltip: "Close this tiddler"});
