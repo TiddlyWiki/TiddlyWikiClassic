@@ -321,7 +321,7 @@ config.formatters = [
 		var lookaheadMatch = this.lookaheadRegExp.exec(w.source)
 		if(lookaheadMatch && lookaheadMatch.index == w.matchStart && lookaheadMatch[1])
 			{
-			w.nextMatch = lookaheadMatch.index + lookaheadMatch[0].length;
+			w.nextMatch = this.lookaheadRegExp.lastIndex;
 			invokeMacro(w.output,lookaheadMatch[1],lookaheadMatch[2],w,w.tiddler);
 			}
 	}
@@ -349,7 +349,7 @@ config.formatters = [
 				e = config.formatterHelpers.isExternalLink(link) ? createExternalLink(w.output,link) : createTiddlyLink(w.output,link,false);
 				}
 			createTiddlyText(e,text);
-			w.nextMatch = lookaheadMatch.index + lookaheadMatch[0].length;
+			w.nextMatch = this.lookaheadRegExp.lastIndex;
 			}
 	}
 },
@@ -426,7 +426,7 @@ config.formatters = [
 			if(lookaheadMatch[3])
 				img.title = lookaheadMatch[3];
 			img.src = lookaheadMatch[4];
-			w.nextMatch = lookaheadMatch.index + lookaheadMatch[0].length;
+			w.nextMatch = this.lookaheadRegExp.lastIndex;
 			}
 	}
 },
@@ -443,7 +443,7 @@ config.formatters = [
 			{
 			var e = createTiddlyElement(w.output,"span");
 			e.innerHTML = lookaheadMatch[1];
-			w.nextMatch = lookaheadMatch.index + lookaheadMatch[0].length;
+			w.nextMatch = this.lookaheadRegExp.lastIndex;
 			}
 	}
 },
@@ -457,7 +457,7 @@ config.formatters = [
 		this.lookaheadRegExp.lastIndex = w.matchStart;
 		var lookaheadMatch = this.lookaheadRegExp.exec(w.source)
 		if(lookaheadMatch && lookaheadMatch.index == w.matchStart)
-			w.nextMatch = lookaheadMatch.index + lookaheadMatch[0].length;
+			w.nextMatch = this.lookaheadRegExp.lastIndex;
 	}
 },
 
@@ -520,7 +520,7 @@ config.formatters = [
 		if(lookaheadMatch && lookaheadMatch.index == w.matchStart)
 			{
 			var e = createTiddlyElement(w.output,"code",null,null,lookaheadMatch[1]);
-			w.nextMatch = lookaheadMatch.index + lookaheadMatch[0].length;
+			w.nextMatch = this.lookaheadRegExp.lastIndex;
 			}
 	}
 },
@@ -573,7 +573,7 @@ config.formatters = [
 			{
 			var isByLine = lookaheadMatch[2] == "\n";
 			var e = createTiddlyElement(w.output,isByLine ? "div" : "span",null,lookaheadMatch[1]);
-			w.nextMatch = lookaheadMatch.index + lookaheadMatch[0].length;
+			w.nextMatch = this.lookaheadRegExp.lastIndex;
 			w.subWikifyTerm(e,this.termRegExp);
 			}
 	}
