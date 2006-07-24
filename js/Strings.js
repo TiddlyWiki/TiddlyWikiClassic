@@ -1,10 +1,3 @@
-// @Deprecated: Use right hand side directly instead
-var regexpBackSlashEn = new RegExp("\\\\n","mg");
-var regexpBackSlash = new RegExp("\\\\","mg");
-var regexpBackSlashEss = new RegExp("\\\\s","mg");
-var regexpNewLine = new RegExp("\n","mg");
-var regexpCarriageReturn = new RegExp("\r","mg");
-
 // Get characters from the right end of a string
 String.prototype.right = function(n)
 {

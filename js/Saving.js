@@ -212,8 +212,3 @@ function generateRss()
 	return s.join("\n");
 }
 
-// Deprecated; use store.allTiddlersAsHtml() instead
-function allTiddlersAsHtml()
-{
-	return store.allTiddlersAsHtml();
-}

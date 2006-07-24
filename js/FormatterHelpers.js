@@ -16,13 +16,6 @@ function Formatter(formatters)
 
 config.formatterHelpers = {
 
-	// @Deprecated: Use createElementAndWikify and this.termRegExp instead
-	charFormatHelper: function(w)
-	{
-		var e = createTiddlyElement(w.output,this.element);
-		w.subWikify(e,this.terminator);
-	},
-
 	createElementAndWikify: function(w)
 	{
 		w.subWikifyTerm(createTiddlyElement(w.output,this.element),this.termRegExp);
@@ -67,22 +60,6 @@ config.formatterHelpers = {
 			catch (ex)
 				{
 				}
-			}
-	},
-
-	// @Deprecated: Use enclosedTextHelper and this.lookaheadRegExp instead
-	monospacedByLineHelper: function(w)
-	{
-		var lookaheadRegExp = new RegExp(this.lookahead,"mg");
-		lookaheadRegExp.lastIndex = w.matchStart;
-		var lookaheadMatch = lookaheadRegExp.exec(w.source);
-		if(lookaheadMatch && lookaheadMatch.index == w.matchStart)
-			{
-			var text = lookaheadMatch[1];
-			if(config.browser.isIE)
-				text = text.replace(/\n/g,"\r");
-			var e = createTiddlyElement(w.output,"pre",null,null,text);
-			w.nextMatch = lookaheadMatch.index + lookaheadMatch[0].length;
 			}
 	},
 
