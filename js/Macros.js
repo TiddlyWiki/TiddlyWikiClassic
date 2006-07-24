@@ -630,7 +630,7 @@ config.macros.edit.handler = function(place,macroName,params,wikifier,paramStrin
 					e.setAttribute("readOnly","readOnly");
 				e.value = tiddler.text;
 				var rows = 10;
-				var lines = tiddler.text.match(regexpNewLine);
+				var lines = tiddler.text.match(/\n/mg);
 				var maxLines = Math.max(parseInt(config.options.txtMaxEditRows),5);
 				if(lines != null && lines.length > rows)
 					rows = lines.length + 5;
