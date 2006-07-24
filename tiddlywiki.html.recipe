@@ -30,10 +30,10 @@ js/Slider.js
 js/Popup.js
 js/ListView.js
 js/BasicTypes.js
-js/Crypto.js
 js/Strings.js
-js/RGB.js
 js/Dates.js
+js/Crypto.js
+js/RGB.js
 js/Dom.js
 js/TW21Loader.js
 js/TW21Saver.js

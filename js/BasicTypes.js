@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------------------
-// Augmented methods for the JavaScript Number(), Array() and String() objects
+// Augmented methods for the JavaScript Number(), Array(), String() and Date() objects
 // ---------------------------------------------------------------------------------
 
 // Clamp a number to a range
@@ -34,25 +34,25 @@ Array.prototype.findByField = function(field,value)
 // Return whether an entry exists in an array
 Array.prototype.contains = function(item)
 {
-    return this.find(item) != null;
+	return this.find(item) != null;
 };
 
 // Return whether one of a list of values exists in an array
 Array.prototype.containsAny = function(items)
 {
-    for(var i=0; i<items.length; i++)
-        if (this.contains(items[i]))
-            return true;
-    return false;
+	for(var i=0; i<items.length; i++)
+		if (this.contains(items[i]))
+			return true;
+	return false;
 };
 
 // Return wheter all of a list of values exists in an array
 Array.prototype.containsAll = function(items)
 {
-    for (var i = 0; i<items.length; i++)
-        if (!this.contains(items[i]))
-            return false;
-    return true;
+	for (var i = 0; i<items.length; i++)
+		if (!this.contains(items[i]))
+			return false;
+	return true;
 };
 
 // Push a new value into an array only if it is not already present in the array. If the optional unique parameter is false, it reverts to a normal push
