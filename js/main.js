@@ -42,7 +42,7 @@ function main()
 	restart();
 	if(pluginProblem)
 		{
-		displayTiddler(null,"PluginStatus");
+		displayTiddler(null,"PluginManager");
 		displayMessage(config.messages.customConfigError);
 		}
 	// Just for the beta
