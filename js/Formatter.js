@@ -487,8 +487,8 @@ config.formatters = [
 
 {
 	name: "strikeByChar",
-	match: "==",
-	termRegExp: /(==)/mg,
+	match: "--",
+	termRegExp: /(--)/mg,
 	element: "strike",
 	handler: config.formatterHelpers.createElementAndWikify
 },
