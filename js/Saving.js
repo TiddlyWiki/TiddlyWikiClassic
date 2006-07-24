@@ -109,8 +109,8 @@ function saveChanges(onlyIfDirty)
 	try 
 		{
 		// Save new file
-		var revised = original.substr(0,posOpeningDiv + startSaveArea.length) + 
-					convertUnicodeToUTF8(store.allTiddlersAsHtml()) + "\n\t\t" +
+		var revised = original.substr(0,posOpeningDiv + startSaveArea.length) + "\n" +
+					convertUnicodeToUTF8(store.allTiddlersAsHtml()) + "\n" +
 					original.substr(posClosingDiv);
 		var newSiteTitle = convertUnicodeToUTF8((wikifyPlain("SiteTitle") + " - " + wikifyPlain("SiteSubtitle")).htmlEncode());
 		revised = revised.replaceChunk("<title"+">","</title"+">"," " + newSiteTitle + " ");
