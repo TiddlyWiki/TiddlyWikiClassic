@@ -132,15 +132,6 @@ config.formatters = [
 },
 
 {
-	name: "rule",
-	match: "^----+$\\n?",
-	handler: function(w)
-	{
-		createTiddlyElement(w.output,"hr");
-	}
-},
-
-{
 	name: "heading",
 	match: "^!{1,5}",
 	termRegExp: /(\n)/mg,
@@ -148,104 +139,6 @@ config.formatters = [
 	{
 		var e = createTiddlyElement(w.output,"h" + w.matchLength);
 		w.subWikifyTerm(e,this.termRegExp);
-	}
-},
-
-{
-	name: "monospacedByLine",
-	match: "^\\{\\{\\{\\n",
-	lookaheadRegExp: /^\{\{\{\n((?:^[^\n]*\n)+?)(^\}\}\}$\n?)/mg,
-	element: "pre",
-	handler: config.formatterHelpers.enclosedTextHelper
-},
-
-{
-	name: "monospacedByLineForCSS",
-	match: "^/\\*[\\{]{3}\\*/\\n",
-	lookaheadRegExp: /\/\*[\{]{3}\*\/\n*((?:^[^\n]*\n)+?)(\n*^\/\*[\}]{3}\*\/$\n?)/mg,
-	element: "pre",
-	handler: config.formatterHelpers.enclosedTextHelper
-},
-
-{
-	name: "monospacedByLineForPlugin",
-	match: "^//\\{\\{\\{\\n",
-	lookaheadRegExp: /^\/\/\{\{\{\n\n*((?:^[^\n]*\n)+?)(\n*^\/\/\}\}\}$\n?)/mg,
-	element: "pre",
-	handler: config.formatterHelpers.enclosedTextHelper
-},
-
-{
-	name: "monospacedByLineForTemplate",
-	match: "^<!--[\\{]{3}-->\\n",
-	lookaheadRegExp: /<!--[\{]{3}-->\n*((?:^[^\n]*\n)+?)(\n*^<!--[\}]{3}-->$\n?)/mg, 
-	element: "pre",
-	handler: config.formatterHelpers.enclosedTextHelper
-},
-
-{
-	name: "wikifyCommentForPlugin", 
-	match: "^/\\*\\*\\*\\n",
-	termRegExp: /(^\*\*\*\/\n)/mg,
-	handler: function(w)
-	{
-		w.subWikifyTerm(w.output,this.termRegExp);
-	}
-},
-
-{
-	name: "wikifyCommentForTemplate", 
-	match: "^<!---\\n",
-	termRegExp: /(^--->\n)/mg,
-	handler: function(w) 
-	{
-		w.subWikifyTerm(w.output,this.termRegExp);
-	}
-},
-
-{
-	name: "quoteByBlock",
-	match: "^<<<\\n",
-	termRegExp: /(^<<<(\n|$))/mg,
-	element: "blockquote",
-	handler: config.formatterHelpers.createElementAndWikify
-},
-
-{
-	name: "quoteByLine",
-	match: "^>+",
-	lookaheadRegExp: /^>+/mg,
-	termRegExp: /(\n)/mg,
-	element: "blockquote",
-	handler: function(w)
-	{
-		var placeStack = [w.output];
-		var currLevel = 0;
-		var newLevel = w.matchLength;
-		var t;
-		do {
-			if(newLevel > currLevel)
-				{
-				for(t=currLevel; t<newLevel; t++)
-					placeStack.push(createTiddlyElement(placeStack[placeStack.length-1],this.element));
-				}
-			else if(newLevel < currLevel)
-				{
-				for(t=currLevel; t>newLevel; t--)
-					placeStack.pop();
-				}
-			currLevel = newLevel;
-			w.subWikifyTerm(placeStack[placeStack.length-1],this.termRegExp);
-			createTiddlyElement(placeStack[placeStack.length-1],"br");
-			this.lookaheadRegExp.lastIndex = w.nextMatch;
-			var lookaheadMatch = this.lookaheadRegExp.exec(w.source);
-			var matched = lookaheadMatch && lookaheadMatch.index == w.nextMatch;
-			if(matched)
-				{
-				newLevel = lookaheadMatch[0].length;
-				w.nextMatch += lookaheadMatch[0].length;
-				}
-		} while(matched);
 	}
 },
 
@@ -312,6 +205,156 @@ config.formatters = [
 },
 
 {
+	name: "quoteByBlock",
+	match: "^<<<\\n",
+	termRegExp: /(^<<<(\n|$))/mg,
+	element: "blockquote",
+	handler: config.formatterHelpers.createElementAndWikify
+},
+
+{
+	name: "quoteByLine",
+	match: "^>+",
+	lookaheadRegExp: /^>+/mg,
+	termRegExp: /(\n)/mg,
+	element: "blockquote",
+	handler: function(w)
+	{
+		var placeStack = [w.output];
+		var currLevel = 0;
+		var newLevel = w.matchLength;
+		var t;
+		do {
+			if(newLevel > currLevel)
+				{
+				for(t=currLevel; t<newLevel; t++)
+					placeStack.push(createTiddlyElement(placeStack[placeStack.length-1],this.element));
+				}
+			else if(newLevel < currLevel)
+				{
+				for(t=currLevel; t>newLevel; t--)
+					placeStack.pop();
+				}
+			currLevel = newLevel;
+			w.subWikifyTerm(placeStack[placeStack.length-1],this.termRegExp);
+			createTiddlyElement(placeStack[placeStack.length-1],"br");
+			this.lookaheadRegExp.lastIndex = w.nextMatch;
+			var lookaheadMatch = this.lookaheadRegExp.exec(w.source);
+			var matched = lookaheadMatch && lookaheadMatch.index == w.nextMatch;
+			if(matched)
+				{
+				newLevel = lookaheadMatch[0].length;
+				w.nextMatch += lookaheadMatch[0].length;
+				}
+		} while(matched);
+	}
+},
+
+{
+	name: "rule",
+	match: "^----+$\\n?",
+	handler: function(w)
+	{
+		createTiddlyElement(w.output,"hr");
+	}
+},
+
+{
+	name: "monospacedByLine",
+	match: "^\\{\\{\\{\\n",
+	lookaheadRegExp: /^\{\{\{\n((?:^[^\n]*\n)+?)(^\}\}\}$\n?)/mg,
+	element: "pre",
+	handler: config.formatterHelpers.enclosedTextHelper
+},
+
+{
+	name: "monospacedByLineForCSS",
+	match: "^/\\*[\\{]{3}\\*/\\n",
+	lookaheadRegExp: /\/\*[\{]{3}\*\/\n*((?:^[^\n]*\n)+?)(\n*^\/\*[\}]{3}\*\/$\n?)/mg,
+	element: "pre",
+	handler: config.formatterHelpers.enclosedTextHelper
+},
+
+{
+	name: "monospacedByLineForPlugin",
+	match: "^//\\{\\{\\{\\n",
+	lookaheadRegExp: /^\/\/\{\{\{\n\n*((?:^[^\n]*\n)+?)(\n*^\/\/\}\}\}$\n?)/mg,
+	element: "pre",
+	handler: config.formatterHelpers.enclosedTextHelper
+},
+
+{
+	name: "monospacedByLineForTemplate",
+	match: "^<!--[\\{]{3}-->\\n",
+	lookaheadRegExp: /<!--[\{]{3}-->\n*((?:^[^\n]*\n)+?)(\n*^<!--[\}]{3}-->$\n?)/mg, 
+	element: "pre",
+	handler: config.formatterHelpers.enclosedTextHelper
+},
+
+{
+	name: "wikifyCommentForPlugin", 
+	match: "^/\\*\\*\\*\\n",
+	termRegExp: /(^\*\*\*\/\n)/mg,
+	handler: function(w)
+	{
+		w.subWikifyTerm(w.output,this.termRegExp);
+	}
+},
+
+{
+	name: "wikifyCommentForTemplate", 
+	match: "^<!---\\n",
+	termRegExp: /(^--->\n)/mg,
+	handler: function(w) 
+	{
+		w.subWikifyTerm(w.output,this.termRegExp);
+	}
+},
+
+{
+	name: "macro",
+	match: "<<",
+	lookaheadRegExp: /<<([^>\s]+)(?:\s*)((?:[^>]|(?:>(?!>)))*)>>/mg,
+	handler: function(w)
+	{
+		this.lookaheadRegExp.lastIndex = w.matchStart;
+		var lookaheadMatch = this.lookaheadRegExp.exec(w.source)
+		if(lookaheadMatch && lookaheadMatch.index == w.matchStart && lookaheadMatch[1])
+			{
+			w.nextMatch = lookaheadMatch.index + lookaheadMatch[0].length;
+			invokeMacro(w.output,lookaheadMatch[1],lookaheadMatch[2],w,w.tiddler);
+			}
+	}
+},
+
+{
+	name: "prettyLink",
+	match: "\\[\\[",
+	lookaheadRegExp: /\[\[([^\|\]]*?)(?:(\]\])|(\|(.*?)\]\]))/mg,
+	handler: function(w)
+	{
+		this.lookaheadRegExp.lastIndex = w.matchStart;
+		var lookaheadMatch = this.lookaheadRegExp.exec(w.source)
+		if(lookaheadMatch && lookaheadMatch.index == w.matchStart)
+			{
+			var e;
+			var text = lookaheadMatch[1];
+			if (lookaheadMatch[2]) // Simple bracketted link
+				{
+				e = createTiddlyLink(w.output,text,false);
+				}
+			else if(lookaheadMatch[3]) // Pretty bracketted link
+				{
+				var link = lookaheadMatch[4];
+				e = config.formatterHelpers.isExternalLink(link) ? createExternalLink(w.output,link) : createTiddlyLink(w.output,link,false);
+				}
+			createTiddlyText(e,text);
+			w.nextMatch = lookaheadMatch.index + lookaheadMatch[0].length;
+			}
+	}
+},
+
+{
 	name: "unWikiLink",
 	match: config.textPrimitives.unWikiLink+config.textPrimitives.wikiLink,
 	handler: function(w)
@@ -344,33 +387,6 @@ config.formatters = [
 		else
 			{
 			w.outputText(w.output,w.matchStart,w.nextMatch);
-			}
-	}
-},
-
-{
-	name: "prettyLink",
-	match: "\\[\\[",
-	lookaheadRegExp: /\[\[([^\|\]]*?)(?:(\]\])|(\|(.*?)\]\]))/mg,
-	handler: function(w)
-	{
-		this.lookaheadRegExp.lastIndex = w.matchStart;
-		var lookaheadMatch = this.lookaheadRegExp.exec(w.source)
-		if(lookaheadMatch && lookaheadMatch.index == w.matchStart)
-			{
-			var e;
-			var text = lookaheadMatch[1];
-			if (lookaheadMatch[2]) // Simple bracketted link
-				{
-				e = createTiddlyLink(w.output,text,false);
-				}
-			else if(lookaheadMatch[3]) // Pretty bracketted link
-				{
-				var link = lookaheadMatch[4];
-				e = config.formatterHelpers.isExternalLink(link) ? createExternalLink(w.output,link) : createTiddlyLink(w.output,link,false);
-				}
-			createTiddlyText(e,text);
-			w.nextMatch = lookaheadMatch.index + lookaheadMatch[0].length;
 			}
 	}
 },
@@ -416,22 +432,6 @@ config.formatters = [
 },
 
 {
-	name: "macro",
-	match: "<<",
-	lookaheadRegExp: /<<([^>\s]+)(?:\s*)((?:[^>]|(?:>(?!>)))*)>>/mg,
-	handler: function(w)
-	{
-		this.lookaheadRegExp.lastIndex = w.matchStart;
-		var lookaheadMatch = this.lookaheadRegExp.exec(w.source)
-		if(lookaheadMatch && lookaheadMatch.index == w.matchStart && lookaheadMatch[1])
-			{
-			w.nextMatch = lookaheadMatch.index + lookaheadMatch[0].length;
-			invokeMacro(w.output,lookaheadMatch[1],lookaheadMatch[2],w,w.tiddler);
-			}
-	}
-},
-
-{
 	name: "html",
 	match: "<[Hh][Tt][Mm][Ll]>",
 	lookaheadRegExp: /<[Hh][Tt][Mm][Ll]>((?:.|\n)*?)<\/[Hh][Tt][Mm][Ll]>/mg,
@@ -470,10 +470,10 @@ config.formatters = [
 },
 
 {
-	name: "strikeByChar",
-	match: "==",
-	termRegExp: /(==)/mg,
-	element: "strike",
+	name: "italicByChar",
+	match: "//",
+	termRegExp: /(\/\/)/mg,
+	element: "em",
 	handler: config.formatterHelpers.createElementAndWikify
 },
 
@@ -486,18 +486,10 @@ config.formatters = [
 },
 
 {
-	name: "italicByChar",
-	match: "//",
-	termRegExp: /(\/\/)/mg,
-	element: "em",
-	handler: config.formatterHelpers.createElementAndWikify
-},
-
-{
-	name: "subscriptByChar",
-	match: "~~",
-	termRegExp: /(~~)/mg,
-	element: "sub",
+	name: "strikeByChar",
+	match: "==",
+	termRegExp: /(==)/mg,
+	element: "strike",
 	handler: config.formatterHelpers.createElementAndWikify
 },
 
@@ -506,6 +498,14 @@ config.formatters = [
 	match: "\\^\\^",
 	termRegExp: /(\^\^)/mg,
 	element: "sup",
+	handler: config.formatterHelpers.createElementAndWikify
+},
+
+{
+	name: "subscriptByChar",
+	match: "~~",
+	termRegExp: /(~~)/mg,
+	element: "sub",
 	handler: config.formatterHelpers.createElementAndWikify
 },
 
