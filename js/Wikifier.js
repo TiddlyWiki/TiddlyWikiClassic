@@ -2,12 +2,29 @@
 // Wikifier
 // ---------------------------------------------------------------------------------
 
+function getFormatter(source,tiddler)
+{
+	var f = formatter;
+	if(tiddler!=null)
+		{
+		for(var i in formatters)
+			{
+			if(tiddler.isTagged(formatters[i].formatTag))
+				{
+				f = formatters[i];
+				break;
+				}
+			}
+		}
+	return f;
+}
+
 function wikify(source,output,highlightRegExp,tiddler)
 {
 	if(source && source != "")
 		{
-		var wikifier = new Wikifier(source,formatter,highlightRegExp,tiddler);
-		wikifier.subWikify(output);
+		var wikifier = new Wikifier(source,getFormatter(source,tiddler),highlightRegExp,tiddler);
+		wikifier.subWikifyUnterm(output);
 		}
 }
 
