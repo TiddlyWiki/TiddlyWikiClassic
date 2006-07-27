@@ -881,8 +881,6 @@ config.macros.importTiddlers.onFetch = function(e)
 {
 	var browser = findRelated(this,"INPUT",null,"previousSibling");
 	url = browser.value;
-url = "/Users/jeremyruston/Desktop/tiddlytools.html";
-url = "http://www.tiddlywiki.com/";
 	var importer = findRelated(this,"importTiddler","className","parentNode");
 	var cutoff = findRelated(importer.firstChild,"step2","className","nextSibling");
 	while(cutoff)
