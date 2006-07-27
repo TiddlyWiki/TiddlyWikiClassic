@@ -202,13 +202,12 @@ TiddlyWiki.prototype.getTiddlerSlices = function(title,sliceNames)
 	return r;
 }
 
-TiddlyWiki.prototype.getRecursiveTiddlerText = function(title,defaultText,depth,text)
+TiddlyWiki.prototype.getRecursiveTiddlerText = function(title,defaultText,depth)
 {
 	var bracketRegExp = new RegExp("(?:\\[\\[([^\\]]+)\\]\\])","mg");
-	if(!text)
-		text = this.getTiddlerText(title,defaultText);
+	var text = this.getTiddlerText(title,null);
 	if(text == null)
-		return "";
+		return defaultText;
 	var textOut = [];
 	var lastPos = 0;
 	do {
@@ -218,11 +217,10 @@ TiddlyWiki.prototype.getRecursiveTiddlerText = function(title,defaultText,depth,
 			textOut.push(text.substr(lastPos,match.index-lastPos));
 			if(match[1])
 				{
-				var subText = this.getTiddlerText(match[1],null);
-				if((depth > 0) && (subText != null))
-					textOut.push(this.getRecursiveTiddlerText(match[1],match[1],depth-1,subText));
+				if(depth <= 0)
+					textOut.push(match[1]);
 				else
-					textOut.push(match[0]);
+					textOut.push(this.getRecursiveTiddlerText(match[1],"[[" + match[1] + "]]",depth-1));
 				}
 			lastPos = match.index + match[0].length;
 			}
