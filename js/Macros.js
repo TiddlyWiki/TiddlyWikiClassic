@@ -812,8 +812,8 @@ config.macros.plugins.refresh = function(place,params)
 	for(t=0; t<plugins.length; t++)
 		{
 		var p = plugins[t];
-		p.forced = p.tiddler.isTagged("forceSystemConfig");
-		p.disabled = p.tiddler.isTagged("disableSystemConfig");
+		p.forced = p.tiddler.isTagged("systemConfigForce");
+		p.disabled = p.tiddler.isTagged("systemConfigDisable");
 		p.Selected = selectedRows.find(plugins[t].title) != null;
 		}
 	if(plugins.length == 0)

@@ -113,10 +113,10 @@ function getPluginInfo(tiddler)
 // Verify that a particular plugin is OK to execute
 function verifyPlugin(plugin)
 {
-	if(plugin.tiddler.isTagged("disableSystemConfig"))
-		return verifyTail(plugin,false,"Not executed because disabled via 'disableSystemConfig' tag");
-	if(plugin.tiddler.isTagged("forceSystemConfig"))
-		return verifyTail(plugin,true,"Executed because forced via 'forceSystemConfig' tag");
+	if(plugin.tiddler.isTagged("systemConfigDisable"))
+		return verifyTail(plugin,false,"Not executed because disabled via 'systemConfigDisable' tag");
+	if(plugin.tiddler.isTagged("systemConfigForce"))
+		return verifyTail(plugin,true,"Executed because forced via 'systemConfigForce' tag");
 	if(!plugin["CoreVersion"])
 		return verifyTail(plugin,false,"Not executed because CoreVersion property is missing");
 	var coreVersion = plugin["CoreVersion"].split(".");
