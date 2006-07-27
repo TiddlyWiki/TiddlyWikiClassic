@@ -50,17 +50,19 @@ ListView.create = function(place,listObject,listTemplate,callback,className)
 
 ListView.getCommandHandler = function(callback)
 {
-	return function(e) {
+	return function(e)
+		{
 		var view = findRelated(this,"TABLE",null,"previousSibling");
 		var tiddlers = [];
 		ListView.forEachSelector(view,function(e,rowName) {
 					if(e.checked)
 						tiddlers.push(rowName);
 					});
-	if(tiddlers.length == 0)
-		alert(config.messages.nothingSelected);
-	callback(this.value,tiddlers);
-	};
+		if(tiddlers.length == 0)
+			alert(config.messages.nothingSelected);
+		callback(view,this.value,tiddlers);
+		this.selectedIndex = 0;
+		};
 }
 
 // Invoke a callback for each selector checkbox in the listview
@@ -105,6 +107,16 @@ ListView.columnTypes.String = {
 		}
 };
 
+ListView.columnTypes.Date = {
+	createHeader: ListView.columnTypes.String.createHeader,
+	createItem: function(place,listObject,field,columnTemplate,col,row)
+		{
+			var v = listObject[field];
+			if(v != undefined)
+				createTiddlyText(place,v.formatString(columnTemplate.dateFormat));
+		}
+};
+
 ListView.columnTypes.StringList = {
 	createHeader: ListView.columnTypes.String.createHeader,
 	createItem: function(place,listObject,field,columnTemplate,col,row)
@@ -140,6 +152,15 @@ ListView.columnTypes.Selector = {
 			ListView.forEachSelector(view,function(e,rowName) {
 								e.checked = state;
 							});
+		}
+};
+
+ListView.columnTypes.Tags = {
+	createHeader: ListView.columnTypes.String.createHeader,
+	createItem: function(place,listObject,field,columnTemplate,col,row)
+		{
+			var tags = listObject[field];
+			createTiddlyText(place,String.encodeTiddlyLinkList(tags));
 		}
 };
 

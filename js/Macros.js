@@ -861,3 +861,142 @@ config.macros.refreshDisplay.onClick = function(e)
 	refreshStyles("StyleSheetPrint");
 	return false;
 }
+
+config.macros.importTiddlers.handler = function(place,macroName,params,wikifier,paramString,tiddler)
+{
+	if(readOnly)
+		return;
+	var wrapper = createTiddlyElement(place,"div",null,"importTiddler wizard");
+	createTiddlyElement(wrapper,"h1",null,null,"Import tiddlers from another TiddlyWiki file");
+	createTiddlyElement(wrapper,"h2",null,"step1","Step 1: Locate the TiddlyWiki file");
+	var step = createTiddlyElement(wrapper,"div",null,"wizardStep");
+	var fileInput = createTiddlyElement(null,"input");
+	fileInput.type = "file";
+	step.appendChild(fileInput);
+	createTiddlyElement(step,"br");
+	createTiddlyButton(step,this.fetchLabel,this.fetchPrompt,this.onFetch,null,null,null);
+}
+
+config.macros.importTiddlers.onFetch = function(e)
+{
+	var browser = findRelated(this,"INPUT",null,"previousSibling");
+	url = browser.value;
+url = "/Users/jeremyruston/Desktop/tiddlytools.html";
+url = "http://www.tiddlywiki.com/";
+	var importer = findRelated(this,"importTiddler","className","parentNode");
+	var cutoff = findRelated(importer.firstChild,"step2","className","nextSibling");
+	while(cutoff)
+		{
+		var temp = cutoff.nextSibling;
+		cutoff.parentNode.removeChild(cutoff);
+		cutoff = temp;
+		}
+	createTiddlyElement(importer,"h2",null,"step2","Step 2: Loading TiddlyWiki file");
+	var step = createTiddlyElement(importer,"div",null,"wizardStep","Please wait while the file is loaded from: " + url);
+	loadRemoteFile(url,config.macros.importTiddlers.onLoad,importer);
+}
+
+config.macros.importTiddlers.onLoad = function(status,params,responseText,url,xhr)
+{
+	if(!status)
+		{
+		displayMessage(this.fetchError);
+		return;
+		}
+	var importer = params;
+	// Check that the tiddler we're in hasn't been closed
+	var p = importer;
+	while(p.parentNode)
+		p = p.parentNode;
+	if(!(p instanceof HTMLDocument))
+		return;
+	// Crack out the content - (should be refactored)
+	var posOpeningDiv = responseText.indexOf(startSaveArea);
+	var limitClosingDiv = responseText.indexOf("<!--POST-BODY-START--"+">");
+	var posClosingDiv = responseText.lastIndexOf(endSaveArea,limitClosingDiv == -1 ? responseText.length : limitClosingDiv);
+	if((posOpeningDiv == -1) || (posClosingDiv == -1))
+		{
+		alert(config.messages.invalidFileError.format([url]));
+		return;
+		}
+	var content = "<html><body>" + responseText.substring(posOpeningDiv,posClosingDiv + endSaveArea.length) + "</body></html>";
+	// Create the iframe
+	var iframe = document.createElement("iframe");
+	importer.insertBefore(iframe,importer.firstChild);
+	iframe.style.width = "100px";
+	iframe.style.height = "100px";
+	iframe.style.border = "1px";
+	var doc = iframe.document;
+	if (iframe.contentDocument)
+		doc = iframe.contentDocument; // For NS6
+	else if (iframe.contentWindow)
+		doc = iframe.contentWindow.document; // For IE5.5 and IE6
+	// Put the content in the iframe
+	doc.open();
+	doc.writeln(content);
+	doc.close();
+	// Load the content into a TiddlyWiki() object
+	var storeArea = doc.getElementById("storeArea");
+	var importStore = new TiddlyWiki();
+	importStore.loadFromDiv(storeArea,"store");
+	// Get rid of the iframe
+	iframe.parentNode.removeChild(iframe);
+	// Extract data for the listview
+	var tiddlers = [];
+	importStore.forEachTiddler(function(title,tiddler)
+		{
+		var t = {};
+		t.title = title;
+		t.modified = tiddler.modified;
+		t.modifier = tiddler.modifier;
+		t.text = tiddler.text.substr(0,50);
+		t.tags = tiddler.tags;
+		tiddlers.push(t);
+		});
+	// Display the listview
+	createTiddlyElement(importer,"h2",null,"step3","Step 3: Choose the tiddlers to import");
+	var step = createTiddlyElement(importer,"div",null,"wizardStep");
+	ListView.create(step,tiddlers,config.macros.importTiddlers.listViewTemplate,config.macros.importTiddlers.onSelectCommand);
+	// Save the importer
+	importer.store = importStore;
+}
+
+config.macros.importTiddlers.onSelectCommand = function(listView,command,rowNames)
+{
+	var importer = findRelated(listView,"importTiddler","className","parentNode");
+	switch(command)
+		{
+		case "import":
+			config.macros.importTiddlers.doImport(importer,rowNames);
+			break;
+		}
+	if(config.options.chkAutoSave)
+		saveChanges(true);
+}
+
+config.macros.importTiddlers.doImport = function(importer,rowNames)
+{
+	var theStore = importer.store;
+	var overwrite = new Array();
+	var t;
+	for(t=0; t<rowNames.length; t++)
+		{
+		if(store.tiddlerExists(rowNames[t]))
+			overwrite.push(rowNames[t]);
+	}
+	if(overwrite.length > 0)
+		if(!confirm(this.confirmOverwriteText.format([overwrite.join(", ")])))
+			return;
+	for(t=0; t<rowNames.length; t++)
+		{
+		store.addTiddler(theStore.fetchTiddler(rowNames[t]));
+		store.notify(rowNames[t],false);
+		}
+	store.notifyAll();
+	store.setDirty(true);
+	createTiddlyElement(importer,"h2",null,"step4","%0 tiddler(s) imported".format([rowNames.length]));
+	var step = createTiddlyElement(importer,"div",null,"wizardStep");
+	for(t=0; t<rowNames.length; t++)
+		createTiddlyElement(step,"div",null,null,rowNames[t]);
+	createTiddlyElement(importer,"h2",null,"step5","Done");
+}

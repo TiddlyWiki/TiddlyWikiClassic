@@ -157,6 +157,31 @@ merge(config.macros.refreshDisplay,{
 	prompt: "Redraw the entire TiddlyWiki display"
 	});
 
+merge(config.macros.importTiddlers,{
+	defaultPath: "http://essentials.tiddlywiki.com/index.html",
+	fetchLabel: "fetch",
+	fetchPrompt: "Fetch the tiddlywiki file",
+	fetchError: "There were problems fetching the tiddlywiki file",
+	confirmOverwriteText: "Are you sure you want to overwrite these tiddlers:\n\n%0",
+	listViewTemplate: {
+// Fields needing localisation are: title and caption
+		columns: [
+			{name: "Selected", field: "Selected", rowName: "title", type: "Selector"},
+			{name: "Title", field: "title", title: "Title", type: "String"},
+			{name: "Snippet", field: "text", title: "Snippet", type: "String"},
+			{name: "Tags", field: "tags", title: "Tags", type: "Tags"},
+			],
+		rowClasses: [
+			],
+		sort: [
+			{name: "Title", sortType: "asc"}
+			],
+		actions: [
+			{caption: "More actions...", name: ""},
+			{caption: "Import these tiddlers", name: "import"}
+			]}
+	});
+
 merge(config.commands.closeTiddler,{
 	text: "close",
 	tooltip: "Close this tiddler"});

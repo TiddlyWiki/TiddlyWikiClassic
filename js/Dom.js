@@ -112,9 +112,19 @@ function findRelated(e,value,name,relative)
 {
 	name = name ? name : "tagName";
 	relative = relative ? relative : "parentNode";
-	while(e && e[name] != value)
+	if(name == "className")
 		{
-		e = e[relative];
+		while(e && !hasClass(e,value))
+			{
+			e = e[relative];
+			}
+		}
+	else
+		{
+		while(e && e[name] != value)
+			{
+			e = e[relative];
+			}
 		}
 	return e;
 }
