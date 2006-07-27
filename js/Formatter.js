@@ -58,7 +58,8 @@ config.formatters = [
 	rowHandler: function(w,e,prevColumns)
 	{
 		var col = 0;
-		var currColCount = 1;
+		var colSpanCount = 1;
+		var prevCell = null;
 		this.cellRegExp.lastIndex = w.nextMatch;
 		var cellMatch = this.cellRegExp.exec(w.source);
 		while(cellMatch && cellMatch.index == w.nextMatch)
@@ -69,9 +70,9 @@ config.formatters = [
 				var last = prevColumns[col];
 				if(last)
 					{
-					last.rowCount++;
-					last.element.setAttribute("rowspan",last.rowCount);
-					last.element.setAttribute("rowSpan",last.rowCount); // Needed for IE
+					last.rowSpanCount++;
+					last.element.setAttribute("rowspan",last.rowSpanCount);
+					last.element.setAttribute("rowSpan",last.rowSpanCount); // Needed for IE
 					last.element.valign = "center";
 					}
 				w.nextMatch = this.cellRegExp.lastIndex-1;
@@ -79,12 +80,17 @@ config.formatters = [
 			else if(cellMatch[1] == ">")
 				{
 				// Colspan
-				currColCount++;
+				colSpanCount++;
 				w.nextMatch = this.cellRegExp.lastIndex-1;
 				}
 			else if(cellMatch[2])
 				{
 				// End of row
+				if(prevCell && colSpanCount > 1)
+					{
+					prevCell.setAttribute("colspan",colSpanCount);
+					prevCell.setAttribute("colSpan",colSpanCount); // Needed for IE
+					}
 				w.nextMatch = this.cellRegExp.lastIndex;
 				break;
 				}
@@ -109,12 +115,13 @@ config.formatters = [
 					}
 				else
 					cell = createTiddlyElement(e,"td");
-				prevColumns[col] = {rowCount:1, element:cell};
-				if(currColCount > 1)
+				prevCell = cell;
+				prevColumns[col] = {rowSpanCount:1, element:cell};
+				if(colSpanCount > 1)
 					{
-					cell.setAttribute("colspan",currColCount);
-					cell.setAttribute("colSpan",currColCount); // Needed for IE
-					currColCount = 1;
+					cell.setAttribute("colspan",colSpanCount);
+					cell.setAttribute("colSpan",colSpanCount); // Needed for IE
+					colSpanCount = 1;
 					}
 				config.formatterHelpers.applyCssHelper(cell,styles);
 				w.subWikifyTerm(cell,this.cellTermRegExp);
