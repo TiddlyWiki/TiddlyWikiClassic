@@ -2,6 +2,7 @@
 // Translateable strings
 // ---------------------------------------------------------------------------------
 
+// Strings in "double quotes" should be translated; strings in 'single quotes' should be left alone
 
 merge(config.options,{
 	txtUserName: "YourName"});
@@ -128,27 +129,26 @@ merge(config.macros.plugins,{
 	noPluginText: "There are no plugins installed",
 	confirmDeleteText: "Are you sure you want to delete these tiddlers:\n\n%0",
 	listViewTemplate : {
-		// Fields needing localisation are: title, trueText, falseText and caption
 		columns: [
-			{name: "Selected", field: "Selected", rowName: "title", type: "Selector"},
-			{name: "Title", field: "title", tiddlerLink: "title", title: "Title", type: "TiddlerLink"},
-			{name: "Executed", field: "executed", title: "Executed?", type: "Boolean", trueText: "Yes", falseText: "No"},
-			{name: "Error", field: "error", title: "Result", type: "Boolean", trueText: "Error", falseText: "OK"},
-			{name: "Forced", field: "forced", title: "Forced", tag: "forceSystemConfig", type: "TagCheckbox"},
-			{name: "Disabled", field: "disabled", title: "Disabled", tag: "disableSystemConfig", type: "TagCheckbox"},
-			{name: "Log", field: "log", title: "Log", type: "StringList"}
+			{name: 'Selected', field: 'Selected', rowName: 'title', type: 'Selector'},
+			{name: 'Title', field: 'title', tiddlerLink: 'title', title: "Title", type: 'TiddlerLink'},
+			{name: 'Executed', field: 'executed', title: "Executed?", type: 'Boolean', trueText: "Yes", falseText: "No"},
+			{name: 'Error', field: 'error', title: "Result", type: 'Boolean', trueText: "Error", falseText: "OK"},
+			{name: 'Forced', field: 'forced', title: "Forced", tag: 'forceSystemConfig', type: 'TagCheckbox'},
+			{name: 'Disabled', field: 'disabled', title: "Disabled", tag: 'disableSystemConfig', type: 'TagCheckbox'},
+			{name: 'Log', field: 'log', title: "Log", type: 'StringList'}
 			],
 		rowClasses: [
-			{className: "error", field: "error"}
+			{className: 'error', field: 'error'}
 			],
 		sort: [
-			{name: "Executed", sortType: "asc"},
-			{name: "Name", sortType: "desc"}
+			{name: 'Executed', sortType: 'asc'},
+			{name: 'Name', sortType: 'desc'}
 			],
 		actions: [
-			{caption: "More actions...", name: ""},
-			{caption: "Remove 'systemConfig' tag", name: "remove"},
-			{caption: "Delete forever", name: "delete"}
+			{caption: "More actions...", name: ''},
+			{caption: "Remove systemConfig tag", name: 'remove'},
+			{caption: "Delete these tiddlers forever", name: 'delete'}
 			]}
 	});
 
@@ -158,27 +158,26 @@ merge(config.macros.refreshDisplay,{
 	});
 
 merge(config.macros.importTiddlers,{
-	defaultPath: "http://essentials.tiddlywiki.com/index.html",
+	defaultPath: "http://www.tiddlywiki.com/index.html",
 	fetchLabel: "fetch",
 	fetchPrompt: "Fetch the tiddlywiki file",
 	fetchError: "There were problems fetching the tiddlywiki file",
 	confirmOverwriteText: "Are you sure you want to overwrite these tiddlers:\n\n%0",
 	listViewTemplate: {
-// Fields needing localisation are: title and caption
 		columns: [
-			{name: "Selected", field: "Selected", rowName: "title", type: "Selector"},
-			{name: "Title", field: "title", title: "Title", type: "String"},
-			{name: "Snippet", field: "text", title: "Snippet", type: "String"},
-			{name: "Tags", field: "tags", title: "Tags", type: "Tags"},
+			{name: 'Selected', field: 'Selected', rowName: 'title', type: 'Selector'},
+			{name: 'Title', field: 'title', title: "Title", type: 'String'},
+			{name: 'Snippet', field: 'text', title: "Snippet", type: 'String'},
+			{name: 'Tags', field: 'tags', title: "Tags", type: 'Tags'},
 			],
 		rowClasses: [
 			],
 		sort: [
-			{name: "Title", sortType: "asc"}
+			{name: 'Title', sortType: 'asc'}
 			],
 		actions: [
-			{caption: "More actions...", name: ""},
-			{caption: "Import these tiddlers", name: "import"}
+			{caption: "More actions...", name: ''},
+			{caption: "Import these tiddlers", name: 'import'}
 			]}
 	});
 
