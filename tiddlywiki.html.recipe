@@ -38,6 +38,7 @@ js/RGB.js
 js/Dom.js
 js/TW21Loader.js
 js/TW21Saver.js
+js/Deprecated.js
 html/postscript.html
 html/style.html
 html/postheadstart.html

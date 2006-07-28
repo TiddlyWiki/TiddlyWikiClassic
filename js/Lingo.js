@@ -8,7 +8,7 @@ merge(config.options,{
 	txtUserName: "YourName"});
 
 merge(config.messages,{
-	customConfigError: "Errors were encountered loading plugins. See PluginManager for details",
+	customConfigError: "Problems were encountered loading plugins. See PluginManager for details",
 	nothingSelected: "Nothing is selected. You must select one or more items first",
 	savedSnapshotError: "It appears that this TiddlyWiki has been incorrectly saved. Please see http://www.tiddlywiki.com/#DownloadSoftware for details",
 	subtitleUnknown: "(unknown)",
@@ -132,18 +132,15 @@ merge(config.macros.plugins,{
 		columns: [
 			{name: 'Selected', field: 'Selected', rowName: 'title', type: 'Selector'},
 			{name: 'Title', field: 'title', tiddlerLink: 'title', title: "Title", type: 'TiddlerLink'},
-			{name: 'Executed', field: 'executed', title: "Executed?", type: 'Boolean', trueText: "Yes", falseText: "No"},
-			{name: 'Error', field: 'error', title: "Result", type: 'Boolean', trueText: "Error", falseText: "OK"},
 			{name: 'Forced', field: 'forced', title: "Forced", tag: 'systemConfigForce', type: 'TagCheckbox'},
 			{name: 'Disabled', field: 'disabled', title: "Disabled", tag: 'systemConfigDisable', type: 'TagCheckbox'},
+			{name: 'Executed', field: 'executed', title: "Executed", type: 'Boolean', trueText: "Yes", falseText: "No"},
+			{name: 'Error', field: 'error', title: "Result", type: 'Boolean', trueText: "Error", falseText: "OK"},
 			{name: 'Log', field: 'log', title: "Log", type: 'StringList'}
 			],
 		rowClasses: [
-			{className: 'error', field: 'error'}
-			],
-		sort: [
-			{name: 'Executed', sortType: 'asc'},
-			{name: 'Name', sortType: 'desc'}
+			{className: 'error', field: 'error'},
+			{className: 'warning', field: 'warning'}
 			],
 		actions: [
 			{caption: "More actions...", name: ''},
@@ -182,9 +179,6 @@ merge(config.macros.importTiddlers,{
 			{name: 'Tags', field: 'tags', title: "Tags", type: 'Tags'},
 			],
 		rowClasses: [
-			],
-		sort: [
-			{name: 'Title', sortType: 'asc'}
 			],
 		actions: [
 			{caption: "More actions...", name: ''},
