@@ -163,6 +163,17 @@ merge(config.macros.importTiddlers,{
 	fetchPrompt: "Fetch the tiddlywiki file",
 	fetchError: "There were problems fetching the tiddlywiki file",
 	confirmOverwriteText: "Are you sure you want to overwrite these tiddlers:\n\n%0",
+	wizardTitle: "Import tiddlers from another TiddlyWiki file",
+	step1: "Step 1: Locate the TiddlyWiki file",
+	step1prompt: "Enter the URL or pathname here: ",
+	step1promptFile: "...or browse for a file: ",
+	step1promptFeeds: "...or select a pre-defined feed: ",
+	step1feedPrompt: "Choose...",
+	step2: "Step 2: Loading TiddlyWiki file",
+	step2Text: "Please wait while the file is loaded from: %0",
+	step3: "Step 3: Choose the tiddlers to import",
+	step4: "%0 tiddler(s) imported",
+	step5: "Done",
 	listViewTemplate: {
 		columns: [
 			{name: 'Selected', field: 'Selected', rowName: 'title', type: 'Selector'},

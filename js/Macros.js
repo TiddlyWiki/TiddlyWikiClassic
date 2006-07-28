@@ -866,22 +866,57 @@ config.macros.importTiddlers.handler = function(place,macroName,params,wikifier,
 {
 	if(readOnly)
 		return;
-	var wrapper = createTiddlyElement(place,"div",null,"importTiddler wizard");
-	createTiddlyElement(wrapper,"h1",null,null,"Import tiddlers from another TiddlyWiki file");
-	createTiddlyElement(wrapper,"h2",null,"step1","Step 1: Locate the TiddlyWiki file");
-	var step = createTiddlyElement(wrapper,"div",null,"wizardStep");
+	var importer = createTiddlyElement(place,"div",null,"importTiddler wizard");
+	createTiddlyElement(importer,"h1",null,null,this.wizardTitle);
+	createTiddlyElement(importer,"h2",null,"step1",this.step1);
+	var step = createTiddlyElement(importer,"div",null,"wizardStep");
+	createTiddlyText(step,this.step1prompt);
+	var input = createTiddlyElement(null,"input");
+	input.type = "text";
+	input.size = 50;
+	step.appendChild(input);
+	importer.inputBox = input;
+	createTiddlyElement(step,"br");
+	createTiddlyText(step,this.step1promptFile);
 	var fileInput = createTiddlyElement(null,"input");
 	fileInput.type = "file";
+	fileInput.size = 50;
+	fileInput.onchange = this.onBrowseChange;
+	fileInput.onkeyup = this.onBrowseChange;
 	step.appendChild(fileInput);
+	createTiddlyElement(step,"br");
+	createTiddlyText(step,this.step1promptFeeds);
+	feeds = this.getFeeds([{caption: this.step1feedPrompt, name: ""}]);
+	createTiddlyDropDown(step,this.onFeedChange,feeds);
 	createTiddlyElement(step,"br");
 	createTiddlyButton(step,this.fetchLabel,this.fetchPrompt,this.onFetch,null,null,null);
 }
 
+config.macros.importTiddlers.getFeeds = function(feeds)
+{
+	var tagged = store.getTaggedTiddlers("feed","title");
+	for(var t=0; t<tagged.length; t++)
+		feeds.push({caption: tagged[t].title, name: store.getTiddlerSlice(tagged[t].title,"URL")});
+	return feeds;
+}
+
+config.macros.importTiddlers.onFeedChange = function(e)
+{
+	var importer = findRelated(this,"importTiddler","className","parentNode");
+	importer.inputBox.value = this.value;
+	this.selectedIndex = 0;
+}
+
+config.macros.importTiddlers.onBrowseChange = function(e)
+{
+	var importer = findRelated(this,"importTiddler","className","parentNode");
+	importer.inputBox.value = this.value;
+}
+
 config.macros.importTiddlers.onFetch = function(e)
 {
-	var browser = findRelated(this,"INPUT",null,"previousSibling");
-	url = browser.value;
 	var importer = findRelated(this,"importTiddler","className","parentNode");
+	url = importer.inputBox.value;
 	var cutoff = findRelated(importer.firstChild,"step2","className","nextSibling");
 	while(cutoff)
 		{
@@ -889,8 +924,8 @@ config.macros.importTiddlers.onFetch = function(e)
 		cutoff.parentNode.removeChild(cutoff);
 		cutoff = temp;
 		}
-	createTiddlyElement(importer,"h2",null,"step2","Step 2: Loading TiddlyWiki file");
-	var step = createTiddlyElement(importer,"div",null,"wizardStep","Please wait while the file is loaded from: " + url);
+	createTiddlyElement(importer,"h2",null,"step2",config.macros.importTiddlers.step2);
+	var step = createTiddlyElement(importer,"div",null,"wizardStep",config.macros.importTiddlers.step2Text.format([url]));
 	loadRemoteFile(url,config.macros.importTiddlers.onLoad,importer);
 }
 
@@ -952,7 +987,7 @@ config.macros.importTiddlers.onLoad = function(status,params,responseText,url,xh
 		tiddlers.push(t);
 		});
 	// Display the listview
-	createTiddlyElement(importer,"h2",null,"step3","Step 3: Choose the tiddlers to import");
+	createTiddlyElement(importer,"h2",null,"step3",config.macros.importTiddlers.step3);
 	var step = createTiddlyElement(importer,"div",null,"wizardStep");
 	ListView.create(step,tiddlers,config.macros.importTiddlers.listViewTemplate,config.macros.importTiddlers.onSelectCommand);
 	// Save the importer
@@ -992,9 +1027,12 @@ config.macros.importTiddlers.doImport = function(importer,rowNames)
 		}
 	store.notifyAll();
 	store.setDirty(true);
-	createTiddlyElement(importer,"h2",null,"step4","%0 tiddler(s) imported".format([rowNames.length]));
+	createTiddlyElement(importer,"h2",null,"step4",this.step4.format([rowNames.length]));
 	var step = createTiddlyElement(importer,"div",null,"wizardStep");
 	for(t=0; t<rowNames.length; t++)
-		createTiddlyElement(step,"div",null,null,rowNames[t]);
-	createTiddlyElement(importer,"h2",null,"step5","Done");
+		{
+		createTiddlyLink(step,rowNames[t],true);
+		createTiddlyElement(step,"br");
+		}
+	createTiddlyElement(importer,"h2",null,"step5",this.step5);
 }
