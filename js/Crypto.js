@@ -3,9 +3,7 @@
 // ---------------------------------------------------------------------------------
 
 // Crypto "namespace"
-function Crypto()
-{
-}
+function Crypto() {}
 
 // Convert a string to an array of big-endian 32-bit words
 Crypto.strToBe32s = function(str)
@@ -59,32 +57,32 @@ Crypto.sha1Str = function(str)
 // Calculate the SHA-1 hash of an array of blen bytes of big-endian 32-bit words
 Crypto.sha1 = function(x,blen)
 {
-	// Add 32-bit integers, wrapping at 32 bits. Uses 16-bit operations internally
-	// to work around bugs in some JavaScript interpreters.
+	// Add 32-bit integers, wrapping at 32 bits
+	//# Uses 16-bit operations internally to work around bugs in some JavaScript interpreters.
 	add32 = function(a,b)
 	{
 		var lsw = (a&0xFFFF)+(b&0xFFFF);
 		var msw = (a>>16)+(b>>16)+(lsw>>16);
 		return (msw<<16)|(lsw&0xFFFF);
 	};
-	// Add five 32-bit integers, wrapping at 32 bits. Uses 16-bit operations internally
-	// to work around bugs in some JavaScript interpreters.
+	// Add five 32-bit integers, wrapping at 32 bits
+	//# Uses 16-bit operations internally to work around bugs in some JavaScript interpreters.
 	add32x5 = function(a,b,c,d,e)
 	{
 		var lsw = (a&0xFFFF)+(b&0xFFFF)+(c&0xFFFF)+(d&0xFFFF)+(e&0xFFFF);
 		var msw = (a>>16)+(b>>16)+(c>>16)+(d>>16)+(e>>16)+(lsw>>16);
 		return (msw<<16)|(lsw&0xFFFF);
 	};
-	// Bitwise rotate left a 32-bit integer by 1 bit.
+	// Bitwise rotate left a 32-bit integer by 1 bit
 	rol32 = function(n)
 	{
 		return (n>>>31)|(n<<1);
 	};
 
 	var len = blen*8;
-	// append padding so length in bits is 448 mod 512
+	// Append padding so length in bits is 448 mod 512
 	x[len>>5] |= 0x80 << (24-len%32);
-	// append length,
+	// Append length
 	x[((len+64>>9)<<4)+15] = len;
 	var w = Array(80);
 
@@ -110,31 +108,31 @@ Crypto.sha1 = function(x,blen)
 		for(j = 0;j<16;j++)
 			{
 			w[j] = x[i+j];
-			t = add32x5((a>>>27)|(a<<5), (b&c)|(~b&d), e, w[j], k1);
+			t = add32x5(e,(a>>>27)|(a<<5),d^(b&(c^d)),w[j],k1);
 			e=d; d=c; c=(b>>>2)|(b<<30); b=a; a = t;
 			}
 		for(j=16;j<20;j++)
 			{
 			w[j] = rol32(w[j-3]^w[j-8]^w[j-14]^w[j-16]);
-			t = add32x5((a>>>27)|(a<<5), (b&c)|(~b&d), e, w[j], k1);
+			t = add32x5(e,(a>>>27)|(a<<5),d^(b&(c^d)),w[j],k1);
 			e=d; d=c; c=(b>>>2)|(b<<30); b=a; a = t;
 			}
 		for(j=20;j<40;j++)
 			{
 			w[j] = rol32(w[j-3]^w[j-8]^w[j-14]^w[j-16]);
-			t = add32x5((a>>>27)|(a<<5),b^c^d,e,w[j],k2);
+			t = add32x5(e,(a>>>27)|(a<<5),b^c^d,w[j],k2);
 			e=d; d=c; c=(b>>>2)|(b<<30); b=a; a = t;
 			}
 		for(j=40;j<60;j++)
 			{
 			w[j] = rol32(w[j-3]^w[j-8]^w[j-14]^w[j-16]);
-			t = add32x5((a>>>27)|(a<<5),(b&c)|(b&d)|(c&d),e,w[j],k3);
+			t = add32x5(e,(a>>>27)|(a<<5),(b&c)|(d&(b|c)),w[j],k3);
 			e=d; d=c; c=(b>>>2)|(b<<30); b=a; a = t;
 			}
 		for(j=60;j<80;j++)
 			{
 			w[j] = rol32(w[j-3]^w[j-8]^w[j-14]^w[j-16]);
-			t = add32x5((a>>>27)|(a<<5),b^c^d,e,w[j],k4);
+			t = add32x5(e,(a>>>27)|(a<<5),b^c^d,w[j],k4);
 			e=d; d=c; c=(b>>>2)|(b<<30); b=a; a = t;
 			}
 
