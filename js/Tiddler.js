@@ -91,9 +91,9 @@ Tiddler.prototype.changed = function()
 	var formatMatch = tiddlerLinkRegExp.exec(this.text);
 	while(formatMatch)
 		{
-		if(formatMatch[1] && formatMatch[1] != this.title) // brackettedLink
-			this.links.pushUnique(formatMatch[1]);
-		else if(formatMatch[2] && (store.tiddlerExists(formatMatch[3]) || store.isShadowTiddler(formatMatch[3]))) // titledBrackettedLink
+		if(formatMatch[1] && (store.tiddlerExists(formatMatch[2]) || store.isShadowTiddler(formatMatch[2]))) // titledBrackettedLink
+			this.links.pushUnique(formatMatch[2]);
+		else if(formatMatch[3] && formatMatch[3] != this.title) // brackettedLink
 			this.links.pushUnique(formatMatch[3]);
 		// Do not add link if match urlPattern (formatMatch[4])
 		else if(formatMatch[5] && formatMatch[5] != this.title) // wikiWordLink

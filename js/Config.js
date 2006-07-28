@@ -147,9 +147,9 @@ if(config.browser.isBadSafari)
 		lowerLetter: "[a-z0-9\\-\u00df-\u00ff]",
 		anyLetter:   "[A-Za-z0-9\\-\u00c0-\u00de\u00df-\u00ff]"
 		}
+config.textPrimitives.sliceSeparator = "##";
 config.textPrimitives.urlPattern = "(?:file|http|https|mailto|ftp):[^\\s'\"]+(?:/|\\b)";
 config.textPrimitives.unWikiLink = "~";
-config.textPrimitives.sliceSeparator = "##";
 config.textPrimitives.wikiLink = "(?:(?:" + config.textPrimitives.upperLetter + "+" +
 												config.textPrimitives.lowerLetter + "+" +
 												config.textPrimitives.upperLetter +
@@ -162,15 +162,14 @@ config.textPrimitives.cssLookaheadRegExp = new RegExp(config.textPrimitives.cssL
 
 config.textPrimitives.brackettedLink = "\\[\\[([^\\]]+)\\]\\]";
 config.textPrimitives.titledBrackettedLink = "\\[\\[([^\\[\\]\\|]+)\\|([^\\[\\]\\|]+)\\]\\]";
-
-config.textPrimitives.tiddlerForcedLinkRegExp = new RegExp("(?:" + config.textPrimitives.brackettedLink + ")|(?:" +
-	config.textPrimitives.titledBrackettedLink + ")|(?:" + 
+config.textPrimitives.tiddlerForcedLinkRegExp = new RegExp("(?:" + config.textPrimitives.titledBrackettedLink + ")|(?:" +
+	config.textPrimitives.brackettedLink + ")|(?:" + 
 	config.textPrimitives.urlPattern + ")","mg");
-config.textPrimitives.tiddlerAnyLinkRegExp = new RegExp("(?:" + config.textPrimitives.brackettedLink + ")|(?:" +
-	config.textPrimitives.titledBrackettedLink + ")|(?:" + 
+config.textPrimitives.tiddlerAnyLinkRegExp = new RegExp("(?:" + config.textPrimitives.titledBrackettedLink + ")|(?:" +
+	config.textPrimitives.brackettedLink + ")|(?:" + 
 	config.textPrimitives.urlPattern + ")|(" +
 	config.textPrimitives.wikiLink + ")","mg");
-
+	
 // ---------------------------------------------------------------------------------
 // Shadow tiddlers
 // ---------------------------------------------------------------------------------
