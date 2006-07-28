@@ -160,6 +160,17 @@ config.textPrimitives.wikiLink = "(?:(?:" + config.textPrimitives.upperLetter + 
 config.textPrimitives.cssLookahead = "(?:(" + config.textPrimitives.anyLetter + "+)\\(([^\\)\\|\\n]+)(?:\\):))|(?:(" + config.textPrimitives.anyLetter + "+):([^;\\|\\n]+);)";
 config.textPrimitives.cssLookaheadRegExp = new RegExp(config.textPrimitives.cssLookahead,"mg");
 
+config.textPrimitives.brackettedLink = "\\[\\[([^\\]]+)\\]\\]";
+config.textPrimitives.titledBrackettedLink = "\\[\\[([^\\[\\]\\|]+)\\|([^\\[\\]\\|]+)\\]\\]";
+
+config.textPrimitives.tiddlerForcedLinkRegExp = new RegExp("(?:" + config.textPrimitives.brackettedLink + ")|(?:" +
+	config.textPrimitives.titledBrackettedLink + ")|(?:" + 
+	config.textPrimitives.urlPattern + ")","mg");
+config.textPrimitives.tiddlerAnyLinkRegExp = new RegExp("(?:" + config.textPrimitives.brackettedLink + ")|(?:" +
+	config.textPrimitives.titledBrackettedLink + ")|(?:" + 
+	config.textPrimitives.urlPattern + ")|(" +
+	config.textPrimitives.wikiLink + ")","mg");
+
 // ---------------------------------------------------------------------------------
 // Shadow tiddlers
 // ---------------------------------------------------------------------------------

@@ -87,34 +87,30 @@ Tiddler.prototype.escapeLineBreaks = function()
 Tiddler.prototype.changed = function()
 {
 	this.links = [];
-	var aliasedPrettyLink = "\\[\\[([^\\[\\]\\|]+)\\|([^\\[\\]\\|]+)\\]\\]";
-	var prettyLink = "\\[\\[([^\\]]+)\\]\\]";
-	var wikiNameRegExp = new RegExp("(" + config.textPrimitives.wikiLink + ")|(?:" + 
-				aliasedPrettyLink + ")|(?:" + prettyLink + ")|(?:" + config.textPrimitives.urlPattern + ")","mg");
-	do {
-		var formatMatch = wikiNameRegExp.exec(this.text);
-		if(formatMatch)
+	var tiddlerLinkRegExp = this.hasWikiLinks() ? config.textPrimitives.tiddlerAnyLinkRegExp : config.textPrimitives.tiddlerForcedLinkRegExp;
+	var formatMatch = tiddlerLinkRegExp.exec(this.text);
+	while(formatMatch)
+		{
+		if(formatMatch[1] && formatMatch[1] != this.title) // brackettedLink
+			this.links.pushUnique(formatMatch[1]);
+		else if(formatMatch[2] && (store.tiddlerExists(formatMatch[3]) || store.isShadowTiddler(formatMatch[3]))) // titledBrackettedLink
+			this.links.pushUnique(formatMatch[3]);
+		// Do not add link if match urlPattern (formatMatch[4])
+		else if(formatMatch[5] && formatMatch[5] != this.title) // wikiWordLink
 			{
-			if(formatMatch[1] && formatMatch[1] != this.title && this.hasWikiLinks())
+			if(formatMatch.index > 0)
 				{
-				if(formatMatch.index > 0)
-					{
-					var preRegExp = new RegExp(config.textPrimitives.unWikiLink+"|"+config.textPrimitives.anyLetter,"mg");
-					preRegExp.lastIndex = formatMatch.index-1;
-					preMatch = preRegExp.exec(this.text);
-					if(preMatch.index != formatMatch.index-1)
-						this.links.pushUnique(formatMatch[1]);
-					}
-				else
-					this.links.pushUnique(formatMatch[1]);
+				var preRegExp = new RegExp(config.textPrimitives.unWikiLink+"|"+config.textPrimitives.anyLetter,"mg");
+				preRegExp.lastIndex = formatMatch.index-1;
+				preMatch = preRegExp.exec(this.text);
+				if(preMatch.index != formatMatch.index-1)
+					this.links.pushUnique(formatMatch[5]);
 				}
-			else if(formatMatch[2] && (store.tiddlerExists(formatMatch[3]) || store.isShadowTiddler(formatMatch[3])))
-				this.links.pushUnique(formatMatch[3]);
-			else if(formatMatch[4] && formatMatch[4] != this.title)
-				this.links.pushUnique(formatMatch[4]);
-			// Do not add link if match urlPattern (formatMatch[5])
+			else
+				this.links.pushUnique(formatMatch[5]);
 			}
-	} while(formatMatch);
+		formatMatch = tiddlerLinkRegExp.exec(this.text);
+		}
 	return;
 }
 
