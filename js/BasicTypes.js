@@ -13,14 +13,15 @@ Number.prototype.clamp = function(min,max)
 	return c;
 }
 
-// Find an entry in an array. Returns the array index or null
-Array.prototype.find = function(item)
+// Add indexOf function if browser does not support it
+if(!Array.indexOf) {
+Array.prototype.indexOf = function(item)
 {
-	for(var t=0; t<this.length; t++)
-		if(this[t] == item)
-			return t;
-	return null;
-}
+	for(var i=0; i<this.length; i++)
+		if(this[i] == item)
+			return i;
+	return -1;
+}}
 
 // Find an entry in a given field of the members of an array
 Array.prototype.findByField = function(field,value)
@@ -31,26 +32,20 @@ Array.prototype.findByField = function(field,value)
 	return null;
 }
 
-// Return whether an entry exists in an array
-Array.prototype.contains = function(item)
-{
-	return this.find(item) != null;
-};
-
 // Return whether one of a list of values exists in an array
 Array.prototype.containsAny = function(items)
 {
 	for(var i=0; i<items.length; i++)
-		if (this.contains(items[i]))
+		if (this.indexOf(items[i]) != -1)
 			return true;
 	return false;
 };
 
-// Return wheter all of a list of values exists in an array
+// Return whether all of a list of values exists in an array
 Array.prototype.containsAll = function(items)
 {
 	for (var i = 0; i<items.length; i++)
-		if (!this.contains(items[i]))
+		if (this.indexOf(items[i]) == -1)
 			return false;
 	return true;
 };
@@ -62,7 +57,7 @@ Array.prototype.pushUnique = function(item,unique)
 		this.push(item);
 	else
 		{
-		if(this.find(item) == null)
+		if(this.indexOf(item) == -1)
 			this.push(item);
 		}
 }
