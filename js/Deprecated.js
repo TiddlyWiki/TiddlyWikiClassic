@@ -59,6 +59,17 @@ function allTiddlersAsHtml()
 	return store.allTiddlersAsHtml();
 }
 
+// @Deprecated: Use refreshPageTemplate instead
+function applyPageTemplate(title)
+{
+	refreshPageTemplate(title);
+}
+
+// @Deprecated: Use functions on right hand side directly instead
+var createTiddlerPopup = Popup.create;
+var scrollToTiddlerPopup = Popup.show;
+var hideTiddlerPopup = Popup.remove;
+
 // @Deprecated: Use right hand side directly instead
 var regexpBackSlashEn = new RegExp("\\\\n","mg");
 var regexpBackSlash = new RegExp("\\\\","mg");

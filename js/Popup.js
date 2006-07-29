@@ -66,8 +66,3 @@ Popup.removeFrom = function(from)
 	Popup.stack = Popup.stack.slice(0,from);
 }
 
-// Backwards compatibility
-var createTiddlerPopup = Popup.create;
-var scrollToTiddlerPopup = Popup.show;
-var hideTiddlerPopup = Popup.remove;
-

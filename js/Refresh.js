@@ -91,11 +91,6 @@ function applyHtmlMacros(root,tiddler)
 
 function refreshPageTemplate(title)
 {
-	applyPageTemplate(title);
-}
-
-function applyPageTemplate(title)
-{
 	var stash = createTiddlyElement(document.body,"div");
 	stash.style.display = "none";
 	var display = document.getElementById("tiddlerDisplay");
