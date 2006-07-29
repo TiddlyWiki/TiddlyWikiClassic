@@ -87,16 +87,12 @@ Tiddler.prototype.escapeLineBreaks = function()
 Tiddler.prototype.changed = function()
 {
 	this.links = [];
-	var tiddlerLinkRegExp = this.autoLinkWikiWords() ? config.textPrimitives.tiddlerAnyLinkRegExp : config.textPrimitives.tiddlerForcedLinkRegExp;
+	var t = this.autoLinkWikiWords() ? 0 : 1;
+	var tiddlerLinkRegExp = t==0 ? config.textPrimitives.tiddlerAnyLinkRegExp : config.textPrimitives.tiddlerForcedLinkRegExp;
 	var formatMatch = tiddlerLinkRegExp.exec(this.text);
 	while(formatMatch)
 		{
-		if(formatMatch[1] && (store.tiddlerExists(formatMatch[2]) || store.isShadowTiddler(formatMatch[2]))) // titledBrackettedLink
-			this.links.pushUnique(formatMatch[2]);
-		else if(formatMatch[3] && formatMatch[3] != this.title) // brackettedLink
-			this.links.pushUnique(formatMatch[3]);
-		// Do not add link if match urlPattern (formatMatch[4])
-		else if(formatMatch[5] && formatMatch[5] != this.title) // wikiWordLink
+		if(t==0 && formatMatch[1] && formatMatch[1] != this.title) // wikiWordLink
 			{
 			if(formatMatch.index > 0)
 				{
@@ -104,11 +100,16 @@ Tiddler.prototype.changed = function()
 				preRegExp.lastIndex = formatMatch.index-1;
 				preMatch = preRegExp.exec(this.text);
 				if(preMatch.index != formatMatch.index-1)
-					this.links.pushUnique(formatMatch[5]);
+					this.links.pushUnique(formatMatch[1]);
 				}
 			else
-				this.links.pushUnique(formatMatch[5]);
+				this.links.pushUnique(formatMatch[1]);
 			}
+		else if(formatMatch[2-t] && (store.tiddlerExists(formatMatch[3-t]) || store.isShadowTiddler(formatMatch[3-t]))) // titledBrackettedLink
+			this.links.pushUnique(formatMatch[3-t]);
+		else if(formatMatch[4-t] && formatMatch[4-t] != this.title) // brackettedLink
+			this.links.pushUnique(formatMatch[4-t]);
+		// Do not add link if match urlPattern (formatMatch[5-t])
 		formatMatch = tiddlerLinkRegExp.exec(this.text);
 		}
 	return;

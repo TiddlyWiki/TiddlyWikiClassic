@@ -165,11 +165,11 @@ config.textPrimitives.titledBrackettedLink = "\\[\\[([^\\[\\]\\|]+)\\|([^\\[\\]\
 config.textPrimitives.tiddlerForcedLinkRegExp = new RegExp("(?:" + config.textPrimitives.titledBrackettedLink + ")|(?:" +
 	config.textPrimitives.brackettedLink + ")|(?:" + 
 	config.textPrimitives.urlPattern + ")","mg");
-config.textPrimitives.tiddlerAnyLinkRegExp = new RegExp("(?:" + config.textPrimitives.titledBrackettedLink + ")|(?:" +
-	config.textPrimitives.brackettedLink + ")|(?:" + 
-	config.textPrimitives.urlPattern + ")|(" +
-	config.textPrimitives.wikiLink + ")","mg");
-	
+config.textPrimitives.tiddlerAnyLinkRegExp = new RegExp("("+ config.textPrimitives.wikiLink + ")|(?:" +
+	config.textPrimitives.titledBrackettedLink + ")|(?:" +
+	config.textPrimitives.brackettedLink + ")|(?:" +
+	config.textPrimitives.urlPattern + ")","mg");
+
 // ---------------------------------------------------------------------------------
 // Shadow tiddlers
 // ---------------------------------------------------------------------------------
