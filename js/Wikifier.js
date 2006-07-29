@@ -61,7 +61,7 @@ function Wikifier(source,formatter,highlightRegExp,tiddler)
 	this.output = null;
 	this.formatter = formatter;
 	this.nextMatch = 0;
-	this.hasWikiLinks = tiddler && tiddler.hasWikiLinks() == false ? false : true;
+	this.autoLinkWikiWords = tiddler && tiddler.autoLinkWikiWords() == false ? false : true;
 	this.highlightRegExp = highlightRegExp;
 	this.highlightMatch = null;
 	if(highlightRegExp)

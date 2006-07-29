@@ -87,7 +87,7 @@ Tiddler.prototype.escapeLineBreaks = function()
 Tiddler.prototype.changed = function()
 {
 	this.links = [];
-	var tiddlerLinkRegExp = this.hasWikiLinks() ? config.textPrimitives.tiddlerAnyLinkRegExp : config.textPrimitives.tiddlerForcedLinkRegExp;
+	var tiddlerLinkRegExp = this.autoLinkWikiWords() ? config.textPrimitives.tiddlerAnyLinkRegExp : config.textPrimitives.tiddlerForcedLinkRegExp;
 	var formatMatch = tiddlerLinkRegExp.exec(this.text);
 	while(formatMatch)
 		{
@@ -132,7 +132,7 @@ Tiddler.prototype.isReadOnly = function()
 	return readOnly;
 }
 
-Tiddler.prototype.hasWikiLinks = function()
+Tiddler.prototype.autoLinkWikiWords = function()
 {
 	return !this.isTagged("systemConfig") && !this.isTagged("excludeMissing");
 }
