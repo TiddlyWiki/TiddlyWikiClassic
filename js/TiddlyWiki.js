@@ -288,9 +288,14 @@ TiddlyWiki.prototype.loadFromDiv = function(src,idPrefix)
 	this.idPrefix = idPrefix;
 	var storeElem = (typeof src == "string") ? document.getElementById(src) : src;
 	var tiddlers = this.getLoader().loadTiddlers(this,storeElem.childNodes);
-	for(var t=0; t<tiddlers.length; t++)
-		tiddlers[t].changed();
 	this.setDirty(false);
+}
+
+TiddlyWiki.prototype.updateTiddlers = function()
+{
+	this.forEachTiddler(function(title,tiddler) {
+		tiddler.changed();
+		});
 }
 
 // Return all tiddlers formatted as an HTML string

@@ -972,6 +972,7 @@ config.macros.importTiddlers.onLoad = function(status,params,responseText,url,xh
 	var storeArea = doc.getElementById("storeArea");
 	var importStore = new TiddlyWiki();
 	importStore.loadFromDiv(storeArea,"store");
+	importStore.updateTiddlers();
 	// Get rid of the iframe
 	iframe.parentNode.removeChild(iframe);
 	// Extract data for the listview

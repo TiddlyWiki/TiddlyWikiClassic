@@ -34,6 +34,7 @@ function main()
 	for(var s=0; s<config.notifyTiddlers.length; s++)
 		store.addNotification(config.notifyTiddlers[s].name,config.notifyTiddlers[s].notify);
 	store.loadFromDiv("storeArea","store");
+	store.updateTiddlers();
 	invokeParamifier(params,"onload");
 	var pluginProblem = loadPlugins();
 	formatter = new Formatter(config.formatters);
