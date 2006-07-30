@@ -316,7 +316,7 @@ TiddlyWiki.prototype.search = function(searchRegExp,sortField,excludeTag)
 		}
 	if(!sortField)
 		sortField = "title";
-	results.sort(function (a,b) {if(a[sortField] == b[sortField]) return(0); else return (a[sortField] < b[sortField]) ? -1 : +1; });
+	results.sort(function(a,b) {return a[sortField] < b[sortField] ? -1 : (a[sortField] == b[sortField] ? 0 : +1);});
 	return results;
 }
 
@@ -339,7 +339,7 @@ TiddlyWiki.prototype.getTags = function()
 				results.push([tag,1]);
 			}
 		});
-	results.sort(function (a,b) {if(a[0].toLowerCase() == b[0].toLowerCase()) return(0); else return (a[0].toLowerCase() < b[0].toLowerCase()) ? -1 : +1; });
+	results.sort(function(a,b) {return a[0].toLowerCase() < b[0].toLowerCase() ? -1 : (a[0].toLowerCase() == b[0].toLowerCase() ? 0 : +1);});
 	return results;
 }
 
@@ -370,7 +370,7 @@ TiddlyWiki.prototype.reverseLookup = function(lookupField,lookupValue,lookupMatc
 		});
 	if(!sortField)
 		sortField = "title";
-	results.sort(function (a,b) {if(a[sortField] == b[sortField]) return(0); else return (a[sortField] < b[sortField]) ? -1 : +1; });
+	results.sort(function(a,b) {return a[sortField] < b[sortField] ? -1 : (a[sortField] == b[sortField] ? 0 : +1);});
 	return results;
 }
 
@@ -383,7 +383,7 @@ TiddlyWiki.prototype.getTiddlers = function(field,excludeTag)
 			results.push(tiddler);
 		});
 	if(field)
-		results.sort(function (a,b) {if(a[field] == b[field]) return(0); else return (a[field] < b[field]) ? -1 : +1; });
+		results.sort(function(a,b) {return a[field] < b[field] ? -1 : (a[field] == b[field] ? 0 : +1);});
 	return results;
 }
 
