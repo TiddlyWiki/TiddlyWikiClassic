@@ -144,8 +144,7 @@ config.formatters = [
 	termRegExp: /(\n)/mg,
 	handler: function(w)
 	{
-		var e = createTiddlyElement(w.output,"h" + w.matchLength);
-		w.subWikifyTerm(e,this.termRegExp);
+		w.subWikifyTerm(createTiddlyElement(w.output,"h" + w.matchLength),this.termRegExp);
 	}
 },
 
@@ -403,8 +402,7 @@ config.formatters = [
 	match: config.textPrimitives.urlPattern,
 	handler: function(w)
 	{
-		var e = createExternalLink(w.output,w.matchText);
-		w.outputText(e,w.matchStart,w.nextMatch);
+		w.outputText(createExternalLink(w.output,w.matchText),w.matchStart,w.nextMatch);
 	}
 },
 
@@ -448,8 +446,7 @@ config.formatters = [
 		var lookaheadMatch = this.lookaheadRegExp.exec(w.source)
 		if(lookaheadMatch && lookaheadMatch.index == w.matchStart)
 			{
-			var e = createTiddlyElement(w.output,"span");
-			e.innerHTML = lookaheadMatch[1];
+			createTiddlyElement(w.output,"span").innerHTML = lookaheadMatch[1];
 			w.nextMatch = this.lookaheadRegExp.lastIndex;
 			}
 	}
@@ -526,7 +523,7 @@ config.formatters = [
 		var lookaheadMatch = this.lookaheadRegExp.exec(w.source)
 		if(lookaheadMatch && lookaheadMatch.index == w.matchStart)
 			{
-			var e = createTiddlyElement(w.output,"code",null,null,lookaheadMatch[1]);
+			createTiddlyElement(w.output,"code",null,null,lookaheadMatch[1]);
 			w.nextMatch = this.lookaheadRegExp.lastIndex;
 			}
 	}
@@ -562,8 +559,7 @@ config.formatters = [
 	match: "&#?[a-zA-Z0-9]{2,8};",
 	handler: function(w)
 		{
-		var e = createTiddlyElement(w.output,"span");
-		e.innerHTML = w.matchText ;
+		createTiddlyElement(w.output,"span").innerHTML = w.matchText;
 		}
 },
 
@@ -578,8 +574,7 @@ config.formatters = [
 		var lookaheadMatch = this.lookaheadRegExp.exec(w.source);
 		if(lookaheadMatch)
 			{
-			var isByLine = lookaheadMatch[2] == "\n";
-			var e = createTiddlyElement(w.output,isByLine ? "div" : "span",null,lookaheadMatch[1]);
+			var e = createTiddlyElement(w.output,lookaheadMatch[2] == "\n" ? "div" : "span",null,lookaheadMatch[1]);
 			w.nextMatch = this.lookaheadRegExp.lastIndex;
 			w.subWikifyTerm(e,this.termRegExp);
 			}
