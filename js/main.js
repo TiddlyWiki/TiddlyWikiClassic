@@ -90,11 +90,14 @@ function loadPlugins()
 			try
 				{
 				if(tiddler.text && tiddler.text != "")
-					window.eval(tiddler.text);
+					{
+					var f = window.eval("function(tiddler,pluginInfo){%0\n}".format([tiddler.text]));
+					f(tiddler,p);
+					}
 				}
 			catch(e)
 				{
-				p.log.push(config.messages.customConfigError.format([p.title,exceptionText(e)]));
+				p.log.push(config.messages.pluginError.format([exceptionText(e)]));
 				p.error = true;
 				hadProblem = true;
 				}

@@ -9,6 +9,7 @@ merge(config.options,{
 
 merge(config.messages,{
 	customConfigError: "Problems were encountered loading plugins. See PluginManager for details",
+	pluginError: "Error: %0",
 	nothingSelected: "Nothing is selected. You must select one or more items first",
 	savedSnapshotError: "It appears that this TiddlyWiki has been incorrectly saved. Please see http://www.tiddlywiki.com/#DownloadSoftware for details",
 	subtitleUnknown: "(unknown)",
