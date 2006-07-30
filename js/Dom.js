@@ -80,29 +80,29 @@ function removeEvent(obj,type,fn)
 
 function addClass(e,theClass)
 {
-	removeClass(e,theClass);
-	e.className += " " + theClass;
+	var currClass = e.className.split(" ");
+	if(currClass.indexOf(theClass) == -1)
+		e.className += " " + theClass;
 }
 
 function removeClass(e,theClass)
 {
-	var newClass = [];
 	var currClass = e.className.split(" ");
-	for(var t=0; t<currClass.length; t++)
-		if(currClass[t] != theClass)
-			newClass.push(currClass[t]);
-	e.className = newClass.join(" ");
+	var i = currClass.indexOf(theClass);
+	while(i != -1)
+		{
+		currClass.splice(i,1);
+		i = currClass.indexOf(theClass);
+		}
+	e.className = currClass.join(" ");
 }
 
 function hasClass(e,theClass)
 {
-	var c = e.className;
-	if(c)
+	if(e.className)
 		{
-		c = c.split(" ");
-		for(var t=0; t<c.length; t++)
-			if(c[t] == theClass)
-				return true;
+		if(e.className.split(" ").indexOf(theClass) != -1)
+			return true;
 		}
 	return false;
 }
