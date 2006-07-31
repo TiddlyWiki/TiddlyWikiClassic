@@ -91,7 +91,7 @@ function loadPlugins()
 				{
 				if(tiddler.text && tiddler.text != "")
 					{
-					var f = window.eval("function(tiddler,pluginInfo){%0\n}".format([tiddler.text]));
+					var f = new Function("tiddler","pluginInfo",tiddler.text);
 					f(tiddler,p);
 					}
 				}
