@@ -70,7 +70,7 @@ Story.prototype.displayTiddler = function(srcElement,title,template,animate,slow
 		var before = this.positionTiddler(srcElement);
 		theTiddler = this.createTiddler(place,before,title,template);
 		}
-	if(srcElement)
+	if(srcElement && typeof srcElement !== "string")
 		{
 		if(config.options.chkAnimate && (animate == undefined || animate == true))
 			anim.startAnimating(new Cascade(title,srcElement,theTiddler,slowly),new Scroller(theTiddler,slowly));
