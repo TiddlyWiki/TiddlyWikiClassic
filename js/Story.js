@@ -457,11 +457,6 @@ Story.prototype.gatherSaveFields = function(e,fields)
 		}
 }
 
-config.editFields = {};
-config.editFields.title = {isChanged: function (tiddler, fields) {return tiddler.title != fields.title;}};
-config.editFields.text = {isChanged: function (tiddler, fields) {return tiddler.text != fields.text;}};
-config.editFields.tags = {isChanged: function (tiddler, fields) {return tiddler.getTags() != fields.tags;}};
-
 // Determine whether a tiddler has any edit fields, and if so if their values have been changed
 // title - name of tiddler
 Story.prototype.hasChanges = function(title)
@@ -475,7 +470,7 @@ Story.prototype.hasChanges = function(title)
 		if (!tiddler)
 			return false;
 		for(var n in fields)
-			if (config.editFields[n].isChanged  && config.editFields[n].isChanged(tiddler, fields))
+			if (store.getValue(title,n) != fields[n])
 				return true;
 		}
 	return false;
@@ -508,6 +503,9 @@ Story.prototype.saveTiddler = function(title,minorUpdate)
 			minorUpdate = !minorUpdate;
 		var newDate = new Date();
 		store.saveTiddler(title,newTitle,fields.text,config.options.txtUserName,minorUpdate ? undefined : newDate,fields.tags);
+		for (var n in fields) 
+			if (!TiddlyWiki.isStandardField(n))
+				store.setValue(newTitle,n,fields[n]);
 		if(config.options.chkAutoSave)
 			saveChanges();
 		return newTitle;

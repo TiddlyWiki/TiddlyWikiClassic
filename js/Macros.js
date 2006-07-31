@@ -607,48 +607,43 @@ config.macros.view.handler = function(place,macroName,params,wikifier,paramStrin
 config.macros.edit.handler = function(place,macroName,params,wikifier,paramString,tiddler)
 {
 	var field = params[0];
-	if((tiddler instanceof Tiddler) && field && (tiddler[field] != undefined))
+	if((tiddler instanceof Tiddler) && field)
 		{
 		story.setDirty(tiddler.title,true);
-		switch(field)
+		if (field != "text")
 			{
-			case "title":
 				var e = createTiddlyElement(place,"input");
 				if(tiddler.isReadOnly())
 					e.setAttribute("readOnly","readOnly");
-				e.setAttribute("edit","title");
+				e.setAttribute("edit",field);
 				e.setAttribute("type","text");
-				e.value = tiddler.title;
+				var v = store.getValue(tiddler,field);
+				if (!v) 
+					v = "";
+				e.value = v;
 				e.setAttribute("size","40");
 				e.setAttribute("autocomplete","off");
-				break;
-			case "text":
+			}
+		else
+			{
 				var wrapper1 = createTiddlyElement(place,"fieldset",null,"fieldsetFix");
 				var wrapper2 = createTiddlyElement(wrapper1,"div");
 				var e = createTiddlyElement(wrapper2,"textarea");
 				if(tiddler.isReadOnly())
 					e.setAttribute("readOnly","readOnly");
-				e.value = tiddler.text;
+				var v = store.getValue(tiddler,field);
+				if (!v) 
+					v = "";
+				e.value = v;
 				var rows = 10;
-				var lines = tiddler.text.match(/\n/mg);
+				var lines = v.match(/\n/mg);
 				var maxLines = Math.max(parseInt(config.options.txtMaxEditRows),5);
 				if(lines != null && lines.length > rows)
 					rows = lines.length + 5;
 				rows = Math.min(rows,maxLines);
 				e.setAttribute("rows",rows);
-				e.setAttribute("edit","text");
-				break;
-			case "tags":
-				var e = createTiddlyElement(place,"input");
-				if(tiddler.isReadOnly())
-					e.setAttribute("readOnly","readOnly");
-				e.setAttribute("edit","tags");
-				e.setAttribute("type","text");
-				e.value = tiddler.getTags();
-				e.setAttribute("size","40");
-				e.setAttribute("autocomplete","off");
-				break;
-			}
+				e.setAttribute("edit",field);
+			} 
 		}
 }
 
