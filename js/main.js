@@ -122,14 +122,19 @@ function getPluginInfo(tiddler)
 function isPluginExecutable(plugin)
 {
 	if(plugin.tiddler.isTagged("systemConfigDisable"))
-		return verifyTail(plugin,false,"Not executed because disabled via 'systemConfigDisable' tag");
+		return verifyTail(plugin,false,config.messages.pluginDisabled);
 	if(plugin.tiddler.isTagged("systemConfigForce"))
-		return verifyTail(plugin,true,"Executed because forced via 'systemConfigForce' tag");
+		return verifyTail(plugin,true,config.messages.pluginForced);
 	if(plugin["CoreVersion"])
 		{
 		var coreVersion = plugin["CoreVersion"].split(".");
-		if(parseInt(coreVersion[0]) < version.major || parseInt(coreVersion[1]) < version.minor || parseInt(coreVersion[2]) < version.revision)
-			return verifyTail(plugin,false,"Not executed because specified CoreVersion is too old");
+		var w = parseInt(coreVersion[0]) - version.major;
+		if(w == 0 && coreVersion[1])
+			w = parseInt(coreVersion[1]) - version.minor;
+		if(w == 0 && coreVersion[2])
+		 	w = parseInt(coreVersion[2]) - version.revision;
+		if(w > 0)
+			return verifyTail(plugin,false,config.messages.pluginVersionError);
 		}
 	return true;
 }
