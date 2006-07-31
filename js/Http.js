@@ -46,7 +46,7 @@ function loadRemoteFile(url,callback,params)
 			}
 		}
 	// Send request
-	if(window.netscape && window.netscape.security)
+	if(window.netscape && window.netscape.security && document.location.protocol.indexOf("http") == -1)
 		window.netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
 	try
 		{
