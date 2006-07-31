@@ -182,7 +182,7 @@ String.prototype.getChunkRange = function(start,end)
 	if(s != -1)
 		{
 		s += start.length;
-		var e = this.indexOf(end,s + start.length);
+		var e = this.indexOf(end,s);
 		if(e != -1)
 			return [s, e];
 		}
