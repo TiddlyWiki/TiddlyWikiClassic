@@ -89,6 +89,7 @@ Tiddler.prototype.changed = function()
 	this.links = [];
 	var t = this.autoLinkWikiWords() ? 0 : 1;
 	var tiddlerLinkRegExp = t==0 ? config.textPrimitives.tiddlerAnyLinkRegExp : config.textPrimitives.tiddlerForcedLinkRegExp;
+	tiddlerLinkRegExp.lastIndex = 0;
 	var formatMatch = tiddlerLinkRegExp.exec(this.text);
 	while(formatMatch)
 		{
