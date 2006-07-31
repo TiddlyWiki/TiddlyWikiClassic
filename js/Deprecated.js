@@ -65,6 +65,18 @@ function applyPageTemplate(title)
 	refreshPageTemplate(title);
 }
 
+// @Deprecated: Use story.displayTiddlers instead
+function displayTiddlers(srcElement,titles,template,unused1,unused2,animate,slowly)
+{
+	story.displayTiddlers(srcElement,titles,template,animate,slowly);
+}
+
+// @Deprecated: Use story.displayTiddler instead
+function displayTiddler(srcElement,title,template,unused1,unused2,animate,slowly)
+{
+	story.displayTiddler(srcElement,title,template,animate,slowly);
+}
+
 // @Deprecated: Use functions on right hand side directly instead
 var createTiddlerPopup = Popup.create;
 var scrollToTiddlerPopup = Popup.show;

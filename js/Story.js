@@ -2,16 +2,6 @@
 // Story functions
 // ---------------------------------------------------------------------------------
 
-function displayTiddlers(srcElement,titles,template,unused1,unused2,animate,slowly)
-{
-	story.displayTiddlers(srcElement,titles,template,animate,slowly);
-}
-
-function displayTiddler(srcElement,title,template,unused1,unused2,animate,slowly)
-{
-	story.displayTiddler(srcElement,title,template,animate,slowly);
-}
-
 // A story is a HTML div containing a sequence of tiddlers that can be manipulated
 // container - id of containing element
 // idPrefix - string prefix prepended to title to make ids for tiddlers in this story
