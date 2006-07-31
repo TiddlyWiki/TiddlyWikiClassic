@@ -475,7 +475,7 @@ Story.prototype.hasChanges = function(title)
 		if (!tiddler)
 			return false;
 		for(var n in fields)
-			if (config.editFields[n].isChanged  && config.editFields[n].isChanged(tiddler, fields))
+			if (config.editFields[n] && config.editFields[n].isChanged && config.editFields[n].isChanged(tiddler, fields))
 				return true;
 		}
 	return false;
@@ -508,6 +508,11 @@ Story.prototype.saveTiddler = function(title,minorUpdate)
 			minorUpdate = !minorUpdate;
 		var newDate = new Date();
 		store.saveTiddler(title,newTitle,fields.text,config.options.txtUserName,minorUpdate ? undefined : newDate,fields.tags);
+		for (var i in fields)
+			{
+			if(i != "title" && i != "text" && i != "tags")
+				store.setValue(title,i+"",fields[i]);
+			}
 		if(config.options.chkAutoSave)
 			saveChanges();
 		return newTitle;

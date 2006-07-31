@@ -648,6 +648,17 @@ config.macros.edit.handler = function(place,macroName,params,wikifier,paramStrin
 				e.setAttribute("size","40");
 				e.setAttribute("autocomplete","off");
 				break;
+			default: 
+				var e = createTiddlyElement(place,"input");
+				if(tiddler.isReadOnly())
+					e.setAttribute("readOnly","readOnly");
+				e.setAttribute("edit",field);
+				e.setAttribute("type","text");
+				var metaValue = store.getValue(tiddler, field);
+				e.value = metaValue == undefined ? "" : metaValue;
+				e.setAttribute("size","40");
+				e.setAttribute("autocomplete","off");
+				break;
 			}
 		}
 }
