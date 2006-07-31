@@ -33,7 +33,7 @@ function main()
 	loadOptionsCookie();
 	for(var s=0; s<config.notifyTiddlers.length; s++)
 		store.addNotification(config.notifyTiddlers[s].name,config.notifyTiddlers[s].notify);
-	store.loadFromDiv("storeArea","store");
+	store.loadFromDiv("storeArea","store",true);
 	store.updateTiddlers();
 	invokeParamifier(params,"onload");
 	var pluginProblem = loadPlugins();

@@ -284,12 +284,17 @@ TiddlyWiki.prototype.createTiddler = function(title)
 }
 
 // Load contents of a tiddlywiki from an HTML DIV
-TiddlyWiki.prototype.loadFromDiv = function(src,idPrefix)
+TiddlyWiki.prototype.loadFromDiv = function(src,idPrefix,noUpdate)
 {
 	this.idPrefix = idPrefix;
 	var storeElem = (typeof src == "string") ? document.getElementById(src) : src;
 	var tiddlers = this.getLoader().loadTiddlers(this,storeElem.childNodes);
 	this.setDirty(false);
+	if(!noUpdate)
+		{
+		for(var i = 0;i<tiddlers.length; i++)
+			tiddlers[i].changed();
+		}
 }
 
 TiddlyWiki.prototype.updateTiddlers = function()
