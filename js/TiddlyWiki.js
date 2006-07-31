@@ -142,6 +142,7 @@ TiddlyWiki.prototype.getTiddlerText = function(title,defaultText)
 
 TiddlyWiki.prototype.slicesRE = /(?:[\'\/]*~?(\w+)[\'\/]*\:[\'\/]*\s*(.*?)\s*$)|(?:\|[\'\/]*~?(\w+)\:?[\'\/]*\|\s*(.*?)\s*\|)/gm
 
+//# @internal
 TiddlyWiki.prototype.calcAllSlices = function(title) 
 {
 	var slices = {};
