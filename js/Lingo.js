@@ -180,7 +180,7 @@ merge(config.macros.importTiddlers,{
 			{name: 'Selected', field: 'Selected', rowName: 'title', type: 'Selector'},
 			{name: 'Title', field: 'title', title: "Title", type: 'String'},
 			{name: 'Snippet', field: 'text', title: "Snippet", type: 'String'},
-			{name: 'Tags', field: 'tags', title: "Tags", type: 'Tags'},
+			{name: 'Tags', field: 'tags', title: "Tags", type: 'Tags'}
 			],
 		rowClasses: [
 			],
