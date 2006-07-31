@@ -41,7 +41,8 @@ config.formatters = [
 					{
 					// Caption
 					w.nextMatch++;
-					table.insertBefore(rowContainer,table.firstChild);
+					if(rowContainer != table.firstChild)
+						table.insertBefore(rowContainer,table.firstChild);
 					rowContainer.setAttribute("align",rowCount == 0?"top":"bottom");
 					w.subWikifyTerm(rowContainer,this.rowTermRegExp);
 					}
