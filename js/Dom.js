@@ -33,7 +33,7 @@ function createTiddlyCheckbox(theParent,caption,checked,onChange)
 	theParent.appendChild(cb);
 	cb.checked = checked;
 	if(caption)
-		createTiddlyText(theParent,caption);
+		wikify(caption,theParent);
 	return cb;
 }
 
