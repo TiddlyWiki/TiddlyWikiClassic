@@ -905,7 +905,7 @@ config.macros.importTiddlers.onFeedChange = function(e)
 config.macros.importTiddlers.onBrowseChange = function(e)
 {
 	var importer = findRelated(this,"importTiddler","className","parentNode");
-	importer.inputBox.value = this.value;
+	importer.inputBox.value = "file://" + this.value;
 }
 
 config.macros.importTiddlers.onFetch = function(e)
