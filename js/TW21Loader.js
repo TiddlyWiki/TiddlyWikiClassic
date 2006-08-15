@@ -28,7 +28,7 @@ TW21Loader.prototype.internalizeTiddler = function(store, tiddler, title, data) 
 	var attrs = data.attributes;
 	for(var i = attrs.length-1; i >= 0; i--) {
 		var name = attrs[i].name;
-		if (!TiddlyWiki.isStandardField(name)) {
+		if (attrs[i].specified && !TiddlyWiki.isStandardField(name)) {
 			fields[name] = attrs[i].value.unescapeLineBreaks();
 		}
 	}
