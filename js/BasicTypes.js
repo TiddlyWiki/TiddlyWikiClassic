@@ -32,6 +32,12 @@ Array.prototype.findByField = function(field,value)
 	return null;
 }
 
+// Return whether an entry exists in an array
+Array.prototype.contains = function(item)
+{
+	return this.indexOf(item) != -1;
+};
+
 // Return whether one of a list of values exists in an array
 Array.prototype.containsAny = function(items)
 {
