@@ -68,3 +68,10 @@ Array.prototype.pushUnique = function(item,unique)
 		}
 }
 
+Array.prototype.remove = function(item)
+{
+	var p = this.indexOf(item);
+	if(p != -1)
+		this.splice(p,1);
+}
+

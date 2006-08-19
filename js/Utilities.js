@@ -30,43 +30,49 @@ function createTiddlyButton(theParent,theText,theTooltip,theAction,theClass,theI
 function createTiddlyLink(place,title,includeText,theClass)
 {
 	var text = includeText ? title : null;
-	var btn = createTiddlyButton(place,text,null,onClickTiddlerLink,theClass);
-	if(!theClass)
-		removeClass(btn,"button");
+	var i = getTiddlyLinkInfo(title,theClass)
+	var btn = createTiddlyButton(place,text,i.subTitle,onClickTiddlerLink,i.classes);
 	btn.setAttribute("refresh","link");
 	btn.setAttribute("tiddlyLink",title);
-	refreshTiddlyLink(btn,title);
 	return(btn);
 }
 
 function refreshTiddlyLink(e,title)
 {
-	addClass(e,"tiddlyLink");
-	var subTitle;
+	var i = getTiddlyLinkInfo(title,e.className);
+	e.className = i.classes;
+	e.title = i.subTitle;
+}
+
+function getTiddlyLinkInfo(title,currClasses)
+{
+	var classes = currClasses ? currClasses.split(" ") : [];
+	classes.pushUnique("tiddlyLink");
 	var tiddler = store.fetchTiddler(title);
+	var subTitle;
 	if(tiddler)
 		{
 		subTitle = tiddler.getSubtitle();
-		addClass(e,"tiddlyLinkExisting");
-		removeClass(e,"tiddlyLinkNonExisting");
-		removeClass(e,"shadow");
+		classes.pushUnique("tiddlyLinkExisting");
+		classes.remove("tiddlyLinkNonExisting");
+		classes.remove("shadow");
 		}
 	else
 		{
-		removeClass(e,"tiddlyLinkExisting");
-		addClass(e,"tiddlyLinkNonExisting");
+		classes.remove("tiddlyLinkExisting");
+		classes.pushUnique("tiddlyLinkNonExisting");
 		if(store.isShadowTiddler(title))
 			{
 			subTitle = config.messages.shadowedTiddlerToolTip.format([title]);
-			addClass(e,"shadow");
+			classes.pushUnique("shadow");
 			}
 		else
 			{
 			subTitle = config.messages.undefinedTiddlerToolTip.format([title]);
-			removeClass(e,"shadow");
+			classes.remove("shadow");
 			}
 		}
-	e.title = subTitle;
+	return {classes: classes.join(" "), subTitle: subTitle};
 }
 
 function createExternalLink(place,url)
