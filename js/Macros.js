@@ -384,6 +384,7 @@ config.macros.newTiddler.createNewTiddlerButton = function(place,title,params,la
 	btn.setAttribute("newTitle",title);
 	btn.setAttribute("params",tags.join("|"));
 	btn.setAttribute("newFocus",newFocus);
+	btn.setAttribute("newTemplate",getParam(params,"template",DEFAULT_EDIT_TEMPLATE));
 	var text = getParam(params,"text");
 	if (text !== undefined) 
 		btn.setAttribute("newText",text);
@@ -395,7 +396,8 @@ config.macros.newTiddler.onClickNewTiddler = function()
 	var title = this.getAttribute("newTitle");
 	var params = this.getAttribute("params").split("|");
 	var focus = this.getAttribute("newFocus");
-	story.displayTiddler(null,title,DEFAULT_EDIT_TEMPLATE);
+	var template = this.getAttribute("newTemplate");
+	story.displayTiddler(null,title,template);
 	var text = this.getAttribute("newText");
 	if (typeof text == "string")
 		story.getTiddlerField(title,"text").value = text.format([title]);
