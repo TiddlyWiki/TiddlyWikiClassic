@@ -318,33 +318,22 @@ Story.prototype.blurTiddler = function (title)
 // mode - +1 to add the tag, -1 to remove it, 0 to toggle it
 Story.prototype.setTiddlerTag = function(title,tag,add)
 {
-	var tiddler = document.getElementById(this.idPrefix + title);
-	if(tiddler != null)
+	var c = story.getTiddlerField(title,"tags");
+	var tags = c.value.readBracketedList();
+	var p = tags.find(tag);
+	if(add == 0)
+	    add = (p == null) ? +1 : -1;
+	if(add == +1)
 		{
-		var children = tiddler.getElementsByTagName("input")
-		for (var t=0; t<children.length; t++)
-			{
-			var c = children[t];
-			if(c.tagName.toLowerCase() == "input" && c.getAttribute("edit") == "tags")
-				{
-				var tags = c.value.readBracketedList();
-				var p = tags.find(tag);
-				if(add == 0)
-				    add = (p == null) ? +1 : -1;
-				if(add == +1)
-					{
-					if(p == null)
-						tags.push(tag);
-					}
-				else if(add == -1)
-					{
-					if(p != null)
-						tags.splice(p,1);
-					}
-				c.value = String.encodeTiddlyLinkList(tags);
-				}
-			}
+		if(p == null)
+			tags.push(tag);
 		}
+	else if(add == -1)
+		{
+		if(p != null)
+			tags.splice(p,1);
+		}
+	c.value = String.encodeTiddlyLinkList(tags);
 }
 
 // Close a specified tiddler
