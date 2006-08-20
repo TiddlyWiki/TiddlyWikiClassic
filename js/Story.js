@@ -168,7 +168,7 @@ Story.prototype.refreshTiddler = function(title,template,force)
 			theTiddler.onmouseover = this.onTiddlerMouseOver;
 			theTiddler.onmouseout = this.onTiddlerMouseOut;
 			theTiddler.ondblclick = this.onTiddlerDblClick;
-			theTiddler.onkeypress = this.onTiddlerKeyPress;
+			theTiddler[window.event?"onkeydown":"onkeypress"] = this.onTiddlerKeyPress;
 			var html = this.getTemplateForTiddler(title,template,tiddler);
 			theTiddler.innerHTML = html;
 			applyHtmlMacros(theTiddler,tiddler);
@@ -224,21 +224,20 @@ Story.prototype.onTiddlerDblClick = function(e)
 		return false;
 }
 
-// Default tiddler onkeypress event handler
 Story.prototype.onTiddlerKeyPress = function(e)
 {
 	if (!e) var e = window.event;
 	clearMessage();
-	var consume = false;
+	var consume = false; 
 	var title = this.getAttribute("tiddler");
 	var target = resolveTarget(e);
 	switch(e.keyCode)
 		{
 		case 9: // Tab
-			if(config.options.chkInsertTabs && (target.tagName.toLowerCase() == "input" || target.tagName.toLowerCase() == "textarea"))
+			if(config.options.chkInsertTabs && ( target.tagName.toLowerCase() == "input" || target.tagName.toLowerCase() == "textarea"))
 				{
 				replaceSelection(resolveTarget(e),String.fromCharCode(9));
-				consume = true;
+				consume = true; 
 				}
 			break;
 		case 13: // Ctrl-Enter
@@ -250,7 +249,7 @@ Story.prototype.onTiddlerKeyPress = function(e)
 				config.macros.toolbar.invokeCommand(this,"defaultCommand",e);
 				consume = true;
 				}
-			break;
+			break; 
 		case 27: // Escape
 			blurElement(this);
 			config.macros.toolbar.invokeCommand(this,"cancelCommand",e);
@@ -259,7 +258,11 @@ Story.prototype.onTiddlerKeyPress = function(e)
 		}
 	e.cancelBubble = consume;
 	if(consume)
-		if (e.stopPropagation) e.stopPropagation();
+		{
+		if (e.stopPropagation) e.stopPropagation(); // Stop Propagation
+		e.returnValue = true; // Cancel The Event in IE
+		if (e.preventDefault ) e.preventDefault(); // Cancel The Event in Moz
+		}
 	return(!consume);
 };
 
