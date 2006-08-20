@@ -79,29 +79,26 @@ function loadPlugins()
 	for(var t=0; t<configTiddlers.length; t++)
 		{
 		var tiddler = configTiddlers[t];
-		var p = getPluginInfo(tiddler);
-		if(isPluginExecutable(p))
+		var pluginInfo = getPluginInfo(tiddler);
+		if(isPluginExecutable(pluginInfo))
 			{
-			p.executed = true;
-			p.error = false;
+			pluginInfo.executed = true;
+			pluginInfo.error = false;
 			try
 				{
 				if(tiddler.text && tiddler.text != "")
-					{
-					var f = new Function("tiddler","pluginInfo",tiddler.text);
-					f(tiddler,p);
-					}
+					window.eval(tiddler.text);
 				}
 			catch(e)
 				{
-				p.log.push(config.messages.pluginError.format([exceptionText(e)]));
-				p.error = true;
+				pluginInfo.log.push(config.messages.pluginError.format([exceptionText(e)]));
+				pluginInfo.error = true;
 				hadProblem = true;
 				}
 			}
 		else
-			p.warning = true;
-		installedPlugins.push(p);
+			pluginInfo.warning = true;
+		installedPlugins.push(pluginInfo);
 		}
 	return hadProblem;
 }
