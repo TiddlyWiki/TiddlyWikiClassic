@@ -348,12 +348,12 @@ config.formatters = [
 			var text = lookaheadMatch[1];
 			if (lookaheadMatch[2]) // Simple bracketted link
 				{
-				e = createTiddlyLink(w.output,text,false);
+				e = createTiddlyLink(w.output,text,false,null,w.isStatic);
 				}
 			else if(lookaheadMatch[3]) // Pretty bracketted link
 				{
 				var link = lookaheadMatch[4];
-				e = config.formatterHelpers.isExternalLink(link) ? createExternalLink(w.output,link) : createTiddlyLink(w.output,link,false);
+				e = config.formatterHelpers.isExternalLink(link) ? createExternalLink(w.output,link) : createTiddlyLink(w.output,link,false,null,w.isStatic);
 				}
 			createTiddlyText(e,text);
 			w.nextMatch = this.lookaheadRegExp.lastIndex;
@@ -388,7 +388,7 @@ config.formatters = [
 			}
 		if(w.autoLinkWikiWords == true || store.isShadowTiddler(w.matchText))
 			{
-			var link = createTiddlyLink(w.output,w.matchText,false);
+			var link = createTiddlyLink(w.output,w.matchText,false,null,w.isStatic);
 			w.outputText(link,w.matchStart,w.nextMatch);
 			}
 		else
@@ -421,7 +421,7 @@ config.formatters = [
 			if(lookaheadMatch[5])
 				{
 				var link = lookaheadMatch[5];
-				e = config.formatterHelpers.isExternalLink(link) ? createExternalLink(w.output,link) : createTiddlyLink(w.output,link,false);
+				e = config.formatterHelpers.isExternalLink(link) ? createExternalLink(w.output,link) : createTiddlyLink(w.output,link,false,null,w.isStatic);
 				addClass(e,"imageLink");
 				}
 			var img = createTiddlyElement(e,"img");

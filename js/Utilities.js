@@ -27,11 +27,15 @@ function createTiddlyButton(theParent,theText,theTooltip,theAction,theClass,theI
 	return(theButton);
 }
 
-function createTiddlyLink(place,title,includeText,theClass)
+function createTiddlyLink(place,title,includeText,theClass,isStatic)
 {
 	var text = includeText ? title : null;
 	var i = getTiddlyLinkInfo(title,theClass)
-	var btn = createTiddlyButton(place,text,i.subTitle,onClickTiddlerLink,i.classes);
+	var btn;
+	if(isStatic)
+		btn = createExternalLink(place,"#" + title);
+	else
+		btn = createTiddlyButton(place,text,i.subTitle,onClickTiddlerLink,i.classes);
 	btn.setAttribute("refresh","link");
 	btn.setAttribute("tiddlyLink",title);
 	return(btn);

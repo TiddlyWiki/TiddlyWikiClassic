@@ -28,6 +28,22 @@ function wikify(source,output,highlightRegExp,tiddler)
 		}
 }
 
+function wikifyStatic(source,highlightRegExp,tiddler)
+{
+	var e = createTiddlyElement(document.body,"div");
+	e.style.display = "none";
+	var html;
+	if(source && source != "")
+		{
+		var wikifier = new Wikifier(source,getFormatter(source,tiddler),highlightRegExp,tiddler);
+		wikifier.isStatic = true;
+		wikifier.subWikifyUnterm(e);
+		html = e.innerHTML;
+		e.parentNode.removeChild(e);
+		}
+	return html;
+}
+
 // Wikify a named tiddler to plain text
 function wikifyPlain(title)
 {
@@ -64,6 +80,7 @@ function Wikifier(source,formatter,highlightRegExp,tiddler)
 	this.autoLinkWikiWords = tiddler && tiddler.autoLinkWikiWords() == false ? false : true;
 	this.highlightRegExp = highlightRegExp;
 	this.highlightMatch = null;
+	this.isStatic = false;
 	if(highlightRegExp)
 		{
 		highlightRegExp.lastIndex = 0;
