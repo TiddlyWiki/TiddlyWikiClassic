@@ -1,11 +1,8 @@
 <!--PRE-BODY-END-->
 	<script type="text/javascript">
 //<![CDATA[
-	if (detectPlugin("TiddlyWiki Saver"))
-		{
-		document.write('<embed style="display: none" name="tiddlyWikiSafariSaver" width="0" height="0" type="application/x-webkit-tiddlywiki-saver"></embed>'); 
-		saveUsingSafari = true;
-		}
+if (useJavaSaver)
+	document.write("<applet style='position:absolute;left:-1px' name='TiddlySaver' code='TiddlySaver.class' archive='TiddlySaver.jar' width='1' height='1'></applet>");
 //]]>
 	</script>
 	<div id="copyright">

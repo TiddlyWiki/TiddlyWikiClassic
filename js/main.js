@@ -14,6 +14,9 @@ var hadConfirmExit = false; // Don't warn more than once
 var safeMode = false; // Disable all plugins and cookies
 var installedPlugins = []; // Information filled in when plugins are executed
 
+// Whether to use the JavaSaver applet
+var useJavaSaver = config.browser.isSafari || config.browser.isOpera;
+
 // Starting up
 function main()
 {

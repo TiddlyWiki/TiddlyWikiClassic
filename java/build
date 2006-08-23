@@ -1,0 +1,2 @@
+javac -source 1.2 -target 1.2 -g:none TiddlySaver.java
+jar cf TiddlySaver.jar TiddlySaver.class
