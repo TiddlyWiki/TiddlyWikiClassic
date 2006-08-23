@@ -5,6 +5,7 @@
 function TiddlyWiki()
 {
 	var tiddlers = {}; // Hashmap by name of tiddlers
+	this.tiddlersUpdated = false;
 	this.namedNotifications = []; // Array of {name:,notify:} of notification functions
 	this.notificationLevel = 0;
 	this.slices = {}; // map tiddlerName->(map sliceName->sliceValue). Lazy.
@@ -16,12 +17,12 @@ function TiddlyWiki()
 		return tiddlers[title];
 		};
 	this.deleteTiddler = function(title) {
-		 delete this.slices[title];
-		 delete tiddlers[title];
+		delete this.slices[title];
+		delete tiddlers[title];
 		};
 	this.addTiddler = function(tiddler) {
-		 delete this.slices[tiddler.title];
-		 tiddlers[tiddler.title] = tiddler;
+		delete this.slices[tiddler.title];
+		tiddlers[tiddler.title] = tiddler;
 		};
 	this.forEachTiddler = function(callback) {
 		for(var t in tiddlers)
@@ -73,7 +74,7 @@ TiddlyWiki.prototype.notifyAll = function()
 		for(var t=0; t<this.namedNotifications.length; t++)
 			{
 			var n = this.namedNotifications[t];
-			if (n.name)
+			if(n.name)
 				n.notify(n.name);
 			}
 }
@@ -299,6 +300,7 @@ TiddlyWiki.prototype.loadFromDiv = function(src,idPrefix,noUpdate)
 
 TiddlyWiki.prototype.updateTiddlers = function()
 {
+	this.tiddlersUpdated = true;
 	this.forEachTiddler(function(title,tiddler) {
 		tiddler.changed();
 		});
@@ -358,6 +360,8 @@ TiddlyWiki.prototype.getTaggedTiddlers = function(tag,sortField)
 // Return an array of the tiddlers that link to a given tiddler
 TiddlyWiki.prototype.getReferringTiddlers = function(title,unusedParameter,sortField)
 {
+	if(!this.tiddlersUpdated)
+		this.updateTiddlers();
 	return this.reverseLookup("links",title,true,sortField);
 }
 
@@ -396,6 +400,8 @@ TiddlyWiki.prototype.getTiddlers = function(field,excludeTag)
 // Return array of names of tiddlers that are referred to but not defined
 TiddlyWiki.prototype.getMissingLinks = function(sortField)
 {
+	if(!this.tiddlersUpdated)
+		this.updateTiddlers();
 	var results = [];
 	this.forEachTiddler(function (title,tiddler) {
 		for(var n=0; n<tiddler.links.length;n++)

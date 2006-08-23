@@ -10,8 +10,16 @@ function Tiddler()
 	this.modified = new Date();
 	this.created = new Date();
 	this.links = [];
+	this.linksUpdated = false;
 	this.tags = [];
 	return this;
+}
+
+Tiddler.prototype.getLinks = function()
+{
+	if(this.linksUpdated==false)
+		this.changed();
+	return links;
 }
 
 // Format the text for storage in an RSS item
@@ -113,6 +121,7 @@ Tiddler.prototype.changed = function()
 		// Do not add link if match urlPattern (formatMatch[5-t])
 		formatMatch = tiddlerLinkRegExp.exec(this.text);
 		}
+	this.linksUpdated = true;
 	return;
 }
 
