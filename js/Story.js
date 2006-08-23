@@ -312,28 +312,25 @@ Story.prototype.blurTiddler = function (title)
 		}
 }
 
-// Adds a specified tag to the edit controls (if any) for a particular tiddler)
-// title - name of tiddler
-// tag - name of tag, without any [[brackets]]
-// mode - +1 to add the tag, -1 to remove it, 0 to toggle it
-Story.prototype.setTiddlerTag = function(title,tag,add)
+// Adds a specified value to the edit controls (if any) of a particular
+// array-formatted field of a particular tiddler (eg "tags")
+//  title - name of tiddler
+//  tag - value of field, without any [[brackets]]
+//  mode - +1 to add the tag, -1 to remove it, 0 to toggle it
+//  field - name of field (eg "tags")
+Story.prototype.setTiddlerField = function(title,tag,mode,field)
 {
-	var c = story.getTiddlerField(title,"tags");
+	var c = story.getTiddlerField(title,field);
+
 	var tags = c.value.readBracketedList();
-	var p = tags.find(tag);
-	if(add == 0)
-	    add = (p == null) ? +1 : -1;
-	if(add == +1)
-		{
-		if(p == null)
-			tags.push(tag);
-		}
-	else if(add == -1)
-		{
-		if(p != null)
-			tags.splice(p,1);
-		}
+	tags.setItem(tag,mode);
 	c.value = String.encodeTiddlyLinkList(tags);
+}
+
+// The same as setTiddlerField but preset to the "tags" field
+Story.prototype.setTiddlerTag = function(title,tag,mode)
+{
+	Story.prototype.setTiddlerField(title,tag,mode,"tags");
 }
 
 // Close a specified tiddler

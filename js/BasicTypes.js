@@ -38,6 +38,26 @@ Array.prototype.contains = function(item)
 	return this.indexOf(item) != -1;
 };
 
+// Adds, removes or toggles a particular value within an array
+//  value - value to add
+//  mode - +1 to add value, -1 to remove value, 0 to toggle it
+Array.prototype.setItem = function(value,mode)
+{
+	var p = this.find(tag);
+	if(mode == 0)
+		mode = (p == null) ? +1 : -1;
+	if(mode == +1)
+		{
+		if(p == null)
+			this.push(tag);
+		}
+	else if(mode == -1)
+		{
+		if(p != null)
+			this.splice(p,1);
+		}
+}
+
 // Return whether one of a list of values exists in an array
 Array.prototype.containsAny = function(items)
 {
