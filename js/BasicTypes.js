@@ -43,13 +43,13 @@ Array.prototype.contains = function(item)
 //  mode - +1 to add value, -1 to remove value, 0 to toggle it
 Array.prototype.setItem = function(value,mode)
 {
-	var p = this.find(tag);
+	var p = this.find(value);
 	if(mode == 0)
 		mode = (p == null) ? +1 : -1;
 	if(mode == +1)
 		{
 		if(p == null)
-			this.push(tag);
+			this.push(value);
 		}
 	else if(mode == -1)
 		{
