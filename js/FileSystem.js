@@ -212,7 +212,7 @@ function javaUrlToFilename(url)
 function javaSaveFile(filePath, content)
 {
 	if(document.applets["TiddlySaver"])
-		return document.applets["TiddlySaver"].saveFile(javaUrlToFilename(filePath),content);
+		return document.applets["TiddlySaver"].saveFile(javaUrlToFilename(filePath),"UTF-8",content);
 	try
 		{
 		var s = new java.io.PrintStream(new java.io.FileOutputStream(javaUrlToFilename(filePath)));
@@ -229,7 +229,7 @@ function javaSaveFile(filePath, content)
 function javaLoadFile(filePath)
 {
 	if(document.applets["TiddlySaver"])
-		return String(document.applets["TiddlySaver"].loadFile(javaUrlToFilename(filePath)));
+		return String(document.applets["TiddlySaver"].loadFile(javaUrlToFilename(filePath,"UTF-8")));
 	var content = [];
 	try
 		{
