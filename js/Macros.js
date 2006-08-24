@@ -583,26 +583,29 @@ config.macros.message.handler = function(place,macroName,params)
 
 config.macros.view.handler = function(place,macroName,params,wikifier,paramString,tiddler)
 {
-	if((tiddler instanceof Tiddler) && params[0] && (tiddler[params[0]] != undefined))
+	if((tiddler instanceof Tiddler) && params[0])
 		{
-		switch(params[1])
-			{
-			case undefined:
-				highlightify(tiddler[params[0]],place,highlightHack);
-				break;
-			case "link":
-				createTiddlyLink(place,tiddler[params[0]],true);
-				break;
-			case "wikified":
-				wikify(tiddler[params[0]],place,highlightHack,tiddler);
-				break;
-			case "date":
-				if(params[2])
-					createTiddlyText(place,tiddler[params[0]].formatString(params[2]));
-				else
-					createTiddlyText(place,tiddler[params[0]]);
-				break;
-			}
+		var value = store.getValue(tiddler,params[0]);
+		if(value != undefined)
+			switch(params[1])
+				{
+				case undefined:
+					highlightify(value,place,highlightHack);
+					break;
+				case "link":
+					createTiddlyLink(place,value,true);
+					break;
+				case "wikified":
+					wikify(value,place,highlightHack,tiddler);
+					break;
+				case "date":
+					value = Date.convertFromYYYYMMDDHHMM(value);
+					if(params[2])
+						createTiddlyText(place,value.formatString(params[2]));
+					else
+						createTiddlyText(place,value);
+					break;
+				}
 		}
 }
 
