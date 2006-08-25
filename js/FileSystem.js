@@ -229,7 +229,7 @@ function javaSaveFile(filePath, content)
 function javaLoadFile(filePath)
 {
 	if(document.applets["TiddlySaver"])
-		return String(document.applets["TiddlySaver"].loadFile(javaUrlToFilename(filePath,"UTF-8")));
+		return String(document.applets["TiddlySaver"].loadFile(javaUrlToFilename(filePath),"UTF-8"));
 	var content = [];
 	try
 		{
