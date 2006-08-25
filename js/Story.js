@@ -239,6 +239,14 @@ Story.prototype.onTiddlerKeyPress = function(e)
 				replaceSelection(resolveTarget(e),String.fromCharCode(9));
 				consume = true; 
 				}
+			if(window.opera )
+				{
+				target.onblur = function()
+					{
+					this.focus();
+					this.onblur = null;
+					}
+				}
 			break;
 		case 13: // Ctrl-Enter
 		case 10: // Ctrl-Enter on IE PC
