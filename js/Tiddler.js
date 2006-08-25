@@ -145,7 +145,7 @@ Tiddler.prototype.isReadOnly = function()
 
 Tiddler.prototype.autoLinkWikiWords = function()
 {
-	return !(this.isTagged("excludeMissing") || this.isTagged("excludeMissing"));
+	return !(this.isTagged("systemConfig") || this.isTagged("excludeMissing"));
 }
 
 Tiddler.prototype.generateFingerprint = function()
