@@ -236,10 +236,10 @@ Story.prototype.onTiddlerKeyPress = function(e)
 		case 9: // Tab
 			if(config.options.chkInsertTabs && ( target.tagName.toLowerCase() == "input" || target.tagName.toLowerCase() == "textarea"))
 				{
-				replaceSelection(resolveTarget(e),String.fromCharCode(9));
+				replaceSelection(target,String.fromCharCode(9));
 				consume = true; 
 				}
-			if(window.opera )
+			if(config.isOpera)
 				{
 				target.onblur = function()
 					{
