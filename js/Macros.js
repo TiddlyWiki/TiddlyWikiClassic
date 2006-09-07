@@ -30,7 +30,7 @@ config.macros.list.handler = function(place,macroName,params)
 		results = this[type].handler(params);
 	for (var t = 0; t < results.length; t++)
 		{
-		theListItem = document.createElement("li")
+		var theListItem = document.createElement("li")
 		theList.appendChild(theListItem);
 		if(typeof results[t] == "string")
 			createTiddlyLink(theListItem,results[t],true);
@@ -173,7 +173,7 @@ config.macros.search.onFocus = function(e)
 
 config.macros.tiddler.handler = function(place,macroName,params,wikifier,paramString,tiddler)
 {
-	var params = paramString.parseParams("name",null,true,false,true);
+	params = paramString.parseParams("name",null,true,false,true);
 	var names = params[0]["name"];
 	var tiddlerName = names[0];
 	var className = names[1] ? names[1] : null;
@@ -412,7 +412,7 @@ config.macros.newTiddler.handler = function(place,macroName,params,wikifier,para
 {
 	if(!readOnly)
 		{
-		var params = paramString.parseParams("anon",null,true,false,false);
+		params = paramString.parseParams("anon",null,true,false,false);
 		var title = params[1] && params[1].name == "anon" ? params[1].value : this.title;
 		title = getParam(params,"title",title);
 		this.createNewTiddlerButton(place,title,params,this.label,this.prompt,this.accessKey,"title");
@@ -423,7 +423,7 @@ config.macros.newJournal.handler = function(place,macroName,params,wikifier,para
 {
 	if(!readOnly)
 		{
-		var params = paramString.parseParams("anon",null,true,false,false);
+		params = paramString.parseParams("anon",null,true,false,false);
 		var now = new Date();
 		var title = params[1] && params[1].name == "anon" ? params[1].value : "";
 		title = getParam(params,"title",title);
@@ -891,7 +891,7 @@ config.macros.importTiddlers.handler = function(place,macroName,params,wikifier,
 	step.appendChild(fileInput);
 	createTiddlyElement(step,"br");
 	createTiddlyText(step,this.step1promptFeeds);
-	feeds = this.getFeeds([{caption: this.step1feedPrompt, name: ""}]);
+	var feeds = this.getFeeds([{caption: this.step1feedPrompt, name: ""}]);
 	createTiddlyDropDown(step,this.onFeedChange,feeds);
 	createTiddlyElement(step,"br");
 	createTiddlyButton(step,this.fetchLabel,this.fetchPrompt,this.onFetch,null,null,null);
@@ -922,7 +922,7 @@ config.macros.importTiddlers.onBrowseChange = function(e)
 config.macros.importTiddlers.onFetch = function(e)
 {
 	var importer = findRelated(this,"importTiddler","className","parentNode");
-	url = importer.inputBox.value;
+	var url = importer.inputBox.value;
 	var cutoff = findRelated(importer.firstChild,"step2","className","nextSibling");
 	while(cutoff)
 		{

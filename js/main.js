@@ -74,7 +74,7 @@ function saveTest()
 function loadPlugins()
 {
 	if(safeMode)
-		return;
+		return false;
 	var configTiddlers = store.getTaggedTiddlers("systemConfig");
 	installedPlugins = [];
 	var hadProblem = false;

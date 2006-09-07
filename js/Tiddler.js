@@ -107,7 +107,7 @@ Tiddler.prototype.changed = function()
 				{
 				var preRegExp = new RegExp(config.textPrimitives.unWikiLink+"|"+config.textPrimitives.anyLetter,"mg");
 				preRegExp.lastIndex = formatMatch.index-1;
-				preMatch = preRegExp.exec(this.text);
+				var preMatch = preRegExp.exec(this.text);
 				if(preMatch.index != formatMatch.index-1)
 					this.links.pushUnique(formatMatch[1]);
 				}
