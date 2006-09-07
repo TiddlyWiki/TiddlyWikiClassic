@@ -7,6 +7,7 @@ config.refreshers = {
 		{
 		var title = e.getAttribute("tiddlyLink");
 		refreshTiddlyLink(e,title);
+		return true;
 		},
 	
 	tiddler: function(e,changeList)
@@ -17,6 +18,7 @@ config.refreshers = {
 			story.refreshTiddler(title,template,true);
 		else
 			refreshElements(e,changeList);
+		return true;
 		},
 
 	content: function(e,changeList)
@@ -27,7 +29,10 @@ config.refreshers = {
 			{
 			removeChildren(e);
 			wikify(store.getTiddlerText(title,title),e);
+			return true;
 			}
+		else
+			return false;
 		},
 
 	macro: function(e,changeList)
@@ -38,6 +43,7 @@ config.refreshers = {
 			macro = config.macros[macro];
 		if(macro && macro.refresh)
 			macro.refresh(e,params);
+		return true;
 		}
 };
 
@@ -52,13 +58,11 @@ function refreshElements(root,changeList)
 		else
 			type = null;
 		var refresher = config.refreshers[type];
-		if(refresher == undefined)
-			{
-			if(e.hasChildNodes())
-				refreshElements(e,changeList);
-			}
-		else
-			refresher(e,changeList);
+		var refreshed = false;
+		if(refresher != undefined)
+			refreshed = refresher(e,changeList);
+		if(e.hasChildNodes() && !refreshed)
+			refreshElements(e,changeList);
 		}
 }
 

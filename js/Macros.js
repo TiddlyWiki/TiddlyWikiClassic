@@ -308,6 +308,8 @@ config.macros.slider.handler = function(place,macroName,params)
 {
 	var panel = this.createSlider(place,params[0],params[2],params[3]);
 	var text = store.getTiddlerText(params[1]);
+	panel.setAttribute("refresh", "content");
+	panel.setAttribute("tiddler", params[1]);
 	if(text)
 		wikify(text,panel,null,store.getTiddler(params[1]));
 }
