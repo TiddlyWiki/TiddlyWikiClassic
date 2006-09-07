@@ -193,6 +193,16 @@ Story.prototype.refreshTiddler = function(title,template,force)
 	return theTiddler;
 }
 
+// Refresh all tiddlers in the Story
+Story.prototype.refreshAllTiddlers = function() 
+{
+	var place = document.getElementById(this.container);
+	var e = place.firstChild; 
+	this.refreshTiddler(e.getAttribute("tiddler"),e.getAttribute("template"),true);
+	while((e = e.nextSibling) != null) 
+		this.refreshTiddler(e.getAttribute("tiddler"),e.getAttribute("template"),true);
+}
+
 // Default tiddler onmouseover/out event handlers
 Story.prototype.onTiddlerMouseOver = function(e)
 {
