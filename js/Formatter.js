@@ -353,7 +353,13 @@ config.formatters = [
 			else if(lookaheadMatch[3]) // Pretty bracketted link
 				{
 				var link = lookaheadMatch[4];
-				e = config.formatterHelpers.isExternalLink(link) ? createExternalLink(w.output,link) : createTiddlyLink(w.output,link,false,null,w.isStatic);
+				var i = link.indexOf("|");
+				if (i) 
+					{
+					var s = link.substr(0,i);
+					link = (store.getTiddler(s) || store.isShadowTiddler(s)) ? s : link.substr(i+1);
+					}
+				e = config.formatterHelpers.isExternalLink(link) ? createExternalLink(w.output,link) : createTiddlyLink(w.output,link,false);
 				}
 			createTiddlyText(e,text);
 			w.nextMatch = this.lookaheadRegExp.lastIndex;
