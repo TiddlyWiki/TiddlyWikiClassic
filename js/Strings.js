@@ -54,6 +54,18 @@ String.prototype.escapeRegExp = function()
 	return c;
 }
 
+// Convert "\" to "\s", newlines to "\n" (and remove carriage returns)
+String.prototype.escapeLineBreaks = function()
+{
+	return this.replace(/\\/mg,"\\s").replace(/\n/mg,"\\n").replace(/\r/mg,"");
+}
+
+// Convert "\n" to newlines, "\s" to "\" (and remove carriage returns)
+String.prototype.unescapeLineBreaks = function()
+{
+	return this.replace(/\\n/mg,"\n").replace(/\\s/mg,"\\").replace(/\r/mg,"");
+}
+
 // Convert & to "&amp;", < to "&lt;", > to "&gt;" and " to "&quot;"
 String.prototype.htmlEncode = function()
 {
@@ -236,18 +248,6 @@ String.zeroPad = function(n,d)
 	if(s.length < d)
 		s = "000000000000000000000000000".substr(0,d-s.length) + s;
 	return(s);
-}
-
-// Convert "\" to "\s", newlines to "\n" (and remove carriage returns)
-String.prototype.escapeLineBreaks = function()
-{
-	return this.replace(/\\/mg,"\\s").replace(/\n/mg,"\\n").replace(/\r/mg,"");
-}
-
-// Convert "\n" to newlines, "\s" to "\" (and remove carriage returns)
-String.prototype.unescapeLineBreaks = function()
-{
-	return this.replace(/\\n/mg,"\n").replace(/\\s/mg,"\\").replace(/\r/mg,"");
 }
 
 String.prototype.startsWith = function(prefix) 
