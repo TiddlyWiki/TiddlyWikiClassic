@@ -1026,7 +1026,9 @@ config.macros.importTiddlers.doImport = function(importer,rowNames)
 			return;
 	for(t=0; t<rowNames.length; t++)
 		{
-		store.addTiddler(theStore.fetchTiddler(rowNames[t]));
+		var inbound = theStore.fetchTiddler(rowNames[t]);
+		store.saveTiddler(inbound.title, inbound.title, inbound.text, inbound.modifier, inbound.modified, inbound.tags);
+		store.fetchTiddler(inbound.title).created = inbound.created;
 		store.notify(rowNames[t],false);
 		}
 	store.notifyAll();
