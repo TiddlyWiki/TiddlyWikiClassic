@@ -244,7 +244,7 @@ Story.prototype.onTiddlerKeyPress = function(e)
 	switch(e.keyCode)
 		{
 		case 9: // Tab
-			if(config.options.chkInsertTabs && ( target.tagName.toLowerCase() == "input" || target.tagName.toLowerCase() == "textarea"))
+			if(config.options.chkInsertTabs && target.tagName.toLowerCase() == "textarea")
 				{
 				replaceSelection(target,String.fromCharCode(9));
 				consume = true; 
