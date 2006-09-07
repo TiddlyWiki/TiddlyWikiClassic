@@ -722,9 +722,11 @@ config.macros.toolbar.createCommand = function(place,commandName,tiddler,theClas
 		var title = tiddler.title;
 		var command = config.commands[commandName];
 		var ro = tiddler.isReadOnly();
+		var shadow = store.isShadowTiddler(title) && !store.tiddlerExists(title);
 		var text = ro && command.readOnlyText ? command.readOnlyText : command.text;
 		var tooltip = ro && command.readOnlyTooltip ? command.readOnlyTooltip : command.tooltip;
-		if(!ro || (ro && !command.hideReadOnly))
+		if((!ro || (ro && !command.hideReadOnly)) && !(shadow && command.hideShadow))
+
 			{
 			var btn = createTiddlyButton(null,text,tooltip,this.onClickCommand);
 			btn.setAttribute("commandName", commandName);
