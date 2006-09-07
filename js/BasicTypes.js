@@ -18,7 +18,7 @@ if(!Array.indexOf) {
 Array.prototype.indexOf = function(item,from)
 {
 	if(!from)
-		var from = 0;
+		from = 0;
 	for(var i=from; i<this.length; i++)
 		if(this[i] === item)
 			return i;
