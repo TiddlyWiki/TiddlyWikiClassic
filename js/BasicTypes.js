@@ -15,10 +15,12 @@ Number.prototype.clamp = function(min,max)
 
 // Add indexOf function if browser does not support it
 if(!Array.indexOf) {
-Array.prototype.indexOf = function(item)
+Array.prototype.indexOf = function(item,from)
 {
-	for(var i=0; i<this.length; i++)
-		if(this[i] == item)
+	if(!from)
+		var from = 0;
+	for(var i=from; i<this.length; i++)
+		if(this[i] === item)
 			return i;
 	return -1;
 }}
