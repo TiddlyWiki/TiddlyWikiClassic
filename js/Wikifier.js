@@ -2,16 +2,16 @@
 // Wikifier
 // ---------------------------------------------------------------------------------
 
-function getFormatter(source,tiddler)
+function getParser(tiddler)
 {
 	var f = formatter;
 	if(tiddler!=null)
 		{
-		for(var i in formatters)
+		for(var i in config.parsers)
 			{
-			if(tiddler.isTagged(formatters[i].formatTag))
+			if(tiddler.isTagged(config.parsers[i].formatTag))
 				{
-				f = formatters[i];
+				f = config.parsers[i];
 				break;
 				}
 			}
@@ -23,7 +23,7 @@ function wikify(source,output,highlightRegExp,tiddler)
 {
 	if(source && source != "")
 		{
-		var wikifier = new Wikifier(source,getFormatter(source,tiddler),highlightRegExp,tiddler);
+		var wikifier = new Wikifier(source,getParser(tiddler),highlightRegExp,tiddler);
 		wikifier.subWikifyUnterm(output);
 		}
 }
@@ -35,7 +35,7 @@ function wikifyStatic(source,highlightRegExp,tiddler)
 	var html;
 	if(source && source != "")
 		{
-		var wikifier = new Wikifier(source,getFormatter(source,tiddler),highlightRegExp,tiddler);
+		var wikifier = new Wikifier(source,getParser(tiddler),highlightRegExp,tiddler);
 		wikifier.isStatic = true;
 		wikifier.subWikifyUnterm(e);
 		html = e.innerHTML;
