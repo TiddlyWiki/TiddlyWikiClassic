@@ -297,9 +297,10 @@ config.macros.slider.createSlider = function(place,cookie,title,tooltip)
 {
 	var cookie = cookie ? cookie : "";
 	var btn = createTiddlyButton(place,title,tooltip,this.onClickSlider);
-	var panel = createTiddlyElement(place,"div",null,"sliderPanel");
+	var panel = createTiddlyElement(null,"div",null,"sliderPanel");
 	panel.setAttribute("cookie",cookie);
 	panel.style.display = config.options[cookie] ? "block" : "none";
+        place.appendChild(panel);
 	return panel;
 }
 
@@ -473,7 +474,7 @@ config.macros.tabs.handler = function(place,macroName,params)
 {
 	var cookie = params[0];
 	var numTabs = (params.length-1)/3;
-	var wrapper = createTiddlyElement(place,"div",null,cookie);
+	var wrapper = createTiddlyElement(null,"div",null,cookie);
 	var tabset = createTiddlyElement(wrapper,"div",null,"tabset");
 	tabset.setAttribute("cookie",cookie);
 	var validTab = false;
@@ -492,6 +493,7 @@ config.macros.tabs.handler = function(place,macroName,params)
 	if(!validTab)
 		config.options[cookie] = params[1];
 	this.switchTab(tabset,config.options[cookie]);
+        place.appendChild(wrapper);
 }
 
 config.macros.tabs.onClickTab = function(e)
@@ -617,7 +619,7 @@ config.macros.edit.handler = function(place,macroName,params,wikifier,paramStrin
 		story.setDirty(tiddler.title,true);
 		if (field != "text")
 			{
-				var e = createTiddlyElement(place,"input");
+				var e = createTiddlyElement(null,"input");
 				if(tiddler.isReadOnly())
 					e.setAttribute("readOnly","readOnly");
 				e.setAttribute("edit",field);
@@ -628,10 +630,11 @@ config.macros.edit.handler = function(place,macroName,params,wikifier,paramStrin
 				e.value = v;
 				e.setAttribute("size","40");
 				e.setAttribute("autocomplete","off");
+                                place.appendChild(e);
 			}
 		else
 			{
-				var wrapper1 = createTiddlyElement(place,"fieldset",null,"fieldsetFix");
+				var wrapper1 = createTiddlyElement(null,"fieldset",null,"fieldsetFix");
 				var wrapper2 = createTiddlyElement(wrapper1,"div");
 				var e = createTiddlyElement(wrapper2,"textarea");
 				if(tiddler.isReadOnly())
@@ -648,6 +651,7 @@ config.macros.edit.handler = function(place,macroName,params,wikifier,paramStrin
 				rows = Math.min(rows,maxLines);
 				e.setAttribute("rows",rows);
 				e.setAttribute("edit",field);
+                                place.appendChild(wrapper1);
 			} 
 		}
 }
@@ -718,11 +722,12 @@ config.macros.toolbar.createCommand = function(place,commandName,tiddler,theClas
 		var tooltip = ro && command.readOnlyTooltip ? command.readOnlyTooltip : command.tooltip;
 		if(!ro || (ro && !command.hideReadOnly))
 			{
-			var btn = createTiddlyButton(place,text,tooltip,this.onClickCommand);
+			var btn = createTiddlyButton(null,text,tooltip,this.onClickCommand);
 			btn.setAttribute("commandName", commandName);
 			btn.setAttribute("tiddler", title);
 			if(theClass)
 				addClass(btn,theClass);
+                        place.appendChild(btn);
 			}
 		}
 }
@@ -866,7 +871,7 @@ config.macros.importTiddlers.handler = function(place,macroName,params,wikifier,
 {
 	if(readOnly)
 		return;
-	var importer = createTiddlyElement(place,"div",null,"importTiddler wizard");
+	var importer = createTiddlyElement(null,"div",null,"importTiddler wizard");
 	createTiddlyElement(importer,"h1",null,null,this.wizardTitle);
 	createTiddlyElement(importer,"h2",null,"step1",this.step1);
 	var step = createTiddlyElement(importer,"div",null,"wizardStep");
@@ -890,6 +895,7 @@ config.macros.importTiddlers.handler = function(place,macroName,params,wikifier,
 	createTiddlyDropDown(step,this.onFeedChange,feeds);
 	createTiddlyElement(step,"br");
 	createTiddlyButton(step,this.fetchLabel,this.fetchPrompt,this.onFetch,null,null,null);
+        place.appendChild(importer);
 }
 
 config.macros.importTiddlers.getFeeds = function(feeds)
@@ -955,10 +961,8 @@ config.macros.importTiddlers.onLoad = function(status,params,responseText,url,xh
 	var content = "<html><body>" + responseText.substring(posOpeningDiv,posClosingDiv + endSaveArea.length) + "</body></html>";
 	// Create the iframe
 	var iframe = document.createElement("iframe");
+        iframe.style.display = "none";
 	importer.insertBefore(iframe,importer.firstChild);
-	iframe.style.width = "100px";
-	iframe.style.height = "100px";
-	iframe.style.border = "1px";
 	var doc = iframe.document;
 	if (iframe.contentDocument)
 		doc = iframe.contentDocument; // For NS6
