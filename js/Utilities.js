@@ -209,10 +209,11 @@ function createTiddlyError(place,title,text)
 	if (text) btn.setAttribute("errorText",text);
 }
 
-function merge(dst,src)
+function merge(dst,src,preserveExisting)
 {
 	for (p in src)
-		dst[p] = src[p];
+		if (!preserveExisting || dst[p] === undefined)
+			dst[p] = src[p];
 	return dst;
 }
 
