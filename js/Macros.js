@@ -865,9 +865,9 @@ config.macros.refreshDisplay.onClick = function(e)
 {
 	refreshPageTemplate();
 	refreshDisplay();
-	refreshStyles("StyleSheet");
-	refreshStyles("StyleSheetColors");
 	refreshStyles("StyleSheetLayout");
+	refreshStyles("StyleSheetColors");
+	refreshStyles("StyleSheet");
 	refreshStyles("StyleSheetPrint");
 	return false;
 }
