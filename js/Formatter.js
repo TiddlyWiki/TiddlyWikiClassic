@@ -548,7 +548,7 @@ config.formatters = [
 
 {
 	name: "lineBreak",
-	match: "\\n",
+	match: "\\n|<br ?/?>",
 	handler: function(w)
 	{
 		createTiddlyElement(w.output,"br");

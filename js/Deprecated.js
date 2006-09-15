@@ -24,6 +24,12 @@ config.formatterHelpers.monospacedByLineHelper = function(w)
 		}
 }
 
+// @Deprecated: Use <br> or <br /> instead of <<br>>
+config.macros.br.handler = function(place)
+{
+	createTiddlyElement(place,"br");
+}
+
 // Find an entry in an array. Returns the array index or null
 // @Deprecated: Use indexOf instead
 Array.prototype.find = function(item)

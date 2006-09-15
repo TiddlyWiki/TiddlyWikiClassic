@@ -782,11 +782,6 @@ config.macros.toolbar.handler = function(place,macroName,params,wikifier,paramSt
 		}
 }
 
-config.macros.br.handler = function(place)
-{
-	createTiddlyElement(place,"br");
-}
-
 config.macros.plugins.handler = function(place,macroName,params,wikifier,paramString,tiddler)
 {
 	var e = createTiddlyElement(place,"div");
