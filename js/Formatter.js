@@ -492,8 +492,8 @@ config.formatters = [
 
 {
 	name: "strikeByChar",
-	match: "--",
-	termRegExp: /(--)/mg,
+	match: "--(?!\\s|$)",
+	termRegExp: /((?!\s)--|(?=\n\n))/mg,
 	element: "strike",
 	handler: config.formatterHelpers.createElementAndWikify
 },
@@ -553,6 +553,15 @@ config.formatters = [
 	{
 		createTiddlyElement(w.output,"br");
 	}
+},
+
+{
+	name: "mdash",
+	match: "--",
+	handler: function(w)
+		{
+		createTiddlyElement(w.output,"span").innerHTML = "&mdash";
+		}
 },
 
 {
