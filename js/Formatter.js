@@ -325,7 +325,7 @@ config.formatters = [
 	handler: function(w)
 	{
 		this.lookaheadRegExp.lastIndex = w.matchStart;
-		var lookaheadMatch = this.lookaheadRegExp.exec(w.source)
+		var lookaheadMatch = this.lookaheadRegExp.exec(w.source);
 		if(lookaheadMatch && lookaheadMatch.index == w.matchStart && lookaheadMatch[1])
 			{
 			w.nextMatch = this.lookaheadRegExp.lastIndex;
