@@ -32,7 +32,7 @@ function wikifyStatic(source,highlightRegExp,tiddler)
 {
 	var e = createTiddlyElement(document.body,"div");
 	e.style.display = "none";
-	var html;
+	var html = "";
 	if(source && source != "")
 		{
 		var wikifier = new Wikifier(source,getParser(tiddler),highlightRegExp,tiddler);
