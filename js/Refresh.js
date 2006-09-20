@@ -140,3 +140,19 @@ function refreshStyles(title)
 	setStylesheet(title == null ? "" : store.getRecursiveTiddlerText(title,"",10),title);
 }
 
+function refreshColorPalette(title)
+{
+	if(!startingUp)
+		refreshAll();
+}
+
+function refreshAll()
+{
+	refreshPageTemplate();
+	refreshDisplay();
+	refreshStyles("StyleSheetLayout");
+	refreshStyles("StyleSheetColors");
+	refreshStyles("StyleSheet");
+	refreshStyles("StyleSheetPrint");
+}
+

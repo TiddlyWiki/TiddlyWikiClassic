@@ -48,6 +48,7 @@ config.notifyTiddlers = [
 	{name: "PageTemplate", notify: refreshPageTemplate},
 	{name: "SiteTitle", notify: refreshPageTitle},
 	{name: "SiteSubtitle", notify: refreshPageTitle},
+	{name: "ColorPalette", notify: refreshColorPalette},
 	{name: null, notify: refreshDisplay}
 	];
 
@@ -176,8 +177,7 @@ config.textPrimitives.tiddlerAnyLinkRegExp = new RegExp("("+ config.textPrimitiv
 // ---------------------------------------------------------------------------------
 
 config.shadowTiddlers = {
-	ColorPalette: "<<refreshDisplay>>\n" +
-				  "Background: #fff\n" + 
+	ColorPalette: "Background: #fff\n" + 
 				  "Foreground: #000\n" +
 				  "PrimaryPale: #8cf\n" +
 				  "PrimaryLight: #18f\n" +
