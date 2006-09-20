@@ -13,6 +13,7 @@ var highlightHack = null; // Embarrassing hack department...
 var hadConfirmExit = false; // Don't warn more than once
 var safeMode = false; // Disable all plugins and cookies
 var installedPlugins = []; // Information filled in when plugins are executed
+var startingUp = false; // Whether we're in the process of starting up
 
 // Whether to use the JavaSaver applet
 var useJavaSaver = config.browser.isSafari || config.browser.isOpera;
@@ -21,6 +22,7 @@ var useJavaSaver = config.browser.isSafari || config.browser.isOpera;
 function main()
 {
 	var now, then = new Date();
+	startingUp = true;
 	window.onbeforeunload = function(e) {if(window.confirmExit) return confirmExit();};
 	params = getParameters();
 	if(params)
@@ -49,6 +51,7 @@ function main()
 	// Just for the beta
 	now = new Date();
 	displayMessage("TiddlyWiki startup in " + (now-then) + " milliseconds");
+	startingUp = false;
 }
 
 // Restarting

@@ -858,12 +858,7 @@ config.macros.refreshDisplay.handler = function(place)
 
 config.macros.refreshDisplay.onClick = function(e)
 {
-	refreshPageTemplate();
-	refreshDisplay();
-	refreshStyles("StyleSheetLayout");
-	refreshStyles("StyleSheetColors");
-	refreshStyles("StyleSheet");
-	refreshStyles("StyleSheetPrint");
+	refreshAll();
 	return false;
 }
 
