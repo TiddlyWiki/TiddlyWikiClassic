@@ -9,7 +9,8 @@ var config = {
 	animSlow: 0.01, // Speed for EasterEgg animations
 	cascadeFast: 20, // Speed for cascade animations (higher == slower)
 	cascadeSlow: 60, // Speed for EasterEgg cascade animations
-	cascadeDepth: 5 // Depth of cascade animation
+	cascadeDepth: 5, // Depth of cascade animation
+	displayStartupTime: false // Whether to display startup time
 	};
 
 // Messages

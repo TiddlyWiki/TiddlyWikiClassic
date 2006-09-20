@@ -48,9 +48,9 @@ function main()
 		displayTiddler(null,"PluginManager");
 		displayMessage(config.messages.customConfigError);
 		}
-	// Just for the beta
 	now = new Date();
-	displayMessage("TiddlyWiki startup in " + (now-then) + " milliseconds");
+	if(config.displayStartupTime)
+		displayMessage("TiddlyWiki startup in " + (now-then)/1000 + " seconds");
 	startingUp = false;
 }
 
