@@ -7,6 +7,18 @@ config.refreshers = {
 		{
 		var title = e.getAttribute("tiddlyLink");
 		refreshTiddlyLink(e,title);
+		return true;
+		},
+	
+	tiddler: function(e,changeList)
+		{
+		var title = e.getAttribute("tiddler");
+		var template = e.getAttribute("template");
+		if(changeList && changeList.find(title) != null && !story.isDirty(title))
+			story.refreshTiddler(title,template,true);
+		else
+			refreshElements(e,changeList);
+		return true;
 		},
 
 	content: function(e,changeList)
@@ -16,8 +28,22 @@ config.refreshers = {
 		if(force != null || changeList == null || changeList.find(title) != null)
 			{
 			removeChildren(e);
-			wikify(store.getTiddlerText(title,title),e,null,null);
+			wikify(store.getTiddlerText(title,title),e);
+			return true;
 			}
+		else
+			return false;
+		},
+
+	macro: function(e,changeList)
+		{
+		var macro = e.getAttribute("macroName");
+		var params = e.getAttribute("params");
+		if(macro)
+			macro = config.macros[macro];
+		if(macro && macro.refresh)
+			macro.refresh(e,params);
+		return true;
 		}
 };
 
@@ -32,13 +58,11 @@ function refreshElements(root,changeList)
 		else
 			type = null;
 		var refresher = config.refreshers[type];
-		if(refresher == undefined)
-			{
-			if(e.hasChildNodes())
-				refreshElements(e,changeList);
-			}
-		else
-			refresher(e,changeList);
+		var refreshed = false;
+		if(refresher != undefined)
+			refreshed = refresher(e,changeList);
+		if(e.hasChildNodes() && !refreshed)
+			refreshElements(e,changeList);
 		}
 }
 
@@ -71,11 +95,6 @@ function applyHtmlMacros(root,tiddler)
 
 function refreshPageTemplate(title)
 {
-	applyPageTemplate(title);
-}
-
-function applyPageTemplate(title)
-{
 	var stash = createTiddlyElement(document.body,"div");
 	stash.style.display = "none";
 	var display = document.getElementById("tiddlerDisplay");
@@ -89,10 +108,10 @@ function applyPageTemplate(title)
 	var wrapper = document.getElementById("contentWrapper");
 	if(!title)
 		title = "PageTemplate";
-	var html = store.getTiddlerText(title);
+	var html = store.getRecursiveTiddlerText(title,null,10);
 	wrapper.innerHTML = html;
-	applyHtmlMacros(wrapper,null);
-	refreshElements(wrapper,null);
+	applyHtmlMacros(wrapper);
+	refreshElements(wrapper);
 	display = document.getElementById("tiddlerDisplay");
 	removeChildren(display);
 	if(!display)
@@ -106,7 +125,9 @@ function applyPageTemplate(title)
 function refreshDisplay(hint)
 {
 	var e = document.getElementById("contentWrapper");
-	refreshElements(e,hint == null ? null : [hint]);
+	if(typeof hint == "string")
+		hint = [hint];
+	refreshElements(e,hint);
 }
 
 function refreshPageTitle()
@@ -117,5 +138,21 @@ function refreshPageTitle()
 function refreshStyles(title)
 {
 	setStylesheet(title == null ? "" : store.getRecursiveTiddlerText(title,"",10),title);
+}
+
+function refreshColorPalette(title)
+{
+	if(!startingUp)
+		refreshAll();
+}
+
+function refreshAll()
+{
+	refreshPageTemplate();
+	refreshDisplay();
+	refreshStyles("StyleSheetLayout");
+	refreshStyles("StyleSheetColors");
+	refreshStyles("StyleSheet");
+	refreshStyles("StyleSheetPrint");
 }
 

@@ -6,15 +6,24 @@ var params = null; // Command line parameters
 var store = null; // TiddlyWiki storage
 var story = null; // Main story
 var formatter = null; // Default formatters for the wikifier
+config.parsers = {}; // Hashmap of alternative parsers for the wikifier
 var anim = new Animator(); // Animation engine
 var readOnly = false; // Whether we're in readonly mode
 var highlightHack = null; // Embarrassing hack department...
 var hadConfirmExit = false; // Don't warn more than once
 var safeMode = false; // Disable all plugins and cookies
+var installedPlugins = []; // Information filled in when plugins are executed
+var startingUp = false; // Whether we're in the process of starting up
+
+// Whether to use the JavaSaver applet
+var useJavaSaver = config.browser.isSafari || config.browser.isOpera;
 
 // Starting up
 function main()
 {
+	var now, then = new Date();
+	startingUp = true;
+	window.onbeforeunload = function(e) {if(window.confirmExit) return confirmExit();};
 	params = getParameters();
 	if(params)
 		params = params.parseParams("open",null,false);
@@ -26,14 +35,23 @@ function main()
 	loadOptionsCookie();
 	for(var s=0; s<config.notifyTiddlers.length; s++)
 		store.addNotification(config.notifyTiddlers[s].name,config.notifyTiddlers[s].notify);
-	store.loadFromDiv("storeArea","store");
+	store.loadFromDiv("storeArea","store",true);
 	invokeParamifier(params,"onload");
-	loadSystemConfig();
+	var pluginProblem = loadPlugins();
 	formatter = new Formatter(config.formatters);
 	readOnly = (window.location.protocol == "file:") ? false : config.options.chkHttpReadOnly;
 	invokeParamifier(params,"onconfig");
 	store.notifyAll();
 	restart();
+	if(pluginProblem)
+		{
+		displayTiddler(null,"PluginManager");
+		displayMessage(config.messages.customConfigError);
+		}
+	now = new Date();
+	if(config.displayStartupTime)
+		displayMessage("TiddlyWiki startup in " + (now-then)/1000 + " seconds");
+	startingUp = false;
 }
 
 // Restarting
@@ -56,33 +74,74 @@ function saveTest()
 	saveTest.appendChild(document.createTextNode("savetest"));
 }
 
-function loadSystemConfig()
+function loadPlugins()
 {
 	if(safeMode)
-		return;
+		return false;
 	var configTiddlers = store.getTaggedTiddlers("systemConfig");
+	installedPlugins = [];
+	var hadProblem = false;
 	for(var t=0; t<configTiddlers.length; t++)
 		{
-		var ex = processConfig(configTiddlers[t].text);
-		if(ex)
-			displayMessage(config.messages.customConfigError.format([ex,configTiddlers[t].title]));
+		var tiddler = configTiddlers[t];
+		var pluginInfo = getPluginInfo(tiddler);
+		if(isPluginExecutable(pluginInfo))
+			{
+			pluginInfo.executed = true;
+			pluginInfo.error = false;
+			try
+				{
+				if(tiddler.text && tiddler.text != "")
+					window.eval(tiddler.text);
+				}
+			catch(e)
+				{
+				pluginInfo.log.push(config.messages.pluginError.format([exceptionText(e)]));
+				pluginInfo.error = true;
+				hadProblem = true;
+				}
+			}
+		else
+			pluginInfo.warning = true;
+		installedPlugins.push(pluginInfo);
 		}
+	return hadProblem;
 }
 
-// Merge a custom configuration over the top of the current configuration
-// Returns a string error message or null if it went OK
-function processConfig(customConfig)
+function getPluginInfo(tiddler)
 {
-	try
+	var p = store.getTiddlerSlices(tiddler.title,["Name","Description","Version","CoreVersion","Date","Source","Author","License","Browsers"]);
+	p.tiddler = tiddler;
+	p.title = tiddler.title;
+	p.log = [];
+	return p;
+}
+
+// Check that a particular plugin is valid for execution
+function isPluginExecutable(plugin)
+{
+	if(plugin.tiddler.isTagged("systemConfigDisable"))
+		return verifyTail(plugin,false,config.messages.pluginDisabled);
+	if(plugin.tiddler.isTagged("systemConfigForce"))
+		return verifyTail(plugin,true,config.messages.pluginForced);
+	if(plugin["CoreVersion"])
 		{
-		if(customConfig && customConfig != "")
-			window.eval(customConfig);
+		var coreVersion = plugin["CoreVersion"].split(".");
+		var w = parseInt(coreVersion[0]) - version.major;
+		if(w == 0 && coreVersion[1])
+			w = parseInt(coreVersion[1]) - version.minor;
+		if(w == 0 && coreVersion[2])
+		 	w = parseInt(coreVersion[2]) - version.revision;
+		if(w > 0)
+			return verifyTail(plugin,false,config.messages.pluginVersionError);
 		}
-	catch(e)
-		{
-		return(e.description ? e.description : e.toString());
-		}
-	return null;
+	return true;
+}
+
+function verifyTail(plugin,result,message)
+{
+	plugin.log.push(message);
+	return result;
 }
 
 function invokeMacro(place,macro,params,wikifier,tiddler)

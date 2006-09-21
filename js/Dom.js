@@ -25,6 +25,18 @@ function createTiddlyText(theParent,theText)
 	return theParent.appendChild(document.createTextNode(theText));
 }
 
+function createTiddlyCheckbox(theParent,caption,checked,onChange)
+{
+	var cb = document.createElement("input");
+	cb.setAttribute("type","checkbox");
+	cb.onclick = onChange;
+	theParent.appendChild(cb);
+	cb.checked = checked;
+	if(caption)
+		wikify(caption,theParent);
+	return cb;
+}
+
 function createTiddlyElement(theParent,theElement,theID,theClass,theText)
 {
 	var e = document.createElement(theElement);
@@ -68,31 +80,53 @@ function removeEvent(obj,type,fn)
 
 function addClass(e,theClass)
 {
-	removeClass(e,theClass);
-	e.className += " " + theClass;
+	var currClass = e.className.split(" ");
+	if(currClass.indexOf(theClass) == -1)
+		e.className += " " + theClass;
 }
 
 function removeClass(e,theClass)
 {
-	var newClass = [];
 	var currClass = e.className.split(" ");
-	for(var t=0; t<currClass.length; t++)
-		if(currClass[t] != theClass)
-			newClass.push(currClass[t]);
-	e.className = newClass.join(" ");
+	var i = currClass.indexOf(theClass);
+	while(i != -1)
+		{
+		currClass.splice(i,1);
+		i = currClass.indexOf(theClass);
+		}
+	e.className = currClass.join(" ");
 }
 
 function hasClass(e,theClass)
 {
-	var c = e.className;
-	if(c)
+	if(e.className)
 		{
-		c = c.split(" ");
-		for(var t=0; t<c.length; t++)
-			if(c[t] == theClass)
-				return true;
+		if(e.className.split(" ").indexOf(theClass) != -1)
+			return true;
 		}
 	return false;
+}
+
+// Find the closest relative with a given property value (property defaults to tagName, relative defaults to parentNode)
+function findRelated(e,value,name,relative)
+{
+	name = name ? name : "tagName";
+	relative = relative ? relative : "parentNode";
+	if(name == "className")
+		{
+		while(e && !hasClass(e,value))
+			{
+			e = e[relative];
+			}
+		}
+	else
+		{
+		while(e && e[name] != value)
+			{
+			e = e[relative];
+			}
+		}
+	return e;
 }
 
 // Resolve the target object of an event
@@ -238,4 +272,45 @@ function setStylesheet(s,id)
 			document.getElementsByTagName("head")[0].appendChild(n);
 			}
 		}
+}
+
+// Replace the current selection of a textarea or text input and scroll it into view
+
+function replaceSelection(e,text)
+{
+	if (e.setSelectionRange)
+		{
+		var oldpos = e.selectionStart + 1;
+		e.value = e.value.substr(0,e.selectionStart) + text + e.value.substr(e.selectionStart);
+		e.setSelectionRange( oldpos, oldpos);
+		var linecount = e.value.split('\n').length;
+		var thisline = e.value.substr(0,e.selectionStart).split('\n').length-1;
+		e.scrollTop = Math.floor((thisline-e.rows/2)*e.scrollHeight/linecount);
+		}
+	else if (document.selection)
+		{
+		var range = document.selection.createRange();
+		if (range.parentElement() == e)
+			{
+			var isCollapsed = range.text == "";
+			range.text = text;
+			 if (!isCollapsed)
+				{
+				range.moveStart('character', -text.length);
+				range.select();
+				}
+			}
+		}
+}
+
+// Returns the text of the given (text) node, possibly merging subsequent text nodes
+function getNodeText(e)
+{
+	var t = ""; 
+	while (e && e.nodeName == "#text")
+		{
+		t += e.nodeValue;
+		e = e.nextSibling;
+		}
+	return t;
 }

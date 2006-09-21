@@ -5,17 +5,19 @@
 function createTiddlyButton(theParent,theText,theTooltip,theAction,theClass,theId,theAccessKey)
 {
 	var theButton = document.createElement("a");
-	theButton.className = "button";
 	if(theAction)
 		{
 		theButton.onclick = theAction;
 		theButton.setAttribute("href","javascript:;");
 		}
-	theButton.setAttribute("title",theTooltip);
+	if(theTooltip)
+		theButton.setAttribute("title",theTooltip);
 	if(theText)
 		theButton.appendChild(document.createTextNode(theText));
 	if(theClass)
 		theButton.className = theClass;
+	else
+		theButton.className = "button";
 	if(theId)
 		theButton.id = theId;
 	if(theParent)
@@ -25,39 +27,56 @@ function createTiddlyButton(theParent,theText,theTooltip,theAction,theClass,theI
 	return(theButton);
 }
 
-function createTiddlyLink(place,title,includeText,theClass)
+function createTiddlyLink(place,title,includeText,theClass,isStatic)
 {
 	var text = includeText ? title : null;
-	var btn = createTiddlyButton(place,text,null,onClickTiddlerLink,theClass);
+	var i = getTiddlyLinkInfo(title,theClass)
+	var btn;
+	if(isStatic)
+		btn = createExternalLink(place,"#" + title);
+	else
+		btn = createTiddlyButton(place,text,i.subTitle,onClickTiddlerLink,i.classes);
 	btn.setAttribute("refresh","link");
 	btn.setAttribute("tiddlyLink",title);
-	refreshTiddlyLink(btn,title);
 	return(btn);
 }
 
 function refreshTiddlyLink(e,title)
 {
-	var subTitle, theClass = "tiddlyLink";
+	var i = getTiddlyLinkInfo(title,e.className);
+	e.className = i.classes;
+	e.title = i.subTitle;
+}
+
+function getTiddlyLinkInfo(title,currClasses)
+{
+	var classes = currClasses ? currClasses.split(" ") : [];
+	classes.pushUnique("tiddlyLink");
 	var tiddler = store.fetchTiddler(title);
+	var subTitle;
 	if(tiddler)
 		{
 		subTitle = tiddler.getSubtitle();
-		theClass += " tiddlyLinkExisting";
+		classes.pushUnique("tiddlyLinkExisting");
+		classes.remove("tiddlyLinkNonExisting");
+		classes.remove("shadow");
 		}
 	else
 		{
-		subTitle = config.messages.undefinedTiddlerToolTip.format([title]);
-		theClass += " tiddlyLinkNonExisting";
+		classes.remove("tiddlyLinkExisting");
+		classes.pushUnique("tiddlyLinkNonExisting");
 		if(store.isShadowTiddler(title))
 			{
 			subTitle = config.messages.shadowedTiddlerToolTip.format([title]);
-			theClass += " shadow";
+			classes.pushUnique("shadow");
 			}
 		else
+			{
 			subTitle = config.messages.undefinedTiddlerToolTip.format([title]);
+			classes.remove("shadow");
+			}
 		}
-	e.className = theClass;
-	e.title = subTitle;
+	return {classes: classes.join(" "), subTitle: subTitle};
 }
 
 function createExternalLink(place,url)
@@ -153,8 +172,10 @@ function onClickTagOpenAll(e)
 	if (!e) var e = window.event;
 	var tag = this.getAttribute("tag");
 	var tagged = store.getTaggedTiddlers(tag);
+	var titles = [];
 	for(var t=tagged.length-1; t>=0; t--)
-		story.displayTiddler(this,tagged[t].title,null,false,e.shiftKey || e.altKey);
+		titles.push(tagged[t].title);
+	displayTiddlers(this,titles);
 	return(false);
 }
 
@@ -171,17 +192,41 @@ function onClickError(e)
 	return false;
 }
 
+function createTiddlyDropDown(place,onchange,options)
+{
+	var sel = createTiddlyElement(place,"select");
+	sel.onchange = onchange;
+	for(var t=0; t<options.length; t++)
+		{
+		var e = createTiddlyElement(sel,"option",null,null,options[t].caption);
+		e.value = options[t].name;
+		}
+}
+
 function createTiddlyError(place,title,text)
 {
 	var btn = createTiddlyButton(place,title,null,onClickError,"errorButton");
 	if (text) btn.setAttribute("errorText",text);
 }
 
-function merge(dst,src)
+function merge(dst,src,preserveExisting)
 {
 	for (p in src)
-		dst[p] = src[p];
+		if (!preserveExisting || dst[p] === undefined)
+			dst[p] = src[p];
 	return dst;
 }
 
+// Returns a string containing the description of an exception, optionally prepended by a message
+function exceptionText(e, message)
+{
+	var s = e.description ? e.description : e.toString();
+	return message ? "%0:\n%1".format([message, s]) : s;
+}
+
+// Displays an alert of an exception description with optional message
+function showException(e, message)
+{
+	alert(exceptionText(e, message));
+}
 

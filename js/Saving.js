@@ -3,6 +3,7 @@
 // ---------------------------------------------------------------------------------
 
 var saveUsingSafari = false;
+
 var startSaveArea = '<div id="' + 'storeArea">'; // Split up into two so that indexOf() of this source doesn't find it
 var endSaveArea = '</d' + 'iv>';
 
@@ -24,9 +25,19 @@ function checkUnsavedChanges()
 		}
 }
 
-// Save this tiddlywiki with the pending changes
-function saveChanges()
+function updateMarkupBlock(s,blockName,tiddlerName)
 {
+	return s.replaceChunk(
+			"<!--%0-START-->".format([blockName]),
+			"<!--%0-END-->".format([blockName]),
+			"\n" + store.getRecursiveTiddlerText(tiddlerName,"") + "\n");
+}
+
+// Save this tiddlywiki with the pending changes
+function saveChanges(onlyIfDirty)
+{
+	if(onlyIfDirty && !store.isDirty())
+		return;
 	clearMessage();
 	// Get the URL of the document
 	var originalPath = document.location.toString();
@@ -50,7 +61,8 @@ function saveChanges()
 		}
 	// Locate the storeArea div's
 	var posOpeningDiv = original.indexOf(startSaveArea);
-	var posClosingDiv = original.lastIndexOf(endSaveArea);
+	var limitClosingDiv = original.indexOf("<!--POST-BODY-START--"+">");
+	var posClosingDiv = original.lastIndexOf(endSaveArea,limitClosingDiv == -1 ? original.length : limitClosingDiv);
 	if((posOpeningDiv == -1) || (posClosingDiv == -1))
 		{
 		alert(config.messages.invalidFileError.format([localPath]));
@@ -93,17 +105,25 @@ function saveChanges()
 		else
 			alert(config.messages.emptyFailed);
 		}
-	// Save new file
-	var revised = original.substr(0,posOpeningDiv + startSaveArea.length) +
-				convertUnicodeToUTF8(allTiddlersAsHtml()) + "\n\t\t" +
-				original.substr(posClosingDiv);
-	var newSiteTitle = convertUnicodeToUTF8((wikifyPlain("SiteTitle") + " - " + wikifyPlain("SiteSubtitle")).htmlEncode());
-	revised = revised.replaceChunk("<title"+">","</title"+">"," " + newSiteTitle + " ");
-	revised = revised.replaceChunk("<!--PRE-HEAD-START--"+">","<!--PRE-HEAD-END--"+">","\n" + store.getTiddlerText("MarkupPreHead","") + "\n");
-	revised = revised.replaceChunk("<!--POST-HEAD-START--"+">","<!--POST-HEAD-END--"+">","\n" + store.getTiddlerText("MarkupPostHead","") + "\n");
-	revised = revised.replaceChunk("<!--PRE-BODY-START--"+">","<!--PRE-BODY-END--"+">","\n" + store.getTiddlerText("MarkupPreBody","") + "\n");
-	revised = revised.replaceChunk("<!--POST-BODY-START--"+">","<!--POST-BODY-END--"+">","\n" + store.getTiddlerText("MarkupPostBody","") + "\n");
-	var save = saveFile(localPath,revised);
+	var save;
+	try 
+		{
+		// Save new file
+		var revised = original.substr(0,posOpeningDiv + startSaveArea.length) + "\n" +
+					convertUnicodeToUTF8(store.allTiddlersAsHtml()) + "\n" +
+					original.substr(posClosingDiv);
+		var newSiteTitle = convertUnicodeToUTF8((wikifyPlain("SiteTitle") + " - " + wikifyPlain("SiteSubtitle")).htmlEncode());
+		revised = revised.replaceChunk("<title"+">","</title"+">"," " + newSiteTitle + " ");
+		revised = updateMarkupBlock(revised,"PRE-HEAD","MarkupPreHead");
+		revised = updateMarkupBlock(revised,"POST-HEAD","MarkupPostHead");
+		revised = updateMarkupBlock(revised,"PRE-BODY","MarkupPreBody");
+		revised = updateMarkupBlock(revised,"POST-BODY","MarkupPostBody");
+		save = saveFile(localPath,revised);
+		}
+	catch (e) 
+		{
+		showException(e);
+		}
 	if(save)
 		{
 		displayMessage(config.messages.mainSaved,"file://" + localPath);
@@ -165,7 +185,7 @@ function generateRss()
 {
 	var s = [];
 	var d = new Date();
-	var u = store.getTiddlerText("SiteUrl",null);
+	var u = store.getTiddlerText("SiteUrl");
 	// Assemble the header
 	s.push("<" + "?xml version=\"1.0\"?" + ">");
 	s.push("<rss version=\"2.0\">");
@@ -192,11 +212,3 @@ function generateRss()
 	return s.join("\n");
 }
 
-function allTiddlersAsHtml()
-{
-	var savedTiddlers = [];
-	var tiddlers = store.getTiddlers("title");
-	for (var t = 0; t < tiddlers.length; t++)
-		savedTiddlers.push(tiddlers[t].saveToDiv());
-	return savedTiddlers.join("\n");
-}

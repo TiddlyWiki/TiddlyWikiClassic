@@ -26,7 +26,7 @@ String.prototype.unDash = function()
 // Substitute substrings from an array into a format string that includes '%1'-type specifiers
 String.prototype.format = function(substrings)
 {
-	var subRegExp = new RegExp("(?:%(\\d+))","mg");
+	var subRegExp = /(?:%(\d+))/mg;
 	var currPos = 0;
 	var r = [];
 	do {
@@ -54,36 +54,43 @@ String.prototype.escapeRegExp = function()
 	return c;
 }
 
+// Convert "\" to "\s", newlines to "\n" (and remove carriage returns)
+String.prototype.escapeLineBreaks = function()
+{
+	return this.replace(/\\/mg,"\\s").replace(/\n/mg,"\\n").replace(/\r/mg,"");
+}
+
+// Convert "\n" to newlines, "\s" to "\" (and remove carriage returns)
+String.prototype.unescapeLineBreaks = function()
+{
+	return this.replace(/\\n/mg,"\n").replace(/\\s/mg,"\\").replace(/\r/mg,"");
+}
+
 // Convert & to "&amp;", < to "&lt;", > to "&gt;" and " to "&quot;"
 String.prototype.htmlEncode = function()
 {
-	var regexpAmp = new RegExp("&","mg");
-	var regexpLessThan = new RegExp("<","mg");
-	var regexpGreaterThan = new RegExp(">","mg");
-	var regexpQuote = new RegExp("\"","mg");
-	return(this.replace(regexpAmp,"&amp;").replace(regexpLessThan,"&lt;").replace(regexpGreaterThan,"&gt;").replace(regexpQuote,"&quot;"));
+	return(this.replace(/&/mg,"&amp;").replace(/</mg,"&lt;").replace(/>/mg,"&gt;").replace(/\"/mg,"&quot;"));
 }
 
 // Convert "&amp;" to &, "&lt;" to <, "&gt;" to > and "&quot;" to "
 String.prototype.htmlDecode = function()
 {
-	var regexpAmp = new RegExp("&amp;","mg");
-	var regexpLessThan = new RegExp("&lt;","mg");
-	var regexpGreaterThan = new RegExp("&gt;","mg");
-	var regexpQuote = new RegExp("&quot;","mg");
-	return(this.replace(regexpLessThan,"<").replace(regexpGreaterThan,">").replace(regexpQuote,"\"").replace(regexpAmp,"&"));
+	return(this.replace(/&amp;/mg,"&").replace(/&lt;/mg,"<").replace(/&gt;/mg,">").replace(/&quot;/mg,"\""));
 }
 
 // Parse a space-separated string of name:value parameters where:
-//   - the name or the value can be optional (and a separate default is used instead)
+//   - the name or the value can be optional (in which case separate defaults are used instead)
 //     - in case of ambiguity, a lone word is taken to be a value
+//     - if 'cascadeDefaults' is set to true, then the defaults are modified by updated by each specified name or value
+//     - name prefixes are not allowed if the 'noNames' parameter is true
 //   - if both the name and value are present they must be separated by a colon
 //   - the name and the value may both be quoted with single- or double-quotes, double-square brackets
 //   - names or values quoted with {{double-curly braces}} are evaluated as a JavaScript expression
+//     - as long as the 'allowEval' parameter is true
 // The result is an array of objects:
 //   result[0] = object with a member for each parameter name, value of that member being an array of values
 //   result[1..n] = one object for each parameter, with 'name' and 'value' members
-String.prototype.parseParams = function(defaultName,defaultValue,allowEval,noNames)
+String.prototype.parseParams = function(defaultName,defaultValue,allowEval,noNames,cascadeDefaults)
 {
 	var parseToken = function(match,p)
 		{
@@ -101,9 +108,9 @@ String.prototype.parseParams = function(defaultName,defaultValue,allowEval,noNam
 				if(allowEval)
 					n = window.eval(n);
 				}
-			catch(ex)
+			catch(e)
 				{
-				throw "Unable to evaluate {{" + match[p+3] + "}}: " + ex.toString();
+				throw "Unable to evaluate {{" + match[p+3] + "}}: " + exceptionText(e);
 				}
 		else if(match[p+4]) // Unquoted
 			n = match[p+4];
@@ -119,7 +126,7 @@ String.prototype.parseParams = function(defaultName,defaultValue,allowEval,noNam
 	var token = "(?:" + dblQuote + "|" + sngQuote + "|" + dblSquare + "|" + dblBrace + "|" + unQuoted + ")";
 	var re = noNames
 		? new RegExp(token,"mg")
-		: new RegExp(skipSpace + token + skipSpace + "(?:(\\:)" + skipSpace + token + "){0,1}","mg");
+		: new RegExp(skipSpace + token + skipSpace + "(?:(\\:)" + skipSpace + token + ")?","mg");
 	var params = [];
 	do {
 		var match = re.exec(this);
@@ -139,6 +146,11 @@ String.prototype.parseParams = function(defaultName,defaultValue,allowEval,noNam
 				else if(v == null && defaultValue)
 					v = defaultValue;
 				r.push({name: n, value: v});
+				if(cascadeDefaults)
+					{
+					defaultName = n;
+					defaultValue = v;
+					}
 				}
 			}
 	} while(match);
@@ -175,18 +187,36 @@ String.prototype.readBracketedList = function(unique)
 	return n;
 }
 
-// Replace a chunk of a string given start and end markers
-String.prototype.replaceChunk = function(start,end,sub)
+// Returns array with start and end index of chunk between given start and end marker, or undefined.
+String.prototype.getChunkRange = function(start,end) 
 {
 	var s = this.indexOf(start);
 	if(s != -1)
 		{
-		var e = this.indexOf(end,s + start.length);
+		s += start.length;
+		var e = this.indexOf(end,s);
 		if(e != -1)
-			return this.substring(0,s + start.length) + sub + this.substring(e);
+			return [s, e];
 		}
-	return this;
 }
+
+// Replace a chunk of a string given start and end markers
+String.prototype.replaceChunk = function(start,end,sub)
+{
+	var r = this.getChunkRange(start,end);
+	return r 
+		? this.substring(0,r[0]) + sub + this.substring(r[1])
+		: this;
+}
+
+// Returns a chunk of a string between start and end markers, or undefined
+String.prototype.getChunk = function(start,end)
+{
+	var r = this.getChunkRange(start,end);
+	if (r)
+		return this.substring(r[0],r[1]);
+}
+
 
 // Static method to bracket a string with double square brackets if it contains a space
 String.encodeTiddlyLink = function(title)
@@ -195,6 +225,20 @@ String.encodeTiddlyLink = function(title)
 		return(title);
 	else
 		return("[[" + title + "]]");
+}
+
+// Static method to encodeTiddlyLink for every item in an array and join them with spaces
+String.encodeTiddlyLinkList = function(list)
+{
+	if(list)
+		{
+		var results = [];
+		for(var t=0; t<list.length; t++)
+			results.push(String.encodeTiddlyLink(list[t]));
+		return results.join(" ");
+		}
+	else
+		return "";
 }
 
 // Static method to left-pad a string with 0s to a certain width
@@ -206,3 +250,30 @@ String.zeroPad = function(n,d)
 	return(s);
 }
 
+String.prototype.startsWith = function(prefix) 
+{
+	return !prefix || this.substring(0,prefix.length) == prefix;
+}
+
+// Returns the first value of the given named parameter.
+//#
+//# @param params
+//#         as returned by parseParams or null/undefined
+//# @return [may be null/undefined]
+//#
+function getParam(params, name, defaultValue) {
+	if (!params)
+		return defaultValue;
+	var p = params[0][name];
+	return p ? p[0] : defaultValue;
+}
+
+// Returns the first value of the given boolean named parameter.
+//#
+//# @param params
+//#         as returned by parseParams or null/undefined
+//#
+function getFlag(params, name, defaultValue) {
+	return !!getParam(params, name, defaultValue);
+} 
+	

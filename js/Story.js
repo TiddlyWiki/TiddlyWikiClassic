@@ -2,16 +2,6 @@
 // Story functions
 // ---------------------------------------------------------------------------------
 
-function displayTiddlers(srcElement,titles,template,unused1,unused2,animate,slowly)
-{
-	story.displayTiddlers(srcElement,titles,template,animate,slowly);
-}
-
-function displayTiddler(srcElement,title,template,unused1,unused2,animate,slowly)
-{
-	story.displayTiddler(srcElement,title,template,animate,slowly);
-}
-
 // A story is a HTML div containing a sequence of tiddlers that can be manipulated
 // container - id of containing element
 // idPrefix - string prefix prepended to title to make ids for tiddlers in this story
@@ -70,9 +60,9 @@ Story.prototype.displayTiddler = function(srcElement,title,template,animate,slow
 		var before = this.positionTiddler(srcElement);
 		theTiddler = this.createTiddler(place,before,title,template);
 		}
-	if(srcElement)
+	if(srcElement && typeof srcElement !== "string")
 		{
-		if(config.options.chkAnimate && (animate == undefined || animate == true))
+		if(anim && config.options.chkAnimate && (animate == undefined || animate == true))
 			anim.startAnimating(new Cascade(title,srcElement,theTiddler,slowly),new Scroller(theTiddler,slowly));
 		else
 			window.scrollTo(0,ensureVisible(theTiddler));
@@ -119,7 +109,8 @@ Story.prototype.positionTiddler = function(srcElement)
 // template - the name of the tiddler containing the template or one of the constants DEFAULT_VIEW_TEMPLATE and DEFAULT_EDIT_TEMPLATE
 Story.prototype.createTiddler = function(place,before,title,template)
 {
-	var theTiddler = createTiddlyElement(null,"div",this.idPrefix + title,"tiddler",null);
+	var theTiddler = createTiddlyElement(null,"div",this.idPrefix + title,"tiddler");
+	theTiddler.setAttribute("refresh","tiddler");
 	place.insertBefore(theTiddler,before);
 	this.refreshTiddler(title,template);
 	return theTiddler;
@@ -138,7 +129,7 @@ Story.prototype.chooseTemplateForTiddler = function(title,template)
 // Overridable for extracting the text of a template from a tiddler
 Story.prototype.getTemplateForTiddler = function(title,template,tiddler)
 {
-	return store.getTiddlerText(template);
+	return store.getRecursiveTiddlerText(template,null,10);
 }
 
 // Apply a template to an existing tiddler if it is not already displayed using that template
@@ -177,7 +168,7 @@ Story.prototype.refreshTiddler = function(title,template,force)
 			theTiddler.onmouseover = this.onTiddlerMouseOver;
 			theTiddler.onmouseout = this.onTiddlerMouseOut;
 			theTiddler.ondblclick = this.onTiddlerDblClick;
-			theTiddler.onkeypress = this.onTiddlerKeyPress;
+			theTiddler[window.event?"onkeydown":"onkeypress"] = this.onTiddlerKeyPress;
 			var html = this.getTemplateForTiddler(title,template,tiddler);
 			theTiddler.innerHTML = html;
 			applyHtmlMacros(theTiddler,tiddler);
@@ -200,6 +191,16 @@ Story.prototype.refreshTiddler = function(title,template,force)
 			}
 		}
 	return theTiddler;
+}
+
+// Refresh all tiddlers in the Story
+Story.prototype.refreshAllTiddlers = function() 
+{
+	var place = document.getElementById(this.container);
+	var e = place.firstChild; 
+	this.refreshTiddler(e.getAttribute("tiddler"),e.getAttribute("template"),true);
+	while((e = e.nextSibling) != null) 
+		this.refreshTiddler(e.getAttribute("tiddler"),e.getAttribute("template"),true);
 }
 
 // Default tiddler onmouseover/out event handlers
@@ -233,15 +234,30 @@ Story.prototype.onTiddlerDblClick = function(e)
 		return false;
 }
 
-// Default tiddler onkeypress event handler
 Story.prototype.onTiddlerKeyPress = function(e)
 {
 	if (!e) var e = window.event;
 	clearMessage();
-	var consume = false;
+	var consume = false; 
 	var title = this.getAttribute("tiddler");
+	var target = resolveTarget(e);
 	switch(e.keyCode)
 		{
+		case 9: // Tab
+			if(config.options.chkInsertTabs && target.tagName.toLowerCase() == "textarea")
+				{
+				replaceSelection(target,String.fromCharCode(9));
+				consume = true; 
+				}
+			if(config.isOpera)
+				{
+				target.onblur = function()
+					{
+					this.focus();
+					this.onblur = null;
+					}
+				}
+			break;
 		case 13: // Ctrl-Enter
 		case 10: // Ctrl-Enter on IE PC
 		case 77: // Ctrl-Enter is "M" on some platforms
@@ -251,7 +267,7 @@ Story.prototype.onTiddlerKeyPress = function(e)
 				config.macros.toolbar.invokeCommand(this,"defaultCommand",e);
 				consume = true;
 				}
-			break;
+			break; 
 		case 27: // Escape
 			blurElement(this);
 			config.macros.toolbar.invokeCommand(this,"cancelCommand",e);
@@ -260,18 +276,23 @@ Story.prototype.onTiddlerKeyPress = function(e)
 		}
 	e.cancelBubble = consume;
 	if(consume)
-		if (e.stopPropagation) e.stopPropagation();
+		{
+		if (e.stopPropagation) e.stopPropagation(); // Stop Propagation
+		e.returnValue = true; // Cancel The Event in IE
+		if (e.preventDefault ) e.preventDefault(); // Cancel The Event in Moz
+		}
 	return(!consume);
 };
 
-// Focus a specified tiddler. Attempts to focus the specified field, otherwise the first edit field it finds
-Story.prototype.focusTiddler = function(title,field)
+// Returns the specified field (input or textarea element) in a tiddler, otherwise the first edit field it finds
+// or null if it found no edit field at all
+Story.prototype.getTiddlerField = function(title,field)
 {
 	var tiddler = document.getElementById(this.idPrefix + title);
+	var e = null;
 	if(tiddler != null)
 		{
-		var children = tiddler.getElementsByTagName("*")
-		var e = null;
+		var children = tiddler.getElementsByTagName("*");
 		for (var t=0; t<children.length; t++)
 			{
 			var c = children[t];
@@ -283,11 +304,18 @@ Story.prototype.focusTiddler = function(title,field)
 					e = c;
 				}
 			}
-		if(e)
-			{
-			e.focus();
-			e.select();
-			}
+		}
+	return e;
+}
+
+// Focus a specified tiddler. Attempts to focus the specified field, otherwise the first edit field it finds
+Story.prototype.focusTiddler = function(title,field)
+{
+	var e = this.getTiddlerField(title,field);
+	if(e)
+		{
+		e.focus();
+		e.select();
 		}
 }
 
@@ -302,42 +330,25 @@ Story.prototype.blurTiddler = function (title)
 		}
 }
 
-// Adds a specified tag to the edit controls (if any) for a particular tiddler)
-// title - name of tiddler
-// tag - name of tag, without any [[brackets]]
-// mode - +1 to add the tag, -1 to remove it, 0 to toggle it
-Story.prototype.setTiddlerTag = function(title,tag,add)
+// Adds a specified value to the edit controls (if any) of a particular
+// array-formatted field of a particular tiddler (eg "tags")
+//  title - name of tiddler
+//  tag - value of field, without any [[brackets]]
+//  mode - +1 to add the tag, -1 to remove it, 0 to toggle it
+//  field - name of field (eg "tags")
+Story.prototype.setTiddlerField = function(title,tag,mode,field)
 {
-	var tiddler = document.getElementById(this.idPrefix + title);
-	if(tiddler != null)
-		{
-		var children = tiddler.getElementsByTagName("input")
-		for (var t=0; t<children.length; t++)
-			{
-			var c = children[t];
-			if(c.tagName.toLowerCase() == "input" && c.getAttribute("edit") == "tags")
-				{
-				var tags = c.value.readBracketedList();
-				var p = tags.find(tag);
-				if(add == 0)
-				    add = (p == null) ? +1 : -1;
-				if(add == +1)
-					{
-					if(p == null)
-						tags.push(tag);
-					}
-				else if(add == -1)
-					{
-					if(p != null)
-						tags.splice(p,1);
-					}
-				var result = [];
-				for(var r=0; r<tags.length; r++)
-					result.push(String.encodeTiddlyLink(tags[r]));
-				c.value = result.join(" ");
-				}
-			}
-		}
+	var c = story.getTiddlerField(title,field);
+
+	var tags = c.value.readBracketedList();
+	tags.setItem(tag,mode);
+	c.value = String.encodeTiddlyLinkList(tags);
+}
+
+// The same as setTiddlerField but preset to the "tags" field
+Story.prototype.setTiddlerTag = function(title,tag,mode)
+{
+	Story.prototype.setTiddlerField(title,tag,mode,"tags");
 }
 
 // Close a specified tiddler
@@ -351,7 +362,7 @@ Story.prototype.closeTiddler = function(title,animate,slowly)
 		{
 		clearMessage();
 		this.scrubTiddler(tiddler);
-		if(config.options.chkAnimate && animate)
+		if(anim && config.options.chkAnimate && animate)
 			anim.startAnimating(new Slider(tiddler,false,slowly,"all"));
 		else
 			tiddler.parentNode.removeChild(tiddler);
@@ -412,12 +423,14 @@ Story.prototype.search = function(text,useCaseSensitive,useRegExp)
 	this.closeAllTiddlers();
 	highlightHack = new RegExp(useRegExp ?	 text : text.escapeRegExp(),useCaseSensitive ? "mg" : "img");
 	var matches = store.search(highlightHack,"title","excludeSearch");
+	var titles = [];
 	for(var t=matches.length-1; t>=0; t--)
-		this.displayTiddler(null,matches[t].title);
+		titles.push(matches[t].title);
+	this.displayTiddlers(null,titles);
 	highlightHack = null;
 	var q = useRegExp ? "/" : "'";
 	if(matches.length > 0)
-		displayMessage(config.macros.search.successMsg.format([matches.length.toString(),q + text + q]));
+		displayMessage(config.macros.search.successMsg.format([titles.length.toString(),q + text + q]));
 	else
 		displayMessage(config.macros.search.failureMsg.format([q + text + q]));
 }
@@ -455,33 +468,19 @@ Story.prototype.gatherSaveFields = function(e,fields)
 // title - name of tiddler
 Story.prototype.hasChanges = function(title)
 {
-	var changed = false;
 	var e = document.getElementById(this.idPrefix + title);
 	if(e != null)
 		{
 		var fields = {};
 		this.gatherSaveFields(e,fields);
 		var tiddler = store.fetchTiddler(title);
+		if (!tiddler)
+			return false;
 		for(var n in fields)
-			{
-			switch(n)
-				{
-				case "title":
-					if(tiddler && tiddler.title != fields.title)
-						changed = true;
-					break;
-				case "text":
-					if(tiddler && tiddler.text != fields.text)
-						changed = true;
-					break;
-				case "tags":
-					if(tiddler && tiddler.getTags() != fields.tags)
-						changed = true;
-					break;
-				}
-			}
+			if (store.getValue(title,n) != fields[n])
+				return true;
 		}
-	return changed;
+	return false;
 }
 
 // Save any open edit fields of a tiddler and updates the display as necessary
@@ -505,11 +504,15 @@ Story.prototype.saveTiddler = function(title,minorUpdate)
 			}
 		tiddler.id = this.idPrefix + newTitle;
 		tiddler.setAttribute("tiddler",newTitle);
+		tiddler.setAttribute("template",DEFAULT_VIEW_TEMPLATE);
 		tiddler.setAttribute("dirty","false");
 		if(config.options.chkForceMinorUpdate)
 			minorUpdate = !minorUpdate;
 		var newDate = new Date();
 		store.saveTiddler(title,newTitle,fields.text,config.options.txtUserName,minorUpdate ? undefined : newDate,fields.tags);
+		for (var n in fields) 
+			if (!TiddlyWiki.isStandardField(n))
+				store.setValue(newTitle,n,fields[n]);
 		if(config.options.chkAutoSave)
 			saveChanges();
 		return newTitle;

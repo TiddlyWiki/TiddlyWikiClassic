@@ -9,7 +9,7 @@ var Popup = {
 Popup.create = function(root)
 {
 	Popup.remove();
-	var popup = createTiddlyElement(document.body,"ol","popup","popup",null);
+	var popup = createTiddlyElement(document.body,"ol","popup","popup");
 	Popup.stack.push({root: root, popup: popup});
 	return popup;
 }
@@ -41,7 +41,7 @@ Popup.show = function(unused,slowly)
 	curr.popup.style.top = popupTop + "px";
 	curr.popup.style.display = "block";
 	addClass(curr.root,"highlight");
-	if(config.options.chkAnimate)
+	if(anim && config.options.chkAnimate)
 		anim.startAnimating(new Scroller(curr.popup,slowly));
 	else
 		window.scrollTo(0,ensureVisible(curr.popup));
@@ -65,9 +65,4 @@ Popup.removeFrom = function(from)
 		}
 	Popup.stack = Popup.stack.slice(0,from);
 }
-
-// Backwards compatibility
-var createTiddlerPopup = Popup.create;
-var scrollToTiddlerPopup = Popup.show;
-var hideTiddlerPopup = Popup.remove;
 

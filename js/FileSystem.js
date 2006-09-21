@@ -12,29 +12,33 @@ function convertUTF8ToUnicode(u)
 		return manualConvertUTF8ToUnicode(u);
 }
 
-function manualConvertUTF8ToUnicode(u)
+function manualConvertUTF8ToUnicode(utf)
 {
-	var s = "";
-	var t = 0;
+	var uni = utf;
+	var src = 0;
+	var dst = 0;
 	var b1, b2, b3;
-	while(t < u.length)
+	var c;
+	while(src < utf.length)
 		{
-		b1 = u.charCodeAt(t++);
+		b1 = utf.charCodeAt(src++);
 		if(b1 < 0x80)
-			s += String.fromCharCode(b1);
+			dst++;
 		else if(b1 < 0xE0)
 			{
-			b2 = u.charCodeAt(t++);
-			s += String.fromCharCode(((b1 & 0x1F) << 6) | (b2 & 0x3F));
+			b2 = utf.charCodeAt(src++);
+			c = String.fromCharCode(((b1 & 0x1F) << 6) | (b2 & 0x3F));
+			uni = uni.substring(0,dst++).concat(c,utf.substr(src));
 			}
 		else
 			{
-			b2 = u.charCodeAt(t++);
-			b3 = u.charCodeAt(t++);
-			s += String.fromCharCode(((b1 & 0xF) << 12) | ((b2 & 0x3F) << 6) | (b3 & 0x3F));
+			b2 = utf.charCodeAt(src++);
+			b3 = utf.charCodeAt(src++);
+			c = String.fromCharCode(((b1 & 0xF) << 12) | ((b2 & 0x3F) << 6) | (b3 & 0x3F));
+			uni = uni.substring(0,dst++).concat(c,utf.substr(src));
 			}
 	}
-	return(s);
+	return(uni);
 }
 
 function mozConvertUTF8ToUnicode(u)
@@ -58,9 +62,7 @@ function mozConvertUTF8ToUnicode(u)
 
 function convertUnicodeToUTF8(s)
 {
-	if(saveUsingSafari)
-		return s;
-	else if(window.Components)
+	if(window.Components)
 		return mozConvertUnicodeToUTF8(s);
 	else
 		return manualConvertUnicodeToUTF8(s);
@@ -88,28 +90,24 @@ function mozConvertUnicodeToUTF8(s)
 function saveFile(fileUrl, content)
 {
 	var r = null;
-	if(saveUsingSafari)
-		r = safariSaveFile(fileUrl, content);
 	if((r == null) || (r == false))
 		r = mozillaSaveFile(fileUrl, content);
 	if((r == null) || (r == false))
 		r = ieSaveFile(fileUrl, content);
 	if((r == null) || (r == false))
-		r = operaSaveFile(fileUrl, content);
+		r = javaSaveFile(fileUrl, content);
 	return(r);
 }
 
 function loadFile(fileUrl)
 {
 	var r = null;
-	if(saveUsingSafari)
-		r = safariLoadFile(fileUrl);
 	if((r == null) || (r == false))
 		r = mozillaLoadFile(fileUrl);
 	if((r == null) || (r == false))
 		r = ieLoadFile(fileUrl);
 	if((r == null) || (r == false))
-		r = operaLoadFile(fileUrl);
+		r = javaLoadFile(fileUrl);
 	return(r);
 }
 
@@ -200,7 +198,7 @@ function mozillaLoadFile(filePath)
 	return(null);
 }
 
-function operaUrlToFilename(url)
+function javaUrlToFilename(url)
 {
 	var f = "//localhost";
 	if(url.indexOf(f) == 0)
@@ -211,29 +209,43 @@ function operaUrlToFilename(url)
 	return url;
 }
 
-function operaSaveFile(filePath, content)
+function javaSaveFile(filePath, content)
 {
 	try
 		{
-		var s = new java.io.PrintStream(new java.io.FileOutputStream(operaUrlToFilename(filePath)));
+		if(document.applets["TiddlySaver"])
+			return document.applets["TiddlySaver"].saveFile(javaUrlToFilename(filePath),"UTF-8",content);
+		}
+	catch(e)
+		{
+		}
+	try
+		{
+		var s = new java.io.PrintStream(new java.io.FileOutputStream(javaUrlToFilename(filePath)));
 		s.print(content);
 		s.close();
 		}
 	catch(e)
 		{
-		if(window.opera)
-			opera.postError(e);
 		return null;
 		}
 	return true;
 }
 
-function operaLoadFile(filePath)
+function javaLoadFile(filePath)
 {
+	try
+		{
+	if(document.applets["TiddlySaver"])
+		return String(document.applets["TiddlySaver"].loadFile(javaUrlToFilename(filePath),"UTF-8"));
+		}
+	catch(e)
+		{
+		}
 	var content = [];
 	try
 		{
-		var r = new java.io.BufferedReader(new java.io.FileReader(operaUrlToFilename(filePath)));
+		var r = new java.io.BufferedReader(new java.io.FileReader(javaUrlToFilename(filePath)));
 		var line;
 		while ((line = r.readLine()) != null)
 			content.push(new String(line));
@@ -241,55 +253,9 @@ function operaLoadFile(filePath)
 		}
 	catch(e)
 		{
-		if(window.opera)
-			opera.postError(e);
 		return null;
 		}
 	return content.join("\n");
 }
 
-function safariFilenameToUrl(filename) {
-	return ("file://" + filename);
-}
-
-function safariLoadFile(url)
-{
-	url = safariFilenameToUrl(url);
-	var plugin = document.embeds["tiddlyWikiSafariSaver"];
-	return plugin.readURL(url);
-}
-
-function safariSaveFile(url,content)
-{
-	url = safariFilenameToUrl(url);
-	var plugin = document.embeds["tiddlyWikiSafariSaver"];
-	return plugin.writeStringToURL(content,url);
-}
-
-// Lifted from http://developer.apple.com/internet/webcontent/detectplugins.html
-function detectPlugin()
-{
-	var daPlugins = detectPlugin.arguments;
-	var pluginFound = false;
-	if (navigator.plugins && navigator.plugins.length > 0)
-		{
-		var pluginsArrayLength = navigator.plugins.length;
-		for (var pluginsArrayCounter=0; pluginsArrayCounter < pluginsArrayLength; pluginsArrayCounter++ )
-			{
-			var numFound = 0;
-			for(var namesCounter=0; namesCounter < daPlugins.length; namesCounter++)
-				{
-				if( (navigator.plugins[pluginsArrayCounter].name.indexOf(daPlugins[namesCounter]) >= 0) ||
-						(navigator.plugins[pluginsArrayCounter].description.indexOf(daPlugins[namesCounter]) >= 0) )
-					numFound++;
-				}
-			if(numFound == daPlugins.length)
-				{
-				pluginFound = true;
-				break;
-				}
-			}
-	}
-	return pluginFound;
-}
 

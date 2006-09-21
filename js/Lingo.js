@@ -2,9 +2,18 @@
 // Translateable strings
 // ---------------------------------------------------------------------------------
 
-// Messages
+// Strings in "double quotes" should be translated; strings in 'single quotes' should be left alone
+
+merge(config.options,{
+	txtUserName: "YourName"});
+
 merge(config.messages,{
-	customConfigError: "Error in systemConfig tiddler '%1' - %0",
+	customConfigError: "Problems were encountered loading plugins. See PluginManager for details",
+	pluginError: "Error: %0",
+	pluginDisabled: "Not executed because disabled via 'systemConfigDisable' tag",
+	pluginForced: "Executed because forced via 'systemConfigForce' tag",
+	pluginVersionError: "Not executed because this plugin needs a newer version of TiddlyWiki",
+	nothingSelected: "Nothing is selected. You must select one or more items first",
 	savedSnapshotError: "It appears that this TiddlyWiki has been incorrectly saved. Please see http://www.tiddlywiki.com/#DownloadSoftware for details",
 	subtitleUnknown: "(unknown)",
 	undefinedTiddlerToolTip: "The tiddler '%0' doesn't yet exist",
@@ -29,7 +38,13 @@ merge(config.messages,{
 	overwriteWarning: "A tiddler named '%0' already exists. Choose OK to overwrite it",
 	unsavedChangesWarning: "WARNING! There are unsaved changes in TiddlyWiki\n\nChoose OK to save\nChoose CANCEL to discard",
 	confirmExit: "--------------------------------\n\nThere are unsaved changes in TiddlyWiki. If you continue you will lose those changes\n\n--------------------------------",
-	saveInstructions: "SaveChanges"});
+	saveInstructions: "SaveChanges",
+	unsupportedTWFormat: "Unsupported TiddlyWiki format '%0'",
+	tiddlerSaveError: "Error when saving tiddler '%0'",
+	tiddlerLoadError: "Error when loading tiddler '%0'",
+	wrongSaveFormat: "Cannot save with storage format '%0'. Using standard format for save.",
+	invalidFieldName: "Invalid field name %0",
+	fieldCannotBeChanged: "Field '%0' cannot be changed"});
 
 merge(config.messages.messageClose,{
 	text: "close",
@@ -37,6 +52,8 @@ merge(config.messages.messageClose,{
 
 config.messages.dates.months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November","December"];
 config.messages.dates.days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+config.messages.dates.shortMonths = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+config.messages.dates.shortDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 merge(config.views.wikified.tag,{
 	labelNoTags: "no tags",
@@ -50,7 +67,8 @@ merge(config.views.wikified.tag,{
 merge(config.views.wikified,{
 	defaultText: "The tiddler '%0' doesn't yet exist. Double-click to create it",
 	defaultModifier: "(missing)",
-	shadowModifier: "(shadow)"});
+	shadowModifier: "(built-in shadow tiddler)",
+	createdPrompt: "created"});
 
 merge(config.views.editor,{
 	tagPrompt: "Type tags separated with spaces, [[use double square brackets]] if necessary, or add existing",
@@ -110,6 +128,68 @@ merge(config.macros.newJournal,{
 	prompt: "Create a new tiddler from the current date and time",
 	accessKey: "J"});
 
+merge(config.macros.plugins,{
+	skippedText: "(This plugin has not been executed because it was added since startup)",
+	noPluginText: "There are no plugins installed",
+	confirmDeleteText: "Are you sure you want to delete these tiddlers:\n\n%0",
+	listViewTemplate : {
+		columns: [
+			{name: 'Selected', field: 'Selected', rowName: 'title', type: 'Selector'},
+			{name: 'Title', field: 'title', tiddlerLink: 'title', title: "Title", type: 'TiddlerLink'},
+			{name: 'Forced', field: 'forced', title: "Forced", tag: 'systemConfigForce', type: 'TagCheckbox'},
+			{name: 'Disabled', field: 'disabled', title: "Disabled", tag: 'systemConfigDisable', type: 'TagCheckbox'},
+			{name: 'Executed', field: 'executed', title: "Executed", type: 'Boolean', trueText: "Yes", falseText: "No"},
+			{name: 'Error', field: 'error', title: "Result", type: 'Boolean', trueText: "Error", falseText: "OK"},
+			{name: 'Log', field: 'log', title: "Log", type: 'StringList'}
+			],
+		rowClasses: [
+			{className: 'error', field: 'error'},
+			{className: 'warning', field: 'warning'}
+			],
+		actions: [
+			{caption: "More actions...", name: ''},
+			{caption: "Remove systemConfig tag", name: 'remove'},
+			{caption: "Delete these tiddlers forever", name: 'delete'}
+			]}
+	});
+
+merge(config.macros.refreshDisplay,{
+	label: "refresh",
+	prompt: "Redraw the entire TiddlyWiki display"
+	});
+
+merge(config.macros.importTiddlers,{
+	defaultPath: "http://www.tiddlywiki.com/index.html",
+	fetchLabel: "fetch",
+	fetchPrompt: "Fetch the tiddlywiki file",
+	fetchError: "There were problems fetching the tiddlywiki file",
+	confirmOverwriteText: "Are you sure you want to overwrite these tiddlers:\n\n%0",
+	wizardTitle: "Import tiddlers from another TiddlyWiki file",
+	step1: "Step 1: Locate the TiddlyWiki file",
+	step1prompt: "Enter the URL or pathname here: ",
+	step1promptFile: "...or browse for a file: ",
+	step1promptFeeds: "...or select a pre-defined feed: ",
+	step1feedPrompt: "Choose...",
+	step2: "Step 2: Loading TiddlyWiki file",
+	step2Text: "Please wait while the file is loaded from: %0",
+	step3: "Step 3: Choose the tiddlers to import",
+	step4: "%0 tiddler(s) imported",
+	step5: "Done",
+	listViewTemplate: {
+		columns: [
+			{name: 'Selected', field: 'Selected', rowName: 'title', type: 'Selector'},
+			{name: 'Title', field: 'title', title: "Title", type: 'String'},
+			{name: 'Snippet', field: 'text', title: "Snippet", type: 'String'},
+			{name: 'Tags', field: 'tags', title: "Tags", type: 'Tags'}
+			],
+		rowClasses: [
+			],
+		actions: [
+			{caption: "More actions...", name: ''},
+			{caption: "Import these tiddlers", name: 'import'}
+			]}
+	});
+
 merge(config.commands.closeTiddler,{
 	text: "close",
 	tooltip: "Close this tiddler"});
@@ -161,8 +241,8 @@ merge(config.shadowTiddlers,{
 	SiteUrl: "http://www.tiddlywiki.com/",
 	GettingStarted: "To get started with this blank TiddlyWiki, you'll need to modify the following tiddlers:\n* SiteTitle & SiteSubtitle: The title and subtitle of the site, as shown above (after saving, they will also appear in the browser title bar)\n* MainMenu: The menu (usually on the left)\n* DefaultTiddlers: Contains the names of the tiddlers that you want to appear when the TiddlyWiki is opened\nYou'll also need to enter your username for signing your edits: <<option txtUserName>>",
 	SideBarOptions: "<<search>><<closeAll>><<permaview>><<newTiddler>><<newJournal 'DD MMM YYYY'>><<saveChanges>><<slider chkSliderOptionsPanel OptionsPanel 'options »' 'Change TiddlyWiki advanced options'>>",
-	OptionsPanel: "These InterfaceOptions for customising TiddlyWiki are saved in your browser\n\nYour username for signing your edits. Write it as a WikiWord (eg JoeBloggs)\n\n<<option txtUserName>>\n<<option chkSaveBackups>> SaveBackups\n<<option chkAutoSave>> AutoSave\n<<option chkRegExpSearch>> RegExpSearch\n<<option chkCaseSensitiveSearch>> CaseSensitiveSearch\n<<option chkAnimate>> EnableAnimations\n\nSee AdvancedOptions",
-	AdvancedOptions: "<<option chkGenerateAnRssFeed>> GenerateAnRssFeed\n<<option chkOpenInNewWindow>> OpenLinksInNewWindow\n<<option chkSaveEmptyTemplate>> SaveEmptyTemplate\n<<option chkToggleLinks>> Clicking on links to tiddlers that are already open causes them to close\n^^(override with Control or other modifier key)^^\n<<option chkHttpReadOnly>> HideEditingFeatures when viewed over HTTP\n<<option chkForceMinorUpdate>> Treat edits as MinorChanges by preserving date and time\n^^(override with Shift key when clicking 'done' or by pressing Ctrl-Shift-Enter^^\n<<option chkConfirmDelete>> ConfirmBeforeDeleting\nMaximum number of lines in a tiddler edit box: <<option txtMaxEditRows>>\nFolder name for backup files: <<option txtBackupFolder>>\n",
+	OptionsPanel: "These InterfaceOptions for customising TiddlyWiki are saved in your browser\n\nYour username for signing your edits. Write it as a WikiWord (eg JoeBloggs)\n\n<<option txtUserName>>\n<<option chkSaveBackups>> SaveBackups\n<<option chkAutoSave>> AutoSave\n<<option chkRegExpSearch>> RegExpSearch\n<<option chkCaseSensitiveSearch>> CaseSensitiveSearch\n<<option chkAnimate>> EnableAnimations\n\n----\nAdvancedOptions\nPluginManager\nImportTiddlers",
+	AdvancedOptions: "<<option chkGenerateAnRssFeed>> GenerateAnRssFeed\n<<option chkOpenInNewWindow>> OpenLinksInNewWindow\n<<option chkSaveEmptyTemplate>> SaveEmptyTemplate\n<<option chkToggleLinks>> Clicking on links to tiddlers that are already open causes them to close\n^^(override with Control or other modifier key)^^\n<<option chkHttpReadOnly>> HideEditingFeatures when viewed over HTTP\n<<option chkForceMinorUpdate>> Treat edits as MinorChanges by preserving date and time\n^^(override with Shift key when clicking 'done' or by pressing Ctrl-Shift-Enter^^\n<<option chkConfirmDelete>> ConfirmBeforeDeleting\nMaximum number of lines in a tiddler edit box: <<option txtMaxEditRows>>\nFolder name for backup files: <<option txtBackupFolder>>\n<<option chkInsertTabs>> Use tab key to insert tab characters instead of jumping to next field",
 	SideBarTabs: "<<tabs txtMainTab Timeline Timeline TabTimeline All 'All tiddlers' TabAll Tags 'All tags' TabTags More 'More lists' TabMore>>",
 	TabTimeline: "<<timeline>>",
 	TabAll: "<<list all>>",
@@ -170,5 +250,7 @@ merge(config.shadowTiddlers,{
 	TabMore: "<<tabs txtMoreTab Missing 'Missing tiddlers' TabMoreMissing Orphans 'Orphaned tiddlers' TabMoreOrphans Shadowed 'Shadowed tiddlers' TabMoreShadowed>>",
 	TabMoreMissing: "<<list missing>>",
 	TabMoreOrphans: "<<list orphans>>",
-	TabMoreShadowed: "<<list shadowed>>"});
+	TabMoreShadowed: "<<list shadowed>>",
+	PluginManager: "<<plugins>>",
+	ImportTiddlers: "<<importTiddlers>>"});
 

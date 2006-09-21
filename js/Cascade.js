@@ -34,7 +34,7 @@ Cascade.prototype.tick = function()
 		while(this.elements.length > 0)
 			this.removeTail();
 		this.targetElement.style.position = "static";
-		this.targetElement.style.zIndex = null;
+		this.targetElement.style.zIndex = "";
 		return false;
 		}
 	else
