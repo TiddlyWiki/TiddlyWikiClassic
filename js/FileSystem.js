@@ -7,9 +7,9 @@
 function convertUTF8ToUnicode(u)
 {
 	if(window.netscape == undefined)
-		return mozConvertUTF8ToUnicode(u);
-	else
 		return manualConvertUTF8ToUnicode(u);
+	else
+		return mozConvertUTF8ToUnicode(u);
 }
 
 function manualConvertUTF8ToUnicode(utf)
@@ -61,9 +61,9 @@ function mozConvertUTF8ToUnicode(u)
 function convertUnicodeToUTF8(s)
 {
 	if(window.netscape == undefined)
-		return mozConvertUnicodeToUTF8(s);
-	else
 		return manualConvertUnicodeToUTF8(s);
+	else
+		return mozConvertUnicodeToUTF8(s);
 }
 
 function manualConvertUnicodeToUTF8(s)
