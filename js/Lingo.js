@@ -138,8 +138,8 @@ merge(config.macros.plugins,{
 			{name: 'Title', field: 'title', tiddlerLink: 'title', title: "Title", type: 'TiddlerLink'},
 			{name: 'Forced', field: 'forced', title: "Forced", tag: 'systemConfigForce', type: 'TagCheckbox'},
 			{name: 'Disabled', field: 'disabled', title: "Disabled", tag: 'systemConfigDisable', type: 'TagCheckbox'},
-			{name: 'Executed', field: 'executed', title: "Executed", type: 'Boolean', trueText: "Yes", falseText: "No"},
-			{name: 'Error', field: 'error', title: "Result", type: 'Boolean', trueText: "Error", falseText: "OK"},
+			{name: 'Executed', field: 'executed', title: "Loaded", type: 'Boolean', trueText: "Yes", falseText: "No"},
+			{name: 'Error', field: 'error', title: "Status", type: 'Boolean', trueText: "Error", falseText: "OK"},
 			{name: 'Log', field: 'log', title: "Log", type: 'StringList'}
 			],
 		rowClasses: [
