@@ -560,7 +560,7 @@ config.formatters = [
 	match: "--",
 	handler: function(w)
 		{
-		createTiddlyElement(w.output,"span").innerHTML = "&mdash";
+		createTiddlyElement(w.output,"span").innerHTML = "&mdash;";
 		}
 },
 
