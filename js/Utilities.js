@@ -148,7 +148,7 @@ function onClickTag(e)
 			{
 			var openAll = createTiddlyButton(createTiddlyElement(popup,"li"),lingo.openAllText.format([tag]),lingo.openAllTooltip,onClickTagOpenAll);
 			openAll.setAttribute("tag",tag);
-			createTiddlyElement(createTiddlyElement(popup,"li"),"hr");
+			createTiddlyElement(createTiddlyElement(popup,"li",null,"listBreak"),"div");
 			for(r=0; r<titles.length; r++)
 				{
 				createTiddlyLink(createTiddlyElement(popup,"li"),titles[r],true);
@@ -156,7 +156,7 @@ function onClickTag(e)
 			}
 		else
 			createTiddlyText(createTiddlyElement(popup,"li",null,"disabled"),lingo.popupNone.format([tag]));
-		createTiddlyElement(createTiddlyElement(popup,"li"),"hr");
+		createTiddlyElement(createTiddlyElement(popup,"li",null,"listBreak"),"div");
 		var h = createTiddlyLink(createTiddlyElement(popup,"li"),tag,false);
 		createTiddlyText(h,lingo.openTag.format([tag]));
 		}
