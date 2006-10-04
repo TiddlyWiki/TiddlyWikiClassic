@@ -173,7 +173,7 @@ function onClickTagOpenAll(e)
 	var tag = this.getAttribute("tag");
 	var tagged = store.getTaggedTiddlers(tag);
 	var titles = [];
-	for(var t=tagged.length-1; t>=0; t--)
+	for(var t=0; t<tagged.length-1; t++)
 		titles.push(tagged[t].title);
 	displayTiddlers(this,titles);
 	return(false);
