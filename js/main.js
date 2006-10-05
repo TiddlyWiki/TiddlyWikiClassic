@@ -14,6 +14,7 @@ var hadConfirmExit = false; // Don't warn more than once
 var safeMode = false; // Disable all plugins and cookies
 var installedPlugins = []; // Information filled in when plugins are executed
 var startingUp = false; // Whether we're in the process of starting up
+var pluginInfo,tiddler; // Used to pass information to plugins in loadPlugins()
 
 // Whether to use the JavaSaver applet
 var useJavaSaver = config.browser.isSafari || config.browser.isOpera;
@@ -83,8 +84,8 @@ function loadPlugins()
 	var hadProblem = false;
 	for(var t=0; t<configTiddlers.length; t++)
 		{
-		var tiddler = configTiddlers[t];
-		var pluginInfo = getPluginInfo(tiddler);
+		tiddler = configTiddlers[t];
+		pluginInfo = getPluginInfo(tiddler);
 		if(isPluginExecutable(pluginInfo))
 			{
 			pluginInfo.executed = true;
