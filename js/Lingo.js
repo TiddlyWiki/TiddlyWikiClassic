@@ -88,7 +88,7 @@ merge(config.macros.search,{
 	failureMsg: "No tiddlers found matching %0"});
 
 merge(config.macros.tagging,{
-	label: "tagging:",
+	label: "tagging: ",
 	labelNotTag: "not tagging",
 	tooltip: "List of tiddlers tagged with '%0'"});
 
