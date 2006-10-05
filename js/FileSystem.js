@@ -82,7 +82,7 @@ function mozConvertUnicodeToUTF8(s)
 		}
 	catch(e)
 		{
-		return manualConvertUnicodeToUTF8(u);
+		return manualConvertUnicodeToUTF8(s);
 		} // fallback
 	var u = converter.ConvertFromUnicode(s);
 	var fin = converter.Finish();
