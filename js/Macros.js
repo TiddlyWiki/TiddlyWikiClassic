@@ -895,7 +895,7 @@ config.macros.importTiddlers.handler = function(place,macroName,params,wikifier,
 
 config.macros.importTiddlers.getFeeds = function(feeds)
 {
-	var tagged = store.getTaggedTiddlers("feed","title");
+	var tagged = store.getTaggedTiddlers("contentPublisher","title");
 	for(var t=0; t<tagged.length; t++)
 		feeds.push({caption: tagged[t].title, name: store.getTiddlerSlice(tagged[t].title,"URL")});
 	return feeds;
