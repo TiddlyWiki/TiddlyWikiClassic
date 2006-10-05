@@ -222,26 +222,41 @@ config.macros.tag.handler = function(place,macroName,params)
 
 config.macros.tags.handler = function(place,macroName,params,wikifier,paramString,tiddler)
 {
+	params = paramString.parseParams("anon",null,true,false,false);
 	var theList = createTiddlyElement(place,"ul");
-	if(params[0] && store.tiddlerExists(params[0]))
-		tiddler = store.getTiddler(params[0]);
+	var title = getParam(params,"anon","");
+	if(title && store.tiddlerExists(title))
+		tiddler = store.getTiddler(title);
+	var sep = getParam(params,"sep",null);
 	var lingo = config.views.wikified.tag;
 	var prompt = tiddler.tags.length == 0 ? lingo.labelNoTags : lingo.labelTags;
 	createTiddlyElement(theList,"li",null,"listTitle",prompt.format([tiddler.title]));
 	for(var t=0; t<tiddler.tags.length; t++)
+		{
 		createTagButton(createTiddlyElement(theList,"li"),tiddler.tags[t],tiddler.title);
+		if(t<tiddler.tags.length-1)
+			createTiddlyText(theList,sep);
+		}
 }
 
 config.macros.tagging.handler = function(place,macroName,params,wikifier,paramString,tiddler)
 {
+	params = paramString.parseParams("anon",null,true,false,false);
 	var theList = createTiddlyElement(place,"ul");
-	var title = params[0] ? params[0] : (tiddler instanceof Tiddler ? tiddler.title : "");
+	var title = getParam(params,"anon","");
+	if(title == "" && tiddler instanceof Tiddler)
+		title = tiddler.title;
+	var sep = getParam(params,"sep",null);
 	theList.setAttribute("title",this.tooltip.format([title]));
 	var tagged = store.getTaggedTiddlers(title);
 	var prompt = tagged.length == 0 ? this.labelNotTag : this.label;
 	createTiddlyElement(theList,"li",null,"listTitle",prompt.format([title,tagged.length]));
 	for(var t=0; t<tagged.length; t++)
+		{
 		createTiddlyLink(createTiddlyElement(theList,"li"),tagged[t].title,true);
+		if(t<tagged.length-1)
+			createTiddlyText(theList,sep);
+		}
 }
 
 config.macros.closeAll.handler = function(place)
