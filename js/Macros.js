@@ -227,7 +227,7 @@ config.macros.tags.handler = function(place,macroName,params,wikifier,paramStrin
 	var title = getParam(params,"anon","");
 	if(title && store.tiddlerExists(title))
 		tiddler = store.getTiddler(title);
-	var sep = getParam(params,"sep",null);
+	var sep = getParam(params,"sep"," ");
 	var lingo = config.views.wikified.tag;
 	var prompt = tiddler.tags.length == 0 ? lingo.labelNoTags : lingo.labelTags;
 	createTiddlyElement(theList,"li",null,"listTitle",prompt.format([tiddler.title]));
@@ -246,7 +246,7 @@ config.macros.tagging.handler = function(place,macroName,params,wikifier,paramSt
 	var title = getParam(params,"anon","");
 	if(title == "" && tiddler instanceof Tiddler)
 		title = tiddler.title;
-	var sep = getParam(params,"sep",null);
+	var sep = getParam(params,"sep"," ");
 	theList.setAttribute("title",this.tooltip.format([title]));
 	var tagged = store.getTaggedTiddlers(title);
 	var prompt = tagged.length == 0 ? this.labelNotTag : this.label;
