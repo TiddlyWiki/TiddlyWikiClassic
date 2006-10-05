@@ -99,7 +99,7 @@ config.macros.search.handler = function(place,macroName,params)
 {
 	var searchTimeout = null;
 	var btn = createTiddlyButton(place,this.label,this.prompt,this.onClick);
-	var txt = createTiddlyElement(place,"input");
+	var txt = createTiddlyElement(place,"input",null,"txtOptionInput");
 	if(params[0])
 		txt.value = params[0];
 	txt.onkeyup = this.onKeyPress;
@@ -886,14 +886,14 @@ config.macros.importTiddlers.handler = function(place,macroName,params,wikifier,
 	createTiddlyElement(importer,"h2",null,"step1",this.step1);
 	var step = createTiddlyElement(importer,"div",null,"wizardStep");
 	createTiddlyText(step,this.step1prompt);
-	var input = createTiddlyElement(null,"input");
+	var input = createTiddlyElement(null,"input",null,"txtOptionInput");
 	input.type = "text";
 	input.size = 50;
 	step.appendChild(input);
 	importer.inputBox = input;
 	createTiddlyElement(step,"br");
 	createTiddlyText(step,this.step1promptFile);
-	var fileInput = createTiddlyElement(null,"input");
+	var fileInput = createTiddlyElement(null,"input",null,"txtOptionInput");
 	fileInput.type = "file";
 	fileInput.size = 50;
 	fileInput.onchange = this.onBrowseChange;

@@ -32,6 +32,7 @@ function createTiddlyCheckbox(theParent,caption,checked,onChange)
 	cb.onclick = onChange;
 	theParent.appendChild(cb);
 	cb.checked = checked;
+	cb.className = "chkOptionInput";
 	if(caption)
 		wikify(caption,theParent);
 	return cb;
