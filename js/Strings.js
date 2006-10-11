@@ -60,10 +60,10 @@ String.prototype.escapeLineBreaks = function()
 	return this.replace(/\\/mg,"\\s").replace(/\n/mg,"\\n").replace(/\r/mg,"");
 }
 
-// Convert "\n" to newlines, "\s" to "\" (and remove carriage returns)
+// Convert "\n" to newlines, "\b" to " ", "\s" to "\" (and remove carriage returns)
 String.prototype.unescapeLineBreaks = function()
 {
-	return this.replace(/\\n/mg,"\n").replace(/\\s/mg,"\\").replace(/\r/mg,"");
+	return this.replace(/\\n/mg,"\n").replace(/\\b/mg," ").replace(/\\s/mg,"\\").replace(/\r/mg,"");
 }
 
 // Convert & to "&amp;", < to "&lt;", > to "&gt;" and " to "&quot;"
