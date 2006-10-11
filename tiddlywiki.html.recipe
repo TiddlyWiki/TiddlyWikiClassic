@@ -48,6 +48,7 @@ html/bodystart.html
 @prebody@
 html/body.html
 @tiddler@
+@posttiddlers@
 html/posttiddlers.html
 @postbody@
 html/footer.html
