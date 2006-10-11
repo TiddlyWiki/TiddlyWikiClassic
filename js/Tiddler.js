@@ -27,7 +27,7 @@ Tiddler.prototype.saveToRss = function(url)
 {
 	var s = [];
 	s.push("<item>");
-	s.push("<title>" + this.title.htmlEncode() + "</title>");
+	s.push("<title" + ">" + this.title.htmlEncode() + "</title" + ">");
 	s.push("<description>" + wikifyStatic(this.text,null,this).htmlEncode() + "</description>");
 	for(var t=0; t<this.tags.length; t++)
 		s.push("<category>" + this.tags[t] + "</category>");

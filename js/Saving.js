@@ -190,7 +190,7 @@ function generateRss()
 	s.push("<" + "?xml version=\"1.0\"?" + ">");
 	s.push("<rss version=\"2.0\">");
 	s.push("<channel>");
-	s.push("<title>" + wikifyPlain("SiteTitle").htmlEncode() + "</title>");
+	s.push("<title" + ">" + wikifyPlain("SiteTitle").htmlEncode() + "</title" + ">");
 	if(u)
 		s.push("<link>" + u.htmlEncode() + "</link>");
 	s.push("<description>" + wikifyPlain("SiteSubtitle").htmlEncode() + "</description>");
