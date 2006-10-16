@@ -3,6 +3,7 @@ html/header.html
 html/pretitle.html
 @title@
 html/prescript.html
+@prejs@
 js/Config.js
 js/Lingo.js
 js/main.js
@@ -39,6 +40,7 @@ js/LoaderSaver.js
 js/TW21Loader.js
 js/TW21Saver.js
 js/Deprecated.js
+@postjs@
 html/postscript.html
 html/style.html
 html/postheadstart.html
