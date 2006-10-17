@@ -1,32 +1,32 @@
 // Substitute date components into a string
 Date.prototype.formatString = function(template)
 {
-	template = template.replace(/wYYYY/g,this.getYearForWeekNo());
-	template = template.replace(/wYY/g,String.zeroPad(this.getYearForWeekNo()-2000,2));
-	template = template.replace(/YYYY/g,this.getFullYear());
-	template = template.replace(/YY/g,String.zeroPad(this.getFullYear()-2000,2));
-	template = template.replace(/MMM/g,config.messages.dates.months[this.getMonth()]);
-	template = template.replace(/mmm/g,config.messages.dates.shortMonths[this.getMonth()]);
-	template = template.replace(/0MM/g,String.zeroPad(this.getMonth()+1,2));
-	template = template.replace(/MM/g,this.getMonth()+1);
-	template = template.replace(/0WW/g,String.zeroPad(this.getWeek(),2));
-	template = template.replace(/WW/g,this.getWeek());
-	template = template.replace(/DDD/g,config.messages.dates.days[this.getDay()]);
-	template = template.replace(/ddd/g,config.messages.dates.shortDays[this.getDay()]);
-	template = template.replace(/0DD/g,String.zeroPad(this.getDate(),2));
-	template = template.replace(/DDth/g,this.getDate()+this.daySuffix());
-	template = template.replace(/DD/g,this.getDate());
-	template = template.replace(/0hh12/g,String.zeroPad(this.getHours12(),2));
-	template = template.replace(/hh12/g,this.getHours12());
-	template = template.replace(/0hh/g,String.zeroPad(this.getHours(),2));
-	template = template.replace(/hh/g,this.getHours());
-	template = template.replace(/0mm/g,String.zeroPad(this.getMinutes(),2));
-	template = template.replace(/mm/g,this.getMinutes());
-	template = template.replace(/0ss/g,String.zeroPad(this.getSeconds(),2));
-	template = template.replace(/ss/g,this.getSeconds());
-	template = template.replace(/[ap]m/g,this.getAmPm().toLowerCase());
-	template = template.replace(/[AP]M/g,this.getAmPm().toUpperCase());
-	return template;
+	var t = template.replace(/0hh12/g,String.zeroPad(this.getHours12(),2));
+	t = t.replace(/hh12/g,this.getHours12());
+	t = t.replace(/0hh/g,String.zeroPad(this.getHours(),2));
+	t = t.replace(/hh/g,this.getHours());
+	t = t.replace(/0mm/g,String.zeroPad(this.getMinutes(),2));
+	t = t.replace(/mm/g,this.getMinutes());
+	t = t.replace(/0ss/g,String.zeroPad(this.getSeconds(),2));
+	t = t.replace(/ss/g,this.getSeconds());
+	t = t.replace(/[ap]m/g,this.getAmPm().toLowerCase());
+	t = t.replace(/[AP]M/g,this.getAmPm().toUpperCase());
+	t = t.replace(/wYYYY/g,this.getYearForWeekNo());
+	t = t.replace(/wYY/g,String.zeroPad(this.getYearForWeekNo()-2000,2));
+	t = t.replace(/YYYY/g,this.getFullYear());
+	t = t.replace(/YY/g,String.zeroPad(this.getFullYear()-2000,2));
+	t = t.replace(/MMM/g,config.messages.dates.months[this.getMonth()]);
+	t = t.replace(/mmm/g,config.messages.dates.shortMonths[this.getMonth()]);
+	t = t.replace(/0MM/g,String.zeroPad(this.getMonth()+1,2));
+	t = t.replace(/MM/g,this.getMonth()+1);
+	t = t.replace(/0WW/g,String.zeroPad(this.getWeek(),2));
+	t = t.replace(/WW/g,this.getWeek());
+	t = t.replace(/DDD/g,config.messages.dates.days[this.getDay()]);
+	t = t.replace(/ddd/g,config.messages.dates.shortDays[this.getDay()]);
+	t = t.replace(/0DD/g,String.zeroPad(this.getDate(),2));
+	t = t.replace(/DDth/g,this.getDate()+this.daySuffix());
+	t = t.replace(/DD/g,this.getDate());
+	return t;
 }
 
 Date.prototype.getWeek = function()
