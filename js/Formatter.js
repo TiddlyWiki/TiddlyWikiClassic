@@ -377,7 +377,7 @@ config.formatters = [
 	{
 		if(w.matchStart > 0)
 			{
-			var preRegExp = new RegExp(config.textPrimitives.anyLetter,"mg");
+			var preRegExp = new RegExp(config.textPrimitives.anyLetterString,"mg");
 			preRegExp.lastIndex = w.matchStart-1;
 			var preMatch = preRegExp.exec(w.source);
 			if(preMatch.index == w.matchStart-1)
