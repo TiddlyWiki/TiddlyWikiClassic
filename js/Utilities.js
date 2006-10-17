@@ -175,7 +175,7 @@ function onClickTagOpenAll(e)
 	var titles = [];
 	for(var t=0; t<tagged.length; t++)
 		titles.push(tagged[t].title);
-	displayTiddlers(this,titles);
+	story.displayTiddlers(this,titles);
 	return(false);
 }
 

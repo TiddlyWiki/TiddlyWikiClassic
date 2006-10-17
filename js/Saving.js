@@ -46,7 +46,7 @@ function saveChanges(onlyIfDirty)
 		{
 		alert(config.messages.notFileUrlError);
 		if(store.tiddlerExists(config.messages.saveInstructions))
-			displayTiddler(null,config.messages.saveInstructions);
+			story.displayTiddler(null,config.messages.saveInstructions);
 		return;
 		}
 	var localPath = getLocalPath(originalPath);
@@ -56,7 +56,7 @@ function saveChanges(onlyIfDirty)
 		{
 		alert(config.messages.cantSaveError);
 		if(store.tiddlerExists(config.messages.saveInstructions))
-			displayTiddler(null,config.messages.saveInstructions);
+			story.displayTiddler(null,config.messages.saveInstructions);
 		return;
 		}
 	// Locate the storeArea div's

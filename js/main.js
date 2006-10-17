@@ -46,7 +46,7 @@ function main()
 	restart();
 	if(pluginProblem)
 		{
-		displayTiddler(null,"PluginManager");
+		story.displayTiddler(null,"PluginManager");
 		displayMessage(config.messages.customConfigError);
 		}
 	now = new Date();
