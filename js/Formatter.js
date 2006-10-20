@@ -556,6 +556,22 @@ config.formatters = [
 },
 
 {
+	name: "rawText",
+	match: "\\\"{3}|<nowiki>",
+	lookaheadRegExp: /(?:\"{3}|<nowiki>)((?:.|\n)*?)(?:\"{3}|<\/nowiki>)/mg,
+	handler: function(w)
+	{
+		this.lookaheadRegExp.lastIndex = w.matchStart;
+		var lookaheadMatch = this.lookaheadRegExp.exec(w.source)
+		if(lookaheadMatch && lookaheadMatch.index == w.matchStart)
+			{
+			createTiddlyElement(w.output,"span",null,null,lookaheadMatch[1]);
+			w.nextMatch = this.lookaheadRegExp.lastIndex;
+			}
+	}
+},
+
+{
 	name: "mdash",
 	match: "--",
 	handler: function(w)
