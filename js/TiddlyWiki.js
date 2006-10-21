@@ -237,8 +237,8 @@ TiddlyWiki.prototype.setTiddlerTag = function(title,status,tag)
 	var tiddler = this.fetchTiddler(title);
 	if(tiddler)
 		{
-		var t = tiddler.tags.find(tag);
-		if(t != null)
+		var t = tiddler.tags.indexOf(tag);
+		if(t != -1)
 			tiddler.tags.splice(t,1);
 		if(status)
 			tiddler.tags.push(tag);

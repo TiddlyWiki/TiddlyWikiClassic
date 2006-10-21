@@ -188,7 +188,7 @@ config.macros.tiddler.handler = function(place,macroName,params,wikifier,paramSt
 	if(text)
 		{
 		var stack = config.macros.tiddler.tiddlerStack;
-		if(stack.find(tiddlerName) !== null)
+		if(stack.indexOf(tiddlerName) !== -1)
 			return;
 		stack.push(tiddlerName);
 		try
@@ -834,7 +834,7 @@ config.macros.plugins.refresh = function(place,params)
 		var p = plugins[t];
 		p.forced = p.tiddler.isTagged("systemConfigForce");
 		p.disabled = p.tiddler.isTagged("systemConfigDisable");
-		p.Selected = selectedRows.find(plugins[t].title) != null;
+		p.Selected = selectedRows.indexOf(plugins[t].title) != -1;
 		}
 	if(plugins.length == 0)
 		createTiddlyElement(place,"em",null,null,this.noPluginText);

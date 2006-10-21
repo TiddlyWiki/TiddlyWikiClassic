@@ -14,7 +14,7 @@ config.refreshers = {
 		{
 		var title = e.getAttribute("tiddler");
 		var template = e.getAttribute("template");
-		if(changeList && changeList.find(title) != null && !story.isDirty(title))
+		if(changeList && changeList.indexOf(title) != -1 && !story.isDirty(title))
 			story.refreshTiddler(title,template,true);
 		else
 			refreshElements(e,changeList);
@@ -25,7 +25,7 @@ config.refreshers = {
 		{
 		var title = e.getAttribute("tiddler");
 		var force = e.getAttribute("force");
-		if(force != null || changeList == null || changeList.find(title) != null)
+		if(force != null || changeList == null || changeList.indexOf(title) != -1)
 			{
 			removeChildren(e);
 			wikify(store.getTiddlerText(title,title),e);

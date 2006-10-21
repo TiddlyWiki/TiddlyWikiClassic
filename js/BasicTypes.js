@@ -45,17 +45,17 @@ Array.prototype.contains = function(item)
 //  mode - +1 to add value, -1 to remove value, 0 to toggle it
 Array.prototype.setItem = function(value,mode)
 {
-	var p = this.find(value);
+	var p = this.indexOf(value);
 	if(mode == 0)
-		mode = (p == null) ? +1 : -1;
+		mode = (p == -1) ? +1 : -1;
 	if(mode == +1)
 		{
-		if(p == null)
+		if(p == -1)
 			this.push(value);
 		}
 	else if(mode == -1)
 		{
-		if(p != null)
+		if(p != -1)
 			this.splice(p,1);
 		}
 }

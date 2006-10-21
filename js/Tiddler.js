@@ -76,7 +76,7 @@ Tiddler.prototype.getTags = function()
 // Test if a tiddler carries a tag
 Tiddler.prototype.isTagged = function(tag)
 {
-	return this.tags.find(tag) != null;
+	return this.tags.indexOf(tag) != -1;
 }
 
 // Static method to convert "\n" to newlines, "\s" to "\"
