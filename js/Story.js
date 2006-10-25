@@ -52,20 +52,20 @@ Story.prototype.displayTiddlers = function(srcElement,titles,template,animate,sl
 Story.prototype.displayTiddler = function(srcElement,title,template,animate,slowly)
 {
 	var place = document.getElementById(this.container);
-	var theTiddler = document.getElementById(this.idPrefix + title);
-	if(theTiddler)
+	var tiddlerElem = document.getElementById(this.idPrefix + title);
+	if(tiddlerElem)
 		this.refreshTiddler(title,template);
 	else
 		{
 		var before = this.positionTiddler(srcElement);
-		theTiddler = this.createTiddler(place,before,title,template);
+		tiddlerElem = this.createTiddler(place,before,title,template);
 		}
 	if(srcElement && typeof srcElement !== "string")
 		{
 		if(anim && config.options.chkAnimate && (animate == undefined || animate == true))
-			anim.startAnimating(new Cascade(title,srcElement,theTiddler,slowly),new Scroller(theTiddler,slowly));
+			anim.startAnimating(new Cascade(title,srcElement,tiddlerElem,slowly),new Scroller(tiddlerElem,slowly));
 		else
-			window.scrollTo(0,ensureVisible(theTiddler));
+			window.scrollTo(0,ensureVisible(tiddlerElem));
 		}
 }
 
@@ -109,11 +109,11 @@ Story.prototype.positionTiddler = function(srcElement)
 // template - the name of the tiddler containing the template or one of the constants DEFAULT_VIEW_TEMPLATE and DEFAULT_EDIT_TEMPLATE
 Story.prototype.createTiddler = function(place,before,title,template)
 {
-	var theTiddler = createTiddlyElement(null,"div",this.idPrefix + title,"tiddler");
-	theTiddler.setAttribute("refresh","tiddler");
-	place.insertBefore(theTiddler,before);
+	var tiddlerElem = createTiddlyElement(null,"div",this.idPrefix + title,"tiddler");
+	tiddlerElem.setAttribute("refresh","tiddler");
+	place.insertBefore(tiddlerElem,before);
 	this.refreshTiddler(title,template);
-	return theTiddler;
+	return tiddlerElem;
 }
 
 // Overridable for choosing the name of the template to apply for a tiddler
@@ -138,13 +138,13 @@ Story.prototype.getTemplateForTiddler = function(title,template,tiddler)
 // force - if true, forces the refresh even if the template hasn't changedd
 Story.prototype.refreshTiddler = function(title,template,force)
 {
-	var theTiddler = document.getElementById(this.idPrefix + title);
-	if(theTiddler)
+	var tiddlerElem = document.getElementById(this.idPrefix + title);
+	if(tiddlerElem)
 		{
-		if(theTiddler.getAttribute("dirty") == "true" && !force)
-			return theTiddler;
+		if(tiddlerElem.getAttribute("dirty") == "true" && !force)
+			return tiddlerElem;
 		template = this.chooseTemplateForTiddler(title,template);
-		var currTemplate = theTiddler.getAttribute("template");
+		var currTemplate = tiddlerElem.getAttribute("template");
 		if((template != currTemplate) || force)
 			{
 			var tiddler = store.getTiddler(title);
@@ -161,36 +161,36 @@ Story.prototype.refreshTiddler = function(title,template,force)
 					tiddler.set(title,text,config.views.wikified.defaultModifier,version.date,[],version.date);
 					}
 				}
-			theTiddler.setAttribute("tags",tiddler.tags.join(" "));
-			theTiddler.setAttribute("tiddler",title);
-			theTiddler.setAttribute("template",template);
+			tiddlerElem.setAttribute("tags",tiddler.tags.join(" "));
+			tiddlerElem.setAttribute("tiddler",title);
+			tiddlerElem.setAttribute("template",template);
 			var me = this;
-			theTiddler.onmouseover = this.onTiddlerMouseOver;
-			theTiddler.onmouseout = this.onTiddlerMouseOut;
-			theTiddler.ondblclick = this.onTiddlerDblClick;
-			theTiddler[window.event?"onkeydown":"onkeypress"] = this.onTiddlerKeyPress;
+			tiddlerElem.onmouseover = this.onTiddlerMouseOver;
+			tiddlerElem.onmouseout = this.onTiddlerMouseOut;
+			tiddlerElem.ondblclick = this.onTiddlerDblClick;
+			tiddlerElem[window.event?"onkeydown":"onkeypress"] = this.onTiddlerKeyPress;
 			var html = this.getTemplateForTiddler(title,template,tiddler);
-			theTiddler.innerHTML = html;
-			applyHtmlMacros(theTiddler,tiddler);
+			tiddlerElem.innerHTML = html;
+			applyHtmlMacros(tiddlerElem,tiddler);
 			if(store.getTaggedTiddlers(title).length > 0)
-				addClass(theTiddler,"isTag");
+				addClass(tiddlerElem,"isTag");
 			else
-				removeClass(theTiddler,"isTag");
+				removeClass(tiddlerElem,"isTag");
 			if(!store.tiddlerExists(title))
 				{
 				if(store.isShadowTiddler(title))
-					addClass(theTiddler,"shadow");
+					addClass(tiddlerElem,"shadow");
 				else
-					addClass(theTiddler,"missing");
+					addClass(tiddlerElem,"missing");
 				}
 			else
 				{
-				removeClass(theTiddler,"shadow");
-				removeClass(theTiddler,"missing");
+				removeClass(tiddlerElem,"shadow");
+				removeClass(tiddlerElem,"missing");
 				}
 			}
 		}
-	return theTiddler;
+	return tiddlerElem;
 }
 
 // Refresh all tiddlers in the Story
@@ -219,7 +219,7 @@ Story.prototype.onTiddlerMouseOut = function(e)
 // Default tiddler ondblclick event handler
 Story.prototype.onTiddlerDblClick = function(e)
 {
-	if (!e) var e = window.event;
+	if(!e) var e = window.event;
 	var theTarget = resolveTarget(e);
 	if(theTarget && theTarget.nodeName.toLowerCase() != "input" && theTarget.nodeName.toLowerCase() != "textarea")
 		{
@@ -236,7 +236,7 @@ Story.prototype.onTiddlerDblClick = function(e)
 
 Story.prototype.onTiddlerKeyPress = function(e)
 {
-	if (!e) var e = window.event;
+	if(!e) var e = window.event;
 	clearMessage();
 	var consume = false; 
 	var title = this.getAttribute("tiddler");
@@ -277,9 +277,9 @@ Story.prototype.onTiddlerKeyPress = function(e)
 	e.cancelBubble = consume;
 	if(consume)
 		{
-		if (e.stopPropagation) e.stopPropagation(); // Stop Propagation
+		if(e.stopPropagation) e.stopPropagation(); // Stop Propagation
 		e.returnValue = true; // Cancel The Event in IE
-		if (e.preventDefault ) e.preventDefault(); // Cancel The Event in Moz
+		if(e.preventDefault ) e.preventDefault(); // Cancel The Event in Moz
 		}
 	return(!consume);
 };
@@ -288,11 +288,11 @@ Story.prototype.onTiddlerKeyPress = function(e)
 // or null if it found no edit field at all
 Story.prototype.getTiddlerField = function(title,field)
 {
-	var tiddler = document.getElementById(this.idPrefix + title);
+	var tiddlerElem = document.getElementById(this.idPrefix + title);
 	var e = null;
-	if(tiddler != null)
+	if(tiddlerElem != null)
 		{
-		var children = tiddler.getElementsByTagName("*");
+		var children = tiddlerElem.getElementsByTagName("*");
 		for (var t=0; t<children.length; t++)
 			{
 			var c = children[t];
@@ -320,13 +320,13 @@ Story.prototype.focusTiddler = function(title,field)
 }
 
 // Ensures that a specified tiddler does not have the focus
-Story.prototype.blurTiddler = function (title)
+Story.prototype.blurTiddler = function(title)
 {
-	var tiddler = document.getElementById(this.idPrefix + title);
-	if(tiddler != null && tiddler.focus && tiddler.blur)
+	var tiddlerElem = document.getElementById(this.idPrefix + title);
+	if(tiddlerElem != null && tiddlerElem.focus && tiddlerElem.blur)
 		{
-		tiddler.focus();
-		tiddler.blur();
+		tiddlerElem.focus();
+		tiddlerElem.blur();
 		}
 }
 
@@ -357,42 +357,42 @@ Story.prototype.setTiddlerTag = function(title,tag,mode)
 // slowly - whether to perform animations in slomo
 Story.prototype.closeTiddler = function(title,animate,slowly)
 {
-	var tiddler = document.getElementById(this.idPrefix + title);
-	if(tiddler != null)
+	var tiddlerElem = document.getElementById(this.idPrefix + title);
+	if(tiddlerElem != null)
 		{
 		clearMessage();
-		this.scrubTiddler(tiddler);
+		this.scrubTiddler(tiddlerElem);
 		if(anim && config.options.chkAnimate && animate)
-			anim.startAnimating(new Slider(tiddler,false,slowly,"all"));
+			anim.startAnimating(new Slider(tiddlerElem,false,slowly,"all"));
 		else
-			tiddler.parentNode.removeChild(tiddler);
+			tiddlerElem.parentNode.removeChild(tiddlerElem);
 		}
 }
 
 // Scrub IDs from a tiddler. This is so that the 'ghost' of a tiddler while it is being closed
 // does not interfere with things
 // tiddler - reference to the tiddler element
-Story.prototype.scrubTiddler = function(tiddler)
+Story.prototype.scrubTiddler = function(tiddlerElem)
 {
-	tiddler.id = null;
+	tiddlerElem.id = null;
 }
 
 // Set the 'dirty' flag of a tiddler
-// tiddler - title of tiddler to change
+// title - title of tiddler to change
 // dirty - new boolean status of flag
 Story.prototype.setDirty = function(title,dirty)
 {
-	var tiddler = document.getElementById(this.idPrefix + title);
-	if(tiddler != null)
-		tiddler.setAttribute("dirty",dirty ? "true" : "false");
+	var tiddlerElem = document.getElementById(this.idPrefix + title);
+	if(tiddlerElem != null)
+		tiddlerElem.setAttribute("dirty",dirty ? "true" : "false");
 }
 
 // Is a particular tiddler dirty (with unsaved changes)?
 Story.prototype.isDirty = function(title)
 {
-	var tiddler = document.getElementById(this.idPrefix + title);
-	if(tiddler != null)
-		return tiddler.getAttribute("dirty") == "true";
+	var tiddlerElem = document.getElementById(this.idPrefix + title);
+	if(tiddlerElem != null)
+		return tiddlerElem.getAttribute("dirty") == "true";
 	return null;
 }
 
@@ -489,11 +489,11 @@ Story.prototype.hasChanges = function(title)
 // returns: title of saved tiddler, or null if not saved
 Story.prototype.saveTiddler = function(title,minorUpdate)
 {
-	var tiddler = document.getElementById(this.idPrefix + title);
-	if(tiddler != null)
+	var tiddlerElem = document.getElementById(this.idPrefix + title);
+	if(tiddlerElem != null)
 		{
 		var fields = {};
-		this.gatherSaveFields(tiddler,fields);
+		this.gatherSaveFields(tiddlerElem,fields);
 		var newTitle = fields.title ? fields.title : title;
 		if(store.tiddlerExists(newTitle) && newTitle != title)
 			{
@@ -502,10 +502,10 @@ Story.prototype.saveTiddler = function(title,minorUpdate)
 			else
 				return null;
 			}
-		tiddler.id = this.idPrefix + newTitle;
-		tiddler.setAttribute("tiddler",newTitle);
-		tiddler.setAttribute("template",DEFAULT_VIEW_TEMPLATE);
-		tiddler.setAttribute("dirty","false");
+		tiddlerElem.id = this.idPrefix + newTitle;
+		tiddlerElem.setAttribute("tiddler",newTitle);
+		tiddlerElem.setAttribute("template",DEFAULT_VIEW_TEMPLATE);
+		tiddlerElem.setAttribute("dirty","false");
 		if(config.options.chkForceMinorUpdate)
 			minorUpdate = !minorUpdate;
 		var newDate = new Date();
