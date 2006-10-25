@@ -33,6 +33,8 @@ ListView.create = function(place,listObject,listTemplate,callback,className)
 			if(rowObject[listTemplate.rowClasses[c].field])
 				addClass(r,listTemplate.rowClasses[c].className);
 			}
+		rowObject.rowElement = rowObject;
+		rowObject.colElements = {};
 		for(var cc=0; cc<listTemplate.columns.length; cc++)
 			{
 			var c = createTiddlyElement(r,"td");
@@ -41,6 +43,7 @@ ListView.create = function(place,listObject,listTemplate,callback,className)
 			var colType = ListView.columnTypes[columnTemplate.type];
 			if(colType && colType.createItem)
 				colType.createItem(c,rowObject,field,columnTemplate,cc,rc);
+			rowObject.colElements[field] = c;
 			}
 		}
 	if(callback && listTemplate.actions)
