@@ -95,13 +95,13 @@ String.prototype.parseParams = function(defaultName,defaultValue,allowEval,noNam
 	var parseToken = function(match,p)
 		{
 		var n;
-		if(match[p]) // Double quoted
+		if(match[p] != null) // Double quoted
 			n = match[p];
-		else if(match[p+1]) // Single quoted
+		else if(match[p+1] != null) // Single quoted
 			n = match[p+1];
-		else if(match[p+2]) // Double-square-bracket quoted
+		else if(match[p+2] != null) // Double-square-bracket quoted
 			n = match[p+2];
-		else if(match[p+3]) // Double-brace quoted
+		else if(match[p+3] != null) // Double-brace quoted
 			try
 				{
 				n = match[p+3];
@@ -112,7 +112,7 @@ String.prototype.parseParams = function(defaultName,defaultValue,allowEval,noNam
 				{
 				throw "Unable to evaluate {{" + match[p+3] + "}}: " + exceptionText(e);
 				}
-		else if(match[p+4]) // Unquoted
+		else if(match[p+4] != null) // Unquoted
 			n = match[p+4];
 		return n;
 		};
