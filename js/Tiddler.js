@@ -19,7 +19,7 @@ Tiddler.prototype.getLinks = function()
 {
 	if(this.linksUpdated==false)
 		this.changed();
-	return links;
+	return this.links;
 }
 
 // Format the text for storage in an RSS item
