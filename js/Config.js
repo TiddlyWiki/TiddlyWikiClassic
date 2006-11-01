@@ -153,7 +153,7 @@ if(config.browser.isBadSafari)
 		anyLetterStrict: "[A-Za-z0-9\u00c0-\u00de\u00df-\u00ff]"
 		}
 config.textPrimitives.sliceSeparator = "::";
-config.textPrimitives.urlPattern = "(?:file|http|https|mailto|ftp):[^\\s'\"]+(?:/|\\b)";
+config.textPrimitives.urlPattern = "[a-z]{3,8}:[^\\s:'\"][^\\s'\"]*(?:/|\\b)";
 config.textPrimitives.unWikiLink = "~";
 config.textPrimitives.wikiLink = "(?:(?:" + config.textPrimitives.upperLetter + "+" +
 												config.textPrimitives.lowerLetter + "+" +

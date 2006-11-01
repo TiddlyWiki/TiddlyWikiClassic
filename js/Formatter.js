@@ -337,23 +337,27 @@ config.formatters = [
 {
 	name: "prettyLink",
 	match: "\\[\\[",
-	lookaheadRegExp: /\[\[([^\|\]]*?)(?:(\]\])|(\|(.*?)\]\]))/mg,
+	lookaheadRegExp: /\[\[(.*?)(?:\|(~)?(.*?))?\]\]/mg,
 	handler: function(w)
 	{
 		this.lookaheadRegExp.lastIndex = w.matchStart;
-		var lookaheadMatch = this.lookaheadRegExp.exec(w.source)
+		var lookaheadMatch = this.lookaheadRegExp.exec(w.source);
 		if(lookaheadMatch && lookaheadMatch.index == w.matchStart)
 			{
 			var e;
 			var text = lookaheadMatch[1];
-			if (lookaheadMatch[2]) // Simple bracketted link
+			if(lookaheadMatch[3])
 				{
-				e = createTiddlyLink(w.output,text,false,null,w.isStatic);
+				// Pretty bracketted link
+				var link = lookaheadMatch[3];
+				e = (!lookaheadMatch[2] && config.formatterHelpers.isExternalLink(link))
+						? createExternalLink(w.output,link)
+						: createTiddlyLink(w.output,link,false,null,w.isStatic);
 				}
-			else if(lookaheadMatch[3]) // Pretty bracketted link
+			else
 				{
-				var link = lookaheadMatch[4];
-				e = config.formatterHelpers.isExternalLink(link) ? createExternalLink(w.output,link) : createTiddlyLink(w.output,link,false,null,w.isStatic);
+				// Simple bracketted link
+				e = createTiddlyLink(w.output,text,false,null,w.isStatic);
 				}
 			createTiddlyText(e,text);
 			w.nextMatch = this.lookaheadRegExp.lastIndex;
