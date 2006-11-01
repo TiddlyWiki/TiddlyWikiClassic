@@ -114,16 +114,19 @@ String.prototype.parseParams = function(defaultName,defaultValue,allowEval,noNam
 				}
 		else if(match[p+4]) // Unquoted
 			n = match[p+4];
+		else if(match[p+5]) // empty quote
+			n = "";
 		return n;
 		};
 	var r = [{}];
-	var dblQuote = "(?:\"((?:(?:\\\\\")|[^\"])*)\")";
-	var sngQuote = "(?:'((?:(?:\\\\\')|[^'])*)')";
+	var dblQuote = "(?:\"((?:(?:\\\\\")|[^\"])+)\")";
+	var sngQuote = "(?:'((?:(?:\\\\\')|[^'])+)')";
 	var dblSquare = "(?:\\[\\[((?:\\s|\\S)*?)\\]\\])";
 	var dblBrace = "(?:\\{\\{((?:\\s|\\S)*?)\\}\\})";
 	var unQuoted = noNames ? "([^\"'\\s]\\S*)" : "([^\"':\\s][^\\s:]*)";
+	var emptyQuote = "((?:\"\")|(?:''))";
 	var skipSpace = "(?:\\s*)";
-	var token = "(?:" + dblQuote + "|" + sngQuote + "|" + dblSquare + "|" + dblBrace + "|" + unQuoted + ")";
+	var token = "(?:" + dblQuote + "|" + sngQuote + "|" + dblSquare + "|" + dblBrace + "|" + unQuoted + "|" + emptyQuote + ")";
 	var re = noNames
 		? new RegExp(token,"mg")
 		: new RegExp(skipSpace + token + skipSpace + "(?:(\\:)" + skipSpace + token + ")?","mg");
@@ -137,7 +140,7 @@ String.prototype.parseParams = function(defaultName,defaultValue,allowEval,noNam
 				r.push({name: "", value: n});
 			else
 				{
-				var v = parseToken(match,7);
+				var v = parseToken(match,8);
 				if(v == null && defaultName)
 					{
 					v = n;
