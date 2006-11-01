@@ -510,8 +510,8 @@ config.macros.tabs.handler = function(place,macroName,params)
 		}
 	if(!validTab)
 		config.options[cookie] = params[1];
-	this.switchTab(tabset,config.options[cookie]);
 	place.appendChild(wrapper);
+	this.switchTab(tabset,config.options[cookie]);
 }
 
 config.macros.tabs.onClickTab = function(e)
