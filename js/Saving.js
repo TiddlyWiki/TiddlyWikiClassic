@@ -11,7 +11,7 @@ var endSaveArea = '</d' + 'iv>';
 function confirmExit()
 {
 	hadConfirmExit = true;
-	if(store && store.isDirty && store.isDirty())
+	if((store && store.isDirty && store.isDirty()) || (story && story.areAnyDirty && story.areAnyDirty()))
 		return config.messages.confirmExit;
 }
 

@@ -396,6 +396,17 @@ Story.prototype.isDirty = function(title)
 	return null;
 }
 
+// Determine whether any open tiddler are dirty
+Story.prototype.areAnyDirty = function()
+{
+	var r = false;
+	this.forEachTiddler(function(title,element) {
+		if(this.isDirty(title))
+			r = true;
+		});
+	return r;
+}
+
 // Close all tiddlers in the story
 Story.prototype.closeAllTiddlers = function(exclude)
 {
