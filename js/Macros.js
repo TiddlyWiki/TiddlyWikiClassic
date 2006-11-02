@@ -880,7 +880,10 @@ config.macros.refreshDisplay.onClick = function(e)
 config.macros.importTiddlers.handler = function(place,macroName,params,wikifier,paramString,tiddler)
 {
 	if(readOnly)
+		{
+		createTiddlyElement(place,"div",null,"marked",this.readOnlyWarning);
 		return;
+		}
 	var importer = createTiddlyElement(null,"div",null,"importTiddler wizard");
 	createTiddlyElement(importer,"h1",null,null,this.wizardTitle);
 	createTiddlyElement(importer,"h2",null,"step1",this.step1);

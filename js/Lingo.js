@@ -159,6 +159,7 @@ merge(config.macros.refreshDisplay,{
 	});
 
 merge(config.macros.importTiddlers,{
+	readOnlyWarning: "You cannot import tiddlers into a read-only TiddlyWiki. Try opening the TiddlyWiki file from a file:// URL",
 	defaultPath: "http://www.tiddlywiki.com/index.html",
 	fetchLabel: "fetch",
 	fetchPrompt: "Fetch the tiddlywiki file",
