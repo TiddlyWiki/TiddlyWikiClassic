@@ -703,7 +703,6 @@ config.macros.tagChooser.onTagClick = function(e)
 	if(!e) var e = window.event;
 	var tag = this.getAttribute("tag");
 	var title = this.getAttribute("tiddler");
-	var tiddler = store.getTiddler(title);
 	if(!readOnly)
 		story.setTiddlerTag(title,tag,0);
 	return(false);
