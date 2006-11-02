@@ -48,10 +48,19 @@ ListView.create = function(place,listObject,listTemplate,callback,className)
 		}
 	if(callback && listTemplate.actions)
 		createTiddlyDropDown(place,ListView.getCommandHandler(callback),listTemplate.actions);
+	if(callback && listTemplate.buttons)
+		{
+		for(t=0; t<listTemplate.buttons.length; t++)
+			{
+			var a = listTemplate.buttons[t];
+			if(a && a.name != "")
+				createTiddlyButton(place,a.caption,null,ListView.getCommandHandler(callback,a.name,a.allowEmptySelection));
+			}
+		}
 	return table;
 }
 
-ListView.getCommandHandler = function(callback)
+ListView.getCommandHandler = function(callback,name,allowEmptySelection)
 {
 	return function(e)
 		{
@@ -61,10 +70,18 @@ ListView.getCommandHandler = function(callback)
 					if(e.checked)
 						tiddlers.push(rowName);
 					});
-		if(tiddlers.length == 0)
+		if(tiddlers.length == 0 && !allowEmptySelection)
 			alert(config.messages.nothingSelected);
-		callback(view,this.value,tiddlers);
-		this.selectedIndex = 0;
+		else
+			{
+			if(this.nodeName.toLowerCase() == "select")
+				{
+				callback(view,this.value,tiddlers);
+				this.selectedIndex = 0;
+				}
+			else
+				callback(view,name,tiddlers);
+			}
 		};
 }
 
