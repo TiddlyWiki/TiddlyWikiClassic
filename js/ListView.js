@@ -127,6 +127,17 @@ ListView.columnTypes.String = {
 		}
 };
 
+ListView.columnTypes.Link = {
+	createHeader: ListView.columnTypes.String.createHeader,
+	createItem: function(place,listObject,field,columnTemplate,col,row)
+		{
+			var v = listObject[field];
+			var c = columnTemplate.text;
+			if(v != undefined)
+				createTiddlyText(createExternalLink(place,v),c ? c : v);
+		}
+};
+
 ListView.columnTypes.Date = {
 	createHeader: ListView.columnTypes.String.createHeader,
 	createItem: function(place,listObject,field,columnTemplate,col,row)
