@@ -174,8 +174,8 @@ TiddlyWiki.prototype.calcAllSlices = function(title)
 //# or
 //#    |aName| textSlice |
 //#
-//# In the text the name (or name:) may be decorated with '' or //. I.e.
-//# this would also a possible text slice:
+//# In the text the name (or name:) may be decorated with '' or //
+//# ie this would also a valid text slice:
 //#
 //#    |''aName:''| textSlice |
 //#
