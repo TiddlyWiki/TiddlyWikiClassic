@@ -49,6 +49,9 @@ function main()
 		story.displayTiddler(null,"PluginManager");
 		displayMessage(config.messages.customConfigError);
 		}
+	for(var m in config.macros)
+		if(config.macros[m].init)
+			config.macros[m].init();
 	now = new Date();
 	if(config.displayStartupTime)
 		displayMessage("TiddlyWiki startup in " + (now-then)/1000 + " seconds");
