@@ -22,7 +22,7 @@ merge(config.messages,{
 	externalLinkTooltip: "External link to %0",
 	noTags: "There are no tagged tiddlers",
 	notFileUrlError: "You need to save this TiddlyWiki to a file before you can save changes",
-	cantSaveError: "It's not possible to save changes. This could be because your browser doesn't support saving (instead, use FireFox if you can), or because the pathname to your TiddlyWiki file contains illegal characters",
+	cantSaveError: "It's not possible to save changes. Possible reasons include:\n- your browser doesn't support saving (Firefox, Internet Explorer, Safari and Opera all work if properly configured)\n- the pathname to your TiddlyWiki file contains illegal characters\n- the TiddlyWiki HTML file has been moved or renamed",
 	invalidFileError: "The original file '%0' does not appear to be a valid TiddlyWiki",
 	backupSaved: "Backup saved",
 	backupFailed: "Failed to save backup file",
