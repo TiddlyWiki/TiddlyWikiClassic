@@ -101,6 +101,7 @@ Tiddler.prototype.changed = function()
 	var formatMatch = tiddlerLinkRegExp.exec(this.text);
 	while(formatMatch)
 		{
+		var lastIndex = tiddlerLinkRegExp.lastIndex;
 		if(t==0 && formatMatch[1] && formatMatch[1] != this.title) // wikiWordLink
 			{
 			if(formatMatch.index > 0)
@@ -119,6 +120,7 @@ Tiddler.prototype.changed = function()
 		else if(formatMatch[4-t] && formatMatch[4-t] != this.title) // brackettedLink
 			this.links.pushUnique(formatMatch[4-t]);
 		// Do not add link if match urlPattern (formatMatch[5-t])
+		tiddlerLinkRegExp.lastIndex = lastIndex;
 		formatMatch = tiddlerLinkRegExp.exec(this.text);
 		}
 	this.linksUpdated = true;
