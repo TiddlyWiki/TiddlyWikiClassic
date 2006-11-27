@@ -65,7 +65,7 @@ function restart()
 	if(story.isEmpty())
 		{
 		var defaultParams = store.getTiddlerText("DefaultTiddlers").parseParams("open",null,false);
-		invokeParamifier(defaultParams,"onstart");
+		invokeParamifierAsync(defaultParams,"onstart");
 		}
 	window.scrollTo(0,0);
 }
