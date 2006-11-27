@@ -41,7 +41,7 @@ Popup.show = function(unused,slowly)
 	curr.popup.style.top = popupTop + "px";
 	curr.popup.style.display = "block";
 	addClass(curr.root,"highlight");
-	if(anim && config.options.chkAnimate)
+	if(config.options.chkAnimate && anim && typeof Scroller == "function")
 		anim.startAnimating(new Scroller(curr.popup,slowly));
 	else
 		window.scrollTo(0,ensureVisible(curr.popup));

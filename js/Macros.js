@@ -299,7 +299,7 @@ config.macros.slider.onClickSlider = function(e)
 	var n = this.nextSibling;
 	var cookie = n.getAttribute("cookie");
 	var isOpen = n.style.display != "none";
-	if(anim && config.options.chkAnimate)
+	if(config.options.chkAnimate && anim && typeof Slider == "function")
 		anim.startAnimating(new Slider(n,!isOpen,e.shiftKey || e.altKey,"none"));
 	else
 		n.style.display = isOpen ? "none" : "block";

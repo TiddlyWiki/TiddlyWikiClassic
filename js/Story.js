@@ -62,7 +62,7 @@ Story.prototype.displayTiddler = function(srcElement,title,template,animate,slow
 		}
 	if(srcElement && typeof srcElement !== "string")
 		{
-		if(anim && config.options.chkAnimate && (animate == undefined || animate == true))
+		if(config.options.chkAnimate && (animate == undefined || animate == true) && anim && typeof Cascade == "function" && typeof Scroller == "function")
 			anim.startAnimating(new Cascade(title,srcElement,tiddlerElem,slowly),new Scroller(tiddlerElem,slowly));
 		else
 			window.scrollTo(0,ensureVisible(tiddlerElem));
@@ -364,7 +364,7 @@ Story.prototype.closeTiddler = function(title,animate,slowly)
 		{
 		clearMessage();
 		this.scrubTiddler(tiddlerElem);
-		if(anim && config.options.chkAnimate && animate)
+		if(config.options.chkAnimate && animate && anim && typeof Slider == "function")
 			anim.startAnimating(new Slider(tiddlerElem,false,slowly,"all"));
 		else
 			tiddlerElem.parentNode.removeChild(tiddlerElem);
