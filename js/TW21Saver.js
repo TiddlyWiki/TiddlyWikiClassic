@@ -1,31 +1,38 @@
 //--------------------------------
 // TW21Saver (inherits from SaverBase)
 
-function TW21Saver() {};
+function TW21Saver() {}
 
 TW21Saver.prototype = new SaverBase();
 
-TW21Saver.prototype.externalizeTiddler = function(store, tiddler) 
+TW21Saver.prototype.externalizeTiddler = function(store,tiddler) 
 {
 	try {
-		var extendedFieldAttributes = "";
-		store.forEachField(tiddler, 
-			function(tiddler, fieldName, value) {
+		var extendedAttributes = "";
+		var usePre = config.usePreForStorage;
+		store.forEachField(tiddler,
+			function(tiddler,fieldName,value) {
 				// don't store stuff from the temp namespace
 				if (!fieldName.match(/^temp\./))
-					extendedFieldAttributes += ' %0="%1"'.format([fieldName, value.escapeLineBreaks().htmlEncode()]);
-			}, true);
-		return '<div tiddler="%0" modifier="%1" modified="%2" created="%3" tags="%4"%6>%5</div>'.format([
+					extendedAttributes += ' %0="%1"'.format([fieldName,value.escapeLineBreaks().htmlEncode()]);
+			},true);
+		var created = tiddler.created.convertToYYYYMMDDHHMM();
+		var modified = tiddler.modified.convertToYYYYMMDDHHMM();
+		var attributes = ' modifier="' + tiddler.modifier.htmlEncode() + '"';
+		attributes += (usePre && modified == created) ? "" : ' modified="' + modified +'"';
+		attributes += ' created="' + created + '"';
+		var tags = tiddler.getTags();
+		if(!usePre || tags)
+			attributes += ' tags="' + tags.htmlEncode() + '"';
+		return '<div %0="%1"%2%3>%4</div>'.format([
+				usePre ? "title" : "tiddler",
 				tiddler.title.htmlEncode(),
-				tiddler.modifier.htmlEncode(),
-				tiddler.modified.convertToYYYYMMDDHHMM(),
-				tiddler.created.convertToYYYYMMDDHHMM(),
-				tiddler.getTags().htmlEncode(),
-				tiddler.escapeLineBreaks().htmlEncode(),
-				extendedFieldAttributes
+				attributes,
+				extendedAttributes,
+				usePre ? "\n<pre>" + tiddler.text.htmlEncode() + "</pre>\n" : tiddler.escapeLineBreaks().htmlEncode()
 			]);
-	} catch (e) {
-		throw exceptionText(e, config.messages.tiddlerSaveError.format([tiddler.title]));
+	} catch (ex) {
+		throw exceptionText(ex, config.messages.tiddlerSaveError.format([tiddler.title]));
 	}
 }
 
