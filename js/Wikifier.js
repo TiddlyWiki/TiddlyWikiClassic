@@ -57,11 +57,11 @@ function wikifyPlain(title)
 }
 
 // Highlight plain text into an element
-function highlightify(source,output,highlightRegExp)
+function highlightify(source,output,highlightRegExp,tiddler)
 {
 	if(source && source != "")
 		{
-		var wikifier = new Wikifier(source,formatter,highlightRegExp);
+		var wikifier = new Wikifier(source,formatter,highlightRegExp,tiddler);
 		wikifier.outputText(output,0,source.length);
 		}
 }

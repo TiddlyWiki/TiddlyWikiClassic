@@ -614,7 +614,7 @@ config.macros.view.handler = function(place,macroName,params,wikifier,paramStrin
 			switch(params[1])
 				{
 				case undefined:
-					highlightify(value,place,highlightHack);
+					highlightify(value,place,highlightHack,tiddler);
 					break;
 				case "link":
 					createTiddlyLink(place,value,true);
