@@ -117,3 +117,9 @@ config.paramifiers.newJournal = {
 		}
 };
 
+config.paramifiers.readOnly = {
+	onconfig: function(v) {
+		var p = v.toLowerCase();
+		readOnly = p == "yes" ? true : (p == "no" ? false : readOnly);
+		}
+};
