@@ -61,7 +61,7 @@ config.macros.list.shadowed.handler = function(params)
 
 config.macros.allTags.handler = function(place,macroName,params)
 {
-	var tags = store.getTags();
+	var tags = store.getTags(params[0]);
 	var theDateList = createTiddlyElement(place,"ul");
 	if(tags.length == 0)
 		createTiddlyElement(theDateList,"li",null,"listTitle",this.noTags);

@@ -247,7 +247,7 @@ merge(config.shadowTiddlers,{
 	SideBarTabs: "<<tabs txtMainTab Timeline Timeline TabTimeline All 'All tiddlers' TabAll Tags 'All tags' TabTags More 'More lists' TabMore>>",
 	TabTimeline: "<<timeline>>",
 	TabAll: "<<list all>>",
-	TabTags: "<<allTags>>",
+	TabTags: "<<allTags excludeLists>>",
 	TabMore: "<<tabs txtMoreTab Missing 'Missing tiddlers' TabMoreMissing Orphans 'Orphaned tiddlers' TabMoreOrphans Shadowed 'Shadowed tiddlers' TabMoreShadowed>>",
 	TabMoreMissing: "<<list missing>>",
 	TabMoreOrphans: "<<list orphans>>",

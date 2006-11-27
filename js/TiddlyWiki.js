@@ -329,13 +329,19 @@ TiddlyWiki.prototype.search = function(searchRegExp,sortField,excludeTag)
 }
 
 // Return an array of all the tags in use. Each member of the array is another array where [0] is the name of the tag and [1] is the number of occurances
-TiddlyWiki.prototype.getTags = function()
+TiddlyWiki.prototype.getTags = function(excludeTag)
 {
 	var results = [];
 	this.forEachTiddler(function(title,tiddler) {
 		for(var g=0; g<tiddler.tags.length; g++)
 			{
 			var tag = tiddler.tags[g];
+			if(excludeTag)
+				{
+				var t = store.fetchTiddler(tag);
+				if(t && t.isTagged(excludeTag))
+					return false;
+				}
 			var f = false;
 			for(var c=0; c<results.length; c++)
 				if(results[c][0] == tag)
