@@ -117,7 +117,7 @@ config.formatters = [
 				else
 					cell = createTiddlyElement(e,"td");
 				prevCell = cell;
-				prevColumns[col] = {rowSpanCount:1, element:cell};
+				prevColumns[col] = {rowSpanCount:1,element:cell};
 				if(colSpanCount > 1)
 					{
 					cell.setAttribute("colspan",colSpanCount);
@@ -151,12 +151,12 @@ config.formatters = [
 
 {
 	name: "list",
-	match: "^(?:(?:(?:\\*)|(?:#)|(?:;)|(?::))+)",
+	match: "^(?:[\\*#;:]+)",
 	lookaheadRegExp: /^(?:(?:(\*)|(#)|(;)|(:))+)/mg,
 	termRegExp: /(\n)/mg,
 	handler: function(w)
 	{
-		var placeStack = [w.output];
+		var stack = [w.output];
 		var currLevel = 0, currType = null;
 		var listLevel, listType, itemType;
 		w.nextMatch = w.matchStart;
@@ -189,21 +189,21 @@ config.formatters = [
 			if(listLevel > currLevel)
 				{
 				for(var t=currLevel; t<listLevel; t++)
-					placeStack.push(createTiddlyElement(placeStack[placeStack.length-1],listType));
+					stack.push(createTiddlyElement(stack[stack.length-1],listType));
 				}
 			else if(listLevel < currLevel)
 				{
 				for(var t=currLevel; t>listLevel; t--)
-					placeStack.pop();
+					stack.pop();
 				}
 			else if(listLevel == currLevel && listType != currType)
 				{
-				placeStack.pop();
-				placeStack.push(createTiddlyElement(placeStack[placeStack.length-1],listType));
+				stack.pop();
+				stack.push(createTiddlyElement(stack[stack.length-1],listType));
 				}
 			currLevel = listLevel;
 			currType = listType;
-			var e = createTiddlyElement(placeStack[placeStack.length-1],itemType);
+			var e = createTiddlyElement(stack[stack.length-1],itemType);
 			w.subWikifyTerm(e,this.termRegExp);
 			this.lookaheadRegExp.lastIndex = w.nextMatch;
 			lookaheadMatch = this.lookaheadRegExp.exec(w.source);
@@ -227,7 +227,7 @@ config.formatters = [
 	element: "blockquote",
 	handler: function(w)
 	{
-		var placeStack = [w.output];
+		var stack = [w.output];
 		var currLevel = 0;
 		var newLevel = w.matchLength;
 		var t;
@@ -235,16 +235,16 @@ config.formatters = [
 			if(newLevel > currLevel)
 				{
 				for(t=currLevel; t<newLevel; t++)
-					placeStack.push(createTiddlyElement(placeStack[placeStack.length-1],this.element));
+					stack.push(createTiddlyElement(stack[stack.length-1],this.element));
 				}
 			else if(newLevel < currLevel)
 				{
 				for(t=currLevel; t>newLevel; t--)
-					placeStack.pop();
+					stack.pop();
 				}
 			currLevel = newLevel;
-			w.subWikifyTerm(placeStack[placeStack.length-1],this.termRegExp);
-			createTiddlyElement(placeStack[placeStack.length-1],"br");
+			w.subWikifyTerm(stack[stack.length-1],this.termRegExp);
+			createTiddlyElement(stack[stack.length-1],"br");
 			this.lookaheadRegExp.lastIndex = w.nextMatch;
 			var lookaheadMatch = this.lookaheadRegExp.exec(w.source);
 			var matched = lookaheadMatch && lookaheadMatch.index == w.nextMatch;
@@ -276,8 +276,8 @@ config.formatters = [
 
 {
 	name: "monospacedByLineForCSS",
-	match: "^/\\*[\\{]{3}\\*/\\n",
-	lookaheadRegExp: /\/\*[\{]{3}\*\/\n*((?:^[^\n]*\n)+?)(\n*^\/\*[\}]{3}\*\/$\n?)/mg,
+	match: "^/\\*\\{\\{\\{\\*/\\n",
+	lookaheadRegExp: /\/\*\{\{\{\*\/\n*((?:^[^\n]*\n)+?)(\n*^\/\*\}\}\}\*\/$\n?)/mg,
 	element: "pre",
 	handler: config.formatterHelpers.enclosedTextHelper
 },
@@ -292,14 +292,14 @@ config.formatters = [
 
 {
 	name: "monospacedByLineForTemplate",
-	match: "^<!--[\\{]{3}-->\\n",
-	lookaheadRegExp: /<!--[\{]{3}-->\n*((?:^[^\n]*\n)+?)(\n*^<!--[\}]{3}-->$\n?)/mg, 
+	match: "^<!--\\{\\{\\{-->\\n",
+	lookaheadRegExp: /<!--\{\{\{-->\n*((?:^[^\n]*\n)+?)(\n*^<!--\}\}\}-->$\n?)/mg,
 	element: "pre",
 	handler: config.formatterHelpers.enclosedTextHelper
 },
 
 {
-	name: "wikifyCommentForPlugin", 
+	name: "wikifyCommentForPlugin",
 	match: "^/\\*\\*\\*\\n",
 	termRegExp: /(^\*\*\*\/\n)/mg,
 	handler: function(w)
@@ -309,7 +309,7 @@ config.formatters = [
 },
 
 {
-	name: "wikifyCommentForTemplate", 
+	name: "wikifyCommentForTemplate",
 	match: "^<!---\\n",
 	termRegExp: /(^--->\n)/mg,
 	handler: function(w) 
@@ -419,7 +419,7 @@ config.formatters = [
 	{
 		this.lookaheadRegExp.lastIndex = w.matchStart;
 		var lookaheadMatch = this.lookaheadRegExp.exec(w.source);
-		if(lookaheadMatch && lookaheadMatch.index == w.matchStart) // Simple bracketted link
+		if(lookaheadMatch && lookaheadMatch.index == w.matchStart)
 			{
 			var e = w.output;
 			if(lookaheadMatch[5])
@@ -538,7 +538,7 @@ config.formatters = [
 	name: "styleByChar",
 	match: "@@",
 	termRegExp: /(@@)/mg,
-	handler:  function(w)
+	handler: function(w)
 	{
 		var e = createTiddlyElement(w.output,"span");
 		var styles = config.formatterHelpers.inlineCssHelper(w);
