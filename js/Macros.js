@@ -736,23 +736,34 @@ config.macros.toolbar.createCommand = function(place,commandName,tiddler,theClas
 		}
 	if((tiddler instanceof Tiddler) && (typeof commandName == "string"))
 		{
-		var title = tiddler.title;
 		var command = config.commands[commandName];
-		var ro = tiddler.isReadOnly();
-		var shadow = store.isShadowTiddler(title) && !store.tiddlerExists(title);
-		var text = ro && command.readOnlyText ? command.readOnlyText : command.text;
-		var tooltip = ro && command.readOnlyTooltip ? command.readOnlyTooltip : command.tooltip;
-		if((!ro || (ro && !command.hideReadOnly)) && !(shadow && command.hideShadow))
-
+		if(command.isEnabled ? command.isEnabled(tiddler) : this.isCommandEnabled(command,tiddler))
 			{
+			var text = command.getText ? command.getText(tiddler) : this.getCommandText(command,tiddler);
+			var tooltip = command.getTooltip ? command.getTooltip(tiddler) : this.getCommandTooltip(command,tiddler);
 			var btn = createTiddlyButton(null,text,tooltip,this.onClickCommand);
 			btn.setAttribute("commandName", commandName);
-			btn.setAttribute("tiddler", title);
+			btn.setAttribute("tiddler", tiddler.title);
 			if(theClass)
 				addClass(btn,theClass);
 			place.appendChild(btn);
 			}
 		}
+}
+
+config.macros.toolbar.isCommandEnabled = function(command, tiddler) {
+	var title = tiddler.title;
+	var ro = tiddler.isReadOnly();
+	var shadow = store.isShadowTiddler(title) && !store.tiddlerExists(title);
+	return (!ro || (ro && !command.hideReadOnly)) && !(shadow && command.hideShadow);
+}
+
+config.macros.toolbar.getCommandText = function(command, tiddler) {
+	return tiddler.isReadOnly() && command.readOnlyText ? command.readOnlyText : command.text;
+}
+
+config.macros.toolbar.getCommandTooltip = function(command, tiddler) {
+	return tiddler.isReadOnly() && command.readOnlyTooltip ? command.readOnlyTooltip : command.tooltip;
 }
 
 config.macros.toolbar.onClickCommand = function(e)
