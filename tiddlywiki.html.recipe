@@ -17,6 +17,8 @@ js/Tiddler.js
 js/TiddlyWiki.js
 js/TiddlerFields.js
 js/Story.js
+js/Backstage.js
+js/Import.js
 js/Messages.js
 js/Refresh.js
 js/Options.js
