@@ -22,7 +22,7 @@ var backstage = {
 			backstage.tabs.style.visibility = "hidden";
 		};
 		this.cloak.onmousedown = function(e) {
-			backstage.switchTab(null,null);
+			backstage.switchTab(null);
 		};
 		for(var t=0; t<config.backstageTasks.length; t++) {
 			var taskName = config.backstageTasks[t];
@@ -30,15 +30,25 @@ var backstage = {
 			var btn = createTiddlyButton(this.tabs,task.text,task.tooltip,this.onClickTab,"backstageTab");
 			btn.setAttribute("task",taskName);
 			}
-		this.switchTab(null,null);
+		this.switchTab(null);
 	},
 
 	onClickTab: function(e) {
-		backstage.switchTab(this,this.getAttribute("task"));
+		backstage.switchTab(this.getAttribute("task"));
 	},
 
 	// Switch to a given tab, or none if null is passed
-	switchTab: function(tabElem,tabName) {
+	switchTab: function(tabName) {
+		var tabElem = null;
+		var e = this.tabs.firstChild;
+		while(e)
+			{
+			if(e.getAttribute("task") == tabName)
+				tabElem = e;
+			e = e.nextSibling
+			}
+		if(tabName == backstage.currTabName)
+			return;
 		if(backstage.currTabElem) {
 			removeClass(this.currTabElem,"backstageSelTab");
 			}
@@ -64,7 +74,7 @@ var backstage = {
 	
 	showPanel: function() {
 		if(anim && config.options.chkAnimate)
-			anim.startAnimating(new Slider(backstage.panel,true,false,"none"),new Scroller(backstage.panel,false));
+			anim.startAnimating(new Slider(backstage.panel,true,false,"none"),new Scroller(backstage.backstage,false));
 		else
 			backstage.panel.style.display = "block";
 		return this.panel;
@@ -85,9 +95,18 @@ config.backstage = {
 config.backstageTasks = ["tidy","sync","importTask","copy","plugins"];
 
 config.tasks = {
-		tidy: {text: "Tidy up", tooltip: "Make bulk changes across groups of tiddlers"},
-		sync: {text: "Sync", tooltip: "Synchronise changes with other TiddlyWiki files and servers"},
-		importTask: {text: "Import", tooltip: "Import tiddlers and plugins from other TiddlyWiki files and servers", content: "<<importTiddlers>>"},
-		copy: {text: "Copy", tooltip: "Copy tiddlers to other TiddlyWiki files and servers"},
-		plugins: {text: "Plugins", tooltip: "Manage installed plugins", content: "<<plugins>>"}
+		tidy: {text: "tidy up", tooltip: "Make bulk changes across groups of tiddlers"},
+		sync: {text: "sync", tooltip: "Synchronise changes with other TiddlyWiki files and servers", content: "<<sync>>"},
+		importTask: {text: "import", tooltip: "Import tiddlers and plugins from other TiddlyWiki files and servers", content: "<<importTiddlers>>"},
+		copy: {text: "copy", tooltip: "Copy tiddlers to other TiddlyWiki files and servers"},
+		plugins: {text: "plugins", tooltip: "Manage installed plugins", content: "<<plugins>>"}
 };
+
+config.macros.backstage = {};
+
+config.macros.backstage.handler = function(place,macroName,params,wikifier,paramString,tiddler)
+{
+	var backstageTask = config.tasks[params[0]];
+	if(backstageTask)
+		createTiddlyButton(place,backstageTask.text,backstageTask.tooltip,function(e) {backstage.switchTab(params[0]);})
+}
