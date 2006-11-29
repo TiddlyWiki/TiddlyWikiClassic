@@ -222,6 +222,7 @@ Story.prototype.addCustomFields = function(place,customFields)
 		e.value = fields[t].value;
 		e.setAttribute("size","40");
 		e.setAttribute("autocomplete","off");
+		e.style.display = "none";
 		place.appendChild(e);
 		}
 }
