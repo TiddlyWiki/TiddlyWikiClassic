@@ -243,6 +243,7 @@ TiddlyWiki.prototype.setTiddlerTag = function(title,status,tag)
 		if(status)
 			tiddler.tags.push(tag);
 		tiddler.changed();
+		this.incChangeCount(title);
 		this.notify(title,true);
 		this.setDirty(true);
 		}
@@ -264,11 +265,20 @@ TiddlyWiki.prototype.saveTiddler = function(title,newTitle,newBody,modifier,modi
 		}
 	tiddler.set(newTitle,newBody,modifier,modified,tags,created,fields);
 	this.addTiddler(tiddler);
+	this.incChangeCount(newTitle);
 	if(title != newTitle)
 		this.notify(title,true);
 	this.notify(newTitle,true);
 	this.setDirty(true);
 	return tiddler;
+}
+
+TiddlyWiki.prototype.incChangeCount = function(title)
+{
+	var c = this.getValue(title,"changeCount");
+	if(!c)
+		c = 0;
+	this.setValue(title,"changeCount",++c);
 }
 
 TiddlyWiki.prototype.createTiddler = function(title)
