@@ -93,11 +93,12 @@ config.macros.sync.onSelectCommand = function(listView,command,rowNames)
 
 config.macros.sync.doSync = function(selNames)
 {
-	for(var t=0; t<currSync.syncList.length; t++)
+	for(var t=0; t<selNames.length; t++)
 		{
-		var s = currSync.syncList[t];
+		var f = currSync.syncList.findByField("title",selNames[t])
+		var s = currSync.syncList[f];
 		var syncer = config.syncers[s.syncType];
 		if(syncer.doSync)
-			syncer.doSync(sync,s);
+			syncer.doSync(currSync,s);
 		}
 }
