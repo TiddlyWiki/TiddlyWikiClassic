@@ -387,8 +387,6 @@ config.macros.option.handler = function(place,macroName,params)
 		}
 }
 
-
-
 config.macros.newTiddler.createNewTiddlerButton = function(place,title,params,label,prompt,accessKey,newFocus,isJournal)
 {
 	var tags = [];
@@ -399,12 +397,14 @@ config.macros.newTiddler.createNewTiddlerButton = function(place,title,params,la
 	prompt = getParam(params,"prompt",prompt);
 	accessKey = getParam(params,"accessKey",accessKey);
 	newFocus = getParam(params,"focus",newFocus);
+	var customFields = getParam(params,"fields",newFocus);
 	var btn = createTiddlyButton(place,label,prompt,this.onClickNewTiddler,null,null,accessKey);
 	btn.setAttribute("newTitle",title);
 	btn.setAttribute("isJournal",isJournal);
 	btn.setAttribute("params",tags.join("|"));
 	btn.setAttribute("newFocus",newFocus);
 	btn.setAttribute("newTemplate",getParam(params,"template",DEFAULT_EDIT_TEMPLATE));
+	btn.setAttribute("customFields",customFields);
 	var text = getParam(params,"text");
 	if(text !== undefined) 
 		btn.setAttribute("newText",text);
@@ -422,7 +422,8 @@ config.macros.newTiddler.onClickNewTiddler = function()
 	var params = this.getAttribute("params").split("|");
 	var focus = this.getAttribute("newFocus");
 	var template = this.getAttribute("newTemplate");
-	story.displayTiddler(null,title,template);
+	var customFields = this.getAttribute("customFields");
+	story.displayTiddler(null,title,template,false,false,customFields);
 	var text = this.getAttribute("newText");
 	if(typeof text == "string")
 		story.getTiddlerField(title,"text").value = text.format([title]);

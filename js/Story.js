@@ -33,10 +33,10 @@ Story.prototype.forEachTiddler = function(fn)
 
 // Display several tiddlers given their titles in an array. Parameters same as displayTiddler(), except:
 // titles - array of string titles
-Story.prototype.displayTiddlers = function(srcElement,titles,template,animate,slowly)
+Story.prototype.displayTiddlers = function(srcElement,titles,template,animate,slowly,customFields)
 {
 	for(var t = titles.length-1;t>=0;t--)
-		this.displayTiddler(srcElement,titles[t],template,animate,slowly);
+		this.displayTiddler(srcElement,titles[t],template,animate,slowly,customFields);
 }
 
 // Display a given tiddler with a given template. If the tiddler is already displayed but with a different
@@ -49,16 +49,17 @@ Story.prototype.displayTiddlers = function(srcElement,titles,template,animate,sl
 //			  null or undefined to indicate the current template if there is one, DEFAULT_VIEW_TEMPLATE if not
 // animate - whether to perform animations
 // slowly - whether to perform animations in slomo
-Story.prototype.displayTiddler = function(srcElement,title,template,animate,slowly)
+// customFields - an optional list of name/value pairs to be assigned as tiddler fields (for edit templates)
+Story.prototype.displayTiddler = function(srcElement,title,template,animate,slowly,customFields)
 {
 	var place = document.getElementById(this.container);
 	var tiddlerElem = document.getElementById(this.idPrefix + title);
 	if(tiddlerElem)
-		this.refreshTiddler(title,template);
+		this.refreshTiddler(title,template,false,customFields);
 	else
 		{
 		var before = this.positionTiddler(srcElement);
-		tiddlerElem = this.createTiddler(place,before,title,template);
+		tiddlerElem = this.createTiddler(place,before,title,template,customFields);
 		}
 	if(srcElement && typeof srcElement !== "string")
 		{
@@ -107,12 +108,13 @@ Story.prototype.positionTiddler = function(srcElement)
 // before - null, or reference to element before which to insert new tiddler
 // title - title of new tiddler
 // template - the name of the tiddler containing the template or one of the constants DEFAULT_VIEW_TEMPLATE and DEFAULT_EDIT_TEMPLATE
-Story.prototype.createTiddler = function(place,before,title,template)
+// customFields - an optional list of name/value pairs to be assigned as tiddler fields (for edit templates)
+Story.prototype.createTiddler = function(place,before,title,template,customFields)
 {
 	var tiddlerElem = createTiddlyElement(null,"div",this.idPrefix + title,"tiddler");
 	tiddlerElem.setAttribute("refresh","tiddler");
 	place.insertBefore(tiddlerElem,before);
-	this.refreshTiddler(title,template);
+	this.refreshTiddler(title,template,false,customFields);
 	return tiddlerElem;
 }
 
@@ -136,7 +138,8 @@ Story.prototype.getTemplateForTiddler = function(title,template,tiddler)
 // title - title of tiddler to update
 // template - the name of the tiddler containing the template or one of the constants DEFAULT_VIEW_TEMPLATE and DEFAULT_EDIT_TEMPLATE
 // force - if true, forces the refresh even if the template hasn't changedd
-Story.prototype.refreshTiddler = function(title,template,force)
+// customFields - an optional list of name/value pairs to be assigned as tiddler fields (for edit templates)
+Story.prototype.refreshTiddler = function(title,template,force,customFields)
 {
 	var tiddlerElem = document.getElementById(this.idPrefix + title);
 	if(tiddlerElem)
@@ -188,9 +191,39 @@ Story.prototype.refreshTiddler = function(title,template,force)
 				removeClass(tiddlerElem,"shadow");
 				removeClass(tiddlerElem,"missing");
 				}
+			if(customFields)
+				this.addCustomFields(tiddlerElem,customFields);
 			}
 		}
 	return tiddlerElem;
+}
+
+// Add hidden input elements for the custom fields of a tiddler
+Story.prototype.addCustomFields = function(place,customFields)
+{
+	var fieldsPattern = "(?:(" + config.textPrimitives.anyLetter + "+)\\(([^\\)\\|\\n]+)(?:\\):))|(?:(" + config.textPrimitives.anyLetter + "+):([^;\\|\\n]+);)";
+	var fieldsPattern = "([^:]*):([^;]*);";
+	var fieldsRegExp = new RegExp(fieldsPattern,"mg");
+	var fields = [];
+	var lastMatch = 0;
+	var match = fieldsRegExp.exec(customFields);
+	while(match && match.index == lastMatch)
+		{
+		fields.push({field: match[1], value: match[2]});
+		lastMatch = match.index + match[0].length;
+		fieldsRegExp.lastIndex = lastMatch;
+		match = fieldsRegExp.exec(customFields);
+		}
+	for(var t=0; t<fields.length; t++)
+		{
+		var e = createTiddlyElement(null,"input");
+		e.setAttribute("edit",fields[t].field);
+		e.setAttribute("type","text");
+		e.value = fields[t].value;
+		e.setAttribute("size","40");
+		e.setAttribute("autocomplete","off");
+		place.appendChild(e);
+		}
 }
 
 // Refresh all tiddlers in the Story
