@@ -129,6 +129,8 @@ merge(config.macros.newJournal,{
 	accessKey: "J"});
 
 merge(config.macros.plugins,{
+	wizardTitle: "Plugins",
+	step1: "These are the plugins that are currently loaded",
 	skippedText: "(This plugin has not been executed because it was added since startup)",
 	noPluginText: "There are no plugins installed",
 	confirmDeleteText: "Are you sure you want to delete these tiddlers:\n\n%0",
