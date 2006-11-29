@@ -230,3 +230,9 @@ function showException(e, message)
 	alert(exceptionText(e, message));
 }
 
+function alertAndThrow(m)
+{
+	alert(m);
+	throw(m);
+}
+
