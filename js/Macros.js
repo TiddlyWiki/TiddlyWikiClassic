@@ -62,14 +62,18 @@ config.macros.list.shadowed.handler = function(params)
 config.macros.allTags.handler = function(place,macroName,params)
 {
 	var tags = store.getTags(params[0]);
-	var theDateList = createTiddlyElement(place,"ul");
+	var ul = createTiddlyElement(place,"ul");
 	if(tags.length == 0)
-		createTiddlyElement(theDateList,"li",null,"listTitle",this.noTags);
+		createTiddlyElement(ul,"li",null,"listTitle",this.noTags);
 	for(var t=0; t<tags.length; t++)
 		{
-		var theListItem =createTiddlyElement(theDateList,"li");
-		var theTag = createTiddlyButton(theListItem,tags[t][0] + " (" + tags[t][1] + ")",this.tooltip.format([tags[t][0]]),onClickTag);
-		theTag.setAttribute("tag",tags[t][0]);
+		var title = tags[t][0];
+		var info = getTiddlyLinkInfo(title)
+		var li =createTiddlyElement(ul,"li");
+		var btn = createTiddlyButton(li,title + " (" + tags[t][1] + ")",this.tooltip.format([title]),onClickTag,info.classes);
+		btn.setAttribute("tag",title);
+		btn.setAttribute("refresh","link");
+		btn.setAttribute("tiddlyLink",title);
 		}
 }
 
