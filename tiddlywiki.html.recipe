@@ -57,10 +57,10 @@ html/prestorearea.html
 @tiddler@
 html/poststorearea.html
 html/preshadow.html
+recipe: tiddlers/split.recipe
 @shadow@
 html/postshadow.html
 @posttiddlers@
-html/posttiddlers.html
 @postbody@
 html/footer.html
 copy: java/TiddlySaver.jar
