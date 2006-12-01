@@ -53,12 +53,7 @@ html/postheader.html
 html/bodystart.html
 @prebody@
 html/body.html
-html/prestorearea.html
 @tiddler@
-html/poststorearea.html
-html/preshadow.html
-@shadow@
-html/postshadow.html
 @posttiddlers@
 html/posttiddlers.html
 @postbody@

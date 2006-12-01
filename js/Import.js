@@ -89,7 +89,7 @@ config.macros.importTiddlers.onLoad = function(status,params,responseText,url,xh
 //		return;
 	// Crack out the content - (should be refactored)
 	var posOpeningDiv = responseText.indexOf(startSaveArea);
-	var limitClosingDiv = responseText.indexOf("<!--POST-BODY-START--"+">");
+	var limitClosingDiv = responseText.indexOf("<!--STORE-AREA-END--"+">");
 	var posClosingDiv = responseText.lastIndexOf(endSaveArea,limitClosingDiv == -1 ? responseText.length : limitClosingDiv);
 	if((posOpeningDiv == -1) || (posClosingDiv == -1))
 		{

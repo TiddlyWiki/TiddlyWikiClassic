@@ -34,8 +34,9 @@ TW21Loader.prototype.internalizeTiddler = function(store,tiddler,title,data)
 		text = e.innerHTML.replace(/\r/mg,"").htmlDecode();
 	}
 	var modifier = data.getAttribute("modifier");
-	var created = Date.convertFromYYYYMMDDHHMM(data.getAttribute("created"));
+	var c = data.getAttribute("created");
 	var m = data.getAttribute("modified");
+	var created = c ? Date.convertFromYYYYMMDDHHMM(c) : version.date;
 	var modified = m ? Date.convertFromYYYYMMDDHHMM(m) : created;
 	var tags = data.getAttribute("tags");
 	var fields = {};

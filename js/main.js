@@ -37,6 +37,7 @@ function main()
 	for(var s=0; s<config.notifyTiddlers.length; s++)
 		store.addNotification(config.notifyTiddlers[s].name,config.notifyTiddlers[s].notify);
 	store.loadFromDiv("storeArea","store",true);
+	loadShadowTiddlers();
 	invokeParamifier(params,"onload");
 	var pluginProblem = loadPlugins();
 	formatter = new Formatter(config.formatters);
@@ -78,6 +79,14 @@ function saveTest()
 	if(saveTest.hasChildNodes())
 		alert(config.messages.savedSnapshotError);
 	saveTest.appendChild(document.createTextNode("savetest"));
+}
+
+function loadShadowTiddlers()
+{
+	var shadows = new TiddlyWiki();
+	shadows.loadFromDiv("shadowArea","shadows",true);
+	shadows.forEachTiddler(function(title,tiddler){config.shadowTiddlers[title] = tiddler.text;});
+	delete shadows;
 }
 
 function loadPlugins()

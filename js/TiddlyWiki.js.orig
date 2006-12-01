@@ -299,8 +299,6 @@ TiddlyWiki.prototype.loadFromDiv = function(src,idPrefix,noUpdate)
 {
 	this.idPrefix = idPrefix;
 	var storeElem = (typeof src == "string") ? document.getElementById(src) : src;
-	if(!storeElem)
-		return;
 	var tiddlers = this.getLoader().loadTiddlers(this,storeElem.childNodes);
 	this.setDirty(false);
 	if(!noUpdate)

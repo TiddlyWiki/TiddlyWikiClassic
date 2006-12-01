@@ -18,9 +18,10 @@ TW21Saver.prototype.externalizeTiddler = function(store,tiddler)
 			},true);
 		var created = tiddler.created.convertToYYYYMMDDHHMM();
 		var modified = tiddler.modified.convertToYYYYMMDDHHMM();
-		var attributes = ' modifier="' + tiddler.modifier.htmlEncode() + '"';
+		var vdate = version.date.convertToYYYYMMDDHHMM();
+		var attributes = tiddler.modifier ? ' modifier="' + tiddler.modifier.htmlEncode() + '"' : "";
 		attributes += (usePre && modified == created) ? "" : ' modified="' + modified +'"';
-		attributes += ' created="' + created + '"';
+		attributes += (usePre && created == vdate) ? "" :' created="' + created + '"';
 		var tags = tiddler.getTags();
 		if(!usePre || tags)
 			attributes += ' tags="' + tags.htmlEncode() + '"';
