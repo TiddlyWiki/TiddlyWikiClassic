@@ -7,6 +7,14 @@
 merge(config.options,{
 	txtUserName: "YourName"});
 
+config.tasks = {
+		tidy: {text: "tidy up", tooltip: "Make bulk changes across groups of tiddlers"},
+		sync: {text: "sync", tooltip: "Synchronise changes with other TiddlyWiki files and servers", content: '<<sync>>'},
+		importTask: {text: "import", tooltip: "Import tiddlers and plugins from other TiddlyWiki files and servers", content: '<<importTiddlers>>'},
+		copy: {text: "copy", tooltip: "Copy tiddlers to other TiddlyWiki files and servers"},
+		plugins: {text: "plugins", tooltip: "Manage installed plugins", content: '<<plugins>>'}
+};
+
 merge(config.messages,{
 	customConfigError: "Problems were encountered loading plugins. See PluginManager for details",
 	pluginError: "Error: %0",
@@ -44,7 +52,8 @@ merge(config.messages,{
 	tiddlerLoadError: "Error when loading tiddler '%0'",
 	wrongSaveFormat: "Cannot save with storage format '%0'. Using standard format for save.",
 	invalidFieldName: "Invalid field name %0",
-	fieldCannotBeChanged: "Field '%0' cannot be changed"});
+	fieldCannotBeChanged: "Field '%0' cannot be changed",
+	backstagePrompt: "backstage: "});
 
 merge(config.messages.messageClose,{
 	text: "close",

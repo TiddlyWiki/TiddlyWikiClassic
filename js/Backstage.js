@@ -24,6 +24,7 @@ var backstage = {
 		this.cloak.onmousedown = function(e) {
 			backstage.switchTab(null);
 		};
+		createTiddlyText(this.tabs,config.messages.backstagePrompt);
 		for(var t=0; t<config.backstageTasks.length; t++) {
 			var taskName = config.backstageTasks[t];
 			var task = config.tasks[taskName];
@@ -43,7 +44,7 @@ var backstage = {
 		var e = this.tabs.firstChild;
 		while(e)
 			{
-			if(e.getAttribute("task") == tabName)
+			if(e.getAttribute && e.getAttribute("task") == tabName)
 				tabElem = e;
 			e = e.nextSibling
 			}
@@ -87,19 +88,6 @@ var backstage = {
 			backstage.panel.style.display = "none";
 		backstage.cloak.style.display = "none";
 	}
-};
-
-config.backstage = {
-}
-
-config.backstageTasks = ["tidy","sync","importTask","copy","plugins"];
-
-config.tasks = {
-		tidy: {text: "tidy up", tooltip: "Make bulk changes across groups of tiddlers"},
-		sync: {text: "sync", tooltip: "Synchronise changes with other TiddlyWiki files and servers", content: "<<sync>>"},
-		importTask: {text: "import", tooltip: "Import tiddlers and plugins from other TiddlyWiki files and servers", content: "<<importTiddlers>>"},
-		copy: {text: "copy", tooltip: "Copy tiddlers to other TiddlyWiki files and servers"},
-		plugins: {text: "plugins", tooltip: "Manage installed plugins", content: "<<plugins>>"}
 };
 
 config.macros.backstage = {};
