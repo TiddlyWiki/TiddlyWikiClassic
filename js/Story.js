@@ -451,7 +451,7 @@ Story.prototype.closeAllTiddlers = function(exclude)
 		if((title != exclude) && element.getAttribute("dirty") != "true")
 			this.closeTiddler(title);
 		});
-	window.scrollTo(0,0);
+	window.scrollTo(0,ensureVisible(this.container));
 }
 
 // Check if there are any tiddlers in the story

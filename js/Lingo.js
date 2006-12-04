@@ -8,10 +8,10 @@ merge(config.options,{
 	txtUserName: "YourName"});
 
 config.tasks = {
-		tidy: {text: "tidy up", tooltip: "Make bulk changes across groups of tiddlers"},
+		tidy: {text: "tidy up", tooltip: "Make bulk changes across groups of tiddlers", content: 'Coming soon...\n\nThis tab will allow bulk operations on tiddlers, and tags. It will be a generalised, extensible version of the plugins tab'},
 		sync: {text: "sync", tooltip: "Synchronise changes with other TiddlyWiki files and servers", content: '<<sync>>'},
 		importTask: {text: "import", tooltip: "Import tiddlers and plugins from other TiddlyWiki files and servers", content: '<<importTiddlers>>'},
-		copy: {text: "copy", tooltip: "Copy tiddlers to other TiddlyWiki files and servers"},
+		copy: {text: "copy", tooltip: "Copy tiddlers to other TiddlyWiki files and servers", content: 'Coming soon...\n\nThis tab will allow tiddlers to be copied to remote servers'},
 		plugins: {text: "plugins", tooltip: "Manage installed plugins", content: '<<plugins>>'}
 };
 

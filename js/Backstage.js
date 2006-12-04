@@ -36,6 +36,7 @@ var backstage = {
 
 	onClickTab: function(e) {
 		backstage.switchTab(this.getAttribute("task"));
+		return false;
 	},
 
 	// Switch to a given tab, or none if null is passed
@@ -77,8 +78,11 @@ var backstage = {
 		if(anim && config.options.chkAnimate)
 			anim.startAnimating(new Slider(backstage.panel,true,false,"none"),new Scroller(backstage.backstage,false));
 		else
+			{
+			backstage.panel.height = "auto";
 			backstage.panel.style.display = "block";
-		return this.panel;
+			}
+		return backstage.panel;
 	},
 	
 	hidePanel: function() {
@@ -96,5 +100,5 @@ config.macros.backstage.handler = function(place,macroName,params,wikifier,param
 {
 	var backstageTask = config.tasks[params[0]];
 	if(backstageTask)
-		createTiddlyButton(place,backstageTask.text,backstageTask.tooltip,function(e) {backstage.switchTab(params[0]);})
+		createTiddlyButton(place,backstageTask.text,backstageTask.tooltip,function(e) {backstage.switchTab(params[0]); return false;})
 }

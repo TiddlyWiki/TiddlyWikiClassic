@@ -13,8 +13,8 @@ config.macros.sync = {
 		columns: [
 			{name: 'Selected', field: 'selected', rowName: 'title', type: 'Selector'},
 			{name: 'Title', field: 'title', tiddlerLink: 'title', title: "Title", type: 'TiddlerLink'},
-			{name: 'Local Status', field: 'localStatus', title: "Local Status", type: 'String'},
-			{name: 'Server Status', field: 'serverStatus', title: "Server Status", type: 'String'},
+			{name: 'Local Status', field: 'localStatus', title: "Changed on your computer?", type: 'String'},
+			{name: 'Server Status', field: 'serverStatus', title: "Changed on server?", type: 'String'},
 			{name: 'Server URL', field: 'serverUrl', title: "Server URL", text: "View", type: 'Link'}
 			],
 		rowClasses: [
