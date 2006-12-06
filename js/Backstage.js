@@ -7,6 +7,8 @@ var backstage = {
 	cloak: null,
 	tabs: null,
 	panel: null,
+	panelBody: null,
+	panelFooter: null,
 	currTabName: null,
 	currTabElem: null,
 
@@ -15,6 +17,9 @@ var backstage = {
 		this.backstage = document.getElementById("backstage");
 		this.tabs = document.getElementById("backstageTabs");
 		this.panel = document.getElementById("backstagePanel");
+		this.panelBody = createTiddlyElement(this.panel,"div",null,"backstagePanelBody");
+		this.panelFooter = createTiddlyElement(this.panel,"div",null,"backstagePanelFooter wizardFooter");
+		createTiddlyButton(this.panelFooter,"close","Close backstage",backstage.hidePanel);
 		this.backstage.onmouseover = function(e) {
 			backstage.tabs.style.visibility = "visible";
 		};
@@ -58,7 +63,7 @@ var backstage = {
 			backstage.preparePanel();
 			addClass(tabElem,"backstageSelTab");
 			var task = config.tasks[tabName];
-			wikify(task.content,backstage.panel,null,null)
+			wikify(task.content,backstage.panelBody,null,null)
 			backstage.showPanel();
 		} else if(backstage.currTabElem) {
 			backstage.hidePanel();
@@ -70,8 +75,8 @@ var backstage = {
 	preparePanel: function() {
 		backstage.cloak.style.height = document.documentElement.scrollHeight + "px";
 		backstage.cloak.style.display = "block";
-		removeChildren(backstage.panel);
-		return backstage.panel;
+		removeChildren(backstage.panelBody);
+		return backstage.panelBody;
 	},
 	
 	showPanel: function() {
@@ -82,7 +87,7 @@ var backstage = {
 			backstage.panel.height = "auto";
 			backstage.panel.style.display = "block";
 			}
-		return backstage.panel;
+		return backstage.panelBody;
 	},
 	
 	hidePanel: function() {
@@ -91,6 +96,16 @@ var backstage = {
 		else
 			backstage.panel.style.display = "none";
 		backstage.cloak.style.display = "none";
+	},
+	
+	setButtons: function(buttons,callback) {
+		removeChildren(backstage.panelFooter);
+		for(t=0; t<buttons.length; t++)
+			{
+			var a = buttons[t];
+			if(a && a.name != "")
+				createTiddlyButton(backstage.panelFooter,a.caption,a.tooltip,function (e) {a.onclick.apply(this,arguments); return false;});
+			}
 	}
 };
 
