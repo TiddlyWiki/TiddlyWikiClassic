@@ -56,7 +56,7 @@ Date.prototype.getHours12 = function()
 
 Date.prototype.getAmPm = function()
 {
-	return this.getHours() >= 12 ? "pm" : "am";
+	return this.getHours() >= 12 ? config.messages.dates.pm : config.messages.dates.am;
 }
 
 Date.prototype.daySuffix = function()

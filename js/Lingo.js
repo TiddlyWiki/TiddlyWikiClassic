@@ -63,6 +63,8 @@ config.messages.dates.months = ["January", "February", "March", "April", "May", 
 config.messages.dates.days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 config.messages.dates.shortMonths = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 config.messages.dates.shortDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+config.messages.dates.am = "am";
+config.messages.dates.pm = "pm";
 
 merge(config.views.wikified.tag,{
 	labelNoTags: "no tags",
