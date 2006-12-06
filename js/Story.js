@@ -214,16 +214,16 @@ Story.prototype.addCustomFields = function(place,customFields)
 		fieldsRegExp.lastIndex = lastMatch;
 		match = fieldsRegExp.exec(customFields);
 		}
+	var w = document.createElement("div");
+	w.style.display = "none";
+	place.appendChild(w);
 	for(var t=0; t<fields.length; t++)
 		{
-		var e = createTiddlyElement(null,"input");
-		e.setAttribute("edit",fields[t].field);
+		var e = document.createElement("input");
 		e.setAttribute("type","text");
-		e.value = fields[t].value;
-		e.setAttribute("size","40");
-		e.setAttribute("autocomplete","off");
-		e.style.display = "none";
-		place.appendChild(e);
+		e.setAttribute("value",fields[t].value);
+		w.appendChild(e);
+		e.setAttribute("edit",fields[t].field);
 		}
 }
 
