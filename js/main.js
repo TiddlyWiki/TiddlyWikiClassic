@@ -22,7 +22,7 @@ var useJavaSaver = config.browser.isSafari || config.browser.isOpera;
 // Starting up
 function main()
 {
-	var now, then = new Date();
+	var t9,t8,t7,t6,t5,t4,t3,t2,t1,t0 = new Date();
 	startingUp = true;
 	window.onbeforeunload = function(e) {if(window.confirmExit) return confirmExit();};
 	params = getParameters();
@@ -36,15 +36,23 @@ function main()
 	loadOptionsCookie();
 	for(var s=0; s<config.notifyTiddlers.length; s++)
 		store.addNotification(config.notifyTiddlers[s].name,config.notifyTiddlers[s].notify);
+	t1 = new Date();
 	store.loadFromDiv("storeArea","store",true);
+	t2 = new Date();
 	loadShadowTiddlers();
+	t3 = new Date();
 	invokeParamifier(params,"onload");
+	t4 = new Date();
 	var pluginProblem = loadPlugins();
+	t5 = new Date();
 	formatter = new Formatter(config.formatters);
 	readOnly = (window.location.protocol == "file:") ? false : config.options.chkHttpReadOnly;
 	invokeParamifier(params,"onconfig");
+	t6 = new Date();
 	store.notifyAll();
+	t7 = new Date();
 	restart();
+	t8 = new Date();
 	if(pluginProblem)
 		{
 		story.displayTiddler(null,"PluginManager");
@@ -55,9 +63,16 @@ function main()
 			config.macros[m].init();
 	if(!readOnly)
 		backstage.init();
-	now = new Date();
+	t9 = new Date();
 	if(config.displayStartupTime)
-		displayMessage("TiddlyWiki startup in " + (now-then)/1000 + " seconds");
+		{
+		displayMessage("Load in " + (t2-t1) + " ms");
+		displayMessage("Loadshadows in " + (t3-t2) + " ms");
+		displayMessage("Loadplugins in " + (t5-t4) + " ms");
+		displayMessage("Notify in " + (t7-t6) + " ms");
+		displayMessage("Restart in " + (t8-t7) + " ms");
+		displayMessage("Total startup in " + (t9-t0) + " ms");
+		}
 	startingUp = false;
 }
 
