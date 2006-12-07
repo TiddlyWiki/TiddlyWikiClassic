@@ -15,14 +15,14 @@ html/postheader.html
 html/bodystart.html
 @prebody@
 html/body.html
-html/prestorearea.html
-@tiddler@
-@posttiddlers@
-html/poststorearea.html
 html/preshadow.html
 recipe: tiddlers/split.recipe
 @shadow@
 html/postshadow.html
+html/prestorearea.html
+@tiddler@
+@posttiddlers@
+html/poststorearea.html
 @postbody@
 html/footer.html
 copy: java/TiddlySaver.jar
