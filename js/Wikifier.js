@@ -4,19 +4,17 @@
 
 function getParser(tiddler)
 {
-	var f = formatter;
 	if(tiddler!=null)
 		{
 		for(var i in config.parsers)
 			{
-			if(tiddler.isTagged(config.parsers[i].formatTag))
+			if(tiddler.isTagged(config.parsers[i].formatTag)||(tiddler.fields&&tiddler.fields["wikiformat"]==config.parsers[i].format))
 				{
-				f = config.parsers[i];
-				break;
+				return config.parsers[i];
 				}
 			}
 		}
-	return f;
+	return formatter;
 }
 
 function wikify(source,output,highlightRegExp,tiddler)
