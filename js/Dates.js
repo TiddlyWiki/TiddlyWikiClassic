@@ -5,6 +5,7 @@ Date.prototype.formatString = function(template)
 	t = t.replace(/hh12/g,this.getHours12());
 	t = t.replace(/0hh/g,String.zeroPad(this.getHours(),2));
 	t = t.replace(/hh/g,this.getHours());
+	t = t.replace(/mmm/g,config.messages.dates.shortMonths[this.getMonth()]);
 	t = t.replace(/0mm/g,String.zeroPad(this.getMinutes(),2));
 	t = t.replace(/mm/g,this.getMinutes());
 	t = t.replace(/0ss/g,String.zeroPad(this.getSeconds(),2));
@@ -16,7 +17,6 @@ Date.prototype.formatString = function(template)
 	t = t.replace(/YYYY/g,this.getFullYear());
 	t = t.replace(/YY/g,String.zeroPad(this.getFullYear()-2000,2));
 	t = t.replace(/MMM/g,config.messages.dates.months[this.getMonth()]);
-	t = t.replace(/mmm/g,config.messages.dates.shortMonths[this.getMonth()]);
 	t = t.replace(/0MM/g,String.zeroPad(this.getMonth()+1,2));
 	t = t.replace(/MM/g,this.getMonth()+1);
 	t = t.replace(/0WW/g,String.zeroPad(this.getWeek(),2));
@@ -61,12 +61,7 @@ Date.prototype.getAmPm = function()
 
 Date.prototype.daySuffix = function()
 {
-	var num = this.getDate();
-	if (num >= 11 && num <= 13) return "th";
-	else if (num.toString().substr(-1)=="1") return "st";
-	else if (num.toString().substr(-1)=="2") return "nd";
-	else if (num.toString().substr(-1)=="3") return "rd";
-	return "th";
+	return config.messages.dates.daySuffixes[this.getDate()-1];
 }
 
 // Convert a date to local YYYYMMDDHHMM string format
