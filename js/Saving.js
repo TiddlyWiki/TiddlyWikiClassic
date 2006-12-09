@@ -61,7 +61,7 @@ function saveChanges(onlyIfDirty)
 		}
 	// Locate the storeArea div's
 	var posOpeningDiv = original.indexOf(startSaveArea);
-	var limitClosingDiv = original.indexOf("<!--STORE-AREA-END--"+">");
+	var limitClosingDiv = original.indexOf("<"+"!--STORE-AREA-END--"+">");
 	var posClosingDiv = original.lastIndexOf(endSaveArea,limitClosingDiv == -1 ? original.length : limitClosingDiv);
 	if((posOpeningDiv == -1) || (posClosingDiv == -1))
 		{
@@ -72,7 +72,7 @@ function saveChanges(onlyIfDirty)
 	if(config.options.chkSaveBackups)
 		{
 		var backupPath = getBackupPath(localPath);
-		var backup = saveFile(backupPath,original);
+		var backup = config.browser.isIE ? ieCopyFile(backupPath,localPath) : saveFile(backupPath,original);
 		if(backup)
 			displayMessage(config.messages.backupSaved,"file://" + backupPath);
 		else
@@ -133,8 +133,9 @@ function saveChanges(onlyIfDirty)
 		alert(config.messages.mainFailed);
 }
 
-function getLocalPath(originalPath)
+function getLocalPath(origPath)
 {
+	var originalPath = convertUriToUTF8(origPath,config.options.txtFileSystemCharSet);
 	// Remove any location or query part of the URL
 	var argPos = originalPath.indexOf("?");
 	if(argPos != -1)
@@ -145,11 +146,11 @@ function getLocalPath(originalPath)
 	// Convert file://localhost/ to file:///
 	if(originalPath.indexOf("file://localhost/") == 0)
 		originalPath = "file://" + originalPath.substr(16);
-	// Convert to a native file format assuming
-	// "file:///x:/path/path/path..." - pc local file --> "x:\path\path\path..."
-	// "file://///server/share/path/path/path..." - FireFox pc network file --> "\\server\share\path\path\path..."
-	// "file:///path/path/path..." - mac/unix local file --> "/path/path/path..."
-	// "file://server/share/path/path/path..." - pc network file --> "\\server\share\path\path\path..."
+	// Convert to a native file format
+	//# "file:///x:/path/path/path..." - pc local file --> "x:\path\path\path..."
+	//# "file://///server/share/path/path/path..." - FireFox pc network file --> "\\server\share\path\path\path..."
+	//# "file:///path/path/path..." - mac/unix local file --> "/path/path/path..."
+	//# "file://server/share/path/path/path..." - pc network file --> "\\server\share\path\path\path..."
 	var localPath;
 	if(originalPath.charAt(9) == ":") // pc local file
 		localPath = unescape(originalPath.substr(8)).replace(new RegExp("/","g"),"\\");

@@ -1,8 +1,8 @@
 
-// UTF-8 encoding rules:
-// 0x0000 - 0x007F:	0xxxxxxx
-// 0x0080 - 0x07FF:	110xxxxx 10xxxxxx
-// 0x0800 - 0xFFFF:	1110xxxx 10xxxxxx 10xxxxxx
+//# UTF-8 encoding rules:
+//# 0x0000 - 0x007F:  0xxxxxxx
+//# 0x0080 - 0x07FF:  110xxxxx 10xxxxxx
+//# 0x0800 - 0xFFFF:  1110xxxx 10xxxxxx 10xxxxxx
 
 function convertUTF8ToUnicode(u)
 {
@@ -92,6 +92,19 @@ function mozConvertUnicodeToUTF8(s)
 		return u;
 }
 
+function convertUriToUTF8(uri,charSet)
+{
+	if(window.netscape == undefined || charSet == undefined || charSet == "")
+		return uri;
+	try {
+		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+		var converter = Components.classes["@mozilla.org/intl/utf8converterservice;1"].getService(Components.interfaces.nsIUTF8ConverterService);
+	} catch(ex) {
+		return uri;
+	}
+	return converter.convertURISpecToUTF8(uri,charSet);
+}
+
 function saveFile(fileUrl, content)
 {
 	var r = null;
@@ -150,6 +163,17 @@ function ieLoadFile(filePath)
 		return(null);
 		}
 	return(content);
+}
+
+function ieCopyFile(dest,source)
+{
+	try {
+		var fso = new ActiveXObject("Scripting.FileSystemObject");
+		fso.GetFile(source).Copy(dest);
+	} catch(ex) {
+		return false;
+	}
+	return true;
 }
 
 // Returns null if it can't do it, false if there's an error, true if it saved OK
@@ -262,5 +286,4 @@ function javaLoadFile(filePath)
 		}
 	return content.join("\n");
 }
-
 
