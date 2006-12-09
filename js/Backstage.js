@@ -91,6 +91,8 @@ var backstage = {
 	},
 	
 	hidePanel: function() {
+		backstage.currTabName = null;
+		backstage.currTabElem = null;
 		if(anim && config.options.chkAnimate)
 			anim.startAnimating(new Slider(backstage.panel,false,false,"none"));
 		else
