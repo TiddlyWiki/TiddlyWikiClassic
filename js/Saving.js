@@ -61,7 +61,7 @@ function saveChanges(onlyIfDirty)
 		}
 	// Locate the storeArea div's
 	var posOpeningDiv = original.indexOf(startSaveArea);
-	var limitClosingDiv = original.indexOf("<"+"!--STORE-AREA-END--"+">");
+	var limitClosingDiv = original.indexOf("<"+"!--POST-BODY-END--"+">");
 	var posClosingDiv = original.lastIndexOf(endSaveArea,limitClosingDiv == -1 ? original.length : limitClosingDiv);
 	if((posOpeningDiv == -1) || (posClosingDiv == -1))
 		{
