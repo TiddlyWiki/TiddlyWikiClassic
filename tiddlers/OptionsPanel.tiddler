@@ -1,1 +1,17 @@
-<div tiddler="OptionsPanel">These InterfaceOptions for customising TiddlyWiki are saved in your browser\n\nYour username for signing your edits. Write it as a WikiWord (eg JoeBloggs)\n\n&lt;&lt;option txtUserName&gt;&gt;\n&lt;&lt;option chkSaveBackups&gt;&gt; SaveBackups\n&lt;&lt;option chkAutoSave&gt;&gt; AutoSave\n&lt;&lt;option chkRegExpSearch&gt;&gt; RegExpSearch\n&lt;&lt;option chkCaseSensitiveSearch&gt;&gt; CaseSensitiveSearch\n&lt;&lt;option chkAnimate&gt;&gt; EnableAnimations\n\n----\nAdvancedOptions\nPluginManager\nImportTiddlers</div>
+<div title="OptionsPanel">
+<pre>These InterfaceOptions for customising TiddlyWiki are saved in your browser
+
+Your username for signing your edits. Write it as a WikiWord (eg JoeBloggs)
+
+&lt;&lt;option txtUserName&gt;&gt;
+&lt;&lt;option chkSaveBackups&gt;&gt; SaveBackups
+&lt;&lt;option chkAutoSave&gt;&gt; AutoSave
+&lt;&lt;option chkRegExpSearch&gt;&gt; RegExpSearch
+&lt;&lt;option chkCaseSensitiveSearch&gt;&gt; CaseSensitiveSearch
+&lt;&lt;option chkAnimate&gt;&gt; EnableAnimations
+
+----
+AdvancedOptions
+PluginManager
+ImportTiddlers</pre>
+</div>
