@@ -629,10 +629,7 @@ config.macros.view.handler = function(place,macroName,params,wikifier,paramStrin
 					break;
 				case "date":
 					value = Date.convertFromYYYYMMDDHHMM(value);
-					if(params[2])
-						createTiddlyText(place,value.formatString(params[2]));
-					else
-						createTiddlyText(place,value);
+					createTiddlyText(place,value.formatString(params[2] ? params[2] : config.views.wikified.dateFormat));
 					break;
 				}
 		}

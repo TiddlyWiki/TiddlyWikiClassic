@@ -84,6 +84,7 @@ merge(config.views.wikified,{
 	defaultText: "The tiddler '%0' doesn't yet exist. Double-click to create it",
 	defaultModifier: "(missing)",
 	shadowModifier: "(built-in shadow tiddler)",
+	dateFormat: "DD MMM YYYY",
 	createdPrompt: "created"});
 
 merge(config.views.editor,{
