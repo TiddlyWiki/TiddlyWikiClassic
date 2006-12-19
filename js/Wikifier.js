@@ -1,6 +1,6 @@
-// ---------------------------------------------------------------------------------
-// Wikifier
-// ---------------------------------------------------------------------------------
+//--
+//-- Wikifier
+//--
 
 function getParser(tiddler)
 {
@@ -8,7 +8,7 @@ function getParser(tiddler)
 		{
 		for(var i in config.parsers)
 			{
-			if(tiddler.isTagged(config.parsers[i].formatTag)||(tiddler.fields&&tiddler.fields["wikiformat"]==config.parsers[i].format))
+			if(tiddler.isTagged(config.parsers[i].formatTag)||(tiddler.fields&&config.parsers[i].format&&tiddler.fields["wikiformat"]==config.parsers[i].format))
 				{
 				return config.parsers[i];
 				}
@@ -42,7 +42,7 @@ function wikifyStatic(source,highlightRegExp,tiddler)
 	return html;
 }
 
-// Wikify a named tiddler to plain text
+//# Wikify a named tiddler to plain text
 function wikifyPlain(title)
 {
 	if(store.tiddlerExists(title) || store.isShadowTiddler(title))
@@ -54,7 +54,7 @@ function wikifyPlain(title)
 		return "";
 }
 
-// Highlight plain text into an element
+//# Highlight plain text into an element
 function highlightify(source,output,highlightRegExp,tiddler)
 {
 	if(source && source != "")
@@ -64,11 +64,11 @@ function highlightify(source,output,highlightRegExp,tiddler)
 		}
 }
 
-// Construct a wikifier object
-// source - source string that's going to be wikified
-// formatter - Formatter() object containing the list of formatters to be used
-// highlightRegExp - regular expression of the text string to highlight
-// tiddler - reference to the tiddler that's taken to be the container for this wikification
+//# Construct a wikifier object
+//# source - source string that's going to be wikified
+//# formatter - Formatter() object containing the list of formatters to be used
+//# highlightRegExp - regular expression of the text string to highlight
+//# tiddler - reference to the tiddler that's taken to be the container for this wikification
 function Wikifier(source,formatter,highlightRegExp,tiddler)
 {
 	this.source = source;
@@ -99,7 +99,7 @@ Wikifier.prototype.wikifyPlain = function()
 
 Wikifier.prototype.subWikify = function(output,terminator)
 {
-	// Handle the terminated and unterminated cases separately
+	//# Handle the terminated and unterminated cases separately
 	if (terminator)
 		this.subWikifyTerm(output,new RegExp("(" + terminator + ")","mg"));
 	else
@@ -111,7 +111,7 @@ Wikifier.prototype.subWikifyUnterm = function(output)
 	// subWikify() can be indirectly recursive, so we need to save the old output pointer
 	var oldOutput = this.output;
 	this.output = output;
-	// Get the first match
+	//# Get the first match
 	this.formatter.formatterRegExp.lastIndex = this.nextMatch;
 	var formatterMatch = this.formatter.formatterRegExp.exec(this.source);
 	while(formatterMatch)
@@ -124,7 +124,7 @@ Wikifier.prototype.subWikifyUnterm = function(output)
 		this.matchLength = formatterMatch[0].length;
 		this.matchText = formatterMatch[0];
 		this.nextMatch = this.formatter.formatterRegExp.lastIndex;
-		// Figure out which formatter matched and call its handler
+		//# Figure out which formatter matched and call its handler
 		for(var t=1; t<formatterMatch.length; t++)
 			{
 			if(formatterMatch[t])
@@ -134,16 +134,16 @@ Wikifier.prototype.subWikifyUnterm = function(output)
 				break;
 				}
 			}
-		// Get the next match
+		//# Get the next match
 		formatterMatch = this.formatter.formatterRegExp.exec(this.source);
 		}
-	// Output any text after the last match
+	//# Output any text after the last match
 	if(this.nextMatch < this.source.length)
 		{
 		this.outputText(this.output,this.nextMatch,this.source.length);
 		this.nextMatch = this.source.length;
 		}
-	// Restore the output pointer
+	//# Restore the output pointer
 	this.output = oldOutput;
 }
 
@@ -159,30 +159,30 @@ Wikifier.prototype.subWikifyTerm = function(output,terminatorRegExp)
 	var formatterMatch = this.formatter.formatterRegExp.exec(terminatorMatch ? this.source.substr(0,terminatorMatch.index) : this.source);
 	while(terminatorMatch || formatterMatch)
 		{
-		// Check for a terminator match  before the next formatter match
+		//# Check for a terminator match  before the next formatter match
 		if(terminatorMatch && (!formatterMatch || terminatorMatch.index <= formatterMatch.index))
 			{
-			// Output any text before the match
+			//# Output any text before the match
 			if(terminatorMatch.index > this.nextMatch)
 				this.outputText(this.output,this.nextMatch,terminatorMatch.index);
-			// Set the match parameters
+			//# Set the match parameters
 			this.matchText = terminatorMatch[1];
 			this.matchLength = terminatorMatch[1].length;
 			this.matchStart = terminatorMatch.index;
 			this.nextMatch = this.matchStart + this.matchLength;
-			// Restore the output pointer
+			//# Restore the output pointer
 			this.output = oldOutput;
 			return;
 			}
-		// It must be a formatter match; output any text before the match
+		//# It must be a formatter match; output any text before the match
 		if(formatterMatch.index > this.nextMatch)
 			this.outputText(this.output,this.nextMatch,formatterMatch.index);
-		// Set the match parameters
+		//# Set the match parameters
 		this.matchStart = formatterMatch.index;
 		this.matchLength = formatterMatch[0].length;
 		this.matchText = formatterMatch[0];
 		this.nextMatch = this.formatter.formatterRegExp.lastIndex;
-		// Figure out which formatter matched and call its handler
+		//# Figure out which formatter matched and call its handler
 		for(var t=1; t<formatterMatch.length; t++)
 			{
 			if(formatterMatch[t])
@@ -192,41 +192,41 @@ Wikifier.prototype.subWikifyTerm = function(output,terminatorRegExp)
 				break;
 				}
 			}
-		// Get the next match
+		//# Get the next match
 		terminatorRegExp.lastIndex = this.nextMatch;
 		terminatorMatch = terminatorRegExp.exec(this.source);
 		formatterMatch = this.formatter.formatterRegExp.exec(terminatorMatch ? this.source.substr(0,terminatorMatch.index) : this.source);
 		}
-	// Output any text after the last match
+	//# Output any text after the last match
 	if(this.nextMatch < this.source.length)
 		{
 		this.outputText(this.output,this.nextMatch,this.source.length);
 		this.nextMatch = this.source.length;
 		}
-	// Restore the output pointer
+	//# Restore the output pointer
 	this.output = oldOutput;
 }
 
 Wikifier.prototype.outputText = function(place,startPos,endPos)
 {
-	// Check for highlights
+	//# Check for highlights
 	while(this.highlightMatch && (this.highlightRegExp.lastIndex > startPos) && (this.highlightMatch.index < endPos) && (startPos < endPos))
 		{
-		// Deal with any plain text before the highlight
+		//# Deal with any plain text before the highlight
 		if(this.highlightMatch.index > startPos)
 			{
 			createTiddlyText(place,this.source.substring(startPos,this.highlightMatch.index));
 			startPos = this.highlightMatch.index;
 			}
-		// Deal with the highlight
+		//# Deal with the highlight
 		var highlightEnd = Math.min(this.highlightRegExp.lastIndex,endPos);
 		var theHighlight = createTiddlyElement(place,"span",null,"highlight",this.source.substring(startPos,highlightEnd));
 		startPos = highlightEnd;
-		// Nudge along to the next highlight if we're done with this one
+		//# Nudge along to the next highlight if we're done with this one
 		if(startPos >= this.highlightRegExp.lastIndex)
 			this.highlightMatch = this.highlightRegExp.exec(this.source);
 		}
-	// Do the unhighlighted text left over
+	//# Do the unhighlighted text left over
 	if(startPos < endPos)
 		{
 		createTiddlyText(place,this.source.substring(startPos,endPos));
