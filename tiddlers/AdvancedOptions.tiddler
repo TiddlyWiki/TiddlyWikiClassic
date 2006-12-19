@@ -10,5 +10,6 @@
 &lt;&lt;option chkConfirmDelete&gt;&gt; ConfirmBeforeDeleting
 Maximum number of lines in a tiddler edit box: &lt;&lt;option txtMaxEditRows&gt;&gt;
 Folder name for backup files: &lt;&lt;option txtBackupFolder&gt;&gt;
-&lt;&lt;option chkInsertTabs&gt;&gt; Use tab key to insert tab characters instead of jumping to next field</pre>
+&lt;&lt;option chkInsertTabs&gt;&gt; Use tab key to insert tab characters instead of jumping to next field
+&lt;&lt;option txtFileSystemCharSet&gt;&gt; Character set to use for saving (Firefox/Mozilla only)</pre>
 </div>

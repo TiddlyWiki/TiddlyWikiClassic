@@ -37,7 +37,8 @@ config.options = {
 	txtBackupFolder: "",
 	txtMainTab: "tabTimeline",
 	txtMoreTab: "moreTabAll",
-	txtMaxEditRows: "30"
+	txtMaxEditRows: "30",
+	txtFileSystemCharSet: "UTF-8"
 	};
 	
 // List of notification functions to be called when certain tiddlers are changed or deleted
