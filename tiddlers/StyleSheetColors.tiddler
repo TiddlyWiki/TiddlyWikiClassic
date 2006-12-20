@@ -1,389 +1,116 @@
 <div title="StyleSheetColors">
 <pre>/*{{{*/
-body {
-	background: [[ColorPalette::Background]];
-	color: [[ColorPalette::Foreground]];
-}
-
-a{
-	color: [[ColorPalette::PrimaryMid]];
-}
-
-a:hover{
-	background-color: [[ColorPalette::PrimaryMid]];
-	color: [[ColorPalette::Background]];
-}
-
-a img{
-	border: 0;
-}
-
-h1,h2,h3,h4,h5 {
-	color: [[ColorPalette::SecondaryDark]];
-	background: [[ColorPalette::PrimaryPale]];
-}
-
-.button {
-	color: [[ColorPalette::PrimaryDark]];
-	border: 1px solid [[ColorPalette::Background]];
-}
-
-.button:hover {
-	color: [[ColorPalette::PrimaryDark]];
-	background: [[ColorPalette::SecondaryLight]];
-	border-color: [[ColorPalette::SecondaryMid]];
-}
-
-.button:active {
-	color: [[ColorPalette::Background]];
-	background: [[ColorPalette::SecondaryMid]];
-	border: 1px solid [[ColorPalette::SecondaryDark]];
-}
-
-.header {
-	background: [[ColorPalette::PrimaryMid]];
-}
-
-.headerShadow {
-	color: [[ColorPalette::Foreground]];
-}
-
-.headerShadow a {
-	font-weight: normal;
-	color: [[ColorPalette::Foreground]];
-}
-
-.headerForeground {
-	color: [[ColorPalette::Background]];
-}
-
-.headerForeground a {
-	font-weight: normal;
-	color: [[ColorPalette::PrimaryPale]];
-}
-
-.tabSelected{
-	color: [[ColorPalette::PrimaryDark]];
-	background: [[ColorPalette::TertiaryPale]];
-	border-left: 1px solid [[ColorPalette::TertiaryLight]];
-	border-top: 1px solid [[ColorPalette::TertiaryLight]];
-	border-right: 1px solid [[ColorPalette::TertiaryLight]];
-}
-
-.tabUnselected {
-	color: [[ColorPalette::Background]];
-	background: [[ColorPalette::TertiaryMid]];
-}
-
-.tabContents {
-	color: [[ColorPalette::PrimaryDark]];
-	background: [[ColorPalette::TertiaryPale]];
-	border: 1px solid [[ColorPalette::TertiaryLight]];
-}
-
-.tabContents .button {
-	 border: 0;}
-
-#sidebar {
-}
-
-#sidebarOptions input {
-	border: 1px solid [[ColorPalette::PrimaryMid]];
-}
-
-#sidebarOptions .sliderPanel {
-	background: [[ColorPalette::PrimaryPale]];
-}
-
-#sidebarOptions .sliderPanel a {
-	border: none;
-	color: [[ColorPalette::PrimaryMid]];
-}
-
-#sidebarOptions .sliderPanel a:hover {
-	color: [[ColorPalette::Background]];
-	background: [[ColorPalette::PrimaryMid]];
-}
-
-#sidebarOptions .sliderPanel a:active {
-	color: [[ColorPalette::PrimaryMid]];
-	background: [[ColorPalette::Background]];
-}
-
-.wizard {
-	background: [[ColorPalette::TertiaryLight]];
-	border-top: 1px solid [[ColorPalette::TertiaryMid]];
-	border-left: 1px solid [[ColorPalette::TertiaryMid]];
-}
-
-.wizard h1 {
-	color: [[ColorPalette::TertiaryDark]];
-}
-
-.wizard h2 {
-	color: [[ColorPalette::Foreground]];
-}
-
-.wizardStep {
-	background: [[ColorPalette::Background]];
-	border-top: 1px solid [[ColorPalette::TertiaryMid]];
-	border-bottom: 1px solid [[ColorPalette::TertiaryMid]];
-	border-left: 1px solid [[ColorPalette::TertiaryMid]];
-}
-
-.wizard .button {
-	color: [[ColorPalette::Background]];
-	background: [[ColorPalette::PrimaryMid]];
-	border-top: 1px solid [[ColorPalette::PrimaryLight]];
-	border-right: 1px solid [[ColorPalette::PrimaryDark]];
-	border-bottom: 1px solid [[ColorPalette::PrimaryDark]];
-	border-left: 1px solid [[ColorPalette::PrimaryLight]];
-}
-
-.wizard .button:hover {
-	color: [[ColorPalette::PrimaryLight]];
-	background: [[ColorPalette::PrimaryDark]];
-	border-color: [[ColorPalette::PrimaryLight]];
-}
-
-.wizard .button:active {
-	color: [[ColorPalette::Background]];
-	background: [[ColorPalette::PrimaryMid]];
-	border-top: 1px solid [[ColorPalette::PrimaryLight]];
-	border-right: 1px solid [[ColorPalette::PrimaryDark]];
-	border-bottom: 1px solid [[ColorPalette::PrimaryDark]];
-	border-left: 1px solid [[ColorPalette::PrimaryLight]];
-}
-
-#messageArea {
-	border: 1px solid [[ColorPalette::SecondaryDark]];
-	background: [[ColorPalette::SecondaryMid]];
-	color: [[ColorPalette::PrimaryDark]];
-}
-
-#messageArea .button {
-	padding: 0.2em 0.2em 0.2em 0.2em;
-	color: [[ColorPalette::PrimaryDark]];
-	background: [[ColorPalette::Background]];
-}
-
-.popup {
-	background: [[ColorPalette::PrimaryLight]];
-	border: 1px solid [[ColorPalette::PrimaryMid]];
-}
+body {background:[[ColorPalette::Background]]; color:[[ColorPalette::Foreground]];}
 
-.popup hr {
-	color: [[ColorPalette::PrimaryDark]];
-	background: [[ColorPalette::PrimaryDark]];
-	border-bottom: 1px;
-}
-
-.listBreak div{
-	border-bottom: 1px solid [[ColorPalette::PrimaryDark]];
-}
-
-.popup li.disabled {
-	color: [[ColorPalette::PrimaryMid]];
-}
-
-.popup li a, .popup li a:visited {
-	color: [[ColorPalette::TertiaryPale]];
-	border: none;
-}
-
-.popup li a:hover {
-	background: [[ColorPalette::PrimaryDark]];
-	color: [[ColorPalette::Background]];
-	border: none;
-}
-
-.tiddler .defaultCommand {
- font-weight: bold;
-}
-
-.shadow .title {
-	color: [[ColorPalette::TertiaryDark]];
-}
-
-.title {
-	color: [[ColorPalette::SecondaryDark]];
-}
-
-.subtitle {
-	color: [[ColorPalette::TertiaryDark]];
-}
-
-.toolbar {
-	color: [[ColorPalette::PrimaryMid]];
-}
-
-.tagging, .tagged {
-	border: 1px solid [[ColorPalette::TertiaryPale]];
-	background-color: [[ColorPalette::TertiaryPale]];
-}
-
-.selected .tagging, .selected .tagged {
-	background-color: [[ColorPalette::TertiaryLight]];
-	border: 1px solid [[ColorPalette::TertiaryMid]];
-}
-
-.tagging .listTitle, .tagged .listTitle {
-	color: [[ColorPalette::PrimaryDark]];
-}
-
-.tagging .button, .tagged .button {
-		border: none;
-}
-
-.footer {
-	color: [[ColorPalette::TertiaryLight]];
-}
-
-.selected .footer {
-	color: [[ColorPalette::TertiaryMid]];
-}
-
-.sparkline {
-	background: [[ColorPalette::PrimaryPale]];
-	border: 0;
-}
-
-.sparktick {
-	background: [[ColorPalette::PrimaryDark]];
-}
-
-.error, .errorButton {
-	color: [[ColorPalette::Foreground]];
-	background: [[ColorPalette::Error]];
-}
-
-.warning {
-	color: [[ColorPalette::Foreground]];
-	background: [[ColorPalette::SecondaryPale]];
-}
-
-.cascade {
-	background: [[ColorPalette::TertiaryPale]];
-	color: [[ColorPalette::TertiaryMid]];
-	border: 1px solid [[ColorPalette::TertiaryMid]];
-}
-
-.imageLink, #displayArea .imageLink {
-	background: transparent;
-}
+a {color:[[ColorPalette::PrimaryMid]];}
+a:hover {background-color:[[ColorPalette::PrimaryMid]]; color:[[ColorPalette::Background]];}
+a img {border:0;}
 
-.viewer .listTitle {list-style-type: none; margin-left: -2em;}
+h1,h2,h3,h4,h5 {color:[[ColorPalette::SecondaryDark]]; background:[[ColorPalette::PrimaryPale]];}
 
-.viewer .button {
-	border: 1px solid [[ColorPalette::SecondaryMid]];
-}
+.button {color:[[ColorPalette::PrimaryDark]]; border:1px solid [[ColorPalette::Background]];}
+.button:hover {color:[[ColorPalette::PrimaryDark]]; background:[[ColorPalette::SecondaryLight]]; border-color:[[ColorPalette::SecondaryMid]];}
+.button:active {color:[[ColorPalette::Background]]; background:[[ColorPalette::SecondaryMid]]; border:1px solid [[ColorPalette::SecondaryDark]];}
 
-.viewer blockquote {
-	border-left: 3px solid [[ColorPalette::TertiaryDark]];
-}
+.header {background:[[ColorPalette::PrimaryMid]];}
+.headerShadow {color:[[ColorPalette::Foreground]];}
+.headerShadow a {font-weight:normal; color:[[ColorPalette::Foreground]];}
+.headerForeground {color:[[ColorPalette::Background]];}
+.headerForeground a {font-weight:normal; color:[[ColorPalette::PrimaryPale]];}
 
-table {
-	border: 2px solid [[ColorPalette::TertiaryDark]];
+.tabSelected{color:[[ColorPalette::PrimaryDark]];
+	background:[[ColorPalette::TertiaryPale]];
+	border-left:1px solid [[ColorPalette::TertiaryLight]];
+	border-top:1px solid [[ColorPalette::TertiaryLight]];
+	border-right:1px solid [[ColorPalette::TertiaryLight]];
 }
+.tabUnselected {color:[[ColorPalette::Background]]; background:[[ColorPalette::TertiaryMid]];}
+.tabContents {color:[[ColorPalette::PrimaryDark]]; background:[[ColorPalette::TertiaryPale]]; border:1px solid [[ColorPalette::TertiaryLight]];}
+.tabContents .button {border:0;}
 
-th, thead td {
-	background: [[ColorPalette::SecondaryMid]];
-	border: 1px solid [[ColorPalette::TertiaryDark]];
-	color: [[ColorPalette::Background]];
-}
+#sidebar {}
+#sidebarOptions input {border:1px solid [[ColorPalette::PrimaryMid]];}
+#sidebarOptions .sliderPanel {background:[[ColorPalette::PrimaryPale]];}
+#sidebarOptions .sliderPanel a {border:none;color:[[ColorPalette::PrimaryMid]];}
+#sidebarOptions .sliderPanel a:hover {color:[[ColorPalette::Background]]; background:[[ColorPalette::PrimaryMid]];}
+#sidebarOptions .sliderPanel a:active {color:[[ColorPalette::PrimaryMid]]; background:[[ColorPalette::Background]];}
 
-td, tr {
-	border: 1px solid [[ColorPalette::TertiaryDark]];
-}
+.wizard {background:[[ColorPalette::TertiaryLight]]; border-top:1px solid [[ColorPalette::TertiaryMid]]; border-left:1px solid [[ColorPalette::TertiaryMid]];}
+.wizard h1 {color:[[ColorPalette::TertiaryDark]];}
+.wizard h2 {color:[[ColorPalette::Foreground]];}
+.wizardStep {background:[[ColorPalette::Background]]; border-top:1px solid [[ColorPalette::TertiaryMid]]; border-bottom:1px solid [[ColorPalette::TertiaryMid]]; border-left:1px solid [[ColorPalette::TertiaryMid]];}
+.wizard .button {color:[[ColorPalette::Background]]; background:[[ColorPalette::PrimaryMid]]; border-top:1px solid [[ColorPalette::PrimaryLight]]; border-right:1px solid [[ColorPalette::PrimaryDark]]; border-bottom:1px solid [[ColorPalette::PrimaryDark]]; border-left:1px solid [[ColorPalette::PrimaryLight]];}
+.wizard .button:hover {color:[[ColorPalette::PrimaryLight]]; background:[[ColorPalette::PrimaryDark]]; border-color:[[ColorPalette::PrimaryLight]];}
+.wizard .button:active {color:[[ColorPalette::Background]]; background:[[ColorPalette::PrimaryMid]]; border-top:1px solid [[ColorPalette::PrimaryLight]]; border-right:1px solid [[ColorPalette::PrimaryDark]]; border-bottom:1px solid [[ColorPalette::PrimaryDark]]; border-left:1px solid [[ColorPalette::PrimaryLight]];}
 
-.viewer pre {
-	border: 1px solid [[ColorPalette::SecondaryLight]];
-	background: [[ColorPalette::SecondaryPale]];
-}
+#messageArea {border:1px solid [[ColorPalette::SecondaryDark]]; background:[[ColorPalette::SecondaryMid]]; color:[[ColorPalette::PrimaryDark]];}
+#messageArea .button {padding:0.2em 0.2em 0.2em 0.2em; color:[[ColorPalette::PrimaryDark]]; background:[[ColorPalette::Background]];}
 
-.viewer code {
-	color: [[ColorPalette::SecondaryDark]];
-}
+.popup {background:[[ColorPalette::PrimaryLight]]; border:1px solid [[ColorPalette::PrimaryMid]];}
+.popup hr {color:[[ColorPalette::PrimaryDark]]; background:[[ColorPalette::PrimaryDark]]; border-bottom:1px;}
 
-.viewer hr {
-	border: 0;
-	border-top: dashed 1px [[ColorPalette::TertiaryDark]];
-	color: [[ColorPalette::TertiaryDark]];
-}
+.listBreak div {border-bottom:1px solid [[ColorPalette::PrimaryDark]];}
 
-.highlight, .marked {
-	background: [[ColorPalette::SecondaryLight]];
-}
+.popup li.disabled {color:[[ColorPalette::PrimaryMid]];}
+.popup li a, .popup li a:visited {color:[[ColorPalette::TertiaryPale]]; border:none;}
+.popup li a:hover {background:[[ColorPalette::PrimaryDark]]; color:[[ColorPalette::Background]]; border:none;}
 
-.editor input {
-	border: 1px solid [[ColorPalette::PrimaryMid]];
-}
+.tiddler .defaultCommand {font-weight:bold;}
 
-.editor textarea {
-	border: 1px solid [[ColorPalette::PrimaryMid]];
-	width: 100%;
-}
+.shadow .title {color:[[ColorPalette::TertiaryDark]];}
 
-.editorFooter {
-	color: [[ColorPalette::TertiaryMid]];
-}
+.title {color:[[ColorPalette::SecondaryDark]];}
+.subtitle {color:[[ColorPalette::TertiaryDark]];}
 
-.backstageSelTab {
-	background: [[ColorPalette::Foreground]];
-	color: [[ColorPalette::Background]];
-}
+.toolbar {color:[[ColorPalette::PrimaryMid]];}
 
-#backstagePanel .wizardStep {
-	background: [[ColorPalette::Foreground]];
-}
+.tagging, .tagged {border:1px solid [[ColorPalette::TertiaryPale]]; background-color:[[ColorPalette::TertiaryPale]];}
+.selected .tagging, .selected .tagged {background-color:[[ColorPalette::TertiaryLight]]; border:1px solid [[ColorPalette::TertiaryMid]];}
+.tagging .listTitle, .tagged .listTitle {color:[[ColorPalette::PrimaryDark]];}
+.tagging .button, .tagged .button {border:none;}
 
-#backstagePanel .wizardFooter {
-	background: [[ColorPalette::TertiaryLight]];
-	border-right: 1px solid [[ColorPalette::TertiaryMid]];
-	border-bottom: 1px solid [[ColorPalette::TertiaryMid]];
-	border-left: 1px solid [[ColorPalette::TertiaryMid]];
-}
+.footer {color:[[ColorPalette::TertiaryLight]];}
+.selected .footer {color:[[ColorPalette::TertiaryMid]];}
 
-#backstagePanel .wizardFooter a {	color: [[ColorPalette::Background]];
-	background-color: [[ColorPalette::TertiaryDark]];}
+.sparkline {background:[[ColorPalette::PrimaryPale]]; border:0;}
+.sparktick {background:[[ColorPalette::PrimaryDark]];}
 
-#backstagePanel .wizardFooter a:hover {
-}
+.error, .errorButton {color:[[ColorPalette::Foreground]]; background:[[ColorPalette::Error]];}
+.warning {color:[[ColorPalette::Foreground]]; background:[[ColorPalette::SecondaryPale]];}
 
-#backstagePanel {
-	background:	[[ColorPalette::Foreground]];
-	color: [[ColorPalette::Background]];
-}
+.cascade {background:[[ColorPalette::TertiaryPale]]; color:[[ColorPalette::TertiaryMid]]; border:1px solid [[ColorPalette::TertiaryMid]];}
 
-#backstagePanel a {
-	color: [[ColorPalette::PrimaryPale]];
-}
+.imageLink, #displayArea .imageLink {background:transparent;}
 
-#backstagePanel a:hover {
-	background-color: [[ColorPalette::Background]];
-	color: [[ColorPalette::PrimaryMid]];
-}
+.viewer .listTitle {list-style-type:none; margin-left:-2em;}
+.viewer .button {border:1px solid [[ColorPalette::SecondaryMid]];}
+.viewer blockquote {border-left:3px solid [[ColorPalette::TertiaryDark]];}
 
-#backstagePanel table {
-	border: 2px solid [[ColorPalette::TertiaryMid]];
-}
+table {border:2px solid [[ColorPalette::TertiaryDark]];}
+th, thead td {background:[[ColorPalette::SecondaryMid]]; border:1px solid [[ColorPalette::TertiaryDark]]; color:[[ColorPalette::Background]];}
+td, tr {border:1px solid [[ColorPalette::TertiaryDark]];}
 
-#backstagePanel th, #backstagePanel thead td {
-	background: [[ColorPalette::TertiaryDark]];
-	border: 1px solid [[ColorPalette::TertiaryMid]];
-	color: [[ColorPalette::Background]];
-}
+.viewer pre {border:1px solid [[ColorPalette::SecondaryLight]]; background:[[ColorPalette::SecondaryPale]];}
+.viewer code {color:[[ColorPalette::SecondaryDark]];}
+.viewer hr {border:0; border-top:dashed 1px [[ColorPalette::TertiaryDark]]; color:[[ColorPalette::TertiaryDark]];}
 
-#backstagePanel td, #backstagePanel tr {
-	background: [[ColorPalette::Foreground]];
-	border: 1px solid [[ColorPalette::TertiaryMid]];
-}
+.highlight, .marked {background:[[ColorPalette::SecondaryLight]];}
 
-#backstageCloak {
-	background: [[ColorPalette::Background]];
-	opacity: 0.5;
-	filter:'alpha(opacity:50)';
-}
+.editor input {border:1px solid [[ColorPalette::PrimaryMid]];}
+.editor textarea {border:1px solid [[ColorPalette::PrimaryMid]]; width:100%;}
+.editorFooter {color:[[ColorPalette::TertiaryMid]];}
 
+.backstageSelTab {background:[[ColorPalette::Foreground]]; color:[[ColorPalette::Background]];}
+#backstagePanel .wizardStep {background:[[ColorPalette::Foreground]];}
+#backstagePanel .wizardFooter {background:[[ColorPalette::TertiaryLight]]; border-right:1px solid [[ColorPalette::TertiaryMid]]; border-bottom:1px solid [[ColorPalette::TertiaryMid]]; border-left:1px solid [[ColorPalette::TertiaryMid]];}
+#backstagePanel .wizardFooter a {color:[[ColorPalette::Background]]; background-color:[[ColorPalette::TertiaryDark]];}
+#backstagePanel .wizardFooter a:hover {}
+#backstagePanel {background:[[ColorPalette::Foreground]]; color:[[ColorPalette::Background]];}
+#backstagePanel a {color:[[ColorPalette::PrimaryPale]];}
+#backstagePanel a:hover {background-color:[[ColorPalette::Background]]; color:[[ColorPalette::PrimaryMid]];}
+#backstagePanel table {border:2px solid [[ColorPalette::TertiaryMid]];}
+#backstagePanel th, #backstagePanel thead td {background:[[ColorPalette::TertiaryDark]]; border:1px solid [[ColorPalette::TertiaryMid]]; color:[[ColorPalette::Background]];}
+#backstagePanel td, #backstagePanel tr {background:[[ColorPalette::Foreground]]; border:1px solid [[ColorPalette::TertiaryMid]];}
+#backstageCloak {background:[[ColorPalette::Background]]; opacity:0.5; filter:'alpha(opacity:50)';}
 /*}}}*/</pre>
 </div>
