@@ -1,6 +1,6 @@
-// ---------------------------------------------------------------------------------
-// Cascade animation
-// ---------------------------------------------------------------------------------
+//--
+//-- Cascade animation
+//--
 
 function Cascade(text,startElement,targetElement,slowly)
 {
@@ -29,20 +29,16 @@ function Cascade(text,startElement,targetElement,slowly)
 Cascade.prototype.tick = function()
 {
 	this.progress++;
-	if(this.progress >= this.steps)
-		{
+	if(this.progress >= this.steps) {
 		while(this.elements.length > 0)
 			this.removeTail();
 		this.targetElement.style.position = "static";
 		this.targetElement.style.zIndex = "";
 		return false;
-		}
-	else
-		{
+	} else {
 		if(this.elements.length > 0 && this.progress > config.cascadeDepth)
 			this.removeTail();
-		if(this.progress < (this.steps - config.cascadeDepth))
-			{
+		if(this.progress < (this.steps - config.cascadeDepth)) {
 			var f = Animator.slowInSlowOut(this.progress/(this.steps - config.cascadeDepth - 1));
 			var e = createTiddlyElement(document.body,"div",null,"cascade",this.text);
 			e.style.zIndex = 1;
@@ -52,15 +48,15 @@ Cascade.prototype.tick = function()
 			e.style.height = this.startHeight + (this.targetHeight-this.startHeight) * f + "px";
 			e.style.display = "block";
 			this.elements.push(e);
-			}
-		return true;
 		}
-}
+		return true;
+	}
+};
 
 Cascade.prototype.removeTail = function()
 {
 	var e = this.elements[0];
 	e.parentNode.removeChild(e);
 	this.elements.shift();
-}
+};
 

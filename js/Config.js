@@ -1,6 +1,6 @@
-// ---------------------------------------------------------------------------------
-// Configuration repository
-// ---------------------------------------------------------------------------------
+//--
+//-- Configuration repository
+//--
 
 // Miscellaneous options
 var config = {
@@ -11,7 +11,7 @@ var config = {
 	cascadeSlow: 60, // Speed for EasterEgg cascade animations
 	cascadeDepth: 5, // Depth of cascade animation
 	displayStartupTime: false // Whether to display startup time
-	};
+};
 
 // Messages
 config.messages = {
@@ -52,7 +52,7 @@ config.notifyTiddlers = [
 	{name: "SiteSubtitle", notify: refreshPageTitle},
 	{name: "ColorPalette", notify: refreshColorPalette},
 	{name: null, notify: refreshDisplay}
-	];
+];
 
 // Default tiddler templates
 var DEFAULT_VIEW_TEMPLATE = 1;
@@ -60,17 +60,17 @@ var DEFAULT_EDIT_TEMPLATE = 2;
 config.tiddlerTemplates = {
 	1: "ViewTemplate",
 	2: "EditTemplate"
-	};
+};
 
 // More messages (rather a legacy layout that shouldn't really be like this)
 config.views = {
 	wikified: {
 		tag: {}
-		},
+	},
 	editor: {
 		tagChooser: {}
-		}
-	};
+	}
+};
 
 // Backstage tasks
 config.backstageTasks = ["tidy","sync","importTask","copy","plugins"];
@@ -91,7 +91,7 @@ config.macros = {
 		missing: {},
 		orphans: {},
 		shadowed: {}
-		},
+	},
 	closeAll: {},
 	permaview: {},
 	saveChanges: {},
@@ -111,7 +111,7 @@ config.macros = {
 	plugins: {},
 	refreshDisplay: {},
 	importTiddlers: {}
-	};
+};
 
 // Commands supported by the toolbar macro
 config.commands = {
@@ -124,10 +124,9 @@ config.commands = {
 	permalink: {},
 	references: {},
 	jump: {}
-	};
+};
 
-// Browser detection... In a very few places, there's nothing else for it but to
-// know what browser we're using.
+// Browser detection... In a very few places, there's nothing else for it but to know what browser we're using.
 config.userAgent = navigator.userAgent.toLowerCase();
 config.browser = {
 	isIE: config.userAgent.indexOf("msie") != -1 && config.userAgent.indexOf("opera") == -1,
@@ -140,7 +139,7 @@ config.browser = {
 	isUnix: config.userAgent.indexOf("x11") != -1,
 	isMac: config.userAgent.indexOf("mac") != -1,
 	isWindows: config.userAgent.indexOf("win") != -1
-	};
+};
 
 // Basic regular expressions
 config.textPrimitives = {
@@ -148,23 +147,24 @@ config.textPrimitives = {
 	lowerLetter: "[a-z0-9_\\-\u00df-\u00ff\u0151\u0171]",
 	anyLetter:   "[A-Za-z0-9_\\-\u00c0-\u00de\u00df-\u00ff\u0150\u0170\u0151\u0171]",
 	anyLetterStrict: "[A-Za-z0-9\u00c0-\u00de\u00df-\u00ff\u0150\u0170\u0151\u0171]"
-	};
-if(config.browser.isBadSafari)
+};
+if(config.browser.isBadSafari) {
 	config.textPrimitives = {
 		upperLetter: "[A-Z\u00c0-\u00de]",
 		lowerLetter: "[a-z0-9_\\-\u00df-\u00ff]",
 		anyLetter:   "[A-Za-z0-9_\\-\u00c0-\u00de\u00df-\u00ff]",
 		anyLetterStrict: "[A-Za-z0-9\u00c0-\u00de\u00df-\u00ff]"
-		}
+	};
+}
 config.textPrimitives.sliceSeparator = "::";
 config.textPrimitives.urlPattern = "[a-z]{3,8}:[^\\s:'\"][^\\s'\"]*(?:/|\\b)";
 config.textPrimitives.unWikiLink = "~";
 config.textPrimitives.wikiLink = "(?:(?:" + config.textPrimitives.upperLetter + "+" +
-												config.textPrimitives.lowerLetter + "+" +
-												config.textPrimitives.upperLetter +
-												config.textPrimitives.anyLetter + "*)|(?:" +
-												config.textPrimitives.upperLetter + "{2,}" +
-												config.textPrimitives.lowerLetter + "+))";
+	config.textPrimitives.lowerLetter + "+" +
+	config.textPrimitives.upperLetter +
+	config.textPrimitives.anyLetter + "*)|(?:" +
+	config.textPrimitives.upperLetter + "{2,}" +
+	config.textPrimitives.lowerLetter + "+))";
 
 config.textPrimitives.cssLookahead = "(?:(" + config.textPrimitives.anyLetter + "+)\\(([^\\)\\|\\n]+)(?:\\):))|(?:(" + config.textPrimitives.anyLetter + "+):([^;\\|\\n]+);)";
 config.textPrimitives.cssLookaheadRegExp = new RegExp(config.textPrimitives.cssLookahead,"mg");
@@ -179,9 +179,9 @@ config.textPrimitives.tiddlerAnyLinkRegExp = new RegExp("("+ config.textPrimitiv
 	config.textPrimitives.brackettedLink + ")|(?:" +
 	config.textPrimitives.urlPattern + ")","mg");
 
-// ---------------------------------------------------------------------------------
-// Shadow tiddlers
-// ---------------------------------------------------------------------------------
+//--
+//-- Shadow tiddlers
+//--
 
 config.shadowTiddlers = {
 	StyleSheet: "",
@@ -189,5 +189,5 @@ config.shadowTiddlers = {
 	MarkupPostHead: "",
 	MarkupPreBody: "",
 	MarkupPostBody: ""
-	};
+};
 
