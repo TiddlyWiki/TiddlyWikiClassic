@@ -34,7 +34,7 @@ function updateMarkupBlock(s,blockName,tiddlerName)
 }
 
 // Save this tiddlywiki with the pending changes
-function saveChanges(onlyIfDirty)
+function saveChanges(onlyIfDirty,tiddlers)
 {
 	if(onlyIfDirty && !store.isDirty())
 		return;
