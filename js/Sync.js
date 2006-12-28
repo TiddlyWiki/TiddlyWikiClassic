@@ -5,27 +5,6 @@
 // Synchronisation handlers
 config.syncers = {};
 
-// Translateable strings
-config.macros.sync = {
-	label: "sync",
-	prompt: "Plug back in to the server and synchronize changes",
-	listViewTemplate: {
-		columns: [
-			{name: 'Selected', field: 'selected', rowName: 'title', type: 'Selector'},
-			{name: 'Title', field: 'title', tiddlerLink: 'title', title: "Title", type: 'TiddlerLink'},
-			{name: 'Local Status', field: 'localStatus', title: "Changed on your computer?", type: 'String'},
-			{name: 'Server Status', field: 'serverStatus', title: "Changed on server?", type: 'String'},
-			{name: 'Server URL', field: 'serverUrl', title: "Server URL", text: "View", type: 'Link'}
-			],
-		rowClasses: [
-			],
-		buttons: [
-			{caption: "Sync these tiddlers", name: 'sync'}
-			]},
-	wizardTitle: "Synchronize your content with external servers and feeds",
-	step1: "Choose the tiddlers you want to synchronize"
-};
-
 // Sync state. Members:
 //	syncList - List of sync objects (title, tiddler, server, workspace, page, version)
 //	listView - DOM element of the listView table
@@ -68,34 +47,32 @@ config.macros.sync.startSync = function(place)
 			currSync.syncList.push(syncItem);
 			}
 		});
-	var wizard = createTiddlyElement(place,"div",null,"importTiddler wizard");
-	createTiddlyElement(wizard,"h1",null,null,this.wizardTitle);
-	createTiddlyElement(wizard,"h2",null,"step1",this.step1);
-	var step = createTiddlyElement(wizard,"div",null,"wizardStep");
-	currSync.listView = ListView.create(step,currSync.syncList,this.listViewTemplate,this.onSelectCommand);
+	var wizard = new Wizard();
+	wizard.createWizard(place,this.wizardTitle);
+	wizard.addStep(this.step1Title,this.step1Html);
+	var markList = wizard.getElement("markList");
+	var listWrapper = document.createElement("div");
+	markList.parentNode.insertBefore(listWrapper,markList);
+	var listView = ListView.create(listWrapper,currSync.syncList,this.listViewTemplate);
+	wizard.setValue("listView",listView);
+	wizard.setButtons([
+			{caption: config.macros.sync.syncLabel, tooltip: config.macros.sync.syncPrompt, onClick:  config.macros.sync.doSync}
+		]);
 }
 
 config.macros.sync.cancelSync = function()
 {
+	currSync = null;
 }
 
-config.macros.sync.onSelectCommand = function(listView,command,rowNames)
+config.macros.sync.doSync = function(e)
 {
-	switch(command)
+	var wizard = new Wizard(this);
+	var listView = wizard.getValue("listView");
+	var rowNames = ListView.getSelectedRows(listView);
+	for(var t=0; t<rowNames.length; t++)
 		{
-		case "cancel":
-			break;
-		case "sync":
-			config.macros.sync.doSync(rowNames);
-			break;
-		}
-}
-
-config.macros.sync.doSync = function(selNames)
-{
-	for(var t=0; t<selNames.length; t++)
-		{
-		var f = currSync.syncList.findByField("title",selNames[t])
+		var f = currSync.syncList.findByField("title",rowNames[t])
 		var s = currSync.syncList[f];
 		var syncer = config.syncers[s.syncType];
 		if(syncer.doSync)

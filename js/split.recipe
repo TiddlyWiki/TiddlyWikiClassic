@@ -28,6 +28,7 @@ js: Cascade.js
 js: Scroller.js
 js: Slider.js
 js: Popup.js
+js: Wizard.js
 js: ListView.js
 js: BasicTypes.js
 js: Strings.js

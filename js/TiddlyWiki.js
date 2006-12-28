@@ -294,7 +294,7 @@ TiddlyWiki.prototype.createTiddler = function(title)
 	return tiddler;
 }
 
-// Load contents of a tiddlywiki from an HTML DIV
+// Load contents of a TiddlyWiki from an HTML DIV
 TiddlyWiki.prototype.loadFromDiv = function(src,idPrefix,noUpdate)
 {
 	this.idPrefix = idPrefix;
@@ -308,6 +308,37 @@ TiddlyWiki.prototype.loadFromDiv = function(src,idPrefix,noUpdate)
 		for(var i = 0;i<tiddlers.length; i++)
 			tiddlers[i].changed();
 		}
+}
+
+// Load contents of a TiddlyWiki from a string
+TiddlyWiki.prototype.importTiddlyWiki = function(text)
+{
+	// Crack out the content - will be refactored to share code with saveChanges()
+	var posOpeningDiv = text.indexOf(startSaveArea);
+	var limitClosingDiv = text.indexOf("<!--POST-BODY-END--"+">");
+	var posClosingDiv = text.lastIndexOf(endSaveArea,limitClosingDiv == -1 ? text.length : limitClosingDiv);
+	if((posOpeningDiv == -1) || (posClosingDiv == -1))
+		return config.messages.invalidFileError.format([url]);
+	var content = "<html><body>" + text.substring(posOpeningDiv,posClosingDiv + endSaveArea.length) + "</body></html>";
+	// Create the iframe
+	var iframe = document.createElement("iframe");
+	iframe.style.display = "none";
+	document.body.appendChild(iframe);
+	var doc = iframe.document;
+	if(iframe.contentDocument)
+		doc = iframe.contentDocument; // For NS6
+	else if(iframe.contentWindow)
+		doc = iframe.contentWindow.document; // For IE5.5 and IE6
+	// Put the content in the iframe
+	doc.open();
+	doc.writeln(content);
+	doc.close();
+	// Load the content into a TiddlyWiki() object
+	var storeArea = doc.getElementById("storeArea");
+	this.loadFromDiv(storeArea,"store");
+	// Get rid of the iframe
+	iframe.parentNode.removeChild(iframe);
+	return null;
 }
 
 TiddlyWiki.prototype.updateTiddlers = function()

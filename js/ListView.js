@@ -112,6 +112,16 @@ ListView.forEachSelector = function(view,callback)
 	return hadOne;
 }
 
+ListView.getSelectedRows = function(view)
+{
+	var rowNames = [];
+	ListView.forEachSelector(view,function(e,rowName) {
+				if(e.checked)
+					rowNames.push(rowName);
+				});
+	return rowNames;
+}
+
 ListView.columnTypes = {};
 
 ListView.columnTypes.String = {

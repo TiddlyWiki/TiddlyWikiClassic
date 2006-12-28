@@ -146,11 +146,16 @@ merge(config.macros.newJournal,{
 	accessKey: "J"});
 
 merge(config.macros.plugins,{
-	wizardTitle: "Plugins",
-	step1: "These are the plugins that are currently loaded",
+	wizardTitle: "Manage plugins",
+	step1Title: "Currently loaded plugins",
+	step1Html: "<input type='hidden' name='markList'></input>",
 	skippedText: "(This plugin has not been executed because it was added since startup)",
 	noPluginText: "There are no plugins installed",
-	confirmDeleteText: "Are you sure you want to delete these tiddlers:\n\n%0",
+	confirmDeleteText: "Are you sure you want to delete these plugins:\n\n%0",
+	removeLabel: "remove systemConfig tag",
+	removePrompt: "Remove systemConfig tag",
+	deleteLabel: "delete",
+	deletePrompt: "Delete these tiddlers forever",
 	listViewTemplate : {
 		columns: [
 			{name: 'Selected', field: 'Selected', rowName: 'title', type: 'Selector'},
@@ -164,11 +169,6 @@ merge(config.macros.plugins,{
 		rowClasses: [
 			{className: 'error', field: 'error'},
 			{className: 'warning', field: 'warning'}
-			],
-		actions: [
-			{caption: "More actions...", name: ''},
-			{caption: "Remove systemConfig tag", name: 'remove'},
-			{caption: "Delete these tiddlers forever", name: 'delete'}
 			]}
 	});
 
@@ -178,23 +178,26 @@ merge(config.macros.refreshDisplay,{
 	});
 
 merge(config.macros.importTiddlers,{
-	readOnlyWarning: "You cannot import tiddlers into a read-only TiddlyWiki. Try opening the TiddlyWiki file from a file:// URL",
-	defaultPath: "http://www.tiddlywiki.com/index.html",
+	readOnlyWarning: "You cannot import into a read-only TiddlyWiki file. Try opening it from a file:// URL",
+	wizardTitle: "Import tiddlers from another TiddlyWiki file",
+	step1Title: "Step 1: Locate the TiddlyWiki file",
+	step1Html: "Enter the URL or pathname here: <input type='text' size=50 name='txtPath'><br>...or browse for a file: <input type='file' size=50 name='txtBrowse'><br>...or select a pre-defined feed: <select name='selFeeds'><option value=''>Choose...</option</select>",
 	fetchLabel: "fetch",
 	fetchPrompt: "Fetch the tiddlywiki file",
 	fetchError: "There were problems fetching the tiddlywiki file",
+	step2Title: "Step 2: Loading TiddlyWiki file",
+	step2Html: "Please wait while the file is loaded from: <strong><input type='hidden' name='markPath'></input></strong>",
+	cancelLabel: "cancel",
+	cancelPrompt: "Cancel this import",
+	step3Title: "Step 3: Choose the tiddlers to import",
+	step3Html: "<input type='hidden' name='markList'></input>",
+	importLabel: "import",
+	importPrompt: "Import these tiddlers",
 	confirmOverwriteText: "Are you sure you want to overwrite these tiddlers:\n\n%0",
-	wizardTitle: "Import tiddlers from another TiddlyWiki file",
-	step1: "Step 1: Locate the TiddlyWiki file",
-	step1prompt: "Enter the URL or pathname here: ",
-	step1promptFile: "...or browse for a file: ",
-	step1promptFeeds: "...or select a pre-defined feed: ",
-	step1feedPrompt: "Choose...",
-	step2: "Step 2: Loading TiddlyWiki file",
-	step2Text: "Please wait while the file is loaded from: %0",
-	step3: "Step 3: Choose the tiddlers to import",
-	step4: "%0 tiddler(s) imported",
-	step5: "Done",
+	step4Title: "%0 tiddler(s) imported",
+	step4Html: "<input type='hidden' name='markReport'></input>",
+	doneLabel: "done",
+	donePrompt: "Close this wizard",
 	listViewTemplate: {
 		columns: [
 			{name: 'Selected', field: 'Selected', rowName: 'title', type: 'Selector'},
@@ -203,12 +206,29 @@ merge(config.macros.importTiddlers,{
 			{name: 'Tags', field: 'tags', title: "Tags", type: 'Tags'}
 			],
 		rowClasses: [
-			],
-		actions: [
-			{caption: "More actions...", name: ''},
-			{caption: "Import these tiddlers", name: 'import'}
 			]}
 	});
+
+merge(config.macros.sync,{
+	listViewTemplate: {
+		columns: [
+			{name: 'Selected', field: 'selected', rowName: 'title', type: 'Selector'},
+			{name: 'Title', field: 'title', tiddlerLink: 'title', title: "Title", type: 'TiddlerLink'},
+			{name: 'Local Status', field: 'localStatus', title: "Changed on your computer?", type: 'String'},
+			{name: 'Server Status', field: 'serverStatus', title: "Changed on server?", type: 'String'},
+			{name: 'Server URL', field: 'serverUrl', title: "Server URL", text: "View", type: 'Link'}
+			],
+		rowClasses: [
+			],
+		buttons: [
+			{caption: "Sync these tiddlers", name: 'sync'}
+			]},
+	wizardTitle: "Synchronize your content with external servers and feeds",
+	step1Title: "Choose the tiddlers you want to synchronize",
+	step1Html: '<input type="hidden" name="markList"></input>',
+	syncLabel: "sync",
+	syncPrompt: "Sync these tiddlers"
+});
 
 merge(config.commands.closeTiddler,{
 	text: "close",

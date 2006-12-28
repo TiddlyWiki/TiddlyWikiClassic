@@ -110,7 +110,8 @@ config.macros = {
 	br: {},
 	plugins: {},
 	refreshDisplay: {},
-	importTiddlers: {}
+	importTiddlers: {},
+	sync: {}
 };
 
 // Commands supported by the toolbar macro

@@ -4,25 +4,27 @@
 
 config.macros.plugins.handler = function(place,macroName,params,wikifier,paramString,tiddler)
 {
-	var wizard = createTiddlyElement(place,"div",null,"importTiddler wizard");
-	createTiddlyElement(wizard,"h1",null,null,this.wizardTitle);
-	createTiddlyElement(wizard,"h2",null,"step1",this.step1);
-	var step = createTiddlyElement(wizard,"div",null,"wizardStep");
-	var e = createTiddlyElement(step,"div");
-	e.setAttribute("refresh","macro");
-	e.setAttribute("macroName","plugins");
-	e.setAttribute("params",paramString);
-	this.refresh(e,paramString);
+	var wizard = new Wizard();
+	wizard.createWizard(place,this.wizardTitle);
+	wizard.addStep(this.step1Title,this.step1Html);
+	var markList = wizard.getElement("markList");
+	var listWrapper = document.createElement("div");
+	markList.parentNode.insertBefore(listWrapper,markList);
+	listWrapper.setAttribute("refresh","macro");
+	listWrapper.setAttribute("macroName","plugins");
+	listWrapper.setAttribute("params",paramString);
+	this.refresh(listWrapper,paramString);
 }
 
-config.macros.plugins.refresh = function(place,params)
+config.macros.plugins.refresh = function(listWrapper,params)
 {
+	var wizard = new Wizard(listWrapper);
 	var selectedRows = [];
-	ListView.forEachSelector(place,function(e,rowName) {
+	ListView.forEachSelector(listWrapper,function(e,rowName) {
 			if(e.checked)
 				selectedRows.push(e.getAttribute("rowName"));
 		});
-	removeChildren(place);
+	removeChildren(listWrapper);
 	params = params.parseParams("anon");
 	var plugins = installedPlugins.slice(0);
 	var t,tiddler,p;
@@ -46,32 +48,49 @@ config.macros.plugins.refresh = function(place,params)
 		p.Selected = selectedRows.indexOf(plugins[t].title) != -1;
 		}
 	if(plugins.length == 0)
-		createTiddlyElement(place,"em",null,null,this.noPluginText);
-	else
-		ListView.create(place,plugins,this.listViewTemplate,this.onSelectCommand);
-}
-
-config.macros.plugins.onSelectCommand = function(command,rowNames)
-{
-	var t;
-	switch(command)
 		{
-		case "remove":
-			for(t=0; t<rowNames.length; t++)
-				store.setTiddlerTag(rowNames[t],false,"systemConfig");
-			break;
-		case "delete":
-			if(rowNames.length > 0 && confirm(config.macros.plugins.confirmDeleteText.format([rowNames.join(", ")])))
-				{
-				for(t=0; t<rowNames.length; t++)
-					{
-					store.removeTiddler(rowNames[t]);
-					story.closeTiddler(rowNames[t],true,false);
-					}
-				}
-			break;
+		createTiddlyElement(listWrapper,"em",null,null,this.noPluginText);
+		wizard.setButtons([]);
 		}
-	if(config.options.chkAutoSave)
-		saveChanges(true);
+	else
+		{
+		var listView = ListView.create(listWrapper,plugins,this.listViewTemplate,this.onSelectCommand);
+		wizard.setValue("listView",listView);
+		wizard.setButtons([
+				{caption: config.macros.plugins.removeLabel, tooltip: config.macros.plugins.removePrompt, onClick:  config.macros.plugins.doRemoveTag},
+				{caption: config.macros.plugins.deleteLabel, tooltip: config.macros.plugins.deletePrompt, onClick:  config.macros.plugins.doDelete}
+			]);
+		}
 }
 
+config.macros.plugins.doRemoveTag = function(e)
+{
+	var wizard = new Wizard(this);
+	var listView = wizard.getValue("listView");
+	var rowNames = ListView.getSelectedRows(listView);
+	if(rowNames.length == 0)
+		alert(config.messages.nothingSelected);
+	else
+		for(var t=0; t<rowNames.length; t++)
+			store.setTiddlerTag(rowNames[t],false,"systemConfig");
+}
+
+config.macros.plugins.doDelete = function(e)
+{
+	var wizard = new Wizard(this);
+	var listView = wizard.getValue("listView");
+	var rowNames = ListView.getSelectedRows(listView);
+	if(rowNames.length == 0)
+		alert(config.messages.nothingSelected);
+	else
+		{
+		if(confirm(config.macros.plugins.confirmDeleteText.format([rowNames.join(", ")])))
+			{
+			for(t=0; t<rowNames.length; t++)
+				{
+				store.removeTiddler(rowNames[t]);
+				story.closeTiddler(rowNames[t],true,false);
+				}
+			}
+		}
+}

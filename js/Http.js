@@ -15,7 +15,7 @@
 //     xhr - the underlying XMLHttpRequest object
 function loadRemoteFile(url,callback,params)
 {
-	var x = doHttp("GET",url,null,null,null,null,callback,params,null);
+	return doHttp("GET",url,null,null,null,null,callback,params,null);
 }
 
 // HTTP status codes

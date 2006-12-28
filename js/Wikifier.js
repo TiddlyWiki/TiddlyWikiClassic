@@ -43,11 +43,16 @@ function wikifyStatic(source,highlightRegExp,tiddler)
 }
 
 //# Wikify a named tiddler to plain text
-function wikifyPlain(title)
+function wikifyPlain(title,theStore,limit)
 {
-	if(store.tiddlerExists(title) || store.isShadowTiddler(title))
+	if(!theStore)
+		theStore = store;
+	if(theStore.tiddlerExists(title) || theStore.isShadowTiddler(title))
 		{
-		var wikifier = new Wikifier(store.getTiddlerText(title),formatter,null,store.getTiddler(title));
+		var text = theStore.getTiddlerText(title);
+		if(limit > 0)
+			text = text.substr(0,limit);
+		var wikifier = new Wikifier(text,formatter,null,theStore.getTiddler(title));
 		return wikifier.wikifyPlain();
 		}
 	else

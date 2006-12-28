@@ -9,68 +9,69 @@ config.macros.importTiddlers.handler = function(place,macroName,params,wikifier,
 		createTiddlyElement(place,"div",null,"marked",this.readOnlyWarning);
 		return;
 		}
-	var importer = createTiddlyElement(null,"div",null,"importTiddler wizard");
-	createTiddlyElement(importer,"h1",null,null,this.wizardTitle);
-	createTiddlyElement(importer,"h2",null,"step1",this.step1);
-	var step = createTiddlyElement(importer,"div",null,"wizardStep");
-	createTiddlyText(step,this.step1prompt);
-	var input = createTiddlyElement(null,"input",null,"txtOptionInput");
-	input.type = "text";
-	input.size = 50;
-	step.appendChild(input);
-	importer.inputBox = input;
-	createTiddlyElement(step,"br");
-	createTiddlyText(step,this.step1promptFile);
-	var fileInput = createTiddlyElement(null,"input",null,"txtOptionInput");
-	fileInput.type = "file";
-	fileInput.size = 50;
-	fileInput.onchange = this.onBrowseChange;
-	fileInput.onkeyup = this.onBrowseChange;
-	step.appendChild(fileInput);
-	createTiddlyElement(step,"br");
-	createTiddlyText(step,this.step1promptFeeds);
-	var feeds = this.getFeeds([{caption: this.step1feedPrompt, name: ""}]);
-	createTiddlyDropDown(step,this.onFeedChange,feeds);
-	createTiddlyElement(step,"br");
-	createTiddlyButton(step,this.fetchLabel,this.fetchPrompt,this.onFetch,null,null,null);
-        place.appendChild(importer);
+	var w = new Wizard();
+	w.createWizard(place,this.wizardTitle);
+	this.restart(w);
 }
 
-config.macros.importTiddlers.getFeeds = function(feeds)
+config.macros.importTiddlers.onCancel = function(e)
 {
+	var wizard = new Wizard(this);
+	var place = wizard.clear();
+	config.macros.importTiddlers.restart(wizard);
+}
+
+config.macros.importTiddlers.restart = function(wizard)
+{
+	wizard.addStep(this.step1Title,this.step1Html);
+	var s = wizard.getElement("selFeeds");
+	var feeds = this.getFeeds();
+	for(var t=0; t<feeds.length; t++)
+		{
+		var e = createTiddlyElement(s,"option",null,null,feeds[t].title);
+		e.value = feeds[t].url;
+		}
+	s.onchange = config.macros.importTiddlers.onFeedChange;
+	var fileInput = wizard.getElement("txtBrowse");
+	fileInput.onchange = config.macros.importTiddlers.onBrowseChange;
+	fileInput.onkeyup = config.macros.importTiddlers.onBrowseChange;
+	wizard.setButtons([{caption: this.fetchLabel, tooltip: this.fetchPrompt, onClick: config.macros.importTiddlers.onFetch}]);
+}
+
+config.macros.importTiddlers.getFeeds = function()
+{
+	var feeds = [];
 	var tagged = store.getTaggedTiddlers("contentPublisher","title");
 	for(var t=0; t<tagged.length; t++)
-		feeds.push({caption: tagged[t].title, name: store.getTiddlerSlice(tagged[t].title,"URL")});
+		feeds.push({title: tagged[t].title, url: store.getTiddlerSlice(tagged[t].title,"URL")});
 	return feeds;
 }
 
 config.macros.importTiddlers.onFeedChange = function(e)
 {
-	var importer = findRelated(this,"importTiddler","className","parentNode");
-	importer.inputBox.value = this.value;
+	var wizard = new Wizard(this);
+	var fileInput = wizard.getElement("txtPath");
+	fileInput.value = this.value;
 	this.selectedIndex = 0;
 }
 
 config.macros.importTiddlers.onBrowseChange = function(e)
 {
-	var importer = findRelated(this,"importTiddler","className","parentNode");
-	importer.inputBox.value = "file://" + this.value;
+	var wizard = new Wizard(this);
+	var fileInput = wizard.getElement("txtPath");
+	fileInput.value = "file://" + this.value;
 }
 
 config.macros.importTiddlers.onFetch = function(e)
 {
-	var importer = findRelated(this,"importTiddler","className","parentNode");
-	var url = importer.inputBox.value;
-	var cutoff = findRelated(importer.firstChild,"step2","className","nextSibling");
-	while(cutoff)
-		{
-		var temp = cutoff.nextSibling;
-		cutoff.parentNode.removeChild(cutoff);
-		cutoff = temp;
-		}
-	createTiddlyElement(importer,"h2",null,"step2",config.macros.importTiddlers.step2);
-	var step = createTiddlyElement(importer,"div",null,"wizardStep",config.macros.importTiddlers.step2Text.format([url]));
-	loadRemoteFile(url,config.macros.importTiddlers.onLoad,importer);
+	var wizard = new Wizard(this);
+	var fileInput = wizard.getElement("txtPath");
+	var url = fileInput.value;
+	wizard.addStep(config.macros.importTiddlers.step2Title,config.macros.importTiddlers.step2Html);
+	var markPath = wizard.getElement("markPath");
+	markPath.parentNode.insertBefore(document.createTextNode(url),markPath);
+	loadRemoteFile(url,config.macros.importTiddlers.onLoad,wizard);
+	wizard.setButtons([{caption: config.macros.importTiddlers.cancelLabel, tooltip: config.macros.importTiddlers.cancelPrompt, onClick: config.macros.importTiddlers.onCancel}]);
 }
 
 config.macros.importTiddlers.onLoad = function(status,params,responseText,url,xhr)
@@ -80,42 +81,21 @@ config.macros.importTiddlers.onLoad = function(status,params,responseText,url,xh
 		displayMessage(this.fetchError);
 		return;
 		}
-	var importer = params;
+	var wizard = params;
 	// Check that the tiddler we're in hasn't been closed - doesn't work on IE
 //	var p = importer;
 //	while(p.parentNode)
 //		p = p.parentNode;
 //	if(!(p instanceof HTMLDocument))
 //		return;
-	// Crack out the content - (should be refactored)
-	var posOpeningDiv = responseText.indexOf(startSaveArea);
-	var limitClosingDiv = responseText.indexOf("<!--POST-BODY-END--"+">");
-	var posClosingDiv = responseText.lastIndexOf(endSaveArea,limitClosingDiv == -1 ? responseText.length : limitClosingDiv);
-	if((posOpeningDiv == -1) || (posClosingDiv == -1))
+	// Load the content into a TiddlyWiki() object
+	var importStore = new TiddlyWiki();
+	var r = importStore.importTiddlyWiki(responseText);
+	if(r != null)
 		{
-		alert(config.messages.invalidFileError.format([url]));
+		displayMessage(r);
 		return;
 		}
-	var content = "<html><body>" + responseText.substring(posOpeningDiv,posClosingDiv + endSaveArea.length) + "</body></html>";
-	// Create the iframe
-	var iframe = document.createElement("iframe");
-	iframe.style.display = "none";
-	importer.insertBefore(iframe,importer.firstChild);
-	var doc = iframe.document;
-	if(iframe.contentDocument)
-		doc = iframe.contentDocument; // For NS6
-	else if(iframe.contentWindow)
-		doc = iframe.contentWindow.document; // For IE5.5 and IE6
-	// Put the content in the iframe
-	doc.open();
-	doc.writeln(content);
-	doc.close();
-	// Load the content into a TiddlyWiki() object
-	var storeArea = doc.getElementById("storeArea");
-	var importStore = new TiddlyWiki();
-	importStore.loadFromDiv(storeArea,"store");
-	// Get rid of the iframe
-	iframe.parentNode.removeChild(iframe);
 	// Extract data for the listview
 	var tiddlers = [];
 	importStore.forEachTiddler(function(title,tiddler)
@@ -124,34 +104,30 @@ config.macros.importTiddlers.onLoad = function(status,params,responseText,url,xh
 		t.title = title;
 		t.modified = tiddler.modified;
 		t.modifier = tiddler.modifier;
-		t.text = tiddler.text.substr(0,50);
+		t.text = wikifyPlain(title,importStore,100).substr(0,100);
 		t.tags = tiddler.tags;
 		tiddlers.push(t);
 		});
+	wizard.setValue("store",importStore);
 	// Display the listview
-	createTiddlyElement(importer,"h2",null,"step3",config.macros.importTiddlers.step3);
-	var step = createTiddlyElement(importer,"div",null,"wizardStep");
-	ListView.create(step,tiddlers,config.macros.importTiddlers.listViewTemplate,config.macros.importTiddlers.onSelectCommand);
-	// Save the importer
-	importer.store = importStore;
+	wizard.addStep(config.macros.importTiddlers.step3Title,config.macros.importTiddlers.step3Html);
+	var markList = wizard.getElement("markList");
+	var listWrapper = document.createElement("div");
+	markList.parentNode.insertBefore(listWrapper,markList);
+	var listView = ListView.create(listWrapper,tiddlers,config.macros.importTiddlers.listViewTemplate);
+	wizard.setValue("listView",listView);
+	wizard.setButtons([
+			{caption: config.macros.importTiddlers.cancelLabel, tooltip: config.macros.importTiddlers.cancelPrompt, onClick: config.macros.importTiddlers.onCancel},
+			{caption: config.macros.importTiddlers.importLabel, tooltip: config.macros.importTiddlers.importPrompt, onClick:  config.macros.importTiddlers.doImport}
+		]);
 }
 
-config.macros.importTiddlers.onSelectCommand = function(listView,command,rowNames)
+config.macros.importTiddlers.doImport = function(e)
 {
-	var importer = findRelated(listView,"importTiddler","className","parentNode");
-	switch(command)
-		{
-		case "import":
-			config.macros.importTiddlers.doImport(importer,rowNames);
-			break;
-		}
-	if(config.options.chkAutoSave)
-		saveChanges(true);
-}
-
-config.macros.importTiddlers.doImport = function(importer,rowNames)
-{
-	var theStore = importer.store;
+	var wizard = new Wizard(this);
+	var listView = wizard.getValue("listView");
+	var rowNames = ListView.getSelectedRows(listView);
+	var theStore = wizard.getValue("store");
 	var overwrite = new Array();
 	var t;
 	for(t=0; t<rowNames.length; t++)
@@ -171,12 +147,18 @@ config.macros.importTiddlers.doImport = function(importer,rowNames)
 		}
 	store.notifyAll();
 	store.setDirty(true);
-	createTiddlyElement(importer,"h2",null,"step4",this.step4.format([rowNames.length]));
-	var step = createTiddlyElement(importer,"div",null,"wizardStep");
+	wizard.addStep(config.macros.importTiddlers.step4Title.format([rowNames.length]),config.macros.importTiddlers.step4Html);
+	var reportList = wizard.getElement("markReport");
+	var reportWrapper = document.createElement("div");
+	reportList.parentNode.insertBefore(reportWrapper,reportList);
 	for(t=0; t<rowNames.length; t++)
 		{
-		createTiddlyLink(step,rowNames[t],true);
-		createTiddlyElement(step,"br");
+		createTiddlyLink(reportWrapper,rowNames[t],true);
+		createTiddlyElement(reportWrapper,"br");
 		}
-	createTiddlyElement(importer,"h2",null,"step5",this.step5);
+	if(config.options.chkAutoSave)
+		saveChanges(true);
+	wizard.setButtons([
+			{caption: config.macros.importTiddlers.doneLabel, tooltip: config.macros.importTiddlers.donePrompt, onClick: config.macros.importTiddlers.onCancel}
+		]);
 }

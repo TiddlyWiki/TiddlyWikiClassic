@@ -17,8 +17,8 @@ var backstage = {
 		this.backstage = document.getElementById("backstage");
 		this.tabs = document.getElementById("backstageTabs");
 		this.panel = document.getElementById("backstagePanel");
+		this.panelFooter = createTiddlyElement(this.panel,"div",null,"backstagePanelFooter");
 		this.panelBody = createTiddlyElement(this.panel,"div",null,"backstagePanelBody");
-		this.panelFooter = createTiddlyElement(this.panel,"div",null,"backstagePanelFooter wizardFooter");
 		createTiddlyButton(this.panelFooter,"close","Close backstage",backstage.hidePanel);
 		this.backstage.onmouseover = function(e) {
 			backstage.tabs.style.visibility = "visible";
@@ -84,8 +84,8 @@ var backstage = {
 			anim.startAnimating(new Slider(backstage.panel,true,false,"none"),new Scroller(backstage.backstage,false));
 		else
 			{
-			backstage.panel.height = "auto";
 			backstage.panel.style.display = "block";
+			backstage.panel.height = "auto";
 			}
 		return backstage.panelBody;
 	},
