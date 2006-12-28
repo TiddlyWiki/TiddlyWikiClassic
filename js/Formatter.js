@@ -1,6 +1,6 @@
-// ---------------------------------------------------------------------------------
-// Standard formatters
-// ---------------------------------------------------------------------------------
+//--
+//-- Standard formatters
+//--
 
 config.formatters = [
 {
@@ -22,39 +22,31 @@ config.formatters = [
 		w.nextMatch = w.matchStart;
 		this.lookaheadRegExp.lastIndex = w.nextMatch;
 		var lookaheadMatch = this.lookaheadRegExp.exec(w.source);
-		while(lookaheadMatch && lookaheadMatch.index == w.nextMatch)
-			{
+		while(lookaheadMatch && lookaheadMatch.index == w.nextMatch) {
 			var nextRowType = lookaheadMatch[2];
-			if(nextRowType == "k")
-				{
+			if(nextRowType == "k") {
 				table.className = lookaheadMatch[1];
 				w.nextMatch += lookaheadMatch[0].length+1;
-				}
-			else
-				{
-				if(nextRowType != currRowType)
-					{
+			} else {
+				if(nextRowType != currRowType) {
 					rowContainer = createTiddlyElement(table,this.rowTypes[nextRowType]);
 					currRowType = nextRowType;
-					}
-				if(currRowType == "c")
-					{
+				}
+				if(currRowType == "c") {
 					// Caption
 					w.nextMatch++;
 					if(rowContainer != table.firstChild)
 						table.insertBefore(rowContainer,table.firstChild);
 					rowContainer.setAttribute("align",rowCount == 0?"top":"bottom");
 					w.subWikifyTerm(rowContainer,this.rowTermRegExp);
-					}
-				else
-					{
+				} else {
 					this.rowHandler(w,createTiddlyElement(rowContainer,"tr",null,(rowCount&1)?"oddRow":"evenRow"),prevColumns);
 					rowCount++;
-					}
 				}
+			}
 			this.lookaheadRegExp.lastIndex = w.nextMatch;
 			lookaheadMatch = this.lookaheadRegExp.exec(w.source);
-			}
+		}
 	},
 	rowHandler: function(w,e,prevColumns)
 	{
@@ -63,67 +55,54 @@ config.formatters = [
 		var prevCell = null;
 		this.cellRegExp.lastIndex = w.nextMatch;
 		var cellMatch = this.cellRegExp.exec(w.source);
-		while(cellMatch && cellMatch.index == w.nextMatch)
-			{
-			if(cellMatch[1] == "~")
-				{
+		while(cellMatch && cellMatch.index == w.nextMatch) {
+			if(cellMatch[1] == "~") {
 				// Rowspan
 				var last = prevColumns[col];
-				if(last)
-					{
+				if(last) {
 					last.rowSpanCount++;
 					last.element.setAttribute("rowspan",last.rowSpanCount);
 					last.element.setAttribute("rowSpan",last.rowSpanCount); // Needed for IE
 					last.element.valign = "center";
-					}
-				w.nextMatch = this.cellRegExp.lastIndex-1;
 				}
-			else if(cellMatch[1] == ">")
-				{
+				w.nextMatch = this.cellRegExp.lastIndex-1;
+			} else if(cellMatch[1] == ">") {
 				// Colspan
 				colSpanCount++;
 				w.nextMatch = this.cellRegExp.lastIndex-1;
-				}
-			else if(cellMatch[2])
-				{
+			} else if(cellMatch[2]) {
 				// End of row
-				if(prevCell && colSpanCount > 1)
-					{
+				if(prevCell && colSpanCount > 1) {
 					prevCell.setAttribute("colspan",colSpanCount);
 					prevCell.setAttribute("colSpan",colSpanCount); // Needed for IE
-					}
+				}
 				w.nextMatch = this.cellRegExp.lastIndex;
 				break;
-				}
-			else
-				{
+			} else {
 				// Cell
 				w.nextMatch++;
 				var styles = config.formatterHelpers.inlineCssHelper(w);
 				var spaceLeft = false;
 				var chr = w.source.substr(w.nextMatch,1);
-				while(chr == " ")
-					{
+				while(chr == " ") {
 					spaceLeft = true;
 					w.nextMatch++;
 					chr = w.source.substr(w.nextMatch,1);
-					}
+				}
 				var cell;
-				if(chr == "!")
-					{
+				if(chr == "!") {
 					cell = createTiddlyElement(e,"th");
 					w.nextMatch++;
-					}
-				else
+				} else {
 					cell = createTiddlyElement(e,"td");
+				}
 				prevCell = cell;
 				prevColumns[col] = {rowSpanCount:1,element:cell};
-				if(colSpanCount > 1)
-					{
+				if(colSpanCount > 1) {
 					cell.setAttribute("colspan",colSpanCount);
 					cell.setAttribute("colSpan",colSpanCount); // Needed for IE
 					colSpanCount = 1;
-					}
+				}
 				config.formatterHelpers.applyCssHelper(cell,styles);
 				w.subWikifyTerm(cell,this.cellTermRegExp);
 				if(w.matchText.substr(w.matchText.length-2,1) == " ") // spaceRight
@@ -131,11 +110,11 @@ config.formatters = [
 				else if(spaceLeft)
 					cell.align = "right";
 				w.nextMatch--;
-				}
+			}
 			col++;
 			this.cellRegExp.lastIndex = w.nextMatch;
 			cellMatch = this.cellRegExp.exec(w.source);
-			}
+		}
 	}
 },
 
@@ -162,45 +141,33 @@ config.formatters = [
 		w.nextMatch = w.matchStart;
 		this.lookaheadRegExp.lastIndex = w.nextMatch;
 		var lookaheadMatch = this.lookaheadRegExp.exec(w.source);
-		while(lookaheadMatch && lookaheadMatch.index == w.nextMatch)
-			{
-			if(lookaheadMatch[1])
-				{
+		while(lookaheadMatch && lookaheadMatch.index == w.nextMatch) {
+			if(lookaheadMatch[1]) {
 				listType = "ul";
 				itemType = "li";
-				}
-			else if(lookaheadMatch[2])
-				{
+			} else if(lookaheadMatch[2]) {
 				listType = "ol";
 				itemType = "li";
-				}
-			else if(lookaheadMatch[3])
-				{
+			} else if(lookaheadMatch[3]) {
 				listType = "dl";
 				itemType = "dt";
-				}
-			else if(lookaheadMatch[4])
-				{
+			} else if(lookaheadMatch[4]) {
 				listType = "dl";
 				itemType = "dd";
-				}
+			}
 			listLevel = lookaheadMatch[0].length;
 			w.nextMatch += lookaheadMatch[0].length;
-			if(listLevel > currLevel)
-				{
-				for(var t=currLevel; t<listLevel; t++)
+			var t;
+			if(listLevel > currLevel) {
+				for(t=currLevel; t<listLevel; t++)
 					stack.push(createTiddlyElement(stack[stack.length-1],listType));
-				}
-			else if(listLevel < currLevel)
-				{
-				for(var t=currLevel; t>listLevel; t--)
+			} else if(listLevel < currLevel) {
+				for(t=currLevel; t>listLevel; t--)
 					stack.pop();
-				}
-			else if(listLevel == currLevel && listType != currType)
-				{
+			} else if(listLevel == currLevel && listType != currType) {
 				stack.pop();
 				stack.push(createTiddlyElement(stack[stack.length-1],listType));
-				}
+			}
 			currLevel = listLevel;
 			currType = listType;
 			var e = createTiddlyElement(stack[stack.length-1],itemType);
@@ -232,27 +199,23 @@ config.formatters = [
 		var newLevel = w.matchLength;
 		var t;
 		do {
-			if(newLevel > currLevel)
-				{
+			if(newLevel > currLevel) {
 				for(t=currLevel; t<newLevel; t++)
 					stack.push(createTiddlyElement(stack[stack.length-1],this.element));
-				}
-			else if(newLevel < currLevel)
-				{
+			} else if(newLevel < currLevel) {
 				for(t=currLevel; t>newLevel; t--)
 					stack.pop();
-				}
+			}
 			currLevel = newLevel;
 			w.subWikifyTerm(stack[stack.length-1],this.termRegExp);
 			createTiddlyElement(stack[stack.length-1],"br");
 			this.lookaheadRegExp.lastIndex = w.nextMatch;
 			var lookaheadMatch = this.lookaheadRegExp.exec(w.source);
 			var matched = lookaheadMatch && lookaheadMatch.index == w.nextMatch;
-			if(matched)
-				{
+			if(matched) {
 				newLevel = lookaheadMatch[0].length;
 				w.nextMatch += lookaheadMatch[0].length;
-				}
+			}
 		} while(matched);
 	}
 },
@@ -326,11 +289,10 @@ config.formatters = [
 	{
 		this.lookaheadRegExp.lastIndex = w.matchStart;
 		var lookaheadMatch = this.lookaheadRegExp.exec(w.source);
-		if(lookaheadMatch && lookaheadMatch.index == w.matchStart && lookaheadMatch[1])
-			{
+		if(lookaheadMatch && lookaheadMatch.index == w.matchStart && lookaheadMatch[1]) {
 			w.nextMatch = this.lookaheadRegExp.lastIndex;
 			invokeMacro(w.output,lookaheadMatch[1],lookaheadMatch[2],w,w.tiddler);
-			}
+		}
 	}
 },
 
@@ -342,26 +304,21 @@ config.formatters = [
 	{
 		this.lookaheadRegExp.lastIndex = w.matchStart;
 		var lookaheadMatch = this.lookaheadRegExp.exec(w.source);
-		if(lookaheadMatch && lookaheadMatch.index == w.matchStart)
-			{
+		if(lookaheadMatch && lookaheadMatch.index == w.matchStart) {
 			var e;
 			var text = lookaheadMatch[1];
-			if(lookaheadMatch[3])
-				{
+			if(lookaheadMatch[3]) {
 				// Pretty bracketted link
 				var link = lookaheadMatch[3];
-				e = (!lookaheadMatch[2] && config.formatterHelpers.isExternalLink(link))
-						? createExternalLink(w.output,link)
-						: createTiddlyLink(w.output,link,false,null,w.isStatic);
-				}
-			else
-				{
+				e = (!lookaheadMatch[2] && config.formatterHelpers.isExternalLink(link)) ?
+						createExternalLink(w.output,link) : createTiddlyLink(w.output,link,false,null,w.isStatic);
+			} else {
 				// Simple bracketted link
 				e = createTiddlyLink(w.output,text,false,null,w.isStatic);
-				}
+			}
 			createTiddlyText(e,text);
 			w.nextMatch = this.lookaheadRegExp.lastIndex;
-			}
+		}
 	}
 },
 
@@ -379,26 +336,21 @@ config.formatters = [
 	match: config.textPrimitives.wikiLink,
 	handler: function(w)
 	{
-		if(w.matchStart > 0)
-			{
+		if(w.matchStart > 0) {
 			var preRegExp = new RegExp(config.textPrimitives.anyLetterStrict,"mg");
 			preRegExp.lastIndex = w.matchStart-1;
 			var preMatch = preRegExp.exec(w.source);
-			if(preMatch.index == w.matchStart-1)
-				{
+			if(preMatch.index == w.matchStart-1) {
 				w.outputText(w.output,w.matchStart,w.nextMatch);
 				return;
-				}
 			}
-		if(w.autoLinkWikiWords == true || store.isShadowTiddler(w.matchText))
-			{
+		}
+		if(w.autoLinkWikiWords == true || store.isShadowTiddler(w.matchText)) {
 			var link = createTiddlyLink(w.output,w.matchText,false,null,w.isStatic);
 			w.outputText(link,w.matchStart,w.nextMatch);
-			}
-		else
-			{
+		} else {
 			w.outputText(w.output,w.matchStart,w.nextMatch);
-			}
+		}
 	}
 },
 
@@ -419,15 +371,13 @@ config.formatters = [
 	{
 		this.lookaheadRegExp.lastIndex = w.matchStart;
 		var lookaheadMatch = this.lookaheadRegExp.exec(w.source);
-		if(lookaheadMatch && lookaheadMatch.index == w.matchStart)
-			{
+		if(lookaheadMatch && lookaheadMatch.index == w.matchStart) {
 			var e = w.output;
-			if(lookaheadMatch[5])
-				{
+			if(lookaheadMatch[5]) {
 				var link = lookaheadMatch[5];
 				e = config.formatterHelpers.isExternalLink(link) ? createExternalLink(w.output,link) : createTiddlyLink(w.output,link,false,null,w.isStatic);
 				addClass(e,"imageLink");
-				}
+			}
 			var img = createTiddlyElement(e,"img");
 			if(lookaheadMatch[1])
 				img.align = "left";
@@ -437,7 +387,7 @@ config.formatters = [
 				img.title = lookaheadMatch[3];
 			img.src = lookaheadMatch[4];
 			w.nextMatch = this.lookaheadRegExp.lastIndex;
-			}
+		}
 	}
 },
 
@@ -448,12 +398,11 @@ config.formatters = [
 	handler: function(w)
 	{
 		this.lookaheadRegExp.lastIndex = w.matchStart;
-		var lookaheadMatch = this.lookaheadRegExp.exec(w.source)
-		if(lookaheadMatch && lookaheadMatch.index == w.matchStart)
-			{
+		var lookaheadMatch = this.lookaheadRegExp.exec(w.source);
+		if(lookaheadMatch && lookaheadMatch.index == w.matchStart) {
 			createTiddlyElement(w.output,"span").innerHTML = lookaheadMatch[1];
 			w.nextMatch = this.lookaheadRegExp.lastIndex;
-			}
+		}
 	}
 },
 
@@ -464,7 +413,7 @@ config.formatters = [
 	handler: function(w)
 	{
 		this.lookaheadRegExp.lastIndex = w.matchStart;
-		var lookaheadMatch = this.lookaheadRegExp.exec(w.source)
+		var lookaheadMatch = this.lookaheadRegExp.exec(w.source);
 		if(lookaheadMatch && lookaheadMatch.index == w.matchStart)
 			w.nextMatch = this.lookaheadRegExp.lastIndex;
 	}
@@ -525,12 +474,11 @@ config.formatters = [
 	handler: function(w)
 	{
 		this.lookaheadRegExp.lastIndex = w.matchStart;
-		var lookaheadMatch = this.lookaheadRegExp.exec(w.source)
-		if(lookaheadMatch && lookaheadMatch.index == w.matchStart)
-			{
+		var lookaheadMatch = this.lookaheadRegExp.exec(w.source);
+		if(lookaheadMatch && lookaheadMatch.index == w.matchStart) {
 			createTiddlyElement(w.output,"code",null,null,lookaheadMatch[1]);
 			w.nextMatch = this.lookaheadRegExp.lastIndex;
-			}
+		}
 	}
 },
 
@@ -566,12 +514,11 @@ config.formatters = [
 	handler: function(w)
 	{
 		this.lookaheadRegExp.lastIndex = w.matchStart;
-		var lookaheadMatch = this.lookaheadRegExp.exec(w.source)
-		if(lookaheadMatch && lookaheadMatch.index == w.matchStart)
-			{
+		var lookaheadMatch = this.lookaheadRegExp.exec(w.source);
+		if(lookaheadMatch && lookaheadMatch.index == w.matchStart) {
 			createTiddlyElement(w.output,"span",null,null,lookaheadMatch[1]);
 			w.nextMatch = this.lookaheadRegExp.lastIndex;
-			}
+		}
 	}
 },
 
@@ -579,18 +526,18 @@ config.formatters = [
 	name: "mdash",
 	match: "--",
 	handler: function(w)
-		{
+	{
 		createTiddlyElement(w.output,"span").innerHTML = "&mdash;";
-		}
+	}
 },
 
 {
 	name: "htmlEntitiesEncoding",
 	match: "(?:(?:&#?[a-zA-Z0-9]{2,8};|.)(?:&#?(?:x0*(?:3[0-6][0-9a-fA-F]|1D[c-fC-F][0-9a-fA-F]|20[d-fD-F][0-9a-fA-F]|FE2[0-9a-fA-F])|0*(?:76[89]|7[7-9][0-9]|8[0-7][0-9]|761[6-9]|76[2-7][0-9]|84[0-3][0-9]|844[0-7]|6505[6-9]|6506[0-9]|6507[0-1]));)+|&#?[a-zA-Z0-9]{2,8};)",
 	handler: function(w)
-		{
+	{
 		createTiddlyElement(w.output,"span").innerHTML = w.matchText;
-		}
+	}
 },
 
 {
@@ -602,12 +549,11 @@ config.formatters = [
 	{
 		this.lookaheadRegExp.lastIndex = w.matchStart;
 		var lookaheadMatch = this.lookaheadRegExp.exec(w.source);
-		if(lookaheadMatch)
-			{
+		if(lookaheadMatch) {
 			var e = createTiddlyElement(w.output,lookaheadMatch[2] == "\n" ? "div" : "span",null,lookaheadMatch[1]);
 			w.nextMatch = this.lookaheadRegExp.lastIndex;
 			w.subWikifyTerm(e,this.termRegExp);
-			}
+		}
 	}
 }
 
