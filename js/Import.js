@@ -136,7 +136,7 @@ config.macros.importTiddlers.doImport = function(e)
 			overwrite.push(rowNames[t]);
 	}
 	if(overwrite.length > 0)
-		if(!confirm(this.confirmOverwriteText.format([overwrite.join(", ")])))
+		if(!confirm(config.macros.importTiddlers.confirmOverwriteText.format([overwrite.join(", ")])))
 			return;
 	for(t=0; t<rowNames.length; t++)
 		{

@@ -179,7 +179,7 @@ merge(config.macros.refreshDisplay,{
 
 merge(config.macros.importTiddlers,{
 	readOnlyWarning: "You cannot import into a read-only TiddlyWiki file. Try opening it from a file:// URL",
-	wizardTitle: "Import tiddlers from another TiddlyWiki file",
+	wizardTitle: "Import tiddlers from another file or server",
 	step1Title: "Step 1: Locate the TiddlyWiki file",
 	step1Html: "Enter the URL or pathname here: <input type='text' size=50 name='txtPath'><br>...or browse for a file: <input type='file' size=50 name='txtBrowse'><br>...or select a pre-defined feed: <select name='selFeeds'><option value=''>Choose...</option</select>",
 	fetchLabel: "fetch",
@@ -223,7 +223,7 @@ merge(config.macros.sync,{
 		buttons: [
 			{caption: "Sync these tiddlers", name: 'sync'}
 			]},
-	wizardTitle: "Synchronize your content with external servers and feeds",
+	wizardTitle: "Synchronize with external servers and files",
 	step1Title: "Choose the tiddlers you want to synchronize",
 	step1Html: '<input type="hidden" name="markList"></input>',
 	syncLabel: "sync",
