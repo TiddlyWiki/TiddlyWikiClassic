@@ -41,6 +41,8 @@ Slider.prototype.stop = function()
 			{
 			case "none":
 				this.element.style.display = "none";
+				this.element.style.opacity = 1;
+				this.element.style.filter = "alpha(opacity:100)";
 				break;
 			case "all":
 				this.element.parentNode.removeChild(this.element);

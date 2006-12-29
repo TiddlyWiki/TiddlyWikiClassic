@@ -85,7 +85,7 @@ var backstage = {
 		else
 			{
 			backstage.panel.style.display = "block";
-			backstage.panel.height = "auto";
+			backstage.panel.style.height = "auto";
 			}
 		return backstage.panelBody;
 	},
