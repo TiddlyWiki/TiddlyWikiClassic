@@ -1,11 +1,12 @@
-//--------------------------------
-// TW21Saver (inherits from SaverBase)
+//--
+//-- TW21Saver (inherits from SaverBase)
+//--
 
 function TW21Saver() {}
 
 TW21Saver.prototype = new SaverBase();
 
-TW21Saver.prototype.externalizeTiddler = function(store,tiddler) 
+TW21Saver.prototype.externalizeTiddler = function(store,tiddler)
 {
 	try {
 		var extendedAttributes = "";
@@ -33,7 +34,7 @@ TW21Saver.prototype.externalizeTiddler = function(store,tiddler)
 				usePre ? "\n<pre>" + tiddler.text.htmlEncode() + "</pre>\n" : tiddler.escapeLineBreaks().htmlEncode()
 			]);
 	} catch (ex) {
-		throw exceptionText(ex, config.messages.tiddlerSaveError.format([tiddler.title]));
+		throw exceptionText(ex,config.messages.tiddlerSaveError.format([tiddler.title]));
 	}
-}
+};
 

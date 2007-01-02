@@ -1,64 +1,55 @@
-//# -------------------------
+//--
+//-- LoaderBase and SaverBase
+//--
 //# LoaderBase: A (abstract) storage loader that loads the tiddlers from a list of HTML elements.
 //# The format of the elements is defined by subclasses of this loader through the internalizeTiddler implementation.
 //# Subclasses must implement:
-//# 			function getTitle(store, e)
+//#			function getTitle(store,node)
+//#			function internalizeTiddler(store,tiddler,title,node)
 //#
 //# store must implement:
-//# 			function createTiddler(title).
-//#
+//#			function createTiddler(title)
 
-function LoaderBase()
-{
-}
+function LoaderBase() {}
 
-LoaderBase.prototype.loadTiddler = function(store,e,tiddlers)
+LoaderBase.prototype.loadTiddler = function(store,node,tiddlers)
 {
-	var title = this.getTitle(store, e);
-	if (title)
-		{
+	var title = this.getTitle(store,node);
+	if(title) {
 		var tiddler = store.createTiddler(title);
-		this.internalizeTiddler(store, tiddler, title, e);
+		this.internalizeTiddler(store,tiddler,title,node);
 		tiddlers.push(tiddler);
-		}
-}
+	}
+};
 
 LoaderBase.prototype.loadTiddlers = function(store,nodes)
 {
 	var tiddlers = [];
-	for (var t = 0; t < nodes.length; t++)
-		{
-		try
-			{
-			this.loadTiddler(store, nodes[t], tiddlers);
-			}
-		catch(e)
-			{
-			showException(e, config.messages.tiddlerLoadError.format([this.getTitle(store, nodes[t])]));
-			}
+	for(var t = 0; t < nodes.length; t++) {
+		try {
+			this.loadTiddler(store,nodes[t],tiddlers);
+		} catch(ex) {
+			showException(ex,config.messages.tiddlerLoadError.format([this.getTitle(store,nodes[t])]));
 		}
+	}
 	return tiddlers;
-}
-	
-//# -------------------------
-//# SaverBase: a (abstract) storage saver that externalizes all tiddlers into a string, 
+};
+
+//# SaverBase: a (abstract) storage saver that externalizes all tiddlers into a string,
 //# with every tiddler individually externalized (using this.externalizeTiddler) and joined with newlines 
 //# Subclasses must implement:
-//# 			function externalizeTiddler(store, tiddler)
+//#			function externalizeTiddler(store,tiddler)
 //#
 //# store must implement:
-//# 			function getTiddlers(sortByFieldName)
-//#
+//#			function getTiddlers(sortByFieldName)
 
-function SaverBase()
-{
-}
+function SaverBase() {}
 
-SaverBase.prototype.externalize = function(store) 
+SaverBase.prototype.externalize = function(store)
 {
 	var results = [];
 	var tiddlers = store.getTiddlers("title");
-	for (var t = 0; t < tiddlers.length; t++)
-		results.push(this.externalizeTiddler(store, tiddlers[t]));
+	for(var t = 0; t < tiddlers.length; t++)
+		results.push(this.externalizeTiddler(store,tiddlers[t]));
 	return results.join("\n");
-}
+};

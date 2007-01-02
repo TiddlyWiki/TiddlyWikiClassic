@@ -1,6 +1,6 @@
-// ---------------------------------------------------------------------------------
-// Main
-// ---------------------------------------------------------------------------------
+//--
+//-- Main
+//--
 
 var params = null; // Command line parameters
 var store = null; // TiddlyWiki storage
@@ -53,26 +53,25 @@ function main()
 	t7 = new Date();
 	restart();
 	t8 = new Date();
-	if(pluginProblem)
-		{
+	if(pluginProblem) {
 		story.displayTiddler(null,"PluginManager");
 		displayMessage(config.messages.customConfigError);
-		}
-	for(var m in config.macros)
+	}
+	for(var m in config.macros) {
 		if(config.macros[m].init)
 			config.macros[m].init();
+	}
 	if(!readOnly)
 		backstage.init();
 	t9 = new Date();
-	if(config.displayStartupTime)
-		{
+	if(config.displayStartupTime) {
 		displayMessage("Load in " + (t2-t1) + " ms");
 		displayMessage("Loadshadows in " + (t3-t2) + " ms");
 		displayMessage("Loadplugins in " + (t5-t4) + " ms");
 		displayMessage("Notify in " + (t7-t6) + " ms");
 		displayMessage("Restart in " + (t8-t7) + " ms");
 		displayMessage("Total startup in " + (t9-t0) + " ms");
-		}
+	}
 	startingUp = false;
 }
 
@@ -80,11 +79,10 @@ function main()
 function restart()
 {
 	invokeParamifier(params,"onstart");
-	if(story.isEmpty())
-		{
+	if(story.isEmpty()) {
 		var defaultParams = store.getTiddlerText("DefaultTiddlers").parseParams("open",null,false);
 		invokeParamifierAsync(defaultParams,"onstart");
-		}
+	}
 	window.scrollTo(0,0);
 }
 
@@ -111,30 +109,25 @@ function loadPlugins()
 	var configTiddlers = store.getTaggedTiddlers("systemConfig");
 	installedPlugins = [];
 	var hadProblem = false;
-	for(var t=0; t<configTiddlers.length; t++)
-		{
+	for(var t=0; t<configTiddlers.length; t++) {
 		tiddler = configTiddlers[t];
 		pluginInfo = getPluginInfo(tiddler);
-		if(isPluginExecutable(pluginInfo))
-			{
+		if(isPluginExecutable(pluginInfo)) {
 			pluginInfo.executed = true;
 			pluginInfo.error = false;
-			try
-				{
+			try {
 				if(tiddler.text && tiddler.text != "")
 					window.eval(tiddler.text);
-				}
-			catch(e)
-				{
-				pluginInfo.log.push(config.messages.pluginError.format([exceptionText(e)]));
+			} catch(ex) {
+				pluginInfo.log.push(config.messages.pluginError.format([exceptionText(ex)]));
 				pluginInfo.error = true;
 				hadProblem = true;
-				}
 			}
-		else
+		} else {
 			pluginInfo.warning = true;
-		installedPlugins.push(pluginInfo);
 		}
+		installedPlugins.push(pluginInfo);
+	}
 	return hadProblem;
 }
 
@@ -154,8 +147,7 @@ function isPluginExecutable(plugin)
 		return verifyTail(plugin,false,config.messages.pluginDisabled);
 	if(plugin.tiddler.isTagged("systemConfigForce"))
 		return verifyTail(plugin,true,config.messages.pluginForced);
-	if(plugin["CoreVersion"])
-		{
+	if(plugin["CoreVersion"]) {
 		var coreVersion = plugin["CoreVersion"].split(".");
 		var w = parseInt(coreVersion[0]) - version.major;
 		if(w == 0 && coreVersion[1])
@@ -176,17 +168,14 @@ function verifyTail(plugin,result,message)
 
 function invokeMacro(place,macro,params,wikifier,tiddler)
 {
-	try
-		{
+	try {
 		var m = config.macros[macro];
 		if(m && m.handler)
 			m.handler(place,macro,params.readMacroParams(),wikifier,params,tiddler);
 		else
 			createTiddlyError(place,config.messages.macroError.format([macro]),config.messages.macroErrorDetails.format([macro,config.messages.missingMacro]));
-		}
-	catch(ex)
-		{
+	} catch(ex) {
 		createTiddlyError(place,config.messages.macroError.format([macro]),config.messages.macroErrorDetails.format([macro,ex.toString()]));
-		}
+	}
 }
 

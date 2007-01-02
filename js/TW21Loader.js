@@ -1,31 +1,32 @@
-//--------------------------------
-// TW21Loader (inherits from LoaderBase)
+//--
+//-- TW21Loader (inherits from LoaderBase)
+//--
 
 function TW21Loader() {}
 
 TW21Loader.prototype = new LoaderBase();
 
-TW21Loader.prototype.getTitle = function(store,e)
+TW21Loader.prototype.getTitle = function(store,node)
 {
 	var title = null;
-	if(e.getAttribute) {
-		title = e.getAttribute("title");
+	if(node.getAttribute) {
+		title = node.getAttribute("title");
 		if(!title)
-			title = e.getAttribute("tiddler");
+			title = node.getAttribute("tiddler");
 	}
-	if(!title && e.id) {
+	if(!title && node.id) {
 		var lenPrefix = store.idPrefix.length;
-		if (e.id.substr(0,lenPrefix) == store.idPrefix)
-			title = e.id.substr(lenPrefix);
+		if (node.id.substr(0,lenPrefix) == store.idPrefix)
+			title = node.id.substr(lenPrefix);
 	}
 	return title;
 };
 
-TW21Loader.prototype.internalizeTiddler = function(store,tiddler,title,data)
+TW21Loader.prototype.internalizeTiddler = function(store,tiddler,title,node)
 {
-	var e = data.firstChild;
+	var e = node.firstChild;
 	var text = null;
-	if(data.getAttribute("tiddler")) {
+	if(node.getAttribute("tiddler")) {
 		text = getNodeText(e).unescapeLineBreaks();
 	} else {
 		while(e.nodeName!="PRE" && e.nodeName!="pre") {
@@ -33,14 +34,14 @@ TW21Loader.prototype.internalizeTiddler = function(store,tiddler,title,data)
 		}
 		text = e.innerHTML.replace(/\r/mg,"").htmlDecode();
 	}
-	var modifier = data.getAttribute("modifier");
-	var c = data.getAttribute("created");
-	var m = data.getAttribute("modified");
+	var modifier = node.getAttribute("modifier");
+	var c = node.getAttribute("created");
+	var m = node.getAttribute("modified");
 	var created = c ? Date.convertFromYYYYMMDDHHMM(c) : version.date;
 	var modified = m ? Date.convertFromYYYYMMDDHHMM(m) : created;
-	var tags = data.getAttribute("tags");
+	var tags = node.getAttribute("tags");
 	var fields = {};
-	var attrs = data.attributes;
+	var attrs = node.attributes;
 	for(var i = attrs.length-1; i >= 0; i--) {
 		var name = attrs[i].name;
 		if (attrs[i].specified && !TiddlyWiki.isStandardField(name)) {

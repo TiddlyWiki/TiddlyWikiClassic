@@ -4,26 +4,22 @@
 
 function getParser(tiddler)
 {
-	if(tiddler!=null)
-		{
-		for(var i in config.parsers)
-			{
-			if(tiddler.isTagged(config.parsers[i].formatTag)||(tiddler.fields&&config.parsers[i].format&&tiddler.fields["wikiformat"]==config.parsers[i].format))
-				{
+	if(tiddler!=null) {
+		for(var i in config.parsers) {
+			if(tiddler.isTagged(config.parsers[i].formatTag)||(tiddler.fields&&config.parsers[i].format&&tiddler.fields["wikiformat"]==config.parsers[i].format)) {
 				return config.parsers[i];
-				}
 			}
 		}
+	}
 	return formatter;
 }
 
 function wikify(source,output,highlightRegExp,tiddler)
 {
-	if(source && source != "")
-		{
+	if(source && source != "") {
 		var wikifier = new Wikifier(source,getParser(tiddler),highlightRegExp,tiddler);
 		wikifier.subWikifyUnterm(output);
-		}
+	}
 }
 
 function wikifyStatic(source,highlightRegExp,tiddler)
@@ -31,14 +27,13 @@ function wikifyStatic(source,highlightRegExp,tiddler)
 	var e = createTiddlyElement(document.body,"div");
 	e.style.display = "none";
 	var html = "";
-	if(source && source != "")
-		{
+	if(source && source != "") {
 		var wikifier = new Wikifier(source,getParser(tiddler),highlightRegExp,tiddler);
 		wikifier.isStatic = true;
 		wikifier.subWikifyUnterm(e);
 		html = e.innerHTML;
 		e.parentNode.removeChild(e);
-		}
+	}
 	return html;
 }
 
@@ -47,26 +42,24 @@ function wikifyPlain(title,theStore,limit)
 {
 	if(!theStore)
 		theStore = store;
-	if(theStore.tiddlerExists(title) || theStore.isShadowTiddler(title))
-		{
+	if(theStore.tiddlerExists(title) || theStore.isShadowTiddler(title)) {
 		var text = theStore.getTiddlerText(title);
 		if(limit > 0)
 			text = text.substr(0,limit);
 		var wikifier = new Wikifier(text,formatter,null,theStore.getTiddler(title));
 		return wikifier.wikifyPlain();
-		}
-	else
+	} else {
 		return "";
+	}
 }
 
 //# Highlight plain text into an element
 function highlightify(source,output,highlightRegExp,tiddler)
 {
-	if(source && source != "")
-		{
+	if(source && source != "") {
 		var wikifier = new Wikifier(source,formatter,highlightRegExp,tiddler);
 		wikifier.outputText(output,0,source.length);
-		}
+	}
 }
 
 //# Construct a wikifier object
@@ -84,11 +77,10 @@ function Wikifier(source,formatter,highlightRegExp,tiddler)
 	this.highlightRegExp = highlightRegExp;
 	this.highlightMatch = null;
 	this.isStatic = false;
-	if(highlightRegExp)
-		{
+	if(highlightRegExp) {
 		highlightRegExp.lastIndex = 0;
 		this.highlightMatch = highlightRegExp.exec(source);
-		}
+	}
 	this.tiddler = tiddler;
 }
 
@@ -100,16 +92,16 @@ Wikifier.prototype.wikifyPlain = function()
 	var text = getPlainText(e);
 	e.parentNode.removeChild(e);
 	return text;
-}
+};
 
 Wikifier.prototype.subWikify = function(output,terminator)
 {
 	//# Handle the terminated and unterminated cases separately
-	if (terminator)
+	if(terminator)
 		this.subWikifyTerm(output,new RegExp("(" + terminator + ")","mg"));
 	else
 		this.subWikifyUnterm(output);
-}
+};
 
 Wikifier.prototype.subWikifyUnterm = function(output)
 {
@@ -119,8 +111,7 @@ Wikifier.prototype.subWikifyUnterm = function(output)
 	//# Get the first match
 	this.formatter.formatterRegExp.lastIndex = this.nextMatch;
 	var formatterMatch = this.formatter.formatterRegExp.exec(this.source);
-	while(formatterMatch)
-		{
+	while(formatterMatch) {
 		// Output any text before the match
 		if(formatterMatch.index > this.nextMatch)
 			this.outputText(this.output,this.nextMatch,formatterMatch.index);
@@ -130,27 +121,24 @@ Wikifier.prototype.subWikifyUnterm = function(output)
 		this.matchText = formatterMatch[0];
 		this.nextMatch = this.formatter.formatterRegExp.lastIndex;
 		//# Figure out which formatter matched and call its handler
-		for(var t=1; t<formatterMatch.length; t++)
-			{
-			if(formatterMatch[t])
-				{
+		for(var t=1; t<formatterMatch.length; t++) {
+			if(formatterMatch[t]) {
 				this.formatter.formatters[t-1].handler(this);
 				this.formatter.formatterRegExp.lastIndex = this.nextMatch;
 				break;
-				}
 			}
+		}
 		//# Get the next match
 		formatterMatch = this.formatter.formatterRegExp.exec(this.source);
-		}
+	}
 	//# Output any text after the last match
-	if(this.nextMatch < this.source.length)
-		{
+	if(this.nextMatch < this.source.length) {
 		this.outputText(this.output,this.nextMatch,this.source.length);
 		this.nextMatch = this.source.length;
-		}
+	}
 	//# Restore the output pointer
 	this.output = oldOutput;
-}
+};
 
 Wikifier.prototype.subWikifyTerm = function(output,terminatorRegExp)
 {
@@ -162,11 +150,9 @@ Wikifier.prototype.subWikifyTerm = function(output,terminatorRegExp)
 	var terminatorMatch = terminatorRegExp.exec(this.source);
 	this.formatter.formatterRegExp.lastIndex = this.nextMatch;
 	var formatterMatch = this.formatter.formatterRegExp.exec(terminatorMatch ? this.source.substr(0,terminatorMatch.index) : this.source);
-	while(terminatorMatch || formatterMatch)
-		{
+	while(terminatorMatch || formatterMatch) {
 		//# Check for a terminator match  before the next formatter match
-		if(terminatorMatch && (!formatterMatch || terminatorMatch.index <= formatterMatch.index))
-			{
+		if(terminatorMatch && (!formatterMatch || terminatorMatch.index <= formatterMatch.index)) {
 			//# Output any text before the match
 			if(terminatorMatch.index > this.nextMatch)
 				this.outputText(this.output,this.nextMatch,terminatorMatch.index);
@@ -178,7 +164,7 @@ Wikifier.prototype.subWikifyTerm = function(output,terminatorRegExp)
 			//# Restore the output pointer
 			this.output = oldOutput;
 			return;
-			}
+		}
 		//# It must be a formatter match; output any text before the match
 		if(formatterMatch.index > this.nextMatch)
 			this.outputText(this.output,this.nextMatch,formatterMatch.index);
@@ -188,41 +174,36 @@ Wikifier.prototype.subWikifyTerm = function(output,terminatorRegExp)
 		this.matchText = formatterMatch[0];
 		this.nextMatch = this.formatter.formatterRegExp.lastIndex;
 		//# Figure out which formatter matched and call its handler
-		for(var t=1; t<formatterMatch.length; t++)
-			{
-			if(formatterMatch[t])
-				{
+		for(var t=1; t<formatterMatch.length; t++) {
+			if(formatterMatch[t]) {
 				this.formatter.formatters[t-1].handler(this);
 				this.formatter.formatterRegExp.lastIndex = this.nextMatch;
 				break;
-				}
 			}
+		}
 		//# Get the next match
 		terminatorRegExp.lastIndex = this.nextMatch;
 		terminatorMatch = terminatorRegExp.exec(this.source);
 		formatterMatch = this.formatter.formatterRegExp.exec(terminatorMatch ? this.source.substr(0,terminatorMatch.index) : this.source);
-		}
+	}
 	//# Output any text after the last match
-	if(this.nextMatch < this.source.length)
-		{
+	if(this.nextMatch < this.source.length) {
 		this.outputText(this.output,this.nextMatch,this.source.length);
 		this.nextMatch = this.source.length;
-		}
+	}
 	//# Restore the output pointer
 	this.output = oldOutput;
-}
+};
 
 Wikifier.prototype.outputText = function(place,startPos,endPos)
 {
 	//# Check for highlights
-	while(this.highlightMatch && (this.highlightRegExp.lastIndex > startPos) && (this.highlightMatch.index < endPos) && (startPos < endPos))
-		{
+	while(this.highlightMatch && (this.highlightRegExp.lastIndex > startPos) && (this.highlightMatch.index < endPos) && (startPos < endPos)) {
 		//# Deal with any plain text before the highlight
-		if(this.highlightMatch.index > startPos)
-			{
+		if(this.highlightMatch.index > startPos) {
 			createTiddlyText(place,this.source.substring(startPos,this.highlightMatch.index));
 			startPos = this.highlightMatch.index;
-			}
+		}
 		//# Deal with the highlight
 		var highlightEnd = Math.min(this.highlightRegExp.lastIndex,endPos);
 		var theHighlight = createTiddlyElement(place,"span",null,"highlight",this.source.substring(startPos,highlightEnd));
@@ -230,11 +211,10 @@ Wikifier.prototype.outputText = function(place,startPos,endPos)
 		//# Nudge along to the next highlight if we're done with this one
 		if(startPos >= this.highlightRegExp.lastIndex)
 			this.highlightMatch = this.highlightRegExp.exec(this.source);
-		}
+	}
 	//# Do the unhighlighted text left over
-	if(startPos < endPos)
-		{
+	if(startPos < endPos) {
 		createTiddlyText(place,this.source.substring(startPos,endPos));
-		}
-}
+	}
+};
 
