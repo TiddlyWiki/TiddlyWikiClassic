@@ -248,29 +248,31 @@ function removeChildren(e)
 }
 
 // Add a stylesheet, replacing any previous custom stylesheet
-function setStylesheet(s,id)
+function setStylesheet(s,id,doc)
 {
 	if(!id)
 		id = "customStyleSheet";
-	var n = document.getElementById(id);
-	if(document.createStyleSheet) // Test for IE's non-standard createStyleSheet method
+	if(!doc)
+		doc = document;
+	var n = doc.getElementById(id);
+	if(doc.createStyleSheet) // Test for IE's non-standard createStyleSheet method
 		{
 		if(n)
 			n.parentNode.removeChild(n);
 		// This failed without the &nbsp;
-		document.getElementsByTagName("head")[0].insertAdjacentHTML("beforeEnd","&nbsp;<style id='" + id + "'>" + s + "</style>");
+		doc.getElementsByTagName("head")[0].insertAdjacentHTML("beforeEnd","&nbsp;<style id='" + id + "'>" + s + "</style>");
 		}
 	else
 		{
 		if(n)
-			n.replaceChild(document.createTextNode(s),n.firstChild);
+			n.replaceChild(doc.createTextNode(s),n.firstChild);
 		else
 			{
-			var n = document.createElement("style");
+			var n = doc.createElement("style");
 			n.type = "text/css";
 			n.id = id;
-			n.appendChild(document.createTextNode(s));
-			document.getElementsByTagName("head")[0].appendChild(n);
+			n.appendChild(doc.createTextNode(s));
+			doc.getElementsByTagName("head")[0].appendChild(n);
 			}
 		}
 }

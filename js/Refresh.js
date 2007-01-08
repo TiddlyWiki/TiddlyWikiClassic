@@ -135,9 +135,11 @@ function refreshPageTitle()
 	document.title = wikifyPlain("SiteTitle") + " - " + wikifyPlain("SiteSubtitle");
 }
 
-function refreshStyles(title)
+function refreshStyles(title,doc)
 {
-	setStylesheet(title == null ? "" : store.getRecursiveTiddlerText(title,"",10),title);
+	if(!doc)
+		doc = document
+	setStylesheet(title == null ? "" : store.getRecursiveTiddlerText(title,"",10),title,doc);
 }
 
 function refreshColorPalette(title)
