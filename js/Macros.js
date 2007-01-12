@@ -58,6 +58,11 @@ config.macros.list.shadowed.handler = function(params)
 	return store.getShadowed();
 };
 
+config.macros.list.touched.handler = function(params)
+{
+	return store.getTouched();
+}
+
 config.macros.allTags.handler = function(place,macroName,params)
 {
 	var tags = store.getTags(params[0]);

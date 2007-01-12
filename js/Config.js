@@ -90,7 +90,8 @@ config.macros = {
 		all: {},
 		missing: {},
 		orphans: {},
-		shadowed: {}
+		shadowed: {},
+		touched: {}
 	},
 	closeAll: {},
 	permaview: {},

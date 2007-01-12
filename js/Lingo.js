@@ -227,8 +227,9 @@ merge(config.macros.sync,{
 	step1Title: "Choose the tiddlers you want to synchronize",
 	step1Html: '<input type="hidden" name="markList"></input>',
 	syncLabel: "sync",
-	syncPrompt: "Sync these tiddlers"
-});
+	syncPrompt: "Sync these tiddlers",
+	hasChanged:	"Changed while unplugged",
+	hasNotChanged: "Unchanged while unplugged"});
 
 merge(config.commands.closeTiddler,{
 	text: "close",

@@ -12,6 +12,7 @@ function Tiddler()
 	this.links = [];
 	this.linksUpdated = false;
 	this.tags = [];
+	this.fields = {};
 	return this;
 }
 
@@ -32,6 +33,26 @@ Tiddler.prototype.getInheritedFields = function()
 		}
 	}
 	return ret=="" ? null : ret;
+};
+
+// Increment the changeCount of a tiddler
+Tiddler.prototype.incChangeCount = function()
+{
+	var c = this.fields['changeCount'];
+	if(!c)
+		c = 0;
+	this.fields['changeCount'] = c+1;
+};
+
+// Returns true if the tiddler has been updated since the tiddler was created or downloaded
+Tiddler.prototype.isTouched = function()
+{
+	var changeCount = 0;
+	if(this.fields) {
+		if(this.fields['changeCount'])
+			changeCount = this.fields['changeCount'];
+	}
+	return changeCount > 0;
 };
 
 // Format the text for storage in an RSS item
@@ -163,4 +184,3 @@ Tiddler.prototype.generateFingerprint = function()
 {
 	return "0x" + Crypto.hexSha1Str(this.text);
 };
-

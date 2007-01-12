@@ -28,17 +28,15 @@ config.macros.sync.startSync = function(place)
 			config.syncers[syncer].init(currSync);
 	currSync.syncList = [];
 	store.forEachTiddler(function(title,tiddler) {
-		var syncType = store.getValue(tiddler,"sync");
-		if(store.getValue(tiddler,"socialtext.server"))
-			syncType = "socialtext";
+		var syncType = store.getValue(tiddler,"server.type");
 		var syncItem = {title: title,
 			tiddler: tiddler,
 			syncType: syncType,
-			changeCount: store.getValue(tiddler,"changeCount"),
+			isTouched: tiddler.isTouched(),
 			serverStatus: "..."
 			};
-		syncItem.localStatus = syncItem.changeCount > 0 ? "Changed while unplugged" : "Unchanged while unplugged";
-		syncItem.selected = syncItem.changeCount > 0;
+		syncItem.localStatus = syncItem.isTouched ? config.macros.sync.hasChanged : config.macros.sync.hasNotChanged;
+		syncItem.selected = syncItem.isTouched;
 		syncer = config.syncers[syncType];
 		if(syncType && syncer)
 			{
@@ -56,7 +54,7 @@ config.macros.sync.startSync = function(place)
 	var listView = ListView.create(listWrapper,currSync.syncList,this.listViewTemplate);
 	wizard.setValue("listView",listView);
 	wizard.setButtons([
-			{caption: config.macros.sync.syncLabel, tooltip: config.macros.sync.syncPrompt, onClick:  config.macros.sync.doSync}
+			{caption: config.macros.sync.syncLabel, tooltip: config.macros.sync.syncPrompt, onClick: config.macros.sync.doSync}
 		]);
 }
 
