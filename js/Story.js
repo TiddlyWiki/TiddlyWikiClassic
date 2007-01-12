@@ -150,7 +150,8 @@ Story.prototype.refreshTiddler = function(title,template,force,customFields)
 					var text = template=="EditTemplate" ?
 								config.views.editor.defaultText.format([title]) :
 								config.views.wikified.defaultText.format([title]);
-					tiddler.set(title,text,config.views.wikified.defaultModifier,version.date,[],version.date);
+					var fields = customFields ? convertCustomFieldsToHash(customFields) : null;
+					tiddler.set(title,text,config.views.wikified.defaultModifier,version.date,[],version.date,fields);
 				}
 			}
 			tiddlerElem.setAttribute("tags",tiddler.tags.join(" "));
@@ -187,7 +188,6 @@ Story.prototype.refreshTiddler = function(title,template,force,customFields)
 //# Add hidden input elements for the custom fields of a tiddler
 Story.prototype.addCustomFields = function(place,customFields)
 {
-	var fieldsPattern = "(?:(" + config.textPrimitives.anyLetter + "+)\\(([^\\)\\|\\n]+)(?:\\):))|(?:(" + config.textPrimitives.anyLetter + "+):([^;\\|\\n]+);)";
 	var fieldsPattern = "([^:]*):([^;]*);";
 	var fieldsRegExp = new RegExp(fieldsPattern,"mg");
 	var fields = [];

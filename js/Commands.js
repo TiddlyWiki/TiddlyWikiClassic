@@ -17,7 +17,9 @@ config.commands.closeOthers.handler = function(event,src,title)
 config.commands.editTiddler.handler = function(event,src,title)
 {
 	clearMessage();
-	story.displayTiddler(null,title,DEFAULT_EDIT_TEMPLATE);
+	var tiddlerElem = document.getElementById(story.idPrefix + title);
+	var fields = tiddlerElem.getAttribute("tiddlyFields");
+	story.displayTiddler(null,title,DEFAULT_EDIT_TEMPLATE,null,null,fields);
 	story.focusTiddler(title,"text");
 	return false;
 };

@@ -26,17 +26,19 @@ function createTiddlyButton(theParent,theText,theTooltip,theAction,theClass,theI
 	return theButton;
 }
 
-function createTiddlyLink(place,title,includeText,theClass,isStatic)
+function createTiddlyLink(place,title,includeText,theClass,isStatic,linkedFromTiddler)
 {
 	var text = includeText ? title : null;
 	var i = getTiddlyLinkInfo(title,theClass);
-	var btn;
-	if(isStatic)
-		btn = createExternalLink(place,"#" + title);
-	else
-		btn = createTiddlyButton(place,text,i.subTitle,onClickTiddlerLink,i.classes);
+	var btn = isStatic ? createExternalLink(place,"#" + title) : createTiddlyButton(place,text,i.subTitle,onClickTiddlerLink,i.classes);
 	btn.setAttribute("refresh","link");
 	btn.setAttribute("tiddlyLink",title);
+	if(linkedFromTiddler) {
+		var fields = linkedFromTiddler.getInheritedFields();
+		if(fields) {
+			btn.setAttribute("tiddlyFields",fields);
+		}
+	}
 	return btn;
 }
 
@@ -91,8 +93,10 @@ function onClickTiddlerLink(e)
 	var theTarget = resolveTarget(e);
 	var theLink = theTarget;
 	var title = null;
+	var fields = null;
 	do {
 		title = theLink.getAttribute("tiddlyLink");
+		fields = theLink.getAttribute("tiddlyFields");
 		theLink = theLink.parentNode;
 	} while(title == null && theLink != null);
 	if(title) {
@@ -100,13 +104,32 @@ function onClickTiddlerLink(e)
 		if(config.options.chkToggleLinks)
 			toggling = !toggling;
 		var opening;
-		if(toggling && document.getElementById("tiddler" + title))
+		if(toggling && document.getElementById("tiddler" + title)) {
 			story.closeTiddler(title,true,e.shiftKey || e.altKey);
-		else
-			story.displayTiddler(theTarget,title,null,true,e.shiftKey || e.altKey);
+		} else {
+			story.displayTiddler(theTarget,title,null,true,e.shiftKey || e.altKey,fields);
+			if(fields) {
+				var tiddlerElem = document.getElementById(story.idPrefix + title);
+				tiddlerElem.setAttribute("tiddlyFields",fields);
+			}
+		}
 	}
 	clearMessage();
 	return false;
+}
+
+// Converts customFields in "field:value;field2:value2;" format into a hash
+function convertCustomFieldsToHash(customFields)
+{
+	fields = {};
+	var fieldsRegExp = /([^:]*):([^;]*);/mg;
+	fieldsRegExp.lastIndex = 0;
+	var match = fieldsRegExp.exec(customFields);
+	while(match) {
+		fields[match[1]] = match[2];
+		match = fieldsRegExp.exec(customFields);
+	}
+	return fields;
 }
 
 // Create a button for a tag with a popup listing all the tiddlers that it tags
