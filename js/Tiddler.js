@@ -38,10 +38,10 @@ Tiddler.prototype.getInheritedFields = function()
 // Increment the changeCount of a tiddler
 Tiddler.prototype.incChangeCount = function()
 {
-	var c = this.fields['changeCount'];
+	var c = this.fields['changecount'];
 	if(!c)
 		c = 0;
-	this.fields['changeCount'] = c+1;
+	this.fields['changecount'] = String(c+1);
 };
 
 // Returns true if the tiddler has been updated since the tiddler was created or downloaded
@@ -49,8 +49,8 @@ Tiddler.prototype.isTouched = function()
 {
 	var changeCount = 0;
 	if(this.fields) {
-		if(this.fields['changeCount'])
-			changeCount = this.fields['changeCount'];
+		if(this.fields['changecount'])
+			changeCount = this.fields['changecount'];
 	}
 	return changeCount > 0;
 };
