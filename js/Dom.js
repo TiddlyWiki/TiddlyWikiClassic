@@ -1,11 +1,10 @@
-// ---------------------------------------------------------------------------------
-// DOM utilities - many derived from www.quirksmode.org
-// ---------------------------------------------------------------------------------
+//--
+//-- DOM utilities - many derived from www.quirksmode.org
+//--
 
 function drawGradient(place,horiz,colours)
 {
-	for(var t=0; t<= 100; t+=2)
-		{
+	for(var t=0; t<= 100; t+=2) {
 		var bar = document.createElement("div");
 		place.appendChild(bar);
 		bar.style.position = "absolute";
@@ -17,7 +16,7 @@ function drawGradient(place,horiz,colours)
 		var f = t/100;
 		var p = f*(colours.length-1);
 		bar.style.backgroundColor = colours[Math.floor(p)].mix(colours[Math.ceil(p)],p-Math.floor(p)).toString();
-		}
+	}
 }
 
 function createTiddlyText(theParent,theText)
@@ -49,34 +48,32 @@ function createTiddlyElement(theParent,theElement,theID,theClass,theText)
 		e.appendChild(document.createTextNode(theText));
 	if(theParent != null)
 		theParent.appendChild(e);
-	return(e);
+	return e;
 }
 
-// Add an event handler
-// Thanks to John Resig, via QuirksMode
+//# Add an event handler
+//# Thanks to John Resig, via QuirksMode
 function addEvent(obj,type,fn)
 {
-	if(obj.attachEvent)
-		{
+	if(obj.attachEvent) {
 		obj['e'+type+fn] = fn;
-		obj[type+fn] = function(){obj['e'+type+fn](window.event);}
+		obj[type+fn] = function(){obj['e'+type+fn](window.event);};
 		obj.attachEvent('on'+type,obj[type+fn]);
-		}
-	else
+	} else {
 		obj.addEventListener(type,fn,false);
+	}
 }
 
-// Remove  an event handler
-// Thanks to John Resig, via QuirksMode
+//# Remove  an event handler
+//# Thanks to John Resig, via QuirksMode
 function removeEvent(obj,type,fn)
 {
-	if(obj.detachEvent)
-		{
+	if(obj.detachEvent) {
 		obj.detachEvent('on'+type,obj[type+fn]);
 		obj[type+fn] = null;
-		}
-	else
+	} else {
 		obj.removeEventListener(type,fn,false);
+	}
 }
 
 function addClass(e,theClass)
@@ -90,21 +87,19 @@ function removeClass(e,theClass)
 {
 	var currClass = e.className.split(" ");
 	var i = currClass.indexOf(theClass);
-	while(i != -1)
-		{
+	while(i != -1) {
 		currClass.splice(i,1);
 		i = currClass.indexOf(theClass);
-		}
+	}
 	e.className = currClass.join(" ");
 }
 
 function hasClass(e,theClass)
 {
-	if(e.className)
-		{
+	if(e.className) {
 		if(e.className.split(" ").indexOf(theClass) != -1)
 			return true;
-		}
+	}
 	return false;
 }
 
@@ -113,20 +108,15 @@ function findRelated(e,value,name,relative)
 {
 	name = name ? name : "tagName";
 	relative = relative ? relative : "parentNode";
-	if(name == "className")
-		{
-		while(e && !hasClass(e,value))
-			{
+	if(name == "className") {
+		while(e && !hasClass(e,value)) {
 			e = e[relative];
-			}
 		}
-	else
-		{
-		while(e && e[name] != value)
-			{
+	} else {
+		while(e && e[name] != value) {
 			e = e[relative];
-			}
 		}
+	}
 	return e;
 }
 
@@ -134,13 +124,13 @@ function findRelated(e,value,name,relative)
 function resolveTarget(e)
 {
 	var obj;
-	if (e.target)
+	if(e.target)
 		obj = e.target;
-	else if (e.srcElement)
+	else if(e.srcElement)
 		obj = e.srcElement;
-	if (obj.nodeType == 3) // defeat Safari bug
+	if(obj.nodeType == 3) // defeat Safari bug
 		obj = obj.parentNode;
-	return(obj);
+	return obj;
 }
 
 // Return the content of an element as plain text with no formatting
@@ -162,73 +152,69 @@ function ensureVisible(e)
 	var winTop = findScrollY();
 	var winHeight = findWindowHeight();
 	var winBot = winTop + winHeight;
-	if(posTop < winTop)
-		return(posTop);
-	else if(posBot > winBot)
-		{
+	if(posTop < winTop) {
+		return posTop;
+	} else if(posBot > winBot) {
 		if(e.offsetHeight < winHeight)
-			return(posTop - (winHeight - e.offsetHeight));
+			return posTop - (winHeight - e.offsetHeight);
 		else
-			return(posTop);
-		}
-	else
-		return(winTop);
+			return posTop;
+	} else {
+		return winTop;
+	}
 }
 
 // Get the current width of the display window
 function findWindowWidth()
 {
-	return(window.innerWidth ? window.innerWidth : document.documentElement.clientWidth);
+	return window.innerWidth ? window.innerWidth : document.documentElement.clientWidth;
 }
 
 // Get the current height of the display window
 function findWindowHeight()
 {
-	return(window.innerHeight ? window.innerHeight : document.documentElement.clientHeight);
+	return window.innerHeight ? window.innerHeight : document.documentElement.clientHeight;
 }
 
 // Get the current horizontal page scroll position
 function findScrollX()
 {
-	return(window.scrollX ? window.scrollX : document.documentElement.scrollLeft);
+	return window.scrollX ? window.scrollX : document.documentElement.scrollLeft;
 }
 
 // Get the current vertical page scroll position
 function findScrollY()
 {
-	return(window.scrollY ? window.scrollY : document.documentElement.scrollTop);
+	return window.scrollY ? window.scrollY : document.documentElement.scrollTop;
 }
 
 function findPosX(obj)
 {
 	var curleft = 0;
-	while (obj.offsetParent)
-		{
+	while(obj.offsetParent) {
 		curleft += obj.offsetLeft;
 		obj = obj.offsetParent;
-		}
+	}
 	return curleft;
 }
 
 function findPosY(obj)
 {
 	var curtop = 0;
-	while (obj.offsetParent)
-		{
+	while(obj.offsetParent) {
 		curtop += obj.offsetTop;
 		obj = obj.offsetParent;
-		}
+	}
 	return curtop;
 }
 
 // Blur a particular element
 function blurElement(e)
 {
-	if(e != null && e.focus && e.blur)
-		{
+	if(e != null && e.focus && e.blur) {
 		e.focus();
 		e.blur();
-		}
+	}
 }
 
 // Create a non-breaking space
@@ -255,65 +241,56 @@ function setStylesheet(s,id,doc)
 	if(!doc)
 		doc = document;
 	var n = doc.getElementById(id);
-	if(doc.createStyleSheet) // Test for IE's non-standard createStyleSheet method
-		{
+	if(doc.createStyleSheet) {
+		// Test for IE's non-standard createStyleSheet method
 		if(n)
 			n.parentNode.removeChild(n);
 		// This failed without the &nbsp;
 		doc.getElementsByTagName("head")[0].insertAdjacentHTML("beforeEnd","&nbsp;<style id='" + id + "'>" + s + "</style>");
-		}
-	else
-		{
-		if(n)
+	} else {
+		if(n) {
 			n.replaceChild(doc.createTextNode(s),n.firstChild);
-		else
-			{
-			var n = doc.createElement("style");
+		} else {
+			n = doc.createElement("style");
 			n.type = "text/css";
 			n.id = id;
 			n.appendChild(doc.createTextNode(s));
 			doc.getElementsByTagName("head")[0].appendChild(n);
-			}
 		}
+	}
 }
 
 // Replace the current selection of a textarea or text input and scroll it into view
-
 function replaceSelection(e,text)
 {
-	if (e.setSelectionRange)
-		{
+	if(e.setSelectionRange) {
 		var oldpos = e.selectionStart + 1;
 		e.value = e.value.substr(0,e.selectionStart) + text + e.value.substr(e.selectionStart);
 		e.setSelectionRange( oldpos, oldpos);
 		var linecount = e.value.split('\n').length;
 		var thisline = e.value.substr(0,e.selectionStart).split('\n').length-1;
 		e.scrollTop = Math.floor((thisline-e.rows/2)*e.scrollHeight/linecount);
-		}
-	else if (document.selection)
-		{
+	} else if(document.selection) {
 		var range = document.selection.createRange();
-		if (range.parentElement() == e)
-			{
+		if(range.parentElement() == e) {
 			var isCollapsed = range.text == "";
 			range.text = text;
-			 if (!isCollapsed)
-				{
+			if(!isCollapsed) {
 				range.moveStart('character', -text.length);
 				range.select();
-				}
 			}
 		}
+	}
 }
 
 // Returns the text of the given (text) node, possibly merging subsequent text nodes
 function getNodeText(e)
 {
 	var t = ""; 
-	while (e && e.nodeName == "#text")
-		{
+	while(e && e.nodeName == "#text") {
 		t += e.nodeValue;
 		e = e.nextSibling;
-		}
+	}
 	return t;
 }
+

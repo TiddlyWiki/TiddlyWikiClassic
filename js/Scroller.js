@@ -1,6 +1,6 @@
-// ---------------------------------------------------------------------------------
-// Scroller animation
-// ---------------------------------------------------------------------------------
+//--
+//-- Scroller animation
+//--
 
 function Scroller(targetElement,slowly)
 {
@@ -15,16 +15,13 @@ function Scroller(targetElement,slowly)
 Scroller.prototype.tick = function()
 {
 	this.progress += this.step;
-	if(this.progress > 1)
-		{
+	if(this.progress > 1) {
 		window.scrollTo(0,this.targetScroll);
 		return false;
-		}
-	else
-		{
+	} else {
 		var f = Animator.slowInSlowOut(this.progress);
 		window.scrollTo(0,this.startScroll + (this.targetScroll-this.startScroll) * f);
 		return true;
-		}
-}
+	}
+};
 

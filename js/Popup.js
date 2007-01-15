@@ -1,6 +1,6 @@
-// ---------------------------------------------------------------------------------
-// Popup menu
-// ---------------------------------------------------------------------------------
+//--
+//-- Popup menu
+//--
 
 var Popup = {
 	stack: [] // Array of objects with members root: and popup:
@@ -12,18 +12,19 @@ Popup.create = function(root)
 	var popup = createTiddlyElement(document.body,"ol","popup","popup");
 	Popup.stack.push({root: root, popup: popup});
 	return popup;
-}
+};
 
 Popup.onDocumentClick = function(e)
 {
-	if (!e) var e = window.event;
+	if (!e)
+		e = window.event;
 	var target = resolveTarget(e);
 	if(e.eventPhase == undefined)
 		Popup.remove();
 	else if(e.eventPhase == Event.BUBBLING_PHASE || e.eventPhase == Event.AT_TARGET)
 		Popup.remove();
 	return true;
-}
+};
 
 Popup.show = function(unused,slowly)
 {
@@ -45,24 +46,22 @@ Popup.show = function(unused,slowly)
 		anim.startAnimating(new Scroller(curr.popup,slowly));
 	else
 		window.scrollTo(0,ensureVisible(curr.popup));
-}
+};
 
 Popup.remove = function()
 {
-	if(Popup.stack.length > 0)
-		{
+	if(Popup.stack.length > 0) {
 		Popup.removeFrom(0);
-		}
-}
+	}
+};
 
 Popup.removeFrom = function(from)
 {
-	for(var t=Popup.stack.length-1; t>=from; t--)
-		{
+	for(var t=Popup.stack.length-1; t>=from; t--) {
 		var p = Popup.stack[t];
 		removeClass(p.root,"highlight");
 		p.popup.parentNode.removeChild(p.popup);
-		}
+	}
 	Popup.stack = Popup.stack.slice(0,from);
-}
+};
 
