@@ -2,6 +2,17 @@
 // Options cookie stuff
 // ---------------------------------------------------------------------------------
 
+config.optionHandlers = {
+	'txt': {
+ 		export: function(name) {return encodeCookie(config.options[name].toString());},
+		import: function(name,value) {config.options[name] = decodeCookie(value);}
+	},
+	'chk': {
+ 		export: function(name) {return config.options[name] ? "true" : "false";},
+		import: function(name,value) {config.options[name] = value == "true";}	
+	}	
+};
+
 function loadOptionsCookie()
 {
 	if(safeMode)
@@ -14,15 +25,9 @@ function loadOptionsCookie()
 			{
 			var name = cookies[c].substr(0,p).trim();
 			var value = cookies[c].substr(p+1).trim();
-			switch(name.substr(0,3))
-				{
-				case "txt":
-					config.options[name] = decodeCookie(value);
-					break;
-				case "chk":
-					config.options[name] = value == "true";
-					break;
-				}
+			var optType = name.substr(0,3);
+			if (config.optionHandlers[optType] && config.optionHandlers[optType].import)
+				config.optionHandlers[optType].import(name,value);
 			}
 		}
 }
@@ -32,15 +37,9 @@ function saveOptionCookie(name)
 	if(safeMode)
 		return;
 	var c = name + "=";
-	switch(name.substr(0,3))
-		{
-		case "txt":
-			c += encodeCookie(config.options[name].toString());
-			break;
-		case "chk":
-			c += config.options[name] ? "true" : "false";
-			break;
-		}
+	var optType = name.substr(0,3);
+	if (config.optionHandlers[optType] && config.optionHandlers[optType].export)
+		c += config.optionHandlers[optType].export(name);
 	c += "; expires=Fri, 1 Jan 2038 12:00:00 UTC; path=/";
 	document.cookie = c;
 }
