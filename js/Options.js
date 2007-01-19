@@ -4,12 +4,12 @@
 
 config.optionHandlers = {
 	'txt': {
- 		export: function(name) {return encodeCookie(config.options[name].toString());},
-		import: function(name,value) {config.options[name] = decodeCookie(value);}
+		get: function(name) {return encodeCookie(config.options[name].toString());},
+		set: function(name,value) {config.options[name] = decodeCookie(value);}
 	},
 	'chk': {
- 		export: function(name) {return config.options[name] ? "true" : "false";},
-		import: function(name,value) {config.options[name] = value == "true";}	
+		get: function(name) {return config.options[name] ? "true" : "false";},
+		set: function(name,value) {config.options[name] = value == "true";}	
 	}	
 };
 
@@ -26,8 +26,8 @@ function loadOptionsCookie()
 			var name = cookies[c].substr(0,p).trim();
 			var value = cookies[c].substr(p+1).trim();
 			var optType = name.substr(0,3);
-			if (config.optionHandlers[optType] && config.optionHandlers[optType].import)
-				config.optionHandlers[optType].import(name,value);
+			if (config.optionHandlers[optType] && config.optionHandlers[optType].set)
+				config.optionHandlers[optType].set(name,value);
 			}
 		}
 }
@@ -38,8 +38,8 @@ function saveOptionCookie(name)
 		return;
 	var c = name + "=";
 	var optType = name.substr(0,3);
-	if (config.optionHandlers[optType] && config.optionHandlers[optType].export)
-		c += config.optionHandlers[optType].export(name);
+	if (config.optionHandlers[optType] && config.optionHandlers[optType].get)
+		c += config.optionHandlers[optType].get(name);
 	c += "; expires=Fri, 1 Jan 2038 12:00:00 UTC; path=/";
 	document.cookie = c;
 }
