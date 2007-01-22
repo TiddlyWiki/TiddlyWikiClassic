@@ -341,6 +341,8 @@ config.macros.option.types = {
 config.macros.option.createHelper = function(opt,place,params,def)
 {
     var c = document.createElement(def.elementType);
+    if (def.typeValue)
+        c.setAttribute("type",def.typeValue);
     c[def.eventName] = config.macros.option.onChangeOption;
     c.setAttribute("option",opt);
 	if (params[1])
@@ -349,8 +351,6 @@ config.macros.option.createHelper = function(opt,place,params,def)
     	c.className = def.className;
     place.appendChild(c);
     c[def.valueField] = config.options[opt];
-    if (def.typeValue)
-        c.setAttribute("type",def.typeValue);
     return c;
 };
 
