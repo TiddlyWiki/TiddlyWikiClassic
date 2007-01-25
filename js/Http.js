@@ -62,7 +62,7 @@ function doHttp(type,url,data,contentType,username,password,callback,params,head
 	}
 	// Install callback
 	x.onreadystatechange = function() {
-		if (x.readyState == 4 && callback) {
+		if (x.readyState == 4 && callback && (x.status !== undefined)) {
 			if([0, httpStatus.OK, httpStatus.ContentCreated, httpStatus.NoContent].contains(x.status))
 				callback(true,params,x.responseText,url,x);
 			else
