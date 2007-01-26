@@ -16,8 +16,7 @@ Popup.create = function(root)
 
 Popup.onDocumentClick = function(e)
 {
-	if (!e)
-		e = window.event;
+	if (!e) var e = window.event;
 	var target = resolveTarget(e);
 	if(e.eventPhase == undefined)
 		Popup.remove();
