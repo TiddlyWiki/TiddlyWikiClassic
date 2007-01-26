@@ -6,7 +6,7 @@ function getParser(tiddler)
 {
 	if(tiddler!=null) {
 		for(var i in config.parsers) {
-			if(tiddler.isTagged(config.parsers[i].formatTag)||(tiddler.fields&&config.parsers[i].format&&tiddler.fields["wikiformat"]==config.parsers[i].format)) {
+			if(tiddler.isTagged(config.parsers[i].formatTag) || (config.parsers[i].format && tiddler.fields["wikiformat"] == config.parsers[i].format)) {
 				return config.parsers[i];
 			}
 		}

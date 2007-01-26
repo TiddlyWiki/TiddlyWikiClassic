@@ -47,11 +47,9 @@ Tiddler.prototype.incChangeCount = function()
 // Returns true if the tiddler has been updated since the tiddler was created or downloaded
 Tiddler.prototype.isTouched = function()
 {
-	var changeCount = 0;
-	if(this.fields) {
-		if(this.fields['changecount'])
-			changeCount = this.fields['changecount'];
-	}
+	var changeCount = this.fields['changecount'];
+	if(changeCount === undefined)
+		changeCount = 0;
 	return changeCount > 0;
 };
 

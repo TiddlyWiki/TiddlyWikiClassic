@@ -73,8 +73,6 @@ TiddlyWiki.prototype.setValue = function(tiddler,fieldName,value)
 		return;
 	fieldName = fieldName.toLowerCase();
 	var isRemove = (value === undefined) || (value === null);
-	if(!t.fields)
-		t.fields = {};
 	var accessor = TiddlyWiki.standardFieldAccess[fieldName];
 	if(accessor) {
 		if(isRemove)
@@ -132,7 +130,7 @@ TiddlyWiki.prototype.getValue = function(tiddler,fieldName)
 	if(accessor) {
 		return accessor.get(t);
 	}
-	return t.fields ? t.fields[fieldName] : undefined;
+	return t.fields[fieldName];
 };
 
 // Calls the callback function for every field in the tiddler.
@@ -145,13 +143,11 @@ TiddlyWiki.prototype.forEachField = function(tiddler,callback,onlyExtendedFields
 	var t = this.resolveTiddler(tiddler);
 	if(!t)
 		return undefined;
-	if(t.fields) {
-		for(var n in t.fields) {
-			var result = callback(t,n,t.fields[n]);
-			if(result)
-				return result;
+	for(var n in t.fields) {
+		var result = callback(t,n,t.fields[n]);
+		if(result)
+			return result;
 		}
-	}
 	if(onlyExtendedFields)
 		return undefined;
 	for(var n in TiddlyWiki.standardFieldAccess) {
