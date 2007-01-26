@@ -120,6 +120,7 @@ config.macros.list.all.prompt = "All tiddlers in alphabetical order";
 config.macros.list.missing.prompt = "Tiddlers that have links to them but are not defined";
 config.macros.list.orphans.prompt = "Tiddlers that are not linked to from any other tiddlers";
 config.macros.list.shadowed.prompt = "Tiddlers shadowed with default contents";
+config.macros.list.touched.prompt = "Tiddlers that have been modified locally";
 
 merge(config.macros.closeAll,{
 	label: "close all",
