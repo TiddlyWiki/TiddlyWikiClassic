@@ -94,6 +94,9 @@ a.tiddlyLinkNonExisting.shadow {font-weight:bold;}
 .txtMainTab .tabContents li {list-style:none;}
 .tabContents li.listLink { margin-left:.75em;}
 
+#contentWrapper {display:block;}
+#splashScreen {display:none;}
+
 #displayArea {margin:1em 17em 0em 14em;}
 
 .toolbar {text-align:right; font-size:.9em; visibility:hidden;}
