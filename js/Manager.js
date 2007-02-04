@@ -43,6 +43,7 @@ config.macros.plugins.refresh = function(listWrapper,params)
 	for(t=0; t<plugins.length; t++)
 		{
 		var p = plugins[t];
+		p.size = p.tiddler.text ? p.tiddler.text.length : 0;
 		p.forced = p.tiddler.isTagged("systemConfigForce");
 		p.disabled = p.tiddler.isTagged("systemConfigDisable");
 		p.Selected = selectedRows.indexOf(plugins[t].title) != -1;

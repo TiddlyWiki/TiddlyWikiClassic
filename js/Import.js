@@ -106,6 +106,7 @@ config.macros.importTiddlers.onLoad = function(status,params,responseText,url,xh
 		t.modifier = tiddler.modifier;
 		t.text = wikifyPlain(title,importStore,100).substr(0,100);
 		t.tags = tiddler.tags;
+		t.size = tiddler.text ? tiddler.text.length : 0;
 		tiddlers.push(t);
 		});
 	wizard.setValue("store",importStore);

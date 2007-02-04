@@ -137,6 +137,27 @@ ListView.columnTypes.String = {
 		}
 };
 
+ListView.columnTypes.Size = {
+	sizeTemplates:
+		[
+		{unit:1024*1024*1024,template:"%0GB"},
+		{unit:1024*1024,template:"%0MB"},
+		{unit:1024,template:"%0KB"},
+		{unit:1,template:"%0B"}
+		],
+	createHeader: ListView.columnTypes.String.createHeader,
+	createItem: function(place,listObject,field,columnTemplate,col,row)
+		{
+			var v = listObject[field];
+			if(v != undefined) {
+				var t = 0;
+				while(t<this.sizeTemplates.length-1 && v<this.sizeTemplates[t].unit)
+					t++;
+				createTiddlyText(place,this.sizeTemplates[t].template.format([Math.round(v/this.sizeTemplates[t].unit)]));
+			}
+		}
+};
+
 ListView.columnTypes.Link = {
 	createHeader: ListView.columnTypes.String.createHeader,
 	createItem: function(place,listObject,field,columnTemplate,col,row)
