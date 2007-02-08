@@ -442,7 +442,7 @@ Story.prototype.search = function(text,useCaseSensitive,useRegExp)
 	highlightHack = new RegExp(useRegExp ?	 text : text.escapeRegExp(),useCaseSensitive ? "mg" : "img");
 	var matches = store.search(highlightHack,"title","excludeSearch");
 	var titles = [];
-	for(var t=matches.length-1; t>=0; t--)
+	for(var t=0;t<matches.length;t++)
 		titles.push(matches[t].title);
 	this.displayTiddlers(null,titles);
 	highlightHack = null;
