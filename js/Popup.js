@@ -6,10 +6,10 @@ var Popup = {
 	stack: [] // Array of objects with members root: and popup:
 	};
 
-Popup.create = function(root)
+Popup.create = function(root,elem,theClass)
 {
 	Popup.remove();
-	var popup = createTiddlyElement(document.body,"ol","popup","popup");
+	var popup = createTiddlyElement(document.body,elem ? elem : "ol","popup",theClass ? theClass : "popup");
 	Popup.stack.push({root: root, popup: popup});
 	return popup;
 };
