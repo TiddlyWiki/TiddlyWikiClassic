@@ -97,7 +97,7 @@ function refreshPageTemplate(title)
 {
 	var stash = createTiddlyElement(document.body,"div");
 	stash.style.display = "none";
-	var display = document.getElementById("tiddlerDisplay");
+	var display = document.getElementById("storyDisplay");
 	var nodes,t;
 	if(display)
 		{
@@ -109,13 +109,15 @@ function refreshPageTemplate(title)
 	if(!title)
 		title = "PageTemplate";
 	var html = store.getRecursiveTiddlerText(title,null,10);
+	// Hack due to http://trac.tiddlywiki.org/tiddlywiki/ticket/283
+	html = html.replace(/tiddlerDisplay/,"storyDisplay");
 	wrapper.innerHTML = html;
 	applyHtmlMacros(wrapper);
 	refreshElements(wrapper);
-	display = document.getElementById("tiddlerDisplay");
+	display = document.getElementById("storyDisplay");
 	removeChildren(display);
 	if(!display)
-		display = createTiddlyElement(wrapper,"div","tiddlerDisplay");
+		display = createTiddlyElement(wrapper,"div","storyDisplay");
 	nodes = stash.childNodes;
 	for(t=nodes.length-1; t>=0; t--)
 		display.appendChild(nodes[t]);

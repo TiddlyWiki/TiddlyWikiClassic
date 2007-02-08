@@ -229,7 +229,7 @@ function insertSpacer(place)
 // Remove all children of a node
 function removeChildren(e)
 {
-	while(e.hasChildNodes())
+	while(e && e.hasChildNodes())
 		e.removeChild(e.firstChild);
 }
 

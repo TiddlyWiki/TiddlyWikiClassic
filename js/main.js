@@ -30,7 +30,7 @@ function main()
 		params = params.parseParams("open",null,false);
 	store = new TiddlyWiki();
 	invokeParamifier(params,"oninit");
-	story = new Story("tiddlerDisplay","tiddler");
+	story = new Story("storyDisplay","tiddler");
 	addEvent(document,"click",Popup.onDocumentClick);
 	saveTest();
 	loadOptionsCookie();
