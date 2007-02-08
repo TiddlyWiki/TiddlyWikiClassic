@@ -524,9 +524,11 @@ Story.prototype.saveTiddler = function(title,minorUpdate)
 			minorUpdate = !minorUpdate;
 		var newDate = new Date();
 		var tiddler = store.saveTiddler(title,newTitle,fields.text,config.options.txtUserName,minorUpdate ? undefined : newDate,fields.tags);
+		store.suspendNotifications();
 		for(var n in fields) {
 			if(!TiddlyWiki.isStandardField(n))
 				store.setValue(newTitle,n,fields[n]);
+		store.resumeNotifications();
 		}
 		if(config.options.chkAutoSave)
 			saveChanges(null,[tiddler]);
