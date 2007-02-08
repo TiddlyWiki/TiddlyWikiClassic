@@ -511,11 +511,11 @@ Story.prototype.saveTiddler = function(title,minorUpdate)
 		this.gatherSaveFields(tiddlerElem,fields);
 		var newTitle = fields.title ? fields.title : title;
 		if(store.tiddlerExists(newTitle) && newTitle != title) {
-			if(confirm(config.messages.overwriteWarning.format([newTitle.toString()])))
-				this.closeTiddler(newTitle,false,false);
-			else
+			if(!confirm(config.messages.overwriteWarning.format([newTitle.toString()])))
 				return null;
 		}
+		if(newTitle != title)
+			this.closeTiddler(newTitle,false,false);
 		tiddlerElem.id = this.idPrefix + newTitle;
 		tiddlerElem.setAttribute("tiddler",newTitle);
 		tiddlerElem.setAttribute("template",DEFAULT_VIEW_TEMPLATE);
