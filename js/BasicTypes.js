@@ -82,7 +82,7 @@ Array.prototype.containsAll = function(items)
 // Push a new value into an array only if it is not already present in the array. If the optional unique parameter is false, it reverts to a normal push
 Array.prototype.pushUnique = function(item,unique)
 {
-	if(unique != undefined && unique == false) {
+	if(unique === false) {
 		this.push(item);
 	} else {
 		if(this.indexOf(item) == -1)
