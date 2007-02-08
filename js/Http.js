@@ -50,16 +50,9 @@ var httpStatus = {
 function doHttp(type,url,data,contentType,username,password,callback,params,headers)
 {
 	// Get an xhr object
-	var x;
-	try {
-		x = new XMLHttpRequest(); // Modern
-	} catch(ex) {
-		try {
-			x = new ActiveXObject("Msxml2.XMLHTTP"); // IE 6
-		} catch (ex2) {
-			return "Can't create XMLHttpRequest object";
-		}
-	}
+	var x = getXMLHttpRequest();
+	if(!x)
+		return "Can't create XMLHttpRequest object";
 	// Install callback
 	x.onreadystatechange = function() {
 		if (x.readyState == 4 && callback && (x.status !== undefined)) {
@@ -89,6 +82,21 @@ function doHttp(type,url,data,contentType,username,password,callback,params,head
 		x.send(data);
 	} catch (ex) {
 		return exceptionText(ex);
+	}
+	return x;
+}
+
+//# Obtain an XMLHttpRequest object, or null if there is a problem
+function getXMLHttpRequest()
+{
+	try {
+		var x = new XMLHttpRequest(); // Modern
+	} catch(ex) {
+		try {
+			x = new ActiveXObject("Msxml2.XMLHTTP"); // IE 6
+		} catch (ex2) {
+			return null;
+		}
 	}
 	return x;
 }
