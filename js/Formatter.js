@@ -120,7 +120,7 @@ config.formatters = [
 
 {
 	name: "heading",
-	match: "^!{1,5}",
+	match: "^!{1,6}",
 	termRegExp: /(\n)/mg,
 	handler: function(w)
 	{
