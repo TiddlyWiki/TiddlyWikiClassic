@@ -87,7 +87,6 @@ function Wikifier(source,formatter,highlightRegExp,tiddler)
 Wikifier.prototype.wikifyPlain = function()
 {
 	var e = createTiddlyElement(document.body,"div");
-	e.style.display = "none";
 	this.subWikify(e);
 	var text = getPlainText(e);
 	e.parentNode.removeChild(e);
