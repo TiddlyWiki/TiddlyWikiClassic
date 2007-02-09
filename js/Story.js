@@ -32,14 +32,15 @@ Story.prototype.forEachTiddler = function(fn)
 
 //# Display several tiddlers given their titles in an array. Parameters same as displayTiddler(), except:
 //# titles - array of string titles
-Story.prototype.displayTiddlers = function(srcElement,titles,template,animate,slowly,customFields)
+Story.prototype.displayTiddlers = function(srcElement,titles,template,animate,slowly,customFields,toggle)
 {
 	for(var t = titles.length-1;t>=0;t--)
 		this.displayTiddler(srcElement,titles[t],template,animate,slowly,customFields);
 };
 
 //# Display a given tiddler with a given template. If the tiddler is already displayed but with a different
-//# template, it is switched to the specified template
+//# template, it is switched to the specified template. If the tiddler does not exist, and if server hosting
+//# custom fields were provided, then an attempt is made to retrieve the tiddler from the server
 //# srcElement - reference to element from which this one is being opened -or-
 //#              special positions "top", "bottom"
 //# title - title of tiddler to display
@@ -49,12 +50,16 @@ Story.prototype.displayTiddlers = function(srcElement,titles,template,animate,sl
 //# animate - whether to perform animations
 //# slowly - whether to perform animations in slomo
 //# customFields - an optional list of name/value pairs to be assigned as tiddler fields (for edit templates)
-Story.prototype.displayTiddler = function(srcElement,title,template,animate,slowly,customFields)
+//# toggle - if true, causes the tiddler to be closed if it is already opened
+Story.prototype.displayTiddler = function(srcElement,title,template,animate,slowly,customFields,toggle)
 {
 	var place = document.getElementById(this.container);
 	var tiddlerElem = document.getElementById(this.idPrefix + title);
 	if(tiddlerElem) {
-		this.refreshTiddler(title,template,false,customFields);
+		if(toggling)
+			this.closeTiddler(title,true,slowly);
+		else
+			this.refreshTiddler(title,template,false,customFields);
 	} else {
 		var before = this.positionTiddler(srcElement);
 		tiddlerElem = this.createTiddler(place,before,title,template,customFields);
@@ -96,20 +101,35 @@ Story.prototype.positionTiddler = function(srcElement)
 	return before;
 };
 
-//# Create a tiddler frame at the appropriate place in a story column
+//# Create a tiddler frame at the appropriate place in a story column. If the tiddler doesn't exist,
+//# triggers an attempt to load it as a missing tiddler
 //# place - reference to parent element
 //# before - null, or reference to element before which to insert new tiddler
 //# title - title of new tiddler
 //# template - the name of the tiddler containing the template or one of the constants DEFAULT_VIEW_TEMPLATE and DEFAULT_EDIT_TEMPLATE
-//# customFields - an optional list of name/value pairs to be assigned as tiddler fields (for edit templates)
+//# customFields - an optional list of name/value pairs to be assigned as tiddler fields
 Story.prototype.createTiddler = function(place,before,title,template,customFields)
 {
 	var tiddlerElem = createTiddlyElement(null,"div",this.idPrefix + title,"tiddler");
 	tiddlerElem.setAttribute("refresh","tiddler");
 	place.insertBefore(tiddlerElem,before);
 	this.refreshTiddler(title,template,false,customFields);
+	if(!store.tiddlerExists(title))
+		this.loadMissingTiddler(title,customFields,tiddlerElem);
 	return tiddlerElem;
 };
+
+//# Attempts to load a missing tiddler from the server specified in the custom fields
+//#   title - title of the missing tiddler
+//#   fields - string of name:value; pairs
+//#   tiddlerElem - reference to the element that will contain the tiddler
+Story.prototype.loadMissingTiddler = function(title,fields,tiddlerElem)
+{
+	var tiddler = new Tiddler(title);
+	tiddler.fields = fields;
+	tiddler.fields['temp.callback'] = TiddlyWiki.updateTiddlerAndSave;
+	return invokeAdaptor('getTiddler',tiddler);
+}
 
 //# Overridable for choosing the name of the template to apply for a tiddler
 Story.prototype.chooseTemplateForTiddler = function(title,template)

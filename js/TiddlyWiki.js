@@ -515,15 +515,6 @@ TiddlyWiki.prototype.getDefaultCustomFields = function()
 	return this.defaultCustomFields;
 };
 
-//# Get a missing tiddler from the host specified in fields
-TiddlyWiki.prototype.getMissingTiddler = function(title,fields)
-{
-	var tiddler = new Tiddler(title);
-	tiddler.fields = fields;
-	tiddler.fields['temp.callback'] = TiddlyWiki.updateTiddlerAndSave;
-	return invokeAdaptor('getTiddler',tiddler);
-};
-
 TiddlyWiki.updateTiddlerAndSave = function(tiddler)
 {
 	var downloaded = new Date();

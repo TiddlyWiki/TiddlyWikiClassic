@@ -105,17 +105,7 @@ function onClickTiddlerLink(e)
 		var toggling = e.metaKey || e.ctrlKey;
 		if(config.options.chkToggleLinks)
 			toggling = !toggling;
-		var opening;
-		if(toggling && document.getElementById("tiddler" + title)) {
-			story.closeTiddler(title,true,e.shiftKey || e.altKey);
-		} else {
-			story.displayTiddler(theTarget,title,null,true,e.shiftKey || e.altKey,fields);
-			if(fields) {
-				var tiddlerElem = document.getElementById(story.idPrefix + title);
-				tiddlerElem.setAttribute("tiddlyFields",fields);
-				if(!store.tiddlerExists(title))
-					store.getMissingTiddler(title,convertCustomFieldsToHash(fields));
-			}
+		story.displayTiddler(theTarget,title,null,true,e.shiftKey || e.altKey,fields,toggling);
 		}
 	}
 	clearMessage();
@@ -277,5 +267,5 @@ function invokeAdaptor(fnName,params,fields)
 		delete adaptor;
 	}
 	return ret;
-};
+}
 
