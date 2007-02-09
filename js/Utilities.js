@@ -26,13 +26,13 @@ function createTiddlyButton(theParent,theText,theTooltip,theAction,theClass,theI
 	return theButton;
 }
 
-function createTiddlyLink(place,title,includeText,theClass,isStatic,linkedFromTiddler)
+function createTiddlyLink(place,title,includeText,theClass,isStatic,linkedFromTiddler,link)
 {
 	var text = includeText ? title : null;
 	var i = getTiddlyLinkInfo(title,theClass);
 	var btn = isStatic ? createExternalLink(place,"#" + title) : createTiddlyButton(place,text,i.subTitle,onClickTiddlerLink,i.classes);
 	btn.setAttribute("refresh","link");
-	btn.setAttribute("tiddlyLink",title);
+	btn.setAttribute("tiddlyLink",link ? link : title);
 	if(linkedFromTiddler) {
 		var fields = linkedFromTiddler.getInheritedFields();
 		if(fields) {
@@ -89,7 +89,7 @@ function createExternalLink(place,url)
 // Event handler for clicking on a tiddly link
 function onClickTiddlerLink(e)
 {
-	if(!e) var e = window.event;
+	if(!e) e = window.event;
 	var theTarget = resolveTarget(e);
 	var theLink = theTarget;
 	var title = null;
@@ -99,6 +99,8 @@ function onClickTiddlerLink(e)
 		fields = theLink.getAttribute("tiddlyFields");
 		theLink = theLink.parentNode;
 	} while(title == null && theLink != null);
+	if(!fields && !store.isShadowTiddler(title))
+		fields = store.getDefaultCustomFields();
 	if(title) {
 		var toggling = e.metaKey || e.ctrlKey;
 		if(config.options.chkToggleLinks)
@@ -111,6 +113,8 @@ function onClickTiddlerLink(e)
 			if(fields) {
 				var tiddlerElem = document.getElementById(story.idPrefix + title);
 				tiddlerElem.setAttribute("tiddlyFields",fields);
+				if(!store.tiddlerExists(title))
+					store.getMissingTiddler(title,convertCustomFieldsToHash(fields));
 			}
 		}
 	}
@@ -248,4 +252,30 @@ function alertAndThrow(m)
 	alert(m);
 	throw(m);
 }
+
+// Utility to invoke one of the adaptor functions
+function invokeAdaptor(fnName,params,fields)
+{
+	var ret = false;
+	if(!fields)
+		fields = params.fields;
+	if(!fields)
+		return ret;
+	var serverType = fields['server.type'];
+	if(!serverType)
+		serverType = fields['wikiformat'];
+	if(serverType)
+		serverType = serverType.toLowerCase();
+	if(!serverType || !config.adaptors[serverType] || !fields['server.host'])
+		return ret;
+	var adaptor = new config.adaptors[serverType];
+	if(adaptor) {
+		adaptor.openHost(fields['server.host']);
+		adaptor.openWorkspace(fields['server.workspace']);
+		ret = adaptor[fnName](params);
+		adaptor.close();
+		delete adaptor;
+	}
+	return ret;
+};
 

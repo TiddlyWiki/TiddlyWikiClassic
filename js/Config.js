@@ -13,6 +13,9 @@ var config = {
 	displayStartupTime: false // Whether to display startup time
 };
 
+// Adaptors
+config.adaptors = {};
+
 // Messages
 config.messages = {
 	messageClose: {},

@@ -2,9 +2,9 @@
 //-- Tiddler() object
 //--
 
-function Tiddler()
+function Tiddler(title)
 {
-	this.title = null;
+	this.title = title;
 	this.text = null;
 	this.modifier = null;
 	this.modified = new Date();

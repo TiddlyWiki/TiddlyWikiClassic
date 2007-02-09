@@ -21,20 +21,17 @@ config.macros.version.handler = function(place)
 config.macros.list.handler = function(place,macroName,params)
 {
 	var type = params[0] ? params[0] : "all";
-	var theList = document.createElement("ul");
-	place.appendChild(theList);
+	var list = document.createElement("ul");
+	place.appendChild(list);
 	if(this[type].prompt)
-		createTiddlyElement(theList,"li",null,"listTitle",this[type].prompt);
+		createTiddlyElement(list,"li",null,"listTitle",this[type].prompt);
 	var results;
 	if(this[type].handler)
 		results = this[type].handler(params);
 	for(var t = 0; t < results.length; t++) {
-		var theListItem = document.createElement("li");
-		theList.appendChild(theListItem);
-		if(typeof results[t] == "string")
-			createTiddlyLink(theListItem,results[t],true);
-		else
-			createTiddlyLink(theListItem,results[t].title,true);
+		var li = document.createElement("li");
+		list.appendChild(li);
+		createTiddlyLink(li,typeof results[t] == "string" ? results[t] : results[t].title,true);
 	}
 };
 
@@ -400,7 +397,9 @@ config.macros.newTiddler.createNewTiddlerButton = function(place,title,params,la
 	prompt = getParam(params,"prompt",prompt);
 	accessKey = getParam(params,"accessKey",accessKey);
 	newFocus = getParam(params,"focus",newFocus);
-	var customFields = getParam(params,"fields",newFocus);
+	var customFields = getParam(params,"fields");
+	if(!customFields && !store.isShadowTiddler(title))
+		customFields = store.getDefaultCustomFields();
 	var btn = createTiddlyButton(place,label,prompt,this.onClickNewTiddler,null,null,accessKey);
 	btn.setAttribute("newTitle",title);
 	btn.setAttribute("isJournal",isJournal);

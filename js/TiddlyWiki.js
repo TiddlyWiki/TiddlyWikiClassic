@@ -503,3 +503,38 @@ TiddlyWiki.prototype.getSaver = function()
 	return this.saver;
 };
 
+//# Set default customFields in "field:value;field2:value2;" format
+TiddlyWiki.prototype.setDefaultCustomFields = function(fields)
+{
+	this.defaultCustomFields = fields;
+};
+
+//# Return default customFields in "field:value;field2:value2;" format
+TiddlyWiki.prototype.getDefaultCustomFields = function()
+{
+	return this.defaultCustomFields;
+};
+
+//# Get a missing tiddler from the host specified in fields
+TiddlyWiki.prototype.getMissingTiddler = function(title,fields)
+{
+	var tiddler = new Tiddler(title);
+	tiddler.fields = fields;
+	tiddler.fields['temp.callback'] = TiddlyWiki.updateTiddlerAndSave;
+	return invokeAdaptor('getTiddler',tiddler);
+};
+
+TiddlyWiki.updateTiddlerAndSave = function(tiddler)
+{
+	var downloaded = new Date();
+	if(!tiddler.created)
+		tiddler.created = downloaded;
+	if(!tiddler.modified)
+		tiddler.modified = tiddler.created;
+	tiddler.fields['downloaded'] = downloaded.convertToYYYYMMDDHHMM();
+	tiddler.fields['changecount'] = -1;
+	store.saveTiddler(tiddler.title,tiddler.title,tiddler.text,tiddler.modifier,tiddler.modified,tiddler.tags,tiddler.fields);
+	if(config.options.chkAutoSave)
+		saveChanges();
+};
+

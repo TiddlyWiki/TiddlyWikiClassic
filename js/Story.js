@@ -549,3 +549,23 @@ Story.prototype.permaView = function()
 		window.location.hash = t;
 };
 
+Story.prototype.getHostedTiddler = function(title,callback)
+{
+	var tiddler = store.fetchTiddler(title);
+	if(!tiddler) {
+		tiddler = new Tiddler(title);
+		tiddler.fields = convertCustomFieldsToHash(document.getElementById(this.idPrefix + title).getAttribute("tiddlyFields"));
+	}
+	tiddler.fields['temp.callback'] = callback;
+	return invokeAdaptor('getTiddler',tiddler);
+};
+
+Story.prototype.putHostedTiddler = function(title,callback)
+{
+	var tiddler = store.fetchTiddler(title);
+	if(!tiddler)
+		return false;
+	tiddler.fields['temp.callback'] = callback;
+	return invokeAdaptor('putTiddler',tiddler);
+};
+
