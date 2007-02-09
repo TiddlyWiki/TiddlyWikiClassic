@@ -523,13 +523,12 @@ Story.prototype.saveTiddler = function(title,minorUpdate)
 		if(config.options.chkForceMinorUpdate)
 			minorUpdate = !minorUpdate;
 		var newDate = new Date();
-		store.suspendNotifications();
+		var extendedFields = {};
 		for(var n in fields) {
 			if(!TiddlyWiki.isStandardField(n))
-				store.setValue(newTitle,n,fields[n]);
-		store.resumeNotifications();
-		var tiddler = store.saveTiddler(title,newTitle,fields.text,config.options.txtUserName,minorUpdate ? undefined : newDate,fields.tags);
-		}
+				extendedFields[n] = fields[n];
+			}
+		var tiddler = store.saveTiddler(title,newTitle,fields.text,config.options.txtUserName,minorUpdate ? undefined : newDate,fields.tags,extendedFields);
 		if(config.options.chkAutoSave)
 			saveChanges(null,[tiddler]);
 		return newTitle;
