@@ -100,7 +100,7 @@ function onClickTiddlerLink(e)
 		theLink = theLink.parentNode;
 	} while(title == null && theLink != null);
 	if(!fields && !store.isShadowTiddler(title))
-		fields = store.getDefaultCustomFields();
+		fields = String.encodeHashMap(config.defaultCustomFields);
 	if(title) {
 		var toggling = e.metaKey || e.ctrlKey;
 		if(config.options.chkToggleLinks)
@@ -109,20 +109,6 @@ function onClickTiddlerLink(e)
 	}
 	clearMessage();
 	return false;
-}
-
-// Converts customFields in "field:value;field2:value2;" format into a hash
-function convertCustomFieldsToHash(customFields)
-{
-	fields = {};
-	var fieldsRegExp = /([^:]*):([^;]*);/mg;
-	fieldsRegExp.lastIndex = 0;
-	var match = fieldsRegExp.exec(customFields);
-	while(match) {
-		fields[match[1]] = match[2];
-		match = fieldsRegExp.exec(customFields);
-	}
-	return fields;
 }
 
 // Create a button for a tag with a popup listing all the tiddlers that it tags
@@ -267,4 +253,3 @@ function invokeAdaptor(fnName,params,fields)
 	}
 	return ret;
 }
-

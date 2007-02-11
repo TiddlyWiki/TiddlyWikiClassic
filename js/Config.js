@@ -16,6 +16,9 @@ var config = {
 // Adaptors
 config.adaptors = {};
 
+// Custom fields to be automatically added to new tiddlers
+config.defaultCustomFields = {};
+
 // Messages
 config.messages = {
 	messageClose: {},

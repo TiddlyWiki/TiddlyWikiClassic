@@ -49,7 +49,7 @@ Story.prototype.displayTiddlers = function(srcElement,titles,template,animate,sl
 //#            null or undefined to indicate the current template if there is one, DEFAULT_VIEW_TEMPLATE if not
 //# animate - whether to perform animations
 //# slowly - whether to perform animations in slomo
-//# customFields - an optional list of name:value; pairs to be assigned as tiddler fields (for edit templates)
+//# customFields - an optional list of name:"value" pairs to be assigned as tiddler fields (for edit templates)
 //# toggle - if true, causes the tiddler to be closed if it is already opened
 Story.prototype.displayTiddler = function(srcElement,title,template,animate,slowly,customFields,toggle)
 {
@@ -108,7 +108,7 @@ Story.prototype.positionTiddler = function(srcElement)
 //# before - null, or reference to element before which to insert new tiddler
 //# title - title of new tiddler
 //# template - the name of the tiddler containing the template or one of the constants DEFAULT_VIEW_TEMPLATE and DEFAULT_EDIT_TEMPLATE
-//# customFields - an optional list of name:value; pairs to be assigned as tiddler fields
+//# customFields - an optional list of name:"value" pairs to be assigned as tiddler fields
 Story.prototype.createTiddler = function(place,before,title,template,customFields)
 {
 	var tiddlerElem = createTiddlyElement(null,"div",this.idPrefix + title,"tiddler");
@@ -117,13 +117,13 @@ Story.prototype.createTiddler = function(place,before,title,template,customField
 	place.insertBefore(tiddlerElem,before);
 	this.refreshTiddler(title,template,false,customFields);
 	if(!store.tiddlerExists(title))
-		this.loadMissingTiddler(title,convertCustomFieldsToHash(customFields),tiddlerElem);
+		this.loadMissingTiddler(title,customFields.decodeHashMap(),tiddlerElem);
 	return tiddlerElem;
 };
 
 //# Attempts to load a missing tiddler from the server specified in the custom fields
 //#   title - title of the missing tiddler
-//#   fields - string of name:value; pairs
+//#   fields - string of name:"value" pairs
 //#   tiddlerElem - reference to the element that will contain the tiddler
 Story.prototype.loadMissingTiddler = function(title,fields,tiddlerElem)
 {
@@ -172,7 +172,7 @@ Story.prototype.refreshTiddler = function(title,template,force,customFields)
 					var text = template=="EditTemplate" ?
 								config.views.editor.defaultText.format([title]) :
 								config.views.wikified.defaultText.format([title]);
-					var fields = customFields ? convertCustomFieldsToHash(customFields) : null;
+					var fields = customFields ? customFields.decodeHashMap() : null;
 					tiddler.set(title,text,config.views.wikified.defaultModifier,version.date,[],version.date,fields);
 				}
 			}
@@ -210,26 +210,16 @@ Story.prototype.refreshTiddler = function(title,template,force,customFields)
 //# Add hidden input elements for the custom fields of a tiddler
 Story.prototype.addCustomFields = function(place,customFields)
 {
-	var fieldsPattern = "([^:]*):([^;]*);";
-	var fieldsRegExp = new RegExp(fieldsPattern,"mg");
-	var fields = [];
-	var lastMatch = 0;
-	var match = fieldsRegExp.exec(customFields);
-	while(match && match.index == lastMatch) {
-		fields.push({field: match[1], value: match[2]});
-		lastMatch = match.index + match[0].length;
-		fieldsRegExp.lastIndex = lastMatch;
-		match = fieldsRegExp.exec(customFields);
-	}
+	var fields = customFields.decodeHashMap();
 	var w = document.createElement("div");
 	w.style.display = "none";
 	place.appendChild(w);
-	for(var t=0; t<fields.length; t++) {
+	for(var t in fields) {
 		var e = document.createElement("input");
 		e.setAttribute("type","text");
-		e.setAttribute("value",fields[t].value);
+		e.setAttribute("value",fields[t]);
 		w.appendChild(e);
-		e.setAttribute("edit",fields[t].field);
+		e.setAttribute("edit",t);
 	}
 };
 
@@ -576,7 +566,7 @@ Story.prototype.getHostedTiddler = function(title,callback)
 	var tiddler = store.fetchTiddler(title);
 	if(!tiddler) {
 		tiddler = new Tiddler(title);
-		tiddler.fields = convertCustomFieldsToHash(document.getElementById(this.idPrefix + title).getAttribute("tiddlyFields"));
+		tiddler.fields = String(document.getElementById(this.idPrefix + title).getAttribute("tiddlyFields")).decodeHashMap();
 	}
 	tiddler.fields['temp.callback'] = callback;
 	return invokeAdaptor('getTiddler',tiddler);

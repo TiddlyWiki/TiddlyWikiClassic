@@ -248,6 +248,25 @@ String.encodeTiddlyLinkList = function(list)
 	}
 };
 
+// Convert a string as a sequence of name:"value" pairs into a hashmap
+String.prototype.decodeHashMap = function()
+{
+	var fields = customFields.parseParams("anon","",false);
+	var r = {};
+	for(var t=1; t<fields.length; t++)
+		r[fields[t].name] = fields[t].value;
+	return r;
+}
+
+// Static method to encode a hashmap into a name:"value"... string
+String.encodeHashMap = function(hashmap)
+{
+	var r = [];
+	for(var t in hashmap)
+		r.push(t + ':"' + hashmap[t] + '"')
+	return r.join(" ");
+};
+
 // Static method to left-pad a string with 0s to a certain width
 String.zeroPad = function(n,d)
 {

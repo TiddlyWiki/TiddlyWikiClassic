@@ -503,18 +503,6 @@ TiddlyWiki.prototype.getSaver = function()
 	return this.saver;
 };
 
-//# Set default customFields in "field:value;field2:value2;" format
-TiddlyWiki.prototype.setDefaultCustomFields = function(fields)
-{
-	this.defaultCustomFields = fields;
-};
-
-//# Return default customFields in "field:value;field2:value2;" format
-TiddlyWiki.prototype.getDefaultCustomFields = function()
-{
-	return this.defaultCustomFields;
-};
-
 TiddlyWiki.updateTiddlerAndSave = function(tiddler)
 {
 	var downloaded = new Date();
