@@ -49,14 +49,14 @@ Story.prototype.displayTiddlers = function(srcElement,titles,template,animate,sl
 //#            null or undefined to indicate the current template if there is one, DEFAULT_VIEW_TEMPLATE if not
 //# animate - whether to perform animations
 //# slowly - whether to perform animations in slomo
-//# customFields - an optional list of name/value pairs to be assigned as tiddler fields (for edit templates)
+//# customFields - an optional list of name:value; pairs to be assigned as tiddler fields (for edit templates)
 //# toggle - if true, causes the tiddler to be closed if it is already opened
 Story.prototype.displayTiddler = function(srcElement,title,template,animate,slowly,customFields,toggle)
 {
 	var place = document.getElementById(this.container);
 	var tiddlerElem = document.getElementById(this.idPrefix + title);
 	if(tiddlerElem) {
-		if(toggling)
+		if(toggle)
 			this.closeTiddler(title,true,slowly);
 		else
 			this.refreshTiddler(title,template,false,customFields);
@@ -79,7 +79,7 @@ Story.prototype.displayTiddler = function(srcElement,title,template,animate,slow
 Story.prototype.positionTiddler = function(srcElement)
 {
 	var place = document.getElementById(this.container);
-	var before;
+	var before = null;
 	if(typeof srcElement == "string") {
 		switch(srcElement) {
 			case "top":
@@ -91,12 +91,13 @@ Story.prototype.positionTiddler = function(srcElement)
 		}
 	} else {
 		var after = this.findContainingTiddler(srcElement);
-		if(after == null)
+		if(after == null) {
 			before = place.firstChild;
-		else if(after.nextSibling)
+		} else if(after.nextSibling) {
 			before = after.nextSibling;
-		else
-			before = null;
+			if(before.nodeType != 1)
+				before = null;
+		}
 	}
 	return before;
 };
@@ -107,15 +108,16 @@ Story.prototype.positionTiddler = function(srcElement)
 //# before - null, or reference to element before which to insert new tiddler
 //# title - title of new tiddler
 //# template - the name of the tiddler containing the template or one of the constants DEFAULT_VIEW_TEMPLATE and DEFAULT_EDIT_TEMPLATE
-//# customFields - an optional list of name/value pairs to be assigned as tiddler fields
+//# customFields - an optional list of name:value; pairs to be assigned as tiddler fields
 Story.prototype.createTiddler = function(place,before,title,template,customFields)
 {
 	var tiddlerElem = createTiddlyElement(null,"div",this.idPrefix + title,"tiddler");
 	tiddlerElem.setAttribute("refresh","tiddler");
+	tiddlerElem.setAttribute("tiddlyFields",customFields);
 	place.insertBefore(tiddlerElem,before);
 	this.refreshTiddler(title,template,false,customFields);
 	if(!store.tiddlerExists(title))
-		this.loadMissingTiddler(title,customFields,tiddlerElem);
+		this.loadMissingTiddler(title,convertCustomFieldsToHash(customFields),tiddlerElem);
 	return tiddlerElem;
 };
 

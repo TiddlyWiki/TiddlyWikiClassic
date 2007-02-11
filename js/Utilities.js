@@ -106,7 +106,6 @@ function onClickTiddlerLink(e)
 		if(config.options.chkToggleLinks)
 			toggling = !toggling;
 		story.displayTiddler(theTarget,title,null,true,e.shiftKey || e.altKey,fields,toggling);
-		}
 	}
 	clearMessage();
 	return false;
