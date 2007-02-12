@@ -23,16 +23,16 @@ Tiddler.prototype.getLinks = function()
 	return this.links;
 };
 
-// Returns the fields that are inherited in string "field:value;field2:value2;" format
+// Returns the fields that are inherited in string field:"value" field2:"value2" format
 Tiddler.prototype.getInheritedFields = function()
 {
-	var ret = "";
+	var f = {};
 	for(i in this.fields) {
 		if(i=="server.host" || i=="server.workspace" || i=="wikiformat"|| i=="server.type") {
-			ret += i + ":" + this.fields[i] + ";";
+			f[i] = this.fields[i];
 		}
 	}
-	return ret=="" ? null : ret;
+	return String.encodeHashMap(f);
 };
 
 // Increment the changeCount of a tiddler
