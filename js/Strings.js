@@ -251,7 +251,7 @@ String.encodeTiddlyLinkList = function(list)
 // Convert a string as a sequence of name:"value" pairs into a hashmap
 String.prototype.decodeHashMap = function()
 {
-	var fields = customFields.parseParams("anon","",false);
+	var fields = this.parseParams("anon","",false);
 	var r = {};
 	for(var t=1; t<fields.length; t++)
 		r[fields[t].name] = fields[t].value;

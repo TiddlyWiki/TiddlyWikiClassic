@@ -241,7 +241,7 @@ function invokeAdaptor(fnName,params,fields)
 	// End of temporary compatibility
 	if(!fields)
 		return ret;
-	var adaptor = fields.getAdaptor();
+	var adaptor = params.getAdaptor();
 	if(adaptor) {
 		adaptor.openHost(fields['server.host']);
 		adaptor.openWorkspace(fields['server.workspace']);
