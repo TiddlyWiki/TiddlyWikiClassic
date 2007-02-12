@@ -182,3 +182,14 @@ Tiddler.prototype.generateFingerprint = function()
 {
 	return "0x" + Crypto.hexSha1Str(this.text);
 };
+
+Tiddler.prototype.getAdaptor = function()
+{
+	var serverType = this.fields['server.type'];
+	if(!serverType)
+		serverType = this.fields['wikiformat'];
+	if(!serverType || !config.adaptors[serverType] || !this.fields['server.host'])
+		return null;
+	else
+	 	return new config.adaptors[serverType];
+}

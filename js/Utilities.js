@@ -232,16 +232,16 @@ function invokeAdaptor(fnName,params,fields)
 	var ret = false;
 	if(!fields)
 		fields = params.fields;
+	// Temporary for compatibility
+	if(!(params instanceof Tiddler)) {
+		var tmpTiddler = new Tiddler();
+		tmpTiddler.fields = fields;
+		params = tmpTiddler;
+	}
+	// End of temporary compatibility
 	if(!fields)
 		return ret;
-	var serverType = fields['server.type'];
-	if(!serverType)
-		serverType = fields['wikiformat'];
-	if(serverType)
-		serverType = serverType.toLowerCase();
-	if(!serverType || !config.adaptors[serverType] || !fields['server.host'])
-		return ret;
-	var adaptor = new config.adaptors[serverType];
+	var adaptor = fields.getAdaptor();
 	if(adaptor) {
 		adaptor.openHost(fields['server.host']);
 		adaptor.openWorkspace(fields['server.workspace']);
