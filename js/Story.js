@@ -129,9 +129,22 @@ Story.prototype.loadMissingTiddler = function(title,fields,tiddlerElem)
 {
 	var tiddler = new Tiddler(title);
 	tiddler.fields = fields;
-	tiddler.fields['temp.callback'] = TiddlyWiki.updateTiddlerAndSave;
+	tiddler.fields['temp.callback'] = Story.loadTiddlerCallback;
 	return invokeAdaptor('getTiddler',tiddler);
 }
+
+Story.loadTiddlerCallback = function(tiddler)
+{
+	var downloaded = new Date();
+	if(!tiddler.created)
+		tiddler.created = downloaded;
+	if(!tiddler.modified)
+		tiddler.modified = tiddler.created;
+	tiddler.fields['downloaded'] = downloaded.convertToYYYYMMDDHHMM();
+	tiddler.fields['changecount'] = -1;
+	store.saveTiddler(tiddler.title,tiddler.title,tiddler.text,tiddler.modifier,tiddler.modified,tiddler.tags,tiddler.fields);
+	saveChanges(true);
+};
 
 //# Overridable for choosing the name of the template to apply for a tiddler
 Story.prototype.chooseTemplateForTiddler = function(title,template)
@@ -541,8 +554,7 @@ Story.prototype.saveTiddler = function(title,minorUpdate)
 				extendedFields[n] = fields[n];
 			}
 		var tiddler = store.saveTiddler(title,newTitle,fields.text,config.options.txtUserName,minorUpdate ? undefined : newDate,fields.tags,extendedFields);
-		if(config.options.chkAutoSave)
-			saveChanges(null,[tiddler]);
+		saveChanges(true,[tiddler]);
 		return newTitle;
 	}
 	return null;

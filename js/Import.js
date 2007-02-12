@@ -157,8 +157,7 @@ config.macros.importTiddlers.doImport = function(e)
 		createTiddlyLink(reportWrapper,rowNames[t],true);
 		createTiddlyElement(reportWrapper,"br");
 		}
-	if(config.options.chkAutoSave)
-		saveChanges(true);
+	saveChanges(true);
 	wizard.setButtons([
 			{caption: config.macros.importTiddlers.doneLabel, tooltip: config.macros.importTiddlers.donePrompt, onClick: config.macros.importTiddlers.onCancel}
 		]);

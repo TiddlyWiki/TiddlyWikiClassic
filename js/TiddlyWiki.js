@@ -503,17 +503,3 @@ TiddlyWiki.prototype.getSaver = function()
 	return this.saver;
 };
 
-TiddlyWiki.updateTiddlerAndSave = function(tiddler)
-{
-	var downloaded = new Date();
-	if(!tiddler.created)
-		tiddler.created = downloaded;
-	if(!tiddler.modified)
-		tiddler.modified = tiddler.created;
-	tiddler.fields['downloaded'] = downloaded.convertToYYYYMMDDHHMM();
-	tiddler.fields['changecount'] = -1;
-	store.saveTiddler(tiddler.title,tiddler.title,tiddler.text,tiddler.modifier,tiddler.modified,tiddler.tags,tiddler.fields);
-	if(config.options.chkAutoSave)
-		saveChanges();
-};
-
