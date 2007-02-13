@@ -26,13 +26,19 @@ function createTiddlyButton(theParent,theText,theTooltip,theAction,theClass,theI
 	return theButton;
 }
 
-function createTiddlyLink(place,title,includeText,theClass,isStatic,linkedFromTiddler,link)
+//# Create a link to a particular tiddler
+//#   place - element where the link should be created
+//#   title - title of target tiddler
+//#   includeText - flag for whether to include the title as the text of the link
+//#   theClass - custom CSS class for the link
+//#   linkedFromTiddler - tiddler from which to inherit extended fields  
+function createTiddlyLink(place,title,includeText,theClass,isStatic,linkedFromTiddler)
 {
 	var text = includeText ? title : null;
 	var i = getTiddlyLinkInfo(title,theClass);
 	var btn = isStatic ? createExternalLink(place,"#" + title) : createTiddlyButton(place,text,i.subTitle,onClickTiddlerLink,i.classes);
 	btn.setAttribute("refresh","link");
-	btn.setAttribute("tiddlyLink",link ? link : title);
+	btn.setAttribute("tiddlyLink",title);
 	if(linkedFromTiddler) {
 		var fields = linkedFromTiddler.getInheritedFields();
 		btn.setAttribute("tiddlyFields",fields);
