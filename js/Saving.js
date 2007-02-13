@@ -33,6 +33,12 @@ function updateMarkupBlock(s,blockName,tiddlerName)
 			"\n" + store.getRecursiveTiddlerText(tiddlerName,"") + "\n");
 }
 
+function autoSaveChanges(onlyIfDirty,tiddlers)
+{
+	if(config.options.chkAutoSave)
+		saveChanges(onlyIfDirty,tiddlers);
+}
+
 // Save this tiddlywiki with the pending changes
 function saveChanges(onlyIfDirty,tiddlers)
 {

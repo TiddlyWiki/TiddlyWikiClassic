@@ -144,7 +144,7 @@ Story.loadTiddlerCallback = function(tiddler)
 	tiddler.fields['downloaded'] = downloaded.convertToYYYYMMDDHHMM();
 	tiddler.fields['changecount'] = -1;
 	store.saveTiddler(tiddler.title,tiddler.title,tiddler.text,tiddler.modifier,tiddler.modified,tiddler.tags,tiddler.fields);
-	saveChanges(true);
+	autoSaveChanges();
 };
 
 //# Overridable for choosing the name of the template to apply for a tiddler
@@ -555,7 +555,7 @@ Story.prototype.saveTiddler = function(title,minorUpdate)
 				extendedFields[n] = fields[n];
 			}
 		var tiddler = store.saveTiddler(title,newTitle,fields.text,config.options.txtUserName,minorUpdate ? undefined : newDate,fields.tags,extendedFields);
-		saveChanges(true,[tiddler]);
+		autoSaveChanges(null,[tiddler]);
 		return newTitle;
 	}
 	return null;

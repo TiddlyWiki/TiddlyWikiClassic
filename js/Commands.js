@@ -51,7 +51,7 @@ config.commands.deleteTiddler.handler = function(event,src,title)
 	if (deleteIt) {
 		store.removeTiddler(title);
 		story.closeTiddler(title,true,event.shiftKey || event.altKey);
-		saveChanges(true);
+		autoSaveChanges();
 	}
 	return false;
 };
