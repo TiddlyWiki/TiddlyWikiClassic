@@ -182,14 +182,17 @@ function onClickError(e)
 	return false;
 }
 
-function createTiddlyDropDown(place,onchange,options)
+function createTiddlyDropDown(place,onchange,options,defaultValue)
 {
 	var sel = createTiddlyElement(place,"select");
 	sel.onchange = onchange;
 	for(var t=0; t<options.length; t++) {
 		var e = createTiddlyElement(sel,"option",null,null,options[t].caption);
 		e.value = options[t].name;
+		if(options[t].name == defaultValue)
+			e.selected = true;
 	}
+	return sel;
 }
 
 function createTiddlyError(place,title,text)
