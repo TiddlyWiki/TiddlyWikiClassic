@@ -90,7 +90,7 @@ config.commands.jump.handler = function(event,src,title)
 	var popup = Popup.create(src);
 	if(popup) {
 		story.forEachTiddler(function(title,element) {
-			createTiddlyLink(createTiddlyElement(popup,"li"),title,true);
+			createTiddlyLink(createTiddlyElement(popup,"li"),title,true,null,false,null,true);
 			});
 	}
 	Popup.show(popup,false);

@@ -31,14 +31,17 @@ function createTiddlyButton(theParent,theText,theTooltip,theAction,theClass,theI
 //#   title - title of target tiddler
 //#   includeText - flag for whether to include the title as the text of the link
 //#   theClass - custom CSS class for the link
-//#   linkedFromTiddler - tiddler from which to inherit extended fields  
-function createTiddlyLink(place,title,includeText,theClass,isStatic,linkedFromTiddler)
+//#   linkedFromTiddler - tiddler from which to inherit extended fields
+//#   noToggle - flag to force the link to open the target, even if chkToggleLinks is on
+function createTiddlyLink(place,title,includeText,theClass,isStatic,linkedFromTiddler,noToggle)
 {
 	var text = includeText ? title : null;
 	var i = getTiddlyLinkInfo(title,theClass);
 	var btn = isStatic ? createExternalLink(place,"#" + title) : createTiddlyButton(place,text,i.subTitle,onClickTiddlerLink,i.classes);
 	btn.setAttribute("refresh","link");
 	btn.setAttribute("tiddlyLink",title);
+	if(noToggle)
+		btn.setAttribute("noToggle","true");
 	if(linkedFromTiddler) {
 		var fields = linkedFromTiddler.getInheritedFields();
 		btn.setAttribute("tiddlyFields",fields);
@@ -98,9 +101,11 @@ function onClickTiddlerLink(e)
 	var theLink = theTarget;
 	var title = null;
 	var fields = null;
+	var noToggle = null;
 	do {
 		title = theLink.getAttribute("tiddlyLink");
 		fields = theLink.getAttribute("tiddlyFields");
+		noToggle = theLink.getAttribute("noToggle");
 		theLink = theLink.parentNode;
 	} while(title == null && theLink != null);
 	if(!fields && !store.isShadowTiddler(title))
@@ -109,6 +114,8 @@ function onClickTiddlerLink(e)
 		var toggling = e.metaKey || e.ctrlKey;
 		if(config.options.chkToggleLinks)
 			toggling = !toggling;
+		if(noToggle)
+			toggling = false;
 		story.displayTiddler(theTarget,title,null,true,e.shiftKey || e.altKey,fields,toggling);
 	}
 	clearMessage();
