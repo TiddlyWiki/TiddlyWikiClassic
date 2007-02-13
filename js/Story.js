@@ -117,7 +117,7 @@ Story.prototype.createTiddler = function(place,before,title,template,customField
 	place.insertBefore(tiddlerElem,before);
 	this.refreshTiddler(title,template,false,customFields);
 	if(!store.tiddlerExists(title))
-		this.loadMissingTiddler(title,customFields.decodeHashMap(),tiddlerElem);
+		this.loadMissingTiddler(title,customFields,tiddlerElem);
 	return tiddlerElem;
 };
 
@@ -128,6 +128,7 @@ Story.prototype.createTiddler = function(place,before,title,template,customField
 Story.prototype.loadMissingTiddler = function(title,fields,tiddlerElem)
 {
 	var tiddler = new Tiddler(title);
+	fields = typeof fields == "String" ?  fields.decodeHashMap() : {};
 	tiddler.fields = fields;
 	tiddler.fields['temp.callback'] = Story.loadTiddlerCallback;
 	return invokeAdaptor('getTiddler',tiddler);
