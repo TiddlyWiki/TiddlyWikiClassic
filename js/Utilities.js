@@ -241,29 +241,3 @@ function alertAndThrow(m)
 	alert(m);
 	throw(m);
 }
-
-// Utility to invoke one of the adaptor functions
-function invokeAdaptor(fnName,params,fields)
-{
-	var ret = false;
-	if(!fields)
-		fields = params.fields;
-	// Temporary for compatibility
-	if(!(params instanceof Tiddler)) {
-		var tmpTiddler = new Tiddler();
-		tmpTiddler.fields = fields;
-		params = tmpTiddler;
-	}
-	// End of temporary compatibility
-	if(!fields)
-		return ret;
-	var adaptor = params.getAdaptor();
-	if(adaptor) {
-		adaptor.openHost(fields['server.host']);
-		adaptor.openWorkspace(fields['server.workspace']);
-		ret = adaptor[fnName](params);
-		adaptor.close();
-		delete adaptor;
-	}
-	return ret;
-}

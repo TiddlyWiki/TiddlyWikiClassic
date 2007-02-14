@@ -131,7 +131,16 @@ Story.prototype.loadMissingTiddler = function(title,fields,tiddlerElem)
 	fields = typeof fields == "String" ?  fields.decodeHashMap() : {};
 	tiddler.fields = fields;
 	tiddler.fields['temp.callback'] = Story.loadTiddlerCallback;
-	return invokeAdaptor('getTiddler',tiddler);
+	var ret = false;
+	var adaptor = tiddler.getAdaptor();
+	if(adaptor) {
+		adaptor.openHost(fields['server.host']);
+		adaptor.openWorkspace(fields['server.workspace']);
+		ret = adaptor.getTiddler(tiddler);
+		adaptor.close();
+		delete adaptor;
+	}
+	return ret;
 }
 
 Story.loadTiddlerCallback = function(tiddler)
@@ -572,25 +581,5 @@ Story.prototype.permaView = function()
 		t = "#";
 	if(window.location.hash != t)
 		window.location.hash = t;
-};
-
-Story.prototype.getHostedTiddler = function(title,callback)
-{
-	var tiddler = store.fetchTiddler(title);
-	if(!tiddler) {
-		tiddler = new Tiddler(title);
-		tiddler.fields = String(document.getElementById(this.idPrefix + title).getAttribute("tiddlyFields")).decodeHashMap();
-	}
-	tiddler.fields['temp.callback'] = callback;
-	return invokeAdaptor('getTiddler',tiddler);
-};
-
-Story.prototype.putHostedTiddler = function(title,callback)
-{
-	var tiddler = store.fetchTiddler(title);
-	if(!tiddler)
-		return false;
-	tiddler.fields['temp.callback'] = callback;
-	return invokeAdaptor('putTiddler',tiddler);
 };
 
