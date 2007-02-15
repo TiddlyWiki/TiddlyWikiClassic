@@ -300,7 +300,7 @@ TiddlyWiki.prototype.importTiddlyWiki = function(text)
 {
 	// Crack out the content - will be refactored to share code with saveChanges()
 	var posOpeningDiv = text.indexOf(startSaveArea);
-	var limitClosingDiv = text.indexOf("<!--POST-BODY-END--"+">");
+	var limitClosingDiv = text.indexOf("<!--POST-BODY-START--"+">");
 	var posClosingDiv = text.lastIndexOf(endSaveArea,limitClosingDiv == -1 ? text.length : limitClosingDiv);
 	if((posOpeningDiv == -1) || (posClosingDiv == -1))
 		return config.messages.invalidFileError.format([url]);
