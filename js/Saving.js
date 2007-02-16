@@ -33,6 +33,35 @@ function updateMarkupBlock(s,blockName,tiddlerName)
 			"\n" + store.getRecursiveTiddlerText(tiddlerName,"") + "\n");
 }
 
+function updateOriginal(original, posDiv)
+{
+	if (!posDiv)
+		posDiv = locateStoreArea(original);
+	if((posDiv[0] == -1) || (posDiv[1] == -1)) {
+		alert(config.messages.invalidFileError.format([localPath]));
+		return;
+	}
+	var revised = original.substr(0,posDiv[0] + startSaveArea.length) + "\n" +
+				convertUnicodeToUTF8(store.allTiddlersAsHtml()) + "\n" +
+				original.substr(posDiv[1]);
+	var newSiteTitle = convertUnicodeToUTF8((wikifyPlain("SiteTitle") + " - " + wikifyPlain("SiteSubtitle")).htmlEncode());
+	revised = revised.replaceChunk("<title"+">","</title"+">"," " + newSiteTitle + " ");
+	revised = updateMarkupBlock(revised,"PRE-HEAD","MarkupPreHead");
+	revised = updateMarkupBlock(revised,"POST-HEAD","MarkupPostHead");
+	revised = updateMarkupBlock(revised,"PRE-BODY","MarkupPreBody");
+	revised = updateMarkupBlock(revised,"POST-BODY","MarkupPostBody");
+	return revised;
+}
+
+function locateStoreArea(original)
+{
+	// Locate the storeArea div's
+	var posOpeningDiv = original.indexOf(startSaveArea);
+	var limitClosingDiv = original.indexOf("<"+"!--POST-BODY-START--"+">");
+	var posClosingDiv = original.lastIndexOf(endSaveArea,limitClosingDiv == -1 ? original.length : limitClosingDiv);
+	return Array(posOpeningDiv,posClosingDiv);
+}
+
 function autoSaveChanges(onlyIfDirty,tiddlers)
 {
 	if(config.options.chkAutoSave)
@@ -65,15 +94,20 @@ function saveChanges(onlyIfDirty,tiddlers)
 			story.displayTiddler(null,config.messages.saveInstructions);
 		return;
 		}
-	// Locate the storeArea div's
-	var posOpeningDiv = original.indexOf(startSaveArea);
-	var limitClosingDiv = original.indexOf("<"+"!--POST-BODY-START--"+">");
-	var posClosingDiv = original.lastIndexOf(endSaveArea,limitClosingDiv == -1 ? original.length : limitClosingDiv);
-	if((posOpeningDiv == -1) || (posClosingDiv == -1))
-		{
+	// Locate the storeArea div's 
+	var posDiv = locateStoreArea(original);
+	if((posDiv[0] == -1) || (posDiv[1] == -1)) {
 		alert(config.messages.invalidFileError.format([localPath]));
 		return;
-		}
+	}
+	saveBackup(localPath,original);
+	saveRss(localPath);
+	saveEmpty(localPath,original,posDiv);
+	saveMain(localPath,original,posDiv);
+}
+	
+function saveBackup(localPath,original)
+{
 	// Save the backup
 	if(config.options.chkSaveBackups)
 		{
@@ -84,6 +118,10 @@ function saveChanges(onlyIfDirty,tiddlers)
 		else
 			alert(config.messages.backupFailed);
 		}
+}
+
+function saveRss(localPath)
+{
 	// Save Rss
 	if(config.options.chkGenerateAnRssFeed)
 		{
@@ -94,6 +132,10 @@ function saveChanges(onlyIfDirty,tiddlers)
 		else
 			alert(config.messages.rssFailed);
 		}
+}
+
+function saveEmpty(localPath,original,posDiv)
+{
 	// Save empty template
 	if(config.options.chkSaveEmptyTemplate)
 		{
@@ -111,19 +153,15 @@ function saveChanges(onlyIfDirty,tiddlers)
 		else
 			alert(config.messages.emptyFailed);
 		}
+}
+
+function saveMain(localPath,original,posDiv)
+{
 	var save;
 	try 
 		{
 		// Save new file
-		var revised = original.substr(0,posOpeningDiv + startSaveArea.length) + "\n" +
-					convertUnicodeToUTF8(store.allTiddlersAsHtml()) + "\n" +
-					original.substr(posClosingDiv);
-		var newSiteTitle = convertUnicodeToUTF8((wikifyPlain("SiteTitle") + " - " + wikifyPlain("SiteSubtitle")).htmlEncode());
-		revised = revised.replaceChunk("<title"+">","</title"+">"," " + newSiteTitle + " ");
-		revised = updateMarkupBlock(revised,"PRE-HEAD","MarkupPreHead");
-		revised = updateMarkupBlock(revised,"POST-HEAD","MarkupPostHead");
-		revised = updateMarkupBlock(revised,"PRE-BODY","MarkupPreBody");
-		revised = updateMarkupBlock(revised,"POST-BODY","MarkupPostBody");
+		var revised = updateOriginal(original, posDiv);
 		save = saveFile(localPath,revised);
 		}
 	catch (e) 
