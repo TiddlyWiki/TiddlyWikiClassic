@@ -19,7 +19,7 @@ var backstage = {
 		this.panel = document.getElementById("backstagePanel");
 		this.panelFooter = createTiddlyElement(this.panel,"div",null,"backstagePanelFooter");
 		this.panelBody = createTiddlyElement(this.panel,"div",null,"backstagePanelBody");
-		createTiddlyButton(this.panelFooter,"close","Close backstage",backstage.hidePanel);
+		createTiddlyButton(this.panelFooter,"close","Close backstage",function (e) {backstage.hidePanel(); return false;});
 		this.backstage.onmouseover = function(e) {
 			backstage.tabs.style.visibility = "visible";
 		};
