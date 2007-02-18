@@ -146,7 +146,7 @@ function saveEmpty(localPath,original,posDiv)
 			emptyPath = localPath.substr(0,p) + "\\empty.html";
 		else
 			emptyPath = localPath + ".empty.html";
-		var empty = original.substr(0,posOpeningDiv + startSaveArea.length) + original.substr(posClosingDiv);
+		var empty = original.substr(0,posDiv[0] + startSaveArea.length) + original.substr(posDiv[1]);
 		var emptySave = saveFile(emptyPath,empty);
 		if(emptySave)
 			displayMessage(config.messages.emptySaved,"file://" + emptyPath);
