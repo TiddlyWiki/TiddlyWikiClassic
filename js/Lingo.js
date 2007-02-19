@@ -52,12 +52,17 @@ merge(config.messages,{
 	tiddlerLoadError: "Error when loading tiddler '%0'",
 	wrongSaveFormat: "Cannot save with storage format '%0'. Using standard format for save.",
 	invalidFieldName: "Invalid field name %0",
-	fieldCannotBeChanged: "Field '%0' cannot be changed",
-	backstagePrompt: "backstage: "});
+	fieldCannotBeChanged: "Field '%0' cannot be changed"});
 
 merge(config.messages.messageClose,{
 	text: "close",
 	tooltip: "close this message area"});
+
+config.messages.backstage = {
+	open: {text: "backstage", icon: "↪", iconIE: "→", tooltip: "Open the backstage area to perform authoring and editing tasks"},
+	close: {text: "close", tooltip: "Close the backstage area"},
+	prompt: "backstage: "
+}
 
 config.messages.dates.months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November","December"];
 config.messages.dates.days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];

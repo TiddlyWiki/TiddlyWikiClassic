@@ -151,10 +151,12 @@ table.listView th, table.listView td, table.listView tr {padding:0px 3px 0px 3px
 
 .cascade {font-size:1.1em; position:absolute; overflow:hidden;}
 
-#backstage {position:absolute; z-index:100; width:100%;}
-#backstageTabs {visibility:hidden; position:relative; margin:0.5em 3em 0.2em 3em; font-size:1.1em; background:none; text-align:right;}
-#backstageTabs a {font-weight:bold; padding:0.2em 0.5em 0.2em 0.5em;}
-#backstagePanel {display:none; position:relative; margin:0em 3em 0em 3em; padding:1em 1em 1em 1em;}
+#backstageArea {display:none; position:relative; overflow: hidden; z-index:150; padding:0.2em 0.5em 0.2em 0.5em;}
+#backstageToolbar {position:relative;}
+#backstageArea a {font-weight:bold; margin-left:0.5em; padding:0.2em 0.5em 0.2em 0.5em;}
+#backstageButton {display:none; position:absolute; z-index:175; top:0em; right:0em; padding:0.2em 0.5em 0.2em 0.5em;}
+#backstage {position:relative; width:100%;}
+#backstagePanel {display:none; z-index:100; position:absolute; margin:0em 3em 0em 3em; padding:1em 1em 1em 1em;}
 .backstagePanelFooter {padding-top:0.2em; float:right;}
 .backstagePanelFooter a {padding:0.2em 0.4em 0.2em 0.4em;}
 #backstageCloak {display:none; z-index:50; position:absolute; width:100%; height:100px;}

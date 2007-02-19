@@ -106,10 +106,15 @@ td, tr {border:1px solid [[ColorPalette::TertiaryDark]];}
 .editor textarea {border:1px solid [[ColorPalette::PrimaryMid]]; width:100%;}
 .editorFooter {color:[[ColorPalette::TertiaryMid]];}
 
-.backstageSelTab {background:[[ColorPalette::Foreground]]; color:[[ColorPalette::Background]];}
-#backstagePanel {background:[[ColorPalette::Foreground]]; color:[[ColorPalette::Background]];}
+#backstageArea {background:[[ColorPalette::Foreground]]; color:[[ColorPalette::TertiaryDark]];}
+#backstageArea a {background:[[ColorPalette::Foreground]]; color:[[ColorPalette::Background]]; border:none;}
+#backstageArea a:hover {background:[[ColorPalette::SecondaryMid]]; color:[[ColorPalette::Foreground]]; }
+#backstageArea a.backstageSelTab {background:[[ColorPalette::Background]]; color:[[ColorPalette::Foreground]];}
+#backstageButton {background:[[ColorPalette::Foreground]]; color:[[ColorPalette::Background]];}
+#backstageButton .button {background:[[ColorPalette::Foreground]]; color:[[ColorPalette::Background]]; border:none;}
+#backstagePanel {background:[[ColorPalette::Background]];}
 .backstagePanelFooter .button {border:none; color:[[ColorPalette::Background]];}
 .backstagePanelFooter .button:hover {color:[[ColorPalette::Foreground]];}
-#backstageCloak {background:[[ColorPalette::Background]]; opacity:0.5; filter:'alpha(opacity:50)';}
+#backstageCloak {background:[[ColorPalette::Foreground]]; opacity:0.6; filter:'alpha(opacity:60)';}
 /*}}}*/</pre>
 </div>
