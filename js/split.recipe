@@ -24,6 +24,7 @@ js: FileSystem.js
 js: Http.js
 js: Utilities.js
 js: Animator.js
+js: Morpher.js
 js: Cascade.js
 js: Scroller.js
 js: Slider.js
