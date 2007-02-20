@@ -202,38 +202,44 @@ config.macros.importTiddlers.doImport = function(e)
 	var adaptor = wizard.getValue("adaptor");
 	var overwrite = new Array();
 	var t;
-	for(t=0; t<rowNames.length; t++)
-		{
+	for(t=0; t<rowNames.length; t++) {
 		if(store.tiddlerExists(rowNames[t]))
 			overwrite.push(rowNames[t]);
 	}
 	if(overwrite.length > 0)
 		if(!confirm(config.macros.importTiddlers.confirmOverwriteText.format([overwrite.join(", ")])))
 			return;
+	wizard.addStep(config.macros.importTiddlers.step4Title.format([rowNames.length]),config.macros.importTiddlers.step4Html);
+	for(t=0; t<rowNames.length; t++) {
+		var link = document.createElement("div");
+		createTiddlyLink(link,rowNames[t],true);
+		var place = wizard.getElement("markReport");
+		place.parentNode.insertBefore(link,place);
+		}
+	wizard.setValue("remainingImports",rowNames.length);
+	wizard.setButtons([
+			{caption: config.macros.importTiddlers.doneLabel, tooltip: config.macros.importTiddlers.donePrompt, onClick: config.macros.importTiddlers.onCancel}
+		]);
 	for(t=0; t<rowNames.length; t++)
 		{
 		var context = {};
 		var inbound = adaptor.getTiddler(rowNames[t],context,wizard,config.macros.importTiddlers.onGetTiddler);
 		}
-	wizard.addStep(config.macros.importTiddlers.step4Title.format([rowNames.length]),config.macros.importTiddlers.step4Html);
-	wizard.setButtons([
-			{caption: config.macros.importTiddlers.doneLabel, tooltip: config.macros.importTiddlers.donePrompt, onClick: config.macros.importTiddlers.onCancel}
-		]);
 	return false;
 }
 
 config.macros.importTiddlers.onGetTiddler = function(context,wizard)
 {
-	displayMessage("Back in onGetTiddler");
 	if(!context.status)
 		displayMessage("Error in importTiddlers.onGetTiddler: " + context.statusText);
 	var tiddler = context.tiddler;
 	store.saveTiddler(tiddler.title, tiddler.title, tiddler.text, tiddler.modifier, tiddler.modified, tiddler.tags, tiddler.fields);
 	store.fetchTiddler(tiddler.title).created = tiddler.created;
-	var link = document.createElement("div");
-	createTiddlyLink(link,tiddler.title,true);
-	var place = wizard.getElement("markReport");
-	place.parentNode.insertBefore(link,place);
-	autoSaveChanges(); // <<<<<<<<<<<<<<<<<
+	var remainingImports = wizard.getValue("remainingImports")-1;
+	wizard.setValue("remainingImports",remainingImports);
+	if(remainingImports == 0) {
+		wizard.addStep(config.macros.importTiddlers.step5Title,config.macros.importTiddlers.step5Html);
+		autoSaveChanges();
+	}
 }
 

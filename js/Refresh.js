@@ -124,10 +124,14 @@ function refreshPageTemplate(title)
 
 function refreshDisplay(hint)
 {
-	var e = document.getElementById("contentWrapper");
 	if(typeof hint == "string")
 		hint = [hint];
+	var e = document.getElementById("contentWrapper");
 	refreshElements(e,hint);
+	if(backstage.isPanelVisible()) {
+		e = document.getElementById("backstage");
+		refreshElements(e,hint);
+	}
 }
 
 function refreshPageTitle()

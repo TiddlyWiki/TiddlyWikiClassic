@@ -62,7 +62,7 @@ merge(config.messages.messageClose,{
 
 config.messages.backstage = {
 	open: {text: "backstage", icon: "↩", iconIE: "←", tooltip: "Open the backstage area to perform authoring and editing tasks"},
-	close: {text: "close", tooltip: "Close the backstage area"},
+	close: {text: "close", icon: "↪", iconIE: "→", tooltip: "Close the backstage area"},
 	prompt: "backstage: "
 }
 
@@ -216,8 +216,10 @@ merge(config.macros.importTiddlers,{
 	importLabel: "import",
 	importPrompt: "Import these tiddlers",
 	confirmOverwriteText: "Are you sure you want to overwrite these tiddlers:\n\n%0",
-	step4Title: "%0 tiddler(s) imported",
+	step4Title: "Step 4: Importing %0 tiddler(s)",
 	step4Html: "<input type='hidden' name='markReport'></input>",
+	step5Title: "Step 5: Completed",
+	step5Html: "All tiddlers were imported",
 	doneLabel: "done",
 	donePrompt: "Close this wizard",
 	listViewTemplate: {

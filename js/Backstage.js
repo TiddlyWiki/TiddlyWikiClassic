@@ -25,7 +25,8 @@ var backstage = {
 		var t = cmb.open.text + " " + cmb.open[config.browser.isIE ? "iconIE" : "icon"];
 		this.showButton = createTiddlyButton(this.button,t,cmb.open.tooltip,
 						function (e) {backstage.show(); return false;},null,"backstageShow");
-		this.hideButton = createTiddlyButton(this.button,cmb.close.text,cmb.close.tooltip,
+		var t = cmb.close[config.browser.isIE ? "iconIE" : "icon"] + " " + cmb.close.text;
+		this.hideButton = createTiddlyButton(this.button,t,cmb.close.tooltip,
 						function (e) {backstage.hide(); return false;},null,"backstageHide");
 		this.cloak = document.getElementById("backstageCloak");
 		this.panel = document.getElementById("backstagePanel");
@@ -134,6 +135,10 @@ var backstage = {
 		}
 		backstage.currTabName = tabName;
 		backstage.currTabElem = tabElem;
+	},
+
+	isPanelVisible: function() {
+		return backstage.panel.style.display == "block";
 	},
 
 	preparePanel: function() {
