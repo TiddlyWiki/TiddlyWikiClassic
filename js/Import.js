@@ -49,7 +49,7 @@ config.macros.importTiddlers.restart = function(wizard)
 config.macros.importTiddlers.getFeeds = function()
 {
 	var feeds = {};
-	var tagged = store.getTaggedTiddlers("systemServer","title");
+	var tagged = store.getTaggedTiddlers("contentPublisher","title");
 	for(var t=0; t<tagged.length; t++)
 		{
 		var title = tagged[t].title;
