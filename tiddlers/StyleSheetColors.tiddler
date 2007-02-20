@@ -112,6 +112,7 @@ td, tr {border:1px solid [[ColorPalette::TertiaryDark]];}
 #backstageArea a.backstageSelTab {background:[[ColorPalette::Background]]; color:[[ColorPalette::Foreground]];}
 #backstageButton {background:[[ColorPalette::Foreground]]; color:[[ColorPalette::Background]];}
 #backstageButton a {background:[[ColorPalette::Foreground]]; color:[[ColorPalette::Background]]; border:none;}
+#backstageButton a:hover {color:[[ColorPalette::SecondaryLight]]; border:none;}
 #backstagePanel {background:[[ColorPalette::Background]]; border-color: [[ColorPalette::Background]] [[ColorPalette::TertiaryDark]] [[ColorPalette::TertiaryDark]] [[ColorPalette::TertiaryDark]];}
 .backstagePanelFooter .button {border:none; color:[[ColorPalette::Background]];}
 .backstagePanelFooter .button:hover {color:[[ColorPalette::Foreground]];}

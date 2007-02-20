@@ -10,6 +10,7 @@ function FileAdaptor()
 }
 
 FileAdaptor.NotLoadedError = "TiddlyWiki file has not been loaded";
+FileAdaptor.serverType = 'file';
 
 // Open the specified host/server
 //#   host - url of host (eg, "http://www.tiddlywiki.com/" or "www.tiddlywiki.com")
@@ -127,6 +128,8 @@ FileAdaptor.prototype.getTiddler = function(title,context,userParams,callback)
 	if(!this.store)
 		return FileAdaptor.NotLoadedError;
 	context.tiddler = this.store.fetchTiddler(title);
+	context.tiddler.fields['server.type'] = FileAdaptor.serverType;
+	context.tiddler.fields['server.host'] = this.host;
 	context.status = true;
 	window.setTimeout(function() {callback(context,userParams);},10);
 	return true;
@@ -153,6 +156,6 @@ FileAdaptor.prototype.close = function()
 	this.store = null;
 }
 
-config.adaptors['file'] = FileAdaptor;
+config.adaptors[FileAdaptor.serverType] = FileAdaptor;
 
 

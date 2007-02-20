@@ -197,6 +197,8 @@ config.macros.importTiddlers.onGetTiddlerList = function(context,wizard)
 config.macros.importTiddlers.doImport = function(e)
 {
 	var wizard = new Wizard(this);
+	var chkSync = wizard.getElement("chkSync").checked;
+	wizard.setValue("sync",chkSync);
 	var listView = wizard.getValue("listView");
 	var rowNames = ListView.getSelectedRows(listView);
 	var adaptor = wizard.getValue("adaptor");
@@ -234,7 +236,10 @@ config.macros.importTiddlers.onGetTiddler = function(context,wizard)
 		displayMessage("Error in importTiddlers.onGetTiddler: " + context.statusText);
 	var tiddler = context.tiddler;
 	store.saveTiddler(tiddler.title, tiddler.title, tiddler.text, tiddler.modifier, tiddler.modified, tiddler.tags, tiddler.fields);
-	store.fetchTiddler(tiddler.title).created = tiddler.created;
+	if(!wizard.getValue("sync")) {
+		store.setValue(tiddler.title,'server.type',null);
+		store.setValue(tiddler.title,'server.host',null);
+	}
 	var remainingImports = wizard.getValue("remainingImports")-1;
 	wizard.setValue("remainingImports",remainingImports);
 	if(remainingImports == 0) {
