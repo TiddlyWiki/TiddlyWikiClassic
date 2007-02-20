@@ -183,13 +183,22 @@ Tiddler.prototype.generateFingerprint = function()
 	return "0x" + Crypto.hexSha1Str(this.text);
 };
 
-Tiddler.prototype.getAdaptor = function()
+Tiddler.prototype.getServerType = function()
 {
 	var serverType = this.fields['server.type'];
 	if(!serverType)
 		serverType = this.fields['wikiformat'];
-	if(!serverType || !config.adaptors[serverType] || !this.fields['server.host'])
+	if(!serverType || !config.adaptors[serverType])
 		return null;
 	else
+	 	return serverType;
+}
+
+Tiddler.prototype.getAdaptor = function()
+{
+	var serverType = this.getServerType();
+	if(serverType)
 	 	return new config.adaptors[serverType];
+	else
+		return null;
 }

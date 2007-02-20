@@ -112,6 +112,11 @@ FileAdaptor.prototype.getTiddlerList = function(context,userParams,callback)
 	return true;
 }
 
+FileAdaptor.prototype.generateTiddlerUri = function(tiddler)
+{
+	return this.host + "#" + tiddler.title;
+};
+
 // Retrieves a tiddler from a given workspace on a given server
 //#   title - title of the tiddler to get
 //#   callback - function to be called on completion
@@ -130,6 +135,7 @@ FileAdaptor.prototype.getTiddler = function(title,context,userParams,callback)
 	context.tiddler = this.store.fetchTiddler(title);
 	context.tiddler.fields['server.type'] = FileAdaptor.serverType;
 	context.tiddler.fields['server.host'] = this.host;
+	context.tiddler.fields['server.page.version'] = context.tiddler.modified.convertToYYYYMMDDHHMM();
 	context.status = true;
 	window.setTimeout(function() {callback(context,userParams);},10);
 	return true;

@@ -128,23 +128,24 @@ Story.prototype.createTiddler = function(place,before,title,template,customField
 Story.prototype.loadMissingTiddler = function(title,fields,tiddlerElem)
 {
 	var tiddler = new Tiddler(title);
-	fields = typeof fields == "String" ?  fields.decodeHashMap() : {};
-	tiddler.fields = fields;
-	tiddler.fields['temp.callback'] = Story.loadTiddlerCallback;
+	tiddler.fields = typeof fields == "string" ?  fields.decodeHashMap() : fields;
 	var ret = false;
 	var adaptor = tiddler.getAdaptor();
 	if(adaptor) {
-		adaptor.openHost(fields['server.host']);
-		adaptor.openWorkspace(fields['server.workspace']);
-		ret = adaptor.getTiddler(tiddler);
+		adaptor.openHost(tiddler.fields['server.host']);
+		adaptor.openWorkspace(tiddler.fields['server.workspace']);
+		ret = adaptor.getTiddler(tiddler.title,null,null,Story.loadTiddlerCallback);
 		adaptor.close();
 		delete adaptor;
 	}
 	return ret;
 }
 
-Story.loadTiddlerCallback = function(tiddler)
+Story.loadTiddlerCallback = function(context,userParams)
 {
+	if(!context.status)
+		return;
+	var tiddler = context.tiddler;
 	var downloaded = new Date();
 	if(!tiddler.created)
 		tiddler.created = downloaded;
@@ -153,7 +154,7 @@ Story.loadTiddlerCallback = function(tiddler)
 	tiddler.fields['downloaded'] = downloaded.convertToYYYYMMDDHHMM();
 	tiddler.fields['changecount'] = -1;
 	store.saveTiddler(tiddler.title,tiddler.title,tiddler.text,tiddler.modifier,tiddler.modified,tiddler.tags,tiddler.fields);
-	autoSaveChanges();
+	saveChanges(true);
 };
 
 //# Overridable for choosing the name of the template to apply for a tiddler

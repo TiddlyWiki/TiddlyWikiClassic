@@ -19,31 +19,25 @@ config.macros.sync.handler = function(place,macroName,params,wikifier,paramStrin
 
 config.macros.sync.startSync = function(place)
 {
+	// Cancel any outstanding sync
 	if(currSync)
 		config.macros.sync.cancelSync();
 	currSync = {};
-	var syncer;
-	for(syncer in config.syncers)
-		if(config.syncers[syncer].init)
-			config.syncers[syncer].init(currSync);
+	// Get a list of all the syncable tiddlers
 	currSync.syncList = [];
 	store.forEachTiddler(function(title,tiddler) {
-		var syncType = store.getValue(tiddler,"server.type");
-		var syncItem = {title: title,
-			tiddler: tiddler,
-			syncType: syncType,
-			isTouched: tiddler.isTouched(),
-			serverStatus: "..."
-			};
+		var syncItem = {};
+		syncItem.serverType = tiddler.getServerType();
+		syncItem.serverHost = tiddler.fields['server.host'];
+		syncItem.serverWorkspace = tiddler.fields['server.Workspace'];
+		syncItem.tiddler = tiddler;
+		syncItem.title = tiddler.title;
+		syncItem.isTouched = tiddler.isTouched();
+		syncItem.serverStatus = "...";
 		syncItem.localStatus = syncItem.isTouched ? config.macros.sync.hasChanged : config.macros.sync.hasNotChanged;
 		syncItem.selected = syncItem.isTouched;
-		syncer = config.syncers[syncType];
-		if(syncType && syncer)
-			{
-			if(syncer.addSyncable)
-				syncer.addSyncable(currSync,tiddler,syncItem);
+		if(syncItem.serverType && syncItem.serverHost)
 			currSync.syncList.push(syncItem);
-			}
 		});
 	var wizard = new Wizard();
 	wizard.createWizard(place,this.wizardTitle);
