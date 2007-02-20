@@ -181,6 +181,7 @@ config.macros.importTiddlers.onGetTiddlerList = function(context,wizard)
 				size: tiddler.text ? tiddler.text.length : 0
 			});
 		}
+	listedTiddlers.sort(function(a,b) {return a.title < b.title ? -1 : (a.title == b.title ? 0 : +1);});
 	// Display the listview
 	wizard.addStep(config.macros.importTiddlers.step3Title,config.macros.importTiddlers.step3Html);
 	var markList = wizard.getElement("markList");
