@@ -28,7 +28,6 @@ Wizard.prototype.createWizard = function(place,title) {
 	createTiddlyElement(this.formElem,"h1",null,null,title);
 	this.bodyElem = createTiddlyElement(this.formElem,"div",null,"wizardBody");
 	this.footElem = createTiddlyElement(this.formElem,"div",null,"wizardFooter");
-	createTiddlyButton(this.footElem,"close","Close backstage",backstage.hidePanel);
 };
 
 Wizard.prototype.clear = function() {
@@ -36,13 +35,15 @@ Wizard.prototype.clear = function() {
 };
 
 
-Wizard.prototype.setButtons = function(buttonInfo) {
+Wizard.prototype.setButtons = function(buttonInfo,status) {
 	removeChildren(this.footElem);
 	for(var t=0; t<buttonInfo.length; t++) {
-		if(t != 0)
-			insertSpacer(this.footElem);
 		createTiddlyButton(this.footElem,buttonInfo[t].caption,buttonInfo[t].tooltip,buttonInfo[t].onClick);
+		insertSpacer(this.footElem);
 		}
+	if(typeof status == "string") {
+		createTiddlyElement(this.footElem,"span",null,"status",status);
+	}
 };
 
 Wizard.prototype.addStep = function(stepTitle,html) {

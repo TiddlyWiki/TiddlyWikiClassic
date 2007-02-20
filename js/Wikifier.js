@@ -43,14 +43,22 @@ function wikifyPlain(title,theStore,limit)
 	if(!theStore)
 		theStore = store;
 	if(theStore.tiddlerExists(title) || theStore.isShadowTiddler(title)) {
-		var text = theStore.getTiddlerText(title);
-		if(limit > 0)
-			text = text.substr(0,limit);
-		var wikifier = new Wikifier(text,formatter,null,theStore.getTiddler(title));
-		return wikifier.wikifyPlain();
+		return wikifyPlainText(theStore.getTiddlerText(title),limit,tiddler);
 	} else {
 		return "";
 	}
+}
+
+//# Wikify a string to plain text
+//#   text - text to wikify
+//#   limit - maximum number of characters to generate
+//#   tiddler - optional reference to the tiddler containing this text
+function wikifyPlainText(text,limit,tiddler)
+{
+	if(limit > 0)
+		text = text.substr(0,limit);
+	var wikifier = new Wikifier(text,formatter,null,tiddler);
+	return wikifier.wikifyPlain();
 }
 
 //# Highlight plain text into an element

@@ -307,8 +307,8 @@ TiddlyWiki.prototype.importTiddlyWiki = function(text)
 	var content = "<html><body>" + text.substring(posOpeningDiv,posClosingDiv + endSaveArea.length) + "</body></html>";
 	// Create the iframe
 	var iframe = document.createElement("iframe");
-	iframe.style.display = "none";
 	document.body.appendChild(iframe);
+	iframe.style.display = "none";
 	var doc = iframe.document;
 	if(iframe.contentDocument)
 		doc = iframe.contentDocument; // For NS6

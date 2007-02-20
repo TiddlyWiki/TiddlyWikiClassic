@@ -6,7 +6,7 @@
 //#   url - the source url
 //#   callback - function to call when there's a response
 //#   params - parameter object that gets passed to the callback for storing it's state
-//# Return value is the underlying XMLHttpRequest object, or 'null' if there was an error
+//# Return value is the underlying XMLHttpRequest object, or a string if there was an error
 //# Callback function is called like this:
 //#   callback(status,params,responseText,xhr)
 //#     status - true if OK, false if error
@@ -65,7 +65,7 @@ function doHttp(type,url,data,contentType,username,password,callback,params,head
 		}
 	};
 	// Send request
-	if(window.netscape && window.netscape.security && document.location.protocol.indexOf("http") == -1)
+	if(window.Components && window.netscape && window.netscape.security && document.location.protocol.indexOf("http") == -1)
 		window.netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
 	try {
 		url = url + (url.indexOf("?") < 0 ? "?" : "&") + "nocache=" + Math.random();

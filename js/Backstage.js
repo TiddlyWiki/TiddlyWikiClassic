@@ -14,6 +14,7 @@ var backstage = {
 	panelFooter: null,
 	currTabName: null,
 	currTabElem: null,
+	content: null,
 
 	init: function() {
 		var cmb = config.messages.backstage;
@@ -21,7 +22,7 @@ var backstage = {
 		this.toolbar = document.getElementById("backstageToolbar");
 		this.button = document.getElementById("backstageButton");
 		this.button.style.display = "block";
-		var t = cmb.open[config.browser.isIE ? "iconIE" : "icon"] + " " + cmb.open.text;
+		var t = cmb.open.text + " " + cmb.open[config.browser.isIE ? "iconIE" : "icon"];
 		this.showButton = createTiddlyButton(this.button,t,cmb.open.tooltip,
 						function (e) {backstage.show(); return false;},null,"backstageShow");
 		this.hideButton = createTiddlyButton(this.button,cmb.close.text,cmb.close.tooltip,
@@ -37,9 +38,11 @@ var backstage = {
 		for(var t=0; t<config.backstageTasks.length; t++) {
 			var taskName = config.backstageTasks[t];
 			var task = config.tasks[taskName];
-			var btn = createTiddlyButton(this.toolbar,task.text,task.tooltip,this.onClickTab,"backstageTab");
+			var handler = task.action ? this.onClickCommand : this.onClickTab;
+			var btn = createTiddlyButton(this.toolbar,task.text,task.tooltip,handler,"backstageTab");
 			btn.setAttribute("task",taskName);
 			}
+		this.content = document.getElementById("contentWrapper");
 		if(config.options.chkBackstage)
 			this.show();
 		else
@@ -65,6 +68,7 @@ var backstage = {
 		this.hideButton.style.display = "block";
 		config.options.chkBackstage = true;
 		saveOptionCookie("chkBackstage");
+		addClass(this.content,"backstage");
 	},
 
 	hide: function() {
@@ -85,7 +89,18 @@ var backstage = {
 			this.hideButton.style.display = "none";
 			config.options.chkBackstage = false;
 			saveOptionCookie("chkBackstage");
+			removeClass(this.content,"backstage");
 		}
+	},
+
+	onClickCommand: function(e) {
+		var task = config.tasks[this.getAttribute("task")];
+		displayMessage(task);
+		if(task.action) {
+			backstage.switchTab(null);
+			task.action();
+		}
+		return false;
 	},
 
 	onClickTab: function(e) {

@@ -5,7 +5,7 @@
 // Miscellaneous options
 var config = {
 	numRssItems: 20, // Number of items in the RSS feed
-	animDuration: 300, // Duration of UI animations
+	animDuration: 400, // Duration of UI animations
 	animFast: 0.12, // Speed for animations (lower == slower)
 	animSlow: 0.01, // Speed for EasterEgg animations
 	cascadeFast: 20, // Speed for cascade animations (higher == slower)

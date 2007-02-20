@@ -61,7 +61,7 @@ merge(config.messages.messageClose,{
 	tooltip: "close this message area"});
 
 config.messages.backstage = {
-	open: {text: "backstage", icon: "↪", iconIE: "→", tooltip: "Open the backstage area to perform authoring and editing tasks"},
+	open: {text: "backstage", icon: "↩", iconIE: "←", tooltip: "Open the backstage area to perform authoring and editing tasks"},
 	close: {text: "close", tooltip: "Close the backstage area"},
 	prompt: "backstage: "
 }
@@ -103,6 +103,15 @@ merge(config.views.editor.tagChooser,{
 	tooltip: "Choose existing tags to add to this tiddler",
 	popupNone: "There are no tags defined",
 	tagTooltip: "Add the tag '%0'"});
+
+merge(config.messages,{
+	sizeTemplates:
+		[
+		{unit: 1024*1024*1024, template: "%0\u00a0GB"},
+		{unit: 1024*1024, template: "%0\u00a0MB"},
+		{unit: 1024, template: "%0\u00a0KB"},
+		{unit: 1, template: "%0\u00a0B"}
+		]});
 
 merge(config.macros.search,{
 	label: "search",
@@ -189,15 +198,19 @@ merge(config.macros.refreshDisplay,{
 merge(config.macros.importTiddlers,{
 	readOnlyWarning: "You cannot import into a read-only TiddlyWiki file. Try opening it from a file:// URL",
 	wizardTitle: "Import tiddlers from another file or server",
-	step1Title: "Step 1: Locate the TiddlyWiki file",
-	step1Html: "Enter the URL or pathname here: <input type='text' size=50 name='txtPath'><br>...or browse for a file: <input type='file' size=50 name='txtBrowse'><br>...or select a pre-defined feed: <select name='selFeeds'><option value=''>Choose...</option</select>",
-	fetchLabel: "fetch",
-	fetchPrompt: "Fetch the tiddlywiki file",
-	fetchError: "There were problems fetching the tiddlywiki file",
-	step2Title: "Step 2: Loading TiddlyWiki file",
-	step2Html: "Please wait while the file is loaded from: <strong><input type='hidden' name='markPath'></input></strong>",
+	step1Title: "Step 1: Locate the server or TiddlyWiki file",
+	step1Html: "Specify the type of the server: <select name='selTypes'><option value=''>Choose...</option></select><br>Enter the URL or pathname here: <input type='text' size=50 name='txtPath'><br>...or browse for a file: <input type='file' size=50 name='txtBrowse'><br><hr>...or select a pre-defined feed: <select name='selFeeds'><option value=''>Choose...</option></select>",
+	openLabel: "open",
+	openPrompt: "Open the connection to this file or server",
+	openError: "There were problems fetching the tiddlywiki file",
+	statusOpenHost: "Opening the host",
+	statusGetWorkspaceList: "Getting the list of available workspaces",
+	step2Title: "Step 2: Choose the workspace",
+	step2Html: "Enter a workspace name: <input type='text' size=50 name='txtWorkspace'><br>...or select a workspace: <select name='selWorkspace'><option value=''>Choose...</option></select>",
 	cancelLabel: "cancel",
 	cancelPrompt: "Cancel this import",
+	statusOpenWorkspace: "Opening the workspace",
+	statusGetTiddlerList: "Getting the list of available tiddlers",
 	step3Title: "Step 3: Choose the tiddlers to import",
 	step3Html: "<input type='hidden' name='markList'></input>",
 	importLabel: "import",
