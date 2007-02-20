@@ -31,7 +31,7 @@ TW21Saver.prototype.externalizeTiddler = function(store,tiddler)
 				tiddler.title.htmlEncode(),
 				attributes,
 				extendedAttributes,
-				usePre ? "\n<pre>" + tiddler.text.htmlEncode() + "</pre>\n" : tiddler.escapeLineBreaks().htmlEncode()
+				usePre ? "\n<pre>" + tiddler.text.htmlEncode() + "</pre>\n" : tiddler.text.escapeLineBreaks().htmlEncode()
 			]);
 	} catch (ex) {
 		throw exceptionText(ex,config.messages.tiddlerSaveError.format([tiddler.title]));
