@@ -239,6 +239,9 @@ merge(config.macros.sync,{
 		columns: [
 			{name: 'Selected', field: 'selected', rowName: 'title', type: 'Selector'},
 			{name: 'Title', field: 'title', tiddlerLink: 'title', title: "Title", type: 'TiddlerLink'},
+			{name: 'Server Type', field: 'serverType', title: "Server type", type: 'String'},
+			{name: 'Server Host', field: 'serverHost', title: "Server host", type: 'String'},
+			{name: 'Server Workspace', field: 'serverWorkspace', title: "Server workspace", type: 'String'},
 			{name: 'Local Status', field: 'localStatus', title: "Changed on your computer?", type: 'String'},
 			{name: 'Server Status', field: 'serverStatus', title: "Changed on server?", type: 'String'},
 			{name: 'Server URL', field: 'serverUrl', title: "Server URL", text: "View", type: 'Link'}

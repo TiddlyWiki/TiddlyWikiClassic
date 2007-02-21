@@ -74,7 +74,7 @@ a.tiddlyLinkNonExisting.shadow {font-weight:bold;}
 .wizardFooter .status {padding:0em 0.4em 0em 0.4em; margin-left:1em;}
 .wizard .button {padding:0.1em 0.2em 0.1em 0.2em;}
 
-#messageArea {position:absolute; top:2em; left:0em; margin:0.5em; padding:0.5em; z-index:200;}
+#messageArea {position:absolute; top:2em; right:0em; margin:0.5em; padding:0.5em; z-index:200;}
 *[id='messageArea'] {position:fixed !important; z-index:200;}
 .messageToolbar {display:block; text-align:right; padding:0.2em 0.2em 0.2em 0.2em;}
 #messageArea a {text-decoration:underline;}
