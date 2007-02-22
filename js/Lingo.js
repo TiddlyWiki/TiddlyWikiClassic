@@ -242,8 +242,7 @@ merge(config.macros.sync,{
 			{name: 'Server Type', field: 'serverType', title: "Server type", type: 'String'},
 			{name: 'Server Host', field: 'serverHost', title: "Server host", type: 'String'},
 			{name: 'Server Workspace', field: 'serverWorkspace', title: "Server workspace", type: 'String'},
-			{name: 'Local Status', field: 'localStatus', title: "Changed on your computer?", type: 'String'},
-			{name: 'Server Status', field: 'serverStatus', title: "Changed on server?", type: 'String'},
+			{name: 'Status', field: 'status', title: "Synchronisation status", type: 'String'},
 			{name: 'Server URL', field: 'serverUrl', title: "Server URL", text: "View", type: 'Link'}
 			],
 		rowClasses: [
@@ -257,7 +256,15 @@ merge(config.macros.sync,{
 	syncLabel: "sync",
 	syncPrompt: "Sync these tiddlers",
 	hasChanged:	"Changed while unplugged",
-	hasNotChanged: "Unchanged while unplugged"});
+	hasNotChanged: "Unchanged while unplugged",
+	syncStatusList: {
+		none: {text: "...", color: "none"},
+		changedServer: {text: "Changed on server", color: "#80ff80"},
+		changedLocally: {text: "Changed while unplugged", color: "#80ff80"},
+		changedBoth: {text: "Changed while unplugged and on server", color: "#ff8080"},
+		notFound: {text: "Not found on server", color: "#ffff80"}
+		}
+	});
 
 merge(config.commands.closeTiddler,{
 	text: "close",

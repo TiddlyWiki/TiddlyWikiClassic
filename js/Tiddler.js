@@ -185,13 +185,14 @@ Tiddler.prototype.generateFingerprint = function()
 
 Tiddler.prototype.getServerType = function()
 {
-	var serverType = this.fields['server.type'];
+	var serverType = null;
+	if(this.fields && this.fields['server.type'])
+		serverType = this.fields['server.type'];
 	if(!serverType)
 		serverType = this.fields['wikiformat'];
-	if(!serverType || !config.adaptors[serverType])
-		return null;
-	else
-	 	return serverType;
+	if(serverType && !config.adaptors[serverType])
+		serverType = null;
+	return serverType;
 }
 
 Tiddler.prototype.getAdaptor = function()

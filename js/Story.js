@@ -116,7 +116,7 @@ Story.prototype.createTiddler = function(place,before,title,template,customField
 	tiddlerElem.setAttribute("tiddlyFields",customFields);
 	place.insertBefore(tiddlerElem,before);
 	this.refreshTiddler(title,template,false,customFields);
-	if(!store.tiddlerExists(title))
+	if(!store.tiddlerExists(title) && !store.isShadowTiddler(title))
 		this.loadMissingTiddler(title,customFields,tiddlerElem);
 	return tiddlerElem;
 };
@@ -559,7 +559,7 @@ Story.prototype.saveTiddler = function(title,minorUpdate)
 		if(config.options.chkForceMinorUpdate)
 			minorUpdate = !minorUpdate;
 		var newDate = new Date();
-		var extendedFields = {};
+		var extendedFields = store.tiddlerExists(newTitle) ? store.fetchTiddler(newTitle).fields : {};
 		for(var n in fields) {
 			if(!TiddlyWiki.isStandardField(n))
 				extendedFields[n] = fields[n];

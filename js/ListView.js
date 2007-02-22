@@ -33,7 +33,7 @@ ListView.create = function(place,listObject,listTemplate,callback,className)
 			if(rowObject[listTemplate.rowClasses[c].field])
 				addClass(r,listTemplate.rowClasses[c].className);
 			}
-		rowObject.rowElement = rowObject;
+		rowObject.rowElement = r;
 		rowObject.colElements = {};
 		for(var cc=0; cc<listTemplate.columns.length; cc++)
 			{

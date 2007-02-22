@@ -98,13 +98,12 @@ FileAdaptor.prototype.getTiddlerList = function(context,userParams,callback)
 	context.tiddlers = [];
 	this.store.forEachTiddler(function(title,tiddler)
 		{
-		var t = {};
-		t.title = title;
+		var t = new Tiddler(title);
 		t.text = tiddler.text;
 		t.modified = tiddler.modified;
 		t.modifier = tiddler.modifier;
+		t.fields['server.page.version'] = tiddler.modified.convertToYYYYMMDDHHMM();
 		t.tags = tiddler.tags;
-		t.url = this.host + "#" + title;
 		context.tiddlers.push(t);
 		});
 	context.status = true;
@@ -114,7 +113,7 @@ FileAdaptor.prototype.getTiddlerList = function(context,userParams,callback)
 
 FileAdaptor.prototype.generateTiddlerUri = function(tiddler)
 {
-	return this.host + "#" + tiddler.title;
+	return tiddler.fields['server.host'] + "#" + tiddler.title;
 };
 
 // Retrieves a tiddler from a given workspace on a given server

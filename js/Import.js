@@ -241,6 +241,7 @@ config.macros.importTiddlers.onGetTiddler = function(context,wizard)
 		store.setValue(tiddler.title,'server.type',null);
 		store.setValue(tiddler.title,'server.host',null);
 	}
+	store.setValue(tiddler.title,'changecount',null);
 	var remainingImports = wizard.getValue("remainingImports")-1;
 	wizard.setValue("remainingImports",remainingImports);
 	if(remainingImports == 0) {
