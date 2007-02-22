@@ -45,10 +45,10 @@ function main()
 	t4 = new Date();
 	var pluginProblem = loadPlugins();
 	t5 = new Date();
-	if(!readOnly)
-		backstage.init();
 	formatter = new Formatter(config.formatters);
 	readOnly = (window.location.protocol == "file:") ? false : config.options.chkHttpReadOnly;
+	if(!readOnly)
+		backstage.init();
 	invokeParamifier(params,"onconfig");
 	t6 = new Date();
 	store.notifyAll();
