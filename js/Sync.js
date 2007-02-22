@@ -36,9 +36,8 @@ config.macros.sync.startSync = function(place)
 	var markList = wizard.getElement("markList");
 	var listWrapper = document.createElement("div");
 	markList.parentNode.insertBefore(listWrapper,markList);
-	var listView = ListView.create(listWrapper,currSync.syncList,this.listViewTemplate);
+	currSync.listView = ListView.create(listWrapper,currSync.syncList,this.listViewTemplate);
 	config.macros.sync.processSyncableTiddlers();
-	wizard.setValue("listView",listView);
 	wizard.setButtons([
 			{caption: config.macros.sync.syncLabel, tooltip: config.macros.sync.syncPrompt, onClick: config.macros.sync.doSync}
 		]);
@@ -121,6 +120,8 @@ config.macros.sync.createSyncMachine = function(syncItem)
 config.macros.sync.syncOnOpenHost = function(context,syncMachine)
 {
 //#	displayMessage("syncOnOpenHost for " + syncMachine.serverType + " - " + syncMachine.serverHost + " - " + syncMachine.serverWorkspace);
+	if(!context.status)
+		displayMessage("Error in sync.syncOnOpenHost: " + context.statusText);
 	var r = syncMachine.adaptor.openWorkspace(syncMachine.serverWorkspace,context,syncMachine,config.macros.sync.syncOnOpenWorkspace);
 	if(r !== true)
 		displayMessage("Error from openWorkspace: " + r);
@@ -129,6 +130,8 @@ config.macros.sync.syncOnOpenHost = function(context,syncMachine)
 config.macros.sync.syncOnOpenWorkspace = function(context,syncMachine)
 {
 //#	displayMessage("syncOnOpenWorkspace for " + syncMachine.serverType + " - " + syncMachine.serverHost + " - " + syncMachine.serverWorkspace);
+	if(!context.status)
+		displayMessage("Error in sync.syncOnOpenWorkspace: " + context.statusText);
 	var r = syncMachine.adaptor.getTiddlerList(context,syncMachine,config.macros.sync.syncOnGetTiddlerList);
 	if(r !== true)
 		displayMessage("Error from getTiddlerList: " + r);
@@ -137,6 +140,8 @@ config.macros.sync.syncOnOpenWorkspace = function(context,syncMachine)
 config.macros.sync.syncOnGetTiddlerList = function(context,syncMachine)
 {
 //#	displayMessage("syncOnGetTiddlerList for " + syncMachine.serverType + " - " + syncMachine.serverHost + " - " + syncMachine.serverWorkspace);
+	if(!context.status)
+		displayMessage("Error in sync.syncOnGetTiddlerList: " + context.statusText);
 	for(var t=0; t<syncMachine.syncItems.length; t++) {
 		var si = syncMachine.syncItems[t];
 		var f = context.tiddlers.findByField("title",si.title);
@@ -147,11 +152,74 @@ config.macros.sync.syncOnGetTiddlerList = function(context,syncMachine)
 		} else {
 			si.syncStatus = config.macros.sync.syncStatusList.notFound;
 		}
-		var e = si.colElements["status"];
-		removeChildren(e);
-		createTiddlyText(e,si.syncStatus.text);
-		si.rowElement.style.backgroundColor = si.syncStatus.color;
+		config.macros.sync.updateSyncStatus(si);
 	}
+}
+
+config.macros.sync.updateSyncStatus = function(syncItem)
+{
+	var e = syncItem.colElements["status"];
+	removeChildren(e);
+	createTiddlyText(e,syncItem.syncStatus.text);
+	syncItem.rowElement.style.backgroundColor = syncItem.syncStatus.color;
+}
+
+config.macros.sync.doSync = function(e)
+{
+	var rowNames = ListView.getSelectedRows(currSync.listView);
+	for(var t=0; t<currSync.syncList.length; t++) {
+		var si = currSync.syncList[t];
+		if(rowNames.indexOf(si.title) != -1) {
+			config.macros.sync.doSyncItem(si);
+		}
+	}
+	return false;
+}
+
+config.macros.sync.doSyncItem = function(syncItem)
+{
+	var r = true;
+	var context = {};
+	var requestState = {syncMachine: syncItem.syncMachine, title: syncItem.title, syncItem: syncItem};
+	switch(syncItem.syncStatus) {
+		case config.macros.sync.syncStatusList.changedServer:
+			r = syncItem.syncMachine.adaptor.getTiddler(syncItem.title,context,requestState,config.macros.sync.syncOnGetTiddler);
+			break;
+		case config.macros.sync.syncStatusList.notFound:
+		case config.macros.sync.syncStatusList.changedLocally:
+		case config.macros.sync.syncStatusList.changedBoth:
+			r = syncItem.syncMachine.adaptor.putTiddler(syncItem.tiddler,context,requestState,config.macros.sync.syncOnPutTiddler);
+			break;
+	}
+	if(r !== true)
+		displayMessage("Error in doSyncItem: " + r);
+}
+
+config.macros.sync.syncOnGetTiddler = function(context,requestState)
+{
+	var syncMachine = requestState.syncMachine;
+	var title = requestState.title;
+	var syncItem = requestState.syncItem;
+	var tiddler = context.tiddler;
+	store.saveTiddler(tiddler.title, tiddler.title, tiddler.text, tiddler.modifier, tiddler.modified, tiddler.tags, tiddler.fields);
+	store.suspendNotifications();
+	store.setValue(tiddler.title,'changecount',null);
+	store.resumeNotifications();
+	syncItem.syncStatus = config.macros.sync.syncStatusList.gotFromServer;
+	config.macros.sync.updateSyncStatus(syncItem);
+	if(!context.status)
+		displayMessage("Error in sync.syncOnGetTiddler: " + context.statusText);
+}
+
+config.macros.sync.syncOnPutTiddler = function(context,requestState)
+{
+	var syncMachine = requestState.syncMachine;
+	var title = requestState.title;
+	var syncItem = requestState.syncItem;
+	syncItem.syncStatus = config.macros.sync.syncStatusList.putToServer;
+	config.macros.sync.updateSyncStatus(syncItem);
+	if(!context.status)
+		displayMessage("Error in sync.syncOnPutTiddler: " + context.statusText);
 }
 
 config.macros.sync.cancelSync = function()
