@@ -68,7 +68,8 @@ config.macros.sync.preProcessSyncableTiddlers = function()
 {
 	for(var t=0; t<currSync.syncList.length; t++) {
 		si = currSync.syncList[t];
-		si.serverUrl = si.syncMachine.adaptor.generateTiddlerUri(si.tiddler);
+		var ti = si.syncMachine.adaptor.generateTiddlerInfo(si.tiddler);
+		si.serverUrl = ti.uri;
 	}
 }
 

@@ -111,10 +111,12 @@ FileAdaptor.prototype.getTiddlerList = function(context,userParams,callback)
 	return true;
 }
 
-FileAdaptor.prototype.generateTiddlerUri = function(tiddler)
+FileAdaptor.prototype.generateTiddlerInfo = function(tiddler)
 {
-	return tiddler.fields['server.host'] + "#" + tiddler.title;
-};
+	var info = {};
+	info.uri = tiddler.fields['server.host'] + "#" + tiddler.title;
+	return info;
+}
 
 // Retrieves a tiddler from a given workspace on a given server
 //#   title - title of the tiddler to get
