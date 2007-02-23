@@ -170,7 +170,7 @@ config.macros.importTiddlers.onGetTiddlerList = function(context,wizard)
 	// Extract data for the listview
 	var listedTiddlers = [];
 	if(context.tiddlers)
-		for(var n=0; n<context.tiddlers.length-1; n++) {
+		for(var n=0; n<context.tiddlers.length; n++) {
 			var tiddler = context.tiddlers[n];
 			listedTiddlers.push({
 				title: tiddler.title,
