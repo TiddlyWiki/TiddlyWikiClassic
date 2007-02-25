@@ -5,61 +5,29 @@
 // deleteMode - "none", "all" [delete target element and it's children], [only] "children" [but not the target element]
 function Slider(element,opening,slowly,deleteMode)
 {
-	this.element = element;
-	element.style.display = "block";
-	this.deleteMode = deleteMode;
-	this.element.style.height = "auto";
-	this.realHeight = element.offsetHeight;
-	this.opening = opening;
-	this.step = slowly ? config.animSlow : config.animFast;
+	element.style.display = 'block';
+	element.style.overflow = 'hidden';
+	element.style.height = 'auto';
+	var p = [];
+	var c = null;
 	if(opening) {
-		this.progress = 0;
-		element.style.height = "0px";
-		element.style.display = "block";
+		p.push({style: 'height', start: 0, end: element.offsetHeight, template: '%0px', atEnd: 'auto'});
+		p.push({style: 'display', atEnd: 'auto'});
+		p.push({style: 'opacity', start: 0, end: 1, template: '%0'});
+		p.push({style: 'filter', start: 0, end: 100, template: 'alpha(opacity:%0)'});
 	} else {
-		this.progress = 1;
-		this.step = -this.step;
-	}
-	element.style.overflow = "hidden";
-	return this;
-}
-
-Slider.prototype.stop = function()
-{
-	if(this.opening) {
-		this.element.style.height = "auto";
-		this.element.style.opacity = 1;
-		this.element.style.filter = "alpha(opacity:100)";
-	} else {
-		switch(this.deleteMode) {
-			case "none":
-				this.element.style.display = "none";
-				this.element.style.opacity = 1;
-				this.element.style.filter = "alpha(opacity:100)";
-				break;
+		p.push({style: 'height', start: element.offsetHeight, end: 0, template: '%0px'});
+		p.push({style: 'display', atEnd: 'none'});
+		p.push({style: 'opacity', start: 1, end: 0, template: '%0'});
+		p.push({style: 'filter', start: 100, end: 0, template: 'alpha(opacity:%0)'});
+		switch(deleteMode) {
 			case "all":
-				this.element.parentNode.removeChild(this.element);
+				c = function(element,properties) {element.parentNode.removeChild(element);};
 				break;
 			case "children":
-				removeChildren(this.element);
+				c = function(element,properties) {removeChildren(element);};
 				break;
 		}
 	}
-};
-
-Slider.prototype.tick = function()
-{
-	this.progress += this.step;
-	if(this.progress < 0 || this.progress > 1) {
-		this.stop();
-		return false;
-	} else {
-		var f = Animator.slowInSlowOut(this.progress);
-		var h = this.realHeight * f;
-		this.element.style.height = h + "px";
-		this.element.style.opacity = f;
-		this.element.style.filter = "alpha(opacity:" + f * 100 +")";
-		return true;
-	}
-};
-
+	return new Morpher(element,config.animDuration,p,c);
+}
