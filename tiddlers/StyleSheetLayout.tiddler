@@ -148,9 +148,7 @@ table.listView th, table.listView td, table.listView tr {padding:0px 3px 0px 3px
 .sparkline {line-height:1em;}
 .sparktick {outline:0;}
 
-.zoomer {font-size:1.1em; position:absolute; padding:1em;}
-
-.cascade {font-size:1.1em; position:absolute; overflow:hidden;}
+.zoomer {font-size:1.1em; position:absolute; overflow:hidden; padding:1em;}
 
 #backstageArea {display:none; position:relative; overflow: hidden; z-index:150; padding:0.2em 0.5em 0.2em 0.5em;}
 #backstageToolbar {position:relative;}
