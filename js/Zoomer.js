@@ -12,6 +12,7 @@ function Zoomer(text,startElement,targetElement,slowly)
 		{style: 'top', start: findPosY(startElement), end: findPosY(targetElement), template: '%0px'},
 		{style: 'width', start: Math.min(startElement.offsetWidth,winWidth), end: Math.min(targetElement.offsetWidth,winWidth), template: '%0px', atEnd: 'auto'},
 		{style: 'height', start: Math.min(startElement.offsetHeight,winHeight), end: Math.min(targetElement.offsetHeight,winHeight), template: '%0px', atEnd: 'auto'},
+		{style: 'fontSize', start: 8, end: 24, template: '%0pt'}
 	];
 	var c = function(element,properties) {element.parentNode.removeChild(element);};
 	return new Morpher(e,config.animDuration,p,c);
