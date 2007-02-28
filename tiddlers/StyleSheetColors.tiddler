@@ -84,7 +84,7 @@ h1,h2,h3,h4,h5 {color:[[ColorPalette::SecondaryDark]]; background:[[ColorPalette
 .error, .errorButton {color:[[ColorPalette::Foreground]]; background:[[ColorPalette::Error]];}
 .warning {color:[[ColorPalette::Foreground]]; background:[[ColorPalette::SecondaryPale]];}
 
-.zoomer {background:[[ColorPalette::TertiaryPale]]; color:[[ColorPalette::TertiaryMid]]; border:1px solid [[ColorPalette::TertiaryMid]];}
+.zoomer {background:none; color:[[ColorPalette::TertiaryMid]]; border:3px solid [[ColorPalette::TertiaryMid]];}
 
 .imageLink, #displayArea .imageLink {background:transparent;}
 

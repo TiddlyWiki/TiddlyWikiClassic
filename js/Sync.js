@@ -142,7 +142,7 @@ config.macros.sync.syncOnGetTiddlerList = function(context,syncMachine)
 {
 //#	displayMessage("syncOnGetTiddlerList for " + syncMachine.serverType + " - " + syncMachine.serverHost + " - " + syncMachine.serverWorkspace);
 	if(!context.status)
-		displayMessage("Error in sync.syncOnGetTiddlerList: " + context.statusText);
+		displayMessage("Error in sync.syncOnGetTiddlerList: " + context.statusText + " " + syncMachine.serverHost);
 	for(var t=0; t<syncMachine.syncItems.length; t++) {
 		var si = syncMachine.syncItems[t];
 		var f = context.tiddlers.findByField("title",si.title);
