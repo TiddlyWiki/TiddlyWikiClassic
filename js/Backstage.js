@@ -51,7 +51,7 @@ var backstage = {
 	},
 	
 	isVisible: function () {
-		return this.area.style.display == "block";
+		return this.area ? this.area.style.display == "block" : false;
 	},
 	
 	show: function() {
@@ -138,7 +138,7 @@ var backstage = {
 	},
 
 	isPanelVisible: function() {
-		return backstage.panel.style.display == "block";
+		return backstage.panel ? backstage.panel.style.display == "block" : false;
 	},
 
 	preparePanel: function() {
