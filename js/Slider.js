@@ -12,7 +12,6 @@ function Slider(element,opening,slowly,deleteMode)
 	var c = null;
 	if(opening) {
 		p.push({style: 'height', start: 0, end: element.offsetHeight, template: '%0px', atEnd: 'auto'});
-		p.push({style: 'display', atEnd: 'auto'});
 		p.push({style: 'opacity', start: 0, end: 1, template: '%0'});
 		p.push({style: 'filter', start: 0, end: 100, template: 'alpha(opacity:%0)'});
 	} else {
