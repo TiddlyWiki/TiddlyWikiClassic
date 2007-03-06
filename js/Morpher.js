@@ -21,6 +21,7 @@ function Morpher(element,duration,properties,callback)
 	this.startTime = new Date();
 	this.endTime = Number(this.startTime) + duration;
 	this.callback = callback;
+	this.tick();
 	return this;
 }
 
