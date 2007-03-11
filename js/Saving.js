@@ -1,6 +1,6 @@
-// ---------------------------------------------------------------------------------
-// Saving
-// ---------------------------------------------------------------------------------
+//--
+//-- Saving
+//--
 
 var saveUsingSafari = false;
 
@@ -18,11 +18,10 @@ function confirmExit()
 // Give the user a chance to save changes before exitting
 function checkUnsavedChanges()
 {
-	if(store && store.isDirty && store.isDirty() && window.hadConfirmExit === false)
-		{
+	if(store && store.isDirty && store.isDirty() && window.hadConfirmExit === false) {
 		if(confirm(config.messages.unsavedChangesWarning))
 			saveChanges();
-		}
+	}
 }
 
 function updateMarkupBlock(s,blockName,tiddlerName)
@@ -33,13 +32,13 @@ function updateMarkupBlock(s,blockName,tiddlerName)
 			"\n" + store.getRecursiveTiddlerText(tiddlerName,"") + "\n");
 }
 
-function updateOriginal(original, posDiv)
+function updateOriginal(original,posDiv)
 {
-	if (!posDiv)
+	if(!posDiv)
 		posDiv = locateStoreArea(original);
 	if((posDiv[0] == -1) || (posDiv[1] == -1)) {
 		alert(config.messages.invalidFileError.format([localPath]));
-		return;
+		return null;
 	}
 	var revised = original.substr(0,posDiv[0] + startSaveArea.length) + "\n" +
 				convertUnicodeToUTF8(store.allTiddlersAsHtml()) + "\n" +
@@ -77,23 +76,21 @@ function saveChanges(onlyIfDirty,tiddlers)
 	// Get the URL of the document
 	var originalPath = document.location.toString();
 	// Check we were loaded from a file URL
-	if(originalPath.substr(0,5) != "file:")
-		{
+	if(originalPath.substr(0,5) != "file:") {
 		alert(config.messages.notFileUrlError);
 		if(store.tiddlerExists(config.messages.saveInstructions))
 			story.displayTiddler(null,config.messages.saveInstructions);
 		return;
-		}
+	}
 	var localPath = getLocalPath(originalPath);
 	// Load the original file
 	var original = loadFile(localPath);
-	if(original == null)
-		{
+	if(original == null) {
 		alert(config.messages.cantSaveError);
 		if(store.tiddlerExists(config.messages.saveInstructions))
 			story.displayTiddler(null,config.messages.saveInstructions);
 		return;
-		}
+	}
 	// Locate the storeArea div's 
 	var posDiv = locateStoreArea(original);
 	if((posDiv[0] == -1) || (posDiv[1] == -1)) {
@@ -105,40 +102,37 @@ function saveChanges(onlyIfDirty,tiddlers)
 	saveEmpty(localPath,original,posDiv);
 	saveMain(localPath,original,posDiv);
 }
-	
+
 function saveBackup(localPath,original)
 {
 	// Save the backup
-	if(config.options.chkSaveBackups)
-		{
+	if(config.options.chkSaveBackups) {
 		var backupPath = getBackupPath(localPath);
 		var backup = config.browser.isIE ? ieCopyFile(backupPath,localPath) : saveFile(backupPath,original);
 		if(backup)
 			displayMessage(config.messages.backupSaved,"file://" + backupPath);
 		else
 			alert(config.messages.backupFailed);
-		}
+	}
 }
 
 function saveRss(localPath)
 {
-	// Save Rss
-	if(config.options.chkGenerateAnRssFeed)
-		{
+	//# Save Rss
+	if(config.options.chkGenerateAnRssFeed) {
 		var rssPath = localPath.substr(0,localPath.lastIndexOf(".")) + ".xml";
 		var rssSave = saveFile(rssPath,convertUnicodeToUTF8(generateRss()));
 		if(rssSave)
 			displayMessage(config.messages.rssSaved,"file://" + rssPath);
 		else
 			alert(config.messages.rssFailed);
-		}
+	}
 }
 
 function saveEmpty(localPath,original,posDiv)
 {
-	// Save empty template
-	if(config.options.chkSaveEmptyTemplate)
-		{
+	//# Save empty template
+	if(config.options.chkSaveEmptyTemplate) {
 		var emptyPath,p;
 		if((p = localPath.lastIndexOf("/")) != -1)
 			emptyPath = localPath.substr(0,p) + "/empty.html";
@@ -152,29 +146,25 @@ function saveEmpty(localPath,original,posDiv)
 			displayMessage(config.messages.emptySaved,"file://" + emptyPath);
 		else
 			alert(config.messages.emptyFailed);
-		}
+	}
 }
 
 function saveMain(localPath,original,posDiv)
 {
 	var save;
-	try 
-		{
-		// Save new file
-		var revised = updateOriginal(original, posDiv);
+	try {
+		//# Save new file
+		var revised = updateOriginal(original,posDiv);
 		save = saveFile(localPath,revised);
-		}
-	catch (e) 
-		{
-		showException(e);
-		}
-	if(save)
-		{
+	} catch (ex) {
+		showException(ex);
+	}
+	if(save) {
 		displayMessage(config.messages.mainSaved,"file://" + localPath);
 		store.setDirty(false);
-		}
-	else
+	} else {
 		alert(config.messages.mainFailed);
+	}
 }
 
 function getLocalPath(origPath)
@@ -213,11 +203,10 @@ function getBackupPath(localPath)
 {
 	var backSlash = true;
 	var dirPathPos = localPath.lastIndexOf("\\");
-	if(dirPathPos == -1)
-		{
+	if(dirPathPos == -1) {
 		dirPathPos = localPath.lastIndexOf("/");
 		backSlash = false;
-		}
+	}
 	var backupFolder = config.options.txtBackupFolder;
 	if(!backupFolder || backupFolder == "")
 		backupFolder = ".";
