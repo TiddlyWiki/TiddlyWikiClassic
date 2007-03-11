@@ -52,7 +52,13 @@ h1,h2,h3,h4,h5 {color:[[ColorPalette::SecondaryDark]]; background:[[ColorPalette
 #messageArea {border:1px solid [[ColorPalette::SecondaryMid]]; background:[[ColorPalette::SecondaryLight]]; color:[[ColorPalette::Foreground]];}
 #messageArea .button {color:[[ColorPalette::PrimaryMid]]; background:[[ColorPalette::SecondaryPale]]; border:none;}
 
+.tiddlerPopupButton {color:[[ColorPalette::Foreground]]; background:[[ColorPalette::PrimaryPale]]; border: 1px solid [[ColorPalette::PrimaryLight]];}
+.tiddlerPopupButton:hover {color:[[ColorPalette::Background]]; background:[[ColorPalette::PrimaryMid]];}
+.tiddlerPopupButton:active {color:[[ColorPalette::Background]]; background:[[ColorPalette::Foreground]];}
+.tiddlerPopupButton.highlight {color:[[ColorPalette::Foreground]]; background:[[ColorPalette::Background]];}
+
 .popup {background:[[ColorPalette::PrimaryLight]]; border:1px solid [[ColorPalette::PrimaryMid]];}
+.popupTiddler {background:[[ColorPalette::TertiaryPale]]; border:2px solid [[ColorPalette::TertiaryMid]];}
 .popup hr {color:[[ColorPalette::PrimaryDark]]; background:[[ColorPalette::PrimaryDark]]; border-bottom:1px;}
 
 .listBreak div {border-bottom:1px solid [[ColorPalette::PrimaryDark]];}
@@ -83,6 +89,7 @@ h1,h2,h3,h4,h5 {color:[[ColorPalette::SecondaryDark]]; background:[[ColorPalette
 
 .error, .errorButton {color:[[ColorPalette::Foreground]]; background:[[ColorPalette::Error]];}
 .warning {color:[[ColorPalette::Foreground]]; background:[[ColorPalette::SecondaryPale]];}
+.lowlight {background:[[ColorPalette::TertiaryLight]];}
 
 .zoomer {background:none; color:[[ColorPalette::TertiaryMid]]; border:3px solid [[ColorPalette::TertiaryMid]];}
 

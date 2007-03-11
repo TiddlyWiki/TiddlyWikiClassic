@@ -33,8 +33,10 @@ Popup.show = function(unused,slowly)
 	var rootHeight = curr.root.offsetHeight;
 	var popupLeft = rootLeft;
 	var popupTop = rootTop + rootHeight;
-	var popupWidth = curr.popup.offsetWidth;
 	var winWidth = findWindowWidth();
+	if(curr.popup.offsetWidth > winWidth*0.75)
+		curr.popup.style.width = winWidth*0.75 + "px";
+	var popupWidth = curr.popup.offsetWidth;
 	if(popupLeft + popupWidth > winWidth)
 		popupLeft = winWidth - popupWidth;
 	curr.popup.style.left = popupLeft + "px";

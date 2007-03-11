@@ -137,6 +137,41 @@ ListView.columnTypes.String = {
 		}
 };
 
+ListView.columnTypes.WikiText = {
+	createHeader: ListView.columnTypes.String.createHeader,
+	createItem: function(place,listObject,field,columnTemplate,col,row)
+		{
+			var v = listObject[field];
+			if(v != undefined)
+				wikify(v,place,null,null);
+		}
+};
+
+ListView.columnTypes.Tiddler = {
+	createHeader: ListView.columnTypes.String.createHeader,
+	createItem: function(place,listObject,field,columnTemplate,col,row)
+		{
+			var v = listObject[field];
+			if(v != undefined && v.title && v.text) {
+				var btn = createTiddlyButton(place,v.title,config.messages.listView.tiddlerTooltip,ListView.columnTypes.Tiddler.onClick,"tiddlerPopupButton");
+				btn.tiddler = v;
+			}
+		},
+	onClick: function(e)
+		{
+			var popup = Popup.create(this,"div","popupTiddler");
+			var tiddler = this.tiddler;
+			if(tiddler.text)
+				wikify(tiddler.text,popup,null,tiddler);
+			else
+				createTiddlyText(popup,config.messages.listView.previewUnavailable);
+			Popup.show(popup,false);
+			if(e) e.cancelBubble = true;
+			if(e && e.stopPropagation) e.stopPropagation();
+			return false;
+		}
+};
+
 ListView.columnTypes.Size = {
 	createHeader: ListView.columnTypes.String.createHeader,
 	createItem: function(place,listObject,field,columnTemplate,col,row)

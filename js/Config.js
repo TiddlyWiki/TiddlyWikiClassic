@@ -105,6 +105,7 @@ config.macros = {
 	saveChanges: {},
 	slider: {},
 	option: {},
+	options: {},
 	newTiddler: {},
 	newJournal: {},
 	sparkline: {},

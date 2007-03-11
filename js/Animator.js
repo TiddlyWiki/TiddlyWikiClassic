@@ -17,7 +17,7 @@ Animator.prototype.startAnimating = function() // Variable number of arguments
 		this.animations.push(arguments[t]);
 	if(this.running == 0) {
 		var me = this;
-		this.timerID = window.setInterval(function() {me.doAnimate(me);},5);
+		this.timerID = window.setInterval(function() {me.doAnimate(me);},10);
 	}
 	this.running += arguments.length;
 };

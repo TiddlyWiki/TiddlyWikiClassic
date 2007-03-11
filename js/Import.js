@@ -178,7 +178,8 @@ config.macros.importTiddlers.onGetTiddlerList = function(context,wizard)
 				modifier: tiddler.modifier,
 				text: tiddler.text ? wikifyPlainText(tiddler.text,100) : "",
 				tags: tiddler.tags,
-				size: tiddler.text ? tiddler.text.length : 0
+				size: tiddler.text ? tiddler.text.length : 0,
+				tiddler: tiddler
 			});
 		}
 	listedTiddlers.sort(function(a,b) {return a.title < b.title ? -1 : (a.title == b.title ? 0 : +1);});

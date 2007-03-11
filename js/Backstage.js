@@ -42,6 +42,7 @@ var backstage = {
 			var handler = task.action ? this.onClickCommand : this.onClickTab;
 			var btn = createTiddlyButton(this.toolbar,task.text,task.tooltip,handler,"backstageTab");
 			btn.setAttribute("task",taskName);
+			addClass(btn,task.action ? "backstageAction" : "backstageTask");
 			}
 		this.content = document.getElementById("contentWrapper");
 		if(config.options.chkBackstage)
@@ -69,7 +70,7 @@ var backstage = {
 		this.hideButton.style.display = "block";
 		config.options.chkBackstage = true;
 		saveOptionCookie("chkBackstage");
-		addClass(this.content,"backstage");
+		addClass(this.content,"backstageVisible");
 	},
 
 	hide: function() {
@@ -90,7 +91,7 @@ var backstage = {
 			this.hideButton.style.display = "none";
 			config.options.chkBackstage = false;
 			saveOptionCookie("chkBackstage");
-			removeClass(this.content,"backstage");
+			removeClass(this.content,"backstageVisible");
 		}
 	},
 

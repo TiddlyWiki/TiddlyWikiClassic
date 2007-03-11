@@ -316,13 +316,47 @@ config.macros.slider.handler = function(place,macroName,params)
 		wikify(text,panel,null,store.getTiddler(params[1]));
 };
 
+config.macros.option.genericCreate = function(place,type,opt,className,desc)
+{
+	var typeInfo = config.macros.option.types[type];
+    var c = document.createElement(typeInfo.elementType);
+    if(typeInfo.typeValue)
+        c.setAttribute("type",typeInfo.typeValue);
+    c[typeInfo.eventName] = typeInfo.onChange;
+    c.setAttribute("option",opt);
+	if(className)
+		c.className = className;
+	else
+    	c.className = typeInfo.className;
+	if(config.optionsDesc[opt])
+		c.setAttribute("title",config.optionsDesc[opt]);
+    place.appendChild(c);
+	if(desc != "no")
+		createTiddlyText(place,config.optionsDesc[opt] ? config.optionsDesc[opt] : opt);
+    c[typeInfo.valueField] = config.options[opt];
+    return c;
+};
+
+config.macros.option.genericOnChange = function(e)
+{
+	var opt = this.getAttribute("option");
+	if(opt) {
+		var optType = opt.substr(0,3);
+		var handler = config.macros.option.types[optType];
+		if (handler.elementType && handler.valueField)
+			config.macros.option.propagateOption(opt,handler.valueField,this[handler.valueField],handler.elementType)
+		}
+	return true;
+};
+
 config.macros.option.types = {
 	'txt': {
 		elementType: "input",
 		valueField: "value",
 		eventName: "onkeyup",
 		className: "txtOptionInput",
-		create: function(opt,place,params) { config.macros.option.createHelper(opt,place,params,this);}
+		create: config.macros.option.genericCreate,
+		onChange: config.macros.option.genericOnChange
 	},
 	'chk': {
 		elementType: "input",
@@ -330,40 +364,12 @@ config.macros.option.types = {
 		eventName: "onclick",
 		className: "chkOptionInput",
 		typeValue: "checkbox",
-		create: function(opt,place,params) { config.macros.option.createHelper(opt,place,params,this);}
+		create: config.macros.option.genericCreate,
+		onChange: config.macros.option.genericOnChange
 	}
 };
 
-// @param def {elementType:, valueField:, eventName:, className:, typeValue: /*optional*/}
-config.macros.option.createHelper = function(opt,place,params,def)
-{
-    var c = document.createElement(def.elementType);
-    if (def.typeValue)
-        c.setAttribute("type",def.typeValue);
-    c[def.eventName] = config.macros.option.onChangeOption;
-    c.setAttribute("option",opt);
-	if (params[1])
-		c.className = params[1];
-	else
-    	c.className = def.className;
-    place.appendChild(c);
-    c[def.valueField] = config.options[opt];
-    return c;
-};
-
-config.macros.option.onChangeOption = function(e)
-{
-	var opt = this.getAttribute("option");
-	if(opt) {
-		var optType = opt.substr(0,3);
-		var handler = config.macros.option.types[optType];
-		if (handler.elementType && handler.valueField)
-			config.macros.option.propagateOption(opt,handler.valueField, this[handler.valueField], handler.elementType)
-		}
-	return true;
-};
-
-config.macros.option.propagateOption = function(opt, valueField, value, elementType)
+config.macros.option.propagateOption = function(opt,valueField,value,elementType)
 {
 	config.options[opt] = value;
 	saveOptionCookie(opt);
@@ -375,15 +381,41 @@ config.macros.option.propagateOption = function(opt, valueField, value, elementT
 		}
 };
 
-config.macros.option.handler = function(place,macroName,params)
+config.macros.option.handler = function(place,macroName,params,wikifier,paramString,tiddler)
 {
-	var opt = params[0];
-	if(config.options[opt] == undefined)
-		return;
-	var optType = opt.substr(0,3);
-	var h = config.macros.option.types[optType];
-	if (h && h.create) 
-			h.create(opt,place,params);
+	params = paramString.parseParams("anon",null,true,false,false);
+	var opt = (params[1] && params[1].name == "anon") ? params[1].value : getParam(params,"name",null);
+	var className = (params[2] && params[2].name == "anon") ? params[2].value : getParam(params,"class",null);
+	var desc = getParam(params,"desc","no");
+	var type = opt.substr(0,3);
+	var h = config.macros.option.types[type];
+	if (h && h.create)
+		h.create(place,type,opt,className,desc);
+};
+
+config.macros.options.handler = function(place,macroName,params,wikifier,paramString,tiddler)
+{
+	params = paramString.parseParams("anon",null,true,false,false);
+	var showUnknown = getParam(params,"showUnknown","yes");
+	var opts = [];
+	for(var n in config.options) {
+		var opt = {};
+		opt.option = "";
+		opt.name = n;
+		opt.lowlight = !config.optionsDesc[n];
+		opt.description = opt.lowlight ? "//(Unknown)//" : config.optionsDesc[n];
+		if(!opt.lowlight || showUnknown == "yes")
+			opts.push(opt);
+	}
+	opts.sort(function(a,b) {return a.name.substr(3) < b.name.substr(3) ? -1 : (a.name.substr(3) == b.name.substr(3) ? 0 : +1);});
+	var listview = ListView.create(place,opts,config.macros.options.listViewTemplate)
+	for(n=0; n<opts.length; n++) {
+		var type = opts[n].name.substr(0,3);
+		var h = config.macros.option.types[type];
+		if (h && h.create) {
+			h.create(opts[n].colElements['option'],type,opts[n].name,null,"no");
+		}
+	}
 };
 
 config.macros.newTiddler.createNewTiddlerButton = function(place,title,params,label,prompt,accessKey,newFocus,isJournal)
