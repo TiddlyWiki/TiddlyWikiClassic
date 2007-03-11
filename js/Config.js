@@ -11,7 +11,8 @@ var config = {
 	cascadeFast: 20, // Speed for cascade animations (higher == slower)
 	cascadeSlow: 60, // Speed for EasterEgg cascade animations
 	cascadeDepth: 5, // Depth of cascade animation
-	displayStartupTime: false // Whether to display startup time
+	displayStartupTime: false, // Whether to display startup time
+	usePreForStorage: true // Whether to use <pre> format for storage
 };
 
 // Adaptors
