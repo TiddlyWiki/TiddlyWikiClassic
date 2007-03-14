@@ -265,7 +265,6 @@ merge(config.macros.importTiddlers,{
 			{name: 'Selected', field: 'Selected', rowName: 'title', type: 'Selector'},
 			{name: 'Tiddler', field: 'tiddler', title: "Tiddler", type: 'Tiddler'},
 			{name: 'Size', field: 'size', tiddlerLink: 'size', title: "Size", type: 'Size'},
-			{name: 'Snippet', field: 'text', title: "Snippet", type: 'String'},
 			{name: 'Tags', field: 'tags', title: "Tags", type: 'Tags'}
 			],
 		rowClasses: [
@@ -276,7 +275,7 @@ merge(config.macros.sync,{
 	listViewTemplate: {
 		columns: [
 			{name: 'Selected', field: 'selected', rowName: 'title', type: 'Selector'},
-			{name: 'Title', field: 'title', tiddlerLink: 'title', title: "Title", type: 'TiddlerLink'},
+			{name: 'Tiddler', field: 'tiddler', title: "Tiddler", type: 'Tiddler'},
 			{name: 'Server Type', field: 'serverType', title: "Server type", type: 'String'},
 			{name: 'Server Host', field: 'serverHost', title: "Server host", type: 'String'},
 			{name: 'Server Workspace', field: 'serverWorkspace', title: "Server workspace", type: 'String'},

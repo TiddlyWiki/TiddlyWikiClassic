@@ -152,9 +152,13 @@ ListView.columnTypes.Tiddler = {
 	createItem: function(place,listObject,field,columnTemplate,col,row)
 		{
 			var v = listObject[field];
-			if(v != undefined && v.title && v.text) {
-				var btn = createTiddlyButton(place,v.title,config.messages.listView.tiddlerTooltip,ListView.columnTypes.Tiddler.onClick,"tiddlerPopupButton");
-				btn.tiddler = v;
+			if(v != undefined && v.title) {
+				if(v.text) {
+					var btn = createTiddlyButton(place,v.title,config.messages.listView.tiddlerTooltip,ListView.columnTypes.Tiddler.onClick,"tiddlerPopupButton");
+					btn.tiddler = v;
+				} else {
+					createTiddlyText(place,v.title);
+				}
 			}
 		},
 	onClick: function(e)
