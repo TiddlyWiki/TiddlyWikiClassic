@@ -14,6 +14,8 @@ TW21Saver.prototype.externalizeTiddler = function(store,tiddler)
 		store.forEachField(tiddler,
 			function(tiddler,fieldName,value) {
 				// don't store stuff from the temp namespace
+				if(typeof value != "string")
+					value = "";
 				if (!fieldName.match(/^temp\./))
 					extendedAttributes += ' %0="%1"'.format([fieldName,value.escapeLineBreaks().htmlEncode()]);
 			},true);
