@@ -58,6 +58,8 @@ config.macros.importTiddlers.getFeeds = function()
 			serverType = "file";
 		feeds[title] = {title: title,
 						url: store.getTiddlerSlice(title,"URL"),
+						workspace: store.getTiddlerSlice(title,"Workspace"),
+						workspaceList: store.getTiddlerSlice(title,"WorkspaceList"),
 						serverType: serverType,
 						description: store.getTiddlerSlice(title,"Description")};
 		}
@@ -75,6 +77,8 @@ config.macros.importTiddlers.onFeedChange = function(e)
 		{
 		selTypes.value = f.serverType;
 		fileInput.value = f.url;
+		wizard.setValue("defaultWorkspace",f.workspace);
+		wizard.setValue("workspaceList",f.workspaceList);
 		this.selectedIndex = 0;
 		}
 	return false;
@@ -127,6 +131,21 @@ config.macros.importTiddlers.onGetWorkspaceList = function(context,wizard)
 		var e = createTiddlyElement(s,"option",null,null,context.workspaces[t].title);
 		e.value = context.workspaces[t].title;
 		}
+	var workspaceList = wizard.getValue("workspaceList");
+	if(workspaceList) {
+		var list = workspaceList.parseParams("workspace",null,false,true);
+		for(var n=1; n<list.length; n++) {
+			if(context.workspaces.findByField("title",list[n].value) == null) {
+				var e = createTiddlyElement(s,"option",null,null,list[n].value);
+				e.value = list[n].value;
+			}
+		}
+	}
+	var workspace = wizard.getValue("defaultWorkspace");
+	if(workspace) {
+		t = wizard.getElement("txtWorkspace");
+		t.value = workspace;
+	}
 	wizard.setButtons([{caption: config.macros.importTiddlers.openLabel, tooltip: config.macros.importTiddlers.openPrompt, onClick: config.macros.importTiddlers.onChooseWorkspace}]);
 }
 
