@@ -1,6 +1,6 @@
-// ---------------------------------------------------------------------------------
-// Refresh mechanism
-// ---------------------------------------------------------------------------------
+//--
+//-- Refresh mechanism
+//--
 
 config.refreshers = {
 	link: function(e,changeList)
@@ -25,13 +25,11 @@ config.refreshers = {
 		{
 		var title = e.getAttribute("tiddler");
 		var force = e.getAttribute("force");
-		if(force != null || changeList == null || changeList.indexOf(title) != -1)
-			{
+		if(force != null || changeList == null || changeList.indexOf(title) != -1) {
 			removeChildren(e);
 			wikify(store.getTiddlerText(title,title),e);
 			return true;
-			}
-		else
+		} else
 			return false;
 		},
 
@@ -50,8 +48,7 @@ config.refreshers = {
 function refreshElements(root,changeList)
 {
 	var nodes = root.childNodes;
-	for(var c=0; c<nodes.length; c++)
-		{
+	for(var c=0; c<nodes.length; c++) {
 		var e = nodes[c], type = null;
 		if(e.getAttribute  && (e.tagName ? e.tagName != "IFRAME" : true))
 			type = e.getAttribute("refresh");
@@ -61,34 +58,30 @@ function refreshElements(root,changeList)
 			refreshed = refresher(e,changeList);
 		if(e.hasChildNodes() && !refreshed)
 			refreshElements(e,changeList);
-		}
+	}
 }
 
 function applyHtmlMacros(root,tiddler)
 {
 	var e = root.firstChild;
-	while(e)
-		{
+	while(e) {
 		var nextChild = e.nextSibling;
-		if(e.getAttribute)
-			{
+		if(e.getAttribute) {
 			var macro = e.getAttribute("macro");
-			if(macro)
-				{
+			if(macro) {
 				var params = "";
 				var p = macro.indexOf(" ");
-				if(p != -1)
-					{
+				if(p != -1) {
 					params = macro.substr(p+1);
 					macro = macro.substr(0,p);
-					}
-				invokeMacro(e,macro,params,null,tiddler);
 				}
+				invokeMacro(e,macro,params,null,tiddler);
 			}
+		}
 		if(e.hasChildNodes())
 			applyHtmlMacros(e,tiddler);
 		e = nextChild;
-		}
+	}
 }
 
 function refreshPageTemplate(title)
@@ -97,12 +90,11 @@ function refreshPageTemplate(title)
 	stash.style.display = "none";
 	var display = document.getElementById("storyDisplay");
 	var nodes,t;
-	if(display)
-		{
+	if(display) {
 		nodes = display.childNodes;
 		for(t=nodes.length-1; t>=0; t--)
 			stash.appendChild(nodes[t]);
-		}
+	}
 	var wrapper = document.getElementById("contentWrapper");
 	if(!title)
 		title = "PageTemplate";
@@ -142,7 +134,7 @@ function refreshPageTitle()
 function refreshStyles(title,doc)
 {
 	if(!doc)
-		doc = document
+		doc = document;
 	setStylesheet(title == null ? "" : store.getRecursiveTiddlerText(title,"",10),title,doc);
 }
 

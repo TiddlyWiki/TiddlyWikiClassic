@@ -1,6 +1,6 @@
-// ---------------------------------------------------------------------------------
-// Message area
-// ---------------------------------------------------------------------------------
+//--
+//-- Message area
+//--
 
 function getMessageDiv()
 {
@@ -19,29 +19,26 @@ function getMessageDiv()
 function displayMessage(text,linkText)
 {
 	var e = getMessageDiv();
-	if(!e)
-		{
+	if(!e) {
 		alert(text);
 		return;
-		}
-	if(linkText)
-		{
+	}
+	if(linkText) {
 		var link = createTiddlyElement(e,"a",null,null,text);
 		link.href = linkText;
 		link.target = "_blank";
-		}
-	else
+	} else {
 		e.appendChild(document.createTextNode(text));
+	}
 }
 
 function clearMessage()
 {
 	var msgArea = document.getElementById("messageArea");
-	if(msgArea)
-		{
+	if(msgArea) {
 		removeChildren(msgArea);
 		msgArea.style.display = "none";
-		}
+	}
 	return false;
 }
 
