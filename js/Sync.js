@@ -146,7 +146,7 @@ config.macros.sync.syncOnGetTiddlerList = function(context,syncMachine)
 	for(var t=0; t<syncMachine.syncItems.length; t++) {
 		var si = syncMachine.syncItems[t];
 		var f = context.tiddlers.findByField("title",si.title);
-		if(f) {
+		if(f !== null) {
 			if(context.tiddlers[f].fields['server.page.version'] > si.tiddler.fields['server.page.version']) {
 				si.syncStatus = config.macros.sync.syncStatusList[si.isTouched ? 'changedBoth' : 'changedServer'];
 			}
