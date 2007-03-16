@@ -76,6 +76,11 @@ h1,h2,h3,h4,h5 {color:[[ColorPalette::SecondaryDark]]; background:[[ColorPalette
 
 .toolbar {color:[[ColorPalette::PrimaryMid]];}
 
+.details {border-left:2px solid [[ColorPalette::TertiaryPale]];}
+.details table {border:none;}
+.details th, .details thead td {background:[[ColorPalette::TertiaryLight]]; color:[[ColorPalette::Background]]; border:1px solid [[ColorPalette::Background]];}
+.details td, .details tr {background-color:[[ColorPalette::TertiaryPale]]; border:1px solid [[ColorPalette::Background]];}
+
 .tagging, .tagged {border:1px solid [[ColorPalette::TertiaryPale]]; background-color:[[ColorPalette::TertiaryPale]];}
 .selected .tagging, .selected .tagged {background-color:[[ColorPalette::TertiaryLight]]; border:1px solid [[ColorPalette::TertiaryMid]];}
 .tagging .listTitle, .tagged .listTitle {color:[[ColorPalette::PrimaryDark]];}

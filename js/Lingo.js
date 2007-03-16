@@ -33,6 +33,7 @@ config.optionsDesc = {
 	chkForceMinorUpdate: "Don't update modifier username and date when editing tiddlers",
 	chkConfirmDelete: "Require confirmation before deleting tiddlers",
 	chkInsertTabs: "Use the tab key to insert tab characters instead of moving between fields",
+	chkShowTiddlerDetails: "Always show the tiddler details panel when displaying a tiddler",
 	txtBackupFolder: "Name of folder to use for backups",
 	txtMaxEditRows: "Maximum number of rows in edit boxes",
 	txtFileSystemCharSet: "Default character set for saving changes"
@@ -229,7 +230,7 @@ merge(config.macros.plugins,{
 	});
 
 merge(config.macros.toolbar,{
-	moreLabel: "more >",
+	moreLabel: "more",
 	morePrompt: "Reveal further commands"
 	});
 
@@ -308,6 +309,23 @@ merge(config.macros.sync,{
 		putToServer: {text: "Saved update on server", color: "#ff80ff"},
 		gotFromServer: {text: "Retrieved update from server", color: "#80ffff"}
 		}
+	});
+
+merge(config.macros.details,{
+	label: "...",
+	prompt: "Show additional information about this tiddler",
+	hideLabel: "(hide details)",
+	hidePrompt: "Hide this panel of additional information",
+	emptyDetailsText: "There are no extended fields for this tiddler",
+	listViewTemplate: {
+		columns: [
+			{name: 'Field', field: 'field', title: "Field", type: 'String'},
+			{name: 'Value', field: 'value', title: "Value", type: 'String'}
+			],
+		rowClasses: [
+			],
+		buttons: [
+			]},
 	});
 
 merge(config.commands.closeTiddler,{

@@ -42,6 +42,7 @@ config.options = {
 	chkForceMinorUpdate: false,
 	chkConfirmDelete: true,
 	chkInsertTabs: false,
+	chkShowTiddlerDetails: false,
 	txtBackupFolder: "",
 	txtMainTab: "tabTimeline",
 	txtMoreTab: "moreTabAll",
@@ -121,7 +122,8 @@ config.macros = {
 	plugins: {},
 	refreshDisplay: {},
 	importTiddlers: {},
-	sync: {}
+	sync: {},
+	details: {}
 };
 
 // Commands supported by the toolbar macro

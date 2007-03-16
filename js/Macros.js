@@ -848,3 +848,77 @@ config.macros.refreshDisplay.onClick = function(e)
 	refreshAll();
 	return false;
 };
+
+config.macros.details.handler = function(place,macroName,params,wikifier,paramString,tiddler)
+{
+	if(!tiddler)
+		return;
+	params = paramString.parseParams("anon",null,true,false,false);
+	var fields = {};
+	store.forEachField(tiddler,function(tiddler,fieldName,value) {fields[fieldName] = value;},true);
+	var isOpen = null;
+	if(params[0]['start']) {
+		switch(params[0]['start'][0]) {
+			case 'open':
+				isOpen = true;
+				break;
+			case 'closed':
+				isOpen = false;
+				break;
+		}
+	}
+	if(isOpen === null && config.options.chkShowTiddlerDetails)
+		isOpen = true;
+	if(isOpen) {
+		this.createOpenPanel(place,null,fields);
+	} else {
+		this.createClosedPanel(place,null,fields);
+	}
+};
+
+config.macros.details.createOpenPanel = function(place,before,fields)
+{
+	var items = [];
+	for(var t in fields) {
+		items.push({
+			field: t,
+			value: fields[t]
+		});
+	}
+	items.sort(function(a,b) {return a.field < b.field ? -1 : (a.field == b.field ? 0 : +1);});
+	var panel = createTiddlyElement(null,"div",null,"details");
+	place.insertBefore(panel,before);
+	panel.setAttribute("fields",String.encodeHashMap(fields));
+	if(items.length > 0)
+		ListView.create(panel,items,config.macros.details.listViewTemplate);
+	else
+		createTiddlyElement(panel,"div",null,"detailsMessage",this.emptyDetailsText);
+	var btn = createTiddlyButton(createTiddlyElement(panel,"div"),this.hideLabel,this.hidePrompt,this.onClickHide);
+	return panel;
+};
+
+config.macros.details.createClosedPanel = function(place,before,fields)
+{
+	var btn = createTiddlyButton(null,config.macros.details.label,config.macros.details.prompt,config.macros.details.onClickShow);
+	place.insertBefore(btn,before);
+	btn.setAttribute("fields",String.encodeHashMap(fields));
+	return btn;
+};
+
+config.macros.details.onClickHide = function(e)
+{
+	var panel = findRelated(this,"details","className");
+	var fields = panel.getAttribute("fields").decodeHashMap();
+	config.macros.details.createClosedPanel(panel.parentNode,panel,fields);
+	panel.parentNode.removeChild(panel);
+	return false;
+};
+
+config.macros.details.onClickShow = function(e)
+{
+	var fields = this.getAttribute("fields").decodeHashMap();
+	config.macros.details.createOpenPanel(this.parentNode,this,fields);
+	this.parentNode.removeChild(this);
+	return false;
+};
+
