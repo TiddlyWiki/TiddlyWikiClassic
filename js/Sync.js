@@ -184,12 +184,14 @@ config.macros.sync.doSyncItem = function(syncItem)
 	var requestState = {syncMachine: syncItem.syncMachine, title: syncItem.title, syncItem: syncItem};
 	switch(syncItem.syncStatus) {
 		case config.macros.sync.syncStatusList.changedServer:
-			r = syncItem.syncMachine.adaptor.getTiddler(syncItem.title,context,requestState,config.macros.sync.syncOnGetTiddler);
+			if(syncItem.syncMachine.adaptor.getTiddler)
+				r = syncItem.syncMachine.adaptor.getTiddler(syncItem.title,context,requestState,config.macros.sync.syncOnGetTiddler);
 			break;
 		case config.macros.sync.syncStatusList.notFound:
 		case config.macros.sync.syncStatusList.changedLocally:
 		case config.macros.sync.syncStatusList.changedBoth:
-			r = syncItem.syncMachine.adaptor.putTiddler(syncItem.tiddler,context,requestState,config.macros.sync.syncOnPutTiddler);
+			if(syncItem.syncMachine.adaptor.putTiddler)
+				r = syncItem.syncMachine.adaptor.putTiddler(syncItem.tiddler,context,requestState,config.macros.sync.syncOnPutTiddler);
 			break;
 	}
 	if(r !== true)
