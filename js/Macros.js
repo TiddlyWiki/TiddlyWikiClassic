@@ -800,23 +800,41 @@ config.macros.toolbar.invokeCommand = function(place,theClass,event)
 	}
 };
 
+config.macros.toolbar.onClickMore = function(e)
+{
+	var e = this.nextSibling;
+	e.style.display = "inline";
+	this.parentNode.removeChild(this);
+};
+
 config.macros.toolbar.handler = function(place,macroName,params,wikifier,paramString,tiddler)
 {
 	for(var t=0; t<params.length; t++) {
 		var c = params[t];
-		var theClass = "";
-		switch(c.substr(0,1)) {
-			case "+":
-				theClass = "defaultCommand";
-				c = c.substr(1);
+		switch(c) {
+			case '>':
+				var btn = createTiddlyButton(place,this.moreLabel,this.morePrompt,config.macros.toolbar.onClickMore);
+				addClass(btn,"moreCommand");
+				var e = createTiddlyElement(place,"span",null,"moreCommand");
+				e.style.display = "none";
+				place = e;
 				break;
-			case "-":
-				theClass = "cancelCommand";
-				c = c.substr(1);
+			default:
+				var theClass = "";
+				switch(c.substr(0,1)) {
+					case "+":
+						theClass = "defaultCommand";
+						c = c.substr(1);
+						break;
+					case "-":
+						theClass = "cancelCommand";
+						c = c.substr(1);
+						break;
+				}
+				if(c in config.commands)
+					this.createCommand(place,c,tiddler,theClass);
 				break;
 		}
-		if(c in config.commands)
-			this.createCommand(place,c,tiddler,theClass);
 	}
 };
 

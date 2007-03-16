@@ -228,6 +228,11 @@ merge(config.macros.plugins,{
 			]}
 	});
 
+merge(config.macros.toolbar,{
+	moreLabel: "more >",
+	morePrompt: "Reveal further commands"
+	});
+
 merge(config.macros.refreshDisplay,{
 	label: "refresh",
 	prompt: "Redraw the entire TiddlyWiki display"

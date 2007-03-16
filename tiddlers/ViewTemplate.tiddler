@@ -1,6 +1,6 @@
 <div title="ViewTemplate">
 <pre>&lt;!--{{{--&gt;
-&lt;div class='toolbar' macro='toolbar closeTiddler closeOthers +editTiddler permalink references jump'&gt;&lt;/div&gt;
+&lt;div class='toolbar' macro='toolbar closeTiddler closeOthers +editTiddler > permalink references jump > closeTiddler'&gt;&lt;/div&gt;
 &lt;div class='title' macro='view title'&gt;&lt;/div&gt;
 &lt;div class='subtitle'&gt;&lt;span macro='view modifier link'&gt;&lt;/span&gt;, &lt;span macro='view modified date'&gt;&lt;/span&gt; (&lt;span macro='message views.wikified.createdPrompt'&gt;&lt;/span&gt; &lt;span macro='view created date'&gt;&lt;/span&gt;)&lt;/div&gt;
 &lt;div class='tagging' macro='tagging'&gt;&lt;/div&gt;
