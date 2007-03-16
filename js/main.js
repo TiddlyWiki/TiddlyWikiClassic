@@ -112,6 +112,7 @@ function loadPlugins()
 	for(var t=0; t<configTiddlers.length; t++) {
 		tiddler = configTiddlers[t];
 		pluginInfo = getPluginInfo(tiddler);
+		var startTime = new Date();
 		if(isPluginExecutable(pluginInfo)) {
 			pluginInfo.executed = true;
 			pluginInfo.error = false;
@@ -123,6 +124,7 @@ function loadPlugins()
 				pluginInfo.error = true;
 				hadProblem = true;
 			}
+			pluginInfo.startupTime = String((new Date()) - startTime) + "ms";
 		} else {
 			pluginInfo.warning = true;
 		}

@@ -220,6 +220,7 @@ merge(config.macros.plugins,{
 			{name: 'Forced', field: 'forced', title: "Forced", tag: 'systemConfigForce', type: 'TagCheckbox'},
 			{name: 'Disabled', field: 'disabled', title: "Disabled", tag: 'systemConfigDisable', type: 'TagCheckbox'},
 			{name: 'Executed', field: 'executed', title: "Loaded", type: 'Boolean', trueText: "Yes", falseText: "No"},
+			{name: 'Startup Time', field: 'startupTime', title: "Startup Time", type: 'String'},
 			{name: 'Error', field: 'error', title: "Status", type: 'Boolean', trueText: "Error", falseText: "OK"},
 			{name: 'Log', field: 'log', title: "Log", type: 'StringList'}
 			],
