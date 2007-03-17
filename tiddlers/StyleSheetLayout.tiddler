@@ -109,8 +109,8 @@ a.tiddlyLinkNonExisting.shadow {font-weight:bold;}
 .selected .toolbar {visibility:visible;}
 
 .viewDetails {padding:0.5em 0em 0.5em 0em;}
-.viewDetails .button {font-size:0.9em;}
-.detailsMessage {margin:0.8em 1.0em; font-size:0.9em;}
+.viewDetails {font-size:0.9em;}
+.detailsMessage {margin:0.8em 1.0em;}
 
 .tiddler {padding:1em 1em 0em 1em;}
 
@@ -157,7 +157,8 @@ table.listView th, table.listView td, table.listView tr {padding:0px 3px 0px 3px
 .sparkline {line-height:1em;}
 .sparktick {outline:0;}
 
-.zoomer {font-size:1.1em; position:absolute; overflow:hidden; padding:1em;}
+.zoomer {font-size:1.1em; position:absolute; overflow:hidden;}
+.zoomer div {padding:1em;}
 
 * html #backstage {width:99%;}
 * html #backstageArea {width:99%;}

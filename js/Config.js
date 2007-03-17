@@ -136,7 +136,8 @@ config.commands = {
 	deleteTiddler: {hideReadOnly: true},
 	permalink: {},
 	references: {},
-	jump: {}
+	jump: {},
+	send: {}
 };
 
 // Browser detection... In a very few places, there's nothing else for it but to know what browser we're using.
