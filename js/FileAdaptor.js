@@ -25,6 +25,8 @@ FileAdaptor.serverType = 'file';
 FileAdaptor.prototype.openHost = function(host,context,userParams,callback)
 {
 	this.host = host;
+	if(!context)
+		context = {};
 	context.adaptor = this;
 	context.callback = callback;
 	context.userParams = userParams;
@@ -58,6 +60,8 @@ FileAdaptor.openHostCallback = function(status,context,responseText,url,xhr)
 //#   context - parameters as originally passed into the getWorkspaceList function
 FileAdaptor.prototype.getWorkspaceList = function(context,userParams,callback)
 {
+	if(!context)
+		context = {};
 	context.workspaces = [{title:"(default)"}];
 	context.status = true;
 	window.setTimeout(function() {callback(context,userParams);},10);
@@ -76,6 +80,8 @@ FileAdaptor.prototype.getWorkspaceList = function(context,userParams,callback)
 //#   context - parameters as originally passed into the openWorkspace function
 FileAdaptor.prototype.openWorkspace = function(workspace,context,userParams,callback)
 {
+	if(!context)
+		context = {};
 	context.status = true;
 	window.setTimeout(function() {callback(context,userParams);},10);
 	return true;
@@ -95,6 +101,8 @@ FileAdaptor.prototype.getTiddlerList = function(context,userParams,callback)
 {
 	if(!this.store)
 		return FileAdaptor.NotLoadedError;
+	if(!context)
+		context = {};
 	context.tiddlers = [];
 	this.store.forEachTiddler(function(title,tiddler)
 		{
@@ -133,6 +141,8 @@ FileAdaptor.prototype.getTiddler = function(title,context,userParams,callback)
 {
 	if(!this.store)
 		return FileAdaptor.NotLoadedError;
+	if(!context)
+		context = {};
 	context.tiddler = this.store.fetchTiddler(title);
 	context.tiddler.fields['server.type'] = FileAdaptor.serverType;
 	context.tiddler.fields['server.host'] = this.host;
@@ -140,21 +150,6 @@ FileAdaptor.prototype.getTiddler = function(title,context,userParams,callback)
 	context.status = true;
 	window.setTimeout(function() {callback(context,userParams);},10);
 	return true;
-}
-
-// Puts a tiddler to a given workspace on a given server
-//#   tiddler - tiddler to put
-//#   callback - function to be called on completion
-//#   context - passed on as a parameter to the callback function
-//# Return value is true if the request was successfully issued,
-//#   or an error description string if there was a problem
-//# The callback parameters are callback(status,adaptor,context)
-//#   status - true if OK, false if error
-//#   adaptor - reference to this adaptor object
-//#   context - as passed into the function
-FileAdaptor.prototype.putTiddler = function(tiddler,callback,context)
-{
-	return "putTiddler() not supported";
 }
 
 FileAdaptor.prototype.close = function()
