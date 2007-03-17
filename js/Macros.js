@@ -910,14 +910,21 @@ config.macros.viewDetails.onClickHide = function(e)
 	var panel = findRelated(this,"viewDetails","className");
 	var fields = panel.getAttribute("fields").decodeHashMap();
 	config.macros.viewDetails.createClosedPanel(panel.parentNode,panel,fields);
-	panel.parentNode.removeChild(panel);
+	if(anim && config.options.chkAnimate) {
+		anim.startAnimating(new Slider(panel,false,null,"all"));
+	} else {
+		panel.parentNode.removeChild(panel);
+	}
 	return false;
 };
 
 config.macros.viewDetails.onClickShow = function(e)
 {
 	var fields = this.getAttribute("fields").decodeHashMap();
-	config.macros.viewDetails.createOpenPanel(this.parentNode,this,fields);
+	var panel = config.macros.viewDetails.createOpenPanel(this.parentNode,this,fields);
+	if(anim && config.options.chkAnimate) {
+		anim.startAnimating(new Slider(panel,true));
+	}
 	this.parentNode.removeChild(this);
 	return false;
 };
