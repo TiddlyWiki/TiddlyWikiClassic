@@ -123,7 +123,7 @@ config.macros = {
 	refreshDisplay: {},
 	importTiddlers: {},
 	sync: {},
-	details: {}
+	viewDetails: {}
 };
 
 // Commands supported by the toolbar macro

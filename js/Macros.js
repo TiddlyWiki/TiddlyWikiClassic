@@ -849,7 +849,7 @@ config.macros.refreshDisplay.onClick = function(e)
 	return false;
 };
 
-config.macros.details.handler = function(place,macroName,params,wikifier,paramString,tiddler)
+config.macros.viewDetails.handler = function(place,macroName,params,wikifier,paramString,tiddler)
 {
 	if(!tiddler)
 		return;
@@ -876,7 +876,7 @@ config.macros.details.handler = function(place,macroName,params,wikifier,paramSt
 	}
 };
 
-config.macros.details.createOpenPanel = function(place,before,fields)
+config.macros.viewDetails.createOpenPanel = function(place,before,fields)
 {
 	var items = [];
 	for(var t in fields) {
@@ -886,38 +886,38 @@ config.macros.details.createOpenPanel = function(place,before,fields)
 		});
 	}
 	items.sort(function(a,b) {return a.field < b.field ? -1 : (a.field == b.field ? 0 : +1);});
-	var panel = createTiddlyElement(null,"div",null,"details");
+	var panel = createTiddlyElement(null,"div",null,"viewDetails");
 	place.insertBefore(panel,before);
 	panel.setAttribute("fields",String.encodeHashMap(fields));
 	if(items.length > 0)
-		ListView.create(panel,items,config.macros.details.listViewTemplate);
+		ListView.create(panel,items,config.macros.viewDetails.listViewTemplate);
 	else
 		createTiddlyElement(panel,"div",null,"detailsMessage",this.emptyDetailsText);
 	var btn = createTiddlyButton(createTiddlyElement(panel,"div"),this.hideLabel,this.hidePrompt,this.onClickHide);
 	return panel;
 };
 
-config.macros.details.createClosedPanel = function(place,before,fields)
+config.macros.viewDetails.createClosedPanel = function(place,before,fields)
 {
-	var btn = createTiddlyButton(null,config.macros.details.label,config.macros.details.prompt,config.macros.details.onClickShow);
+	var btn = createTiddlyButton(null,config.macros.viewDetails.label,config.macros.viewDetails.prompt,config.macros.viewDetails.onClickShow);
 	place.insertBefore(btn,before);
 	btn.setAttribute("fields",String.encodeHashMap(fields));
 	return btn;
 };
 
-config.macros.details.onClickHide = function(e)
+config.macros.viewDetails.onClickHide = function(e)
 {
-	var panel = findRelated(this,"details","className");
+	var panel = findRelated(this,"viewDetails","className");
 	var fields = panel.getAttribute("fields").decodeHashMap();
-	config.macros.details.createClosedPanel(panel.parentNode,panel,fields);
+	config.macros.viewDetails.createClosedPanel(panel.parentNode,panel,fields);
 	panel.parentNode.removeChild(panel);
 	return false;
 };
 
-config.macros.details.onClickShow = function(e)
+config.macros.viewDetails.onClickShow = function(e)
 {
 	var fields = this.getAttribute("fields").decodeHashMap();
-	config.macros.details.createOpenPanel(this.parentNode,this,fields);
+	config.macros.viewDetails.createOpenPanel(this.parentNode,this,fields);
 	this.parentNode.removeChild(this);
 	return false;
 };

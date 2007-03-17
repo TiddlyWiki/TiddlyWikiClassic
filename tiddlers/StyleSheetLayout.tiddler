@@ -108,7 +108,7 @@ a.tiddlyLinkNonExisting.shadow {font-weight:bold;}
 .toolbar {text-align:right; font-size:.9em; visibility:hidden;}
 .selected .toolbar {visibility:visible;}
 
-.details .button {font-size:0.9em;}
+.viewDetails .button {font-size:0.9em;}
 .detailsMessage {margin: 0.8em 1.0em; font-size:0.9em;}
 
 .tiddler {padding:1em 1em 0em 1em;}

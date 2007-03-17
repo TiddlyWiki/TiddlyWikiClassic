@@ -312,7 +312,7 @@ merge(config.macros.sync,{
 		}
 	});
 
-merge(config.macros.details,{
+merge(config.macros.viewDetails,{
 	label: "...",
 	prompt: "Show additional information about this tiddler",
 	hideLabel: "(hide details)",
