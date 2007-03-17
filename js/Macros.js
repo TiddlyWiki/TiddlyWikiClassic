@@ -911,7 +911,7 @@ config.macros.viewDetails.onClickHide = function(e)
 	var fields = panel.getAttribute("fields").decodeHashMap();
 	config.macros.viewDetails.createClosedPanel(panel.parentNode,panel,fields);
 	if(anim && config.options.chkAnimate) {
-		anim.startAnimating(new Slider(panel,false,null,"all"));
+		anim.startAnimating(new Slider(panel,false,null,"all",true));
 	} else {
 		panel.parentNode.removeChild(panel);
 	}
@@ -923,7 +923,7 @@ config.macros.viewDetails.onClickShow = function(e)
 	var fields = this.getAttribute("fields").decodeHashMap();
 	var panel = config.macros.viewDetails.createOpenPanel(this.parentNode,this,fields);
 	if(anim && config.options.chkAnimate) {
-		anim.startAnimating(new Slider(panel,true));
+		anim.startAnimating(new Slider(panel,true,null,null,true));
 	}
 	this.parentNode.removeChild(this);
 	return false;

@@ -326,7 +326,7 @@ merge(config.macros.viewDetails,{
 		rowClasses: [
 			],
 		buttons: [
-			]},
+			]}
 	});
 
 merge(config.commands.closeTiddler,{

@@ -3,19 +3,28 @@
 //--
 
 // deleteMode - "none", "all" [delete target element and it's children], [only] "children" [but not the target element]
-function Slider(element,opening,slowly,deleteMode)
+function Slider(element,opening,slowly,deleteMode,flyIn)
 {
-	element.style.display = 'block';
 	element.style.overflow = 'hidden';
-	element.style.height = 'auto';
+	if(opening)
+		element.style.height = '0px'; // Resolves a Firefox flashing bug
+	element.style.display = 'block';
+	var left = findPosX(element);
+	var width = element.scrollWidth;
+	var height = element.scrollHeight;
+	var winWidth = findWindowWidth();
 	var p = [];
 	var c = null;
 	if(opening) {
-		p.push({style: 'height', start: 0, end: element.offsetHeight, template: '%0px', atEnd: 'auto'});
+		if(flyIn)
+			p.push({style: 'marginLeft', start: winWidth-width, end: 0, template: '%0px'});
+		p.push({style: 'height', start: 0, end: height, template: '%0px', atEnd: 'auto'});
 		p.push({style: 'opacity', start: 0, end: 1, template: '%0'});
 		p.push({style: 'filter', start: 0, end: 100, template: 'alpha(opacity:%0)'});
 	} else {
-		p.push({style: 'height', start: element.offsetHeight, end: 0, template: '%0px'});
+		if(flyIn)
+			p.push({style: 'marginLeft', start: 0, end: -left, template: '%0px', atEnd: '0px'});
+		p.push({style: 'height', start: height, end: 0, template: '%0px'});
 		p.push({style: 'display', atEnd: 'none'});
 		p.push({style: 'opacity', start: 1, end: 0, template: '%0'});
 		p.push({style: 'filter', start: 100, end: 0, template: 'alpha(opacity:%0)'});
