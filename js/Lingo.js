@@ -190,6 +190,10 @@ merge(config.macros.newJournal,{
 	accessKey: "J"});
 
 merge(config.macros.options,{
+	wizardTitle: "Tweak advanced options",
+	step1Title: "These options are saved in cookies in your browser",
+	step1Html: "<input type='hidden' name='markList'></input><br><input type='checkbox' checked='false' name='chkHidden'>Show hidden options</input>",
+	unknownDescription: "//(hidden)//",
 	listViewTemplate: {
 		columns: [
 			{name: 'Option', field: 'option', title: "Option", type: 'String'},

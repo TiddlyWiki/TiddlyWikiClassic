@@ -396,19 +396,34 @@ config.macros.option.handler = function(place,macroName,params,wikifier,paramStr
 config.macros.options.handler = function(place,macroName,params,wikifier,paramString,tiddler)
 {
 	params = paramString.parseParams("anon",null,true,false,false);
-	var showUnknown = getParam(params,"showUnknown","yes");
+	var showHidden = getParam(params,"showHidden","no");
+	var wizard = new Wizard();
+	wizard.createWizard(place,this.wizardTitle);
+	wizard.addStep(this.step1Title,this.step1Html);
+	var markList = wizard.getElement("markList");
+	var chkHidden = wizard.getElement("chkHidden");
+	chkHidden.checked = showHidden == "yes";
+	chkHidden.onchange = this.onChangeHidden;
+	var listWrapper = document.createElement("div");
+	markList.parentNode.insertBefore(listWrapper,markList);
+	wizard.setValue("listWrapper",listWrapper);
+	this.refreshOptions(listWrapper,showHidden == "yes");
+}
+
+config.macros.options.refreshOptions = function(listWrapper,showHidden)
+{	
 	var opts = [];
 	for(var n in config.options) {
 		var opt = {};
 		opt.option = "";
 		opt.name = n;
 		opt.lowlight = !config.optionsDesc[n];
-		opt.description = opt.lowlight ? "//(Unknown)//" : config.optionsDesc[n];
-		if(!opt.lowlight || showUnknown == "yes")
+		opt.description = opt.lowlight ? this.unknownDescription : config.optionsDesc[n];
+		if(!opt.lowlight || showHidden)
 			opts.push(opt);
 	}
 	opts.sort(function(a,b) {return a.name.substr(3) < b.name.substr(3) ? -1 : (a.name.substr(3) == b.name.substr(3) ? 0 : +1);});
-	var listview = ListView.create(place,opts,config.macros.options.listViewTemplate)
+	var listview = ListView.create(listWrapper,opts,config.macros.options.listViewTemplate);
 	for(n=0; n<opts.length; n++) {
 		var type = opts[n].name.substr(0,3);
 		var h = config.macros.option.types[type];
@@ -416,6 +431,15 @@ config.macros.options.handler = function(place,macroName,params,wikifier,paramSt
 			h.create(opts[n].colElements['option'],type,opts[n].name,null,"no");
 		}
 	}
+};
+
+config.macros.options.onChangeHidden = function(e)
+{
+	var wizard = new Wizard(this);
+	var listWrapper = wizard.getValue("listWrapper");
+	removeChildren(listWrapper);
+	config.macros.options.refreshOptions(listWrapper,this.checked);
+	return false;
 };
 
 config.macros.newTiddler.createNewTiddlerButton = function(place,title,params,label,prompt,accessKey,newFocus,isJournal)
