@@ -135,9 +135,9 @@ config.commands = {
 	cancelTiddler: {},
 	deleteTiddler: {hideReadOnly: true},
 	permalink: {},
-	references: {},
-	jump: {},
-	send: {}
+	references: {type: "popup"},
+	jump: {type: "popup"},
+	syncing: {type: "popup"}
 };
 
 // Browser detection... In a very few places, there's nothing else for it but to know what browser we're using.

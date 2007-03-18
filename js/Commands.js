@@ -64,39 +64,72 @@ config.commands.permalink.handler = function(event,src,title)
 	return false;
 };
 
-config.commands.references.handler = function(event,src,title)
+config.commands.references.handlePopup = function(popup,title)
 {
-	var popup = Popup.create(src);
-	if(popup) {
-		var references = store.getReferringTiddlers(title);
-		var c = false;
-		for(var r=0; r<references.length; r++) {
-			if(references[r].title != title && !references[r].isTagged("excludeLists")) {
-				createTiddlyLink(createTiddlyElement(popup,"li"),references[r].title,true);
-				c = true;
-			}
+	var references = store.getReferringTiddlers(title);
+	var c = false;
+	for(var r=0; r<references.length; r++) {
+		if(references[r].title != title && !references[r].isTagged("excludeLists")) {
+			createTiddlyLink(createTiddlyElement(popup,"li"),references[r].title,true);
+			c = true;
 		}
-		if(!c)
-			createTiddlyText(createTiddlyElement(popup,"li",null,"disabled"),this.popupNone);
 	}
-	Popup.show(popup,false);
-	event.cancelBubble = true;
-	if (event.stopPropagation) event.stopPropagation();
-	return false;
+	if(!c)
+		createTiddlyText(createTiddlyElement(popup,"li",null,"disabled"),this.popupNone);
 };
 
-config.commands.jump.handler = function(event,src,title)
+config.commands.jump.handlePopup = function(popup,title)
 {
-	var popup = Popup.create(src);
-	if(popup) {
-		story.forEachTiddler(function(title,element) {
-			createTiddlyLink(createTiddlyElement(popup,"li"),title,true,null,false,null,true);
-			});
+	story.forEachTiddler(function(title,element) {
+		createTiddlyLink(createTiddlyElement(popup,"li"),title,true,null,false,null,true);
+		});
+};
+
+config.commands.syncing.handlePopup = function(popup,title)
+{
+	var tiddler = store.fetchTiddler(title);
+	if(!tiddler)
+		return;
+	var serverType = tiddler.getServerType();
+	var serverHost = tiddler.fields['server.host'];
+	var serverWorkspace = tiddler.fields['server.workspace'];
+	if(!serverWorkspace)
+		serverWorkspace = "(none)";
+	if(serverType) {
+		var e = createTiddlyElement(popup,"li",null,"popupMessage");
+		e.innerHTML = config.commands.syncing.currentlySyncing.format([serverType,serverHost,serverWorkspace]);
+	} else {
+		createTiddlyElement(popup,"li",null,"popupMessage",config.commands.syncing.notCurrentlySyncing);
 	}
-	Popup.show(popup,false);
-	event.cancelBubble = true;
-	if (event.stopPropagation)
-		event.stopPropagation();
-	return false;
+	createTiddlyElement(createTiddlyElement(popup,"li",null,"listBreak"),"div");
+	createTiddlyElement(popup,"li",null,"popupMessage",config.commands.syncing.chooseServer);
+	var feeds = store.getTaggedTiddlers("systemServer","title");
+	for(var t=0; t<feeds.length; t++) {
+		var f = feeds[t];
+		var btn = createTiddlyButton(createTiddlyElement(popup,"li"),f.title,null,config.commands.syncing.onChooseServer);
+		btn.setAttribute("tiddler",title);
+		var serverType = store.getTiddlerSlice(f.title,"Type");
+		if(!serverType)
+			serverType = "file";
+		btn.setAttribute("server.type",serverType);
+		var serverHost = store.getTiddlerSlice(f.title,"URL");
+		if(!serverHost)
+			serverHost = "";
+		btn.setAttribute("server.host",serverHost);
+		var serverWorkspace = store.getTiddlerSlice(f.title,"Workspace");
+		if(!serverWorkspace)
+			serverWorkspace = "";
+		btn.setAttribute("server.workspace",serverWorkspace);
+	}
+};
+
+config.commands.syncing.onChooseServer = function(e)
+{
+	var tiddler = this.getAttribute("tiddler");
+	store.addTiddlerFields(tiddler,{
+		'server.type': this.getAttribute("server.type"),
+		'server.host': this.getAttribute("server.host"),
+		'server.workspace': this.getAttribute("server.workspace")
+		});
 };
 
