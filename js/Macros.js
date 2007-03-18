@@ -751,7 +751,17 @@ config.macros.toolbar.createCommand = function(place,commandName,tiddler,theClas
 		if(command.isEnabled ? command.isEnabled(tiddler) : this.isCommandEnabled(command,tiddler)) {
 			var text = command.getText ? command.getText(tiddler) : this.getCommandText(command,tiddler);
 			var tooltip = command.getTooltip ? command.getTooltip(tiddler) : this.getCommandTooltip(command,tiddler);
-			var btn = createTiddlyButton(null,text,tooltip,this.onClickCommand);
+			var cmd;
+			switch(command.type) {
+				case "command":
+				default:
+					cmd = this.onClickCommand;
+					break;
+				case "popup":
+					cmd = this.onClickPopup;
+					break;
+			}
+			var btn = createTiddlyButton(null,text,tooltip,cmd);
 			btn.setAttribute("commandName",commandName);
 			btn.setAttribute("tiddler",tiddler.title);
 			if(theClass)
@@ -784,6 +794,21 @@ config.macros.toolbar.onClickCommand = function(e)
 	if(!e) var e = window.event;
 	var command = config.commands[this.getAttribute("commandName")];
 	return command.handler(e,this,this.getAttribute("tiddler"));
+};
+
+config.macros.toolbar.onClickPopup = function(e)
+{
+	if(!e) var e = window.event;
+	var popup = Popup.create(this);
+	var command = config.commands[this.getAttribute("commandName")];
+	var title = this.getAttribute("tiddler");
+	var tiddler = store.fetchTiddler(title);
+	popup.setAttribute("tiddler",title);
+	command.handlePopup(popup,title);
+	Popup.show(popup,false);
+	e.cancelBubble = true;
+	if (e.stopPropagation) e.stopPropagation();
+	return false;
 };
 
 // Invoke the first command encountered from a given place that is tagged with a specified class
