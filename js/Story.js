@@ -113,7 +113,8 @@ Story.prototype.createTiddler = function(place,before,title,template,customField
 {
 	var tiddlerElem = createTiddlyElement(null,"div",this.idPrefix + title,"tiddler");
 	tiddlerElem.setAttribute("refresh","tiddler");
-	tiddlerElem.setAttribute("tiddlyFields",customFields);
+	if(customFields)
+		tiddlerElem.setAttribute("tiddlyFields",customFields);
 	place.insertBefore(tiddlerElem,before);
 	this.refreshTiddler(title,template,false,customFields);
 	if(!store.tiddlerExists(title) && !store.isShadowTiddler(title))
