@@ -6,7 +6,9 @@ a {color:[[ColorPalette::PrimaryMid]];}
 a:hover {background-color:[[ColorPalette::PrimaryMid]]; color:[[ColorPalette::Background]];}
 a img {border:0;}
 
-h1,h2,h3,h4,h5 {color:[[ColorPalette::SecondaryDark]]; background:[[ColorPalette::PrimaryPale]];}
+h1,h2,h3,h4,h5,h6 {color:[[ColorPalette::SecondaryDark]]; background:transparent;}
+h1 {border-bottom:2px solid [[ColorPalette::TertiaryLight]];}
+h2,h3 {border-bottom:1px solid [[ColorPalette::TertiaryLight]];}
 
 .button {color:[[ColorPalette::PrimaryDark]]; border:1px solid [[ColorPalette::Background]];}
 .button:hover {color:[[ColorPalette::PrimaryDark]]; background:[[ColorPalette::SecondaryLight]]; border-color:[[ColorPalette::SecondaryMid]];}
