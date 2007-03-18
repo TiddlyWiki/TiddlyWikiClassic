@@ -82,16 +82,15 @@ a.tiddlyLinkNonExisting.shadow {font-weight:bold;}
 
 .tiddlerPopupButton {padding:0.2em 0.2em 0.2em 0.2em;}
 .tiddlerPopupButton:after {content:" ↓";}
-
-.popup {z-index:300; font-size:.9em; padding:0.2em; list-style:none; margin:0;}
 .popupTiddler {position: absolute; z-index:300; padding:1em 1em 1em 1em; margin:0;}
-.popup hr {display:block; height:1px; width:auto; padding:0; margin:0.2em 0em;}
 
+.popup {position:absolute; z-index:300; font-size:.9em; padding:0; list-style:none; margin:0;}
+.popup .popupMessage {padding:0.4em;}
+.popup hr {display:block; height:1px; width:auto; padding:0; margin:0.2em 0em;}
+.popup li.disabled {padding:0.4em;}
+.popup li a {display:block; padding:0.4em; font-weight:normal; cursor:pointer;}
 .listBreak {font-size:1px; line-height:1px;}
 .listBreak div {margin:2px 0;}
-
-.popup li.disabled {padding:0.2em;}
-.popup li a {display:block; padding:0.2em;}
 
 .tabset {padding:1em 0em 0em 0.5em;}
 .tab {margin:0em 0em 0em 0.25em; padding:2px;}

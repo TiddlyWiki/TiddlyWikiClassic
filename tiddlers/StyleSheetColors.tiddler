@@ -56,16 +56,16 @@ h1,h2,h3,h4,h5 {color:[[ColorPalette::SecondaryDark]]; background:[[ColorPalette
 .tiddlerPopupButton:hover {color:[[ColorPalette::Background]]; background:[[ColorPalette::PrimaryMid]];}
 .tiddlerPopupButton:active {color:[[ColorPalette::Background]]; background:[[ColorPalette::Foreground]];}
 .tiddlerPopupButton.highlight {color:[[ColorPalette::Foreground]]; background:[[ColorPalette::Background]];}
-
-.popup {background:[[ColorPalette::PrimaryLight]]; border:1px solid [[ColorPalette::PrimaryMid]];}
 .popupTiddler {background:[[ColorPalette::TertiaryPale]]; border:2px solid [[ColorPalette::TertiaryMid]];}
+
+.popup {background:[[ColorPalette::TertiaryPale]]; color:[[ColorPalette::TertiaryDark]]; border-left:1px solid [[ColorPalette::TertiaryMid]]; border-top:1px solid [[ColorPalette::TertiaryMid]]; border-right:2px solid [[ColorPalette::TertiaryDark]]; border-bottom:2px solid [[ColorPalette::TertiaryDark]];}
 .popup hr {color:[[ColorPalette::PrimaryDark]]; background:[[ColorPalette::PrimaryDark]]; border-bottom:1px;}
-
-.listBreak div {border-bottom:1px solid [[ColorPalette::PrimaryDark]];}
-
-.popup li.disabled {color:[[ColorPalette::PrimaryMid]];}
-.popup li a, .popup li a:visited {color:[[ColorPalette::TertiaryPale]]; border:none;}
-.popup li a:hover {background:[[ColorPalette::PrimaryDark]]; color:[[ColorPalette::Background]]; border:none;}
+.popup li.disabled {color:[[ColorPalette::TertiaryMid]];}
+.popup li a, .popup li a:visited {color:[[ColorPalette::Foreground]]; border: none;}
+.popup li a:hover {background:[[ColorPalette::SecondaryLight]]; color:[[ColorPalette::Foreground]]; border: none;}
+.popup li a:active {background:[[ColorPalette::SecondaryPale]]; color:[[ColorPalette::Foreground]]; border: none;}
+.popupHighlight {background:[[ColorPalette::Background]]; color:[[ColorPalette::Foreground]];}
+.listBreak div {border-bottom:1px solid [[ColorPalette::TertiaryDark]];}
 
 .tiddler .defaultCommand {font-weight:bold;}
 
