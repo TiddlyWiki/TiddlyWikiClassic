@@ -240,6 +240,18 @@ TiddlyWiki.prototype.setTiddlerTag = function(title,status,tag)
 	}
 };
 
+TiddlyWiki.prototype.addTiddlerFields = function(title,fields)
+{
+	var tiddler = this.fetchTiddler(title);
+	if(!tiddler)
+		return;
+	merge(tiddler.fields,fields);
+	tiddler.changed();
+	this.incChangeCount(title);
+	this.notify(title,true);
+	this.setDirty(true);
+};
+
 TiddlyWiki.prototype.saveTiddler = function(title,newTitle,newBody,modifier,modified,tags,fields)
 {
 	var tiddler = this.fetchTiddler(title);
