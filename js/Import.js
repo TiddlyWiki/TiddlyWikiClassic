@@ -60,6 +60,7 @@ config.macros.importTiddlers.getFeeds = function()
 						url: store.getTiddlerSlice(title,"URL"),
 						workspace: store.getTiddlerSlice(title,"Workspace"),
 						workspaceList: store.getTiddlerSlice(title,"WorkspaceList"),
+						tiddlerFilter: store.getTiddlerSlice(title,"TiddlerFilter"),
 						serverType: serverType,
 						description: store.getTiddlerSlice(title,"Description")};
 		}
@@ -79,6 +80,7 @@ config.macros.importTiddlers.onFeedChange = function(e)
 		fileInput.value = f.url;
 		wizard.setValue("defaultWorkspace",f.workspace);
 		wizard.setValue("workspaceList",f.workspaceList);
+		wizard.setValue("tiddlerFilter",f.tiddlerFilter);
 		this.selectedIndex = 0;
 		}
 	return false;
@@ -176,7 +178,7 @@ config.macros.importTiddlers.onOpenWorkspace = function(context,wizard)
 	if(context.status !== true)
 		displayMessage("Error in importTiddlers.onOpenWorkspace: " + context.statusText);
 	var adaptor = wizard.getValue("adaptor");
-	var ret = adaptor.getTiddlerList(context,wizard,config.macros.importTiddlers.onGetTiddlerList);
+	var ret = adaptor.getTiddlerList(context,wizard,config.macros.importTiddlers.onGetTiddlerList,wizard.getValue("tiddlerFilter"));
 	if(ret !== true)
 		displayMessage(ret);
 	wizard.setButtons([{caption: config.macros.importTiddlers.cancelLabel, tooltip: config.macros.importTiddlers.cancelPrompt, onClick: config.macros.importTiddlers.onCancel}],config.macros.importTiddlers.statusGetTiddlerList);
