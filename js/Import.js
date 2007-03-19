@@ -1,18 +1,17 @@
-// ---------------------------------------------------------------------------------
-// ImportTiddlers macro
-// ---------------------------------------------------------------------------------
+//--
+//-- ImportTiddlers macro
+//--
 
 config.macros.importTiddlers.handler = function(place,macroName,params,wikifier,paramString,tiddler)
 {
-	if(readOnly)
-		{
+	if(readOnly) {
 		createTiddlyElement(place,"div",null,"marked",this.readOnlyWarning);
 		return;
-		}
+	}
 	var w = new Wizard();
 	w.createWizard(place,this.wizardTitle);
 	this.restart(w);
-}
+};
 
 config.macros.importTiddlers.onCancel = function(e)
 {
@@ -63,9 +62,9 @@ config.macros.importTiddlers.getFeeds = function()
 						tiddlerFilter: store.getTiddlerSlice(title,"TiddlerFilter"),
 						serverType: serverType,
 						description: store.getTiddlerSlice(title,"Description")};
-		}
+	}
 	return feeds;
-}
+};
 
 config.macros.importTiddlers.onFeedChange = function(e)
 {
@@ -92,7 +91,7 @@ config.macros.importTiddlers.onBrowseChange = function(e)
 	var fileInput = wizard.getElement("txtPath");
 	fileInput.value = "file://" + this.value;
 	return false;
-}
+};
 
 config.macros.importTiddlers.onOpen = function(e)
 {
@@ -108,18 +107,18 @@ config.macros.importTiddlers.onOpen = function(e)
 		displayMessage(ret);
 	wizard.setButtons([{caption: config.macros.importTiddlers.cancelLabel, tooltip: config.macros.importTiddlers.cancelPrompt, onClick: config.macros.importTiddlers.onCancel}],config.macros.importTiddlers.statusOpenHost);
 	return false;
-}
+};
 
 config.macros.importTiddlers.onOpenHost = function(context,wizard)
 {
 	var adaptor = wizard.getValue("adaptor");
 	if(context.status !== true)
 		displayMessage("Error in importTiddlers.onOpenHost: " + context.statusText);
-	var ret = adaptor.getWorkspaceList(context,wizard,config.macros.importTiddlers.onGetWorkspaceList)
+	var ret = adaptor.getWorkspaceList(context,wizard,config.macros.importTiddlers.onGetWorkspaceList);
 	if(ret !== true)
 		displayMessage(ret);
 	wizard.setButtons([{caption: config.macros.importTiddlers.cancelLabel, tooltip: config.macros.importTiddlers.cancelPrompt, onClick: config.macros.importTiddlers.onCancel}],config.macros.importTiddlers.statusGetWorkspaceList);
-}
+};
 
 config.macros.importTiddlers.onGetWorkspaceList = function(context,wizard)
 {
@@ -128,17 +127,16 @@ config.macros.importTiddlers.onGetWorkspaceList = function(context,wizard)
 	wizard.addStep(config.macros.importTiddlers.step2Title,config.macros.importTiddlers.step2Html);
 	var s = wizard.getElement("selWorkspace");
 	s.onchange = config.macros.importTiddlers.onWorkspaceChange;
-	for(var t=0; t<context.workspaces.length; t++)
-		{
+	for(var t=0; t<context.workspaces.length; t++) {
 		var e = createTiddlyElement(s,"option",null,null,context.workspaces[t].title);
 		e.value = context.workspaces[t].title;
-		}
+	}
 	var workspaceList = wizard.getValue("workspaceList");
 	if(workspaceList) {
 		var list = workspaceList.parseParams("workspace",null,false,true);
 		for(var n=1; n<list.length; n++) {
 			if(context.workspaces.findByField("title",list[n].value) == null) {
-				var e = createTiddlyElement(s,"option",null,null,list[n].value);
+				e = createTiddlyElement(s,"option",null,null,list[n].value);
 				e.value = list[n].value;
 			}
 		}
@@ -149,7 +147,7 @@ config.macros.importTiddlers.onGetWorkspaceList = function(context,wizard)
 		t.value = workspace;
 	}
 	wizard.setButtons([{caption: config.macros.importTiddlers.openLabel, tooltip: config.macros.importTiddlers.openPrompt, onClick: config.macros.importTiddlers.onChooseWorkspace}]);
-}
+};
 
 config.macros.importTiddlers.onWorkspaceChange = function(e)
 {
@@ -158,7 +156,7 @@ config.macros.importTiddlers.onWorkspaceChange = function(e)
 	t.value  = this.value;
 	this.selectedIndex = 0;
 	return false;
-}
+};
 
 config.macros.importTiddlers.onChooseWorkspace = function(e)
 {
@@ -171,7 +169,7 @@ config.macros.importTiddlers.onChooseWorkspace = function(e)
 		displayMessage(ret);
 	wizard.setButtons([{caption: config.macros.importTiddlers.cancelLabel, tooltip: config.macros.importTiddlers.cancelPrompt, onClick: config.macros.importTiddlers.onCancel}],config.macros.importTiddlers.statusOpenWorkspace);
 	return false;
-}
+};
 
 config.macros.importTiddlers.onOpenWorkspace = function(context,wizard)
 {
@@ -182,7 +180,7 @@ config.macros.importTiddlers.onOpenWorkspace = function(context,wizard)
 	if(ret !== true)
 		displayMessage(ret);
 	wizard.setButtons([{caption: config.macros.importTiddlers.cancelLabel, tooltip: config.macros.importTiddlers.cancelPrompt, onClick: config.macros.importTiddlers.onCancel}],config.macros.importTiddlers.statusGetTiddlerList);
-}
+};
 
 config.macros.importTiddlers.onGetTiddlerList = function(context,wizard)
 {
@@ -190,7 +188,7 @@ config.macros.importTiddlers.onGetTiddlerList = function(context,wizard)
 		displayMessage("Error in importTiddlers.onGetTiddlerList: " + context.statusText);
 	// Extract data for the listview
 	var listedTiddlers = [];
-	if(context.tiddlers)
+	if(context.tiddlers) {
 		for(var n=0; n<context.tiddlers.length; n++) {
 			var tiddler = context.tiddlers[n];
 			listedTiddlers.push({
@@ -203,6 +201,7 @@ config.macros.importTiddlers.onGetTiddlerList = function(context,wizard)
 				tiddler: tiddler
 			});
 		}
+	}
 	listedTiddlers.sort(function(a,b) {return a.title < b.title ? -1 : (a.title == b.title ? 0 : +1);});
 	// Display the listview
 	wizard.addStep(config.macros.importTiddlers.step3Title,config.macros.importTiddlers.step3Html);
@@ -215,7 +214,7 @@ config.macros.importTiddlers.onGetTiddlerList = function(context,wizard)
 			{caption: config.macros.importTiddlers.cancelLabel, tooltip: config.macros.importTiddlers.cancelPrompt, onClick: config.macros.importTiddlers.onCancel},
 			{caption: config.macros.importTiddlers.importLabel, tooltip: config.macros.importTiddlers.importPrompt, onClick:  config.macros.importTiddlers.doImport}
 		]);
-}
+};
 
 config.macros.importTiddlers.doImport = function(e)
 {
@@ -231,27 +230,27 @@ config.macros.importTiddlers.doImport = function(e)
 		if(store.tiddlerExists(rowNames[t]))
 			overwrite.push(rowNames[t]);
 	}
-	if(overwrite.length > 0)
+	if(overwrite.length > 0) {
 		if(!confirm(config.macros.importTiddlers.confirmOverwriteText.format([overwrite.join(", ")])))
-			return;
+			return false;
+	}
 	wizard.addStep(config.macros.importTiddlers.step4Title.format([rowNames.length]),config.macros.importTiddlers.step4Html);
 	for(t=0; t<rowNames.length; t++) {
 		var link = document.createElement("div");
 		createTiddlyLink(link,rowNames[t],true);
 		var place = wizard.getElement("markReport");
 		place.parentNode.insertBefore(link,place);
-		}
+	}
 	wizard.setValue("remainingImports",rowNames.length);
 	wizard.setButtons([
 			{caption: config.macros.importTiddlers.doneLabel, tooltip: config.macros.importTiddlers.donePrompt, onClick: config.macros.importTiddlers.onCancel}
 		]);
-	for(t=0; t<rowNames.length; t++)
-		{
+	for(t=0; t<rowNames.length; t++) {
 		var context = {};
 		var inbound = adaptor.getTiddler(rowNames[t],context,wizard,config.macros.importTiddlers.onGetTiddler);
-		}
+	}
 	return false;
-}
+};
 
 config.macros.importTiddlers.onGetTiddler = function(context,wizard)
 {
@@ -270,5 +269,5 @@ config.macros.importTiddlers.onGetTiddler = function(context,wizard)
 		wizard.addStep(config.macros.importTiddlers.step5Title,config.macros.importTiddlers.step5Html);
 		autoSaveChanges();
 	}
-}
+};
 

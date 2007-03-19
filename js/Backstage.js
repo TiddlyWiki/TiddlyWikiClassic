@@ -1,6 +1,6 @@
-// ---------------------------------------------------------------------------------
-// Backstage
-// ---------------------------------------------------------------------------------
+//--
+//-- Backstage
+//--
 
 var backstage = {
 	area: null,
@@ -25,7 +25,7 @@ var backstage = {
 		var t = cmb.open.text + " " + cmb.open[config.browser.isIE ? "iconIE" : "icon"];
 		this.showButton = createTiddlyButton(this.button,t,cmb.open.tooltip,
 						function (e) {backstage.show(); return false;},null,"backstageShow");
-		var t = cmb.close[config.browser.isIE ? "iconIE" : "icon"] + " " + cmb.close.text;
+		t = cmb.close[config.browser.isIE ? "iconIE" : "icon"] + " " + cmb.close.text;
 		this.hideButton = createTiddlyButton(this.button,t,cmb.close.tooltip,
 						function (e) {backstage.hide(); return false;},null,"backstageHide");
 		this.cloak = document.getElementById("backstageCloak");
@@ -36,7 +36,7 @@ var backstage = {
 			backstage.switchTab(null);
 		};
 		createTiddlyText(this.toolbar,cmb.prompt);
-		for(var t=0; t<config.backstageTasks.length; t++) {
+		for(t=0; t<config.backstageTasks.length; t++) {
 			var taskName = config.backstageTasks[t];
 			var task = config.tasks[taskName];
 			var handler = task.action ? this.onClickCommand : this.onClickTab;
@@ -118,18 +118,18 @@ var backstage = {
 			{
 			if(e.getAttribute && e.getAttribute("task") == tabName)
 				tabElem = e;
-			e = e.nextSibling
+			e = e.nextSibling;
 			}
 		if(tabName == backstage.currTabName)
 			return;
 		if(backstage.currTabElem) {
 			removeClass(this.currTabElem,"backstageSelTab");
-			}
+		}
 		if(tabElem && tabName) {
 			backstage.preparePanel();
 			addClass(tabElem,"backstageSelTab");
 			var task = config.tasks[tabName];
-			wikify(task.content,backstage.panelBody,null,null)
+			wikify(task.content,backstage.panelBody,null,null);
 			backstage.showPanel();
 		} else if(backstage.currTabElem) {
 			backstage.hidePanel();
@@ -186,5 +186,6 @@ config.macros.backstage.handler = function(place,macroName,params,wikifier,param
 {
 	var backstageTask = config.tasks[params[0]];
 	if(backstageTask)
-		createTiddlyButton(place,backstageTask.text,backstageTask.tooltip,function(e) {backstage.switchTab(params[0]); return false;})
-}
+		createTiddlyButton(place,backstageTask.text,backstageTask.tooltip,function(e) {backstage.switchTab(params[0]); return false;});
+};
+

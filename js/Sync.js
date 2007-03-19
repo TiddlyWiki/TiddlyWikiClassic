@@ -1,15 +1,16 @@
-// ---------------------------------------------------------------------------------
-// Sync macro
-// ---------------------------------------------------------------------------------
+//--
+//-- Sync macro
+//--
 
 // Synchronisation handlers
 config.syncers = {};
 
-// Sync state. Members:
-//	syncList - List of sync objects (title, tiddler, server, workspace, page, version)
-//	wizard - reference to wizard object
-//	listView - DOM element of the listView table
-//	syncMachines - array of syncMachines
+// Sync state.
+//# Members:
+//#	syncList - List of sync objects (title, tiddler, server, workspace, page, version)
+//#	wizard - reference to wizard object
+//#	listView - DOM element of the listView table
+//#	syncMachines - array of syncMachines
 var currSync = null;
 
 // sync macro
@@ -17,7 +18,7 @@ config.macros.sync.handler = function(place,macroName,params,wikifier,paramStrin
 {
 	if(!wikifier.isStatic)
 		config.macros.sync.startSync(place);
-}
+};
 
 config.macros.sync.startSync = function(place)
 {
@@ -41,7 +42,7 @@ config.macros.sync.startSync = function(place)
 	wizard.setButtons([
 			{caption: config.macros.sync.syncLabel, tooltip: config.macros.sync.syncPrompt, onClick: config.macros.sync.doSync}
 		]);
-}
+};
 
 config.macros.sync.getSyncableTiddlers = function ()
 {
@@ -55,14 +56,14 @@ config.macros.sync.getSyncableTiddlers = function ()
 		syncItem.title = tiddler.title;
 		syncItem.isTouched = tiddler.isTouched();
 		syncItem.selected = syncItem.isTouched;
-		syncItem.syncStatus = config.macros.sync.syncStatusList[syncItem.isTouched ? "changedLocally" : "none"]
+		syncItem.syncStatus = config.macros.sync.syncStatusList[syncItem.isTouched ? "changedLocally" : "none"];
 		syncItem.status = syncItem.syncStatus.text;
 		if(syncItem.serverType && syncItem.serverHost)
 			list.push(syncItem);
 		});
 	list.sort(function(a,b) {return a.title < b.title ? -1 : (a.title == b.title ? 0 : +1);});
 	return list;
-}
+};
 
 config.macros.sync.preProcessSyncableTiddlers = function()
 {
@@ -71,7 +72,7 @@ config.macros.sync.preProcessSyncableTiddlers = function()
 		var ti = si.syncMachine.adaptor.generateTiddlerInfo(si.tiddler);
 		si.serverUrl = ti.uri;
 	}
-}
+};
 
 config.macros.sync.processSyncableTiddlers = function()
 {
@@ -79,7 +80,7 @@ config.macros.sync.processSyncableTiddlers = function()
 		si = currSync.syncList[t];
 		si.rowElement.style.backgroundColor = si.syncStatus.color;
 	}
-}
+};
 
 config.macros.sync.createSyncMachines = function()
 {
@@ -100,7 +101,7 @@ config.macros.sync.createSyncMachines = function()
 			r.syncItems.push(si);
 		}
 	}
-}
+};
 
 config.macros.sync.createSyncMachine = function(syncItem)
 {
@@ -116,7 +117,7 @@ config.macros.sync.createSyncMachine = function(syncItem)
 	if(r !== true)
 		displayMessage("Error from openHost: " + r);
 	return sm;
-}
+};
 
 config.macros.sync.syncOnOpenHost = function(context,syncMachine)
 {
@@ -126,7 +127,7 @@ config.macros.sync.syncOnOpenHost = function(context,syncMachine)
 	var r = syncMachine.adaptor.openWorkspace(syncMachine.serverWorkspace,context,syncMachine,config.macros.sync.syncOnOpenWorkspace);
 	if(r !== true)
 		displayMessage("Error from openWorkspace: " + r);
-}
+};
 
 config.macros.sync.syncOnOpenWorkspace = function(context,syncMachine)
 {
@@ -136,7 +137,7 @@ config.macros.sync.syncOnOpenWorkspace = function(context,syncMachine)
 	var r = syncMachine.adaptor.getTiddlerList(context,syncMachine,config.macros.sync.syncOnGetTiddlerList);
 	if(r !== true)
 		displayMessage("Error from getTiddlerList: " + r);
-}
+};
 
 config.macros.sync.syncOnGetTiddlerList = function(context,syncMachine)
 {
@@ -155,7 +156,7 @@ config.macros.sync.syncOnGetTiddlerList = function(context,syncMachine)
 		}
 		config.macros.sync.updateSyncStatus(si);
 	}
-}
+};
 
 config.macros.sync.updateSyncStatus = function(syncItem)
 {
@@ -163,7 +164,7 @@ config.macros.sync.updateSyncStatus = function(syncItem)
 	removeChildren(e);
 	createTiddlyText(e,syncItem.syncStatus.text);
 	syncItem.rowElement.style.backgroundColor = syncItem.syncStatus.color;
-}
+};
 
 config.macros.sync.doSync = function(e)
 {
@@ -175,7 +176,7 @@ config.macros.sync.doSync = function(e)
 		}
 	}
 	return false;
-}
+};
 
 config.macros.sync.doSyncItem = function(syncItem)
 {
@@ -193,10 +194,12 @@ config.macros.sync.doSyncItem = function(syncItem)
 			if(syncItem.syncMachine.adaptor.putTiddler)
 				r = syncItem.syncMachine.adaptor.putTiddler(syncItem.tiddler,context,requestState,config.macros.sync.syncOnPutTiddler);
 			break;
+		default:
+			break;
 	}
 	if(r !== true)
 		displayMessage("Error in doSyncItem: " + r);
-}
+};
 
 config.macros.sync.syncOnGetTiddler = function(context,requestState)
 {
@@ -212,7 +215,7 @@ config.macros.sync.syncOnGetTiddler = function(context,requestState)
 	config.macros.sync.updateSyncStatus(syncItem);
 	if(!context.status)
 		displayMessage("Error in sync.syncOnGetTiddler: " + context.statusText);
-}
+};
 
 config.macros.sync.syncOnPutTiddler = function(context,requestState)
 {
@@ -223,9 +226,10 @@ config.macros.sync.syncOnPutTiddler = function(context,requestState)
 	config.macros.sync.updateSyncStatus(syncItem);
 	if(!context.status)
 		displayMessage("Error in sync.syncOnPutTiddler: " + context.statusText);
-}
+};
 
 config.macros.sync.cancelSync = function()
 {
 	currSync = null;
-}
+};
+

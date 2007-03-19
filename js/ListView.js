@@ -1,116 +1,104 @@
-// ---------------------------------------------------------------------------------
-// ListView gadget
-// ---------------------------------------------------------------------------------
+//--
+//-- ListView gadget
+//--
 
 var ListView = {};
 
 // Create a listview
-//   place - where in the DOM tree to insert the listview
-//   listObject - array of objects to be included in the listview
-//   listTemplate - template for the listview
-//   callback - callback for a command being selected
-//   className - optional classname for the <table> element
+//#   place - where in the DOM tree to insert the listview
+//#   listObject - array of objects to be included in the listview
+//#   listTemplate - template for the listview
+//#   callback - callback for a command being selected
+//#   className - optional classname for the <table> element
 ListView.create = function(place,listObject,listTemplate,callback,className)
 {
 	var table = createTiddlyElement(place,"table",null,className ? className : "listView");
 	var thead = createTiddlyElement(table,"thead");
 	var r = createTiddlyElement(thead,"tr");
-	for(var t=0; t<listTemplate.columns.length; t++)
-		{
+	for(var t=0; t<listTemplate.columns.length; t++) {
 		var columnTemplate = listTemplate.columns[t];
 		var c = createTiddlyElement(r,"th");
 		var colType = ListView.columnTypes[columnTemplate.type];
 		if(colType && colType.createHeader)
 			colType.createHeader(c,columnTemplate,t);
-		}
+	}
 	var tbody = createTiddlyElement(table,"tbody");
-	for(var rc=0; rc<listObject.length; rc++)
-		{
+	for(var rc=0; rc<listObject.length; rc++) {
 		rowObject = listObject[rc];
 		r = createTiddlyElement(tbody,"tr");
-		for(var c=0; c<listTemplate.rowClasses.length; c++)
-			{
+		for(c=0; c<listTemplate.rowClasses.length; c++) {
 			if(rowObject[listTemplate.rowClasses[c].field])
 				addClass(r,listTemplate.rowClasses[c].className);
-			}
+		}
 		rowObject.rowElement = r;
 		rowObject.colElements = {};
-		for(var cc=0; cc<listTemplate.columns.length; cc++)
-			{
-			var c = createTiddlyElement(r,"td");
-			var columnTemplate = listTemplate.columns[cc];
+		for(var cc=0; cc<listTemplate.columns.length; cc++) {
+			c = createTiddlyElement(r,"td");
+			columnTemplate = listTemplate.columns[cc];
 			var field = columnTemplate.field;
-			var colType = ListView.columnTypes[columnTemplate.type];
+			colType = ListView.columnTypes[columnTemplate.type];
 			if(colType && colType.createItem)
 				colType.createItem(c,rowObject,field,columnTemplate,cc,rc);
 			rowObject.colElements[field] = c;
-			}
 		}
+	}
 	if(callback && listTemplate.actions)
 		createTiddlyDropDown(place,ListView.getCommandHandler(callback),listTemplate.actions);
-	if(callback && listTemplate.buttons)
-		{
-		for(t=0; t<listTemplate.buttons.length; t++)
-			{
+	if(callback && listTemplate.buttons) {
+		for(t=0; t<listTemplate.buttons.length; t++) {
 			var a = listTemplate.buttons[t];
 			if(a && a.name != "")
 				createTiddlyButton(place,a.caption,null,ListView.getCommandHandler(callback,a.name,a.allowEmptySelection));
-			}
 		}
+	}
 	return table;
-}
+};
 
 ListView.getCommandHandler = function(callback,name,allowEmptySelection)
 {
-	return function(e)
-		{
+	return function(e) {
 		var view = findRelated(this,"TABLE",null,"previousSibling");
 		var tiddlers = [];
 		ListView.forEachSelector(view,function(e,rowName) {
 					if(e.checked)
 						tiddlers.push(rowName);
 					});
-		if(tiddlers.length == 0 && !allowEmptySelection)
+		if(tiddlers.length == 0 && !allowEmptySelection) {
 			alert(config.messages.nothingSelected);
-		else
-			{
-			if(this.nodeName.toLowerCase() == "select")
-				{
+		} else {
+			if(this.nodeName.toLowerCase() == "select") {
 				callback(view,this.value,tiddlers);
 				this.selectedIndex = 0;
-				}
-			else
+			} else {
 				callback(view,name,tiddlers);
 			}
-		};
-}
+		}
+	};
+};
 
 // Invoke a callback for each selector checkbox in the listview
-//   view - <table> element of listView
-//   callback(checkboxElement,rowName)
-//     where
-//       checkboxElement - DOM element of checkbox
-//       rowName - name of this row as assigned by the column template
-//   result: true if at least one selector was checked
+//#   view - <table> element of listView
+//#   callback(checkboxElement,rowName)
+//#     where
+//#       checkboxElement - DOM element of checkbox
+//#       rowName - name of this row as assigned by the column template
+//#   result: true if at least one selector was checked
 ListView.forEachSelector = function(view,callback)
 {
 	var checkboxes = view.getElementsByTagName("input");
 	var hadOne = false;
-	for(var t=0; t<checkboxes.length; t++)
-		{
+	for(var t=0; t<checkboxes.length; t++) {
 		var cb = checkboxes[t];
-		if(cb.getAttribute("type") == "checkbox")
-			{
+		if(cb.getAttribute("type") == "checkbox") {
 			var rn = cb.getAttribute("rowName");
-			if(rn)
-				{
+			if(rn) {
 				callback(cb,rn);
 				hadOne = true;
-				}
 			}
 		}
+	}
 	return hadOne;
-}
+};
 
 ListView.getSelectedRows = function(view)
 {
@@ -120,7 +108,7 @@ ListView.getSelectedRows = function(view)
 					rowNames.push(rowName);
 				});
 	return rowNames;
-}
+};
 
 ListView.columnTypes = {};
 
@@ -216,14 +204,12 @@ ListView.columnTypes.StringList = {
 	createItem: function(place,listObject,field,columnTemplate,col,row)
 		{
 			var v = listObject[field];
-			if(v != undefined)
-				{
-				for(var t=0; t<v.length; t++)
-					{
+			if(v != undefined) {
+				for(var t=0; t<v.length; t++) {
 					createTiddlyText(place,v[t]);
 					createTiddlyElement(place,"br");
-					}
 				}
+			}
 		}
 };
 
@@ -290,10 +276,10 @@ ListView.columnTypes.TiddlerLink = {
 	createItem: function(place,listObject,field,columnTemplate,col,row)
 		{
 			var v = listObject[field];
-			if(v != undefined)
-				{
+			if(v != undefined) {
 				var link = createTiddlyLink(place,listObject[columnTemplate.tiddlerLink],false,null);
 				createTiddlyText(link,listObject[field]);
-				}
+			}
 		}
 };
+
