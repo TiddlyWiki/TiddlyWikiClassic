@@ -381,7 +381,9 @@ merge(config.commands.syncing,{
 	tooltip: "Control synchronisation of this tiddler with a server or external file",
 	currentlySyncing: "<div>Currently syncing via <span class='popupHighlight'>'%0'</span> to:</div><div>host: <span class='popupHighlight'>%1</span></div><div>workspace: <span class='popupHighlight'>%2</span></div>",
 	notCurrentlySyncing: "Not currently syncing",
-	chooseServer: "Synchronise this tiddler with another server:"});
+	chooseServer: "Synchronise this tiddler with another server:",
+	currServerMarker: "● ",
+	notCurrServerMarker: "  "});
 
 merge(config.shadowTiddlers,{
 	DefaultTiddlers: "GettingStarted",
