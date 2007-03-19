@@ -854,6 +854,7 @@ config.macros.toolbar.onClickMore = function(e)
 	var e = this.nextSibling;
 	e.style.display = "inline";
 	this.parentNode.removeChild(this);
+	return false;
 };
 
 config.macros.toolbar.handler = function(place,macroName,params,wikifier,paramString,tiddler)
