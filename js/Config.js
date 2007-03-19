@@ -82,7 +82,7 @@ config.views = {
 };
 
 // Backstage tasks
-config.backstageTasks = ["save", "tidy","sync","importTask","copy","tweak","plugins"];
+config.backstageTasks = ["save","sync","importTask","tweak","plugins"];
 
 // Macros; each has a 'handler' member that is inserted later
 config.macros = {
