@@ -94,7 +94,7 @@ config.commands.syncing.handlePopup = function(popup,title)
 	var serverHost = tiddler.fields['server.host'];
 	var serverWorkspace = tiddler.fields['server.workspace'];
 	if(!serverWorkspace)
-		serverWorkspace = "(none)";
+		serverWorkspace = "";
 	if(serverType) {
 		var e = createTiddlyElement(popup,"li",null,"popupMessage");
 		e.innerHTML = config.commands.syncing.currentlySyncing.format([serverType,serverHost,serverWorkspace]);
@@ -106,20 +106,26 @@ config.commands.syncing.handlePopup = function(popup,title)
 	var feeds = store.getTaggedTiddlers("systemServer","title");
 	for(var t=0; t<feeds.length; t++) {
 		var f = feeds[t];
-		var btn = createTiddlyButton(createTiddlyElement(popup,"li"),f.title,null,config.commands.syncing.onChooseServer);
+		var feedServerType = store.getTiddlerSlice(f.title,"Type");
+		if(!feedServerType)
+			feedServerType = "file";
+		var feedServerHost = store.getTiddlerSlice(f.title,"URL");
+		if(!feedServerHost)
+			feedServerHost = "";
+		var feedServerWorkspace = store.getTiddlerSlice(f.title,"Workspace");
+		if(!feedServerWorkspace)
+			feedServerWorkspace = "";
+		var caption = f.title;
+		if(serverType == feedServerType && serverHost == feedServerHost && serverWorkspace == feedServerWorkspace) {
+			caption = config.commands.syncing.currServerMarker + caption;
+		} else {
+			caption = config.commands.syncing.notCurrServerMarker + caption;
+		}
+		var btn = createTiddlyButton(createTiddlyElement(popup,"li"),caption,null,config.commands.syncing.onChooseServer);
 		btn.setAttribute("tiddler",title);
-		var serverType = store.getTiddlerSlice(f.title,"Type");
-		if(!serverType)
-			serverType = "file";
-		btn.setAttribute("server.type",serverType);
-		var serverHost = store.getTiddlerSlice(f.title,"URL");
-		if(!serverHost)
-			serverHost = "";
-		btn.setAttribute("server.host",serverHost);
-		var serverWorkspace = store.getTiddlerSlice(f.title,"Workspace");
-		if(!serverWorkspace)
-			serverWorkspace = "";
-		btn.setAttribute("server.workspace",serverWorkspace);
+		btn.setAttribute("server.type",feedServerType);
+		btn.setAttribute("server.host",feedServerHost);
+		btn.setAttribute("server.workspace",feedServerWorkspace);
 	}
 };
 
@@ -131,5 +137,6 @@ config.commands.syncing.onChooseServer = function(e)
 		'server.host': this.getAttribute("server.host"),
 		'server.workspace': this.getAttribute("server.workspace")
 		});
+	return false;
 };
 
