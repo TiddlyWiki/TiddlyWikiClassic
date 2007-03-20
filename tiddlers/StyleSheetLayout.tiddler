@@ -106,8 +106,7 @@ a.tiddlyLinkNonExisting.shadow {font-weight:bold;}
 
 #displayArea {margin:1em 17em 0em 14em;}
 
-.toolbar {text-align:right; font-size:.9em; visibility:hidden;}
-.selected .toolbar {visibility:visible;}
+.toolbar {text-align:right; font-size:.9em;}
 
 .viewDetails {padding:0.5em 0em 0.5em 0em;}
 .viewDetails {font-size:0.9em;}

@@ -77,6 +77,9 @@ h2,h3 {border-bottom:1px solid [[ColorPalette::TertiaryLight]];}
 .subtitle {color:[[ColorPalette::TertiaryDark]];}
 
 .toolbar {color:[[ColorPalette::PrimaryMid]];}
+.toolbar a {color:[[ColorPalette::TertiaryLight]];}
+.selected .toolbar a {color:[[ColorPalette::TertiaryMid]];}
+.selected .toolbar a:hover {color:[[ColorPalette::Foreground]];}
 
 .viewDetails {border-left:2px solid [[ColorPalette::TertiaryPale]];}
 .viewDetails table {border:none;}
