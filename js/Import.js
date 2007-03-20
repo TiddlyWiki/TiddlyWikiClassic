@@ -19,38 +19,35 @@ config.macros.importTiddlers.onCancel = function(e)
 	var place = wizard.clear();
 	config.macros.importTiddlers.restart(wizard);
 	return false;
-}
+};
 
 config.macros.importTiddlers.restart = function(wizard)
 {
 	wizard.addStep(this.step1Title,this.step1Html);
 	var s = wizard.getElement("selTypes");
-	for(var t in config.adaptors)
-		{
+	for(var t in config.adaptors) {
 		var e = createTiddlyElement(s,"option",null,null,t);
 		e.value = t;
-		}
+	}
 	s = wizard.getElement("selFeeds");
 	var feeds = this.getFeeds();
-	for(t in feeds)
-		{
+	for(t in feeds) {
 		e = createTiddlyElement(s,"option",null,null,t);
 		e.value = t;
-		}
+	}
 	wizard.setValue("feeds",feeds);
 	s.onchange = config.macros.importTiddlers.onFeedChange;
 	var fileInput = wizard.getElement("txtBrowse");
 	fileInput.onchange = config.macros.importTiddlers.onBrowseChange;
 	fileInput.onkeyup = config.macros.importTiddlers.onBrowseChange;
 	wizard.setButtons([{caption: this.openLabel, tooltip: this.openPrompt, onClick: config.macros.importTiddlers.onOpen}]);
-}
+};
 
 config.macros.importTiddlers.getFeeds = function()
 {
 	var feeds = {};
 	var tagged = store.getTaggedTiddlers("systemServer","title");
-	for(var t=0; t<tagged.length; t++)
-		{
+	for(var t=0; t<tagged.length; t++) {
 		var title = tagged[t].title;
 		var serverType = store.getTiddlerSlice(title,"Type");
 		if(!serverType)
@@ -73,17 +70,16 @@ config.macros.importTiddlers.onFeedChange = function(e)
 	var fileInput = wizard.getElement("txtPath");
 	var feeds = wizard.getValue("feeds");
 	var f = feeds[this.value];
-	if(f)
-		{
+	if(f) {
 		selTypes.value = f.serverType;
 		fileInput.value = f.url;
 		wizard.setValue("defaultWorkspace",f.workspace);
 		wizard.setValue("workspaceList",f.workspaceList);
 		wizard.setValue("tiddlerFilter",f.tiddlerFilter);
 		this.selectedIndex = 0;
-		}
+	}
 	return false;
-}
+};
 
 config.macros.importTiddlers.onBrowseChange = function(e)
 {
