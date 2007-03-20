@@ -84,12 +84,12 @@ config.messages.backstage = {
 	open: {text: "backstage", icon: "↩", iconIE: "←", tooltip: "Open the backstage area to perform authoring and editing tasks"},
 	close: {text: "close", icon: "↪", iconIE: "→", tooltip: "Close the backstage area"},
 	prompt: "backstage: "
-}
+};
 
 config.messages.listView = {
 	tiddlerTooltip: "Click for the full text of this tiddler",
 	previewUnavailable: "(preview not available)"
-}
+};
 
 config.messages.dates.months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November","December"];
 config.messages.dates.days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -206,7 +206,7 @@ merge(config.macros.options,{
 merge(config.macros.plugins,{
 	wizardTitle: "Manage plugins",
 	step1Title: "Currently loaded plugins",
-	step1Html: "<input type='hidden' name='markList'></input>",
+	step1Html: "<input type='hidden' name='markList'></input>", // DO NOT TRANSLATE
 	skippedText: "(This plugin has not been executed because it was added since startup)",
 	noPluginText: "There are no plugins installed",
 	confirmDeleteText: "Are you sure you want to delete these plugins:\n\n%0",
@@ -264,7 +264,7 @@ merge(config.macros.importTiddlers,{
 	importPrompt: "Import these tiddlers",
 	confirmOverwriteText: "Are you sure you want to overwrite these tiddlers:\n\n%0",
 	step4Title: "Step 4: Importing %0 tiddler(s)",
-	step4Html: "<input type='hidden' name='markReport'></input>",
+	step4Html: "<input type='hidden' name='markReport'></input>", // DO NOT TRANSLATE
 	step5Title: "Step 5: Completed",
 	step5Html: "All tiddlers were imported",
 	doneLabel: "done",
@@ -298,10 +298,10 @@ merge(config.macros.sync,{
 			]},
 	wizardTitle: "Synchronize with external servers and files",
 	step1Title: "Choose the tiddlers you want to synchronize",
-	step1Html: '<input type="hidden" name="markList"></input>',
+	step1Html: "<input type='hidden' name='markList'></input>", // DO NOT TRANSLATE
 	syncLabel: "sync",
 	syncPrompt: "Sync these tiddlers",
-	hasChanged:	"Changed while unplugged",
+	hasChanged: "Changed while unplugged",
 	hasNotChanged: "Unchanged while unplugged",
 	syncStatusList: {
 		none: {text: "...", color: "none"},
