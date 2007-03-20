@@ -110,7 +110,7 @@ FileAdaptor.prototype.getTiddlerList = function(context,userParams,callback)
 		t.text = tiddler.text;
 		t.modified = tiddler.modified;
 		t.modifier = tiddler.modifier;
-		t.fields['server.page.version'] = tiddler.modified.convertToYYYYMMDDHHMM();
+		t.fields['server.page.revision'] = tiddler.modified.convertToYYYYMMDDHHMM();
 		t.tags = tiddler.tags;
 		context.tiddlers.push(t);
 		});
@@ -146,7 +146,7 @@ FileAdaptor.prototype.getTiddler = function(title,context,userParams,callback)
 	context.tiddler = this.store.fetchTiddler(title);
 	context.tiddler.fields['server.type'] = FileAdaptor.serverType;
 	context.tiddler.fields['server.host'] = this.host;
-	context.tiddler.fields['server.page.version'] = context.tiddler.modified.convertToYYYYMMDDHHMM();
+	context.tiddler.fields['server.page.revision'] = context.tiddler.modified.convertToYYYYMMDDHHMM();
 	context.status = true;
 	window.setTimeout(function() {callback(context,userParams);},10);
 	return true;
