@@ -2,13 +2,13 @@
 //-- Scroller animation
 //--
 
-function Scroller(targetElement,slowly)
+function Scroller(targetElement,unused)
 {
 	this.targetElement = targetElement;
 	this.startScroll = findScrollY();
 	this.targetScroll = ensureVisible(targetElement);
 	this.progress = 0;
-	this.step = slowly ? config.animSlow : config.animFast;
+	this.step = 0.12;
 	return this;
 }
 

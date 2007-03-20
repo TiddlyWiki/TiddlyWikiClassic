@@ -3,7 +3,7 @@
 //--
 
 // deleteMode - "none", "all" [delete target element and it's children], [only] "children" [but not the target element]
-function Slider(element,opening,slowly,deleteMode,flyIn)
+function Slider(element,opening,unused,deleteMode,flyIn)
 {
 	element.style.overflow = 'hidden';
 	if(opening)

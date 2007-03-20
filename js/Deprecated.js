@@ -64,15 +64,15 @@ function applyPageTemplate(title)
 }
 
 // @Deprecated: Use story.displayTiddlers instead
-function displayTiddlers(srcElement,titles,template,unused1,unused2,animate,slowly)
+function displayTiddlers(srcElement,titles,template,unused1,unused2,animate,unused3)
 {
-	story.displayTiddlers(srcElement,titles,template,animate,slowly);
+	story.displayTiddlers(srcElement,titles,template,animate);
 }
 
 // @Deprecated: Use story.displayTiddler instead
-function displayTiddler(srcElement,title,template,unused1,unused2,animate,slowly)
+function displayTiddler(srcElement,title,template,unused1,unused2,animate,unused3)
 {
-	story.displayTiddler(srcElement,title,template,animate,slowly);
+	story.displayTiddler(srcElement,title,template,animate);
 }
 
 // @Deprecated: Use functions on right hand side directly instead

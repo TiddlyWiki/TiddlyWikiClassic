@@ -287,7 +287,7 @@ config.macros.slider.onClickSlider = function(e)
 	var cookie = n.getAttribute("cookie");
 	var isOpen = n.style.display != "none";
 	if(config.options.chkAnimate && anim && typeof Slider == "function")
-		anim.startAnimating(new Slider(n,!isOpen,e.shiftKey || e.altKey,"none"));
+		anim.startAnimating(new Slider(n,!isOpen,null,"none"));
 	else
 		n.style.display = isOpen ? "none" : "block";
 	config.options[cookie] = !isOpen;
@@ -480,7 +480,7 @@ config.macros.newTiddler.onClickNewTiddler = function()
 	var focus = this.getAttribute("newFocus");
 	var template = this.getAttribute("newTemplate");
 	var customFields = this.getAttribute("customFields");
-	story.displayTiddler(null,title,template,false,false,customFields);
+	story.displayTiddler(null,title,template,false,null,customFields);
 	var text = this.getAttribute("newText");
 	if(typeof text == "string")
 		story.getTiddlerField(title,"text").value = text.format([title]);
@@ -729,7 +729,7 @@ config.macros.tagChooser.onClick = function(e)
 		theTag.setAttribute("tag",tags[t][0]);
 		theTag.setAttribute("tiddler",this.getAttribute("tiddler"));
 	}
-	Popup.show(popup,false);
+	Popup.show();
 	e.cancelBubble = true;
 	if(e.stopPropagation) e.stopPropagation();
 	return false;
@@ -829,7 +829,7 @@ config.macros.toolbar.onClickPopup = function(e)
 	var tiddler = store.fetchTiddler(title);
 	popup.setAttribute("tiddler",title);
 	command.handlePopup(popup,title);
-	Popup.show(popup,false);
+	Popup.show();
 	e.cancelBubble = true;
 	if (e.stopPropagation) e.stopPropagation();
 	return false;

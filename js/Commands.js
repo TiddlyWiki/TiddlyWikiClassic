@@ -4,7 +4,7 @@
 
 config.commands.closeTiddler.handler = function(event,src,title)
 {
-	story.closeTiddler(title,true,event.shiftKey || event.altKey);
+	story.closeTiddler(title,true);
 	return false;
 };
 
@@ -19,7 +19,7 @@ config.commands.editTiddler.handler = function(event,src,title)
 	clearMessage();
 	var tiddlerElem = document.getElementById(story.idPrefix + title);
 	var fields = tiddlerElem.getAttribute("tiddlyFields");
-	story.displayTiddler(null,title,DEFAULT_EDIT_TEMPLATE,null,null,fields);
+	story.displayTiddler(null,title,DEFAULT_EDIT_TEMPLATE,false,null,fields);
 	story.focusTiddler(title,"text");
 	return false;
 };
@@ -50,7 +50,7 @@ config.commands.deleteTiddler.handler = function(event,src,title)
 		deleteIt = confirm(this.warning.format([title]));
 	if (deleteIt) {
 		store.removeTiddler(title);
-		story.closeTiddler(title,true,event.shiftKey || event.altKey);
+		story.closeTiddler(title,true);
 		autoSaveChanges();
 	}
 	return false;

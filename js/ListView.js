@@ -157,7 +157,7 @@ ListView.columnTypes.Tiddler = {
 				wikify(tiddler.text,popup,null,tiddler);
 			else
 				createTiddlyText(popup,config.messages.listView.previewUnavailable);
-			Popup.show(popup,false);
+			Popup.show();
 			if(e) e.cancelBubble = true;
 			if(e && e.stopPropagation) e.stopPropagation();
 			return false;

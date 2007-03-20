@@ -61,7 +61,7 @@ config.paramifiers.start = {
 
 config.paramifiers.open = {
 	onstart: function(v,i) {
-		story.displayTiddler(i == 1 ? null : "bottom",v,null,false,false);
+		story.displayTiddler(i == 1 ? null : "bottom",v,null,false,null);
 	}
 };
 
@@ -88,7 +88,7 @@ config.paramifiers.tag = {
 	onstart: function(v) {
 		var tagged = store.getTaggedTiddlers(v,"title");
 		for(var t=0; t<tagged.length; t++)
-			story.displayTiddler("bottom",tagged[t].title,null,false,false);
+			story.displayTiddler("bottom",tagged[t].title,null,false,null);
 	}
 };
 

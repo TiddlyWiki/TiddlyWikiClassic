@@ -25,7 +25,7 @@ Popup.onDocumentClick = function(e)
 	return true;
 };
 
-Popup.show = function(unused,slowly)
+Popup.show = function(unused1,unused2)
 {
 	var curr = Popup.stack[Popup.stack.length-1];
 	var rootLeft = findPosX(curr.root);
@@ -44,7 +44,7 @@ Popup.show = function(unused,slowly)
 	curr.popup.style.display = "block";
 	addClass(curr.root,"highlight");
 	if(config.options.chkAnimate && anim && typeof Scroller == "function")
-		anim.startAnimating(new Scroller(curr.popup,slowly));
+		anim.startAnimating(new Scroller(curr.popup));
 	else
 		window.scrollTo(0,ensureVisible(curr.popup));
 };

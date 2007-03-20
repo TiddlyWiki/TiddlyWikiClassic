@@ -82,7 +82,7 @@ config.macros.plugins.doDelete = function(e)
 		if(confirm(config.macros.plugins.confirmDeleteText.format([rowNames.join(", ")]))) {
 			for(t=0; t<rowNames.length; t++) {
 				store.removeTiddler(rowNames[t]);
-				story.closeTiddler(rowNames[t],true,false);
+				story.closeTiddler(rowNames[t],true);
 			}
 		}
 	}

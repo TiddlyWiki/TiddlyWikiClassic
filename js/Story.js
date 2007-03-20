@@ -32,10 +32,10 @@ Story.prototype.forEachTiddler = function(fn)
 
 //# Display several tiddlers given their titles in an array. Parameters same as displayTiddler(), except:
 //# titles - array of string titles
-Story.prototype.displayTiddlers = function(srcElement,titles,template,animate,slowly,customFields,toggle)
+Story.prototype.displayTiddlers = function(srcElement,titles,template,animate,unused,customFields,toggle)
 {
 	for(var t = titles.length-1;t>=0;t--)
-		this.displayTiddler(srcElement,titles[t],template,animate,slowly,customFields);
+		this.displayTiddler(srcElement,titles[t],template,animate,unused,customFields);
 };
 
 //# Display a given tiddler with a given template. If the tiddler is already displayed but with a different
@@ -48,16 +48,15 @@ Story.prototype.displayTiddlers = function(srcElement,titles,template,animate,sl
 //#            one of the constants DEFAULT_VIEW_TEMPLATE and DEFAULT_EDIT_TEMPLATE -or-
 //#            null or undefined to indicate the current template if there is one, DEFAULT_VIEW_TEMPLATE if not
 //# animate - whether to perform animations
-//# slowly - whether to perform animations in slomo
 //# customFields - an optional list of name:"value" pairs to be assigned as tiddler fields (for edit templates)
 //# toggle - if true, causes the tiddler to be closed if it is already opened
-Story.prototype.displayTiddler = function(srcElement,title,template,animate,slowly,customFields,toggle)
+Story.prototype.displayTiddler = function(srcElement,title,template,animate,unused,customFields,toggle)
 {
 	var place = document.getElementById(this.container);
 	var tiddlerElem = document.getElementById(this.idPrefix + title);
 	if(tiddlerElem) {
 		if(toggle)
-			this.closeTiddler(title,true,slowly);
+			this.closeTiddler(title,true);
 		else
 			this.refreshTiddler(title,template,false,customFields);
 	} else {
@@ -66,7 +65,7 @@ Story.prototype.displayTiddler = function(srcElement,title,template,animate,slow
 	}
 	if(srcElement && typeof srcElement !== "string") {
 		if(config.options.chkAnimate && (animate == undefined || animate == true) && anim && typeof Zoomer == "function" && typeof Scroller == "function")
-			anim.startAnimating(new Zoomer(title,srcElement,tiddlerElem,slowly),new Scroller(tiddlerElem,slowly));
+			anim.startAnimating(new Zoomer(title,srcElement,tiddlerElem),new Scroller(tiddlerElem));
 		else
 			window.scrollTo(0,ensureVisible(tiddlerElem));
 	}
@@ -399,15 +398,14 @@ Story.prototype.setTiddlerTag = function(title,tag,mode)
 //# Close a specified tiddler
 //# title - name of tiddler to close
 //# animate - whether to perform animations
-//# slowly - whether to perform animations in slomo
-Story.prototype.closeTiddler = function(title,animate,slowly)
+Story.prototype.closeTiddler = function(title,animate,unused)
 {
 	var tiddlerElem = document.getElementById(this.idPrefix + title);
 	if(tiddlerElem != null) {
 		clearMessage();
 		this.scrubTiddler(tiddlerElem);
 		if(config.options.chkAnimate && animate && anim && typeof Slider == "function")
-			anim.startAnimating(new Slider(tiddlerElem,false,slowly,"all"));
+			anim.startAnimating(new Slider(tiddlerElem,false,null,"all"));
 		else
 			tiddlerElem.parentNode.removeChild(tiddlerElem);
 	}
@@ -552,7 +550,7 @@ Story.prototype.saveTiddler = function(title,minorUpdate)
 				return null;
 		}
 		if(newTitle != title)
-			this.closeTiddler(newTitle,false,false);
+			this.closeTiddler(newTitle,false);
 		tiddlerElem.id = this.idPrefix + newTitle;
 		tiddlerElem.setAttribute("tiddler",newTitle);
 		tiddlerElem.setAttribute("template",DEFAULT_VIEW_TEMPLATE);

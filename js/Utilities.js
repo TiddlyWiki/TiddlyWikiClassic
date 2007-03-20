@@ -116,7 +116,7 @@ function onClickTiddlerLink(e)
 			toggling = !toggling;
 		if(noToggle)
 			toggling = false;
-		story.displayTiddler(theTarget,title,null,true,e.shiftKey || e.altKey,fields,toggling);
+		story.displayTiddler(theTarget,title,null,true,null,fields,toggling);
 	}
 	clearMessage();
 	return false;
@@ -163,7 +163,7 @@ function onClickTag(e)
 		var h = createTiddlyLink(createTiddlyElement(popup,"li"),tag,false);
 		createTiddlyText(h,lingo.openTag.format([tag]));
 	}
-	Popup.show(popup,false);
+	Popup.show();
 	e.cancelBubble = true;
 	if(e.stopPropagation) e.stopPropagation();
 	return false;
@@ -189,7 +189,7 @@ function onClickError(e)
 	var lines = this.getAttribute("errorText").split("\n");
 	for(var t=0; t<lines.length; t++)
 		createTiddlyElement(popup,"li",null,null,lines[t]);
-	Popup.show(popup,false);
+	Popup.show();
 	e.cancelBubble = true;
 	if(e.stopPropagation) e.stopPropagation();
 	return false;
