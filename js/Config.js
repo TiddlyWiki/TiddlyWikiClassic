@@ -16,6 +16,9 @@ var config = {
 // Adaptors
 config.adaptors = {};
 
+// Backstage tasks
+config.tasks = {};
+
 // Custom fields to be automatically added to new tiddlers
 config.defaultCustomFields = {};
 
