@@ -290,8 +290,7 @@ config.macros.importTiddlers.onGetTiddler = function(context,wizard)
 	var tiddler = context.tiddler;
 	store.saveTiddler(tiddler.title, tiddler.title, tiddler.text, tiddler.modifier, tiddler.modified, tiddler.tags, tiddler.fields);
 	if(!wizard.getValue("sync")) {
-		store.setValue(tiddler.title,'server.type',null);
-		store.setValue(tiddler.title,'server.host',null);
+		store.setValue(tiddler.title,'server',null);
 	}
 	store.setValue(tiddler.title,'changecount',null);
 	var remainingImports = wizard.getValue("remainingImports")-1;
