@@ -259,7 +259,7 @@ merge(config.macros.importTiddlers,{
 	statusOpenWorkspace: "Opening the workspace",
 	statusGetTiddlerList: "Getting the list of available tiddlers",
 	step3Title: "Step 3: Choose the tiddlers to import",
-	step3Html: "<input type='hidden' name='markList'></input><br><input type='checkbox' checked='true' name='chkSync'>Keep these tiddlers linked to this server so that you can synchronise subsequent changes</input><br><input type='checkbox' checked='true' name='chkSave'>Save the details of this server in a 'systemServer' tiddler called:</input> <input type='text' size=25 name='txtSaveTiddler'>",
+	step3Html: "<input type='hidden' name='markList'></input><br><input type='checkbox' checked='true' name='chkSync'>Keep these tiddlers linked to this server so that you can synchronise subsequent changes</input><br><input type='checkbox' checked='false' name='chkSave'>Save the details of this server in a 'systemServer' tiddler called:</input> <input type='text' size=25 name='txtSaveTiddler'>",
 	importLabel: "import",
 	importPrompt: "Import these tiddlers",
 	confirmOverwriteText: "Are you sure you want to overwrite these tiddlers:\n\n%0",
@@ -269,6 +269,11 @@ merge(config.macros.importTiddlers,{
 	step5Html: "All tiddlers were imported",
 	doneLabel: "done",
 	donePrompt: "Close this wizard",
+	systemServerNamePattern: "%2 on %1",
+	systemServerNamePatternNoWorkspace: "%1",
+	confirmOverwriteSaveTiddler: "The tiddler '%0' already exists. Click 'OK' to overwrite it with the details of this server, or 'Cancel' to leave it unchanged",
+	serverSaveTemplate: "|''Type:''|%0|\n|''URL:''|%1|\n|''Workspace:''|%2|\n\nThis tiddler was automatically created to record the details of this server",
+	serverSaveModifier: "(System)",
 	listViewTemplate: {
 		columns: [
 			{name: 'Selected', field: 'Selected', rowName: 'title', type: 'Selector'},
