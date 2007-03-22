@@ -208,6 +208,29 @@ function createTiddlyDropDown(place,onchange,options,defaultValue)
 	return sel;
 }
 
+function createTiddlyPopup(place,caption,tooltip,tiddler)
+{
+	if(tiddler.text) {
+		var btn = createTiddlyButton(place,caption,tooltip,onClickTiddlyPopup,"tiddlerPopupButton");
+		btn.tiddler = tiddler;
+	} else {
+		createTiddlyText(place,caption);
+	}
+}
+
+function onClickTiddlyPopup(e)
+{
+	var tiddler = this.tiddler;
+	if(tiddler.text) {
+		var popup = Popup.create(this,"div","popupTiddler");
+		wikify(tiddler.text,popup,null,tiddler);
+		Popup.show();
+	}
+	if(e) e.cancelBubble = true;
+	if(e && e.stopPropagation) e.stopPropagation();
+	return false;
+}
+
 function createTiddlyError(place,title,text)
 {
 	var btn = createTiddlyButton(place,title,null,onClickError,"errorButton");
