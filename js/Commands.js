@@ -101,6 +101,12 @@ config.commands.syncing.handlePopup = function(popup,title)
 	} else {
 		createTiddlyElement(popup,"li",null,"popupMessage",config.commands.syncing.notCurrentlySyncing);
 	}
+	if(serverType) {
+		createTiddlyElement(createTiddlyElement(popup,"li",null,"listBreak"),"div");
+		var btn = createTiddlyButton(createTiddlyElement(popup,"li"),this.captionUnSync,null,config.commands.syncing.onChooseServer);
+		btn.setAttribute("tiddler",title);
+		btn.setAttribute("server.type","");
+	}
 	createTiddlyElement(createTiddlyElement(popup,"li",null,"listBreak"),"div");
 	createTiddlyElement(popup,"li",null,"popupMessage",config.commands.syncing.chooseServer);
 	var feeds = store.getTaggedTiddlers("systemServer","title");
@@ -132,11 +138,16 @@ config.commands.syncing.handlePopup = function(popup,title)
 config.commands.syncing.onChooseServer = function(e)
 {
 	var tiddler = this.getAttribute("tiddler");
-	store.addTiddlerFields(tiddler,{
-		'server.type': this.getAttribute("server.type"),
-		'server.host': this.getAttribute("server.host"),
-		'server.workspace': this.getAttribute("server.workspace")
-		});
+	var serverType = this.getAttribute("server.type");
+	if(serverType) {
+		store.addTiddlerFields(tiddler,{
+			'server.type': serverType,
+			'server.host': this.getAttribute("server.host"),
+			'server.workspace': this.getAttribute("server.workspace")
+			});
+	} else {
+		store.setValue(tiddler,'server',null);
+	}
 	return false;
 };
 
