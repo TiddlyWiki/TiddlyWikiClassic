@@ -143,7 +143,7 @@ Tiddler.prototype.changed = function()
 				this.links.pushUnique(formatMatch[1]);
 			}
 		}
-		else if(formatMatch[2-t] && (store.tiddlerExists(formatMatch[3-t]) || store.isShadowTiddler(formatMatch[3-t]))) // titledBrackettedLink
+		else if(formatMatch[2-t] && !config.formatterHelpers.isExternalLink(formatMatch[3-t])) // titledBrackettedLink
 			this.links.pushUnique(formatMatch[3-t]);
 		else if(formatMatch[4-t] && formatMatch[4-t] != this.title) // brackettedLink
 			this.links.pushUnique(formatMatch[4-t]);
