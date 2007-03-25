@@ -127,9 +127,8 @@ td, tr {border:1px solid [[ColorPalette::TertiaryDark]];}
 #backstageArea a {background:[[ColorPalette::Foreground]]; color:[[ColorPalette::Background]]; border:none;}
 #backstageArea a:hover {background:[[ColorPalette::SecondaryLight]]; color:[[ColorPalette::Foreground]]; }
 #backstageArea a.backstageSelTab {background:[[ColorPalette::Background]]; color:[[ColorPalette::Foreground]];}
-#backstageButton {background:[[ColorPalette::Foreground]]; color:[[ColorPalette::Background]];}
-#backstageButton a {background:[[ColorPalette::Foreground]]; color:[[ColorPalette::TertiaryMid]]; border:none;}
-#backstageButton a:hover {color:[[ColorPalette::Background]]; border:none;}
+#backstageButton a {background:none; color:[[ColorPalette::Background]]; border:none;}
+#backstageButton a:hover {background:[[ColorPalette::Foreground]]; color:[[ColorPalette::Background]]; border:none;}
 #backstagePanel {background:[[ColorPalette::Background]]; border-color: [[ColorPalette::Background]] [[ColorPalette::TertiaryDark]] [[ColorPalette::TertiaryDark]] [[ColorPalette::TertiaryDark]];}
 .backstagePanelFooter .button {border:none; color:[[ColorPalette::Background]];}
 .backstagePanelFooter .button:hover {color:[[ColorPalette::Foreground]];}

@@ -162,10 +162,11 @@ table.listView th, table.listView td, table.listView tr {padding:0px 3px 0px 3px
 
 * html #backstage {width:99%;}
 * html #backstageArea {width:99%;}
-#backstageArea {display:none; position:relative; overflow: hidden; z-index:150; padding:0.2em 0.5em 0.2em 0.5em;}
+#backstageArea {display:none; position:relative; overflow: hidden; z-index:150; padding:0.3em 0.5em 0.3em 0.5em;}
 #backstageToolbar {position:relative;}
-#backstageArea a {font-weight:bold; margin-left:0.5em; padding:0.2em 0.5em 0.2em 0.5em;}
-#backstageButton {display:none; position:absolute; z-index:175; top:0em; right:0em; padding:0.2em 0.5em 0.2em 0.5em;}
+#backstageArea a {font-weight:bold; margin-left:0.5em; padding:0.3em 0.5em 0.3em 0.5em;}
+#backstageButton {display:none; position:absolute; z-index:175; top:0em; right:0em;}
+#backstageButton a {padding: 0.2em 0.5em 0.2em 0.5em;}
 #backstage {position:relative; width:100%; z-index:50;}
 #backstagePanel {display:none; z-index:100; position:absolute; margin:0em 3em 0em 3em; padding:1em 1em 1em 1em;}
 .backstagePanelFooter {padding-top:0.2em; float:right;}
