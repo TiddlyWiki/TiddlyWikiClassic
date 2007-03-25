@@ -592,7 +592,7 @@ config.macros.tabs.switchTab = function(tabset,tab)
 	}
 	if(theTab) {
 		if(tabset.nextSibling && tabset.nextSibling.className == "tabContents")
-			tabset.parentNode.removeChild(tabset.nextSibling);
+			removeNode(tabset.nextSibling);
 		var tabContent = createTiddlyElement(null,"div",null,"tabContents");
 		tabset.parentNode.insertBefore(tabContent,tabset.nextSibling);
 		var contentTitle = theTab.getAttribute("content");
@@ -853,7 +853,7 @@ config.macros.toolbar.onClickMore = function(e)
 {
 	var e = this.nextSibling;
 	e.style.display = "inline";
-	this.parentNode.removeChild(this);
+	removeNode(this);
 	return false;
 };
 
@@ -963,7 +963,7 @@ config.macros.viewDetails.onClickHide = function(e)
 	if(anim && config.options.chkAnimate) {
 		anim.startAnimating(new Slider(panel,false,null,"all",true));
 	} else {
-		panel.parentNode.removeChild(panel);
+		removeNode(panel);
 	}
 	return false;
 };
@@ -975,7 +975,7 @@ config.macros.viewDetails.onClickShow = function(e)
 	if(anim && config.options.chkAnimate) {
 		anim.startAnimating(new Slider(panel,true,null,null,true));
 	}
-	this.parentNode.removeChild(this);
+	removeNode(this);
 	return false;
 };
 

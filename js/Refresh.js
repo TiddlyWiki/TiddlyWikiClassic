@@ -111,7 +111,7 @@ function refreshPageTemplate(title)
 	nodes = stash.childNodes;
 	for(t=nodes.length-1; t>=0; t--)
 		display.appendChild(nodes[t]);
-	stash.parentNode.removeChild(stash);
+	removeNode(stash);
 }
 
 function refreshDisplay(hint)

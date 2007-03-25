@@ -61,7 +61,7 @@ Popup.removeFrom = function(from)
 	for(var t=Popup.stack.length-1; t>=from; t--) {
 		var p = Popup.stack[t];
 		removeClass(p.root,"highlight");
-		p.popup.parentNode.removeChild(p.popup);
+		removeNode(p.popup);
 	}
 	Popup.stack = Popup.stack.slice(0,from);
 };

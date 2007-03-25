@@ -32,7 +32,7 @@ function wikifyStatic(source,highlightRegExp,tiddler)
 		wikifier.isStatic = true;
 		wikifier.subWikifyUnterm(e);
 		html = e.innerHTML;
-		e.parentNode.removeChild(e);
+		removeNode(e);
 	}
 	return html;
 }
@@ -97,7 +97,7 @@ Wikifier.prototype.wikifyPlain = function()
 	var e = createTiddlyElement(document.body,"div");
 	this.subWikify(e);
 	var text = getPlainText(e);
-	e.parentNode.removeChild(e);
+	removeNode(e);
 	return text;
 };
 

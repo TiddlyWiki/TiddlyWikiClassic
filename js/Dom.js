@@ -230,7 +230,38 @@ function insertSpacer(place)
 function removeChildren(e)
 {
 	while(e && e.hasChildNodes())
-		e.removeChild(e.firstChild);
+		removeNode(e.firstChild);
+}
+
+// Remove a node and all it's children
+function removeNode(e)
+{
+	scrubNode(e);
+	e.parentNode.removeChild(e);
+}
+
+// Remove any event handlers or non-primitve custom attributes
+function scrubNode(e)
+{
+//	if(!config.browser.isIE)
+//		return;
+    var att = e.attributes;
+    if(att) {
+        for (var t=0; t<att.length; t++) {
+            var n = att[t].name;
+            if (n !== 'style' && (typeof e[n] === 'function' || (typeof e[n] === 'object' && e[n] != null))) {
+				try {
+                	e[n] = null;
+				} catch(ex) {
+				}
+            }
+        }
+    }
+	var c = e.firstChild;
+	while(c) {
+		scrubNode(c);
+		c = c.nextSibling;
+	}
 }
 
 // Add a stylesheet, replacing any previous custom stylesheet

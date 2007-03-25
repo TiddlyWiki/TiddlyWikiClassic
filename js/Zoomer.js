@@ -15,6 +15,6 @@ function Zoomer(text,startElement,targetElement,unused)
 		{style: 'height', start: Math.min(startElement.scrollHeight,winHeight), end: Math.min(targetElement.scrollHeight,winHeight), template: '%0px', atEnd: 'auto'},
 		{style: 'fontSize', start: 8, end: 24, template: '%0pt'}
 	];
-	var c = function(element,properties) {element.parentNode.removeChild(element);};
+	var c = function(element,properties) {removeNode(element);};
 	return new Morpher(e,config.animDuration,p,c);
 }
