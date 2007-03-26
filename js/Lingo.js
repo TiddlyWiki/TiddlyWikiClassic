@@ -83,7 +83,10 @@ merge(config.messages.messageClose,{
 config.messages.backstage = {
 	open: {text: "backstage", icon: "↩", iconIE: "←", tooltip: "Open the backstage area to perform authoring and editing tasks"},
 	close: {text: "close", icon: "↪", iconIE: "→", tooltip: "Close the backstage area"},
-	prompt: "backstage: "
+	prompt: "backstage: ",
+	decal: {
+		edit: {text: "edit", tooltip: "Edit this tiddler"}
+	},
 };
 
 config.messages.listView = {
@@ -259,7 +262,7 @@ merge(config.macros.importTiddlers,{
 	statusOpenWorkspace: "Opening the workspace",
 	statusGetTiddlerList: "Getting the list of available tiddlers",
 	step3Title: "Step 3: Choose the tiddlers to import",
-	step3Html: "<input type='hidden' name='markList'></input><br><input type='checkbox' checked='true' name='chkSync'>Keep these tiddlers linked to this server so that you can synchronise subsequent changes</input><br><input type='checkbox' checked='false' name='chkSave'>Save the details of this server in a 'systemServer' tiddler called:</input> <input type='text' size=25 name='txtSaveTiddler'>",
+	step3Html: "<input type='hidden' name='markList'></input><br><input type='checkbox' checked='true' name='chkSync'>Keep these tiddlers linked to this server so that you can synchronise subsequent changes</input><br><input type='checkbox' name='chkSave'>Save the details of this server in a 'systemServer' tiddler called:</input> <input type='text' size=25 name='txtSaveTiddler'>",
 	importLabel: "import",
 	importPrompt: "Import these tiddlers",
 	confirmOverwriteText: "Are you sure you want to overwrite these tiddlers:\n\n%0",
