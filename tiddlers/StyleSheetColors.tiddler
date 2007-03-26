@@ -105,6 +105,8 @@ h2,h3 {border-bottom:1px solid [[ColorPalette::TertiaryLight]];}
 
 .imageLink, #displayArea .imageLink {background:transparent;}
 
+.annotation {background:[[ColorPalette::SecondaryLight]]; color:[[ColorPalette::Foreground]]; border:2px solid [[ColorPalette::SecondaryMid]];}
+
 .viewer .listTitle {list-style-type:none; margin-left:-2em;}
 .viewer .button {border:1px solid [[ColorPalette::SecondaryMid]];}
 .viewer blockquote {border-left:3px solid [[ColorPalette::TertiaryDark]];}

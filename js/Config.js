@@ -19,6 +19,9 @@ config.adaptors = {};
 // Backstage tasks
 config.tasks = {};
 
+// Annotations
+config.annotations = {};
+
 // Custom fields to be automatically added to new tiddlers
 config.defaultCustomFields = {};
 
@@ -50,6 +53,7 @@ config.options = {
 	txtMaxEditRows: "30",
 	txtFileSystemCharSet: "UTF-8"
 	};
+config.optionsDesc = {};
 	
 // List of notification functions to be called when certain tiddlers are changed or deleted
 config.notifyTiddlers = [
@@ -124,7 +128,8 @@ config.macros = {
 	refreshDisplay: {},
 	importTiddlers: {},
 	sync: {},
-	viewDetails: {}
+	viewDetails: {},
+	annotations: {}
 };
 
 // Commands supported by the toolbar macro

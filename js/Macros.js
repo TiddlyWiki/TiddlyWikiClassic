@@ -979,3 +979,14 @@ config.macros.viewDetails.onClickShow = function(e)
 	return false;
 };
 
+config.macros.annotations.handler = function(place,macroName,params,wikifier,paramString,tiddler)
+{
+	var title = tiddler ? tiddler.title : null;
+	var a = title ? config.annotations[title] : null;
+	if(!tiddler || !title || !a)
+		return;
+	var text = a.format([title]);
+	wikify(text,createTiddlyElement(place,"div",null,"annotation"),null,tiddler);
+
+	
+};

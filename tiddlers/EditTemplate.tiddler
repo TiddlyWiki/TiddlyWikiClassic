@@ -3,6 +3,7 @@
 &lt;div class='toolbar' macro='toolbar +saveTiddler -cancelTiddler deleteTiddler'&gt;&lt;/div&gt;
 &lt;div class='title' macro='view title'&gt;&lt;/div&gt;
 &lt;div class='editor' macro='edit title'&gt;&lt;/div&gt;
+&lt;div macro='annotations'&gt;&lt;/div&gt;
 &lt;div class='editor' macro='edit text'&gt;&lt;/div&gt;
 &lt;div class='editor' macro='edit tags'&gt;&lt;/div&gt;&lt;div class='editorFooter'&gt;&lt;span macro='message views.editor.tagPrompt'&gt;&lt;/span&gt;&lt;span macro='tagChooser'&gt;&lt;/span&gt;&lt;/div&gt;
 &lt;!--}}}--&gt;</pre>

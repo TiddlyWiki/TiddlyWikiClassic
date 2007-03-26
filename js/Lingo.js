@@ -16,7 +16,7 @@ merge(config.tasks,{
 });
 
 // Options that can be set in the options panel and/or cookies
-config.optionsDesc = {
+merge(config.optionsDesc,{
 	txtUserName: "Username for signing your edits",
 	chkRegExpSearch: "Enable regular expressions for searches",
 	chkCaseSensitiveSearch: "Case-sensitive searching",
@@ -34,8 +34,7 @@ config.optionsDesc = {
 	chkShowTiddlerDetails: "Always show the tiddler details panel when displaying a tiddler",
 	txtBackupFolder: "Name of folder to use for backups",
 	txtMaxEditRows: "Maximum number of rows in edit boxes",
-	txtFileSystemCharSet: "Default character set for saving changes"
-	};
+	txtFileSystemCharSet: "Default character set for saving changes"});
 
 merge(config.messages,{
 	customConfigError: "Problems were encountered loading plugins. See PluginManager for details",
@@ -339,6 +338,9 @@ merge(config.macros.viewDetails,{
 			]}
 	});
 
+merge(config.macros.annotations,{
+	});
+
 merge(config.commands.closeTiddler,{
 	text: "close",
 	tooltip: "Close this tiddler"});
@@ -409,3 +411,35 @@ merge(config.shadowTiddlers,{
 	TabMoreShadowed: '<<list shadowed>>',
 	PluginManager: '<<plugins>>',
 	ImportTiddlers: '<<importTiddlers>>'});
+
+merge(config.annotations,{
+	AdvancedOptions: "This shadow tiddler provides access to several advanced options",
+	ColorPalette: "These values in this shadow tiddler determine the colour scheme of the ~TiddlyWiki user interface",
+	DefaultTiddlers: "The tiddlers listed in this shadow tiddler will be automatically displayed when ~TiddlyWiki starts up",
+	EditTemplate: "The HTML template in this shadow tiddler determines how tiddlers look while they are being edited",
+	GettingStarted: "This shadow tiddler provides basic usage instructions",
+	ImportTiddlers: "This shadow tiddler provides access to importing tiddlers",
+	MainMenu: "This shadow tiddler is used as the contents of the main menu in the left-hand column of the screen)",
+	OptionsPanel: "This shadow tiddler is used as the contents of the options panel slider in the right-hand sidebar",
+	PageTemplate: "The HTML template in this shadow tiddler determines the overall ~TiddlyWiki layout",
+	PluginManager: "This shadow tiddler provides access to the plugin manager",
+	SideBarOptions: "This shadow tiddler is used as the contents of the option panel in the right-hand sidebar",
+	SideBarTabs: "This shadow tiddler is used as the contents of the tabs panel in the right-hand sidebar",
+	SiteSubtitle: "This shadow tiddler is used as the second part of the page title",
+	SiteTitle: "This shadow tiddler is used as the first part of the page title",
+	SiteUrl: "This shadow tiddler should be set to the full target URL for publication",
+	StyleSheetColours: "This shadow tiddler contains CSS definitions related to the color of page elements",
+	StyleSheet: "This tiddler can contain custom CSS definitions",
+	StyleSheetLayout: "This shadow tiddler contains CSS definitions related to the layout of page elements",
+	StyleSheetLocale: "This shadow tiddler contains CSS definitions related to the translation locale",
+	StyleSheetPrint: "This shadow tiddler contains CSS definitions for printing",
+	TabAll: "This shadow tiddler contains the contents of the 'All' tab in the right-hand sidebar",
+	TabMore: "This shadow tiddler contains the contents of the 'More' tab in the right-hand sidebar",
+	TabMoreMissing: "This shadow tiddler contains the contents of the 'Missing' tab in the right-hand sidebar",
+	TabMoreOrphans: "This shadow tiddler contains the contents of the 'Orphans' tab in the right-hand sidebar",
+	TabMoreShadowed: "This shadow tiddler contains the contents of the 'Shadowed' tab in the right-hand sidebar",
+	TabTags: "This shadow tiddler contains the contents of the 'Tags' tab in the right-hand sidebar",
+	TabTimeline: "This shadow tiddler contains the contents of the 'Timeline' tab in the right-hand sidebar",
+	ViewTemplate: "The HTML template in this shadow tiddler determines how tiddlers look"
+	});
+
