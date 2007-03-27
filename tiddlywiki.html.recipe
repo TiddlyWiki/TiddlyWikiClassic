@@ -23,6 +23,8 @@ html/prestorearea.html
 @tiddler@
 @posttiddlers@
 html/poststorearea.html
+html/prepostbody.html
 @postbody@
+html/postpostbody.html
 html/footer.html
 copy: java/TiddlySaver.jar
