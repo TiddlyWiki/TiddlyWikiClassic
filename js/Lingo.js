@@ -85,7 +85,7 @@ config.messages.backstage = {
 	prompt: "backstage: ",
 	decal: {
 		edit: {text: "edit", tooltip: "Edit this tiddler"}
-	},
+	}
 };
 
 config.messages.listView = {
