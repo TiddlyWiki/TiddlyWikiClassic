@@ -310,13 +310,10 @@ TiddlyWiki.prototype.loadFromDiv = function(src,idPrefix,noUpdate)
 // Load contents of a TiddlyWiki from a string
 TiddlyWiki.prototype.importTiddlyWiki = function(text)
 {
-	// Crack out the content - will be refactored to share code with saveChanges()
-	var posOpeningDiv = text.indexOf(startSaveArea);
-	var limitClosingDiv = text.indexOf("<!--POST-BODY-START--"+">");
-	var posClosingDiv = text.lastIndexOf(endSaveArea,limitClosingDiv == -1 ? text.length : limitClosingDiv);
-	if((posOpeningDiv == -1) || (posClosingDiv == -1))
+	var posDiv = locateStoreArea(text);
+	if(!posDiv)
 		return config.messages.invalidFileError.format([url]);
-	var content = "<html><body>" + text.substring(posOpeningDiv,posClosingDiv + endSaveArea.length) + "</body></html>";
+	var content = "<html><body>" + text.substring(posDiv[0],posDiv[1] + endSaveArea.length) + "</body></html>";
 	// Create the iframe
 	var iframe = document.createElement("iframe");
 	document.body.appendChild(iframe);

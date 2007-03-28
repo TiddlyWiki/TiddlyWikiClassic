@@ -36,7 +36,7 @@ function updateOriginal(original,posDiv)
 {
 	if(!posDiv)
 		posDiv = locateStoreArea(original);
-	if((posDiv[0] == -1) || (posDiv[1] == -1)) {
+	if(!posDiv) {
 		alert(config.messages.invalidFileError.format([localPath]));
 		return null;
 	}
@@ -58,7 +58,7 @@ function locateStoreArea(original)
 	var posOpeningDiv = original.indexOf(startSaveArea);
 	var limitClosingDiv = original.indexOf("<"+"!--POST-BODY-START--"+">");
 	var posClosingDiv = original.lastIndexOf(endSaveArea,limitClosingDiv == -1 ? original.length : limitClosingDiv);
-	return Array(posOpeningDiv,posClosingDiv);
+	return (posOpeningDiv != -1 && posClosingDiv != -1) ? [posOpeningDiv,posClosingDiv] : null;
 }
 
 function autoSaveChanges(onlyIfDirty,tiddlers)
@@ -91,9 +91,9 @@ function saveChanges(onlyIfDirty,tiddlers)
 			story.displayTiddler(null,config.messages.saveInstructions);
 		return;
 	}
-	// Locate the storeArea div's 
+	// Locate the storeArea div's
 	var posDiv = locateStoreArea(original);
-	if((posDiv[0] == -1) || (posDiv[1] == -1)) {
+	if(!posDiv) {
 		alert(config.messages.invalidFileError.format([localPath]));
 		return;
 	}
