@@ -107,18 +107,23 @@ function loadPlugins()
 	if(safeMode)
 		return false;
 	var tiddlers = store.getTaggedTiddlers("systemConfig");
-	var i, n, p, toLoad = [], nLoaded = 0, map = {}, nPlugins = tiddlers.length;
+	var toLoad = [];
+	var nLoaded = 0;
+	var map = {};
+	var nPlugins = tiddlers.length;
 	installedPlugins = [];
-	for(i=0; i<nPlugins; i++) {
-		p = installedPlugins[i] = getPluginInfo(tiddlers[i]);
-		n = p.Name;
+	for(var i=0; i<nPlugins; i++) {
+		var p = getPluginInfo(tiddlers[i]);
+		installedPlugins[i] = p;
+		var n = p.Name;
 		if(n) 
 			map[n] = p;
 		if(n = p.Source) 
 			map[n] = p;
 	}
 	var visit = function(p) {
-		if(!p || p.done) return;
+		if(!p || p.done)
+			return;
 		p.done = 1;
 		var reqs = p.Requires;
 		if(reqs) {
@@ -131,7 +136,8 @@ function loadPlugins()
 	for(n in map) 
 		visit(map[n]);	
 	for(i=0; i<toLoad.length; i++) {
-		pluginInfo = p = toLoad[i];
+		p = toLoad[i];
+		pluginInfo = p;
 		tiddler = p.tiddler;
 		if(isPluginExecutable(p)) {
 			p.executed = true;
