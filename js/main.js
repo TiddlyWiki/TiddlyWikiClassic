@@ -106,36 +106,55 @@ function loadPlugins()
 {
 	if(safeMode)
 		return false;
-	var configTiddlers = store.getTaggedTiddlers("systemConfig");
+	var tiddlers = store.getTaggedTiddlers("systemConfig");
+	var i, n, p, toLoad = [], nLoaded = 0, map = {}, nPlugins = tiddlers.length;
 	installedPlugins = [];
-	var hadProblem = false;
-	for(var t=0; t<configTiddlers.length; t++) {
-		tiddler = configTiddlers[t];
-		pluginInfo = getPluginInfo(tiddler);
-		var startTime = new Date();
-		if(isPluginExecutable(pluginInfo)) {
-			pluginInfo.executed = true;
-			pluginInfo.error = false;
-			try {
-				if(tiddler.text && tiddler.text != "")
-					window.eval(tiddler.text);
-			} catch(ex) {
-				pluginInfo.log.push(config.messages.pluginError.format([exceptionText(ex)]));
-				pluginInfo.error = true;
-				hadProblem = true;
-			}
-			pluginInfo.startupTime = String((new Date()) - startTime) + "ms";
-		} else {
-			pluginInfo.warning = true;
-		}
-		installedPlugins.push(pluginInfo);
+	for(i=0; i<nPlugins; i++) {
+		p = installedPlugins[i] = getPluginInfo(tiddlers[i]);
+		n = p.Name;
+		if(n) 
+			map[n] = p;
+		if(n = p.Source) 
+			map[n] = p;
 	}
-	return hadProblem;
+	var visit = function(p) {
+		if(!p || p.done) return;
+		p.done = 1;
+		var reqs = p.Requires;
+		if(reqs) {
+			reqs = reqs.readBracketedList();
+			for(var i=0; i<reqs.length; i++)
+				visit(map[reqs[i]]);
+		}
+		toLoad.push(p);
+	};
+	for(n in map) 
+		visit(map[n]);	
+	for(i=0; i<toLoad.length; i++) {
+		pluginInfo = p = toLoad[i];
+		tiddler = p.tiddler;
+		if(isPluginExecutable(p)) {
+			p.executed = true;
+			var startTime = new Date();
+			try {
+				if(tiddler.text)
+					window.eval(tiddler.text);
+				nLoaded++;
+			} catch(ex) {
+				p.log.push(config.messages.pluginError.format([exceptionText(ex)]));
+				p.error = true;
+			}
+			pluginInfo.startupTime = String((new Date()) - startTime) + "ms"; 
+		} else {
+			p.warning = true;
+		}
+	}
+	return nLoaded != nPlugins;
 }
 
 function getPluginInfo(tiddler)
 {
-	var p = store.getTiddlerSlices(tiddler.title,["Name","Description","Version","CoreVersion","Date","Source","Author","License","Browsers"]);
+	var p = store.getTiddlerSlices(tiddler.title,["Name","Description","Version","Requires","CoreVersion","Date","Source","Author","License","Browsers"]);
 	p.tiddler = tiddler;
 	p.title = tiddler.title;
 	p.log = [];
