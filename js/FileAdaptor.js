@@ -32,7 +32,7 @@ FileAdaptor.prototype.openHost = function(host,context,userParams,callback)
 	context.userParams = userParams;
 	var ret = loadRemoteFile(host,FileAdaptor.openHostCallback,context);
 	return typeof(ret) == "string" ? ret : true;
-}
+};
 
 FileAdaptor.openHostCallback = function(status,context,responseText,url,xhr)
 {
@@ -46,7 +46,7 @@ FileAdaptor.openHostCallback = function(status,context,responseText,url,xhr)
 		adaptor.store.importTiddlyWiki(responseText);
 	}
 	context.callback(context,context.userParams);
-}
+};
 
 // Gets the list of workspaces on a given server
 //#   context is itself passed on as a parameter to the callback function
@@ -66,7 +66,7 @@ FileAdaptor.prototype.getWorkspaceList = function(context,userParams,callback)
 	context.status = true;
 	window.setTimeout(function() {callback(context,userParams);},10);
 	return true;
-}
+};
 
 // Open the specified workspace
 //#   workspace - name of workspace to open
@@ -85,7 +85,7 @@ FileAdaptor.prototype.openWorkspace = function(workspace,context,userParams,call
 	context.status = true;
 	window.setTimeout(function() {callback(context,userParams);},10);
 	return true;
-}
+};
 
 // Gets the list of tiddlers within a given workspace
 //#   callback - function to be called on completion
@@ -117,14 +117,14 @@ FileAdaptor.prototype.getTiddlerList = function(context,userParams,callback)
 	context.status = true;
 	window.setTimeout(function() {callback(context,userParams);},10);
 	return true;
-}
+};
 
 FileAdaptor.prototype.generateTiddlerInfo = function(tiddler)
 {
 	var info = {};
 	info.uri = tiddler.fields['server.host'] + "#" + tiddler.title;
 	return info;
-}
+};
 
 // Retrieves a tiddler from a given workspace on a given server
 //#   title - title of the tiddler to get
@@ -150,13 +150,13 @@ FileAdaptor.prototype.getTiddler = function(title,context,userParams,callback)
 	context.status = true;
 	window.setTimeout(function() {callback(context,userParams);},10);
 	return true;
-}
+};
 
 FileAdaptor.prototype.close = function()
 {
 	delete this.store;
 	this.store = null;
-}
+};
 
 config.adaptors[FileAdaptor.serverType] = FileAdaptor;
 

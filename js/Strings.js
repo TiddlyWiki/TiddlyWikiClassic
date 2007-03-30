@@ -89,12 +89,12 @@ String.prototype.toJSONString = function()
 		};
 	var replaceFn = function(a,b) {
 		var c = m[b];
-		if (c)
+		if(c)
 			return c;
 		c = b.charCodeAt();
 		return '\\u00' + Math.floor(c / 16).toString(16) + (c % 16).toString(16);
-		}
-	if (/["\\\x00-\x1f]/.test(this))
+		};
+	if(/["\\\x00-\x1f]/.test(this))
 		return '"' + this.replace(/([\x00-\x1f\\"])/g,replaceFn) + '"';
 	return '"' + this + '"';
 };
@@ -256,14 +256,14 @@ String.prototype.decodeHashMap = function()
 	for(var t=1; t<fields.length; t++)
 		r[fields[t].name] = fields[t].value;
 	return r;
-}
+};
 
 // Static method to encode a hashmap into a name:"value"... string
 String.encodeHashMap = function(hashmap)
 {
 	var r = [];
 	for(var t in hashmap)
-		r.push(t + ':"' + hashmap[t] + '"')
+		r.push(t + ':"' + hashmap[t] + '"');
 	return r.join(" ");
 };
 

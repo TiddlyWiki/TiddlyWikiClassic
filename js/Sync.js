@@ -7,7 +7,7 @@ config.syncers = {};
 
 // Sync state.
 //# Members:
-//#	syncList - List of sync objects (title, tiddler, server, workspace, page, version)
+//#	syncList - List of sync objects (title, tiddler, server, workspace, page, revision)
 //#	wizard - reference to wizard object
 //#	listView - DOM element of the listView table
 //#	syncMachines - array of syncMachines
