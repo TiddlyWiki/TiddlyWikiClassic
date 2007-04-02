@@ -308,7 +308,7 @@ TiddlyWiki.prototype.loadFromDiv = function(src,idPrefix,noUpdate)
 };
 
 // Load contents of a TiddlyWiki from a string
-// Returns 
+// Returns null if there's an error
 TiddlyWiki.prototype.importTiddlyWiki = function(text)
 {
 	var posDiv = locateStoreArea(text);
