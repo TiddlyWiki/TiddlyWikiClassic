@@ -43,7 +43,8 @@ FileAdaptor.openHostCallback = function(status,context,responseText,url,xhr)
 	} else {
 		// Load the content into a TiddlyWiki() object
 		adaptor.store = new TiddlyWiki();
-		adaptor.store.importTiddlyWiki(responseText);
+		if(!adaptor.store.importTiddlyWiki(responseText))
+			context.statusText = config.messages.invalidFileError.format([url]);
 	}
 	context.callback(context,context.userParams);
 };
