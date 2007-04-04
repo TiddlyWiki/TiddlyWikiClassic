@@ -43,6 +43,14 @@ Tiddler.prototype.incChangeCount = function()
 	this.fields['changecount'] = String(c+1);
 };
 
+// Clear the changeCount of a tiddler
+Tiddler.prototype.clearChangeCount = function()
+{
+	if(this.fields['changecount']) {
+		delete this.fields['changecount'];
+	}
+};
+
 // Returns true if the tiddler has been updated since the tiddler was created or downloaded
 Tiddler.prototype.isTouched = function()
 {

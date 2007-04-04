@@ -273,6 +273,17 @@ TiddlyWiki.prototype.saveTiddler = function(title,newTitle,newBody,modifier,modi
 	return tiddler;
 };
 
+// Reset the sync status of a freshly synced tiddler
+TiddlyWiki.prototype.resetTiddler = function(title)
+{
+	var tiddler = this.fetchTiddler(title);
+	if(tiddler) {
+		tiddler.clearChangeCount();
+		this.notify(title,true);
+		this.setDirty(true);
+	}
+};
+
 TiddlyWiki.prototype.incChangeCount = function(title)
 {
 	var tiddler = this.fetchTiddler(title);

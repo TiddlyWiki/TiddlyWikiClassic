@@ -222,6 +222,7 @@ config.macros.sync.syncOnPutTiddler = function(context,requestState)
 	var syncMachine = requestState.syncMachine;
 	var title = requestState.title;
 	var syncItem = requestState.syncItem;
+	store.resetTiddler(title);
 	syncItem.syncStatus = config.macros.sync.syncStatusList.putToServer;
 	config.macros.sync.updateSyncStatus(syncItem);
 	if(!context.status)
