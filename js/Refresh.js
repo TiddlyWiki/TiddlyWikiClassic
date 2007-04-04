@@ -54,7 +54,7 @@ function addBackstageDecal(place,title)
 	};
 	var wrapper = createTiddlyElement(place,"div",null,"backstageDecal whenBackstage");
 	var lingo = config.messages.backstage.decal;
-	var btn = createTiddlyButton(wrapper,lingo.edit.text,lingo.edit.tooltip,f);
+	var btn = createTiddlyButton(wrapper,lingo.edit.text,lingo.edit.tooltip.format([title]),f);
 }
 
 function refreshElements(root,changeList)

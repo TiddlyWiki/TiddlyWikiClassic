@@ -83,7 +83,7 @@ config.messages.backstage = {
 	close: {text: "close", icon: "↪", iconIE: "→", tooltip: "Close the backstage area"},
 	prompt: "backstage: ",
 	decal: {
-		edit: {text: "edit", tooltip: "Edit this tiddler"}
+		edit: {text: "edit", tooltip: "Edit the tiddler '%0'"}
 	}
 };
 
@@ -321,10 +321,6 @@ merge(config.macros.sync,{
 	});
 
 merge(config.macros.viewDetails,{
-	label: "...",
-	prompt: "Show additional information about this tiddler",
-	hideLabel: "(hide details)",
-	hidePrompt: "Hide this panel of additional information",
 	emptyDetailsText: "There are no extended fields for this tiddler",
 	listViewTemplate: {
 		columns: [
