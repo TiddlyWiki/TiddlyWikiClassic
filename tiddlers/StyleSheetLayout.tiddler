@@ -108,8 +108,7 @@ a.tiddlyLinkNonExisting.shadow {font-weight:bold;}
 
 .toolbar {text-align:right; font-size:.9em;}
 
-.viewDetails {padding:0.5em 0em 0.5em 0em;}
-.viewDetails {font-size:0.9em;}
+.viewDetails {padding:0.2em 0em 0.2em 0em; font-size:0.9em;}
 .detailsMessage {margin:0.8em 1.0em;}
 
 .tiddler {padding:1em 1em 0em 1em;}
@@ -176,6 +175,8 @@ table.listView th, table.listView td, table.listView tr {padding:0px 3px 0px 3px
 #backstageCloak {display:none; z-index:50; position:absolute; width:100%; height:100px;}
 .backstageDecal {display:none; font-size:9pt; margin:0.4em 0.4em 0.4em 0.4em;}
 .backstageDecal a {display:inline !important; padding:0.2em 0.4em 0.2em 0.4em !important;}
-.backstageVisible .backstageDecal {display:block;}
+
+.whenBackstage {display:none;}
+.backstageVisible .whenBackstage {display:block;}
 /*}}}*/</pre>
 </div>

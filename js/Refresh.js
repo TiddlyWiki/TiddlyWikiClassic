@@ -52,7 +52,7 @@ function addBackstageDecal(place,title)
 		story.displayTiddler(this,title,DEFAULT_EDIT_TEMPLATE,true);
 		return false;
 	};
-	var wrapper = createTiddlyElement(place,"div",null,"backstageDecal");
+	var wrapper = createTiddlyElement(place,"div",null,"backstageDecal whenBackstage");
 	var lingo = config.messages.backstage.decal;
 	var btn = createTiddlyButton(wrapper,lingo.edit.text,lingo.edit.tooltip,f);
 }
