@@ -133,8 +133,8 @@ function loadPlugins()
 		}
 		toLoad.push(p);
 	};
-	for(n in map) 
-		visit(map[n]);	
+	for(i=0; i<nPlugins; i++) 
+		visit(installedPlugins[i]);	
 	for(i=0; i<toLoad.length; i++) {
 		p = toLoad[i];
 		pluginInfo = p;
