@@ -414,7 +414,7 @@ merge(config.annotations,{
 	EditTemplate: "The HTML template in this shadow tiddler determines how tiddlers look while they are being edited",
 	GettingStarted: "This shadow tiddler provides basic usage instructions",
 	ImportTiddlers: "This shadow tiddler provides access to importing tiddlers",
-	MainMenu: "This shadow tiddler is used as the contents of the main menu in the left-hand column of the screen)",
+	MainMenu: "This shadow tiddler is used as the contents of the main menu in the left-hand column of the screen",
 	OptionsPanel: "This shadow tiddler is used as the contents of the options panel slider in the right-hand sidebar",
 	PageTemplate: "The HTML template in this shadow tiddler determines the overall ~TiddlyWiki layout",
 	PluginManager: "This shadow tiddler provides access to the plugin manager",
