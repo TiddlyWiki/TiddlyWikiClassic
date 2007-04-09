@@ -295,9 +295,9 @@ function setStylesheet(s,id,doc)
 function replaceSelection(e,text)
 {
 	if(e.setSelectionRange) {
-		var oldpos = e.selectionStart + 1;
-		e.value = e.value.substr(0,e.selectionStart) + text + e.value.substr(e.selectionStart);
-		e.setSelectionRange( oldpos, oldpos);
+		var oldpos = e.selectionStart;
+		e.value = e.value.substr(0,e.selectionStart) + text + e.value.substr(e.selectionEnd);
+		e.setSelectionRange(oldpos + text.length,oldpos + text.length);
 		var linecount = e.value.split('\n').length;
 		var thisline = e.value.substr(0,e.selectionStart).split('\n').length-1;
 		e.scrollTop = Math.floor((thisline-e.rows/2)*e.scrollHeight/linecount);
