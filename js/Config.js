@@ -28,7 +28,8 @@ config.defaultCustomFields = {};
 // Messages
 config.messages = {
 	messageClose: {},
-	dates: {}
+	dates: {},
+	tiddlerPopup: {}
 };
 
 // Options that can be set in the options panel and/or cookies

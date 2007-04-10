@@ -213,7 +213,8 @@ function createTiddlyDropDown(place,onchange,options,defaultValue)
 function createTiddlyPopup(place,caption,tooltip,tiddler)
 {
 	if(tiddler.text) {
-		var btn = createTiddlyButton(place,caption,tooltip,onClickTiddlyPopup,"tiddlerPopupButton");
+		var c = caption + config.messages.tiddlerPopup[config.browser.isIE ? "iconIE" : "icon"];
+		var btn = createTiddlyButton(place,c,tooltip,onClickTiddlyPopup,"tiddlerPopupButton");
 		btn.tiddler = tiddler;
 	} else {
 		createTiddlyText(place,caption);

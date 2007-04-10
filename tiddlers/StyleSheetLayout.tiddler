@@ -32,7 +32,6 @@ ol ol ol ol ol ol ol {list-style-type:decimal;}
 #contentWrapper .chkOptionInput {border:0;}
 
 .externalLink {text-decoration:underline;}
-.externalLink:after {content:" ⇢";}
 
 .indent {margin-left:3em;}
 .outdent {margin-left:3em; text-indent:-3em;}
@@ -83,7 +82,6 @@ a.tiddlyLinkNonExisting.shadow {font-weight:bold;}
 #messageArea a {text-decoration:underline;}
 
 .tiddlerPopupButton {padding:0.2em 0.2em 0.2em 0.2em;}
-.tiddlerPopupButton:after {content:" ↓";}
 .popupTiddler {position: absolute; z-index:300; padding:1em 1em 1em 1em; margin:0;}
 
 .popup {position:absolute; z-index:300; font-size:.9em; padding:0; list-style:none; margin:0;}
