@@ -106,7 +106,7 @@ config.messages.dates.pm = "pm";
 
 merge(config.messages.tiddlerPopup,{
 	icon: "\u2193",
-	iconIE: ""
+	iconIE: "\u2193"
 	});
 
 merge(config.views.wikified.tag,{
