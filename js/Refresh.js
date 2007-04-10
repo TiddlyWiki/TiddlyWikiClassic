@@ -27,7 +27,6 @@ config.refreshers = {
 		var force = e.getAttribute("force");
 		if(force != null || changeList == null || changeList.indexOf(title) != -1) {
 			removeChildren(e);
-			addBackstageDecal(e,title);
 			wikify(store.getTiddlerText(title,title),e,null);
 			return true;
 		} else
@@ -45,17 +44,6 @@ config.refreshers = {
 		return true;
 		}
 };
-
-function addBackstageDecal(place,title)
-{
-	var f = function(e) {
-		story.displayTiddler(this,title,DEFAULT_EDIT_TEMPLATE,true);
-		return false;
-	};
-	var wrapper = createTiddlyElement(place,"div",null,"backstageDecal whenBackstage");
-	var lingo = config.messages.backstage.decal;
-	var btn = createTiddlyButton(wrapper,lingo.edit.text,lingo.edit.tooltip.format([title]),f);
-}
 
 function refreshElements(root,changeList)
 {

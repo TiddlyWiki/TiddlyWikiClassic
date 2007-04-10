@@ -135,8 +135,5 @@ td, tr {border:1px solid [[ColorPalette::TertiaryDark]];}
 .backstagePanelFooter .button {border:none; color:[[ColorPalette::Background]];}
 .backstagePanelFooter .button:hover {color:[[ColorPalette::Foreground]];}
 #backstageCloak {background:[[ColorPalette::Foreground]]; opacity:0.6; filter:'alpha(opacity:60)';}
-.backstageDecal a {border:none; background:[[ColorPalette::TertiaryMid]]; color:[[ColorPalette::Background]];}
-.backstageDecal a:hover {border:none; background:[[ColorPalette::Foreground]]; color:[[ColorPalette::Background]];}
-.backstageDecal a:active {border:none; background:[[ColorPalette::TertiaryLight]]; color:[[ColorPalette::Foreground]];}
 /*}}}*/</pre>
 </div>

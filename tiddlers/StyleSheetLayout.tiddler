@@ -171,8 +171,6 @@ table.listView th, table.listView td, table.listView tr {padding:0px 3px 0px 3px
 .backstagePanelFooter {padding-top:0.2em; float:right;}
 .backstagePanelFooter a {padding:0.2em 0.4em 0.2em 0.4em;}
 #backstageCloak {display:none; z-index:50; position:absolute; width:100%; height:100px;}
-.backstageDecal {display:none; font-size:9pt; margin:0.4em 0.4em 0.4em 0.4em;}
-.backstageDecal a {display:inline !important; padding:0.2em 0.4em 0.2em 0.4em !important;}
 
 .whenBackstage {display:none;}
 .backstageVisible .whenBackstage {display:block;}
