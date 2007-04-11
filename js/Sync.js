@@ -234,3 +234,108 @@ config.macros.sync.cancelSync = function()
 	currSync = null;
 };
 
+function SyncMachine(serverType,steps)
+{
+	this.serverType = serverType;
+	this.adaptor = new config.adaptors[serverType];
+	this.steps = steps;
+}
+
+SyncMachine.prototype.go = function(start)
+{
+	if(!start) start = "start";
+	return this.invokeStep(start);
+};
+
+SyncMachine.prototype.invokeStep = function(step,varargs)
+{
+	var h = this.steps[step];
+	if(!h)
+		return null;
+	var a = [];
+	for(var t=1; t<arguments.length; t++)
+		a.push(arguments[t]);
+	var r = h.apply(this,a);
+	if(typeof r == "string")
+		this.invokeError(r);
+	return r;
+};
+
+SyncMachine.prototype.invokeError = function(message)
+{
+	if(this.steps.error)
+		this.steps.error(message);
+};
+
+SyncMachine.prototype.openHost = function(host,nextStep)
+{
+	var me = this;
+	return me.adaptor.openHost(host,null,null,function(context) {
+		if(typeof context.status == "string")
+			me.invokeError(context.status);
+		else
+			me.invokeStep(nextStep);
+	});
+};
+
+SyncMachine.prototype.getWorkspaceList = function(nextStep)
+{
+	var me = this;
+	return me.adaptor.getWorkspaceList(null,null,function(context) {
+		if(typeof context.status == "string")
+			me.invokeError(context.status);
+		else
+			me.invokeStep(nextStep,context.workspaces);
+	});
+};
+
+SyncMachine.prototype.openWorkspace = function(workspace,nextStep)
+{
+	var me = this;
+	return me.adaptor.openWorkspace(workspace,null,null,function(context) {
+		if(typeof context.status == "string")
+			me.invokeError(context.status);
+		else
+			me.invokeStep(nextStep);
+	});
+};
+
+SyncMachine.prototype.getTiddlerList = function(nextStep)
+{
+	var me = this;
+	return me.adaptor.getTiddlerList(null,null,function(context) {
+		if(typeof context.status == "string")
+			me.invokeError(context.status);
+		else
+			me.invokeStep(nextStep,context.tiddlers);
+	});
+};
+
+SyncMachine.prototype.generateTiddlerInfo = function(tiddler)
+{
+	return this.adaptor.generateTiddlerInfo(tiddler);
+};
+
+SyncMachine.prototype.getTiddler = function(title,nextStep)
+{
+	var me = this;
+	return me.adaptor.getTiddler(title,null,null,function(context) {
+		if(typeof context.status == "string")
+			me.invokeError(context.status);
+		else
+			me.invokeStep(nextStep,context.tiddler);
+	});
+};
+
+SyncMachine.prototype.putTiddler = function(tiddler,nextStep)
+{
+	var me = this;
+	return me.adaptor.putTiddler(tiddler,null,null,function(context) {
+		if(typeof context.status == "string")
+			me.invokeError(context.status);
+		else
+			me.invokeStep(nextStep,context.tiddler);
+	});
+};
+
+
