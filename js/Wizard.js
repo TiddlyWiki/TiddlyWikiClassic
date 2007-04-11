@@ -53,6 +53,7 @@ Wizard.prototype.setButtons = function(buttonInfo,status)
 
 Wizard.prototype.addStep = function(stepTitle,html)
 {
+	removeChildren(this.bodyElem);
 	var w = createTiddlyElement(this.bodyElem,"div");
 	createTiddlyElement(w,"h2",null,null,stepTitle);
 	var step = createTiddlyElement(w,"div",null,"wizardStep");
