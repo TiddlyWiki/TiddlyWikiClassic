@@ -274,8 +274,8 @@ config.macros.importTiddlers.doImport = function(e)
 	}
 	wizard.setValue("remainingImports",rowNames.length);
 	wizard.setButtons([
-			{caption: config.macros.importTiddlers.doneLabel, tooltip: config.macros.importTiddlers.donePrompt, onClick: config.macros.importTiddlers.onCancel}
-		]);
+			{caption: config.macros.importTiddlers.cancelLabel, tooltip: config.macros.importTiddlers.cancelPrompt, onClick: config.macros.importTiddlers.onCancel}
+		],config.macros.importTiddlers.statusDoingImport);
 	for(t=0; t<rowNames.length; t++) {
 		var context = {};
 		var inbound = adaptor.getTiddler(rowNames[t],context,wizard,config.macros.importTiddlers.onGetTiddler);
@@ -296,7 +296,9 @@ config.macros.importTiddlers.onGetTiddler = function(context,wizard)
 	var remainingImports = wizard.getValue("remainingImports")-1;
 	wizard.setValue("remainingImports",remainingImports);
 	if(remainingImports == 0) {
-		wizard.addStep(config.macros.importTiddlers.step5Title,config.macros.importTiddlers.step5Html);
+		wizard.setButtons([
+				{caption: config.macros.importTiddlers.doneLabel, tooltip: config.macros.importTiddlers.donePrompt, onClick: config.macros.importTiddlers.onCancel}
+			],config.macros.importTiddlers.statusDoneImport);
 		autoSaveChanges();
 	}
 };

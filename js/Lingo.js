@@ -271,10 +271,10 @@ merge(config.macros.importTiddlers,{
 	confirmOverwriteText: "Are you sure you want to overwrite these tiddlers:\n\n%0",
 	step4Title: "Step 4: Importing %0 tiddler(s)",
 	step4Html: "<input type='hidden' name='markReport'></input>", // DO NOT TRANSLATE
-	step5Title: "Step 5: Completed",
-	step5Html: "All tiddlers were imported",
 	doneLabel: "done",
 	donePrompt: "Close this wizard",
+	statusDoingImport: "Importing tiddlers",
+	statusDoneImport: "All tiddlers imported",
 	systemServerNamePattern: "%2 on %1",
 	systemServerNamePatternNoWorkspace: "%1",
 	confirmOverwriteSaveTiddler: "The tiddler '%0' already exists. Click 'OK' to overwrite it with the details of this server, or 'Cancel' to leave it unchanged",
