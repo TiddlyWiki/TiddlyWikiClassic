@@ -115,9 +115,10 @@ Story.prototype.createTiddler = function(place,before,title,template,customField
 	if(customFields)
 		tiddlerElem.setAttribute("tiddlyFields",customFields);
 	place.insertBefore(tiddlerElem,before);
-	this.refreshTiddler(title,template,false,customFields);
+	var defaultText = null;
 	if(!store.tiddlerExists(title) && !store.isShadowTiddler(title))
-		this.loadMissingTiddler(title,customFields,tiddlerElem);
+		defaultText = this.loadMissingTiddler(title,customFields,tiddlerElem);
+	this.refreshTiddler(title,template,false,customFields,defaultText);
 	return tiddlerElem;
 };
 
@@ -129,33 +130,40 @@ Story.prototype.loadMissingTiddler = function(title,fields,tiddlerElem)
 {
 	var tiddler = new Tiddler(title);
 	tiddler.fields = typeof fields == "string" ?  fields.decodeHashMap() : fields;
-	var ret = false;
-	var adaptor = tiddler.getAdaptor();
-	if(adaptor) {
-		adaptor.openHost(tiddler.fields['server.host']);
-		adaptor.openWorkspace(tiddler.fields['server.workspace']);
-		ret = adaptor.getTiddler(tiddler.title,null,null,Story.loadTiddlerCallback);
-		adaptor.close();
-		delete adaptor;
-	}
-	return ret;
+	var serverType = tiddler.getServerType();
+	var host = tiddler.fields['server.host'];
+	var workspace = tiddler.fields['server.workspace'];
+	if(!serverType | !host)
+		return null;
+	var sm = new SyncMachine(serverType,{
+			start: function() {
+				return this.openHost(host,"openWorkspace");
+			},
+			openWorkspace: function() {
+				return this.openWorkspace(workspace,"getTiddler");
+			},
+			getTiddler: function() {
+				return this.getTiddler(title,"gotTiddler");
+			},
+			gotTiddler: function(tiddler) {
+				removeClass(tiddlerElem,"missing");
+				var downloaded = new Date();
+				if(!tiddler.created)
+					tiddler.created = downloaded;
+				if(!tiddler.modified)
+					tiddler.modified = tiddler.created;
+				store.saveTiddler(tiddler.title,tiddler.title,tiddler.text,tiddler.modifier,tiddler.modified,tiddler.tags,tiddler.fields);
+				saveChanges(true);
+				delete this;
+				return true;
+			},
+			error: function(message) {
+				displayMessage("Error loading missing tiddler from %0: %1".format([host,message]));
+			}
+		});
+	sm.go();
+	return "Attempting to retrieve the tiddler '%0' from the '%1' server at:\n\n'%2' in the workspace '%3'".format([title,serverType,host,workspace]);
 }
-
-Story.loadTiddlerCallback = function(context,userParams)
-{
-	if(!context.status)
-		return;
-	var tiddler = context.tiddler;
-	var downloaded = new Date();
-	if(!tiddler.created)
-		tiddler.created = downloaded;
-	if(!tiddler.modified)
-		tiddler.modified = tiddler.created;
-	tiddler.fields['downloaded'] = downloaded.convertToYYYYMMDDHHMM();
-	tiddler.fields['changecount'] = -1;
-	store.saveTiddler(tiddler.title,tiddler.title,tiddler.text,tiddler.modifier,tiddler.modified,tiddler.tags,tiddler.fields);
-	saveChanges(true);
-};
 
 //# Overridable for choosing the name of the template to apply for a tiddler
 Story.prototype.chooseTemplateForTiddler = function(title,template)
@@ -178,7 +186,8 @@ Story.prototype.getTemplateForTiddler = function(title,template,tiddler)
 //# template - the name of the tiddler containing the template or one of the constants DEFAULT_VIEW_TEMPLATE and DEFAULT_EDIT_TEMPLATE
 //# force - if true, forces the refresh even if the template hasn't changedd
 //# customFields - an optional list of name/value pairs to be assigned as tiddler fields (for edit templates)
-Story.prototype.refreshTiddler = function(title,template,force,customFields)
+//# defaultText - an optional string to replace the default text for non-existent tiddlers
+Story.prototype.refreshTiddler = function(title,template,force,customFields,defaultText)
 {
 	var tiddlerElem = document.getElementById(this.idPrefix + title);
 	if(tiddlerElem) {
@@ -196,6 +205,7 @@ Story.prototype.refreshTiddler = function(title,template,force,customFields)
 					var text = template=="EditTemplate" ?
 								config.views.editor.defaultText.format([title]) :
 								config.views.wikified.defaultText.format([title]);
+					text = defaultText ? defaultText : text;
 					var fields = customFields ? customFields.decodeHashMap() : null;
 					tiddler.set(title,text,config.views.wikified.defaultModifier,version.date,[],version.date,fields);
 				}
