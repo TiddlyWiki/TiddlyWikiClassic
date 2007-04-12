@@ -133,13 +133,10 @@ config.macros.sync.createSyncTask = function(syncItem)
 			}
 		},
 		getTiddler: function(title) {
-			console.log("Trying to get " + title);
 			return this.getTiddler(title,"onGetTiddler");
 		},
 		onGetTiddler: function(tiddler) {
-			console.log("Back from getting " + tiddler.title);
 			var syncItem = st.syncItems.findByField("title",tiddler.title);
-			console.log("syncItem is " + syncItem);
 			if(syncItem !== null) {
 				syncItem = st.syncItems[syncItem];
 				store.saveTiddler(tiddler.title, tiddler.title, tiddler.text, tiddler.modifier, tiddler.modified, tiddler.tags, tiddler.fields, true);
@@ -148,7 +145,6 @@ config.macros.sync.createSyncTask = function(syncItem)
 			}
 		},
 		putTiddler: function(tiddler) {
-			console.log("Trying to put " + tiddler.title);
 			return this.putTiddler(tiddler,"onPutTiddler");
 		},
 		onPutTiddler: function(tiddler) {
