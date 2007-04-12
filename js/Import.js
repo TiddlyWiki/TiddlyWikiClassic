@@ -288,11 +288,10 @@ config.macros.importTiddlers.onGetTiddler = function(context,wizard)
 	if(!context.status)
 		displayMessage("Error in importTiddlers.onGetTiddler: " + context.statusText);
 	var tiddler = context.tiddler;
-	store.saveTiddler(tiddler.title, tiddler.title, tiddler.text, tiddler.modifier, tiddler.modified, tiddler.tags, tiddler.fields);
+	store.saveTiddler(tiddler.title, tiddler.title, tiddler.text, tiddler.modifier, tiddler.modified, tiddler.tags, tiddler.fields, true);
 	if(!wizard.getValue("sync")) {
 		store.setValue(tiddler.title,'server',null);
 	}
-	store.setValue(tiddler.title,'changecount',null);
 	var remainingImports = wizard.getValue("remainingImports")-1;
 	wizard.setValue("remainingImports",remainingImports);
 	if(remainingImports == 0) {

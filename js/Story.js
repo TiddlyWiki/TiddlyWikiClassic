@@ -152,7 +152,7 @@ Story.prototype.loadMissingTiddler = function(title,fields,tiddlerElem)
 						tiddler.created = downloaded;
 					if(!tiddler.modified)
 						tiddler.modified = tiddler.created;
-					store.saveTiddler(tiddler.title,tiddler.title,tiddler.text,tiddler.modifier,tiddler.modified,tiddler.tags,tiddler.fields);
+					store.saveTiddler(tiddler.title,tiddler.title,tiddler.text,tiddler.modifier,tiddler.modified,tiddler.tags,tiddler.fields,true);
 					autoSaveChanges();
 				}
 				delete this;
