@@ -146,14 +146,15 @@ Story.prototype.loadMissingTiddler = function(title,fields,tiddlerElem)
 				return this.getTiddler(title,"gotTiddler");
 			},
 			gotTiddler: function(tiddler) {
-				removeClass(tiddlerElem,"missing");
-				var downloaded = new Date();
-				if(!tiddler.created)
-					tiddler.created = downloaded;
-				if(!tiddler.modified)
-					tiddler.modified = tiddler.created;
-				store.saveTiddler(tiddler.title,tiddler.title,tiddler.text,tiddler.modifier,tiddler.modified,tiddler.tags,tiddler.fields);
-				saveChanges(true);
+				if(tiddler && tiddler.text) {
+					var downloaded = new Date();
+					if(!tiddler.created)
+						tiddler.created = downloaded;
+					if(!tiddler.modified)
+						tiddler.modified = tiddler.created;
+					store.saveTiddler(tiddler.title,tiddler.title,tiddler.text,tiddler.modifier,tiddler.modified,tiddler.tags,tiddler.fields);
+					autoSaveChanges();
+				}
 				delete this;
 				return true;
 			},
@@ -162,7 +163,7 @@ Story.prototype.loadMissingTiddler = function(title,fields,tiddlerElem)
 			}
 		});
 	sm.go();
-	return "Attempting to retrieve the tiddler '%0' from the '%1' server at:\n\n'%2' in the workspace '%3'".format([title,serverType,host,workspace]);
+	return config.messages.loadingMissingTiddler.format([title,serverType,host,workspace]);
 }
 
 //# Overridable for choosing the name of the template to apply for a tiddler

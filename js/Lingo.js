@@ -72,7 +72,8 @@ merge(config.messages,{
 	tiddlerLoadError: "Error when loading tiddler '%0'",
 	wrongSaveFormat: "Cannot save with storage format '%0'. Using standard format for save.",
 	invalidFieldName: "Invalid field name %0",
-	fieldCannotBeChanged: "Field '%0' cannot be changed"});
+	fieldCannotBeChanged: "Field '%0' cannot be changed",
+	loadingMissingTiddler: "Attempting to retrieve the tiddler '%0' from the '%1' server at:\n\n'%2' in the workspace '%3'"});
 
 merge(config.messages.messageClose,{
 	text: "close",

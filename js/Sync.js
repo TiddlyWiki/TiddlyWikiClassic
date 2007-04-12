@@ -17,19 +17,17 @@ var currSync = null;
 config.macros.sync.handler = function(place,macroName,params,wikifier,paramString,tiddler)
 {
 	if(!wikifier.isStatic)
-		config.macros.sync.startSync(place);
+		this.startSync(place);
 };
 
 config.macros.sync.startSync = function(place)
 {
-	// Cancel any outstanding sync
 	if(currSync)
 		config.macros.sync.cancelSync();
 	currSync = {};
-	// Get a list of all the syncable tiddlers
-	currSync.syncList = config.macros.sync.getSyncableTiddlers();
-	config.macros.sync.createSyncMachines();
-	config.macros.sync.preProcessSyncableTiddlers();
+	currSync.syncList = this.getSyncableTiddlers();
+	this.createSyncMachines();
+	this.preProcessSyncableTiddlers();
 	var wizard = new Wizard();
 	currSync.wizard = wizard;
 	wizard.createWizard(place,this.wizardTitle);
@@ -40,7 +38,7 @@ config.macros.sync.startSync = function(place)
 	currSync.listView = ListView.create(listWrapper,currSync.syncList,this.listViewTemplate);
 	config.macros.sync.processSyncableTiddlers();
 	wizard.setButtons([
-			{caption: config.macros.sync.syncLabel, tooltip: config.macros.sync.syncPrompt, onClick: config.macros.sync.doSync}
+			{caption: this.syncLabel, tooltip: this.syncPrompt, onClick: this.doSync}
 		]);
 };
 
@@ -105,7 +103,6 @@ config.macros.sync.createSyncMachines = function()
 
 config.macros.sync.createSyncMachine = function(syncItem)
 {
-//#	displayMessage("Creating adaptor for " + syncItem.serverType + " - " + syncItem.serverHost + " - " + syncItem.serverWorkspace);
 	var sm = {};
 	sm.serverType = syncItem.serverType;
 	sm.serverHost = syncItem.serverHost;
@@ -121,7 +118,6 @@ config.macros.sync.createSyncMachine = function(syncItem)
 
 config.macros.sync.syncOnOpenHost = function(context,syncMachine)
 {
-//#	displayMessage("syncOnOpenHost for " + syncMachine.serverType + " - " + syncMachine.serverHost + " - " + syncMachine.serverWorkspace);
 	if(!context.status)
 		displayMessage("Error in sync.syncOnOpenHost: " + context.statusText);
 	var r = syncMachine.adaptor.openWorkspace(syncMachine.serverWorkspace,context,syncMachine,config.macros.sync.syncOnOpenWorkspace);
@@ -131,7 +127,6 @@ config.macros.sync.syncOnOpenHost = function(context,syncMachine)
 
 config.macros.sync.syncOnOpenWorkspace = function(context,syncMachine)
 {
-//#	displayMessage("syncOnOpenWorkspace for " + syncMachine.serverType + " - " + syncMachine.serverHost + " - " + syncMachine.serverWorkspace);
 	if(!context.status)
 		displayMessage("Error in sync.syncOnOpenWorkspace: " + context.statusText);
 	var r = syncMachine.adaptor.getTiddlerList(context,syncMachine,config.macros.sync.syncOnGetTiddlerList);
@@ -141,7 +136,6 @@ config.macros.sync.syncOnOpenWorkspace = function(context,syncMachine)
 
 config.macros.sync.syncOnGetTiddlerList = function(context,syncMachine)
 {
-//#	displayMessage("syncOnGetTiddlerList for " + syncMachine.serverType + " - " + syncMachine.serverHost + " - " + syncMachine.serverWorkspace);
 	if(!context.status)
 		displayMessage("Error in sync.syncOnGetTiddlerList: " + context.statusText + " " + syncMachine.serverHost);
 	for(var t=0; t<syncMachine.syncItems.length; t++) {
