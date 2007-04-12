@@ -145,9 +145,11 @@ FileAdaptor.prototype.getTiddler = function(title,context,userParams,callback)
 	if(!context)
 		context = {};
 	context.tiddler = this.store.fetchTiddler(title);
-	context.tiddler.fields['server.type'] = FileAdaptor.serverType;
-	context.tiddler.fields['server.host'] = this.host;
-	context.tiddler.fields['server.page.revision'] = context.tiddler.modified.convertToYYYYMMDDHHMM();
+	if(context.tiddler) {
+		context.tiddler.fields['server.type'] = FileAdaptor.serverType;
+		context.tiddler.fields['server.host'] = this.host;
+		context.tiddler.fields['server.page.revision'] = context.tiddler.modified.convertToYYYYMMDDHHMM();
+	}
 	context.status = true;
 	window.setTimeout(function() {callback(context,userParams);},10);
 	return true;
