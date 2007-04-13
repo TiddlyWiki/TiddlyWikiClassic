@@ -326,19 +326,6 @@ merge(config.macros.sync,{
 		}
 	});
 
-merge(config.macros.viewDetails,{
-	emptyDetailsText: "There are no extended fields for this tiddler",
-	listViewTemplate: {
-		columns: [
-			{name: 'Field', field: 'field', title: "Field", type: 'String'},
-			{name: 'Value', field: 'value', title: "Value", type: 'String'}
-			],
-		rowClasses: [
-			],
-		buttons: [
-			]}
-	});
-
 merge(config.macros.annotations,{
 	});
 
@@ -394,6 +381,20 @@ merge(config.commands.syncing,{
 	chooseServer: "Synchronise this tiddler with another server:",
 	currServerMarker: "● ",
 	notCurrServerMarker: "  "});
+
+merge(config.commands.fields,{
+	text: "fields",
+	tooltip: "Show the extended fields of this tiddler",
+	emptyText: "There are no extended fields for this tiddler",
+	listViewTemplate: {
+		columns: [
+			{name: 'Field', field: 'field', title: "Field", type: 'String'},
+			{name: 'Value', field: 'value', title: "Value", type: 'String'}
+			],
+		rowClasses: [
+			],
+		buttons: [
+			]}});
 
 merge(config.shadowTiddlers,{
 	DefaultTiddlers: "GettingStarted",

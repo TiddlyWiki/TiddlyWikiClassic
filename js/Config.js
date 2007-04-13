@@ -128,7 +128,6 @@ config.macros = {
 	refreshDisplay: {},
 	importTiddlers: {},
 	sync: {},
-	viewDetails: {},
 	annotations: {}
 };
 
@@ -143,7 +142,8 @@ config.commands = {
 	permalink: {},
 	references: {type: "popup"},
 	jump: {type: "popup"},
-	syncing: {type: "popup"}
+	syncing: {type: "popup"},
+	fields: {type: "popup"}
 };
 
 // Browser detection... In a very few places, there's nothing else for it but to know what browser we're using.

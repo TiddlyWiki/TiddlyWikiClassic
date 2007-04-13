@@ -899,25 +899,6 @@ config.macros.refreshDisplay.onClick = function(e)
 	return false;
 };
 
-config.macros.viewDetails.handler = function(place,macroName,params,wikifier,paramString,tiddler)
-{
-	if(!tiddler)
-		return;
-	params = paramString.parseParams("anon",null,true,false,false);
-	var fields = {};
-	store.forEachField(tiddler,function(tiddler,fieldName,value) {fields[fieldName] = value;},true);
-	var items = [];
-	for(var t in fields) {
-		items.push({field: t,value: fields[t]});
-	}
-	items.sort(function(a,b) {return a.field < b.field ? -1 : (a.field == b.field ? 0 : +1);});
-	var panel = createTiddlyElement(place,"div",null,"viewDetails " + getParam(params,"class",""));
-	if(items.length > 0)
-		ListView.create(panel,items,config.macros.viewDetails.listViewTemplate);
-	else
-		createTiddlyElement(panel,"div",null,"detailsMessage",this.emptyDetailsText);
-};
-
 config.macros.annotations.handler = function(place,macroName,params,wikifier,paramString,tiddler)
 {
 	var title = tiddler ? tiddler.title : null;

@@ -151,3 +151,20 @@ config.commands.syncing.onChooseServer = function(e)
 	return false;
 };
 
+config.commands.fields.handlePopup = function(popup,title)
+{
+	var tiddler = store.fetchTiddler(title);
+	if(!tiddler)
+		return;
+	var fields = {};
+	store.forEachField(tiddler,function(tiddler,fieldName,value) {fields[fieldName] = value;},true);
+	var items = [];
+	for(var t in fields) {
+		items.push({field: t,value: fields[t]});
+	}
+	items.sort(function(a,b) {return a.field < b.field ? -1 : (a.field == b.field ? 0 : +1);});
+	if(items.length > 0)
+		ListView.create(popup,items,this.listViewTemplate);
+	else
+		createTiddlyElement(popup,"div",null,null,this.emptyText);
+};
