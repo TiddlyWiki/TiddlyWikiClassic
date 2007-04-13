@@ -1,15 +1,3 @@
 <div title="AdvancedOptions">
-<pre>&lt;&lt;option chkGenerateAnRssFeed&gt;&gt; GenerateAnRssFeed
-&lt;&lt;option chkOpenInNewWindow&gt;&gt; OpenLinksInNewWindow
-&lt;&lt;option chkSaveEmptyTemplate&gt;&gt; SaveEmptyTemplate
-&lt;&lt;option chkToggleLinks&gt;&gt; Clicking on links to tiddlers that are already open causes them to close
-^^(override with Control or other modifier key)^^
-&lt;&lt;option chkHttpReadOnly&gt;&gt; HideEditingFeatures when viewed over HTTP
-&lt;&lt;option chkForceMinorUpdate&gt;&gt; Treat edits as MinorChanges by preserving date and time
-^^(override with Shift key when clicking 'done' or by pressing Ctrl-Shift-Enter^^
-&lt;&lt;option chkConfirmDelete&gt;&gt; ConfirmBeforeDeleting
-Maximum number of lines in a tiddler edit box: &lt;&lt;option txtMaxEditRows&gt;&gt;
-Folder name for backup files: &lt;&lt;option txtBackupFolder&gt;&gt;
-&lt;&lt;option chkInsertTabs&gt;&gt; Use tab key to insert tab characters instead of jumping to next field
-&lt;&lt;option txtFileSystemCharSet&gt;&gt; Character set to use for saving (Firefox/Mozilla only)</pre>
+<pre>&lt;&lt;options&gt;&gt;</pre>
 </div>

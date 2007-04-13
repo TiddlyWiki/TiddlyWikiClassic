@@ -33,7 +33,7 @@ merge(config.optionsDesc,{
 	chkInsertTabs: "Use the tab key to insert tab characters instead of moving between fields",
 	txtBackupFolder: "Name of folder to use for backups",
 	txtMaxEditRows: "Maximum number of rows in edit boxes",
-	txtFileSystemCharSet: "Default character set for saving changes"});
+	txtFileSystemCharSet: "Default character set for saving changes (Firefox/Mozilla only)"});
 
 merge(config.messages,{
 	customConfigError: "Problems were encountered loading plugins. See PluginManager for details",
@@ -197,8 +197,8 @@ merge(config.macros.newJournal,{
 merge(config.macros.options,{
 	wizardTitle: "Tweak advanced options",
 	step1Title: "These options are saved in cookies in your browser",
-	step1Html: "<input type='hidden' name='markList'></input><br><input type='checkbox' checked='false' name='chkHidden'>Show hidden options</input>",
-	unknownDescription: "//(hidden)//",
+	step1Html: "<input type='hidden' name='markList'></input><br><input type='checkbox' checked='false' name='chkUnknown'>Show unknown options</input>",
+	unknownDescription: "//(unknown)//",
 	listViewTemplate: {
 		columns: [
 			{name: 'Option', field: 'option', title: "Option", type: 'String'},
