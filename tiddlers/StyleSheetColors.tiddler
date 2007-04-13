@@ -81,11 +81,6 @@ h2,h3 {border-bottom:1px solid [[ColorPalette::TertiaryLight]];}
 .selected .toolbar a {color:[[ColorPalette::TertiaryMid]];}
 .selected .toolbar a:hover {color:[[ColorPalette::Foreground]];}
 
-.viewDetails {border-left:2px solid [[ColorPalette::TertiaryPale]];}
-.viewDetails table {border:none;}
-.viewDetails th, .viewDetails thead td {background:[[ColorPalette::TertiaryLight]]; color:[[ColorPalette::Background]]; border:1px solid [[ColorPalette::Background]];}
-.viewDetails td, .viewDetails tr {background-color:[[ColorPalette::TertiaryPale]]; border:1px solid [[ColorPalette::Background]];}
-
 .tagging, .tagged {border:1px solid [[ColorPalette::TertiaryPale]]; background-color:[[ColorPalette::TertiaryPale]];}
 .selected .tagging, .selected .tagged {background-color:[[ColorPalette::TertiaryLight]]; border:1px solid [[ColorPalette::TertiaryMid]];}
 .tagging .listTitle, .tagged .listTitle {color:[[ColorPalette::PrimaryDark]];}
