@@ -28,7 +28,7 @@ TW21Saver.prototype.externalizeTiddler = function(store,tiddler)
 		var tags = tiddler.getTags();
 		if(!usePre || tags)
 			attributes += ' tags="' + tags.htmlEncode() + '"';
-		return '<div %0="%1"%2%3>%4</div>'.format([
+		return ('<div %0="%1"%2%3>%4</'+'div>').format([
 				usePre ? "title" : "tiddler",
 				tiddler.title.htmlEncode(),
 				attributes,
