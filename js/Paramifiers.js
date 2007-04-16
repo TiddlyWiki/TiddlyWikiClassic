@@ -24,33 +24,6 @@ function invokeParamifier(params,handler)
 	}
 }
 
-function AsyncParamifier(p,h)
-{
-	this.params = p;
-	this.handler = h;
-	this.index = 1; // p[0] is not used
-	if(!p || p.length == undefined || p.length <= 1)
-		this.params.length = 0;
-	return this;
-}
-
-AsyncParamifier.prototype.tick = function()
-{
-	if(this.index<this.params.length) {
-		var p = config.paramifiers[this.params[this.index].name];
-		if(p && p[this.handler] instanceof Function)
-			p[this.handler](this.params[this.index].value,this.index);
-		this.index++;
-		return true;
-	}
-	return false;
-};
-
-function invokeParamifierAsync(params,handler)
-{
-	anim.startAnimating(new AsyncParamifier(params,handler));
-}
-
 config.paramifiers = {};
 
 config.paramifiers.start = {
@@ -60,8 +33,8 @@ config.paramifiers.start = {
 };
 
 config.paramifiers.open = {
-	onstart: function(v,i) {
-		story.displayTiddler(i == 1 ? null : "bottom",v,null,false,null);
+	onstart: function(v) {
+		story.displayTiddler("bottom",v,null,false,null);
 	}
 };
 
