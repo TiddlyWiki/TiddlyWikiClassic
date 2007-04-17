@@ -24,6 +24,24 @@ function checkUnsavedChanges()
 	}
 }
 
+function updateLanguageAttribute(s)
+{
+	if(config.locale) {
+		var mRE = /(<html(?:.*?)?)(?: xml:lang\="([a-z]+)")?(?: lang\="([a-z]+)")?>/;
+		var m = mRE.exec(s);
+		if(m) {
+			var t = m[1];
+			if(m[2])
+				t += ' xml:lang="' + config.locale + '"';
+			if(m[3])
+				t += ' lang="' + config.locale + '"';
+			t += ">";
+			s = s.substr(0,m.index) + t + s.substr(m.index+m[0].length);
+		}
+	}
+	return s;
+}
+
 function updateMarkupBlock(s,blockName,tiddlerName)
 {
 	return s.replaceChunk(
@@ -45,6 +63,7 @@ function updateOriginal(original,posDiv)
 				original.substr(posDiv[1]);
 	var newSiteTitle = convertUnicodeToUTF8((wikifyPlain("SiteTitle") + " - " + wikifyPlain("SiteSubtitle")).htmlEncode());
 	revised = revised.replaceChunk("<title"+">","</title"+">"," " + newSiteTitle + " ");
+	revised = updateLanguageAttribute(revised);
 	revised = updateMarkupBlock(revised,"PRE-HEAD","MarkupPreHead");
 	revised = updateMarkupBlock(revised,"POST-HEAD","MarkupPostHead");
 	revised = updateMarkupBlock(revised,"PRE-BODY","MarkupPreBody");
