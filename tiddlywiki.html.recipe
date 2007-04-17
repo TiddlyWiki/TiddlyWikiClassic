@@ -2,23 +2,17 @@ html/header.html
 @prehead@
 html/pretitle.html
 @title@
-html/prescript.html
-@prejs@
-@js@
-recipe: js/split.recipe
-@postjs@
-html/postscript.html
 html/style.html
 html/postheadstart.html
 @posthead@
 html/postheader.html
-html/bodystart.html
-@prebody@
-html/body.html
 html/preshadow.html
 recipe: tiddlers/split.recipe
 @shadow@
 html/postshadow.html
+html/bodystart.html
+@prebody@
+html/body.html
 html/prestorearea.html
 @tiddler@
 @posttiddlers@
@@ -26,5 +20,11 @@ html/poststorearea.html
 html/prepostbody.html
 @postbody@
 html/postpostbody.html
+html/prescript.html
+@prejs@
+@js@
+recipe: js/split.recipe
+@postjs@
+html/postscript.html
 html/footer.html
 copy: java/TiddlySaver.jar
