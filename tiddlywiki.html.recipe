@@ -27,4 +27,5 @@ recipe: js/split.recipe
 @postjs@
 html/postscript.html
 html/footer.html
+html/javasaver.html
 copy: java/TiddlySaver.jar
