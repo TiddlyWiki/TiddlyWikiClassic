@@ -10,7 +10,7 @@ TW21Saver.prototype.externalizeTiddler = function(store,tiddler)
 {
 	try {
 		var extendedAttributes = "";
-		var usePre = config.usePreForStorage;
+		var usePre = config.options.chkUsePreForStorage;
 		store.forEachField(tiddler,
 			function(tiddler,fieldName,value) {
 				// don't store stuff from the temp namespace
