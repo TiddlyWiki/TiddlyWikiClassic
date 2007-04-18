@@ -411,6 +411,7 @@ merge(config.shadowTiddlers,{
 	TabMoreMissing: '<<list missing>>',
 	TabMoreOrphans: '<<list orphans>>',
 	TabMoreShadowed: '<<list shadowed>>',
+	AdvancedOptions: '<<options>>',
 	PluginManager: '<<plugins>>',
 	ImportTiddlers: '<<importTiddlers>>'});
 
