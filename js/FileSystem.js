@@ -108,11 +108,11 @@ function convertUriToUTF8(uri,charSet)
 function saveFile(fileUrl,content)
 {
 	var r = null;
-	if((r == null) || (r == false))
+	if(!r)
 		r = mozillaSaveFile(fileUrl,content);
-	if((r == null) || (r == false))
+	if(!r)
 		r = ieSaveFile(fileUrl,content);
-	if((r == null) || (r == false))
+	if(!r)
 		r = javaSaveFile(fileUrl,content);
 	return r;
 }
