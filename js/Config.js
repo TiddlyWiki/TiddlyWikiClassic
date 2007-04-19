@@ -8,8 +8,7 @@ var config = {
 	animDuration: 400, // Duration of UI animations in milliseconds
 	cascadeFast: 20, // Speed for cascade animations (higher == slower)
 	cascadeSlow: 60, // Speed for EasterEgg cascade animations
-	cascadeDepth: 5, // Depth of cascade animation
-	displayStartupTime: false // Whether to display startup time
+	cascadeDepth: 5 // Depth of cascade animation
 };
 
 // Adaptors
@@ -47,6 +46,7 @@ config.options = {
 	chkConfirmDelete: true,
 	chkInsertTabs: false,
 	chkUsePreForStorage: true, // Whether to use <pre> format for storage
+	chkDisplayStartupTime: false,
 	txtBackupFolder: "",
 	txtMainTab: "tabTimeline",
 	txtMoreTab: "moreTabAll",

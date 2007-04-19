@@ -64,7 +64,7 @@ function main()
 			config.macros[m].init();
 	}
 	t9 = new Date();
-	if(config.displayStartupTime) {
+	if(config.options.chkDisplayStartupTime) {
 		displayMessage("Load in " + (t2-t1) + " ms");
 		displayMessage("Loadshadows in " + (t3-t2) + " ms");
 		displayMessage("Loadplugins in " + (t5-t4) + " ms");
