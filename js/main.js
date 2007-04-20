@@ -140,17 +140,21 @@ function loadPlugins()
 		pluginInfo = p;
 		tiddler = p.tiddler;
 		if(isPluginExecutable(p)) {
-			p.executed = true;
-			var startTime = new Date();
-			try {
-				if(tiddler.text)
-					window.eval(tiddler.text);
-				nLoaded++;
-			} catch(ex) {
-				p.log.push(config.messages.pluginError.format([exceptionText(ex)]));
-				p.error = true;
+			if(isPluginEnabled(p)) {
+				p.executed = true;
+				var startTime = new Date();
+				try {
+					if(tiddler.text)
+						window.eval(tiddler.text);
+					nLoaded++;
+				} catch(ex) {
+					p.log.push(config.messages.pluginError.format([exceptionText(ex)]));
+					p.error = true;
+				}
+				pluginInfo.startupTime = String((new Date()) - startTime) + "ms"; 
+			} else {
+				nPlugins--;
 			}
-			pluginInfo.startupTime = String((new Date()) - startTime) + "ms"; 
 		} else {
 			p.warning = true;
 		}
@@ -170,8 +174,6 @@ function getPluginInfo(tiddler)
 // Check that a particular plugin is valid for execution
 function isPluginExecutable(plugin)
 {
-	if(plugin.tiddler.isTagged("systemConfigDisable"))
-		return verifyTail(plugin,false,config.messages.pluginDisabled);
 	if(plugin.tiddler.isTagged("systemConfigForce"))
 		return verifyTail(plugin,true,config.messages.pluginForced);
 	if(plugin["CoreVersion"]) {
@@ -184,6 +186,13 @@ function isPluginExecutable(plugin)
 		if(w > 0)
 			return verifyTail(plugin,false,config.messages.pluginVersionError);
 		}
+	return true;
+}
+
+function isPluginEnabled(plugin)
+{
+	if(plugin.tiddler.isTagged("systemConfigDisable"))
+		return verifyTail(plugin,false,config.messages.pluginDisabled);
 	return true;
 }
 
