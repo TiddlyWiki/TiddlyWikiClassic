@@ -139,7 +139,7 @@ config.macros.sync.createSyncTask = function(syncItem)
 			var syncItem = st.syncItems.findByField("title",tiddler.title);
 			if(syncItem !== null) {
 				syncItem = st.syncItems[syncItem];
-				store.saveTiddler(tiddler.title, tiddler.title, tiddler.text, tiddler.modifier, tiddler.modified, tiddler.tags, tiddler.fields, true);
+				store.saveTiddler(tiddler.title, tiddler.title, tiddler.text, tiddler.modifier, tiddler.modified, tiddler.tags, tiddler.fields, true, tiddler.created);
 				syncItem.syncStatus = config.macros.sync.syncStatusList.gotFromServer;
 				config.macros.sync.updateSyncStatus(syncItem);
 			}

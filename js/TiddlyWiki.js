@@ -252,16 +252,15 @@ TiddlyWiki.prototype.addTiddlerFields = function(title,fields)
 	this.setDirty(true);
 };
 
-TiddlyWiki.prototype.saveTiddler = function(title,newTitle,newBody,modifier,modified,tags,fields,clearChangeCount)
+TiddlyWiki.prototype.saveTiddler = function(title,newTitle,newBody,modifier,modified,tags,fields,clearChangeCount,created)
 {
 	var tiddler = this.fetchTiddler(title);
-	var created;
 	if(tiddler) {
-		created = tiddler.created; // Preserve created date
+		created = created ? created : tiddler.created; // Preserve created date
 		this.deleteTiddler(title);
 	} else {
+		created = created ? created : modified;
 		tiddler = new Tiddler();
-		created = modified;
 	}
 	tiddler.set(newTitle,newBody,modifier,modified,tags,created,fields);
 	this.addTiddler(tiddler);
