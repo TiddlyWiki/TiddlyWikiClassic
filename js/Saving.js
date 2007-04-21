@@ -75,7 +75,9 @@ function locateStoreArea(original)
 {
 	// Locate the storeArea div's
 	var posOpeningDiv = original.indexOf(startSaveArea);
-	var limitClosingDiv = original.indexOf("<"+"!--POST-BODY-START--"+">");
+	var limitClosingDiv = original.indexOf("<"+"!--POST-STOREAREA--"+">");
+	if(limitClosingDiv == -1)
+		limitClosingDiv = original.indexOf("<"+"!--POST-BODY-START--"+">");
 	var posClosingDiv = original.lastIndexOf(endSaveArea,limitClosingDiv == -1 ? original.length : limitClosingDiv);
 	return (posOpeningDiv != -1 && posClosingDiv != -1) ? [posOpeningDiv,posClosingDiv] : null;
 }
