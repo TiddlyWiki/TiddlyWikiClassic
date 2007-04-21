@@ -371,7 +371,7 @@ merge(config.commands.references,{
 merge(config.commands.jump,{
 	text: "jump",
 	tooltip: "Jump to another open tiddler"});
-	
+
 merge(config.commands.syncing,{
 	text: "syncing",
 	tooltip: "Control synchronisation of this tiddler with a server or external file",
@@ -379,7 +379,7 @@ merge(config.commands.syncing,{
 	notCurrentlySyncing: "Not currently syncing",
 	captionUnSync: "Stop synchronising this tiddler",
 	chooseServer: "Synchronise this tiddler with another server:",
-	currServerMarker: "● ",
+	currServerMarker: "\u25cf ",
 	notCurrServerMarker: "  "});
 
 merge(config.commands.fields,{
@@ -402,7 +402,7 @@ merge(config.shadowTiddlers,{
 	SiteTitle: "My TiddlyWiki",
 	SiteSubtitle: "a reusable non-linear personal web notebook",
 	SiteUrl: "http://www.tiddlywiki.com/",
-	SideBarOptions: '<<search>><<closeAll>><<permaview>><<newTiddler>><<newJournal "DD MMM YYYY">><<saveChanges>><<slider chkSliderOptionsPanel OptionsPanel "options »" "Change TiddlyWiki advanced options">>',
+	SideBarOptions: '<<search>><<closeAll>><<permaview>><<newTiddler>><<newJournal "DD MMM YYYY">><<saveChanges>><<slider chkSliderOptionsPanel OptionsPanel "options \u00bb" "Change TiddlyWiki advanced options">>',
 	SideBarTabs: '<<tabs txtMainTab "Timeline" "Timeline" TabTimeline "All" "All tiddlers" TabAll "Tags" "All tags" TabTags "More" "More lists" TabMore>>',
 	TabTimeline: '<<timeline>>',
 	TabAll: '<<list all>>',
