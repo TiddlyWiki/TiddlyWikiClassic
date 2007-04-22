@@ -208,6 +208,15 @@ config.shadowTiddlers = {
 	MarkupPreHead: "<!--{{{-->\n<link rel='alternate' type='application/rss+xml' title='RSS' href='index.xml'/>\n<!--}}}-->",
 	MarkupPostHead: "",
 	MarkupPreBody: "",
-	MarkupPostBody: ""
+	MarkupPostBody: "",
+	TabTimeline: '<<timeline>>',
+	TabAll: '<<list all>>',
+	TabTags: '<<allTags excludeLists>>',
+	TabMoreMissing: '<<list missing>>',
+	TabMoreOrphans: '<<list orphans>>',
+	TabMoreShadowed: '<<list shadowed>>',
+	AdvancedOptions: '<<options>>',
+	PluginManager: '<<plugins>>',
+	ImportTiddlers: '<<importTiddlers>>'
 };
 

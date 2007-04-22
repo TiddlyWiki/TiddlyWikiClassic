@@ -404,16 +404,7 @@ merge(config.shadowTiddlers,{
 	SiteUrl: "http://www.tiddlywiki.com/",
 	SideBarOptions: '<<search>><<closeAll>><<permaview>><<newTiddler>><<newJournal "DD MMM YYYY">><<saveChanges>><<slider chkSliderOptionsPanel OptionsPanel "options \u00bb" "Change TiddlyWiki advanced options">>',
 	SideBarTabs: '<<tabs txtMainTab "Timeline" "Timeline" TabTimeline "All" "All tiddlers" TabAll "Tags" "All tags" TabTags "More" "More lists" TabMore>>',
-	TabTimeline: '<<timeline>>',
-	TabAll: '<<list all>>',
-	TabTags: '<<allTags excludeLists>>',
-	TabMore: '<<tabs txtMoreTab "Missing" "Missing tiddlers" TabMoreMissing "Orphans" "Orphaned tiddlers" TabMoreOrphans "Shadowed" "Shadowed tiddlers" TabMoreShadowed>>',
-	TabMoreMissing: '<<list missing>>',
-	TabMoreOrphans: '<<list orphans>>',
-	TabMoreShadowed: '<<list shadowed>>',
-	AdvancedOptions: '<<options>>',
-	PluginManager: '<<plugins>>',
-	ImportTiddlers: '<<importTiddlers>>'});
+	TabMore: '<<tabs txtMoreTab "Missing" "Missing tiddlers" TabMoreMissing "Orphans" "Orphaned tiddlers" TabMoreOrphans "Shadowed" "Shadowed tiddlers" TabMoreShadowed>>'});
 
 merge(config.annotations,{
 	AdvancedOptions: "This shadow tiddler provides access to several advanced options",
