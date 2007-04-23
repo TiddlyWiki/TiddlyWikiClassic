@@ -124,12 +124,12 @@ Story.prototype.createTiddler = function(place,before,title,template,customField
 
 //# Attempts to load a missing tiddler from the server specified in the custom fields
 //#   title - title of the missing tiddler
-//#   fields - string of name:"value" pairs
+//#   fields - string of name:"value" pairs or hashmap
 //#   tiddlerElem - reference to the element that will contain the tiddler
 Story.prototype.loadMissingTiddler = function(title,fields,tiddlerElem)
 {
 	var tiddler = new Tiddler(title);
-	tiddler.fields = typeof fields == "string" ?  fields.decodeHashMap() : fields;
+	tiddler.fields = typeof fields == "string" ?  fields.decodeHashMap() : (fields ? fields : {});
 	var serverType = tiddler.getServerType();
 	var host = tiddler.fields['server.host'];
 	var workspace = tiddler.fields['server.workspace'];
