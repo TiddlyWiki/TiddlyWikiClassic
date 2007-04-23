@@ -72,7 +72,7 @@ function convertUnicodeToUTF8(s)
 function manualConvertUnicodeToUTF8(s)
 {
 	var re = /[^\u0000-\u007F]/g ;
-	return s.replace(re,function($0) {return "&#" + $0.charCodeAt(0).toString() + ";";})
+	return s.replace(re,function($0) {return "&#" + $0.charCodeAt(0).toString() + ";";});
 }
 
 function mozConvertUnicodeToUTF8(s)

@@ -127,7 +127,7 @@ config.commands.syncing.handlePopup = function(popup,title)
 		} else {
 			caption = config.commands.syncing.notCurrServerMarker + caption;
 		}
-		var btn = createTiddlyButton(createTiddlyElement(popup,"li"),caption,null,config.commands.syncing.onChooseServer);
+		btn = createTiddlyButton(createTiddlyElement(popup,"li"),caption,null,config.commands.syncing.onChooseServer);
 		btn.setAttribute("tiddler",title);
 		btn.setAttribute("server.type",feedServerType);
 		btn.setAttribute("server.host",feedServerHost);

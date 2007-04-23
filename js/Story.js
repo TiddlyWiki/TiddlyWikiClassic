@@ -164,7 +164,7 @@ Story.prototype.loadMissingTiddler = function(title,fields,tiddlerElem)
 		});
 	sm.go();
 	return config.messages.loadingMissingTiddler.format([title,serverType,host,workspace]);
-}
+};
 
 //# Overridable for choosing the name of the template to apply for a tiddler
 Story.prototype.chooseTemplateForTiddler = function(title,template)

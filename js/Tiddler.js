@@ -72,7 +72,7 @@ Tiddler.prototype.saveToRss = function(url)
 	s.push("<link>" + url + "#" + encodeURIComponent(String.encodeTiddlyLink(this.title)) + "</link>");
 	s.push("<pubDate>" + this.modified.toGMTString() + "</pubDate>");
 	s.push("</item>");
-	return(s.join("\n"));
+	return s.join("\n");
 };
 
 // Change the text and other attributes of a tiddler
@@ -200,13 +200,14 @@ Tiddler.prototype.getServerType = function()
 	if(serverType && !config.adaptors[serverType])
 		serverType = null;
 	return serverType;
-}
+};
 
 Tiddler.prototype.getAdaptor = function()
 {
 	var serverType = this.getServerType();
 	if(serverType)
-	 	return new config.adaptors[serverType];
+		return new config.adaptors[serverType];
 	else
 		return null;
-}
+};
+

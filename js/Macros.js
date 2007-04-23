@@ -58,7 +58,7 @@ config.macros.list.shadowed.handler = function(params)
 config.macros.list.touched.handler = function(params)
 {
 	return store.getTouched();
-}
+};
 
 config.macros.allTags.handler = function(place,macroName,params)
 {
@@ -344,7 +344,7 @@ config.macros.option.genericOnChange = function(e)
 		var optType = opt.substr(0,3);
 		var handler = config.macros.option.types[optType];
 		if (handler.elementType && handler.valueField)
-			config.macros.option.propagateOption(opt,handler.valueField,this[handler.valueField],handler.elementType)
+			config.macros.option.propagateOption(opt,handler.valueField,this[handler.valueField],handler.elementType);
 		}
 	return true;
 };
@@ -408,7 +408,7 @@ config.macros.options.handler = function(place,macroName,params,wikifier,paramSt
 	markList.parentNode.insertBefore(listWrapper,markList);
 	wizard.setValue("listWrapper",listWrapper);
 	this.refreshOptions(listWrapper,showUnknown == "yes");
-}
+};
 
 config.macros.options.refreshOptions = function(listWrapper,showUnknown)
 {	
@@ -777,12 +777,12 @@ config.macros.toolbar.createCommand = function(place,commandName,tiddler,theClas
 			var tooltip = command.getTooltip ? command.getTooltip(tiddler) : this.getCommandTooltip(command,tiddler);
 			var cmd;
 			switch(command.type) {
+				case "popup":
+					cmd = this.onClickPopup;
+					break;
 				case "command":
 				default:
 					cmd = this.onClickCommand;
-					break;
-				case "popup":
-					cmd = this.onClickPopup;
 					break;
 			}
 			var btn = createTiddlyButton(null,text,tooltip,cmd);
