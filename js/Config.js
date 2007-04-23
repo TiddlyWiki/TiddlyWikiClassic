@@ -210,6 +210,7 @@ config.shadowTiddlers = {
 	MarkupPostHead: "",
 	MarkupPreBody: "",
 	MarkupPostBody: "",
+	MarkupPostScript: "",
 	TabTimeline: '<<timeline>>',
 	TabAll: '<<list all>>',
 	TabTags: '<<allTags excludeLists>>',

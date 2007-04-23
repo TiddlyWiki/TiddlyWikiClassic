@@ -68,6 +68,7 @@ function updateOriginal(original,posDiv)
 	revised = updateMarkupBlock(revised,"POST-HEAD","MarkupPostHead");
 	revised = updateMarkupBlock(revised,"PRE-BODY","MarkupPreBody");
 	revised = updateMarkupBlock(revised,"POST-BODY","MarkupPostBody");
+	revised = updateMarkupBlock(revised,"POST-SCRIPT","MarkupPostScript");
 	return revised;
 }
 
