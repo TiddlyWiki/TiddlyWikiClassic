@@ -291,6 +291,15 @@ function setStylesheet(s,id,doc)
 	}
 }
 
+// Force the browser to do a document reflow when needed to workaround browser bugs
+function forceReflow()
+{
+	if(config.browser.isGecko) {
+		setStylesheet("body {top:-1em;margin-top:1em;}");
+		setStylesheet("");
+	}
+}
+
 // Replace the current selection of a textarea or text input and scroll it into view
 function replaceSelection(e,text)
 {

@@ -237,6 +237,7 @@ Story.prototype.refreshTiddler = function(title,template,force,customFields,defa
 			}
 			if(customFields)
 				this.addCustomFields(tiddlerElem,customFields);
+			forceReflow();
 		}
 	}
 	return tiddlerElem;
@@ -417,8 +418,10 @@ Story.prototype.closeTiddler = function(title,animate,unused)
 		this.scrubTiddler(tiddlerElem);
 		if(config.options.chkAnimate && animate && anim && typeof Slider == "function")
 			anim.startAnimating(new Slider(tiddlerElem,false,null,"all"));
-		else
+		else {
 			removeNode(tiddlerElem);
+			forceReflow();
+		}
 	}
 };
 
