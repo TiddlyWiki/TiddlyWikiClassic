@@ -47,9 +47,9 @@ function main()
 	t5 = new Date();
 	formatter = new Formatter(config.formatters);
 	readOnly = (window.location.protocol == "file:") ? false : config.options.chkHttpReadOnly;
+	invokeParamifier(params,"onconfig");
 	if(!readOnly)
 		backstage.init();
-	invokeParamifier(params,"onconfig");
 	t6 = new Date();
 	store.notifyAll();
 	t7 = new Date();
