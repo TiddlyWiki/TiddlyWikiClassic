@@ -306,4 +306,3 @@ SyncMachine.prototype.putTiddler = function(tiddler,nextStep)
 	});
 };
 
-

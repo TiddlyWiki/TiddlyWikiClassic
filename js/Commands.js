@@ -168,3 +168,4 @@ config.commands.fields.handlePopup = function(popup,title)
 	else
 		createTiddlyElement(popup,"div",null,null,this.emptyText);
 };
+

@@ -1,6 +1,7 @@
 //--
 //-- LoaderBase and SaverBase
 //--
+
 //# LoaderBase: A (abstract) storage loader that loads the tiddlers from a list of HTML elements.
 //# The format of the elements is defined by subclasses of this loader through the internalizeTiddler implementation.
 //# Subclasses must implement:
@@ -9,7 +10,6 @@
 //#
 //# store must implement:
 //#			function createTiddler(title)
-
 function LoaderBase() {}
 
 LoaderBase.prototype.loadTiddler = function(store,node,tiddlers)
@@ -42,7 +42,6 @@ LoaderBase.prototype.loadTiddlers = function(store,nodes)
 //#
 //# store must implement:
 //#			function getTiddlers(sortByFieldName)
-
 function SaverBase() {}
 
 SaverBase.prototype.externalize = function(store)
@@ -53,3 +52,4 @@ SaverBase.prototype.externalize = function(store)
 		results.push(this.externalizeTiddler(store,tiddlers[t]));
 	return results.join("\n");
 };
+

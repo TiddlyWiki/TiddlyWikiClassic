@@ -1,14 +1,14 @@
 //--
 //-- Filesystem code
 //--
-
+//#
 //# This code is designed to be reusable, but please take care,
 //# there are some intricacies that make it tricky to use these
 //# functions with full UTF-8 files. For more details, see:
 //# 
 //# http://doc.tiddlywiki.org/#FileSystemFunctions
 //#
-
+//#
 //# UTF-8 encoding rules:
 //# 0x0000 - 0x007F:  0xxxxxxx
 //# 0x0080 - 0x07FF:  110xxxxx 10xxxxxx

@@ -35,3 +35,4 @@ function Slider(element,opening,unused,deleteMode)
 	}
 	return new Morpher(element,config.animDuration,p,c);
 }
+

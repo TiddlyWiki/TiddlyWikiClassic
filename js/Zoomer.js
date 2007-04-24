@@ -18,3 +18,4 @@ function Zoomer(text,startElement,targetElement,unused)
 	var c = function(element,properties) {removeNode(element);};
 	return new Morpher(e,config.animDuration,p,c);
 }
+
