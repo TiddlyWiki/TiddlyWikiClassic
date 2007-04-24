@@ -678,9 +678,10 @@ config.macros.view.handler = function(place,macroName,params,wikifier,paramStrin
 config.macros.edit.handler = function(place,macroName,params,wikifier,paramString,tiddler)
 {
 	var field = params[0];
+	var rows = params[1];
 	if((tiddler instanceof Tiddler) && field) {
 		story.setDirty(tiddler.title,true);
-		if(field != "text") {
+		if(field != "text" && !rows) {
 			var e = createTiddlyElement(null,"input");
 			if(tiddler.isReadOnly())
 				e.setAttribute("readOnly","readOnly");
@@ -703,7 +704,7 @@ config.macros.edit.handler = function(place,macroName,params,wikifier,paramStrin
 			if(!v) 
 				v = "";
 			e.value = v;
-			var rows = 10;
+			var rows = rows ? rows : 10;
 			var lines = v.match(/\n/mg);
 			var maxLines = Math.max(parseInt(config.options.txtMaxEditRows),5);
 			if(lines != null && lines.length > rows)
