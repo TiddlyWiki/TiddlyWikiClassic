@@ -459,6 +459,8 @@ TiddlyWiki.prototype.getMissingLinks = function(sortField)
 		this.updateTiddlers();
 	var results = [];
 	this.forEachTiddler(function (title,tiddler) {
+		if(tiddler.isTagged("excludeMissing") || tiddler.isTagged("systemConfig"))
+			return;
 		for(var n=0; n<tiddler.links.length;n++) {
 			var link = tiddler.links[n];
 			if(this.fetchTiddler(link) == null && !this.isShadowTiddler(link))
