@@ -128,7 +128,8 @@ function refreshDisplay(hint)
 
 function refreshPageTitle()
 {
-	document.title = wikifyPlain("SiteTitle") + " - " + wikifyPlain("SiteSubtitle");
+	var s = wikifyPlain("SiteSubtitle");
+	document.title = wikifyPlain("SiteTitle") + (s == "" ? "" : " - " + s);
 }
 
 function refreshStyles(title,doc)
