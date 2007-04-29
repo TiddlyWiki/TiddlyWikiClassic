@@ -319,22 +319,22 @@ config.macros.slider.handler = function(place,macroName,params)
 config.macros.option.genericCreate = function(place,type,opt,className,desc)
 {
 	var typeInfo = config.macros.option.types[type];
-    var c = document.createElement(typeInfo.elementType);
-    if(typeInfo.typeValue)
-        c.setAttribute("type",typeInfo.typeValue);
-    c[typeInfo.eventName] = typeInfo.onChange;
-    c.setAttribute("option",opt);
+	var c = document.createElement(typeInfo.elementType);
+	if(typeInfo.typeValue)
+		c.setAttribute("type",typeInfo.typeValue);
+	c[typeInfo.eventName] = typeInfo.onChange;
+	c.setAttribute("option",opt);
 	if(className)
 		c.className = className;
 	else
-    	c.className = typeInfo.className;
+		c.className = typeInfo.className;
 	if(config.optionsDesc[opt])
 		c.setAttribute("title",config.optionsDesc[opt]);
-    place.appendChild(c);
+	place.appendChild(c);
 	if(desc != "no")
 		createTiddlyText(place,config.optionsDesc[opt] ? config.optionsDesc[opt] : opt);
-    c[typeInfo.valueField] = config.options[opt];
-    return c;
+	c[typeInfo.valueField] = config.options[opt];
+	return c;
 };
 
 config.macros.option.genericOnChange = function(e)
@@ -757,10 +757,10 @@ config.macros.tagChooser.handler = function(place,macroName,params,wikifier,para
 };
 
 // Create a toolbar command button
-// place - parent DOM element
-// command - reference to config.commands[] member -or- name of member
-// tiddler - reference to tiddler that toolbar applies to
-// theClass - the class to give the button
+//#  place - parent DOM element
+//#  command - reference to config.commands[] member -or- name of member
+//#  tiddler - reference to tiddler that toolbar applies to
+//#  theClass - the class to give the button
 config.macros.toolbar.createCommand = function(place,commandName,tiddler,theClass)
 {
 	if(typeof commandName != "string") {
