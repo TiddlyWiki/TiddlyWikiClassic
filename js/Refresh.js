@@ -128,8 +128,14 @@ function refreshDisplay(hint)
 
 function refreshPageTitle()
 {
-	var s = wikifyPlain("SiteSubtitle");
-	document.title = wikifyPlain("SiteTitle") + (s == "" ? "" : " - " + s);
+	document.title = getPageTitle();
+}
+
+function getPageTitle()
+{
+	var st = wikifyPlain("SiteTitle");
+	var ss = wikifyPlain("SiteSubtitle");
+	return st + ((st == "" || ss == "") ? "" : " - ") + ss;
 }
 
 function refreshStyles(title,doc)
