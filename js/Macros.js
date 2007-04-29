@@ -472,7 +472,7 @@ config.macros.newTiddler.createNewTiddlerButton = function(place,title,params,la
 config.macros.newTiddler.onClickNewTiddler = function()
 {
 	var title = this.getAttribute("newTitle");
-	if(this.getAttribute("isJournal")) {
+	if(this.getAttribute("isJournal") == "true") {
 		var now = new Date();
 		title = now.formatString(title.trim());
 	}
