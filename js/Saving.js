@@ -61,7 +61,7 @@ function updateOriginal(original,posDiv)
 	var revised = original.substr(0,posDiv[0] + startSaveArea.length) + "\n" +
 				convertUnicodeToUTF8(store.allTiddlersAsHtml()) + "\n" +
 				original.substr(posDiv[1]);
-	var newSiteTitle = convertUnicodeToUTF8(getPageTitle()).htmlEncode());
+	var newSiteTitle = convertUnicodeToUTF8(getPageTitle()).htmlEncode();
 	revised = revised.replaceChunk("<title"+">","</title"+">"," " + newSiteTitle + " ");
 	revised = updateLanguageAttribute(revised);
 	revised = updateMarkupBlock(revised,"PRE-HEAD","MarkupPreHead");
