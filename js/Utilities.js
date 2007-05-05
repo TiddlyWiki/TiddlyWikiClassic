@@ -213,7 +213,7 @@ function createTiddlyDropDown(place,onchange,options,defaultValue)
 function createTiddlyPopup(place,caption,tooltip,tiddler)
 {
 	if(tiddler.text) {
-		var c = caption + config.messages.tiddlerPopup[config.browser.isIE ? "iconIE" : "icon"];
+		var c = caption + glyph("downArrow");
 		var btn = createTiddlyButton(place,c,tooltip,onClickTiddlyPopup,"tiddlerPopupButton");
 		btn.tiddler = tiddler;
 	} else {
@@ -266,4 +266,19 @@ function alertAndThrow(m)
 {
 	alert(m);
 	throw(m);
+}
+
+function glyph(name)
+{
+	var g = config.glyphs;
+	var b = g.currBrowser;
+	if(b == null) {
+		b = 0;
+		while(!g.browsers[b]() && b < g.browsers.length-1)
+			b++;
+		g.currBrowser = b;
+	}
+	if(!g.codes[name])
+		return "";
+	return g.codes[name][b];
 }
