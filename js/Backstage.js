@@ -22,10 +22,10 @@ var backstage = {
 		this.toolbar = document.getElementById("backstageToolbar");
 		this.button = document.getElementById("backstageButton");
 		this.button.style.display = "block";
-		var t = cmb.open.text + " " + cmb.open[config.browser.isIE ? "iconIE" : "icon"];
+		var t = cmb.open.text + " " + glyph("bentArrowLeft");
 		this.showButton = createTiddlyButton(this.button,t,cmb.open.tooltip,
 						function (e) {backstage.show(); return false;},null,"backstageShow");
-		t = cmb.close[config.browser.isIE ? "iconIE" : "icon"] + " " + cmb.close.text;
+		t = glyph("bentArrowRight") + " " + cmb.close.text;
 		this.hideButton = createTiddlyButton(this.button,t,cmb.close.tooltip,
 						function (e) {backstage.hide(); return false;},null,"backstageHide");
 		this.cloak = document.getElementById("backstageCloak");
@@ -40,7 +40,8 @@ var backstage = {
 			var taskName = config.backstageTasks[t];
 			var task = config.tasks[taskName];
 			var handler = task.action ? this.onClickCommand : this.onClickTab;
-			var btn = createTiddlyButton(this.toolbar,task.text,task.tooltip,handler,"backstageTab");
+			var text = task.text + (task.action ? "" : glyph("downTriangle"));
+			var btn = createTiddlyButton(this.toolbar,text,task.tooltip,handler,"backstageTab");
 			btn.setAttribute("task",taskName);
 			addClass(btn,task.action ? "backstageAction" : "backstageTask");
 			}

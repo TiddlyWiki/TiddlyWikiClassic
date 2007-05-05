@@ -80,8 +80,8 @@ merge(config.messages.messageClose,{
 	tooltip: "close this message area"});
 
 config.messages.backstage = {
-	open: {text: "backstage", icon: "\u21A9", iconIE: "\u2190", tooltip: "Open the backstage area to perform authoring and editing tasks"},
-	close: {text: "close", icon: "\u21AA", iconIE: "\u2192", tooltip: "Close the backstage area"},
+	open: {text: "backstage", tooltip: "Open the backstage area to perform authoring and editing tasks"},
+	close: {text: "close", tooltip: "Close the backstage area"},
 	prompt: "backstage: ",
 	decal: {
 		edit: {text: "edit", tooltip: "Edit the tiddler '%0'"}
@@ -106,8 +106,6 @@ config.messages.dates.am = "am";
 config.messages.dates.pm = "pm";
 
 merge(config.messages.tiddlerPopup,{
-	icon: "\u2193",
-	iconIE: "\u2193"
 	});
 
 merge(config.views.wikified.tag,{
