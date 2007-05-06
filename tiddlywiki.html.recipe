@@ -26,6 +26,7 @@ html/prescript.html
 recipe: js/split.recipe
 @postjs@
 html/postscript.html
-html/footer.html
 html/javasaver.html
+html/prefooter.html
+html/footer.html
 copy: java/TiddlySaver.jar
