@@ -305,7 +305,6 @@ function replaceSelection(e,text)
 {
 	if(e.setSelectionRange) {
 		var oldpos = e.selectionStart;
-		console.log(e.selectionEnd);console.log(e.selectionStart);
 		var isRange = e.selectionEnd > e.selectionStart;
 		e.value = e.value.substr(0,e.selectionStart) + text + e.value.substr(e.selectionEnd);
 		e.setSelectionRange(isRange ? oldpos : oldpos + text.length,oldpos + text.length);
