@@ -200,8 +200,6 @@ config.textPrimitives.tiddlerAnyLinkRegExp = new RegExp("("+ config.textPrimitiv
 	config.textPrimitives.brackettedLink + ")|(?:" +
 	config.textPrimitives.urlPattern + ")","mg");
 
-
-
 config.glyphs = {
 	browsers: [
 		function() {return config.browser.isIE;},
@@ -209,10 +207,10 @@ config.glyphs = {
 	],
 	currBrowser: null,
 	codes: {
-		downTriangle: ["\u25BE","\u25BE"],
+		downTriangle: ["\u25BC","\u25BE"],
 		downArrow: ["\u2193","\u2193"],
 		bentArrowLeft: ["\u2190","\u21A9"],
-		bentArrowRight: ["\u2192","\u21AA"],
+		bentArrowRight: ["\u2192","\u21AA"]
 	}
 };
 
