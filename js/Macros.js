@@ -817,6 +817,8 @@ config.macros.toolbar.getCommandTooltip = function(command,tiddler)
 config.macros.toolbar.onClickCommand = function(e)
 {
 	if(!e) var e = window.event;
+	e.cancelBubble = true;
+	if (e.stopPropagation) e.stopPropagation();
 	var command = config.commands[this.getAttribute("commandName")];
 	return command.handler(e,this,this.getAttribute("tiddler"));
 };
@@ -824,6 +826,8 @@ config.macros.toolbar.onClickCommand = function(e)
 config.macros.toolbar.onClickPopup = function(e)
 {
 	if(!e) var e = window.event;
+	e.cancelBubble = true;
+	if (e.stopPropagation) e.stopPropagation();
 	var popup = Popup.create(this);
 	var command = config.commands[this.getAttribute("commandName")];
 	var title = this.getAttribute("tiddler");
@@ -831,8 +835,6 @@ config.macros.toolbar.onClickPopup = function(e)
 	popup.setAttribute("tiddler",title);
 	command.handlePopup(popup,title);
 	Popup.show();
-	e.cancelBubble = true;
-	if (e.stopPropagation) e.stopPropagation();
 	return false;
 };
 
