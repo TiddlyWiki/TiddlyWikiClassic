@@ -327,7 +327,7 @@ TiddlyWiki.prototype.importTiddlyWiki = function(text)
 	var posDiv = locateStoreArea(text);
 	if(!posDiv)
 		return null;
-	var content = "<html><body>" + text.substring(posDiv[0],posDiv[1] + endSaveArea.length) + "</body></html>";
+	var content = "<" + "html><" + "body>" + text.substring(posDiv[0],posDiv[1] + endSaveArea.length) + "<" + "/body><" + "/html>";
 	// Create the iframe
 	var iframe = document.createElement("iframe");
 	iframe.style.display = "none";
