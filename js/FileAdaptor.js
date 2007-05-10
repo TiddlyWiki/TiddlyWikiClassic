@@ -151,7 +151,12 @@ FileAdaptor.prototype.getTiddler = function(title,context,userParams,callback)
 		context.tiddler.fields['server.page.revision'] = context.tiddler.modified.convertToYYYYMMDDHHMM();
 	}
 	context.status = true;
-	window.setTimeout(function() {callback(context,userParams);},10);
+	if(context.allowSynchronous) {
+		context.isSynchronous = true;
+		callback(context,userParams);
+	} else {
+		window.setTimeout(function() {callback(context,userParams);},10);
+	}
 	return true;
 };
 

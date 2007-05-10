@@ -278,6 +278,7 @@ config.macros.importTiddlers.doImport = function(e)
 		],config.macros.importTiddlers.statusDoingImport);
 	for(t=0; t<rowNames.length; t++) {
 		var context = {};
+		context.allowSynchronous = true;
 		var inbound = adaptor.getTiddler(rowNames[t],context,wizard,config.macros.importTiddlers.onGetTiddler);
 	}
 	return false;
@@ -288,13 +289,21 @@ config.macros.importTiddlers.onGetTiddler = function(context,wizard)
 	if(!context.status)
 		displayMessage("Error in importTiddlers.onGetTiddler: " + context.statusText);
 	var tiddler = context.tiddler;
+	store.suspendNotifications();
 	store.saveTiddler(tiddler.title, tiddler.title, tiddler.text, tiddler.modifier, tiddler.modified, tiddler.tags, tiddler.fields, true, tiddler.created);
 	if(!wizard.getValue("sync")) {
 		store.setValue(tiddler.title,'server',null);
 	}
+	store.resumeNotifications();
+	if(!context.isSynchronous) 
+		store.notify(tiddler.title,true);
 	var remainingImports = wizard.getValue("remainingImports")-1;
 	wizard.setValue("remainingImports",remainingImports);
 	if(remainingImports == 0) {
+		if(context.isSynchronous) {
+			store.notifyAll();
+			refreshDisplay();
+		}
 		wizard.setButtons([
 				{caption: config.macros.importTiddlers.doneLabel, tooltip: config.macros.importTiddlers.donePrompt, onClick: config.macros.importTiddlers.onCancel}
 			],config.macros.importTiddlers.statusDoneImport);
