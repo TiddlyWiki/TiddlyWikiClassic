@@ -571,13 +571,15 @@ Story.prototype.saveTiddler = function(title,minorUpdate)
 		tiddlerElem.setAttribute("dirty","false");
 		if(config.options.chkForceMinorUpdate)
 			minorUpdate = !minorUpdate;
+		if(!store.tiddlerExists(newTitle))
+			minorUpdate = false;
 		var newDate = new Date();
 		var extendedFields = store.tiddlerExists(newTitle) ? store.fetchTiddler(newTitle).fields : {};
 		for(var n in fields) {
 			if(!TiddlyWiki.isStandardField(n))
 				extendedFields[n] = fields[n];
 			}
-		var tiddler = store.saveTiddler(title,newTitle,fields.text,config.options.txtUserName,minorUpdate ? undefined : newDate,fields.tags,extendedFields);
+		var tiddler = store.saveTiddler(title,newTitle,fields.text,minorUpdate ? undefined : config.options.txtUserName,minorUpdate ? undefined : newDate,fields.tags,extendedFields);
 		autoSaveChanges(null,[tiddler]);
 		return newTitle;
 	}
