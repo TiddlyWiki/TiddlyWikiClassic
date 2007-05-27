@@ -43,13 +43,11 @@ function main()
 	t3 = new Date();
 	invokeParamifier(params,"onload");
 	t4 = new Date();
+	readOnly = (window.location.protocol == "file:") ? false : config.options.chkHttpReadOnly;
 	var pluginProblem = loadPlugins();
 	t5 = new Date();
 	formatter = new Formatter(config.formatters);
-	readOnly = (window.location.protocol == "file:") ? false : config.options.chkHttpReadOnly;
 	invokeParamifier(params,"onconfig");
-	if(!readOnly)
-		backstage.init();
 	t6 = new Date();
 	store.notifyAll();
 	t7 = new Date();
@@ -63,6 +61,8 @@ function main()
 		if(config.macros[m].init)
 			config.macros[m].init();
 	}
+	if(!readOnly)
+		backstage.init();
 	t9 = new Date();
 	if(config.options.chkDisplayStartupTime) {
 		displayMessage("Load in " + (t2-t1) + " ms");
