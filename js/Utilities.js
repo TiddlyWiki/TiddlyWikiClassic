@@ -213,8 +213,8 @@ function createTiddlyDropDown(place,onchange,options,defaultValue)
 function createTiddlyPopup(place,caption,tooltip,tiddler)
 {
 	if(tiddler.text) {
-		var c = caption + glyph("downArrow");
-		var btn = createTiddlyButton(place,c,tooltip,onClickTiddlyPopup,"tiddlerPopupButton");
+		createTiddlyLink(place,caption,true);
+		var btn = createTiddlyButton(place,glyph("downArrow"),tooltip,onClickTiddlyPopup,"tiddlerPopupButton");
 		btn.tiddler = tiddler;
 	} else {
 		createTiddlyText(place,caption);
