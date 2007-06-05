@@ -88,10 +88,10 @@ function restart()
 
 function saveTest()
 {
-	var saveTest = document.getElementById("saveTest");
-	if(saveTest.hasChildNodes())
+	var s = document.getElementById("saveTest");
+	if(s.hasChildNodes())
 		alert(config.messages.savedSnapshotError);
-	saveTest.appendChild(document.createTextNode("savetest"));
+	s.appendChild(document.createTextNode("savetest"));
 }
 
 function loadShadowTiddlers()
