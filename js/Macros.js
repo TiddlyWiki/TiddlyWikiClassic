@@ -458,7 +458,7 @@ config.macros.newTiddler.createNewTiddlerButton = function(place,title,params,la
 		customFields = String.encodeHashMap(config.defaultCustomFields);
 	var btn = createTiddlyButton(place,label,prompt,this.onClickNewTiddler,null,null,accessKey);
 	btn.setAttribute("newTitle",title);
-	btn.setAttribute("isJournal",isJournal);
+	btn.setAttribute("isJournal",isJournal ? "true" : "false");
 	btn.setAttribute("params",tags.join("|"));
 	btn.setAttribute("newFocus",newFocus);
 	btn.setAttribute("newTemplate",getParam(params,"template",DEFAULT_EDIT_TEMPLATE));
