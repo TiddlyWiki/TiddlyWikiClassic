@@ -223,6 +223,7 @@ function createTiddlyPopup(place,caption,tooltip,tiddler)
 
 function onClickTiddlyPopup(e)
 {
+	if(!e) var e = window.event;
 	var tiddler = this.tiddler;
 	if(tiddler.text) {
 		var popup = Popup.create(this,"div","popupTiddler");
