@@ -88,6 +88,8 @@ config.macros.importTiddlers.onBrowseChange = function(e)
 	var wizard = new Wizard(this);
 	var fileInput = wizard.getElement("txtPath");
 	fileInput.value = "file://" + this.value;
+	var serverType = wizard.getElement("selTypes");
+	serverType.value = "file";
 	return false;
 };
 
