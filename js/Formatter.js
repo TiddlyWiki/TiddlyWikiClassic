@@ -168,7 +168,7 @@ config.formatters = [
 					stack.pop();
 			} else if(listLevel == currLevel && listType != currType) {
 				stack.pop();
-				stack.push(createTiddlyElement(stack[stack.length-1],listType));
+				stack.push(createTiddlyElement(stack[stack.length-1].lastChild,listType));
 			}
 			currLevel = listLevel;
 			currType = listType;
