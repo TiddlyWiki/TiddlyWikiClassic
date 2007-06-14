@@ -159,8 +159,10 @@ config.formatters = [
 			w.nextMatch += lookaheadMatch[0].length;
 			var t;
 			if(listLevel > currLevel) {
-				for(t=currLevel; t<listLevel; t++)
-					stack.push(createTiddlyElement(stack[stack.length-1],listType));
+				for(t=currLevel; t<listLevel; t++) {
+					var target = (currLevel == 0) ? stack[stack.length-1] : stack[stack.length-1].lastChild;
+					stack.push(createTiddlyElement(target,listType));
+				}
 			} else if(listLevel < currLevel) {
 				for(t=currLevel; t>listLevel; t--)
 					stack.pop();
