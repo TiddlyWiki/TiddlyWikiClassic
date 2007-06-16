@@ -483,7 +483,9 @@ config.macros.newTiddler.onClickNewTiddler = function()
 	var focus = this.getAttribute("newFocus");
 	var template = this.getAttribute("newTemplate");
 	var customFields = this.getAttribute("customFields");
-	story.displayTiddler(null,title,template,false,null,customFields);
+	story.displayTiddler(null,title,template,false,null,null);
+	var tiddlerElem = document.getElementById(story.idPrefix + title);
+	story.addCustomFields(tiddlerElem,customFields);
 	var text = this.getAttribute("newText");
 	if(typeof text == "string")
 		story.getTiddlerField(title,"text").value = text.format([title]);
