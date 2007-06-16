@@ -28,26 +28,32 @@ Popup.onDocumentClick = function(e)
 Popup.show = function(unused1,unused2)
 {
 	var curr = Popup.stack[Popup.stack.length-1];
-	var rootLeft = findPosX(curr.root);
-	var rootTop = findPosY(curr.root);
-	var rootHeight = curr.root.offsetHeight;
-	var popupLeft = rootLeft;
-	var popupTop = rootTop + rootHeight;
-	var winWidth = findWindowWidth();
-	if(curr.popup.offsetWidth > winWidth*0.75)
-		curr.popup.style.width = winWidth*0.75 + "px";
-	var popupWidth = curr.popup.offsetWidth;
-	if(popupLeft + popupWidth > winWidth)
-		popupLeft = winWidth - popupWidth;
-	curr.popup.style.left = popupLeft + "px";
-	curr.popup.style.top = popupTop + "px";
-	curr.popup.style.display = "block";
+	this.place(curr.root,curr.popup);
 	addClass(curr.root,"highlight");
 	if(config.options.chkAnimate && anim && typeof Scroller == "function")
 		anim.startAnimating(new Scroller(curr.popup));
 	else
 		window.scrollTo(0,ensureVisible(curr.popup));
 };
+
+Popup.place = function(root,popup,offset)
+{
+	if(!offset) var offset = {x:0, y:0};
+	var rootLeft = findPosX(root);
+	var rootTop = findPosY(root);
+	var rootHeight = root.offsetHeight;
+	var popupLeft = rootLeft + offset.x;
+	var popupTop = rootTop + rootHeight + offset.y;
+	var winWidth = findWindowWidth();
+	if(popup.offsetWidth > winWidth*0.75)
+		popup.style.width = winWidth*0.75 + "px";
+	var popupWidth = popup.offsetWidth;
+	if(popupLeft + popupWidth > winWidth)
+		popupLeft = winWidth - popupWidth;
+	popup.style.left = popupLeft + "px";
+	popup.style.top = popupTop + "px";
+	popup.style.display = "block";
+}
 
 Popup.remove = function()
 {
