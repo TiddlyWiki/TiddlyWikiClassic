@@ -14,7 +14,7 @@ config.formatters = [
 
 	handler: function(w)
 	{
-		var table = createTiddlyElement(w.output,"table");
+		var table = createTiddlyElement(w.output,"table",null,"twtable");
 		var prevColumns = [];
 		var currRowType = null;
 		var rowContainer;
