@@ -44,7 +44,8 @@ function createTiddlyLink(place,title,includeText,theClass,isStatic,linkedFromTi
 		btn.setAttribute("noToggle","true");
 	if(linkedFromTiddler) {
 		var fields = linkedFromTiddler.getInheritedFields();
-		btn.setAttribute("tiddlyFields",fields);
+		if(fields)
+			btn.setAttribute("tiddlyFields",fields);
 	}
 	return btn;
 }
