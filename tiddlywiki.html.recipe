@@ -6,13 +6,13 @@ html/style.html
 html/postheadstart.html
 @posthead@
 html/postheader.html
+html/bodystart.html
+@prebody@
+html/body.html
 html/preshadow.html
 recipe: tiddlers/split.recipe
 @shadow@
 html/postshadow.html
-html/bodystart.html
-@prebody@
-html/body.html
 html/prestorearea.html
 @tiddler@
 @posttiddlers@
