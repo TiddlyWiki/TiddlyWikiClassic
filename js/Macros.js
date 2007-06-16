@@ -478,7 +478,8 @@ config.macros.newTiddler.onClickNewTiddler = function()
 		var now = new Date();
 		title = now.formatString(title.trim());
 	}
-	var params = this.getAttribute("params").split("|");
+	var params = this.getAttribute("params");
+	var tags = params ? params.split("|") : [];
 	var focus = this.getAttribute("newFocus");
 	var template = this.getAttribute("newTemplate");
 	var customFields = this.getAttribute("customFields");
@@ -486,8 +487,8 @@ config.macros.newTiddler.onClickNewTiddler = function()
 	var text = this.getAttribute("newText");
 	if(typeof text == "string")
 		story.getTiddlerField(title,"text").value = text.format([title]);
-	for(var t=0;t<params.length;t++)
-		story.setTiddlerTag(title,params[t],+1);
+	for(var t=0;t<tags.length;t++)
+		story.setTiddlerTag(title,tags[t],+1);
 	story.focusTiddler(title,focus);
 	return false;
 };
