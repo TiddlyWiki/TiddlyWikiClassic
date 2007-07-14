@@ -83,13 +83,14 @@ config.macros.timeline.handler = function(place,macroName,params)
 	var tiddlers = store.reverseLookup("tags","excludeLists",false,field);
 	var lastDay = "";
 	var last = params[1] ? tiddlers.length-Math.min(tiddlers.length,parseInt(params[1])) : 0;
+	var dateFormat = params[2] ? params[2] : this.dateFormat;
 	for(var t=tiddlers.length-1; t>=last; t--) {
 		var tiddler = tiddlers[t];
 		var theDay = tiddler[field].convertToLocalYYYYMMDDHHMM().substr(0,8);
 		if(theDay != lastDay) {
 			var theDateList = document.createElement("ul");
 			place.appendChild(theDateList);
-			createTiddlyElement(theDateList,"li",null,"listTitle",tiddler[field].formatString(this.dateFormat));
+			createTiddlyElement(theDateList,"li",null,"listTitle",tiddler[field].formatString(dateFormat));
 			lastDay = theDay;
 		}
 		var theDateListItem = createTiddlyElement(theDateList,"li",null,"listLink");
