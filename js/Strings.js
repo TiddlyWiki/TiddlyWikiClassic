@@ -21,11 +21,9 @@ String.prototype.unDash = function()
 	return s.join("");
 };
 
-// Substitute substrings from the argument list or an array into a format string that includes '%1'-type specifiers
+// Substitute substrings from an array into a format string that includes '%1'-type specifiers
 String.prototype.format = function(substrings)
 {
-	if (substrings instanceof Array)
-    	substrings = arguments;
 	var subRegExp = /(?:%(\d+))/mg;
 	var currPos = 0;
 	var r = [];
