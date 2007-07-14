@@ -17,7 +17,6 @@ Popup.create = function(root,elem,theClass)
 Popup.onDocumentClick = function(e)
 {
 	if (!e) var e = window.event;
-	var target = resolveTarget(e);
 	if(e.eventPhase == undefined)
 		Popup.remove();
 	else if(e.eventPhase == Event.BUBBLING_PHASE || e.eventPhase == Event.AT_TARGET)

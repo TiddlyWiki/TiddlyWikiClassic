@@ -139,7 +139,6 @@ function createTagButton(place,tag,excludeTiddler)
 function onClickTag(e)
 {
 	if(!e) var e = window.event;
-	var theTarget = resolveTarget(e);
 	var popup = Popup.create(this);
 	var tag = this.getAttribute("tag");
 	var title = this.getAttribute("tiddler");
