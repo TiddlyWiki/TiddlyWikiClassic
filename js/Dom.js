@@ -243,8 +243,8 @@ function removeNode(e)
 // Remove any event handlers or non-primitve custom attributes
 function scrubNode(e)
 {
-//#	if(!config.browser.isIE)
-//#		return;
+	if(!config.browser.isIE)
+		return;
 	var att = e.attributes;
 	if(att) {
 		for(var t=0; t<att.length; t++) {
