@@ -111,8 +111,10 @@ function onClickTiddlerLink(e)
 		noToggle = theLink.getAttribute("noToggle");
 		theLink = theLink.parentNode;
 	} while(title == null && theLink != null);
-	if(!fields && !store.isShadowTiddler(title))
-		fields = String.encodeHashMap(config.defaultCustomFields);
+	if(!store.isShadowTiddler(title)) {
+		var f = fields ? fields.decodeHashMap() : {};
+		fields = String.encodeHashMap(merge(f,config.defaultCustomFields,true));
+	}
 	if(title) {
 		var toggling = e.metaKey || e.ctrlKey;
 		if(config.options.chkToggleLinks)
