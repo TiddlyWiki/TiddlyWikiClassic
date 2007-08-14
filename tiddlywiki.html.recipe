@@ -1,32 +1,4 @@
-html/header.html
-@prehead@
-html/pretitle.html
-@title@
-html/style.html
-html/postheadstart.html
-@posthead@
-html/postheader.html
-html/bodystart.html
-@prebody@
-html/body.html
-html/preshadow.html
+template: html/tiddlywiki.template.html
 recipe: tiddlers/split.recipe
-@shadow@
-html/postshadow.html
-html/prestorearea.html
-@tiddler@
-@posttiddlers@
-html/poststorearea.html
-html/prepostbody.html
-@postbody@
-html/postpostbody.html
-html/prescript.html
-@prejs@
-@js@
 recipe: js/split.recipe
-@postjs@
-html/postscript.html
-html/javasaver.html
-html/prefooter.html
-html/footer.html
 copy: java/TiddlySaver.jar
