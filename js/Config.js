@@ -203,7 +203,7 @@ config.textPrimitives.tiddlerAnyLinkRegExp = new RegExp("("+ config.textPrimitiv
 config.glyphs = {
 	browsers: [
 		function() {return config.browser.isIE;},
-		function() {return true}
+		function() {return true;}
 	],
 	currBrowser: null,
 	codes: {
