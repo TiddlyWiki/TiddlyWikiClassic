@@ -42,7 +42,7 @@ h2,h3 {border-bottom:1px solid [[ColorPalette::TertiaryLight]];}
 .wizard h2 {color:[[ColorPalette::Foreground]]; border:none;}
 .wizardStep {background:[[ColorPalette::Background]]; color:[[ColorPalette::Foreground]];
 	border:1px solid [[ColorPalette::PrimaryMid]];}
-.wizardStep.wizardStepDone {background::[[ColorPalette::TertiaryLight]];}
+.wizardStep.wizardStepDone {background:[[ColorPalette::TertiaryLight]];}
 .wizardFooter {background:[[ColorPalette::PrimaryPale]];}
 .wizardFooter .status {background:[[ColorPalette::PrimaryDark]]; color:[[ColorPalette::Background]];}
 .wizard .button {color:[[ColorPalette::Foreground]]; background:[[ColorPalette::SecondaryLight]]; border: 1px solid;
