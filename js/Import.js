@@ -297,7 +297,7 @@ config.macros.importTiddlers.onGetTiddler = function(context,wizard)
 		store.setValue(tiddler.title,'server',null);
 	}
 	store.resumeNotifications();
-	if(!context.isSynchronous) 
+	if(!context.isSynchronous)
 		store.notify(tiddler.title,true);
 	var remainingImports = wizard.getValue("remainingImports")-1;
 	wizard.setValue("remainingImports",remainingImports);

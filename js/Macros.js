@@ -136,9 +136,9 @@ config.macros.search.onClick = function(e)
 	return false;
 };
 
-config.macros.search.onKeyPress = function(e)
+config.macros.search.onKeyPress = function(ev)
 {
-	if(!e) var e = window.event;
+	var e = ev ? ev : window.event;
 	switch(e.keyCode) {
 		case 13: // Ctrl-Enter
 		case 10: // Ctrl-Enter on IE PC
@@ -198,7 +198,7 @@ config.macros.tiddler.handler = function(place,macroName,params,wikifier,paramSt
 	}
 };
 
-config.macros.tiddler.renderText = function(place,text,tiddlerName,params) 
+config.macros.tiddler.renderText = function(place,text,tiddlerName,params)
 {
 	wikify(text,place,null,store.getTiddler(tiddlerName));
 };
@@ -281,9 +281,9 @@ config.macros.saveChanges.onClick = function(e)
 	return false;
 };
 
-config.macros.slider.onClickSlider = function(e)
+config.macros.slider.onClickSlider = function(ev)
 {
-	if(!e) var e = window.event;
+	var e = ev ? ev : window.event;
 	var n = this.nextSibling;
 	var cookie = n.getAttribute("cookie");
 	var isOpen = n.style.display != "none";
@@ -298,11 +298,11 @@ config.macros.slider.onClickSlider = function(e)
 
 config.macros.slider.createSlider = function(place,cookie,title,tooltip)
 {
-	var cookie = cookie ? cookie : "";
+	var c = cookie ? cookie : "";
 	var btn = createTiddlyButton(place,title,tooltip,this.onClickSlider);
 	var panel = createTiddlyElement(null,"div",null,"sliderPanel");
-	panel.setAttribute("cookie",cookie);
-	panel.style.display = config.options[cookie] ? "block" : "none";
+	panel.setAttribute("cookie",c);
+	panel.style.display = config.options[c] ? "block" : "none";
 	place.appendChild(panel);
 	return panel;
 };
@@ -412,7 +412,7 @@ config.macros.options.handler = function(place,macroName,params,wikifier,paramSt
 };
 
 config.macros.options.refreshOptions = function(listWrapper,showUnknown)
-{	
+{
 	var opts = [];
 	for(var n in config.options) {
 		var opt = {};
@@ -467,7 +467,7 @@ config.macros.newTiddler.createNewTiddlerButton = function(place,title,params,la
 	if(customFields !== "")
 		btn.setAttribute("customFields",customFields);
 	var text = getParam(params,"text");
-	if(text !== undefined) 
+	if(text !== undefined)
 		btn.setAttribute("newText",text);
 	return btn;
 };
@@ -522,8 +522,9 @@ config.macros.sparkline.handler = function(place,macroName,params)
 	var data = [];
 	var min = 0;
 	var max = 0;
+	var v;
 	for(var t=0; t<params.length; t++) {
-		var v = parseInt(params[t]);
+		v = parseInt(params[t]);
 		if(v < min)
 			min = v;
 		if(v > max)
@@ -546,7 +547,7 @@ config.macros.sparkline.handler = function(place,macroName,params)
 		tick.src = "data:image/gif,GIF89a%01%00%01%00%91%FF%00%FF%FF%FF%00%00%00%C0%C0%C0%00%00%00!%F9%04%01%00%00%02%00%2C%00%00%00%00%01%00%01%00%40%02%02T%01%00%3B";
 		tick.style.left = d*2 + "px";
 		tick.style.width = "2px";
-		var v = Math.floor(((data[d] - min)/(max-min)) * h);
+		v = Math.floor(((data[d] - min)/(max-min)) * h);
 		tick.style.top = (h-v) + "px";
 		tick.style.height = v + "px";
 		box.appendChild(tick);
@@ -688,14 +689,15 @@ config.macros.edit.handler = function(place,macroName,params,wikifier,paramStrin
 	var rows = params[1];
 	if((tiddler instanceof Tiddler) && field) {
 		story.setDirty(tiddler.title,true);
+		var e,v;
 		if(field != "text" && !rows) {
-			var e = createTiddlyElement(null,"input");
+			e = createTiddlyElement(null,"input");
 			if(tiddler.isReadOnly())
 				e.setAttribute("readOnly","readOnly");
 			e.setAttribute("edit",field);
 			e.setAttribute("type","text");
-			var v = store.getValue(tiddler,field);
-			if(!v) 
+			v = store.getValue(tiddler,field);
+			if(!v)
 				v = "";
 			e.value = v;
 			e.setAttribute("size","40");
@@ -704,14 +706,14 @@ config.macros.edit.handler = function(place,macroName,params,wikifier,paramStrin
 		} else {
 			var wrapper1 = createTiddlyElement(null,"fieldset",null,"fieldsetFix");
 			var wrapper2 = createTiddlyElement(wrapper1,"div");
-			var e = createTiddlyElement(wrapper2,"textarea");
+			e = createTiddlyElement(wrapper2,"textarea");
 			if(tiddler.isReadOnly())
 				e.setAttribute("readOnly","readOnly");
-			var v = store.getValue(tiddler,field);
-			if(!v) 
+			v = store.getValue(tiddler,field);
+			if(!v)
 				v = "";
 			e.value = v;
-			var rows = rows ? rows : 10;
+			rows = rows ? rows : 10;
 			var lines = v.match(/\n/mg);
 			var maxLines = Math.max(parseInt(config.options.txtMaxEditRows),5);
 			if(lines != null && lines.length > rows)
@@ -724,9 +726,9 @@ config.macros.edit.handler = function(place,macroName,params,wikifier,paramStrin
 	}
 };
 
-config.macros.tagChooser.onClick = function(e)
+config.macros.tagChooser.onClick = function(ev)
 {
-	if(!e) var e = window.event;
+	var e = ev ? ev : window.event;
 	var lingo = config.views.editor.tagChooser;
 	var popup = Popup.create(this);
 	var tags = store.getTags();
@@ -743,9 +745,9 @@ config.macros.tagChooser.onClick = function(e)
 	return false;
 };
 
-config.macros.tagChooser.onTagClick = function(e)
+config.macros.tagChooser.onTagClick = function(ev)
 {
-	if(!e) var e = window.event;
+	var e = ev ? ev : window.event;
 	var tag = this.getAttribute("tag");
 	var title = this.getAttribute("tiddler");
 	if(!readOnly)
@@ -821,18 +823,18 @@ config.macros.toolbar.getCommandTooltip = function(command,tiddler)
 	return tiddler.isReadOnly() && command.readOnlyTooltip ? command.readOnlyTooltip : command.tooltip;
 };
 
-config.macros.toolbar.onClickCommand = function(e)
+config.macros.toolbar.onClickCommand = function(ev)
 {
-	if(!e) var e = window.event;
+	var e = ev ? ev : window.event;
 	e.cancelBubble = true;
 	if (e.stopPropagation) e.stopPropagation();
 	var command = config.commands[this.getAttribute("commandName")];
 	return command.handler(e,this,this.getAttribute("tiddler"));
 };
 
-config.macros.toolbar.onClickPopup = function(e)
+config.macros.toolbar.onClickPopup = function(ev)
 {
-	if(!e) var e = window.event;
+	var e = ev ? ev : window.event;
 	e.cancelBubble = true;
 	if (e.stopPropagation) e.stopPropagation();
 	var popup = Popup.create(this);
@@ -859,7 +861,7 @@ config.macros.toolbar.invokeCommand = function(place,theClass,event)
 	}
 };
 
-config.macros.toolbar.onClickMore = function(e)
+config.macros.toolbar.onClickMore = function(ev)
 {
 	var e = this.nextSibling;
 	e.style.display = "inline";

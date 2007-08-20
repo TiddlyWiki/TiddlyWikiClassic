@@ -202,7 +202,7 @@ String.prototype.readBracketedList = function(unique)
 };
 
 // Returns array with start and end index of chunk between given start and end marker, or undefined.
-String.prototype.getChunkRange = function(start,end) 
+String.prototype.getChunkRange = function(start,end)
 {
 	var s = this.indexOf(start);
 	if(s != -1) {
@@ -276,7 +276,7 @@ String.zeroPad = function(n,d)
 	return s;
 };
 
-String.prototype.startsWith = function(prefix) 
+String.prototype.startsWith = function(prefix)
 {
 	return !prefix || this.substring(0,prefix.length) == prefix;
 };

@@ -14,9 +14,9 @@ Popup.create = function(root,elem,theClass)
 	return popup;
 };
 
-Popup.onDocumentClick = function(e)
+Popup.onDocumentClick = function(ev)
 {
-	if (!e) var e = window.event;
+	var e = ev ? ev : window.event;
 	if(e.eventPhase == undefined)
 		Popup.remove();
 	else if(e.eventPhase == Event.BUBBLING_PHASE || e.eventPhase == Event.AT_TARGET)
@@ -52,7 +52,7 @@ Popup.place = function(root,popup,offset)
 	popup.style.left = popupLeft + "px";
 	popup.style.top = popupTop + "px";
 	popup.style.display = "block";
-}
+};
 
 Popup.remove = function()
 {

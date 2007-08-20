@@ -277,7 +277,7 @@ config.formatters = [
 	name: "wikifyCommentForTemplate",
 	match: "^<!---\\n",
 	termRegExp: /(^--->\n)/mg,
-	handler: function(w) 
+	handler: function(w)
 	{
 		w.subWikifyTerm(w.output,this.termRegExp);
 	}

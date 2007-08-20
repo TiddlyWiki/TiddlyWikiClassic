@@ -138,9 +138,9 @@ function createTagButton(place,tag,excludeTiddler)
 }
 
 // Event handler for clicking on a tiddler tag
-function onClickTag(e)
+function onClickTag(ev)
 {
-	if(!e) var e = window.event;
+	var e = ev ? ev : window.event;
 	var popup = Popup.create(this);
 	var tag = this.getAttribute("tag");
 	var title = this.getAttribute("tiddler");
@@ -174,9 +174,9 @@ function onClickTag(e)
 }
 
 // Event handler for 'open all' on a tiddler popup
-function onClickTagOpenAll(e)
+function onClickTagOpenAll(ev)
 {
-	if(!e) var e = window.event;
+	var e = ev ? ev : window.event;
 	var tag = this.getAttribute("tag");
 	var tagged = store.getTaggedTiddlers(tag);
 	var titles = [];
@@ -186,9 +186,9 @@ function onClickTagOpenAll(e)
 	return false;
 }
 
-function onClickError(e)
+function onClickError(ev)
 {
-	if(!e) var e = window.event;
+	var e = ev ? ev : window.event;
 	var popup = Popup.create(this);
 	var lines = this.getAttribute("errorText").split("\n");
 	for(var t=0; t<lines.length; t++)
@@ -223,9 +223,9 @@ function createTiddlyPopup(place,caption,tooltip,tiddler)
 	}
 }
 
-function onClickTiddlyPopup(e)
+function onClickTiddlyPopup(ev)
 {
-	if(!e) var e = window.event;
+	var e = ev ? ev : window.event;
 	var tiddler = this.tiddler;
 	if(tiddler.text) {
 		var popup = Popup.create(this,"div","popupTiddler");

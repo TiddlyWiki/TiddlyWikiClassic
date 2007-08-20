@@ -9,7 +9,7 @@ config.refreshers = {
 		refreshTiddlyLink(e,title);
 		return true;
 		},
-	
+
 	tiddler: function(e,changeList)
 		{
 		var title = e.getAttribute("tiddler");

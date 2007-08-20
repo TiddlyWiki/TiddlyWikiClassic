@@ -19,7 +19,7 @@ config.formatterHelpers = {
 	{
 		w.subWikifyTerm(createTiddlyElement(w.output,this.element),this.termRegExp);
 	},
-	
+
 	inlineCssHelper: function(w)
 	{
 		var styles = [];

@@ -204,7 +204,7 @@ merge(config.macros.options,{
 			{name: 'Name', field: 'name', title: "Name", type: 'String'}
 			],
 		rowClasses: [
-			{className: 'lowlight', field: 'lowlight'} 
+			{className: 'lowlight', field: 'lowlight'}
 			]}
 	});
 

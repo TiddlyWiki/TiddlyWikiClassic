@@ -116,9 +116,10 @@ function loadPlugins()
 		var p = getPluginInfo(tiddlers[i]);
 		installedPlugins[i] = p;
 		var n = p.Name;
-		if(n) 
+		if(n)
 			map[n] = p;
-		if(n = p.Source) 
+		n = p.Source;
+		if(n)
 			map[n] = p;
 	}
 	var visit = function(p) {
@@ -133,8 +134,8 @@ function loadPlugins()
 		}
 		toLoad.push(p);
 	};
-	for(i=0; i<nPlugins; i++) 
-		visit(installedPlugins[i]);	
+	for(i=0; i<nPlugins; i++)
+		visit(installedPlugins[i]);
 	for(i=0; i<toLoad.length; i++) {
 		p = toLoad[i];
 		pluginInfo = p;
@@ -151,7 +152,7 @@ function loadPlugins()
 					p.log.push(config.messages.pluginError.format([exceptionText(ex)]));
 					p.error = true;
 				}
-				pluginInfo.startupTime = String((new Date()) - startTime) + "ms"; 
+				pluginInfo.startupTime = String((new Date()) - startTime) + "ms";
 			} else {
 				nPlugins--;
 			}

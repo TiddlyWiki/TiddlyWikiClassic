@@ -143,19 +143,20 @@ TiddlyWiki.prototype.forEachField = function(tiddler,callback,onlyExtendedFields
 	var t = this.resolveTiddler(tiddler);
 	if(!t)
 		return undefined;
-	for(var n in t.fields) {
-		var result = callback(t,n,t.fields[n]);
+	var n,result;
+	for(n in t.fields) {
+		result = callback(t,n,t.fields[n]);
 		if(result)
 			return result;
 		}
 	if(onlyExtendedFields)
 		return undefined;
-	for(var n in TiddlyWiki.standardFieldAccess) {
+	for(n in TiddlyWiki.standardFieldAccess) {
 		if(n == "tiddler")
 			// even though the "title" field can also be referenced through the name "tiddler"
 			// we only visit this field once.
 			continue;
-		var result = callback(t,n,TiddlyWiki.standardFieldAccess[n].get(t));
+		result = callback(t,n,TiddlyWiki.standardFieldAccess[n].get(t));
 		if(result)
 			return result;
 	}

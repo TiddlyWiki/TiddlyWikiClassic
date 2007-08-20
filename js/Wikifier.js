@@ -7,14 +7,15 @@ function getParser(tiddler,format)
 	if(tiddler) {
 		if(!format)
 			format = tiddler.fields["wikiformat"];
+		var i;
 		if(format) {
 			//# format field takes precedence over format tag
-			for(var i in config.parsers) {
+			for(i in config.parsers) {
 				if(format == config.parsers[i].format)
 					return config.parsers[i];
 			}
 		} else {
-			for(var i in config.parsers) {
+			for(i in config.parsers) {
 				if(tiddler.isTagged(config.parsers[i].formatTag))
 					return config.parsers[i];
 			}

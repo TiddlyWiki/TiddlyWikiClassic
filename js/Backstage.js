@@ -51,11 +51,11 @@ var backstage = {
 		else
 			this.hide();
 	},
-	
+
 	isVisible: function () {
 		return this.area ? this.area.style.display == "block" : false;
 	},
-	
+
 	show: function() {
 		this.area.style.display = "block";
 		if(anim && config.options.chkAnimate) {
@@ -149,7 +149,7 @@ var backstage = {
 		removeChildren(backstage.panelBody);
 		return backstage.panelBody;
 	},
-	
+
 	showPanel: function() {
 		backstage.panel.style.display = "block";
 		if(anim && config.options.chkAnimate) {
@@ -163,7 +163,7 @@ var backstage = {
 		}
 		return backstage.panelBody;
 	},
-	
+
 	hidePanel: function() {
 		backstage.currTabName = null;
 		backstage.currTabElem = null;

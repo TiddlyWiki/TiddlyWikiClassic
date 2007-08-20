@@ -260,14 +260,14 @@ Story.prototype.addCustomFields = function(place,customFields)
 };
 
 //# Refresh all tiddlers in the Story
-Story.prototype.refreshAllTiddlers = function() 
+Story.prototype.refreshAllTiddlers = function()
 {
 	var place = document.getElementById(this.container);
 	var e = place.firstChild;
 	if(!e)
 		return;
 	this.refreshTiddler(e.getAttribute("tiddler"),e.getAttribute("template"),true);
-	while((e = e.nextSibling) != null) 
+	while((e = e.nextSibling) != null)
 		this.refreshTiddler(e.getAttribute("tiddler"),e.getAttribute("template"),true);
 };
 
@@ -285,9 +285,9 @@ Story.prototype.onTiddlerMouseOut = function(e)
 };
 
 //# Default tiddler ondblclick event handler
-Story.prototype.onTiddlerDblClick = function(e)
+Story.prototype.onTiddlerDblClick = function(ev)
 {
-	if(!e) var e = window.event;
+	var e = ev ? ev : window.event;
 	var theTarget = resolveTarget(e);
 	if(theTarget && theTarget.nodeName.toLowerCase() != "input" && theTarget.nodeName.toLowerCase() != "textarea") {
 		if(document.selection && document.selection.empty)
@@ -301,18 +301,18 @@ Story.prototype.onTiddlerDblClick = function(e)
 	}
 };
 
-Story.prototype.onTiddlerKeyPress = function(e)
+Story.prototype.onTiddlerKeyPress = function(ev)
 {
-	if(!e) var e = window.event;
+	var e = ev ? ev : window.event;
 	clearMessage();
-	var consume = false; 
+	var consume = false;
 	var title = this.getAttribute("tiddler");
 	var target = resolveTarget(e);
 	switch(e.keyCode) {
 		case 9: // Tab
 			if(config.options.chkInsertTabs && target.tagName.toLowerCase() == "textarea") {
 				replaceSelection(target,String.fromCharCode(9));
-				consume = true; 
+				consume = true;
 			}
 			if(config.isOpera) {
 				target.onblur = function() {
@@ -329,7 +329,7 @@ Story.prototype.onTiddlerKeyPress = function(e)
 				config.macros.toolbar.invokeCommand(this,"defaultCommand",e);
 				consume = true;
 			}
-			break; 
+			break;
 		case 27: // Escape
 			blurElement(this);
 			config.macros.toolbar.invokeCommand(this,"cancelCommand",e);
