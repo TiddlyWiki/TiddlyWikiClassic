@@ -137,7 +137,7 @@ config.formatters = [
 	{
 		var stack = [w.output];
 		var currLevel = 0, currType = null;
-		var listLevel, listType, itemType;
+		var listLevel, listType, itemType, baseType;
 		w.nextMatch = w.matchStart;
 		this.lookaheadRegExp.lastIndex = w.nextMatch;
 		var lookaheadMatch = this.lookaheadRegExp.exec(w.source);
@@ -155,6 +155,8 @@ config.formatters = [
 				listType = "dl";
 				itemType = "dd";
 			}
+			if (!baseType)
+			   baseType = listType;
 			listLevel = lookaheadMatch[0].length;
 			w.nextMatch += lookaheadMatch[0].length;
 			var t;
@@ -163,6 +165,9 @@ config.formatters = [
 					var target = (currLevel == 0) ? stack[stack.length-1] : stack[stack.length-1].lastChild;
 					stack.push(createTiddlyElement(target,listType));
 				}
+			} else if (listType!=baseType && listLevel==1) {
+				w.nextMatch -= lookaheadMatch[0].length;
+				return;
 			} else if(listLevel < currLevel) {
 				for(t=currLevel; t>listLevel; t--)
 					stack.pop();
