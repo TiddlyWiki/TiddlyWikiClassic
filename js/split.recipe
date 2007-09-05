@@ -7,6 +7,11 @@ js: FormatterHelpers.js
 js: Formatter.js
 js: Wikifier.js
 js: Macros.js
+js: NewTiddler.js
+js: Search.js
+js: Tabs.js
+js: Sparkline.js
+js: Toolbar.js
 js: Commands.js
 js: Tiddler.js
 js: TiddlyWiki.js
