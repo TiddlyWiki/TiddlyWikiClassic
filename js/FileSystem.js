@@ -16,10 +16,7 @@
 
 function convertUTF8ToUnicode(u)
 {
-	if(window.netscape == undefined)
-		return manualConvertUTF8ToUnicode(u);
-	else
-		return mozConvertUTF8ToUnicode(u);
+	return window.netscape == undefined ? manualConvertUTF8ToUnicode(u) : mozConvertUTF8ToUnicode(u);
 }
 
 function manualConvertUTF8ToUnicode(utf)
@@ -86,10 +83,7 @@ function mozConvertUnicodeToUTF8(s)
 	} // fallback
 	var u = converter.ConvertFromUnicode(s);
 	var fin = converter.Finish();
-	if(fin.length > 0)
-		return u + fin;
-	else
-		return u;
+	return fin.length > 0 ? u + fin : u;
 }
 
 function convertUriToUTF8(uri,charSet)
@@ -107,9 +101,7 @@ function convertUriToUTF8(uri,charSet)
 
 function saveFile(fileUrl,content)
 {
-	var r = null;
-	if(!r)
-		r = mozillaSaveFile(fileUrl,content);
+	var r = mozillaSaveFile(fileUrl,content);
 	if(!r)
 		r = ieSaveFile(fileUrl,content);
 	if(!r)
@@ -119,9 +111,7 @@ function saveFile(fileUrl,content)
 
 function loadFile(fileUrl)
 {
-	var r = null;
-	if((r == null) || (r == false))
-		r = mozillaLoadFile(fileUrl);
+	var r = mozillaLoadFile(fileUrl);
 	if((r == null) || (r == false))
 		r = ieLoadFile(fileUrl);
 	if((r == null) || (r == false))

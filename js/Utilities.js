@@ -2,28 +2,25 @@
 //-- TiddlyWiki-specific utility functions
 //--
 
-function createTiddlyButton(theParent,theText,theTooltip,theAction,theClass,theId,theAccessKey)
+function createTiddlyButton(parent,text,tooltip,action,className,id,accessKey)
 {
-	var theButton = document.createElement("a");
-	if(theAction) {
-		theButton.onclick = theAction;
-		theButton.setAttribute("href","javascript:;");
+	var btn = document.createElement("a");
+	if(action) {
+		btn.onclick = action;
+		btn.setAttribute("href","javascript:;");
 	}
-	if(theTooltip)
-		theButton.setAttribute("title",theTooltip);
-	if(theText)
-		theButton.appendChild(document.createTextNode(theText));
-	if(theClass)
-		theButton.className = theClass;
-	else
-		theButton.className = "button";
-	if(theId)
-		theButton.id = theId;
-	if(theParent)
-		theParent.appendChild(theButton);
-	if(theAccessKey)
-		theButton.setAttribute("accessKey",theAccessKey);
-	return theButton;
+	if(tooltip)
+		btn.setAttribute("title",tooltip);
+	if(text)
+		btn.appendChild(document.createTextNode(text));
+	btn.className = className ? className : "button";
+	if(id)
+		btn.id = id;
+	if(parent)
+		parent.appendChild(btn);
+	if(accessKey)
+		btn.setAttribute("accessKey",accessKey);
+	return btn;
 }
 
 //# Create a link to a particular tiddler
@@ -33,10 +30,10 @@ function createTiddlyButton(theParent,theText,theTooltip,theAction,theClass,theI
 //#   theClass - custom CSS class for the link
 //#   linkedFromTiddler - tiddler from which to inherit extended fields
 //#   noToggle - flag to force the link to open the target, even if chkToggleLinks is on
-function createTiddlyLink(place,title,includeText,theClass,isStatic,linkedFromTiddler,noToggle)
+function createTiddlyLink(place,title,includeText,className,isStatic,linkedFromTiddler,noToggle)
 {
 	var text = includeText ? title : null;
-	var i = getTiddlyLinkInfo(title,theClass);
+	var i = getTiddlyLinkInfo(title,className);
 	var btn = isStatic ? createExternalLink(place,store.getTiddlerText("SiteUrl",null) + "#" + title) : createTiddlyButton(place,text,i.subTitle,onClickTiddlerLink,i.classes);
 	btn.setAttribute("refresh","link");
 	btn.setAttribute("tiddlyLink",title);
@@ -86,31 +83,31 @@ function getTiddlyLinkInfo(title,currClasses)
 
 function createExternalLink(place,url)
 {
-	var theLink = document.createElement("a");
-	theLink.className = "externalLink";
-	theLink.href = url;
-	theLink.title = config.messages.externalLinkTooltip.format([url]);
+	var link = document.createElement("a");
+	link.className = "externalLink";
+	link.href = url;
+	link.title = config.messages.externalLinkTooltip.format([url]);
 	if(config.options.chkOpenInNewWindow)
-		theLink.target = "_blank";
-	place.appendChild(theLink);
-	return theLink;
+		link.target = "_blank";
+	place.appendChild(link);
+	return link;
 }
 
 // Event handler for clicking on a tiddly link
-function onClickTiddlerLink(e)
+function onClickTiddlerLink(ev)
 {
-	if(!e) e = window.event;
-	var theTarget = resolveTarget(e);
-	var theLink = theTarget;
+	var e = ev ? ev : window.event;
+	var target = resolveTarget(e);
+	var link = target;
 	var title = null;
 	var fields = null;
 	var noToggle = null;
 	do {
-		title = theLink.getAttribute("tiddlyLink");
-		fields = theLink.getAttribute("tiddlyFields");
-		noToggle = theLink.getAttribute("noToggle");
-		theLink = theLink.parentNode;
-	} while(title == null && theLink != null);
+		title = link.getAttribute("tiddlyLink");
+		fields = link.getAttribute("tiddlyFields");
+		noToggle = link.getAttribute("noToggle");
+		link = link.parentNode;
+	} while(title == null && link != null);
 	if(!store.isShadowTiddler(title)) {
 		var f = fields ? fields.decodeHashMap() : {};
 		fields = String.encodeHashMap(merge(f,config.defaultCustomFields,true));
@@ -121,7 +118,7 @@ function onClickTiddlerLink(e)
 			toggling = !toggling;
 		if(noToggle)
 			toggling = false;
-		story.displayTiddler(theTarget,title,null,true,null,fields,toggling);
+		story.displayTiddler(target,title,null,true,null,fields,toggling);
 	}
 	clearMessage();
 	return false;
@@ -130,11 +127,11 @@ function onClickTiddlerLink(e)
 // Create a button for a tag with a popup listing all the tiddlers that it tags
 function createTagButton(place,tag,excludeTiddler)
 {
-	var theTag = createTiddlyButton(place,tag,config.views.wikified.tag.tooltip.format([tag]),onClickTag);
-	theTag.setAttribute("tag",tag);
+	var btn = createTiddlyButton(place,tag,config.views.wikified.tag.tooltip.format([tag]),onClickTag);
+	btn.setAttribute("tag",tag);
 	if(excludeTiddler)
-		theTag.setAttribute("tiddler",excludeTiddler);
-	return theTag;
+		btn.setAttribute("tiddler",excludeTiddler);
+	return btn;
 }
 
 // Event handler for clicking on a tiddler tag
@@ -285,3 +282,4 @@ function glyph(name)
 		return "";
 	return g.codes[name][b];
 }
+

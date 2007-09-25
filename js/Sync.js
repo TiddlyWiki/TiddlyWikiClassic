@@ -42,7 +42,7 @@ config.macros.sync.startSync = function(place)
 		]);
 };
 
-config.macros.sync.getSyncableTiddlers = function ()
+config.macros.sync.getSyncableTiddlers = function()
 {
 	var list = [];
 	store.forEachTiddler(function(title,tiddler) {

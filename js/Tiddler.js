@@ -164,15 +164,15 @@ Tiddler.prototype.changed = function()
 
 Tiddler.prototype.getSubtitle = function()
 {
-	var theModifier = this.modifier;
-	if(!theModifier)
-		theModifier = config.messages.subtitleUnknown;
-	var theModified = this.modified;
-	if(theModified)
-		theModified = theModified.toLocaleString();
+	var modifier = this.modifier;
+	if(!modifier)
+		modifier = config.messages.subtitleUnknown;
+	var modified = this.modified;
+	if(modified)
+		modified = modified.toLocaleString();
 	else
-		theModified = config.messages.subtitleUnknown;
-	return config.messages.tiddlerLinkTooltip.format([this.title,theModifier,theModified]);
+		modified = config.messages.subtitleUnknown;
+	return config.messages.tiddlerLinkTooltip.format([this.title,modifier,modified]);
 };
 
 Tiddler.prototype.isReadOnly = function()
@@ -205,9 +205,6 @@ Tiddler.prototype.getServerType = function()
 Tiddler.prototype.getAdaptor = function()
 {
 	var serverType = this.getServerType();
-	if(serverType)
-		return new config.adaptors[serverType];
-	else
-		return null;
+	return serverType ? new config.adaptors[serverType] : null;
 };
 
