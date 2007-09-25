@@ -22,7 +22,7 @@ var useJavaSaver = config.browser.isSafari || config.browser.isOpera;
 // Starting up
 function main()
 {
-	var t9,t8,t7,t6,t5,t4,t3,t2,t1,t0 = new Date();
+	var t10,t9,t8,t7,t6,t5,t4,t3,t2,t1,t0 = new Date();
 	startingUp = true;
 	window.onbeforeunload = function(e) {if(window.confirmExit) return confirmExit();};
 	params = getParameters();
@@ -61,16 +61,18 @@ function main()
 		if(config.macros[m].init)
 			config.macros[m].init();
 	}
+	t9 = new Date();
 	if(!readOnly)
 		backstage.init();
-	t9 = new Date();
+	t10 = new Date();
 	if(config.options.chkDisplayStartupTime) {
-		displayMessage("Load in " + (t2-t1) + " ms");
-		displayMessage("Loadshadows in " + (t3-t2) + " ms");
-		displayMessage("Loadplugins in " + (t5-t4) + " ms");
-		displayMessage("Notify in " + (t7-t6) + " ms");
-		displayMessage("Restart in " + (t8-t7) + " ms");
-		displayMessage("Total startup in " + (t9-t0) + " ms");
+		displayMessage("LoadFromDiv " + (t2-t1) + " ms");
+		displayMessage("LoadShadows " + (t3-t2) + " ms");
+		displayMessage("LoadPlugins " + (t5-t4) + " ms");
+		displayMessage("Notify " + (t7-t6) + " ms");
+		displayMessage("Restart " + (t8-t7) + " ms");
+		displayMessage("Macro init " + (t9-t8) + " ms");
+		displayMessage("Total: " + (t10-t0) + " ms");
 	}
 	startingUp = false;
 }
