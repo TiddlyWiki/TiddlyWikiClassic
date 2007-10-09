@@ -37,7 +37,7 @@ function createTiddlyCheckbox(theParent,caption,checked,onChange)
 	return cb;
 }
 
-function createTiddlyElement(theParent,theElement,theID,theClass,theText)
+function createTiddlyElement(theParent,theElement,theID,theClass,theText,attribs)
 {
 	var e = document.createElement(theElement);
 	if(theClass != null)
@@ -46,6 +46,11 @@ function createTiddlyElement(theParent,theElement,theID,theClass,theText)
 		e.setAttribute("id",theID);
 	if(theText != null)
 		e.appendChild(document.createTextNode(theText));
+	if(attribs){
+		for(var n in attribs){
+			e.setAttribute(n,attribs[n]);
+		}
+	}
 	if(theParent != null)
 		theParent.appendChild(e);
 	return e;

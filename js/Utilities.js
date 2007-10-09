@@ -2,7 +2,7 @@
 //-- TiddlyWiki-specific utility functions
 //--
 
-function createTiddlyButton(parent,text,tooltip,action,className,id,accessKey)
+function createTiddlyButton(parent,text,tooltip,action,className,id,accessKey,attribs)
 {
 	var btn = document.createElement("a");
 	if(action) {
@@ -16,6 +16,11 @@ function createTiddlyButton(parent,text,tooltip,action,className,id,accessKey)
 	btn.className = className ? className : "button";
 	if(id)
 		btn.id = id;
+	if(attribs){
+		for(var n in attribs){
+			e.setAttribute(n,attribs[n]);
+		}
+	}
 	if(parent)
 		parent.appendChild(btn);
 	if(accessKey)
