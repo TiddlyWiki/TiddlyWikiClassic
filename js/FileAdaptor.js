@@ -89,8 +89,10 @@ FileAdaptor.prototype.openWorkspace = function(workspace,context,userParams,call
 };
 
 // Gets the list of tiddlers within a given workspace
-//#   callback - function to be called on completion
 //#   context - passed on to callback function
+//#   userParams - user parameters passed through to the callback function
+//#   callback - function to be called on completion
+//#   filter - filter expression
 //# Return value is true if the request was successfully issued,
 //#   or an error description string if there was a problem
 //# The callback parameters are callback(status,adaptor,context,tiddlerList)
@@ -98,23 +100,16 @@ FileAdaptor.prototype.openWorkspace = function(workspace,context,userParams,call
 //#   adaptor - reference to this adaptor object
 //#   context - parameters as originally passed into the getTiddlerList function
 //#   tiddlerList - array of objects describing each tiddler
-FileAdaptor.prototype.getTiddlerList = function(context,userParams,callback)
+FileAdaptor.prototype.getTiddlerList = function(context,userParams,callback,filter)
 {
 	if(!this.store)
 		return FileAdaptor.NotLoadedError;
 	if(!context)
 		context = {};
-	context.tiddlers = [];
-	this.store.forEachTiddler(function(title,tiddler)
-		{
-		var t = new Tiddler(title);
-		t.text = tiddler.text;
-		t.modified = tiddler.modified;
-		t.modifier = tiddler.modifier;
-		t.fields['server.page.revision'] = tiddler.modified.convertToYYYYMMDDHHMM();
-		t.tags = tiddler.tags;
-		context.tiddlers.push(t);
-		});
+	context.tiddlers = this.store.filterTiddlers(filter);
+	for(var t=0; t<context.tiddlers.length; t++) {
+		context.tiddlers[t].fields['server.page.revision'] = context.tiddlers[t].modified.convertToYYYYMMDDHHMM();
+	}
 	context.status = true;
 	window.setTimeout(function() {callback(context,userParams);},10);
 	return true;

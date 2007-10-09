@@ -60,6 +60,18 @@ config.macros.list.touched.handler = function(params)
 	return store.getTouched();
 };
 
+config.macros.list.filter.handler = function(params)
+{
+	var filter = params[1];
+	var results = [];
+	if(filter) {
+		var tiddlers = store.filterTiddlers(filter);
+		for(var t=0; t<tiddlers.length; t++)
+			results.push(tiddlers[t].title);
+	}
+	return results;
+};
+
 config.macros.allTags.handler = function(place,macroName,params)
 {
 	var tags = store.getTags(params[0]);

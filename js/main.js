@@ -82,8 +82,10 @@ function restart()
 {
 	invokeParamifier(params,"onstart");
 	if(story.isEmpty()) {
-		var defaultParams = store.getTiddlerText("DefaultTiddlers").parseParams("open",null,false);
-		invokeParamifier(defaultParams,"onstart");
+		var tiddlers = store.filterTiddlers(store.getTiddlerText("DefaultTiddlers"));
+		for(var t=0; t<tiddlers.length; t++) {
+			story.displayTiddler("bottom",tiddlers[t].title);
+		}
 	}
 	window.scrollTo(0,0);
 }

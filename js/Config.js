@@ -105,7 +105,8 @@ config.macros = {
 		missing: {},
 		orphans: {},
 		shadowed: {},
-		touched: {}
+		touched: {},
+		filter: {}
 	},
 	closeAll: {},
 	permaview: {},

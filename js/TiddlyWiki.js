@@ -530,3 +530,40 @@ TiddlyWiki.prototype.getSaver = function()
 	return this.saver;
 };
 
+// Filter a list of tiddlers
+//#   filter - filter expression (eg "tidlertitle [[multi word tiddler title]] [tag[systemConfig]]")
+//# Returns an array of Tiddler() objects that match the filter expression
+TiddlyWiki.prototype.filterTiddlers = function(filter)
+{
+	var results = [];
+	if(filter) {
+		var re = /(\w+)|(?:\[([ \w]+)\[([ \w]+)\]\])|(?:\[\[([ \w]+)\]\])/mg;
+		var match = re.exec(filter);
+		while(match) {
+			if(match[1]) {
+				//# matches (eg) text
+				var tiddler = this.fetchTiddler(match[1])
+				if(tiddler)
+					results.push(tiddler);
+			} else if(match[2]) {
+				//# matches (eg) [text[more text]]
+				if(match[2]=="tag") {
+					this.forEachTiddler(function(title,tiddler) {
+						if(tiddler.isTagged(match[3]))
+							results.push(tiddler);
+					});
+				}
+			} else if(match[4]) {
+				//# matches (eg) [[tiddler title]]
+				var tiddler = this.fetchTiddler(match[4])
+				if(tiddler)
+					results.push(tiddler);
+			}			
+			match = re.exec(filter);
+		}
+	} else {
+		this.forEachTiddler(function(title,tiddler) {results.push(tiddler);});
+	}
+	return results;
+};
+
