@@ -70,7 +70,7 @@ config.macros.newJournal.handler = function(place,macroName,params,wikifier,para
 {
 	if(!readOnly) {
 		params = paramString.parseParams("anon",null,true,false,false);
-		var title = params[1] && params[1].name == "anon" ? params[1].value : "";
+		var title = params[1] && params[1].name == "anon" ? params[1].value : config.macros.timeline.dateFormat;
 		title = getParam(params,"title",title);
 		config.macros.newTiddler.createNewTiddlerButton(place,title,params,this.label,this.prompt,this.accessKey,"text",true);
 	}
