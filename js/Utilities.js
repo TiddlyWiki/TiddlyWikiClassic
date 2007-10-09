@@ -118,6 +118,8 @@ function onClickTiddlerLink(ev)
 			toggling = !toggling;
 		if(noToggle)
 			toggling = false;
+		if(store.getTiddler(title))
+			fields = null;
 		story.displayTiddler(target,title,null,true,null,fields,toggling);
 	}
 	clearMessage();

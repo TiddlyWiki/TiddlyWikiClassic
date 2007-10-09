@@ -198,12 +198,7 @@ Story.prototype.refreshTiddler = function(title,template,force,customFields,defa
 		var currTemplate = tiddlerElem.getAttribute("template");
 		if((template != currTemplate) || force) {
 			var tiddler = store.getTiddler(title);
-			if(tiddler) {
-				var f = tiddler.fields;
-				if(customFields)
-					f = merge(customFields.decodeHashMap(),f);
-				customFields = String.encodeHashMap(f);
-			} else {
+			if(!tiddler) {
 				tiddler = new Tiddler();
 				if(store.isShadowTiddler(title)) {
 					tiddler.set(title,store.getTiddlerText(title),config.views.wikified.shadowModifier,version.date,[],version.date);
