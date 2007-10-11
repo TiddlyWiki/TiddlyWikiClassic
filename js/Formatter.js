@@ -330,19 +330,14 @@ config.formatters = [
 },
 
 {
-	name: "unWikiLink",
-	match: config.textPrimitives.unWikiLink+config.textPrimitives.wikiLink,
-	handler: function(w)
-	{
-		w.outputText(w.output,w.matchStart+1,w.nextMatch);
-	}
-},
-
-{
 	name: "wikiLink",
-	match: config.textPrimitives.wikiLink,
+	match: config.textPrimitives.unWikiLink+"?"+config.textPrimitives.wikiLink,
 	handler: function(w)
 	{
+		if(w.matchText.substr(0,1) == config.textPrimitives.unWikiLink) {
+			w.outputText(w.output,w.matchStart+1,w.nextMatch);
+			return;
+		}
 		if(w.matchStart > 0) {
 			var preRegExp = new RegExp(config.textPrimitives.anyLetterStrict,"mg");
 			preRegExp.lastIndex = w.matchStart-1;
