@@ -537,7 +537,7 @@ TiddlyWiki.prototype.filterTiddlers = function(filter)
 {
 	var results = [];
 	if(filter) {
-		var re = /(\w+)|(?:\[([ \w]+)\[([ \w]+)\]\])|(?:\[\[([ \w]+)\]\])/mg;
+		var re = /([^ \[\]]+)|(?:\[([ \w]+)\[([^\]]+)\]\])|(?:\[\[([^\]]+)\]\])/mg;
 		var match = re.exec(filter);
 		while(match) {
 			if(match[1]) {
