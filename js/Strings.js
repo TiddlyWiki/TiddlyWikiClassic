@@ -196,8 +196,10 @@ String.prototype.readBracketedList = function(unique)
 {
 	var p = this.parseParams("list",null,false,true);
 	var n = [];
-	for(var t=1; t<p.length; t++)
-		n.pushUnique(p[t].value,unique);
+	for(var t=1; t<p.length; t++) {
+		if(p[t].value)
+			n.pushUnique(p[t].value,unique);
+	}
 	return n;
 };
 
