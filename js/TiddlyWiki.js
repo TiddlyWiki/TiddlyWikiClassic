@@ -364,9 +364,9 @@ TiddlyWiki.prototype.allTiddlersAsHtml = function()
 };
 
 // Return an array of tiddlers matching a search regular expression
-TiddlyWiki.prototype.search = function(searchRegExp,sortField,excludeTag)
+TiddlyWiki.prototype.search = function(searchRegExp,sortField,excludeTag,match)
 {
-	var candidates = this.reverseLookup("tags",excludeTag,false);
+	var candidates = this.reverseLookup("tags",excludeTag,!!match);
 	var results = [];
 	for(var t=0; t<candidates.length; t++) {
 		if((candidates[t].title.search(searchRegExp) != -1) || (candidates[t].text.search(searchRegExp) != -1))
