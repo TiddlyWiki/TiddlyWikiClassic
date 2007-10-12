@@ -5,11 +5,7 @@
 config.macros.today.handler = function(place,macroName,params)
 {
 	var now = new Date();
-	var text;
-	if(params[0])
-		text = now.formatString(params[0].trim());
-	else
-		text = now.toLocaleString();
+	var text = params[0] ? now.formatString(params[0].trim()) : text = now.toLocaleString();
 	createTiddlyElement(place,"span",null,null,text);
 };
 
@@ -100,13 +96,12 @@ config.macros.timeline.handler = function(place,macroName,params)
 		var tiddler = tiddlers[t];
 		var theDay = tiddler[field].convertToLocalYYYYMMDDHHMM().substr(0,8);
 		if(theDay != lastDay) {
-			var theDateList = document.createElement("ul");
-			place.appendChild(theDateList);
-			createTiddlyElement(theDateList,"li",null,"listTitle",tiddler[field].formatString(dateFormat));
+			var ul = document.createElement("ul");
+			place.appendChild(ul);
+			createTiddlyElement(ul,"li",null,"listTitle",tiddler[field].formatString(dateFormat));
 			lastDay = theDay;
 		}
-		var theDateListItem = createTiddlyElement(theDateList,"li",null,"listLink");
-		theDateListItem.appendChild(createTiddlyLink(place,tiddler.title,true));
+		createTiddlyElement(ul,"li",null,"listLink").appendChild(createTiddlyLink(place,tiddler.title,true));
 	}
 };
 
@@ -156,37 +151,37 @@ config.macros.tag.handler = function(place,macroName,params)
 config.macros.tags.handler = function(place,macroName,params,wikifier,paramString,tiddler)
 {
 	params = paramString.parseParams("anon",null,true,false,false);
-	var theList = createTiddlyElement(place,"ul");
+	var ul = createTiddlyElement(place,"ul");
 	var title = getParam(params,"anon","");
 	if(title && store.tiddlerExists(title))
 		tiddler = store.getTiddler(title);
 	var sep = getParam(params,"sep"," ");
 	var lingo = config.views.wikified.tag;
 	var prompt = tiddler.tags.length == 0 ? lingo.labelNoTags : lingo.labelTags;
-	createTiddlyElement(theList,"li",null,"listTitle",prompt.format([tiddler.title]));
+	createTiddlyElement(ul,"li",null,"listTitle",prompt.format([tiddler.title]));
 	for(var t=0; t<tiddler.tags.length; t++) {
-		createTagButton(createTiddlyElement(theList,"li"),tiddler.tags[t],tiddler.title);
+		createTagButton(createTiddlyElement(ul,"li"),tiddler.tags[t],tiddler.title);
 		if(t<tiddler.tags.length-1)
-			createTiddlyText(theList,sep);
+			createTiddlyText(ul,sep);
 	}
 };
 
 config.macros.tagging.handler = function(place,macroName,params,wikifier,paramString,tiddler)
 {
 	params = paramString.parseParams("anon",null,true,false,false);
-	var theList = createTiddlyElement(place,"ul");
+	var ul = createTiddlyElement(place,"ul");
 	var title = getParam(params,"anon","");
 	if(title == "" && tiddler instanceof Tiddler)
 		title = tiddler.title;
 	var sep = getParam(params,"sep"," ");
-	theList.setAttribute("title",this.tooltip.format([title]));
+	ul.setAttribute("title",this.tooltip.format([title]));
 	var tagged = store.getTaggedTiddlers(title);
 	var prompt = tagged.length == 0 ? this.labelNotTag : this.label;
-	createTiddlyElement(theList,"li",null,"listTitle",prompt.format([title,tagged.length]));
+	createTiddlyElement(ul,"li",null,"listTitle",prompt.format([title,tagged.length]));
 	for(var t=0; t<tagged.length; t++) {
-		createTiddlyLink(createTiddlyElement(theList,"li"),tagged[t].title,true);
+		createTiddlyLink(createTiddlyElement(ul,"li"),tagged[t].title,true);
 		if(t<tagged.length-1)
-			createTiddlyText(theList,sep);
+			createTiddlyText(ul,sep);
 	}
 };
 
@@ -263,29 +258,23 @@ config.macros.slider.handler = function(place,macroName,params)
 // <<gradient [[tiddler name]] vert|horiz rgb rgb rgb rgb... >>
 config.macros.gradient.handler = function(place,macroName,params,wikifier)
 {
-	var terminator = ">>";
-	var panel;
-	if(wikifier)
-		panel = createTiddlyElement(place,"div",null,"gradient");
-	else
-		panel = place;
+	var panel = wikifier ? createTiddlyElement(place,"div",null,"gradient") : place;
 	panel.style.position = "relative";
 	panel.style.overflow = "hidden";
 	panel.style.zIndex = "0";
-	var t;
 	if(wikifier) {
 		var styles = config.formatterHelpers.inlineCssHelper(wikifier);
 		config.formatterHelpers.applyCssHelper(panel,styles);
 	}
 	var colours = [];
-	for(t=1; t<params.length; t++) {
+	for(var t=1; t<params.length; t++) {
 		var c = new RGB(params[t]);
 		if(c)
 			colours.push(c);
 	}
 	drawGradient(panel,params[0] != "vert",colours);
 	if(wikifier)
-		wikifier.subWikify(panel,terminator);
+		wikifier.subWikify(panel,">>");
 	if(document.all) {
 		panel.style.height = "100%";
 		panel.style.width = "100%";
@@ -383,9 +372,9 @@ config.macros.tagChooser.onClick = function(ev)
 	if(tags.length == 0)
 		createTiddlyText(createTiddlyElement(popup,"li"),lingo.popupNone);
 	for(var t=0; t<tags.length; t++) {
-		var theTag = createTiddlyButton(createTiddlyElement(popup,"li"),tags[t][0],lingo.tagTooltip.format([tags[t][0]]),config.macros.tagChooser.onTagClick);
-		theTag.setAttribute("tag",tags[t][0]);
-		theTag.setAttribute("tiddler",this.getAttribute("tiddler"));
+		var tag = createTiddlyButton(createTiddlyElement(popup,"li"),tags[t][0],lingo.tagTooltip.format([tags[t][0]]),config.macros.tagChooser.onTagClick);
+		tag.setAttribute("tag",tags[t][0]);
+		tag.setAttribute("tiddler",this.getAttribute("tiddler"));
 	}
 	Popup.show();
 	e.cancelBubble = true;
@@ -406,10 +395,9 @@ config.macros.tagChooser.onTagClick = function(ev)
 config.macros.tagChooser.handler = function(place,macroName,params,wikifier,paramString,tiddler)
 {
 	if(tiddler instanceof Tiddler) {
-		var title = tiddler.title;
 		var lingo = config.views.editor.tagChooser;
 		var btn = createTiddlyButton(place,lingo.text,lingo.tooltip,this.onClick);
-		btn.setAttribute("tiddler",title);
+		btn.setAttribute("tiddler",tiddler.title);
 	}
 };
 

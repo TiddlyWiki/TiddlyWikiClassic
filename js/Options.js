@@ -180,3 +180,4 @@ config.macros.options.onChangeUnknown = function(e)
 	config.macros.options.refreshOptions(listWrapper,this.checked);
 	return false;
 };
+

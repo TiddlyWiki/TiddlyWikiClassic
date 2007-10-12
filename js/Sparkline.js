@@ -2,6 +2,7 @@
 //-- Sparklines
 //--
 
+config.macros.sparkline = {};
 config.macros.sparkline.handler = function(place,macroName,params)
 {
 	var data = [];
@@ -38,3 +39,4 @@ config.macros.sparkline.handler = function(place,macroName,params)
 		box.appendChild(tick);
 	}
 };
+

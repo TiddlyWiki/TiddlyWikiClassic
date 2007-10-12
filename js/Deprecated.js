@@ -24,6 +24,7 @@ config.formatterHelpers.monospacedByLineHelper = function(w)
 };
 
 // @Deprecated: Use <br> or <br /> instead of <<br>>
+config.macros.br = {};
 config.macros.br.handler = function(place)
 {
 	createTiddlyElement(place,"br");

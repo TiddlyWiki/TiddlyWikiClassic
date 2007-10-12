@@ -52,7 +52,7 @@ var backstage = {
 			this.hide();
 	},
 
-	isVisible: function () {
+	isVisible: function() {
 		return this.area ? this.area.style.display == "block" : false;
 	},
 

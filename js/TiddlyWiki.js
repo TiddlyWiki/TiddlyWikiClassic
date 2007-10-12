@@ -542,7 +542,7 @@ TiddlyWiki.prototype.filterTiddlers = function(filter)
 		while(match) {
 			if(match[1]) {
 				//# matches (eg) text
-				var tiddler = this.fetchTiddler(match[1])
+				var tiddler = this.fetchTiddler(match[1]);
 				if(tiddler)
 					results.push(tiddler);
 			} else if(match[2]) {
@@ -555,7 +555,7 @@ TiddlyWiki.prototype.filterTiddlers = function(filter)
 				}
 			} else if(match[4]) {
 				//# matches (eg) [[tiddler title]]
-				var tiddler = this.fetchTiddler(match[4])
+				var tiddler = this.fetchTiddler(match[4]);
 				if(tiddler)
 					results.push(tiddler);
 			}			
