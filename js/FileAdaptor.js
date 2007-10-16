@@ -99,14 +99,19 @@ FileAdaptor.prototype.openWorkspace = function(workspace,context,userParams,call
 //#   status - true if OK, false if error
 //#   adaptor - reference to this adaptor object
 //#   context - parameters as originally passed into the getTiddlerList function
-//#   tiddlerList - array of objects describing each tiddler
+//#   context.tiddlers - array of tiddler objects
 FileAdaptor.prototype.getTiddlerList = function(context,userParams,callback,filter)
 {
 	if(!this.store)
 		return FileAdaptor.NotLoadedError;
 	if(!context)
 		context = {};
-	context.tiddlers = this.store.filterTiddlers(filter);
+	if(filter) {
+		context.tiddlers = this.store.filterTiddlers(filter);
+	} else {
+		context.tiddlers = [];
+		this.store.forEachTiddler(function(title,tiddler) {context.tiddlers.push(tiddler);});
+	}
 	for(var t=0; t<context.tiddlers.length; t++) {
 		context.tiddlers[t].fields['server.page.revision'] = context.tiddlers[t].modified.convertToYYYYMMDDHHMM();
 	}
