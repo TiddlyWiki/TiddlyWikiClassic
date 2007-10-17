@@ -23,6 +23,7 @@ var httpStatus = {
 	OK: 200,
 	ContentCreated: 201,
 	NoContent: 204,
+	MultiStatus: 207,
 	Unauthorized: 401,
 	Forbidden: 403,
 	NotFound: 404,
@@ -49,14 +50,14 @@ var httpStatus = {
 //#     xhr - the underlying XMLHttpRequest object
 function doHttp(type,url,data,contentType,username,password,callback,params,headers)
 {
-	// Get an xhr object
+	//# Get an xhr object
 	var x = getXMLHttpRequest();
 	if(!x)
 		return "Can't create XMLHttpRequest object";
-	// Install callback
+	//# Install callback
 	x.onreadystatechange = function() {
 		if (x.readyState == 4 && callback && (x.status !== undefined)) {
-			if([0, httpStatus.OK, httpStatus.ContentCreated, httpStatus.NoContent].contains(x.status))
+			if([0, httpStatus.OK, httpStatus.ContentCreated, httpStatus.NoContent, httpStatus.MultiStatus].contains(x.status))
 				callback(true,params,x.responseText,url,x);
 			else
 				callback(false,params,null,url,x);
@@ -64,23 +65,23 @@ function doHttp(type,url,data,contentType,username,password,callback,params,head
 			x = null;
 		}
 	};
-	// Send request
+	//# Send request
 	if(window.Components && window.netscape && window.netscape.security && document.location.protocol.indexOf("http") == -1)
 		window.netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
 	try {
 		url = url + (url.indexOf("?") < 0 ? "?" : "&") + "nocache=" + Math.random();
 		x.open(type,url,true,username,password);
-		if (data)
+		if(data)
 			x.setRequestHeader("Content-Type", contentType ? contentType : "application/x-www-form-urlencoded");
-		if (x.overrideMimeType)
+		if(x.overrideMimeType)
 			x.setRequestHeader("Connection", "close");
 		if(headers) {
-			for(n in headers)
+			for(var n in headers)
 				x.setRequestHeader(n,headers[n]);
 		}
 		x.setRequestHeader("X-Requested-With", "TiddlyWiki " + version.major + "." + version.minor + "." + version.revision + (version.beta ? " (beta " + version.beta + ")" : ""));
 		x.send(data);
-	} catch (ex) {
+	} catch(ex) {
 		return exceptionText(ex);
 	}
 	return x;
