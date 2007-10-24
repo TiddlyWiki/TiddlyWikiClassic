@@ -11,7 +11,7 @@ function Animator()
 }
 
 // Start animation engine
-Animator.prototype.startAnimating = function() // Variable number of arguments
+Animator.prototype.startAnimating = function() //# Variable number of arguments
 {
 	for(var t=0; t<arguments.length; t++)
 		this.animations.push(arguments[t]);
@@ -38,7 +38,6 @@ Animator.prototype.doAnimate = function(me)
 	}
 };
 
-// Map a 0..1 value to 0..1, but slow down at the start and end
 Animator.slowInSlowOut = function(progress)
 {
 	return(1-((Math.cos(progress * Math.PI)+1)/2));

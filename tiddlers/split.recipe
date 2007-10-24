@@ -1,3 +1,5 @@
+prehead: MarkupPreHead.tiddler
+shadow: MarkupPreHead.tiddler
 shadow: ColorPalette.tiddler
 shadow: StyleSheetColors.tiddler
 shadow: StyleSheetLayout.tiddler
@@ -8,3 +10,4 @@ shadow: ViewTemplate.tiddler
 shadow: EditTemplate.tiddler
 shadow: GettingStarted.tiddler
 shadow: OptionsPanel.tiddler
+shadow: ImportTiddlers.tiddler

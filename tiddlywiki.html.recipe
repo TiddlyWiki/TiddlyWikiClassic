@@ -1,5 +1,4 @@
 template: html/tiddlywiki.template.html
-version: js/Version.js
 recipe: tiddlers/split.recipe
 recipe: js/split.recipe
 copy: java/TiddlySaver.jar

@@ -219,7 +219,7 @@ config.glyphs = {
 
 config.shadowTiddlers = {
 	StyleSheet: "",
-	MarkupPreHead: "<!--{{{-->\n<link rel='alternate' type='application/rss+xml' title='RSS' href='index.xml'/>\n<!--}}}-->",
+	MarkupPreHead: "",
 	MarkupPostHead: "",
 	MarkupPreBody: "",
 	MarkupPostBody: "",
@@ -230,7 +230,6 @@ config.shadowTiddlers = {
 	TabMoreOrphans: '<<list orphans>>',
 	TabMoreShadowed: '<<list shadowed>>',
 	AdvancedOptions: '<<options>>',
-	PluginManager: '<<plugins>>',
-	ImportTiddlers: '<<importTiddlers>>'
+	PluginManager: '<<plugins>>'
 };
 

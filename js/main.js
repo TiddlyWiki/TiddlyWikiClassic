@@ -7,7 +7,7 @@ var store = null; // TiddlyWiki storage
 var story = null; // Main story
 var formatter = null; // Default formatters for the wikifier
 config.parsers = {}; // Hashmap of alternative parsers for the wikifier
-var anim = new Animator(); // Animation engine
+var anim = typeof Animator == "function" ? new Animator() : null; // Animation engine
 var readOnly = false; // Whether we're in readonly mode
 var highlightHack = null; // Embarrassing hack department...
 var hadConfirmExit = false; // Don't warn more than once
