@@ -126,7 +126,7 @@ function saveChanges(onlyIfDirty,tiddlers)
 
 function saveBackup(localPath,original)
 {
-	// Save the backup
+	//# Save the backup
 	if(config.options.chkSaveBackups) {
 		var backupPath = getBackupPath(localPath);
 		var backup = config.browser.isIE ? ieCopyFile(backupPath,localPath) : saveFile(backupPath,original);
@@ -220,19 +220,23 @@ function getLocalPath(origPath)
 	return localPath;
 }
 
-function getBackupPath(localPath)
+function getBackupPath(localPath,title,extension)
 {
-	var backSlash = true;
+	var slash = "\\";
 	var dirPathPos = localPath.lastIndexOf("\\");
 	if(dirPathPos == -1) {
 		dirPathPos = localPath.lastIndexOf("/");
-		backSlash = false;
+		slash = "/";
 	}
 	var backupFolder = config.options.txtBackupFolder;
 	if(!backupFolder || backupFolder == "")
 		backupFolder = ".";
-	var backupPath = localPath.substr(0,dirPathPos) + (backSlash ? "\\" : "/") + backupFolder + localPath.substr(dirPathPos);
-	backupPath = backupPath.substr(0,backupPath.lastIndexOf(".")) + "." + (new Date()).convertToYYYYMMDDHHMMSSMMM() + ".html";
+	var backupPath = localPath.substr(0,dirPathPos) + slash + backupFolder + localPath.substr(dirPathPos);
+	backupPath = backupPath.substr(0,backupPath.lastIndexOf(".")) + ".";
+	//# replace illegal filename characters(// \/:*?"<>|) and space with underscore 
+	if(title)
+		backupPath += title.replace(/[\\\/\*\?\":<> ]/g,"_") + ".";
+	backupPath += (new Date()).convertToYYYYMMDDHHMMSSMMM() + "." + (extension ? extension : "html");
 	return backupPath;
 }
 
