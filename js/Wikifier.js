@@ -91,7 +91,7 @@ function Wikifier(source,formatter,highlightRegExp,tiddler)
 	this.output = null;
 	this.formatter = formatter;
 	this.nextMatch = 0;
-	this.autoLinkWikiWords = tiddler && tiddler.autoLinkWikiWords() == false ? false : true;
+	this.autoLinkWikiWords = tiddler && tiddler.autoLinkWikiWords();
 	this.highlightRegExp = highlightRegExp;
 	this.highlightMatch = null;
 	this.isStatic = false;
@@ -113,7 +113,7 @@ Wikifier.prototype.wikifyPlain = function()
 
 Wikifier.prototype.subWikify = function(output,terminator)
 {
-	//# Handle the terminated and unterminated cases separately
+	//# Handle the terminated and unterminated cases separately, this speeds up wikifikation by about 30%
 	if(terminator)
 		this.subWikifyTerm(output,new RegExp("(" + terminator + ")","mg"));
 	else
@@ -122,7 +122,7 @@ Wikifier.prototype.subWikify = function(output,terminator)
 
 Wikifier.prototype.subWikifyUnterm = function(output)
 {
-	// subWikify() can be indirectly recursive, so we need to save the old output pointer
+	//# subWikify can be indirectly recursive, so we need to save the old output pointer
 	var oldOutput = this.output;
 	this.output = output;
 	//# Get the first match
@@ -159,10 +159,10 @@ Wikifier.prototype.subWikifyUnterm = function(output)
 
 Wikifier.prototype.subWikifyTerm = function(output,terminatorRegExp)
 {
-	// subWikify() can be indirectly recursive, so we need to save the old output pointer
+	//# subWikify can be indirectly recursive, so we need to save the old output pointer
 	var oldOutput = this.output;
 	this.output = output;
-	// Get the first matches for the formatter and terminator RegExps
+	//# Get the first matches for the formatter and terminator RegExps
 	terminatorRegExp.lastIndex = this.nextMatch;
 	var terminatorMatch = terminatorRegExp.exec(this.source);
 	this.formatter.formatterRegExp.lastIndex = this.nextMatch;
