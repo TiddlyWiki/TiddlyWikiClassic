@@ -11,7 +11,7 @@ js: Macros.js
 js: NewTiddler.js
 js: Search.js
 js: Tabs.js
-js: Sparkline.js
+plugin: Sparkline.js title="SplarklinePlugin" tags="systemConfig excludeLists excludeSearch" Description="Sparklines"
 js: Toolbar.js
 js: Commands.js
 js: Tiddler.js
@@ -41,10 +41,11 @@ js: ListView.js
 js: BasicTypes.js
 js: Strings.js
 js: Dates.js
-js: Crypto.js
+plugin: Crypto.js title="CryptoFunctionsPlugin" tags="systemConfig excludeLists excludeSearch" Description="Support for cryptographic functions"
 js: RGB.js
 js: Dom.js
 js: LoaderSaver.js
 js: TW21Loader.js
 js: TW21Saver.js
-js: Deprecated.js
+plugin: Deprecated.js title="DeprecatedFunctionsPlugin" tags="systemConfig excludeLists excludeSearch" Description="Support for deprecated functions removed from core"
+
