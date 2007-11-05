@@ -323,7 +323,8 @@ config.macros.view.handler = function(place,macroName,params,wikifier,paramStrin
 config.macros.edit.handler = function(place,macroName,params,wikifier,paramString,tiddler)
 {
 	var field = params[0];
-	var rows = params[1];
+	var rows = params[1] || 0;
+	var defVal = params[2] || '';
 	if((tiddler instanceof Tiddler) && field) {
 		story.setDirty(tiddler.title,true);
 		var e,v;
@@ -333,10 +334,7 @@ config.macros.edit.handler = function(place,macroName,params,wikifier,paramStrin
 				e.setAttribute("readOnly","readOnly");
 			e.setAttribute("edit",field);
 			e.setAttribute("type","text");
-			v = store.getValue(tiddler,field);
-			if(!v)
-				v = "";
-			e.value = v;
+			e.value = store.getValue(tiddler,field) || defVal;
 			e.setAttribute("size","40");
 			e.setAttribute("autocomplete","off");
 			place.appendChild(e);
@@ -346,10 +344,7 @@ config.macros.edit.handler = function(place,macroName,params,wikifier,paramStrin
 			e = createTiddlyElement(wrapper2,"textarea");
 			if(tiddler.isReadOnly())
 				e.setAttribute("readOnly","readOnly");
-			v = store.getValue(tiddler,field);
-			if(!v)
-				v = "";
-			e.value = v;
+			e.value = v = store.getValue(tiddler,field) || defVal;
 			rows = rows ? rows : 10;
 			var lines = v.match(/\n/mg);
 			var maxLines = Math.max(parseInt(config.options.txtMaxEditRows),5);
@@ -360,6 +355,7 @@ config.macros.edit.handler = function(place,macroName,params,wikifier,paramStrin
 			e.setAttribute("edit",field);
 			place.appendChild(wrapper1);
 		}
+		return e;
 	}
 };
 
