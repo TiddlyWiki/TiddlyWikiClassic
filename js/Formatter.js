@@ -11,7 +11,6 @@ config.formatters = [
 	cellRegExp: /(?:\|([^\n\|]*)\|)|(\|[fhck]?$\n?)/mg,
 	cellTermRegExp: /((?:\x20*)\|)/mg,
 	rowTypes: {"c":"caption", "h":"thead", "":"tbody", "f":"tfoot"},
-
 	handler: function(w)
 	{
 		var table = createTiddlyElement(w.output,"table",null,"twtable");
@@ -158,8 +157,8 @@ config.formatters = [
 				listType = "dl";
 				itemType = "dd";
 			}
-			if (!baseType)
-			   baseType = listType;
+			if(!baseType)
+				baseType = listType;
 			listLevel = lookaheadMatch[0].length;
 			w.nextMatch += lookaheadMatch[0].length;
 			var t;
@@ -168,7 +167,7 @@ config.formatters = [
 					var target = (currLevel == 0) ? stack[stack.length-1] : stack[stack.length-1].lastChild;
 					stack.push(createTiddlyElement(target,listType));
 				}
-			} else if (listType!=baseType && listLevel==1) {
+			} else if(listType!=baseType && listLevel==1) {
 				w.nextMatch -= lookaheadMatch[0].length;
 				return;
 			} else if(listLevel < currLevel) {
@@ -241,53 +240,37 @@ config.formatters = [
 
 {
 	name: "monospacedByLine",
-	match: "^\\{\\{\\{\\n",
-	lookaheadRegExp: /^\{\{\{\n((?:^[^\n]*\n)+?)(^\}\}\}$\n?)/mg,
+	match: "^(?:/\\*\\{\\{\\{\\*/|\\{\\{\\{|//\\{\\{\\{|<!--\\{\\{\\{-->)\\n",
 	element: "pre",
-	handler: config.formatterHelpers.enclosedTextHelper
-},
-
-{
-	name: "monospacedByLineForCSS",
-	match: "^/\\*\\{\\{\\{\\*/\\n",
-	lookaheadRegExp: /\/\*\{\{\{\*\/\n*((?:^[^\n]*\n)+?)(\n*^\/\*\}\}\}\*\/$\n?)/mg,
-	element: "pre",
-	handler: config.formatterHelpers.enclosedTextHelper
-},
-
-{
-	name: "monospacedByLineForPlugin",
-	match: "^//\\{\\{\\{\\n",
-	lookaheadRegExp: /^\/\/\{\{\{\n\n*((?:^[^\n]*\n)+?)(\n*^\/\/\}\}\}$\n?)/mg,
-	element: "pre",
-	handler: config.formatterHelpers.enclosedTextHelper
-},
-
-{
-	name: "monospacedByLineForTemplate",
-	match: "^<!--\\{\\{\\{-->\\n",
-	lookaheadRegExp: /<!--\{\{\{-->\n*((?:^[^\n]*\n)+?)(\n*^<!--\}\}\}-->$\n?)/mg,
-	element: "pre",
-	handler: config.formatterHelpers.enclosedTextHelper
-},
-
-{
-	name: "wikifyCommentForPlugin",
-	match: "^/\\*\\*\\*\\n",
-	termRegExp: /(^\*\*\*\/\n)/mg,
 	handler: function(w)
 	{
-		w.subWikifyTerm(w.output,this.termRegExp);
+		switch(w.matchText) {
+		case "/*{{{*/\n": // CSS
+			this.lookaheadRegExp = /\/\*\{\{\{\*\/\n*((?:^[^\n]*\n)+?)(\n*^\/\*\}\}\}\*\/$\n?)/mg;
+			break;
+		case "{{{\n": // monospaced block
+			this.lookaheadRegExp = /^\{\{\{\n((?:^[^\n]*\n)+?)(^\}\}\}$\n?)/mg;
+			break;
+		case "//{{{\n": // plugin
+			this.lookaheadRegExp = /^\/\/\{\{\{\n\n*((?:^[^\n]*\n)+?)(\n*^\/\/\}\}\}$\n?)/mg;
+			break;
+		case "<!--{{{-->\n": //template
+			this.lookaheadRegExp = /<!--\{\{\{-->\n*((?:^[^\n]*\n)+?)(\n*^<!--\}\}\}-->$\n?)/mg;
+			break;
+		default:
+			break;
+		}
+		config.formatterHelpers.enclosedTextHelper.call(this,w);
 	}
 },
 
 {
-	name: "wikifyCommentForTemplate",
-	match: "^<!---\\n",
-	termRegExp: /(^--->\n)/mg,
+	name: "wikifyComment",
+	match: "^(?:/\\*\\*\\*|<!---)\\n",
 	handler: function(w)
 	{
-		w.subWikifyTerm(w.output,this.termRegExp);
+		var termRegExp = (w.matchText == "/***\n") ? (/(^\*\*\*\/\n)/mg) : (/(^--->\n)/mg);
+		w.subWikifyTerm(w.output,termRegExp);
 	}
 },
 
@@ -426,81 +409,77 @@ config.formatters = [
 },
 
 {
-	name: "boldByChar",
-	match: "''",
-	termRegExp: /('')/mg,
-	element: "strong",
-	handler: config.formatterHelpers.createElementAndWikify
-},
-
-{
-	name: "italicByChar",
-	match: "//",
-	termRegExp: /(\/\/)/mg,
-	element: "em",
-	handler: config.formatterHelpers.createElementAndWikify
-},
-
-{
-	name: "underlineByChar",
-	match: "__",
-	termRegExp: /(__)/mg,
-	element: "u",
-	handler: config.formatterHelpers.createElementAndWikify
-},
-
-{
-	name: "strikeByChar",
-	match: "--(?!\\s|$)",
-	termRegExp: /((?!\s)--|(?=\n\n))/mg,
-	element: "strike",
-	handler: config.formatterHelpers.createElementAndWikify
-},
-
-{
-	name: "superscriptByChar",
-	match: "\\^\\^",
-	termRegExp: /(\^\^)/mg,
-	element: "sup",
-	handler: config.formatterHelpers.createElementAndWikify
-},
-
-{
-	name: "subscriptByChar",
-	match: "~~",
-	termRegExp: /(~~)/mg,
-	element: "sub",
-	handler: config.formatterHelpers.createElementAndWikify
-},
-
-{
-	name: "monospacedByChar",
-	match: "\\{\\{\\{",
-	lookaheadRegExp: /\{\{\{((?:.|\n)*?)\}\}\}/mg,
+	name: "characterFormat",
+	match: "''|//|__|\\^\\^|~~|--(?!\\s|$)|\\{\\{\\{",
 	handler: function(w)
 	{
-		this.lookaheadRegExp.lastIndex = w.matchStart;
-		var lookaheadMatch = this.lookaheadRegExp.exec(w.source);
-		if(lookaheadMatch && lookaheadMatch.index == w.matchStart) {
-			createTiddlyElement(w.output,"code",null,null,lookaheadMatch[1]);
-			w.nextMatch = this.lookaheadRegExp.lastIndex;
+		switch(w.matchText) {
+		case "''":
+			w.subWikifyTerm(w.output.appendChild(document.createElement("strong")),/('')/mg);
+			break;
+		case "//":
+			w.subWikifyTerm(createTiddlyElement(w.output,"em"),/(\/\/)/mg);
+			break;
+		case "__":
+			w.subWikifyTerm(createTiddlyElement(w.output,"u"),/(__)/mg);
+			break;
+		case "^^":
+			w.subWikifyTerm(createTiddlyElement(w.output,"sup"),/(\^\^)/mg);
+			break;
+		case "~~":
+			w.subWikifyTerm(createTiddlyElement(w.output,"sub"),/(~~)/mg);
+			break;
+		case "--":
+			w.subWikifyTerm(createTiddlyElement(w.output,"strike"),/(--)/mg);
+			break;
+		case "{{{":
+			var lookaheadRegExp = /\{\{\{((?:.|\n)*?)\}\}\}/mg;
+			lookaheadRegExp.lastIndex = w.matchStart;
+			var lookaheadMatch = lookaheadRegExp.exec(w.source);
+			if(lookaheadMatch && lookaheadMatch.index == w.matchStart) {
+				createTiddlyElement(w.output,"code",null,null,lookaheadMatch[1]);
+				w.nextMatch = lookaheadRegExp.lastIndex;
+			}
+			break;
 		}
 	}
 },
 
 {
-	name: "styleByChar",
-	match: "@@",
-	termRegExp: /(@@)/mg,
+	name: "customFormat",
+	match: "@@|\\{\\{",
 	handler: function(w)
 	{
-		var e = createTiddlyElement(w.output,"span");
-		var styles = config.formatterHelpers.inlineCssHelper(w);
-		if(styles.length == 0)
-			e.className = "marked";
-		else
-			config.formatterHelpers.applyCssHelper(e,styles);
-		w.subWikifyTerm(e,this.termRegExp);
+		switch(w.matchText) {
+		case "@@":
+			var e = createTiddlyElement(w.output,"span");
+			var styles = config.formatterHelpers.inlineCssHelper(w);
+			if(styles.length == 0)
+				e.className = "marked";
+			else
+				config.formatterHelpers.applyCssHelper(e,styles);
+			w.subWikifyTerm(e,/(@@)/mg);
+			break;
+		case "{{":
+			lookaheadRegExp = /\{\{[\s]*([\w]+[\s\w]*)[\s]*\{(\n?)/mg;
+			lookaheadRegExp.lastIndex = w.matchStart;
+			lookaheadMatch = lookaheadRegExp.exec(w.source);
+			if(lookaheadMatch) {
+				w.nextMatch = lookaheadRegExp.lastIndex;
+				e = createTiddlyElement(w.output,lookaheadMatch[2] == "\n" ? "div" : "span",null,lookaheadMatch[1]);
+				w.subWikifyTerm(e,/(\}\}\})/mg);
+			}
+			break;
+		}
+	}
+},
+
+{
+	name: "mdash",
+	match: "--",
+	handler: function(w)
+	{
+		createTiddlyElement(w.output,"span").innerHTML = "&mdash;";
 	}
 },
 
@@ -529,37 +508,11 @@ config.formatters = [
 },
 
 {
-	name: "mdash",
-	match: "--",
-	handler: function(w)
-	{
-		createTiddlyElement(w.output,"span").innerHTML = "&mdash;";
-	}
-},
-
-{
 	name: "htmlEntitiesEncoding",
 	match: "(?:(?:&#?[a-zA-Z0-9]{2,8};|.)(?:&#?(?:x0*(?:3[0-6][0-9a-fA-F]|1D[c-fC-F][0-9a-fA-F]|20[d-fD-F][0-9a-fA-F]|FE2[0-9a-fA-F])|0*(?:76[89]|7[7-9][0-9]|8[0-7][0-9]|761[6-9]|76[2-7][0-9]|84[0-3][0-9]|844[0-7]|6505[6-9]|6506[0-9]|6507[0-1]));)+|&#?[a-zA-Z0-9]{2,8};)",
 	handler: function(w)
 	{
 		createTiddlyElement(w.output,"span").innerHTML = w.matchText;
-	}
-},
-
-{
-	name: "customClasses",
-	match: "\\{\\{",
-	termRegExp: /(\}\}\})/mg,
-	lookaheadRegExp: /\{\{[\s]*([\w]+[\s\w]*)[\s]*\{(\n?)/mg,
-	handler: function(w)
-	{
-		this.lookaheadRegExp.lastIndex = w.matchStart;
-		var lookaheadMatch = this.lookaheadRegExp.exec(w.source);
-		if(lookaheadMatch) {
-			var e = createTiddlyElement(w.output,lookaheadMatch[2] == "\n" ? "div" : "span",null,lookaheadMatch[1]);
-			w.nextMatch = this.lookaheadRegExp.lastIndex;
-			w.subWikifyTerm(e,this.termRegExp);
-		}
 	}
 }
 
