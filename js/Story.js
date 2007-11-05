@@ -133,7 +133,7 @@ Story.prototype.loadMissingTiddler = function(title,fields,tiddlerElem)
 	var serverType = tiddler.getServerType();
 	var host = tiddler.fields['server.host'];
 	var workspace = tiddler.fields['server.workspace'];
-	if(!serverType | !host)
+	if(!serverType || !host)
 		return null;
 	var sm = new SyncMachine(serverType,{
 			start: function() {
@@ -143,9 +143,10 @@ Story.prototype.loadMissingTiddler = function(title,fields,tiddlerElem)
 				return this.openWorkspace(workspace,"getTiddler");
 			},
 			getTiddler: function() {
-				return this.getTiddler(title,"gotTiddler");
+				return this.getTiddler(title,"onGetTiddler");
 			},
-			gotTiddler: function(tiddler) {
+			onGetTiddler: function(context) {
+				var tiddler = context.tiddler;
 				if(tiddler && tiddler.text) {
 					var downloaded = new Date();
 					if(!tiddler.created)
