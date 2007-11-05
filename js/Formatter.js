@@ -40,7 +40,10 @@ config.formatters = [
 					rowContainer.setAttribute("align",rowCount == 0?"top":"bottom");
 					w.subWikifyTerm(rowContainer,this.rowTermRegExp);
 				} else {
-					this.rowHandler(w,createTiddlyElement(rowContainer,"tr",null,(rowCount&1)?"oddRow":"evenRow"),prevColumns);
+					var theRow = createTiddlyElement(rowContainer,"tr",null,(rowCount&1)?"oddRow":"evenRow");
+					theRow.onmouseover = function() {addClass(this,"hoverRow");};
+					theRow.onmouseout = function() {removeClass(this,"hoverRow");};
+					this.rowHandler(w,theRow,prevColumns);
 					rowCount++;
 				}
 			}
