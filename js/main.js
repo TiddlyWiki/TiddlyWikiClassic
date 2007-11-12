@@ -12,6 +12,7 @@ var readOnly = false; // Whether we're in readonly mode
 var highlightHack = null; // Embarrassing hack department...
 var hadConfirmExit = false; // Don't warn more than once
 var safeMode = false; // Disable all plugins and cookies
+var showBackstage; // Whether to include the backstage area
 var installedPlugins = []; // Information filled in when plugins are executed
 var startingUp = false; // Whether we're in the process of starting up
 var pluginInfo,tiddler; // Used to pass information to plugins in loadPlugins()
@@ -44,6 +45,7 @@ function main()
 	invokeParamifier(params,"onload");
 	t4 = new Date();
 	readOnly = (window.location.protocol == "file:") ? false : config.options.chkHttpReadOnly;
+	showBackstage = !readOnly;
 	var pluginProblem = loadPlugins();
 	t5 = new Date();
 	formatter = new Formatter(config.formatters);
@@ -62,7 +64,7 @@ function main()
 			config.macros[m].init();
 	}
 	t9 = new Date();
-	if(!readOnly)
+	if(showBackstage)
 		backstage.init();
 	t10 = new Date();
 	if(config.options.chkDisplayStartupTime) {
