@@ -119,9 +119,42 @@ function loadFile(fileUrl)
 	return r;
 }
 
+function ieCreatePath(path)
+{
+	try {
+		var fso = new ActiveXObject("Scripting.FileSystemObject");
+	} catch(ex) {
+		return null;
+	}
+
+	//# Remove the filename, if present.  Use trailing slash (i.e. "foo\bar\") if no filename.
+	var pos = path.lastIndexOf("\\");
+	if(pos!=-1)
+		path = path.substring(0, pos+1);
+
+	//# Walk up the path until we find a folder that exists
+	var scan = [];
+	scan.push(path);
+	var i = 0;
+	do {
+		var parent = fso.GetParentFolderName(scan[i++]);
+		if (fso.FolderExists(parent))
+			break;
+		scan.push(parent);
+	} while(true);
+
+	//# Walk back down the path, creating folders
+	for(i=scan.length-1;i>=0;i--) {
+		if (!fso.FolderExists(scan[i]))
+			fso.CreateFolder(scan[i]);
+	}
+	return true;
+}
+
 // Returns null if it can't do it, false if there's an error, true if it saved OK
 function ieSaveFile(filePath,content)
 {
+	ieCreatePath(filePath);
 	try {
 		var fso = new ActiveXObject("Scripting.FileSystemObject");
 	} catch(ex) {
@@ -151,6 +184,7 @@ function ieLoadFile(filePath)
 
 function ieCopyFile(dest,source)
 {
+	ieCreatePath(dest);
 	try {
 		var fso = new ActiveXObject("Scripting.FileSystemObject");
 		fso.GetFile(source).Copy(dest);
