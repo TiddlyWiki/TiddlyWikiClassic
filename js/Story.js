@@ -31,7 +31,7 @@ Story.prototype.forEachTiddler = function(fn)
 };
 
 //# Display several tiddlers given their titles in an array. Parameters same as displayTiddler(), except:
-//# titles - array of string titles
+//# titles - array of tiddlers or string titles
 Story.prototype.displayTiddlers = function(srcElement,titles,template,animate,unused,customFields,toggle)
 {
 	for(var t = titles.length-1;t>=0;t--)
@@ -43,15 +43,16 @@ Story.prototype.displayTiddlers = function(srcElement,titles,template,animate,un
 //# custom fields were provided, then an attempt is made to retrieve the tiddler from the server
 //# srcElement - reference to element from which this one is being opened -or-
 //#              special positions "top", "bottom"
-//# title - title of tiddler to display
+//# tiddler - tiddler or title of tiddler to display
 //# template - the name of the tiddler containing the template -or-
 //#            one of the constants DEFAULT_VIEW_TEMPLATE and DEFAULT_EDIT_TEMPLATE -or-
 //#            null or undefined to indicate the current template if there is one, DEFAULT_VIEW_TEMPLATE if not
 //# animate - whether to perform animations
 //# customFields - an optional list of name:"value" pairs to be assigned as tiddler fields (for edit templates)
 //# toggle - if true, causes the tiddler to be closed if it is already opened
-Story.prototype.displayTiddler = function(srcElement,title,template,animate,unused,customFields,toggle)
+Story.prototype.displayTiddler = function(srcElement,tiddler,template,animate,unused,customFields,toggle)
 {
+	var title = (tiddler instanceof Tiddler)? tiddler.title : tiddler;  
 	var place = document.getElementById(this.container);
 	var tiddlerElem = document.getElementById(this.idPrefix + title);
 	if(tiddlerElem) {
@@ -491,14 +492,11 @@ Story.prototype.search = function(text,useCaseSensitive,useRegExp)
 	this.closeAllTiddlers();
 	highlightHack = new RegExp(useRegExp ?	 text : text.escapeRegExp(),useCaseSensitive ? "mg" : "img");
 	var matches = store.search(highlightHack,"title","excludeSearch");
-	var titles = [];
-	for(var t=0;t<matches.length;t++)
-		titles.push(matches[t].title);
-	this.displayTiddlers(null,titles);
+	this.displayTiddlers(null,matches);
 	highlightHack = null;
 	var q = useRegExp ? "/" : "'";
 	if(matches.length > 0)
-		displayMessage(config.macros.search.successMsg.format([titles.length.toString(),q + text + q]));
+		displayMessage(config.macros.search.successMsg.format([matches.length.toString(),q + text + q]));
 	else
 		displayMessage(config.macros.search.failureMsg.format([q + text + q]));
 };
@@ -599,4 +597,5 @@ Story.prototype.permaView = function()
 	if(window.location.hash != t)
 		window.location.hash = t;
 };
+
 

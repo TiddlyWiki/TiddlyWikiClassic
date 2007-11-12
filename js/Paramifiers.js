@@ -60,8 +60,7 @@ config.paramifiers.searchRegExp = {
 config.paramifiers.tag = {
 	onstart: function(v) {
 		var tagged = store.getTaggedTiddlers(v,"title");
-		for(var t=0; t<tagged.length; t++)
-			story.displayTiddler("bottom",tagged[t].title,null,false,null);
+		story.displayTiddlers(null,tagged,null,false,null);
 	}
 };
 
@@ -91,4 +90,5 @@ config.paramifiers.readOnly = {
 		readOnly = p == "yes" ? true : (p == "no" ? false : readOnly);
 	}
 };
+
 

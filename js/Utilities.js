@@ -183,10 +183,7 @@ function onClickTagOpenAll(ev)
 	var e = ev ? ev : window.event;
 	var tag = this.getAttribute("tag");
 	var tagged = store.getTaggedTiddlers(tag);
-	var titles = [];
-	for(var t=0; t<tagged.length; t++)
-		titles.push(tagged[t].title);
-	story.displayTiddlers(this,titles);
+	story.displayTiddlers(this,tagged);
 	return false;
 }
 
@@ -289,4 +286,5 @@ function glyph(name)
 		return "";
 	return g.codes[name][b];
 }
+
 
