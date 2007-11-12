@@ -333,7 +333,7 @@ config.formatters = [
 				return;
 			}
 		}
-		if(w.autoLinkWikiWords == true || store.isShadowTiddler(w.matchText)) {
+		if(w.autoLinkWikiWords || store.isShadowTiddler(w.matchText)) {
 			var link = createTiddlyLink(w.output,w.matchText,false,null,w.isStatic,w.tiddler);
 			w.outputText(link,w.matchStart,w.nextMatch);
 		} else {
