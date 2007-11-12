@@ -81,7 +81,7 @@ function getTiddlyLinkInfo(title,currClasses)
 			classes.remove("shadow");
 		}
 	}
-	if(config.annotations[title])
+	if(typeof config.annotations[title]=="string")
 		subTitle = config.annotations[title];
 	return {classes: classes.join(" "),subTitle: subTitle};
 }
