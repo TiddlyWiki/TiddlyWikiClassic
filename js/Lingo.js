@@ -424,7 +424,7 @@ merge(config.annotations,{
 	SiteSubtitle: "This shadow tiddler is used as the second part of the page title",
 	SiteTitle: "This shadow tiddler is used as the first part of the page title",
 	SiteUrl: "This shadow tiddler should be set to the full target URL for publication",
-	StyleSheetColours: "This shadow tiddler contains CSS definitions related to the color of page elements",
+	StyleSheetColors: "This shadow tiddler contains CSS definitions related to the color of page elements",
 	StyleSheet: "This tiddler can contain custom CSS definitions",
 	StyleSheetLayout: "This shadow tiddler contains CSS definitions related to the layout of page elements",
 	StyleSheetLocale: "This shadow tiddler contains CSS definitions related to the translation locale",
