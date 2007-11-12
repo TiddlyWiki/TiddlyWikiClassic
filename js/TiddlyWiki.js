@@ -541,18 +541,16 @@ TiddlyWiki.prototype.filterTiddlers = function(filter)
 		var re = /([^ \[\]]+)|(?:\[([ \w]+)\[([^\]]+)\]\])|(?:\[\[([^\]]+)\]\])/mg;
 		var match = re.exec(filter);
 		while(match) {
-			if(match[1]) {
-				//# matches (eg) text
-				var title = match[1];
+			if(match[1] || match[4]) {
+				//# matches (eg) text or [[tiddler title]]
+				var title = match[1] ? match[1] : match[4];
 				tiddler = this.fetchTiddler(title);
 				if(tiddler) {
 					results.push(tiddler);
-				} else {
-					if(store.isShadowTiddler(title)) {
-						tiddler = new Tiddler();
-						tiddler.set(title,store.getTiddlerText(title));
-						results.push(tiddler);
-					}
+				} else if(store.isShadowTiddler(title)) {
+					tiddler = new Tiddler();
+					tiddler.set(title,store.getTiddlerText(title));
+					results.push(tiddler);
 				}
 			} else if(match[2]) {
 				//# matches (eg) [text[more text]]
@@ -562,11 +560,6 @@ TiddlyWiki.prototype.filterTiddlers = function(filter)
 							results.push(tiddler);
 					});
 				}
-			} else if(match[4]) {
-				//# matches (eg) [[tiddler title]]
-				tiddler = this.fetchTiddler(match[4]);
-				if(tiddler)
-					results.push(tiddler);
 			}
 			match = re.exec(filter);
 		}
