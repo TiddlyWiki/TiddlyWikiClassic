@@ -125,6 +125,19 @@ config.macros.importTiddlers.onGetWorkspaceList = function(context,wizard)
 {
 	if(context.status !== true)
 		displayMessage("Error in importTiddlers.onGetWorkspaceList: " + context.statusText);
+	wizard.setValue("context",context);
+	var workspace = wizard.getValue("feedWorkspace");
+	if(!workspace && context.workspaces.length==1)
+		workspace = context.workspaces[0].title;
+	if(workspace) {
+		//# if there is only one workspace, then open it directly
+		var ret = context.adaptor.openWorkspace(workspace,context,wizard,config.macros.importTiddlers.onOpenWorkspace);
+		if(ret !== true)
+			displayMessage(ret);
+		wizard.setValue("workspace",workspace);
+		wizard.setButtons([{caption: config.macros.importTiddlers.cancelLabel, tooltip: config.macros.importTiddlers.cancelPrompt, onClick: config.macros.importTiddlers.onCancel}],config.macros.importTiddlers.statusOpenWorkspace);
+		return;
+	}
 	wizard.addStep(config.macros.importTiddlers.step2Title,config.macros.importTiddlers.step2Html);
 	var s = wizard.getElement("selWorkspace");
 	s.onchange = config.macros.importTiddlers.onWorkspaceChange;
@@ -142,12 +155,10 @@ config.macros.importTiddlers.onGetWorkspaceList = function(context,wizard)
 			}
 		}
 	}
-	var workspace = wizard.getValue("feedWorkspace");
 	if(workspace) {
 		t = wizard.getElement("txtWorkspace");
 		t.value = workspace;
 	}
-	wizard.setValue("context",context);
 	wizard.setButtons([{caption: config.macros.importTiddlers.openLabel, tooltip: config.macros.importTiddlers.openPrompt, onClick: config.macros.importTiddlers.onChooseWorkspace}]);
 };
 
