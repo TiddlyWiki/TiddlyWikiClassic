@@ -11,7 +11,7 @@ js: Macros.js
 js: NewTiddler.js
 js: Search.js
 js: Tabs.js
-plugin: Sparkline.js title="SplarklinePlugin" tags="systemConfig excludeLists excludeSearch" Description="Sparklines"
+plugin: Sparkline.js title="SparklinePlugin" tags="systemConfig excludeLists excludeSearch" Description="Sparklines macro"
 js: Toolbar.js
 js: Commands.js
 js: Tiddler.js
