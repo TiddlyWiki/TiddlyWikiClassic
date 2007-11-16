@@ -122,16 +122,34 @@ TiddlyWiki.prototype.getTiddler = function(title)
 
 TiddlyWiki.prototype.getTiddlerText = function(title,defaultText)
 {
-	var tiddler = this.fetchTiddler(title);
-	if(tiddler)
-		return tiddler.text;
-	if(!title)
+  	if(!title)
 		return defaultText;
-	var pos = title.indexOf(config.textPrimitives.sliceSeparator);
+	var pos = title.indexOf(config.textPrimitives.sectionSeparator);
+	var section = null;
+	if(pos != -1) {
+		section = title.substr(pos + config.textPrimitives.sectionSeparator.length);
+		title = title.substr(0,pos);
+	}
+	pos = title.indexOf(config.textPrimitives.sliceSeparator);
 	if(pos != -1) {
 		var slice = this.getTiddlerSlice(title.substr(0,pos),title.substr(pos + config.textPrimitives.sliceSeparator.length));
 		if(slice)
 			return slice;
+	}
+	var tiddler = this.fetchTiddler(title);
+	if(tiddler) {
+		if(!section)
+			return tiddler.text; 
+		var re = new RegExp("(^!{1,6}" + section.escapeRegExp() + ")","mg"); 
+		var match =  re.exec(tiddler.text); 
+		if(match) { 
+			var t = tiddler.text.substr(match.index+match[1].length); 
+			match = /\n!/mg.exec(t); //# search for the next heading
+			if(match) 
+				t = t.substr(0,match.index); 
+			return t; 
+		} 
+		return defaultText; 
 	}
 	if(this.isShadowTiddler(title))
 		return config.shadowTiddlers[title];

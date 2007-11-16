@@ -42,7 +42,13 @@ config.refreshers = {
 		if(macro && macro.refresh)
 			macro.refresh(e,params);
 		return true;
-		}
+		},
+	styleSheet: "StyleSheet", 
+	defaultStyleSheet: "StyleSheet", 
+	pageTemplate: "PageTemplate", 
+	defaultPageTemplate: "PageTemplate", 
+	colorPalette: "ColorPalette", 
+	defaultColorPalette: "ColorPalette" 
 };
 
 function refreshElements(root,changeList)
@@ -96,9 +102,19 @@ function refreshPageTemplate(title)
 			stash.appendChild(nodes[t]);
 	}
 	var wrapper = document.getElementById("contentWrapper");
-	if(!title)
-		title = "PageTemplate";
-	var html = store.getRecursiveTiddlerText(title,null,10);
+
+	isAvailable = function(title) { 
+		var s = title ? title.indexOf(config.textPrimitives.sectionSeparator) : -1; 
+		if(s!=-1) 
+			title = title.substr(0,s); 
+		return store.tiddlerExists(title) || store.isShadowTiddler(title); 
+ 	};
+	//# protect against non-existent pageTemplate
+	if(!title || !isAvailable(title))
+		title = config.refreshers.pageTemplate;
+	if(!isAvailable(title))
+		title = config.refreshers.defaultPageTemplate; //# this one is always avaialable
+	html = store.getRecursiveTiddlerText(title,null,10);
 	wrapper.innerHTML = html;
 	applyHtmlMacros(wrapper);
 	refreshElements(wrapper);
@@ -138,9 +154,7 @@ function getPageTitle()
 
 function refreshStyles(title,doc)
 {
-	if(!doc)
-		doc = document;
-	setStylesheet(title == null ? "" : store.getRecursiveTiddlerText(title,"",10),title,doc);
+	setStylesheet(title == null ? "" : store.getRecursiveTiddlerText(title,"",10),title,doc ? doc : document);
 }
 
 function refreshColorPalette(title)
@@ -155,7 +169,7 @@ function refreshAll()
 	refreshDisplay();
 	refreshStyles("StyleSheetLayout");
 	refreshStyles("StyleSheetColors");
-	refreshStyles("StyleSheet");
+	refreshStyles(config.refreshers.styleSheet);
 	refreshStyles("StyleSheetPrint");
 }
 

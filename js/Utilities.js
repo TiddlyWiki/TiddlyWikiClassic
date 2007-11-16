@@ -16,9 +16,9 @@ function createTiddlyButton(parent,text,tooltip,action,className,id,accessKey,at
 	btn.className = className ? className : "button";
 	if(id)
 		btn.id = id;
-	if(attribs){
-		for(var n in attribs){
-			e.setAttribute(n,attribs[n]);
+	if(attribs) {
+		for(var n in attribs) {
+			btn.setAttribute(n,attribs[n]);
 		}
 	}
 	if(parent)

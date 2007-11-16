@@ -296,6 +296,13 @@ function setStylesheet(s,id,doc)
 	}
 }
 
+function removeStyleSheet(id)
+{
+	var e = document.getElementById(id);
+	if(e)
+		e.parentNode.removeChild(e);
+}
+
 // Force the browser to do a document reflow when needed to workaround browser bugs
 function forceReflow()
 {

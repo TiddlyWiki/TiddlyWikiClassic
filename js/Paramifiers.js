@@ -92,3 +92,9 @@ config.paramifiers.readOnly = {
 };
 
 
+config.paramifiers.theme = {
+	onconfig: function(v) {
+		story.switchTheme(v);
+	}
+};
+

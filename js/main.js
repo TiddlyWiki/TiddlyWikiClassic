@@ -49,6 +49,7 @@ function main()
 	var pluginProblem = loadPlugins();
 	t5 = new Date();
 	formatter = new Formatter(config.formatters);
+	story.switchTheme(config.options.txtTheme);
 	invokeParamifier(params,"onconfig");
 	t6 = new Date();
 	store.notifyAll();

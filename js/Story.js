@@ -262,15 +262,15 @@ Story.prototype.addCustomFields = function(place,customFields)
 };
 
 //# Refresh all tiddlers in the Story
-Story.prototype.refreshAllTiddlers = function()
+Story.prototype.refreshAllTiddlers = function(force)
 {
 	var place = document.getElementById(this.container);
 	var e = place.firstChild;
 	if(!e)
 		return;
-	this.refreshTiddler(e.getAttribute("tiddler"),e.getAttribute("template"),true);
+	this.refreshTiddler(e.getAttribute("tiddler"),force ? null : e.getAttribute("template"),true);
 	while((e = e.nextSibling) != null)
-		this.refreshTiddler(e.getAttribute("tiddler"),e.getAttribute("template"),true);
+		this.refreshTiddler(e.getAttribute("tiddler"),force ? null : e.getAttribute("template"),true);
 };
 
 //# Default tiddler onmouseover/out event handlers
@@ -598,4 +598,60 @@ Story.prototype.permaView = function()
 		window.location.hash = t;
 };
 
+
+Story.prototype.switchTheme = function(theme)
+{
+	if(safeMode) 
+		return;
+		
+	isAvailable = function(title) { 
+		var s = title ? title.indexOf(config.textPrimitives.sectionSeparator) : -1; 
+		if(s!=-1) 
+			title = title.substr(0,s); 
+		return store.tiddlerExists(title) || store.isShadowTiddler(title); 
+ 	};
+
+	getSlice = function(theme,slice) {
+		var r = store.getTiddlerSlice(theme,slice);
+		if(r && r.indexOf(config.textPrimitives.sectionSeparator)==0)
+			r = theme + r;
+		return isAvailable(r) ? r : slice;
+	};
+
+	replaceNotification = function(i,name,newName) {
+		if(name==newName)
+			return name;
+		if(store.namedNotifications[i].name == name) {
+			store.namedNotifications[i].name = newName;
+			return newName;
+		}
+		return name;
+	};
+
+	for(var i=0; i<config.notifyTiddlers.length; i++) {
+		var name = config.notifyTiddlers[i].name;
+		switch(name) {
+		case "PageTemplate":
+			config.refreshers.pageTemplate = replaceNotification(i,config.refreshers.pageTemplate,getSlice(theme,name));
+			break;
+		case "StyleSheet":
+			removeStyleSheet(config.refreshers.styleSheet);
+			config.refreshers.styleSheet = replaceNotification(i,config.refreshers.styleSheet,getSlice(theme,name));
+			break;
+		case "ColorPalette":
+			config.refreshers.colorPalette = replaceNotification(i,config.refreshers.colorPalette,getSlice(theme,name));
+			break;
+		default:
+			break;
+		}
+	}
+	config.tiddlerTemplates[DEFAULT_VIEW_TEMPLATE] = getSlice(theme,"ViewTemplate");
+	config.tiddlerTemplates[DEFAULT_EDIT_TEMPLATE] = getSlice(theme,"EditTemplate");
+	if(!startingUp) {
+		refreshAll();
+		story.refreshAllTiddlers(true);
+		config.options.txtTheme = theme;
+		saveOptionCookie("txtTheme");
+	}
+};
 

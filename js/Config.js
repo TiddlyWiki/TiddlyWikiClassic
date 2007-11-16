@@ -51,7 +51,8 @@ config.options = {
 	txtMainTab: "tabTimeline",
 	txtMoreTab: "moreTabAll",
 	txtMaxEditRows: "30",
-	txtFileSystemCharSet: "UTF-8"
+	txtFileSystemCharSet: "UTF-8",
+	txtTheme: ""
 	};
 config.optionsDesc = {};
 
@@ -177,6 +178,7 @@ if(config.browser.isBadSafari) {
 	};
 }
 config.textPrimitives.sliceSeparator = "::";
+config.textPrimitives.sectionSeparator = "##";
 config.textPrimitives.urlPattern = "(?:file|http|https|mailto|ftp|irc|news|data):[^\\s'\"]+(?:/|\\b)";
 config.textPrimitives.unWikiLink = "~";
 config.textPrimitives.wikiLink = "(?:(?:" + config.textPrimitives.upperLetter + "+" +
