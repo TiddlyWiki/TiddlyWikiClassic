@@ -97,3 +97,12 @@ Array.prototype.remove = function(item)
 		this.splice(p,1);
 };
 
+if(!Array.prototype.map){
+Array.prototype.map = function(fn, thisObj) {
+    var scope = thisObj || window;
+    var a = [];
+    for ( var i=0, j=this.length; i < j; ++i ) {
+        a.push(fn.call(scope, this[i], i, this));
+    }
+    return a;
+};}
