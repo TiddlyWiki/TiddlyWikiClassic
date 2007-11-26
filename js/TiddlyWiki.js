@@ -568,18 +568,18 @@ TiddlyWiki.prototype.filterTiddlers = function(filter)
 				var title = match[1] ? match[1] : match[4];
 				tiddler = this.fetchTiddler(title);
 				if(tiddler) {
-					results.push(tiddler);
+					results.pushUnique(tiddler);
 				} else if(store.isShadowTiddler(title)) {
 					tiddler = new Tiddler();
 					tiddler.set(title,store.getTiddlerText(title));
-					results.push(tiddler);
+					results.pushUnique(tiddler);
 				}
 			} else if(match[2]) {
 				//# matches (eg) [text[more text]]
 				if(match[2]=="tag") {
 					this.forEachTiddler(function(title,tiddler) {
 						if(tiddler.isTagged(match[3]))
-							results.push(tiddler);
+							results.pushUnique(tiddler);
 					});
 				}
 			}
