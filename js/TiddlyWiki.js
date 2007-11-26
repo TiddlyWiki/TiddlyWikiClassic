@@ -139,17 +139,20 @@ TiddlyWiki.prototype.getTiddlerText = function(title,defaultText)
 	var tiddler = this.fetchTiddler(title);
 	if(tiddler) {
 		if(!section)
-			return tiddler.text; 
-		var re = new RegExp("(^!{1,6}" + section.escapeRegExp() + ")","mg"); 
-		var match =  re.exec(tiddler.text); 
-		if(match) { 
-			var t = tiddler.text.substr(match.index+match[1].length); 
-			match = /\n!/mg.exec(t); //# search for the next heading
-			if(match) 
-				t = t.substr(0,match.index); 
-			return t; 
-		} 
-		return defaultText; 
+			return tiddler.text;
+		var re = new RegExp("(^!{1,6}" + section.escapeRegExp() + ")","mg");
+		re.lastIndex = 0;
+		var match =  re.exec(tiddler.text);
+		if(match) {
+			var t = tiddler.text.substr(match.index+match[1].length);
+			var re2 = /^!/mg;
+			re2.lastIndex = 0;
+			match = re2.exec(t); //# search for the next heading
+			if(match)
+				t = t.substr(0,match.index);
+			return t;
+		}
+		return defaultText;
 	}
 	if(this.isShadowTiddler(title))
 		return config.shadowTiddlers[title];
