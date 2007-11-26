@@ -138,6 +138,14 @@ function resolveTarget(e)
 	return obj;
 }
 
+// Prevent an event from bubbling
+function stopEvent(e){
+	var ev = e? e : window.event;
+	ev.cancelBubble = true;
+	if (ev.stopPropagation) ev.stopPropagation();
+	return false;	
+}
+
 // Return the content of an element as plain text with no formatting
 function getPlainText(e)
 {
