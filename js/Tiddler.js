@@ -60,19 +60,23 @@ Tiddler.prototype.isTouched = function()
 	return changeCount > 0;
 };
 
-// Format the text for storage in an RSS item
-Tiddler.prototype.saveToRss = function(url)
+// Return the tiddler as an RSS item
+Tiddler.prototype.toRssItem = function(uri)
 {
 	var s = [];
-	s.push("<item>");
 	s.push("<title" + ">" + this.title.htmlEncode() + "</title" + ">");
 	s.push("<description>" + wikifyStatic(this.text,null,this).htmlEncode() + "</description>");
 	for(var t=0; t<this.tags.length; t++)
 		s.push("<category>" + this.tags[t] + "</category>");
-	s.push("<link>" + url + "#" + encodeURIComponent(String.encodeTiddlyLink(this.title)) + "</link>");
+	s.push("<link>" + uri + "#" + encodeURIComponent(String.encodeTiddlyLink(this.title)) + "</link>");
 	s.push("<pubDate>" + this.modified.toGMTString() + "</pubDate>");
-	s.push("</item>");
 	return s.join("\n");
+};
+
+// Format the text for storage in an RSS item
+Tiddler.prototype.saveToRss = function(uri)
+{
+	return "<item>\n" + this.toRssItem(uri) + "\n</item>";
 };
 
 // Change the text and other attributes of a tiddler

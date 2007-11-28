@@ -262,8 +262,9 @@ function generateRss()
 	// The body
 	var tiddlers = store.getTiddlers("modified","excludeLists");
 	var n = config.numRssItems > tiddlers.length ? 0 : tiddlers.length-config.numRssItems;
-	for (var t=tiddlers.length-1; t>=n; t--)
-		s.push(tiddlers[t].saveToRss(u));
+	for (var t=tiddlers.length-1; t>=n; t--) {
+		s.push("<item>\n" + tiddlers[t].toRssItem(u) + "\n</item>");
+	}
 	// And footer
 	s.push("</channel>");
 	s.push("</rss>");
