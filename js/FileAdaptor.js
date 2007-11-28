@@ -1,5 +1,5 @@
 //--
-//-- Server adaptor for talking to static files
+//-- Server adaptor for talking to static TiddlyWiki files
 //--
 
 function FileAdaptor()
@@ -9,114 +9,155 @@ function FileAdaptor()
 	return this;
 }
 
-FileAdaptor.NotLoadedError = "TiddlyWiki file has not been loaded";
 FileAdaptor.serverType = 'file';
 
-// Open the specified host/server
+FileAdaptor.prototype.setContext = function(context,userParams,callback)
+{
+	if(!context) context = {};
+	context.userParams = userParams;
+	if(callback) context.callback = callback;
+	context.adaptor = this;
+	if(!context.host)
+		context.host = this.host;
+	context.host = FileAdaptor.fullHostName(context.host);
+	if(!context.workspace)
+		context.workspace = this.workspace;
+	return context;
+};
+
+FileAdaptor.fullHostName = function(host)
+{
+	if(!host)
+		return '';
+	if(!host.match(/:\/\//))
+		host = 'http://' + host;
+	return host;
+};
+
+FileAdaptor.minHostName = function(host)
+{
+	return host ? host.replace(/^http:\/\//,'').replace(/\/$/,'') : '';
+};
+
+// Open the specified host
 //#   host - url of host (eg, "http://www.tiddlywiki.com/" or "www.tiddlywiki.com")
 //#   context is itself passed on as a parameter to the callback function
+//#   userParams - user settable object object that is passed on unchanged to the callback function
 //#   callback - optional function to be called on completion
 //# Return value is true if the request was successfully issued, false if this connector doesn't support openHost(),
 //#   or an error description string if there was a problem
 //# The callback parameters are callback(context)
 //#   context.status - true if OK, string if error
 //#   context.adaptor - reference to this adaptor object
-//#   context - parameters as originally passed into the openHost function
+//#   userParams - parameters as originally passed into the openHost function
 FileAdaptor.prototype.openHost = function(host,context,userParams,callback)
 {
 	this.host = host;
-	if(!context)
-		context = {};
-	context.adaptor = this;
-	context.callback = callback;
-	context.userParams = userParams;
-	var ret = loadRemoteFile(host,FileAdaptor.openHostCallback,context);
-	return typeof(ret) == "string" ? ret : true;
+	context = this.setContext(context,userParams,callback);
+	context.status = true;
+	if(callback)
+		window.setTimeout(function() {callback(context,userParams);},10);
+	return true;
 };
 
-FileAdaptor.openHostCallback = function(status,context,responseText,url,xhr)
+FileAdaptor.loadTiddlyWikiCallback = function(status,context,responseText,url,xhr)
 {
-	var adaptor = context.adaptor;
 	context.status = status;
 	if(!status) {
 		context.statusText = "Error reading file: " + xhr.statusText;
 	} else {
-		// Load the content into a TiddlyWiki() object
-		adaptor.store = new TiddlyWiki();
-		if(!adaptor.store.importTiddlyWiki(responseText))
+		//# Load the content into a TiddlyWiki() object
+		context.adaptor.store = new TiddlyWiki();
+		if(!context.adaptor.store.importTiddlyWiki(responseText))
 			context.statusText = config.messages.invalidFileError.format([url]);
 	}
-	context.callback(context,context.userParams);
+	context.complete(context,context.userParams);
 };
 
-// Gets the list of workspaces on a given server
-//#   context is itself passed on as a parameter to the callback function
-//#   callback - optional function to be called on completion
+// Get the list of workspaces on a given server
+//#   context - passed on as a parameter to the callback function
+//#   userParams - user settable object object that is passed on unchanged to the callback function
+//#   callback - function to be called on completion
 //# Return value is true if the request was successfully issued, false if this connector doesn't support getWorkspaceList(),
 //#   or an error description string if there was a problem
-//# The callback parameters are callback(context)
+//# The callback parameters are callback(context,userParams)
 //#   context.status - true if OK, false if error
 //#   context.statusText - error message if there was an error
 //#   context.adaptor - reference to this adaptor object
-//#   context - parameters as originally passed into the getWorkspaceList function
+//#   userParams - parameters as originally passed into the getWorkspaceList function
 FileAdaptor.prototype.getWorkspaceList = function(context,userParams,callback)
 {
-	if(!context)
-		context = {};
+	context = this.setContext(context,userParams,callback);
 	context.workspaces = [{title:"(default)"}];
 	context.status = true;
-	window.setTimeout(function() {callback(context,userParams);},10);
+	if(callback)
+		window.setTimeout(callback,10,context,userParams);
 	return true;
 };
 
 // Open the specified workspace
 //#   workspace - name of workspace to open
+//#   context - passed on as a parameter to the callback function
+//#   userParams - user settable object object that is passed on unchanged to the callback function
 //#   callback - function to be called on completion
-//#   context - passed to callback function
 //# Return value is true if the request was successfully issued
 //#   or an error description string if there was a problem
-//# The callback parameters are callback(status,adaptor,context)
-//#   status - true if OK, string if error
-//#   adaptor - reference to this adaptor object
-//#   context - parameters as originally passed into the openWorkspace function
+//# The callback parameters are callback(context,userParams)
+//#   context.status - true if OK, false if error
+//#   context.statusText - error message if there was an error
+//#   context.adaptor - reference to this adaptor object
+//#   userParams - parameters as originally passed into the openWorkspace function
 FileAdaptor.prototype.openWorkspace = function(workspace,context,userParams,callback)
 {
-	if(!context)
-		context = {};
+	this.workspace = workspace;
+	context = this.setContext(context,userParams,callback);
 	context.status = true;
-	window.setTimeout(function() {callback(context,userParams);},10);
+	if(callback)
+		window.setTimeout(callback,10,context,userParams);
 	return true;
 };
 
 // Gets the list of tiddlers within a given workspace
-//#   context - passed on to callback function
-//#   userParams - user parameters passed through to the callback function
+//#   context - passed on as a parameter to the callback function
+//#   userParams - user settable object object that is passed on unchanged to the callback function
 //#   callback - function to be called on completion
 //#   filter - filter expression
 //# Return value is true if the request was successfully issued,
 //#   or an error description string if there was a problem
-//# The callback parameters are callback(status,adaptor,context,tiddlerList)
-//#   status - true if OK, false if error
-//#   adaptor - reference to this adaptor object
-//#   context - parameters as originally passed into the getTiddlerList function
+//# The callback parameters are callback(context,userParams)
+//#   context.status - true if OK, false if error
+//#   context.statusText - error message if there was an error
+//#   context.adaptor - reference to this adaptor object
 //#   context.tiddlers - array of tiddler objects
+//#   userParams - parameters as originally passed into the getTiddlerList function
 FileAdaptor.prototype.getTiddlerList = function(context,userParams,callback,filter)
 {
-	if(!this.store)
-		return FileAdaptor.NotLoadedError;
-	if(!context)
-		context = {};
-	if(filter) {
-		context.tiddlers = this.store.filterTiddlers(filter);
+	context = this.setContext(context,userParams,callback);
+	if(!context.filter)
+		context.filter = filter;
+	context.complete = FileAdaptor.getTiddlerListComplete;
+	return this.store ? 
+		context.complete(context,context.userParams) :
+		loadRemoteFile(context.host,FileAdaptor.loadTiddlyWikiCallback,context);
+};
+
+FileAdaptor.getTiddlerListComplete = function(context,userParams)
+{
+	if(context.filter) {
+		context.tiddlers = context.adaptor.store.filterTiddlers(context.filter);
 	} else {
 		context.tiddlers = [];
-		this.store.forEachTiddler(function(title,tiddler) {context.tiddlers.push(tiddler);});
+		context.adaptor.store.forEachTiddler(function(title,tiddler) {context.tiddlers.push(tiddler);});
 	}
-	for(var t=0; t<context.tiddlers.length; t++) {
-		context.tiddlers[t].fields['server.page.revision'] = context.tiddlers[t].modified.convertToYYYYMMDDHHMM();
+	for(var i=0; i<context.tiddlers.length; i++) {
+		context.tiddlers[i].fields['server.type'] = FileAdaptor.serverType;
+		context.tiddlers[i].fields['server.host'] = FileAdaptor.minHostName(context.host);
+		context.tiddlers[i].fields['server.page.revision'] = context.tiddlers[i].modified.convertToYYYYMMDDHHMM();
 	}
 	context.status = true;
-	window.setTimeout(function() {callback(context,userParams);},10);
+	if(context.callback) {
+		window.setTimeout(context.callback,10,context,userParams);
+	}
 	return true;
 };
 
@@ -127,35 +168,42 @@ FileAdaptor.prototype.generateTiddlerInfo = function(tiddler)
 	return info;
 };
 
-// Retrieves a tiddler from a given workspace on a given server
+// Retrieve a tiddler from a given workspace on a given server
 //#   title - title of the tiddler to get
-//#   callback - function to be called on completion
 //#   context - passed on as a parameter to the callback function
+//#   userParams - user settable object object that is passed on unchanged to the callback function
+//#   callback - function to be called on completion
 //# Return value is true if the request was successfully issued,
 //#   or an error description string if there was a problem
-//# The callback parameters are callback(status,adaptor,context,tiddler)
-//#   status - true if OK, false if error
-//#   adaptor - reference to this adaptor object
-//#   context - as passed into the function
-//#   tiddler - the retrieved tiddler, or null if it cannot be found
+//# The callback parameters are callback(context,userParams)
+//#   context.status - true if OK, false if error
+//#   context.statusText - error message if there was an error
+//#   context.adaptor - reference to this adaptor object
+//#   context.tiddler - the retrieved tiddler, or null if it cannot be found
+//#   userParams - parameters as originally passed into the getTiddler function
 FileAdaptor.prototype.getTiddler = function(title,context,userParams,callback)
 {
-	if(!this.store)
-		return FileAdaptor.NotLoadedError;
-	if(!context)
-		context = {};
-	context.tiddler = this.store.fetchTiddler(title);
-	if(context.tiddler) {
-		context.tiddler.fields['server.type'] = FileAdaptor.serverType;
-		context.tiddler.fields['server.host'] = this.host;
-		context.tiddler.fields['server.page.revision'] = context.tiddler.modified.convertToYYYYMMDDHHMM();
-	}
+	context = this.setContext(context,userParams,callback);
+	context.title = title;
+	context.complete = FileAdaptor.getTiddlerComplete;
+	return context.adaptor.store ? 
+		context.complete(context,context.userParams) :
+		loadRemoteFile(context.host,FileAdaptor.loadTiddlyWikiCallback,context);
+};
+
+FileAdaptor.getTiddlerComplete = function(context,userParams)
+{
+	var t = context.adaptor.store.fetchTiddler(context.title);
+	t.fields['server.type'] = FileAdaptor.serverType;
+	t.fields['server.host'] = FileAdaptor.minHostName(context.host);
+	t.fields['server.page.revision'] = t.modified.convertToYYYYMMDDHHMM();
+	context.tiddler = t;
 	context.status = true;
 	if(context.allowSynchronous) {
 		context.isSynchronous = true;
-		callback(context,userParams);
+		context.callback(context,userParams);
 	} else {
-		window.setTimeout(function() {callback(context,userParams);},10);
+		window.setTimeout(context.callback,10,context,userParams);
 	}
 	return true;
 };
