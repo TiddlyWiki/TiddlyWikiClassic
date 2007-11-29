@@ -597,7 +597,7 @@ TiddlyWiki.prototype.filterTiddlers = function(filter)
 // Sort a list of tiddlers
 //# tiddlers - array of Tiddler() objects to be sorted
 //# field - name of field (or extended field) to sort by;
-//#         precede with '+' for ascending sort (default)
+//#         precede with '+' for ascending sort (the default)
 //#			or '-' for descending sort
 TiddlyWiki.prototype.sortTiddlers = function(tiddlers,field)
 {
