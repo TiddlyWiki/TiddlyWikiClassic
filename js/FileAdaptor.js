@@ -91,7 +91,7 @@ FileAdaptor.prototype.getWorkspaceList = function(context,userParams,callback)
 	context.workspaces = [{title:"(default)"}];
 	context.status = true;
 	if(callback)
-		window.setTimeout(callback,10,context,userParams);
+		window.setTimeout(function() {callback(context,userParams);},10);
 	return true;
 };
 
@@ -113,7 +113,7 @@ FileAdaptor.prototype.openWorkspace = function(workspace,context,userParams,call
 	context = this.setContext(context,userParams,callback);
 	context.status = true;
 	if(callback)
-		window.setTimeout(callback,10,context,userParams);
+		window.setTimeout(function() {callback(context,userParams);},10);
 	return true;
 };
 
@@ -156,7 +156,7 @@ FileAdaptor.getTiddlerListComplete = function(context,userParams)
 	}
 	context.status = true;
 	if(context.callback) {
-		window.setTimeout(context.callback,10,context,userParams);
+		window.setTimeout(function() {callback(context,userParams);},10);
 	}
 	return true;
 };
@@ -203,7 +203,7 @@ FileAdaptor.getTiddlerComplete = function(context,userParams)
 		context.isSynchronous = true;
 		context.callback(context,userParams);
 	} else {
-		window.setTimeout(context.callback,10,context,userParams);
+		window.setTimeout(function() {callback(context,userParams);},10);
 	}
 	return true;
 };

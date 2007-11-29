@@ -576,11 +576,16 @@ TiddlyWiki.prototype.filterTiddlers = function(filter)
 				}
 			} else if(match[2]) {
 				//# matches (eg) [text[more text]]
-				if(match[2]=="tag") {
-					this.forEachTiddler(function(title,tiddler) {
-						if(tiddler.isTagged(match[3]))
-							results.pushUnique(tiddler);
-					});
+				switch(match[2]) {
+					case "tag":
+						this.forEachTiddler(function(title,tiddler) {
+							if(tiddler.isTagged(match[3]))
+								results.pushUnique(tiddler);
+						});
+						break;
+					case "sort":
+						results = this.sortTiddlers(results,match[3]);
+						break; 
 				}
 			}
 			match = re.exec(filter);
@@ -589,3 +594,25 @@ TiddlyWiki.prototype.filterTiddlers = function(filter)
 	return results;
 };
 
+// Sort a list of tiddlers
+//# tiddlers - array of Tiddler() objects to be sorted
+//# field - name of field (or extended field) to sort by;
+//#         precede with '+' for ascending sort (default)
+//#			or '-' for descending sort
+TiddlyWiki.prototype.sortTiddlers = function(tiddlers,field)
+{
+	var asc = +1;
+	switch(field.substr(0,1)) {
+		case "-":
+			asc = -1;
+			// Note: this fall-through is intentional
+		case "+":
+			field = field.substr(1);
+			break;
+	}
+	if(TiddlyWiki.standardFieldAccess[field])
+		tiddlers.sort(function(a,b) {return a[field] < b[field] ? -asc : (a[field] == b[field] ? 0 : asc);});
+	else
+		tiddlers.sort(function(a,b) {return a.fields[field] < b.fields[field] ? -asc : (a.fields[field] == b.fields[field] ? 0 : +asc);});
+	return tiddlers;
+};
