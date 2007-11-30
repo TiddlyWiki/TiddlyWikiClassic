@@ -558,6 +558,8 @@ Story.prototype.saveTiddler = function(title,minorUpdate)
 		var fields = {};
 		this.gatherSaveFields(tiddlerElem,fields);
 		var newTitle = fields.title ? fields.title : title;
+		if(!store.tiddlerExists(newTitle))
+			newTitle = newTitle.trim();
 		if(store.tiddlerExists(newTitle) && newTitle != title) {
 			if(!confirm(config.messages.overwriteWarning.format([newTitle.toString()])))
 				return null;
