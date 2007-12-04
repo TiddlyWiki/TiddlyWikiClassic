@@ -56,8 +56,13 @@ function doHttp(type,url,data,contentType,username,password,callback,params,head
 		return "Can't create XMLHttpRequest object";
 	//# Install callback
 	x.onreadystatechange = function() {
-		if (x.readyState == 4 && callback && (x.status !== undefined)) {
-			if([0, httpStatus.OK, httpStatus.ContentCreated, httpStatus.NoContent, httpStatus.MultiStatus].contains(x.status))
+		try {
+			var status = x.status;
+		} catch(ex) {
+			status = false;
+		}
+		if (x.readyState == 4 && callback && (status !== undefined)) {
+			if([0, httpStatus.OK, httpStatus.ContentCreated, httpStatus.NoContent, httpStatus.MultiStatus].contains(status))
 				callback(true,params,x.responseText,url,x);
 			else
 				callback(false,params,null,url,x);
