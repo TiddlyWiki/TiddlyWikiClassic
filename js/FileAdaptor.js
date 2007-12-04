@@ -136,9 +136,14 @@ FileAdaptor.prototype.getTiddlerList = function(context,userParams,callback,filt
 	if(!context.filter)
 		context.filter = filter;
 	context.complete = FileAdaptor.getTiddlerListComplete;
-	return this.store ? 
-		context.complete(context,context.userParams) :
-		loadRemoteFile(context.host,FileAdaptor.loadTiddlyWikiCallback,context);
+	if(this.store) {
+		var ret = context.complete(context,context.userParams);
+	} else {
+		ret = loadRemoteFile(context.host,FileAdaptor.loadTiddlyWikiCallback,context);
+		if(typeof ret != "string")
+			ret = true;
+	}
+	return ret;
 };
 
 FileAdaptor.getTiddlerListComplete = function(context,userParams)
