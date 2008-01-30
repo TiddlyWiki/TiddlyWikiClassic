@@ -28,7 +28,7 @@ function wikify(source,output,highlightRegExp,tiddler)
 {
 	if(source && source != "") {
 		var wikifier = new Wikifier(source,getParser(tiddler),highlightRegExp,tiddler);
-		wikifier.subWikifyUnterm(output);
+		wikifier.subWikify(output);
 	}
 }
 
@@ -40,7 +40,7 @@ function wikifyStatic(source,highlightRegExp,tiddler,format)
 	if(source && source != "") {
 		var wikifier = new Wikifier(source,getParser(tiddler,format),highlightRegExp,tiddler);
 		wikifier.isStatic = true;
-		wikifier.subWikifyUnterm(e);
+		wikifier.subWikify(e);
 		html = e.innerHTML;
 		removeNode(e);
 	}
@@ -105,6 +105,7 @@ function Wikifier(source,formatter,highlightRegExp,tiddler)
 Wikifier.prototype.wikifyPlain = function()
 {
 	var e = createTiddlyElement(document.body,"div");
+	e.style.display = "none";
 	this.subWikify(e);
 	var text = getPlainText(e);
 	removeNode(e);
@@ -114,10 +115,14 @@ Wikifier.prototype.wikifyPlain = function()
 Wikifier.prototype.subWikify = function(output,terminator)
 {
 	//# Handle the terminated and unterminated cases separately, this speeds up wikifikation by about 30%
-	if(terminator)
-		this.subWikifyTerm(output,new RegExp("(" + terminator + ")","mg"));
-	else
-		this.subWikifyUnterm(output);
+	try {
+		if(terminator)
+			this.subWikifyTerm(output,new RegExp("(" + terminator + ")","mg"));
+		else
+			this.subWikifyUnterm(output);
+	} catch(ex) {
+		showException(ex);
+	}
 };
 
 Wikifier.prototype.subWikifyUnterm = function(output)
