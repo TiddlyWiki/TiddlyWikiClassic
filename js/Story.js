@@ -216,26 +216,21 @@ Story.prototype.refreshTiddler = function(title,template,force,customFields,defa
 			tiddlerElem.setAttribute("tags",tiddler.tags.join(" "));
 			tiddlerElem.setAttribute("tiddler",title);
 			tiddlerElem.setAttribute("template",template);
-			var me = this;
 			tiddlerElem.onmouseover = this.onTiddlerMouseOver;
 			tiddlerElem.onmouseout = this.onTiddlerMouseOut;
 			tiddlerElem.ondblclick = this.onTiddlerDblClick;
 			tiddlerElem[window.event?"onkeydown":"onkeypress"] = this.onTiddlerKeyPress;
-			var html = this.getTemplateForTiddler(title,template,tiddler);
-			tiddlerElem.innerHTML = html;
+			tiddlerElem.innerHTML = this.getTemplateForTiddler(title,template,tiddler);
 			applyHtmlMacros(tiddlerElem,tiddler);
 			if(store.getTaggedTiddlers(title).length > 0)
 				addClass(tiddlerElem,"isTag");
 			else
 				removeClass(tiddlerElem,"isTag");
-			if(!store.tiddlerExists(title)) {
-				if(store.isShadowTiddler(title))
-					addClass(tiddlerElem,"shadow");
-				else
-					addClass(tiddlerElem,"missing");
-			} else {
+			if(store.tiddlerExists(title)) {
 				removeClass(tiddlerElem,"shadow");
 				removeClass(tiddlerElem,"missing");
+			} else {
+				addClass(tiddlerElem,store.isShadowTiddler(title) ? "shadow" : "missing");
 			}
 			if(customFields)
 				this.addCustomFields(tiddlerElem,customFields);
@@ -634,14 +629,14 @@ Story.prototype.switchTheme = function(theme)
 		var name = config.notifyTiddlers[i].name;
 		switch(name) {
 		case "PageTemplate":
-			config.refreshers.pageTemplate = replaceNotification(i,config.refreshers.pageTemplate,getSlice(theme,name));
+			config.refresherData.pageTemplate = replaceNotification(i,config.refresherData.pageTemplate,getSlice(theme,name));
 			break;
 		case "StyleSheet":
-			removeStyleSheet(config.refreshers.styleSheet);
-			config.refreshers.styleSheet = replaceNotification(i,config.refreshers.styleSheet,getSlice(theme,name));
+			removeStyleSheet(config.refresherData.styleSheet);
+			config.refresherData.styleSheet = replaceNotification(i,config.refresherData.styleSheet,getSlice(theme,name));
 			break;
 		case "ColorPalette":
-			config.refreshers.colorPalette = replaceNotification(i,config.refreshers.colorPalette,getSlice(theme,name));
+			config.refresherData.colorPalette = replaceNotification(i,config.refresherData.colorPalette,getSlice(theme,name));
 			break;
 		default:
 			break;

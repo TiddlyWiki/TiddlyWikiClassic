@@ -2,6 +2,7 @@
 //-- Refresh mechanism
 //--
 
+//# refresher functions
 config.refreshers = {
 	link: function(e,changeList)
 		{
@@ -42,13 +43,16 @@ config.refreshers = {
 		if(macro && macro.refresh)
 			macro.refresh(e,params);
 		return true;
-		},
-	styleSheet: "StyleSheet", 
-	defaultStyleSheet: "StyleSheet", 
-	pageTemplate: "PageTemplate", 
-	defaultPageTemplate: "PageTemplate", 
-	colorPalette: "ColorPalette", 
-	defaultColorPalette: "ColorPalette" 
+		}
+};
+
+config.refresherData = {
+	styleSheet: "StyleSheet",
+	defaultStyleSheet: "StyleSheet",
+	pageTemplate: "PageTemplate",
+	defaultPageTemplate: "PageTemplate",
+	colorPalette: "ColorPalette",
+	defaultColorPalette: "ColorPalette"
 };
 
 function refreshElements(root,changeList)
@@ -104,16 +108,16 @@ function refreshPageTemplate(title)
 	var wrapper = document.getElementById("contentWrapper");
 
 	isAvailable = function(title) { 
-		var s = title ? title.indexOf(config.textPrimitives.sectionSeparator) : -1; 
+		var s = title ? title.indexOf(config.textPrimitives.sectionSeparator) : -1;
 		if(s!=-1) 
 			title = title.substr(0,s); 
-		return store.tiddlerExists(title) || store.isShadowTiddler(title); 
+		return store.tiddlerExists(title) || store.isShadowTiddler(title);
  	};
 	//# protect against non-existent pageTemplate
 	if(!title || !isAvailable(title))
-		title = config.refreshers.pageTemplate;
+		title = config.refresherData.pageTemplate;
 	if(!isAvailable(title))
-		title = config.refreshers.defaultPageTemplate; //# this one is always avaialable
+		title = config.refresherData.defaultPageTemplate; //# this one is always avaialable
 	html = store.getRecursiveTiddlerText(title,null,10);
 	wrapper.innerHTML = html;
 	applyHtmlMacros(wrapper);
@@ -169,7 +173,7 @@ function refreshAll()
 	refreshDisplay();
 	refreshStyles("StyleSheetLayout");
 	refreshStyles("StyleSheetColors");
-	refreshStyles(config.refreshers.styleSheet);
+	refreshStyles(config.refresherData.styleSheet);
 	refreshStyles("StyleSheetPrint");
 }
 
