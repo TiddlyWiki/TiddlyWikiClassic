@@ -56,7 +56,7 @@ FileAdaptor.prototype.openHost = function(host,context,userParams,callback)
 	context = this.setContext(context,userParams,callback);
 	context.status = true;
 	if(callback)
-		window.setTimeout(function() {callback(context,userParams);},10);
+		window.setTimeout(function() {context.callback(context,userParams);},10);
 	return true;
 };
 
