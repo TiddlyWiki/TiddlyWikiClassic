@@ -6,7 +6,7 @@ config.macros.tabs.handler = function(place,macroName,params)
 {
 	var cookie = params[0];
 	var numTabs = (params.length-1)/3;
-	var wrapper = createTiddlyElement(null,"div",null,cookie);
+	var wrapper = createTiddlyElement(null,"div",null,"tabsetWrapper " + cookie);
 	var tabset = createTiddlyElement(wrapper,"div",null,"tabset");
 	tabset.setAttribute("cookie",cookie);
 	var validTab = false;
