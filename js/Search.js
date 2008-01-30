@@ -5,8 +5,8 @@
 config.macros.search.handler = function(place,macroName,params)
 {
 	var searchTimeout = null;
-	var btn = createTiddlyButton(place,this.label,this.prompt,this.onClick);
-	var txt = createTiddlyElement(place,"input",null,"txtOptionInput");
+	var btn = createTiddlyButton(place,this.label,this.prompt,this.onClick,"searchButton");
+	var txt = createTiddlyElement(place,"input",null,"txtOptionInput searchField");
 	if(params[0])
 		txt.value = params[0];
 	txt.onkeyup = this.onKeyPress;
