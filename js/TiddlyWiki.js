@@ -140,7 +140,7 @@ TiddlyWiki.prototype.getTiddlerText = function(title,defaultText)
 	if(tiddler) {
 		if(!section)
 			return tiddler.text;
-		var re = new RegExp("(^!{1,6}" + section.escapeRegExp() + ")","mg");
+		var re = new RegExp("(^!{1,6}" + section.escapeRegExp() + " *\n)","mg");
 		re.lastIndex = 0;
 		var match =  re.exec(tiddler.text);
 		if(match) {
@@ -149,7 +149,7 @@ TiddlyWiki.prototype.getTiddlerText = function(title,defaultText)
 			re2.lastIndex = 0;
 			match = re2.exec(t); //# search for the next heading
 			if(match)
-				t = t.substr(0,match.index);
+				t = t.substr(0,match.index-1);//# don't include final \n
 			return t;
 		}
 		return defaultText;
