@@ -284,17 +284,23 @@ config.macros.gradient.handler = function(place,macroName,params,wikifier)
 config.macros.message.handler = function(place,macroName,params)
 {
 	if(params[0]) {
-		var m = config;
-		var p = params[0].split(".");
-		for(var t=0; t<p.length; t++) {
-			if(p[t] in m)
-				m = m[p[t]];
-			else
-				break;
-		}
+		var names = params[0].split(".");
+		var lookupMessage = function(root,nameIndex) {
+				if(names[nameIndex] in root) {
+					if(nameIndex < names.length-1)
+						return (lookupMessage(root[names[nameIndex]],nameIndex+1));
+					else
+						return root[names[nameIndex]];
+				} else
+					return null;
+			};
+		var m = lookupMessage(config,0);
+		if(m == null)
+			m = lookupMessage(window,0);
 		createTiddlyText(place,m.toString().format(params.splice(1)));
 	}
 };
+
 
 config.macros.view.views = {
 	text: function(value,place,params,wikifier,paramString,tiddler) {
