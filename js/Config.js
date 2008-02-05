@@ -120,7 +120,7 @@ config.macros = {
 	tabs: {},
 	gradient: {},
 	message: {},
-	view: {},
+	view: {defaultView: "text"},
 	edit: {},
 	tagChooser: {},
 	toolbar: {},

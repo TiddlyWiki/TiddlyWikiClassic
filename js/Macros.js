@@ -296,26 +296,32 @@ config.macros.message.handler = function(place,macroName,params)
 	}
 };
 
+config.macros.view.views = {
+	text: function(value,place,params,wikifier,paramString,tiddler) {
+		highlightify(value,place,highlightHack,tiddler);
+	},
+	link: function(value,place,params,wikifier,paramString,tiddler) {
+		createTiddlyLink(place,value,true);
+	},
+	wikified: function(value,place,params,wikifier,paramString,tiddler) {
+		value = params[2] ? ("" + params[2]).format([value]) : value;
+		wikify(value,place,highlightHack,tiddler);
+	},
+	date: function(value,place,params,wikifier,paramString,tiddler) {
+		value = Date.convertFromYYYYMMDDHHMM(value);
+		createTiddlyText(place,value.formatString(params[2] ? params[2] : config.views.wikified.dateFormat));	
+	}
+};
+
 config.macros.view.handler = function(place,macroName,params,wikifier,paramString,tiddler)
 {
 	if((tiddler instanceof Tiddler) && params[0]) {
 		var value = store.getValue(tiddler,params[0]);
-		if(value != undefined) {
-			switch(params[1]) {
-				case undefined:
-					highlightify(value,place,highlightHack,tiddler);
-					break;
-				case "link":
-					createTiddlyLink(place,value,true);
-					break;
-				case "wikified":
-					wikify(value,place,highlightHack,tiddler);
-					break;
-				case "date":
-					value = Date.convertFromYYYYMMDDHHMM(value);
-					createTiddlyText(place,value.formatString(params[2] ? params[2] : config.views.wikified.dateFormat));
-					break;
-			}
+		if(value) {
+			var type = params[1] ? params[1] : config.macros.view.defaultView;
+			var handler = config.macros.view.views[type];
+			if (handler)
+				handler(value,place,params,wikifier,paramString,tiddler);
 		}
 	}
 };
