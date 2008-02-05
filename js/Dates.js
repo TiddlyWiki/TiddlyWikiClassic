@@ -26,6 +26,9 @@ Date.prototype.formatString = function(template)
 	t = t.replace(/0DD/g,String.zeroPad(this.getDate(),2));
 	t = t.replace(/DDth/g,this.getDate()+this.daySuffix());
 	t = t.replace(/DD/g,this.getDate());
+	var tz = this.getTimezoneOffset();
+	var atz = Math.abs(tz);
+	t = t.replace(/TZD/g,(tz < 0 ? '+' : '-') + String.zeroPad(Math.floor(atz / 60),2) + ':' + String.zeroPad(atz % 60,2));
 	return t;
 };
 
