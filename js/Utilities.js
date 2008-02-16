@@ -132,9 +132,10 @@ function onClickTiddlerLink(ev)
 }
 
 // Create a button for a tag with a popup listing all the tiddlers that it tags
-function createTagButton(place,tag,excludeTiddler)
+//# title and tooltip arguments are optional
+function createTagButton(place,tag,excludeTiddler,title,tooltip)
 {
-	var btn = createTiddlyButton(place,tag,config.views.wikified.tag.tooltip.format([tag]),onClickTag);
+	var btn = createTiddlyButton(place,title||tag,(tooltip||config.views.wikified.tag.tooltip).format([tag]),onClickTag);
 	btn.setAttribute("tag",tag);
 	if(excludeTiddler)
 		btn.setAttribute("tiddler",excludeTiddler);

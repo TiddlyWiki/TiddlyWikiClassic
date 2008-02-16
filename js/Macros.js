@@ -143,9 +143,12 @@ config.macros.tiddler.renderText = function(place,text,tiddlerName,params)
 
 config.macros.tiddler.tiddlerStack = [];
 
-config.macros.tag.handler = function(place,macroName,params)
-{
-	createTagButton(place,params[0]);
+//# params[0] - tag
+//# params[1] - title (optional)
+//# params[2] - tooltip (optional)
+config.macros.tag.handler = function(place,macroName,params) 
+{ 
+	createTagButton(place,params[0],null,params[1],params[2]);
 };
 
 config.macros.tags.handler = function(place,macroName,params,wikifier,paramString,tiddler)
