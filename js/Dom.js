@@ -2,8 +2,10 @@
 //-- DOM utilities - many derived from www.quirksmode.org
 //--
 
-function drawGradient(place,horiz,colours)
+function drawGradient(place,horiz,locolors,hicolors)
 {
+	if(!hicolors)
+		hicolors = locolors;
 	for(var t=0; t<= 100; t+=2) {
 		var bar = document.createElement("div");
 		place.appendChild(bar);
@@ -13,9 +15,8 @@ function drawGradient(place,horiz,colours)
 		bar.style.width = horiz ? (101-t) + "%" : "100%";
 		bar.style.height = horiz ? "100%" : (101-t) + "%";
 		bar.style.zIndex = -1;
-		var f = t/100;
-		var p = f*(colours.length-1);
-		bar.style.backgroundColor = colours[Math.floor(p)].mix(colours[Math.ceil(p)],p-Math.floor(p)).toString();
+		var p = t/100*(locolors.length-1);
+		bar.style.backgroundColor = hicolors[Math.floor(p)].mix(locolors[Math.ceil(p)],p-Math.floor(p)).toString();
 	}
 }
 
@@ -354,4 +355,5 @@ function getNodeText(e)
 	}
 	return t;
 }
+
 

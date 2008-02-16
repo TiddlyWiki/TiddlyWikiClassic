@@ -256,7 +256,7 @@ config.macros.slider.handler = function(place,macroName,params)
 };
 
 // <<gradient [[tiddler name]] vert|horiz rgb rgb rgb rgb... >>
-config.macros.gradient.handler = function(place,macroName,params,wikifier)
+config.macros.gradient.handler = function(place,macroName,params,wikifier,paramString,tiddler)
 {
 	var panel = wikifier ? createTiddlyElement(place,"div",null,"gradient") : place;
 	panel.style.position = "relative";
@@ -266,13 +266,18 @@ config.macros.gradient.handler = function(place,macroName,params,wikifier)
 		var styles = config.formatterHelpers.inlineCssHelper(wikifier);
 		config.formatterHelpers.applyCssHelper(panel,styles);
 	}
-	var colours = [];
-	for(var t=1; t<params.length; t++) {
-		var c = new RGB(params[t]);
-		if(c)
-			colours.push(c);
+	params = paramString.parseParams("color");
+	var locolors = [], hicolors = [];
+	for(var t=2; t<params.length; t++) {
+		var c = new RGB(params[t].value);
+		if(params[t].name == "snap") {
+			hicolors[hicolors.length-1] = c;
+		} else {
+			locolors.push(c);
+			hicolors.push(c);
+		}
 	}
-	drawGradient(panel,params[0] != "vert",colours);
+	drawGradient(panel,params[1].value != "vert",locolors,hicolors);
 	if(wikifier)
 		wikifier.subWikify(panel,">>");
 	if(document.all) {
@@ -429,4 +434,5 @@ config.macros.annotations.handler = function(place,macroName,params,wikifier,par
 	var text = a.format([title]);
 	wikify(text,createTiddlyElement(place,"div",null,"annotation"),null,tiddler);
 };
+
 
