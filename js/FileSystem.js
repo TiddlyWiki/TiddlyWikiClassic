@@ -232,7 +232,10 @@ function mozillaLoadFile(filePath)
 			inputStream.init(file,0x01,00004,null);
 			var sInputStream = Components.classes["@mozilla.org/scriptableinputstream;1"].createInstance(Components.interfaces.nsIScriptableInputStream);
 			sInputStream.init(inputStream);
-			return sInputStream.read(sInputStream.available());
+			var contents = sInputStream.read(sInputStream.available());
+			sInputStream.close();
+			inputStream.close();
+			return contents;
 		} catch(ex) {
 			//# alert("Exception while attempting to load\n\n" + ex);
 			return false;
