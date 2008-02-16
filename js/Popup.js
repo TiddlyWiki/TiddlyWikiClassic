@@ -47,8 +47,9 @@ Popup.place = function(root,popup,offset)
 	if(popup.offsetWidth > winWidth*0.75)
 		popup.style.width = winWidth*0.75 + "px";
 	var popupWidth = popup.offsetWidth;
-	if(popupLeft + popupWidth > winWidth)
-		popupLeft = winWidth - popupWidth;
+	var scrollWidth = winWidth - document.body.offsetWidth;
+	if(popupLeft + popupWidth > winWidth - scrollWidth - 1)
+		popupLeft = winWidth - popupWidth - scrollWidth - 1;
 	popup.style.left = popupLeft + "px";
 	popup.style.top = popupTop + "px";
 	popup.style.display = "block";
