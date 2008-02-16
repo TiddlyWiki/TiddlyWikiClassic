@@ -44,7 +44,7 @@ config.macros.newTiddler.onClickNewTiddler = function()
 	var template = this.getAttribute("newTemplate");
 	var customFields = this.getAttribute("customFields");
 	story.displayTiddler(null,title,template,false,null,null);
-	var tiddlerElem = document.getElementById(story.idPrefix + title);
+	var tiddlerElem = story.getTiddler(title);
 	if(customFields)
 		story.addCustomFields(tiddlerElem,customFields);
 	var text = this.getAttribute("newText");

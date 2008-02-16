@@ -54,7 +54,7 @@ Story.prototype.displayTiddler = function(srcElement,tiddler,template,animate,un
 {
 	var title = (tiddler instanceof Tiddler)? tiddler.title : tiddler;  
 	var place = document.getElementById(this.container);
-	var tiddlerElem = document.getElementById(this.idPrefix + title);
+	var tiddlerElem = this.getTiddler(title);
 	if(tiddlerElem) {
 		if(toggle)
 			this.closeTiddler(title,true);
@@ -111,7 +111,7 @@ Story.prototype.positionTiddler = function(srcElement)
 //# customFields - an optional list of name:"value" pairs to be assigned as tiddler fields
 Story.prototype.createTiddler = function(place,before,title,template,customFields)
 {
-	var tiddlerElem = createTiddlyElement(null,"div",this.idPrefix + title,"tiddler");
+	var tiddlerElem = createTiddlyElement(null,"div",this.tiddlerId(title),"tiddler");
 	tiddlerElem.setAttribute("refresh","tiddler");
 	if(customFields)
 		tiddlerElem.setAttribute("tiddlyFields",customFields);
@@ -192,7 +192,7 @@ Story.prototype.getTemplateForTiddler = function(title,template,tiddler)
 //# defaultText - an optional string to replace the default text for non-existent tiddlers
 Story.prototype.refreshTiddler = function(title,template,force,customFields,defaultText)
 {
-	var tiddlerElem = document.getElementById(this.idPrefix + title);
+	var tiddlerElem = this.getTiddler(title);
 	if(tiddlerElem) {
 		if(tiddlerElem.getAttribute("dirty") == "true" && !force)
 			return tiddlerElem;
@@ -346,7 +346,7 @@ Story.prototype.onTiddlerKeyPress = function(ev)
 //# or null if it found no edit field at all
 Story.prototype.getTiddlerField = function(title,field)
 {
-	var tiddlerElem = document.getElementById(this.idPrefix + title);
+	var tiddlerElem = this.getTiddler(title);
 	var e = null;
 	if(tiddlerElem != null) {
 		var children = tiddlerElem.getElementsByTagName("*");
@@ -376,7 +376,7 @@ Story.prototype.focusTiddler = function(title,field)
 //# Ensures that a specified tiddler does not have the focus
 Story.prototype.blurTiddler = function(title)
 {
-	var tiddlerElem = document.getElementById(this.idPrefix + title);
+	var tiddlerElem = this.getTiddler(title);
 	if(tiddlerElem != null && tiddlerElem.focus && tiddlerElem.blur) {
 		tiddlerElem.focus();
 		tiddlerElem.blur();
@@ -409,7 +409,7 @@ Story.prototype.setTiddlerTag = function(title,tag,mode)
 //# animate - whether to perform animations
 Story.prototype.closeTiddler = function(title,animate,unused)
 {
-	var tiddlerElem = document.getElementById(this.idPrefix + title);
+	var tiddlerElem = this.getTiddler(title);
 	if(tiddlerElem != null) {
 		clearMessage();
 		this.scrubTiddler(tiddlerElem);
@@ -435,7 +435,7 @@ Story.prototype.scrubTiddler = function(tiddlerElem)
 //# dirty - new boolean status of flag
 Story.prototype.setDirty = function(title,dirty)
 {
-	var tiddlerElem = document.getElementById(this.idPrefix + title);
+	var tiddlerElem = this.getTiddler(title);
 	if(tiddlerElem != null)
 		tiddlerElem.setAttribute("dirty",dirty ? "true" : "false");
 };
@@ -443,7 +443,7 @@ Story.prototype.setDirty = function(title,dirty)
 //# Is a particular tiddler dirty (with unsaved changes)?
 Story.prototype.isDirty = function(title)
 {
-	var tiddlerElem = document.getElementById(this.idPrefix + title);
+	var tiddlerElem = this.getTiddler(title);
 	if(tiddlerElem != null)
 		return tiddlerElem.getAttribute("dirty") == "true";
 	return null;
@@ -527,7 +527,7 @@ Story.prototype.gatherSaveFields = function(e,fields)
 //# title - name of tiddler
 Story.prototype.hasChanges = function(title)
 {
-	var e = document.getElementById(this.idPrefix + title);
+	var e = this.getTiddler(title);
 	if(e != null) {
 		var fields = {};
 		this.gatherSaveFields(e,fields);
@@ -548,7 +548,7 @@ Story.prototype.hasChanges = function(title)
 //# returns: title of saved tiddler, or null if not saved
 Story.prototype.saveTiddler = function(title,minorUpdate)
 {
-	var tiddlerElem = document.getElementById(this.idPrefix + title);
+	var tiddlerElem = this.getTiddler(title);
 	if(tiddlerElem != null) {
 		var fields = {};
 		this.gatherSaveFields(tiddlerElem,fields);
@@ -651,4 +651,16 @@ Story.prototype.switchTheme = function(theme)
 		saveOptionCookie("txtTheme");
 	}
 };
+
+//# generate tiddler ID
+Story.prototype.tiddlerId = function(title)
+{
+    return this.idPrefix + title;
+}
+
+//# retrieve tiddler element
+Story.prototype.getTiddler = function(title)
+{
+    return document.getElementById(this.tiddlerId(title));
+}
 
