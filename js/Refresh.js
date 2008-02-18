@@ -98,7 +98,7 @@ function refreshPageTemplate(title)
 {
 	var stash = createTiddlyElement(document.body,"div");
 	stash.style.display = "none";
-	var display = document.getElementById("tiddlerDisplay");
+	var display = story.getContainer();
 	var nodes,t;
 	if(display) {
 		nodes = display.childNodes;
@@ -122,10 +122,10 @@ function refreshPageTemplate(title)
 	wrapper.innerHTML = html;
 	applyHtmlMacros(wrapper);
 	refreshElements(wrapper);
-	display = document.getElementById("tiddlerDisplay");
+	display = story.getContainer();
 	removeChildren(display);
 	if(!display)
-		display = createTiddlyElement(wrapper,"div","tiddlerDisplay");
+		display = createTiddlyElement(wrapper,"div",story.containerId());
 	nodes = stash.childNodes;
 	for(t=nodes.length-1; t>=0; t--)
 		display.appendChild(nodes[t]);

@@ -5,11 +5,18 @@
 //# A story is a HTML div containing a sequence of tiddlers that can be manipulated
 //# container - id of containing element
 //# idPrefix - string prefix prepended to title to make ids for tiddlers in this story
-function Story(container,idPrefix)
+function Story(containerId,idPrefix)
 {
-	this.container = container;
+	this.container = containerId;
 	this.idPrefix = idPrefix;
 	this.highlightRegExp = null;
+	//# generate tiddler ID
+	this.tiddlerId = function(title) {
+		return this.idPrefix + title;
+	};
+	this.containerId = function() {
+		return this.container;
+	};
 }
 
 //# Iterate through all the tiddlers in a story
@@ -18,7 +25,7 @@ function Story(container,idPrefix)
 //#      element - reference to tiddler display element
 Story.prototype.forEachTiddler = function(fn)
 {
-	var place = document.getElementById(this.container);
+	var place = this.getContainer();
 	if(!place)
 		return;
 	var e = place.firstChild;
@@ -52,8 +59,7 @@ Story.prototype.displayTiddlers = function(srcElement,titles,template,animate,un
 //# toggle - if true, causes the tiddler to be closed if it is already opened
 Story.prototype.displayTiddler = function(srcElement,tiddler,template,animate,unused,customFields,toggle)
 {
-	var title = (tiddler instanceof Tiddler)? tiddler.title : tiddler;  
-	var place = document.getElementById(this.container);
+	var title = (tiddler instanceof Tiddler)? tiddler.title : tiddler;
 	var tiddlerElem = this.getTiddler(title);
 	if(tiddlerElem) {
 		if(toggle)
@@ -61,6 +67,7 @@ Story.prototype.displayTiddler = function(srcElement,tiddler,template,animate,un
 		else
 			this.refreshTiddler(title,template,false,customFields);
 	} else {
+		var place = this.getContainer();
 		var before = this.positionTiddler(srcElement);
 		tiddlerElem = this.createTiddler(place,before,title,template,customFields);
 	}
@@ -78,7 +85,7 @@ Story.prototype.displayTiddler = function(srcElement,tiddler,template,animate,un
 //# returns - reference to the tiddler that the new one should appear before (null for the bottom of the story)
 Story.prototype.positionTiddler = function(srcElement)
 {
-	var place = document.getElementById(this.container);
+	var place = this.getContainer();
 	var before = null;
 	if(typeof srcElement == "string") {
 		switch(srcElement) {
@@ -130,7 +137,7 @@ Story.prototype.createTiddler = function(place,before,title,template,customField
 Story.prototype.loadMissingTiddler = function(title,fields,tiddlerElem)
 {
 	var tiddler = new Tiddler(title);
-	tiddler.fields = typeof fields == "string" ?  fields.decodeHashMap() : (fields ? fields : {});
+	tiddler.fields = typeof fields == "string" ? fields.decodeHashMap() : (fields ? fields : {});
 	var serverType = tiddler.getServerType();
 	var host = tiddler.fields['server.host'];
 	var workspace = tiddler.fields['server.workspace'];
@@ -259,7 +266,7 @@ Story.prototype.addCustomFields = function(place,customFields)
 //# Refresh all tiddlers in the Story
 Story.prototype.refreshAllTiddlers = function(force)
 {
-	var place = document.getElementById(this.container);
+	var place = this.getContainer();
 	var e = place.firstChild;
 	if(!e)
 		return;
@@ -474,7 +481,7 @@ Story.prototype.closeAllTiddlers = function(exclude)
 //# Check if there are any tiddlers in the story
 Story.prototype.isEmpty = function()
 {
-	var place = document.getElementById(this.container);
+	var place = this.getContainer();
 	return place && place.firstChild == null;
 };
 
@@ -561,7 +568,7 @@ Story.prototype.saveTiddler = function(title,minorUpdate)
 		}
 		if(newTitle != title)
 			this.closeTiddler(newTitle,false);
-		tiddlerElem.id = this.idPrefix + newTitle;
+		tiddlerElem.id = this.tiddlerId(newTitle);
 		tiddlerElem.setAttribute("tiddler",newTitle);
 		tiddlerElem.setAttribute("template",DEFAULT_VIEW_TEMPLATE);
 		tiddlerElem.setAttribute("dirty","false");
@@ -652,15 +659,14 @@ Story.prototype.switchTheme = function(theme)
 	}
 };
 
-//# generate tiddler ID
-Story.prototype.tiddlerId = function(title)
-{
-    return this.idPrefix + title;
-}
-
 //# retrieve tiddler element
 Story.prototype.getTiddler = function(title)
 {
-    return document.getElementById(this.tiddlerId(title));
+	return document.getElementById(this.tiddlerId(title));
+}
+
+Story.prototype.getContainer = function()
+{
+	return document.getElementById(this.containerId());
 }
 
