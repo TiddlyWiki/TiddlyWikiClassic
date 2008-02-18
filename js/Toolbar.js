@@ -6,8 +6,8 @@
 //#  place - parent DOM element
 //#  command - reference to config.commands[] member -or- name of member
 //#  tiddler - reference to tiddler that toolbar applies to
-//#  theClass - the class to give the button
-config.macros.toolbar.createCommand = function(place,commandName,tiddler,theClass)
+//#  className - the class to give the button
+config.macros.toolbar.createCommand = function(place,commandName,tiddler,className)
 {
 	if(typeof commandName != "string") {
 		var c = null;
@@ -22,21 +22,21 @@ config.macros.toolbar.createCommand = function(place,commandName,tiddler,theClas
 		if(command.isEnabled ? command.isEnabled(tiddler) : this.isCommandEnabled(command,tiddler)) {
 			var text = command.getText ? command.getText(tiddler) : this.getCommandText(command,tiddler);
 			var tooltip = command.getTooltip ? command.getTooltip(tiddler) : this.getCommandTooltip(command,tiddler);
-			var cmd;
-			switch(command.type) {
-				case "popup":
-					cmd = this.onClickPopup;
-					break;
-				case "command":
-				default:
-					cmd = this.onClickCommand;
-					break;
-			}
+			var cmd; 
+			switch(command.type) { 
+				case "popup": 
+					cmd = this.onClickPopup; 
+					break; 
+				case "command": 
+				default: 
+					cmd = this.onClickCommand; 
+					break; 
+			} 
 			var btn = createTiddlyButton(null,text,tooltip,cmd);
 			btn.setAttribute("commandName",commandName);
 			btn.setAttribute("tiddler",tiddler.title);
-			if(theClass)
-				addClass(btn,theClass);
+			if(className)
+				addClass(btn,className);
 			place.appendChild(btn);
 		}
 	}
@@ -64,7 +64,7 @@ config.macros.toolbar.onClickCommand = function(ev)
 {
 	var e = ev ? ev : window.event;
 	e.cancelBubble = true;
-	if (e.stopPropagation) e.stopPropagation();
+	if(e.stopPropagation) e.stopPropagation();
 	var command = config.commands[this.getAttribute("commandName")];
 	return command.handler(e,this,this.getAttribute("tiddler"));
 };
@@ -73,7 +73,7 @@ config.macros.toolbar.onClickPopup = function(ev)
 {
 	var e = ev ? ev : window.event;
 	e.cancelBubble = true;
-	if (e.stopPropagation) e.stopPropagation();
+	if(e.stopPropagation) e.stopPropagation();
 	var popup = Popup.create(this);
 	var command = config.commands[this.getAttribute("commandName")];
 	var title = this.getAttribute("tiddler");
@@ -85,12 +85,12 @@ config.macros.toolbar.onClickPopup = function(ev)
 };
 
 // Invoke the first command encountered from a given place that is tagged with a specified class
-config.macros.toolbar.invokeCommand = function(place,theClass,event)
+config.macros.toolbar.invokeCommand = function(place,className,event)
 {
 	var children = place.getElementsByTagName("a");
 	for(var t=0; t<children.length; t++) {
 		var c = children[t];
-		if(hasClass(c,theClass) && c.getAttribute && c.getAttribute("commandName")) {
+		if(hasClass(c,className) && c.getAttribute && c.getAttribute("commandName")) {
 			if(c.onclick instanceof Function)
 				c.onclick.call(c,event);
 			break;
@@ -119,19 +119,19 @@ config.macros.toolbar.handler = function(place,macroName,params,wikifier,paramSt
 				place = e;
 				break;
 			default:
-				var theClass = "";
+				var className = "";
 				switch(c.substr(0,1)) {
 					case "+":
-						theClass = "defaultCommand";
+						className = "defaultCommand";
 						c = c.substr(1);
 						break;
 					case "-":
-						theClass = "cancelCommand";
+						className = "cancelCommand";
 						c = c.substr(1);
 						break;
 				}
 				if(c in config.commands)
-					this.createCommand(place,c,tiddler,theClass);
+					this.createCommand(place,c,tiddler,className);
 				break;
 		}
 	}

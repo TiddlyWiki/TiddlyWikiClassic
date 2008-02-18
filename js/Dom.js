@@ -20,40 +20,40 @@ function drawGradient(place,horiz,locolors,hicolors)
 	}
 }
 
-function createTiddlyText(theParent,theText)
+function createTiddlyText(parent,text)
 {
-	return theParent.appendChild(document.createTextNode(theText));
+	return parent.appendChild(document.createTextNode(text));
 }
 
-function createTiddlyCheckbox(theParent,caption,checked,onChange)
+function createTiddlyCheckbox(parent,caption,checked,onChange)
 {
 	var cb = document.createElement("input");
 	cb.setAttribute("type","checkbox");
 	cb.onclick = onChange;
-	theParent.appendChild(cb);
+	parent.appendChild(cb);
 	cb.checked = checked;
 	cb.className = "chkOptionInput";
 	if(caption)
-		wikify(caption,theParent);
+		wikify(caption,parent);
 	return cb;
 }
 
-function createTiddlyElement(theParent,theElement,theID,theClass,theText,attribs)
+function createTiddlyElement(parent,element,id,className,text,attribs)
 {
-	var e = document.createElement(theElement);
-	if(theClass != null)
-		e.className = theClass;
-	if(theID != null)
-		e.setAttribute("id",theID);
-	if(theText != null)
-		e.appendChild(document.createTextNode(theText));
-	if(attribs){
-		for(var n in attribs){
+	var e = document.createElement(element);
+	if(className != null)
+		e.className = className;
+	if(id != null)
+		e.setAttribute("id",id);
+	if(text != null)
+		e.appendChild(document.createTextNode(text));
+	if(attribs) {
+		for(var n in attribs) {
 			e.setAttribute(n,attribs[n]);
 		}
 	}
-	if(theParent != null)
-		theParent.appendChild(e);
+	if(parent != null)
+		parent.appendChild(e);
 	return e;
 }
 
@@ -82,28 +82,28 @@ function removeEvent(obj,type,fn)
 	}
 }
 
-function addClass(e,theClass)
+function addClass(e,className)
 {
 	var currClass = e.className.split(" ");
-	if(currClass.indexOf(theClass) == -1)
-		e.className += " " + theClass;
+	if(currClass.indexOf(className) == -1)
+		e.className += " " + className;
 }
 
-function removeClass(e,theClass)
+function removeClass(e,className)
 {
 	var currClass = e.className.split(" ");
-	var i = currClass.indexOf(theClass);
+	var i = currClass.indexOf(className);
 	while(i != -1) {
 		currClass.splice(i,1);
-		i = currClass.indexOf(theClass);
+		i = currClass.indexOf(className);
 	}
 	e.className = currClass.join(" ");
 }
 
-function hasClass(e,theClass)
+function hasClass(e,className)
 {
 	if(e.className) {
-		if(e.className.split(" ").indexOf(theClass) != -1)
+		if(e.className.split(" ").indexOf(className) != -1)
 			return true;
 	}
 	return false;
@@ -140,10 +140,11 @@ function resolveTarget(e)
 }
 
 // Prevent an event from bubbling
-function stopEvent(e){
-	var ev = e? e : window.event;
+function stopEvent(e)
+{
+	var ev = e ? e : window.event;
 	ev.cancelBubble = true;
-	if (ev.stopPropagation) ev.stopPropagation();
+	if(ev.stopPropagation) ev.stopPropagation();
 	return false;	
 }
 
