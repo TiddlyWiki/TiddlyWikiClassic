@@ -63,7 +63,7 @@ Array.prototype.setItem = function(value,mode)
 Array.prototype.containsAny = function(items)
 {
 	for(var i=0; i<items.length; i++) {
-		if (this.indexOf(items[i]) != -1)
+		if(this.indexOf(items[i]) != -1)
 			return true;
 	}
 	return false;
@@ -72,8 +72,8 @@ Array.prototype.containsAny = function(items)
 // Return whether all of a list of values exists in an array
 Array.prototype.containsAll = function(items)
 {
-	for (var i = 0; i<items.length; i++) {
-		if (this.indexOf(items[i]) == -1)
+	for(var i = 0; i<items.length; i++) {
+		if(this.indexOf(items[i]) == -1)
 			return false;
 	}
 	return true;
@@ -97,12 +97,13 @@ Array.prototype.remove = function(item)
 		this.splice(p,1);
 };
 
-if(!Array.prototype.map){
-Array.prototype.map = function(fn, thisObj) {
-    var scope = thisObj || window;
-    var a = [];
-    for ( var i=0, j=this.length; i < j; ++i ) {
-        a.push(fn.call(scope, this[i], i, this));
-    }
-    return a;
+if(!Array.prototype.map) {
+Array.prototype.map = function(fn,thisObj)
+{
+	var scope = thisObj || window;
+	var a = [];
+	for(var i=0, j=this.length; i < j; ++i) {
+		a.push(fn.call(scope,this[i],i,this));
+	}
+	return a;
 };}

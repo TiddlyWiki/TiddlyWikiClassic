@@ -46,9 +46,9 @@ config.commands.cancelTiddler.handler = function(event,src,title)
 config.commands.deleteTiddler.handler = function(event,src,title)
 {
 	var deleteIt = true;
-	if (config.options.chkConfirmDelete)
+	if(config.options.chkConfirmDelete)
 		deleteIt = confirm(this.warning.format([title]));
-	if (deleteIt) {
+	if(deleteIt) {
 		store.removeTiddler(title);
 		story.closeTiddler(title,true);
 		autoSaveChanges();
