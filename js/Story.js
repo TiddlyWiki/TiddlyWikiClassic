@@ -602,7 +602,6 @@ Story.prototype.permaView = function()
 		window.location.hash = t;
 };
 
-
 Story.prototype.switchTheme = function(theme)
 {
 	if(safeMode) 
@@ -616,44 +615,56 @@ Story.prototype.switchTheme = function(theme)
  	};
 
 	getSlice = function(theme,slice) {
+		if(readOnly)
+			var r = store.getTiddlerSlice(theme,slice+"ReadOnly");
+		r = r || store.getTiddlerSlice(theme,slice);
 		var r = store.getTiddlerSlice(theme,slice);
 		if(r && r.indexOf(config.textPrimitives.sectionSeparator)==0)
 			r = theme + r;
 		return isAvailable(r) ? r : slice;
 	};
 
-	replaceNotification = function(i,name,newName) {
-		if(name==newName)
-			return name;
-		if(store.namedNotifications[i].name == name) {
+	replaceNotification = function(i,name,theme,slice) {
+		var newName = getSlice(theme,slice);
+		if(name!=newName && store.namedNotifications[i].name==name) {
 			store.namedNotifications[i].name = newName;
 			return newName;
 		}
 		return name;
 	};
 
+	var pt = config.refreshers.pageTemplate;
+	var vi = DEFAULT_VIEW_TEMPLATE;
+	var vt = config.tiddlerTemplates[vi];
+	var ei = DEFAULT_EDIT_TEMPLATE;
+	var et = config.tiddlerTemplates[ei];
+
 	for(var i=0; i<config.notifyTiddlers.length; i++) {
 		var name = config.notifyTiddlers[i].name;
 		switch(name) {
 		case "PageTemplate":
-			config.refresherData.pageTemplate = replaceNotification(i,config.refresherData.pageTemplate,getSlice(theme,name));
+			config.refresherData.pageTemplate = replaceNotification(i,config.refresherData.pageTemplate,theme,name);
 			break;
 		case "StyleSheet":
 			removeStyleSheet(config.refresherData.styleSheet);
-			config.refresherData.styleSheet = replaceNotification(i,config.refresherData.styleSheet,getSlice(theme,name));
+			config.refresherData.styleSheet = replaceNotification(i,config.refresherData.styleSheet,theme,name);
 			break;
 		case "ColorPalette":
-			config.refresherData.colorPalette = replaceNotification(i,config.refresherData.colorPalette,getSlice(theme,name));
+			config.refresherData.colorPalette = replaceNotification(i,config.refresherData.colorPalette,theme,name);
 			break;
 		default:
 			break;
 		}
 	}
-	config.tiddlerTemplates[DEFAULT_VIEW_TEMPLATE] = getSlice(theme,"ViewTemplate");
-	config.tiddlerTemplates[DEFAULT_EDIT_TEMPLATE] = getSlice(theme,"EditTemplate");
+	config.tiddlerTemplates[vi] = getSlice(theme,"ViewTemplate");
+	config.tiddlerTemplates[ei] = getSlice(theme,"EditTemplate");
 	if(!startingUp) {
-		refreshAll();
-		story.refreshAllTiddlers(true);
+		if(config.refresherData.pageTemplate!=pt || config.tiddlerTemplates[vi]!=vt || config.tiddlerTemplates[ei]!=et) {
+			refreshAll();
+			story.refreshAllTiddlers(true);
+		} else {
+			setStylesheet(store.getRecursiveTiddlerText(config.refreshers.styleSheet,"",10),config.refreshers.styleSheet);
+		}
 		config.options.txtTheme = theme;
 		saveOptionCookie("txtTheme");
 	}
