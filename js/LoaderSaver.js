@@ -15,6 +15,8 @@ function LoaderBase() {}
 LoaderBase.prototype.loadTiddler = function(store,node,tiddlers)
 {
 	var title = this.getTitle(store,node);
+	if(safeMode && store.isShadowTiddler(title))
+		return;
 	if(title) {
 		var tiddler = store.createTiddler(title);
 		this.internalizeTiddler(store,tiddler,title,node);

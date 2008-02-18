@@ -38,9 +38,9 @@ function main()
 	for(var s=0; s<config.notifyTiddlers.length; s++)
 		store.addNotification(config.notifyTiddlers[s].name,config.notifyTiddlers[s].notify);
 	t1 = new Date();
-	store.loadFromDiv("storeArea","store",true);
-	t2 = new Date();
 	loadShadowTiddlers();
+	t2 = new Date();
+	store.loadFromDiv("storeArea","store",true);
 	t3 = new Date();
 	invokeParamifier(params,"onload");
 	t4 = new Date();
@@ -69,8 +69,8 @@ function main()
 		backstage.init();
 	t10 = new Date();
 	if(config.options.chkDisplayStartupTime) {
-		displayMessage("LoadFromDiv " + (t2-t1) + " ms");
-		displayMessage("LoadShadows " + (t3-t2) + " ms");
+		displayMessage("LoadShadows " + (t2-t1) + " ms");
+		displayMessage("LoadFromDiv " + (t3-t2) + " ms");
 		displayMessage("LoadPlugins " + (t5-t4) + " ms");
 		displayMessage("Notify " + (t7-t6) + " ms");
 		displayMessage("Restart " + (t8-t7) + " ms");
