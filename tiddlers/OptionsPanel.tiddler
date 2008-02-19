@@ -3,12 +3,12 @@
 
 Your username for signing your edits. Write it as a WikiWord (eg JoeBloggs)
 
-&lt;&lt;option txtUserName&gt;&gt;
-&lt;&lt;option chkSaveBackups&gt;&gt; SaveBackups
-&lt;&lt;option chkAutoSave&gt;&gt; AutoSave
-&lt;&lt;option chkRegExpSearch&gt;&gt; RegExpSearch
-&lt;&lt;option chkCaseSensitiveSearch&gt;&gt; CaseSensitiveSearch
-&lt;&lt;option chkAnimate&gt;&gt; EnableAnimations
+<<option txtUserName>>
+<<option chkSaveBackups>> SaveBackups
+<<option chkAutoSave>> AutoSave
+<<option chkRegExpSearch>> RegExpSearch
+<<option chkCaseSensitiveSearch>> CaseSensitiveSearch
+<<option chkAnimate>> EnableAnimations
 
 ----
 Also see AdvancedOptions</pre>

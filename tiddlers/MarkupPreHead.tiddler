@@ -1,6 +1,6 @@
 <div title="MarkupPreHead">
-<pre>&lt;!--{{{--&gt;
-&lt;link rel='alternate' type='application/rss+xml' title='RSS' href='index.xml'/&gt;
-&lt;!--}}}--&gt;
+<pre><!--{{{-->
+<link rel='alternate' type='application/rss+xml' title='RSS' href='index.xml'/>
+<!--}}}-->
 </pre>
 </div>
