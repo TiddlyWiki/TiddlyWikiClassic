@@ -6,7 +6,7 @@ function getParameters()
 {
 	var p = null;
 	if(window.location.hash) {
-		p = decodeURI(window.location.hash.substr(1));
+		p = decodeURIComponent(window.location.hash.substr(1));
 		if(config.browser.firefoxDate != null && config.browser.firefoxDate[1] < "20051111")
 			p = convertUTF8ToUnicode(p);
 	}
