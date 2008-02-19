@@ -4,6 +4,11 @@
 
 config.commands.closeTiddler.handler = function(event,src,title)
 {
+	if(story.isDirty(title) && !readOnly) {
+		if(!confirm(config.commands.cancelTiddler.warning.format([title])))
+			return false;
+	}
+	story.setDirty(title,false);
 	story.closeTiddler(title,true);
 	return false;
 };
