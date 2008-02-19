@@ -13,6 +13,7 @@ var config = {
 
 // Adaptors
 config.adaptors = {};
+config.defaultAdaptor = null;
 
 // Backstage tasks
 config.tasks = {};

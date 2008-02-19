@@ -221,3 +221,4 @@ FileAdaptor.prototype.close = function()
 
 config.adaptors[FileAdaptor.serverType] = FileAdaptor;
 
+config.defaultAdaptor = FileAdaptor.serverType;

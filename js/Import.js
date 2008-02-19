@@ -29,6 +29,8 @@ config.macros.importTiddlers.restart = function(wizard)
 		var e = createTiddlyElement(s,"option",null,null,t);
 		e.value = t;
 	}
+	if(config.defaultAdaptor)
+		s.value = config.defaultAdaptor;
 	s = wizard.getElement("selFeeds");
 	var feeds = this.getFeeds();
 	for(t in feeds) {
