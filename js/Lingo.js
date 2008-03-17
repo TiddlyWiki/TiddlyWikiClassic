@@ -415,7 +415,7 @@ merge(config.annotations,{
 	MarkupPreHead: "This tiddler is inserted at the top of the <head> section of the TiddlyWiki HTML file",
 	MarkupPostHead: "This tiddler is inserted at the bottom of the <head> section of the TiddlyWiki HTML file",
 	MarkupPreBody: "This tiddler is inserted at the top of the <body> section of the TiddlyWiki HTML file",
-	MarkupPostBody: "This tiddler is inserted at the end of the <body> section of the TiddlyWiki HTML file immediately before the script block",
+	MarkupPostBody: "This tiddler is inserted at the end of the <body> section of the TiddlyWiki HTML file immediately after the script block",
 	OptionsPanel: "This shadow tiddler is used as the contents of the options panel slider in the right-hand sidebar",
 	PageTemplate: "The HTML template in this shadow tiddler determines the overall ~TiddlyWiki layout",
 	PluginManager: "This shadow tiddler provides access to the plugin manager",
