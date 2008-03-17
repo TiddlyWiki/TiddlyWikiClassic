@@ -10,6 +10,7 @@ function FileAdaptor()
 }
 
 FileAdaptor.serverType = 'file';
+FileAdaptor.serverLabel = 'TiddlyWiki';
 
 FileAdaptor.prototype.setContext = function(context,userParams,callback)
 {
