@@ -210,10 +210,10 @@ config.macros.permaview.onClick = function(e)
 	return false;
 };
 
-config.macros.saveChanges.handler = function(place)
+config.macros.saveChanges.handler = function(place,macroName,params)
 {
 	if(!readOnly)
-		createTiddlyButton(place,this.label,this.prompt,this.onClick,null,null,this.accessKey);
+		createTiddlyButton(place,params[0] || this.label,params[1] || this.prompt,this.onClick,null,null,this.accessKey);
 };
 
 config.macros.saveChanges.onClick = function(e)
