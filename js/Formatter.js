@@ -372,8 +372,10 @@ config.formatters = [
 				img.align = "left";
 			else if(lookaheadMatch[2])
 				img.align = "right";
-			if(lookaheadMatch[3])
+			if(lookaheadMatch[3]) {
 				img.title = lookaheadMatch[3];
+				img.setAttribute("alt",lookaheadMatch[3]);
+			}
 			img.src = lookaheadMatch[4];
 			w.nextMatch = this.lookaheadRegExp.lastIndex;
 		}
