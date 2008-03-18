@@ -51,7 +51,7 @@ SaverBase.prototype.externalize = function(store)
 	var results = [];
 	var tiddlers = store.getTiddlers("title");
 	for(var t = 0; t < tiddlers.length; t++)
-		results.push(this.externalizeTiddler(store,tiddlers[t]));
+		if (!tiddlers[t].doNotSave())
+			results.push(this.externalizeTiddler(store,tiddlers[t]));
 	return results.join("\n");
 };
-
