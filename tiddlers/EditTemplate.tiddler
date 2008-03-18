@@ -1,6 +1,6 @@
 <div title="EditTemplate">
 <pre><!--{{{-->
-<div class='toolbar' macro='toolbar +saveTiddler -cancelTiddler deleteTiddler'></div>
+<div class='toolbar' macro='toolbar [[ToolbarCommands::EditToolbar]]'></div>
 <div class='title' macro='view title'></div>
 <div class='editor' macro='edit title'></div>
 <div macro='annotations'></div>
