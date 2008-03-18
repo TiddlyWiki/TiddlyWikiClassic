@@ -21,6 +21,12 @@ config.macros.importTiddlers.onCancel = function(e)
 	return false;
 };
 
+config.macros.importTiddlers.onClose = function(e)
+{
+	backstage.hidePanel();
+	return false;
+};
+
 config.macros.importTiddlers.restart = function(wizard)
 {
 	wizard.addStep(this.step1Title,this.step1Html);
@@ -75,7 +81,6 @@ config.macros.importTiddlers.onFeedChange = function(e)
 	if(f) {
 		selTypes.value = f.serverType;
 		fileInput.value = f.url;
-		this.selectedIndex = 0;
 		wizard.setValue("feedName",f.serverType);
 		wizard.setValue("feedHost",f.url);
 		wizard.setValue("feedWorkspace",f.workspace);
@@ -320,7 +325,7 @@ config.macros.importTiddlers.onGetTiddler = function(context,wizard)
 			refreshDisplay();
 		}
 		wizard.setButtons([
-				{caption: config.macros.importTiddlers.doneLabel, tooltip: config.macros.importTiddlers.donePrompt, onClick: config.macros.importTiddlers.onCancel}
+				{caption: config.macros.importTiddlers.doneLabel, tooltip: config.macros.importTiddlers.donePrompt, onClick: config.macros.importTiddlers.onClose}
 			],config.macros.importTiddlers.statusDoneImport);
 		autoSaveChanges();
 	}
