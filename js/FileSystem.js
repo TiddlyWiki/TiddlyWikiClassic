@@ -138,14 +138,14 @@ function ieCreatePath(path)
 	var i = 0;
 	do {
 		var parent = fso.GetParentFolderName(scan[i++]);
-		if (fso.FolderExists(parent))
+		if(fso.FolderExists(parent))
 			break;
 		scan.push(parent);
 	} while(true);
 
 	//# Walk back down the path, creating folders
 	for(i=scan.length-1;i>=0;i--) {
-		if (!fso.FolderExists(scan[i]))
+		if(!fso.FolderExists(scan[i]))
 			fso.CreateFolder(scan[i]);
 	}
 	return true;

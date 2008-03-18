@@ -16,7 +16,7 @@ TW21Saver.prototype.externalizeTiddler = function(store,tiddler)
 				// don't store stuff from the temp namespace
 				if(typeof value != "string")
 					value = "";
-				if (!fieldName.match(/^temp\./))
+				if(!fieldName.match(/^temp\./))
 					extendedAttributes += ' %0="%1"'.format([fieldName,value.escapeLineBreaks().htmlEncode()]);
 			},true);
 		var created = tiddler.created.convertToYYYYMMDDHHMM();

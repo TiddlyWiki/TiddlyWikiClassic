@@ -16,7 +16,7 @@ TW21Loader.prototype.getTitle = function(store,node)
 	}
 	if(!title && node.id) {
 		var lenPrefix = store.idPrefix.length;
-		if (node.id.substr(0,lenPrefix) == store.idPrefix)
+		if(node.id.substr(0,lenPrefix) == store.idPrefix)
 			title = node.id.substr(lenPrefix);
 	}
 	return title;
@@ -44,7 +44,7 @@ TW21Loader.prototype.internalizeTiddler = function(store,tiddler,title,node)
 	var attrs = node.attributes;
 	for(var i = attrs.length-1; i >= 0; i--) {
 		var name = attrs[i].name;
-		if (attrs[i].specified && !TiddlyWiki.isStandardField(name)) {
+		if(attrs[i].specified && !TiddlyWiki.isStandardField(name)) {
 			fields[name] = attrs[i].value.unescapeLineBreaks();
 		}
 	}

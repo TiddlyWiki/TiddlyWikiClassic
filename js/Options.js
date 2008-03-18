@@ -82,7 +82,7 @@ config.macros.option.genericOnChange = function(e)
 	if(opt) {
 		var optType = opt.substr(0,3);
 		var handler = config.macros.option.types[optType];
-		if (handler.elementType && handler.valueField)
+		if(handler.elementType && handler.valueField)
 			config.macros.option.propagateOption(opt,handler.valueField,this[handler.valueField],handler.elementType);
 		}
 	return true;
@@ -128,7 +128,7 @@ config.macros.option.handler = function(place,macroName,params,wikifier,paramStr
 	var desc = getParam(params,"desc","no");
 	var type = opt.substr(0,3);
 	var h = config.macros.option.types[type];
-	if (h && h.create)
+	if(h && h.create)
 		h.create(place,type,opt,className,desc);
 };
 
@@ -166,7 +166,7 @@ config.macros.options.refreshOptions = function(listWrapper,showUnknown)
 	for(n=0; n<opts.length; n++) {
 		var type = opts[n].name.substr(0,3);
 		var h = config.macros.option.types[type];
-		if (h && h.create) {
+		if(h && h.create) {
 			h.create(opts[n].colElements['option'],type,opts[n].name,null,"no");
 		}
 	}

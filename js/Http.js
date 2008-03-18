@@ -61,7 +61,7 @@ function doHttp(type,url,data,contentType,username,password,callback,params,head
 		} catch(ex) {
 			status = false;
 		}
-		if (x.readyState == 4 && callback && (status !== undefined)) {
+		if(x.readyState == 4 && callback && (status !== undefined)) {
 			if([0, httpStatus.OK, httpStatus.ContentCreated, httpStatus.NoContent, httpStatus.MultiStatus].contains(status))
 				callback(true,params,x.responseText,url,x);
 			else

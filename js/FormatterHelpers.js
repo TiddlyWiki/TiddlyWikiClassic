@@ -34,7 +34,7 @@ config.formatterHelpers = {
 				s = lookaheadMatch[3].unDash();
 				v = lookaheadMatch[4];
 			}
-			if (s=="bgcolor")
+			if(s=="bgcolor")
 				s = "backgroundColor";
 			styles.push({style: s, value: v});
 			w.nextMatch = lookaheadMatch.index + lookaheadMatch[0].length;
@@ -78,7 +78,7 @@ config.formatterHelpers = {
 			//# Definitely an external link
 			return true;
 		}
-		if (link.indexOf(".")!=-1 || link.indexOf("\\")!=-1 || link.indexOf("/")!=-1 || link.indexOf("#")!=-1) {
+		if(link.indexOf(".")!=-1 || link.indexOf("\\")!=-1 || link.indexOf("/")!=-1 || link.indexOf("#")!=-1) {
 			//# Link contains . / \ or # so is probably an external link
 			return true;
 		}

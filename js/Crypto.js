@@ -14,7 +14,7 @@ Crypto.strToBe32s = function(str)
 	for(i=0, j=0; i<len; i++, j+=4) {
 		be[i]=((str.charCodeAt(j)&0xff) << 24)|((str.charCodeAt(j+1)&0xff) << 16)|((str.charCodeAt(j+2)&0xff) << 8)|(str.charCodeAt(j+3)&0xff);
 	}
-	while (j<str.length) {
+	while(j<str.length) {
 		be[j>>2] |= (str.charCodeAt(j)&0xff)<<(24-(j*8)%32);
 		j++;
 	}

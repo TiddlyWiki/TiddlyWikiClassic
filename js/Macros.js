@@ -334,7 +334,7 @@ config.macros.view.handler = function(place,macroName,params,wikifier,paramStrin
 		if(value) {
 			var type = params[1] ? params[1] : config.macros.view.defaultView;
 			var handler = config.macros.view.views[type];
-			if (handler)
+			if(handler)
 				handler(value,place,params,wikifier,paramString,tiddler);
 		}
 	}
