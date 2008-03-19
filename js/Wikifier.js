@@ -34,7 +34,7 @@ function wikify(source,output,highlightRegExp,tiddler)
 
 function wikifyStatic(source,highlightRegExp,tiddler,format)
 {
-	var e = createTiddlyElement(document.body,"div");
+	var e = createTiddlyElement(document.body,"pre");
 	e.style.display = "none";
 	var html = "";
 	if(source && source != "") {

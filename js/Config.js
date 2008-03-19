@@ -11,6 +11,9 @@ var config = {
 	cascadeDepth: 5 // Depth of cascade animation
 };
 
+// Hashmap of alternative parsers for the wikifier
+config.parsers = {};
+
 // Adaptors
 config.adaptors = {};
 config.defaultAdaptor = null;
@@ -47,7 +50,7 @@ config.options = {
 	chkConfirmDelete: true,
 	chkInsertTabs: false,
 	chkUsePreForStorage: true, // Whether to use <pre> format for storage
-	chkDisplayStartupTime: false,
+	chkDisplayInstrumentation: false,
 	txtBackupFolder: "",
 	txtMainTab: "tabTimeline",
 	txtMoreTab: "moreTabAll",

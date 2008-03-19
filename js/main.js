@@ -6,7 +6,6 @@ var params = null; // Command line parameters
 var store = null; // TiddlyWiki storage
 var story = null; // Main story
 var formatter = null; // Default formatters for the wikifier
-config.parsers = {}; // Hashmap of alternative parsers for the wikifier
 var anim = typeof Animator == "function" ? new Animator() : null; // Animation engine
 var readOnly = false; // Whether we're in readonly mode
 var highlightHack = null; // Embarrassing hack department...
@@ -68,7 +67,7 @@ function main()
 	if(showBackstage)
 		backstage.init();
 	t10 = new Date();
-	if(config.options.chkDisplayStartupTime) {
+	if(config.options.chkDisplayInstrumentation) {
 		displayMessage("LoadShadows " + (t2-t1) + " ms");
 		displayMessage("LoadFromDiv " + (t3-t2) + " ms");
 		displayMessage("LoadPlugins " + (t5-t4) + " ms");

@@ -94,9 +94,10 @@ function saveChanges(onlyIfDirty,tiddlers)
 	if(onlyIfDirty && !store.isDirty())
 		return;
 	clearMessage();
-	// Get the URL of the document
+	var t0 = new Date();
+	//# Get the URL of the document
 	var originalPath = document.location.toString();
-	// Check we were loaded from a file URL
+	//# Check we were loaded from a file URL
 	if(originalPath.substr(0,5) != "file:") {
 		alert(config.messages.notFileUrlError);
 		if(store.tiddlerExists(config.messages.saveInstructions))
@@ -104,7 +105,7 @@ function saveChanges(onlyIfDirty,tiddlers)
 		return;
 	}
 	var localPath = getLocalPath(originalPath);
-	// Load the original file
+	//# Load the original file
 	var original = loadFile(localPath);
 	if(original == null) {
 		alert(config.messages.cantSaveError);
@@ -112,7 +113,7 @@ function saveChanges(onlyIfDirty,tiddlers)
 			story.displayTiddler(null,config.messages.saveInstructions);
 		return;
 	}
-	// Locate the storeArea div's
+	//# Locate the storeArea div's
 	var posDiv = locateStoreArea(original);
 	if(!posDiv) {
 		alert(config.messages.invalidFileError.format([localPath]));
@@ -122,6 +123,8 @@ function saveChanges(onlyIfDirty,tiddlers)
 	saveRss(localPath);
 	saveEmpty(localPath,original,posDiv);
 	saveMain(localPath,original,posDiv);
+	if(config.options.chkDisplayInstrumentation)
+		displayMessage("saveChanges " + (new Date()-t0) + " ms");
 }
 
 function saveBackup(localPath,original)
@@ -134,19 +137,6 @@ function saveBackup(localPath,original)
 			displayMessage(config.messages.backupSaved,"file://" + backupPath);
 		else
 			alert(config.messages.backupFailed);
-	}
-}
-
-function saveRss(localPath)
-{
-	//# Save Rss
-	if(config.options.chkGenerateAnRssFeed) {
-		var rssPath = localPath.substr(0,localPath.lastIndexOf(".")) + ".xml";
-		var rssSave = saveFile(rssPath,convertUnicodeToUTF8(generateRss()));
-		if(rssSave)
-			displayMessage(config.messages.rssSaved,"file://" + rssPath);
-		else
-			alert(config.messages.rssFailed);
 	}
 }
 
@@ -185,6 +175,18 @@ function saveMain(localPath,original,posDiv)
 		store.setDirty(false);
 	} else {
 		alert(config.messages.mainFailed);
+	}
+}
+
+function saveRss(localPath)
+{
+	//# Save Rss
+	if(config.options.chkGenerateAnRssFeed) {
+		var rssPath = localPath.substr(0,localPath.lastIndexOf(".")) + ".xml";
+		if(saveFile(rssPath,convertUnicodeToUTF8(generateRss())))
+			displayMessage(config.messages.rssSaved,"file://" + rssPath);
+		else
+			alert(config.messages.rssFailed);
 	}
 }
 
