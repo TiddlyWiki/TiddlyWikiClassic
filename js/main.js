@@ -17,7 +17,7 @@ var startingUp = false; // Whether we're in the process of starting up
 var pluginInfo,tiddler; // Used to pass information to plugins in loadPlugins()
 
 // Whether to use the JavaSaver applet
-var useJavaSaver = config.browser.isSafari || config.browser.isOpera;
+var useJavaSaver = (config.browser.isSafari || config.browser.isOpera) && (document.location.toString().substr(0,4) != "http");
 
 // Starting up
 function main()
