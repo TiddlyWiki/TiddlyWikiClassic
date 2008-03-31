@@ -34,7 +34,8 @@ config.paramifiers.start = {
 
 config.paramifiers.open = {
 	onstart: function(v) {
-		story.displayTiddler("bottom",v,null,false,null);
+		if(!readOnly || store.tiddlerExists(v) || store.isShadowTiddler(v))
+			story.displayTiddler("bottom",v,null,false,null);
 	}
 };
 
