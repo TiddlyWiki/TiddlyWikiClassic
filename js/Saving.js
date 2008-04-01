@@ -88,6 +88,11 @@ function autoSaveChanges(onlyIfDirty,tiddlers)
 		saveChanges(onlyIfDirty,tiddlers);
 }
 
+function loadOriginal(localPath)
+{
+	return loadFile(localPath);
+}
+
 // Save this tiddlywiki with the pending changes
 function saveChanges(onlyIfDirty,tiddlers)
 {
@@ -106,7 +111,7 @@ function saveChanges(onlyIfDirty,tiddlers)
 	}
 	var localPath = getLocalPath(originalPath);
 	//# Load the original file
-	var original = loadFile(localPath);
+	var original = loadOriginal(localPath);
 	if(original == null) {
 		alert(config.messages.cantSaveError);
 		if(store.tiddlerExists(config.messages.saveInstructions))
