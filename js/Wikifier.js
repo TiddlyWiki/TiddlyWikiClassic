@@ -38,6 +38,8 @@ function wikifyStatic(source,highlightRegExp,tiddler,format)
 	e.style.display = "none";
 	var html = "";
 	if(source && source != "") {
+		if(!tiddler)
+			tiddler = new Tiddler("temp");
 		var wikifier = new Wikifier(source,getParser(tiddler,format),highlightRegExp,tiddler);
 		wikifier.isStatic = true;
 		wikifier.subWikify(e);
