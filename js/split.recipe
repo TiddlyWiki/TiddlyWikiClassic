@@ -41,7 +41,7 @@ js: ListView.js
 js: BasicTypes.js
 js: Strings.js
 js: Dates.js
-plugin: Crypto.js title="CryptoFunctionsPlugin" tags="systemConfig excludeLists excludeSearch" Description="Support for cryptographic functions"
+js: Crypto.js
 js: RGB.js
 js: Dom.js
 js: LoaderSaver.js
