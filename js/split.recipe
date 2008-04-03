@@ -20,6 +20,7 @@ js: TiddlerFields.js
 js: Story.js
 js: Backstage.js
 js: Import.js
+js: Upgrade.js
 js: Sync.js
 js: Manager.js
 js: Messages.js

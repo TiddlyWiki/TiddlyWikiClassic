@@ -12,6 +12,7 @@ merge(config.tasks,{
 	sync: {text: "sync", tooltip: "Synchronise changes with other TiddlyWiki files and servers", content: '<<sync>>'},
 	importTask: {text: "import", tooltip: "Import tiddlers and plugins from other TiddlyWiki files and servers", content: '<<importTiddlers>>'},
 	tweak: {text: "tweak", tooltip: "Tweak the appearance and behaviour of TiddlyWiki", content: '<<options>>'},
+	upgrade: {text: "upgrade", tooltip: "Upgrade TiddlyWiki core code", content: '<<upgrade>>'},
 	plugins: {text: "plugins", tooltip: "Manage installed plugins", content: '<<plugins>>'}
 });
 
@@ -288,6 +289,22 @@ merge(config.macros.importTiddlers,{
 			],
 		rowClasses: [
 			]}
+	});
+
+merge(config.macros.upgrade,{
+	wizardTitle: "Upgrade TiddlyWiki core code",
+	step1Title: "Update or repair this TiddlyWiki to the latest release",
+	step1Html: "You are about to upgrade to the latest release of the TiddlyWiki core code (from <a href='%0' class='externalLink' target='_blank'>%1</a>). This procedure does not affect the content you have created or imported.<br><br>[explain things a bit more]. ",
+	upgradeLabel: "upgrade",
+	upgradePrompt: "Start the upgrade process",
+	statusPreparingBackup: "Preparing backup",
+	statusSavingBackup: "Saving backup file",
+	errorSavingBackup: "There was a problem saving the backup file",
+	statusLoadingCore: "Loading core code",
+	errorLoadingCore: "Error loading the core code",
+	errorCoreFormat: "Error with the new core code",
+	statusSavingCore: "Saving the new core code",
+	statusReloadingCore: "Reloading the new core code"
 	});
 
 merge(config.macros.sync,{

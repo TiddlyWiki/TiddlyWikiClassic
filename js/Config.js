@@ -92,7 +92,7 @@ config.views = {
 };
 
 // Backstage tasks
-config.backstageTasks = ["save","sync","importTask","tweak","plugins"];
+config.backstageTasks = ["save","sync","importTask","tweak","upgrade","plugins"];
 
 // Macros; each has a 'handler' member that is inserted later
 config.macros = {
@@ -131,6 +131,10 @@ config.macros = {
 	plugins: {},
 	refreshDisplay: {},
 	importTiddlers: {},
+	upgrade: {
+		source: "http://www.tiddlywiki.com/empty.html",
+		backupExtension: "pre.core.upgrade"
+	},
 	sync: {},
 	annotations: {}
 };
