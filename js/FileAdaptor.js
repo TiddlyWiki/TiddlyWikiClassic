@@ -209,7 +209,7 @@ FileAdaptor.getTiddlerComplete = function(context,userParams)
 		context.isSynchronous = true;
 		context.callback(context,userParams);
 	} else {
-		window.setTimeout(function() {callback(context,userParams);},10);
+		window.setTimeout(function() {context.callback(context,userParams);},10);
 	}
 	return true;
 };
