@@ -357,4 +357,13 @@ function getNodeText(e)
 	return t;
 }
 
-
+// Returns true if the element e has a given ancestor element
+function isDescendant(e,ancestor)
+{
+	while(e) {
+		if(e === ancestor)
+			return true;
+		e = e.parentNode;
+	}
+	return false;
+}
