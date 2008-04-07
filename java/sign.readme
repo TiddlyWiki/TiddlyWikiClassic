@@ -1,0 +1,250 @@
+
+	Readme file for signing TiddlySaver applet
+
+for verifying see verify.readme file
+
+1 - HISTORY
+
+2008 04 06 - BidiX : documentation
+2008 04 06 - BidiX : create TiddlySaverVerify.keystore
+2008 03 27 - BidiX : Signing TiddlySaver.jar
+2008 03 26 - BidiX : obtaining UnaMesa Signing Certificate
+2008 03 17 - BidiX : Issuing a certificate request to Thawte with a BidiX CSR
+2003 03 12 - BidiX : Create UnaMesa.keystore with BidiX alias and Private key
+
+
+2 - UNAMESA.KEYSTORE CREATION
+
+Using this command:
+> keytool -genkey -keyalg RSA -alias BidiX -keystore UnaMesa.keystore
+and filled required fields (assigning a password for keystore)
+
+For security reasons the Keystore is kept in a safe place in BidiX environment (BidiX @ bidix.info)
+
+
+3 - CERTICATE REQUEST
+
+Using this command:
+> keytool -certreq -alias BidiX -file certreq -keystore UnaMesa.keystore
+and pasting result in form at Thawtle site
+
+
+4 - ADDING CERTICATES TO KEYSTORE
+
+Adding Certificate Chain by importing in keystore:
+	- UnaMesa Certificate
+	- Thawte Code Signing CA Certificate
+	- Thawte Premium Server CA Certificate
+	
+> keytool -list -v -keystore UnaMesa.keystore
+
+Keystore type: jks
+Keystore provider: SUN
+
+Your keystore contains 3 entries
+
+Alias name: rootca
+Creation date: Mar 27, 2008
+Entry type: trustedCertEntry
+
+Owner: EMAILADDRESS=premium-server@thawte.com, CN=Thawte Premium Server CA, OU=Certification Services Division, O=Thawte Consulting cc, L=Cape Town, ST=Western Cape, C=ZA
+Issuer: EMAILADDRESS=premium-server@thawte.com, CN=Thawte Premium Server CA, OU=Certification Services Division, O=Thawte Consulting cc, L=Cape Town, ST=Western Cape, C=ZA
+Serial number: 1
+Valid from: Thu Aug 01 02:00:00 CEST 1996 until: Fri Jan 01 00:59:59 CET 2021
+Certificate fingerprints:
+	 MD5:  06:9F:69:79:16:66:90:02:1B:8C:8C:A2:C3:07:6F:3A
+	 SHA1: 62:7F:8D:78:27:65:63:99:D2:7D:7F:90:44:C9:FE:B3:F3:3E:FA:9A
+
+
+*******************************************
+*******************************************
+
+
+Alias name: bidix
+Creation date: Mar 26, 2008
+Entry type: keyEntry
+Certificate chain length: 3
+Certificate[1]:
+Owner: CN=UnaMesa Association, OU=TiddlyWiki, O=UnaMesa Association, L=Menlo Park, ST=California, C=US
+Issuer: CN=Thawte Code Signing CA, O=Thawte Consulting (Pty) Ltd., C=ZA
+Serial number: 216daade0a7b241446c142eec8d2c6a9
+Valid from: Wed Mar 26 01:00:00 CET 2008 until: Sat Mar 27 00:59:59 CET 2010
+Certificate fingerprints:
+	 MD5:  1D:C3:CA:0F:8E:9F:02:96:C1:F7:A5:B5:7E:79:E3:31
+	 SHA1: A7:B8:B7:BF:BA:AB:A6:95:5A:BB:F4:2C:F9:91:62:7F:3E:64:3D:A0
+Certificate[2]:
+Owner: CN=Thawte Code Signing CA, O=Thawte Consulting (Pty) Ltd., C=ZA
+Issuer: EMAILADDRESS=premium-server@thawte.com, CN=Thawte Premium Server CA, OU=Certification Services Division, O=Thawte Consulting cc, L=Cape Town, ST=Western Cape, C=ZA
+Serial number: a
+Valid from: Wed Aug 06 02:00:00 CEST 2003 until: Tue Aug 06 01:59:59 CEST 2013
+Certificate fingerprints:
+	 MD5:  D4:A7:BF:00:7B:6A:0C:20:D9:23:CD:5B:60:7B:7C:12
+	 SHA1: A7:06:BA:1E:CA:B6:A2:AB:18:69:9F:C0:D7:DD:8C:7D:E3:6F:29:0F
+Certificate[3]:
+Owner: EMAILADDRESS=premium-server@thawte.com, CN=Thawte Premium Server CA, OU=Certification Services Division, O=Thawte Consulting cc, L=Cape Town, ST=Western Cape, C=ZA
+Issuer: EMAILADDRESS=premium-server@thawte.com, CN=Thawte Premium Server CA, OU=Certification Services Division, O=Thawte Consulting cc, L=Cape Town, ST=Western Cape, C=ZA
+Serial number: 1
+Valid from: Thu Aug 01 02:00:00 CEST 1996 until: Fri Jan 01 00:59:59 CET 2021
+Certificate fingerprints:
+	 MD5:  06:9F:69:79:16:66:90:02:1B:8C:8C:A2:C3:07:6F:3A
+	 SHA1: 62:7F:8D:78:27:65:63:99:D2:7D:7F:90:44:C9:FE:B3:F3:3E:FA:9A
+
+
+*******************************************
+*******************************************
+
+
+Alias name: signingca
+Creation date: Mar 27, 2008
+Entry type: trustedCertEntry
+
+Owner: CN=Thawte Code Signing CA, O=Thawte Consulting (Pty) Ltd., C=ZA
+Issuer: EMAILADDRESS=premium-server@thawte.com, CN=Thawte Premium Server CA, OU=Certification Services Division, O=Thawte Consulting cc, L=Cape Town, ST=Western Cape, C=ZA
+Serial number: a
+Valid from: Wed Aug 06 02:00:00 CEST 2003 until: Tue Aug 06 01:59:59 CEST 2013
+Certificate fingerprints:
+	 MD5:  D4:A7:BF:00:7B:6A:0C:20:D9:23:CD:5B:60:7B:7C:12
+	 SHA1: A7:06:BA:1E:CA:B6:A2:AB:18:69:9F:C0:D7:DD:8C:7D:E3:6F:29:0F
+
+
+*******************************************
+*******************************************
+
+
+5 - SIGNING TIDDLYSAVER.JAR
+
+Get TiddlySaver.jar from http://trac.tiddlywiki.org/browser/Trunk/core/java/TiddlySaver.jar.
+TiddlySaver.jar contained classes compiled on Thu Dec 07 14:48:00 CET 2006
+
+With UnaMesa.keystore in the current directory Signing jar on Thu Mar 27 07:59:12 CET 2008 using this command :
+> jarsigner -keystore UnaMesa.keystore TiddlySaver.jar BidiX
+
+
+6 - VERIFYING SIGNATURE WITH UNAMESA KEYSTORE
+
+> jarsigner -verify -verbose -certs -keystore UnaMesa.keystore TiddlySaver.jar BidiX
+
+         284 Thu Mar 27 07:59:12 CET 2008 META-INF/MANIFEST.MF
+         395 Thu Mar 27 07:59:12 CET 2008 META-INF/BIDIX.SF
+        2830 Thu Mar 27 07:59:12 CET 2008 META-INF/BIDIX.RSA
+           0 Thu Dec 07 14:48:00 CET 2006 META-INF/
+smk     1271 Thu Dec 07 14:48:00 CET 2006 TiddlySaver$1.class
+
+      X.509, CN=UnaMesa Association, OU=TiddlyWiki, O=UnaMesa Association, L=Menlo Park, ST=California, C=US (bidix)
+      [certificate is valid from 26/03/08 01:00 to 27/03/10 00:59]
+      X.509, CN=Thawte Code Signing CA, O=Thawte Consulting (Pty) Ltd., C=ZA (signingca)
+      [certificate is valid from 06/08/03 02:00 to 06/08/13 01:59]
+      X.509, EMAILADDRESS=premium-server@thawte.com, CN=Thawte Premium Server CA, OU=Certification Services Division, O=Thawte Consulting cc, L=Cape Town, ST=Western Cape, C=ZA (rootca)
+      [certificate is valid from 01/08/96 02:00 to 01/01/21 00:59]
+
+smk     1184 Thu Dec 07 14:48:00 CET 2006 TiddlySaver$2.class
+
+      X.509, CN=UnaMesa Association, OU=TiddlyWiki, O=UnaMesa Association, L=Menlo Park, ST=California, C=US (bidix)
+      [certificate is valid from 26/03/08 01:00 to 27/03/10 00:59]
+      X.509, CN=Thawte Code Signing CA, O=Thawte Consulting (Pty) Ltd., C=ZA (signingca)
+      [certificate is valid from 06/08/03 02:00 to 06/08/13 01:59]
+      X.509, EMAILADDRESS=premium-server@thawte.com, CN=Thawte Premium Server CA, OU=Certification Services Division, O=Thawte Consulting cc, L=Cape Town, ST=Western Cape, C=ZA (rootca)
+      [certificate is valid from 01/08/96 02:00 to 01/01/21 00:59]
+
+smk      775 Thu Dec 07 14:48:00 CET 2006 TiddlySaver.class
+
+      X.509, CN=UnaMesa Association, OU=TiddlyWiki, O=UnaMesa Association, L=Menlo Park, ST=California, C=US (bidix)
+      [certificate is valid from 26/03/08 01:00 to 27/03/10 00:59]
+      X.509, CN=Thawte Code Signing CA, O=Thawte Consulting (Pty) Ltd., C=ZA (signingca)
+      [certificate is valid from 06/08/03 02:00 to 06/08/13 01:59]
+      X.509, EMAILADDRESS=premium-server@thawte.com, CN=Thawte Premium Server CA, OU=Certification Services Division, O=Thawte Consulting cc, L=Cape Town, ST=Western Cape, C=ZA (rootca)
+      [certificate is valid from 01/08/96 02:00 to 01/01/21 00:59]
+
+
+  s = signature was verified 
+  m = entry is listed in manifest
+  k = at least one certificate was found in keystore
+  i = at least one certificate was found in identity scope
+
+jar verified.
+
+
+6 - VERIFYING SIGNATURE WITHOUT KEYSTORE
+
+> jarsigner -verify -verbose TiddlySaver.jar
+         274 Sun Apr 06 12:16:04 CEST 2008 META-INF/MANIFEST.MF
+         395 Sun Apr 06 12:16:04 CEST 2008 META-INF/BIDIX.SF
+        2830 Sun Apr 06 12:16:04 CEST 2008 META-INF/BIDIX.RSA
+           0 Sun Apr 06 12:16:00 CEST 2008 META-INF/
+sm      1271 Sun Apr 06 12:16:00 CEST 2008 TiddlySaver$1.class
+sm      1184 Sun Apr 06 12:16:00 CEST 2008 TiddlySaver$2.class
+sm       775 Sun Apr 06 12:16:00 CEST 2008 TiddlySaver.class
+
+  s = signature was verified 
+  m = entry is listed in manifest
+  k = at least one certificate was found in keystore
+  i = at least one certificate was found in identity scope
+
+jar verified.
+
+
+7 - CREATE TIDDLYSAVERVERIFY KEYSTORE
+
+Import Certificates (Public keys only) in a new keystore named TiddlySaverVerify.keystore
+>keytool -import -alias rootca -keystore TiddlySaverVerify.keystore -storepass tiddlywiki -file ThawtePremiumServerCA.cer
+>keytool -import -alias signingca -keystore TiddlySaverVerify.keystore -storepass tiddlywiki -file ThawteCodeSigningCA.cer
+>keytool -import -alias bidix -keystore TiddlySaverVerify.keystore -storepass tiddlywiki -file UnaMesa.cer
+
+List Certificates in Keystore:
+> keytool -list -v -keystore TiddlySaverVerify.keystore  -storepass tiddlywiki
+
+
+Keystore type: jks
+Keystore provider: SUN
+
+Your keystore contains 3 entries
+
+Alias name: rootca
+Creation date: Apr 6, 2008
+Entry type: trustedCertEntry
+
+Owner: EMAILADDRESS=premium-server@thawte.com, CN=Thawte Premium Server CA, OU=Certification Services Division, O=Thawte Consulting cc, L=Cape Town, ST=Western Cape, C=ZA
+Issuer: EMAILADDRESS=premium-server@thawte.com, CN=Thawte Premium Server CA, OU=Certification Services Division, O=Thawte Consulting cc, L=Cape Town, ST=Western Cape, C=ZA
+Serial number: 1
+Valid from: Thu Aug 01 02:00:00 CEST 1996 until: Fri Jan 01 00:59:59 CET 2021
+Certificate fingerprints:
+	 MD5:  06:9F:69:79:16:66:90:02:1B:8C:8C:A2:C3:07:6F:3A
+	 SHA1: 62:7F:8D:78:27:65:63:99:D2:7D:7F:90:44:C9:FE:B3:F3:3E:FA:9A
+
+
+*******************************************
+*******************************************
+
+
+Alias name: bidix
+Creation date: Apr 6, 2008
+Entry type: trustedCertEntry
+
+Owner: CN=UnaMesa Association, OU=TiddlyWiki, O=UnaMesa Association, L=Menlo Park, ST=California, C=US
+Issuer: CN=Thawte Code Signing CA, O=Thawte Consulting (Pty) Ltd., C=ZA
+Serial number: 216daade0a7b241446c142eec8d2c6a9
+Valid from: Wed Mar 26 01:00:00 CET 2008 until: Sat Mar 27 00:59:59 CET 2010
+Certificate fingerprints:
+	 MD5:  1D:C3:CA:0F:8E:9F:02:96:C1:F7:A5:B5:7E:79:E3:31
+	 SHA1: A7:B8:B7:BF:BA:AB:A6:95:5A:BB:F4:2C:F9:91:62:7F:3E:64:3D:A0
+
+
+*******************************************
+*******************************************
+
+
+Alias name: signingca
+Creation date: Apr 6, 2008
+Entry type: trustedCertEntry
+
+Owner: CN=Thawte Code Signing CA, O=Thawte Consulting (Pty) Ltd., C=ZA
+Issuer: EMAILADDRESS=premium-server@thawte.com, CN=Thawte Premium Server CA, OU=Certification Services Division, O=Thawte Consulting cc, L=Cape Town, ST=Western Cape, C=ZA
+Serial number: a
+Valid from: Wed Aug 06 02:00:00 CEST 2003 until: Tue Aug 06 01:59:59 CEST 2013
+Certificate fingerprints:
+	 MD5:  D4:A7:BF:00:7B:6A:0C:20:D9:23:CD:5B:60:7B:7C:12
+	 SHA1: A7:06:BA:1E:CA:B6:A2:AB:18:69:9F:C0:D7:DD:8C:7D:E3:6F:29:0F
+
+
+*******************************************
+*******************************************
