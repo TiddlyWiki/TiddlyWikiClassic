@@ -12,11 +12,23 @@ describe('Dates', {
 		
 		value_of(actual).should_be(expected);
 	},
+	'Date formatting hours, minutes & seconds': function() {
+		var actual = new Date(2008,11,31,3,8,9).formatString("0hh hh 0mm mm 0ss ss");
+		var expected = "03 3 08 8 09 9";
+		
+		value_of(actual).should_be(expected);
+	},
+	'Date formatting 12-hour': function() {
+		var actual = new Date(2008,11,31,15,8,9).formatString("hh12");
+		var expected = "3";
+		
+		value_of(actual).should_be(expected);
+	},
 	'Date convertFromYYYYMMDDHHMM': function() {
 		var actual = Date.convertFromYYYYMMDDHHMM("200812312348");
 		var expected = new Date(2008,11,31,23,48);
 		
 		value_of(actual).should_be(expected);
-	},
-})
+	}
+});
 // ]]>
