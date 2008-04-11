@@ -1,0 +1,2 @@
+template: testAll.template.html
+recipe: ../jsspec/split.recipe
