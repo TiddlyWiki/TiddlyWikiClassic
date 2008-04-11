@@ -15,7 +15,12 @@ describe('Dates', {
 		var expected = "03 3 08 8 09 9";
 		value_of(actual).should_be(expected);
 	},
-	'Date formatting 12-hour': function() {
+	'Date formatting 12-hour (AM)': function() {
+		var actual = new Date(2008,11,31,3,8,9).formatString("hh12 0hh12 AM am PM pm");
+		var expected = "3 03 AM am AM am";
+		value_of(actual).should_be(expected);
+	},
+	'Date formatting 12-hour (PM)': function() {
 		var actual = new Date(2008,11,31,15,8,9).formatString("hh12 0hh12 AM am PM pm");
 		var expected = "3 03 PM pm PM pm";
 		value_of(actual).should_be(expected);
