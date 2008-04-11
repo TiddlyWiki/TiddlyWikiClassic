@@ -29,7 +29,7 @@ describe('Wikifier', {
 		var actual = wikifyStatic("~~subscript~~");
 		var expected = "<sub>subscript</sub>";		
 		value_of(actual).should_be(expected);
-	},
-})
+	}
+});
 // ]]>
 

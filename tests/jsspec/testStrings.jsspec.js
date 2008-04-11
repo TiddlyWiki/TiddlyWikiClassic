@@ -15,5 +15,5 @@ describe('Strings', {
 		var expected = "backgroundColor";		
 		value_of(actual).should_be(expected);
 	}
-})
+});
 // ]]>

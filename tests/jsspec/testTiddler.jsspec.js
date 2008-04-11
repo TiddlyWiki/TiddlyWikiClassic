@@ -12,6 +12,6 @@ describe('Tiddlers', {
 		var tiddler = new Tiddler("temp");
 		value_of(tiddler.isTagged()).should_be(false);
 		value_of(tiddler.getTags()).should_be("");
-	},
-})
+	}
+});
 // ]]>

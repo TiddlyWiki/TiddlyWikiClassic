@@ -10,5 +10,5 @@ describe('RGB', {
 		var expected = "#ff0000";		
 		value_of(actual).should_be(expected);
 	}
-})
+});
 // ]]>
