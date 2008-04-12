@@ -74,7 +74,8 @@ merge(config.messages,{
 	wrongSaveFormat: "Cannot save with storage format '%0'. Using standard format for save.",
 	invalidFieldName: "Invalid field name %0",
 	fieldCannotBeChanged: "Field '%0' cannot be changed",
-	loadingMissingTiddler: "Attempting to retrieve the tiddler '%0' from the '%1' server at:\n\n'%2' in the workspace '%3'"});
+	loadingMissingTiddler: "Attempting to retrieve the tiddler '%0' from the '%1' server at:\n\n'%2' in the workspace '%3'",
+	upgradeDone: "The upgrade is now complete\n\nClick 'OK' to reload the newly upgraded TiddlyWiki"});
 
 merge(config.messages.messageClose,{
 	text: "close",
@@ -294,7 +295,7 @@ merge(config.macros.importTiddlers,{
 merge(config.macros.upgrade,{
 	wizardTitle: "Upgrade TiddlyWiki core code",
 	step1Title: "Update or repair this TiddlyWiki to the latest release",
-	step1Html: "You are about to upgrade to the latest release of the TiddlyWiki core code (from <a href='%0' class='externalLink' target='_blank'>%1</a>). This procedure does not affect the content you have created or imported.<br><br>[explain things a bit more]. ",
+	step1Html: "You are about to upgrade to the latest release of the TiddlyWiki core code (from <a href='%0' class='externalLink' target='_blank'>%1</a>). Your content will be preserved across the upgrade.<br><br>Note that core upgrades have been known to interfere with older plugins. If you run into problems with the upgraded file, see <a href='http://www.tiddlywiki.org/wiki/CoreUpgrades' class='externalLink' target='_blank'>http://www.tiddlywiki.org/wiki/CoreUpgrades</a>",
 	upgradeLabel: "upgrade",
 	upgradePrompt: "Start the upgrade process",
 	statusPreparingBackup: "Preparing backup",

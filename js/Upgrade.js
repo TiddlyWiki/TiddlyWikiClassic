@@ -57,3 +57,18 @@ config.macros.upgrade.onLoadCore = function(status,params,responseText,url,xhr)
 	var backupPath = w.getValue("backupPath");
 	window.location = document.location.toString() + '?time=' + new Date().convertToYYYYMMDDHHMM()  + '#upgrade:[[' + encodeURI(backupPath) + ']]';
 }
+
+function upgradeFrom(path)
+{
+	var importStore = new TiddlyWiki();
+	importStore.importTiddlyWiki(loadFile(path));
+	importStore.forEachTiddler(function(title,tiddler) {
+		if(!store.getTiddler(title)) {
+			store.addTiddler(tiddler);
+		}
+	});
+	refreshDisplay();
+	saveChanges(); //# To create appropriate Markup* sections
+	alert(config.messages.upgradeDone);
+	window.location = window.location.toString().substr(0,window.location.toString().lastIndexOf('?'));
+}

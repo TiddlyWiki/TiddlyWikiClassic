@@ -92,10 +92,14 @@ config.paramifiers.readOnly = {
 	}
 };
 
-
 config.paramifiers.theme = {
 	onconfig: function(v) {
 		story.switchTheme(v);
 	}
 };
 
+config.paramifiers.upgrade = {
+	onstart: function(v) {
+		upgradeFrom(v);
+	}
+};
