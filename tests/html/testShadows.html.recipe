@@ -1,0 +1,3 @@
+template: test.template.html
+recipe: test.recipe
+jsspec: ../jsspec/testShadows.jsspec.js
