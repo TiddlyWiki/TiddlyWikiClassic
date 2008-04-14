@@ -618,7 +618,6 @@ Story.prototype.switchTheme = function(theme)
 		if(readOnly)
 			var r = store.getTiddlerSlice(theme,slice+"ReadOnly");
 		r = r || store.getTiddlerSlice(theme,slice);
-		var r = store.getTiddlerSlice(theme,slice);
 		if(r && r.indexOf(config.textPrimitives.sectionSeparator)==0)
 			r = theme + r;
 		return isAvailable(r) ? r : slice;
@@ -674,10 +673,10 @@ Story.prototype.switchTheme = function(theme)
 Story.prototype.getTiddler = function(title)
 {
 	return document.getElementById(this.tiddlerId(title));
-}
+};
 
 Story.prototype.getContainer = function()
 {
 	return document.getElementById(this.containerId());
-}
+};
 

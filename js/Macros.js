@@ -77,7 +77,7 @@ config.macros.allTags.handler = function(place,macroName,params)
 	for(var t=0; t<tags.length; t++) {
 		var title = tags[t][0];
 		var info = getTiddlyLinkInfo(title);
-		var li =createTiddlyElement(ul,"li");
+		var li = createTiddlyElement(ul,"li");
 		var btn = createTiddlyButton(li,title + " (" + tags[t][1] + ")",this.tooltip.format([title]),onClickTag,info.classes);
 		btn.setAttribute("tag",title);
 		btn.setAttribute("refresh","link");

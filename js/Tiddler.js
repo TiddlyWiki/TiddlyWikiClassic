@@ -52,9 +52,10 @@ Tiddler.prototype.clearChangeCount = function()
 };
 
 //# returns true when this tiddler has the field 'temporary', meaning it is a temporary tiddler (i.e. must not be saved).
-Tiddler.prototype.doNotSave = function() {
+Tiddler.prototype.doNotSave = function()
+{
 	return this.fields['doNotSave'];
-}
+};
 
 // Returns true if the tiddler has been updated since the tiddler was created or downloaded
 Tiddler.prototype.isTouched = function()
