@@ -1,0 +1,4 @@
+template: test.template.html
+jsspec: ../jsspec/testDates.jsspec.js
+recipe: ../../tiddlers/split.recipe
+recipe: ../../js/split.recipe
