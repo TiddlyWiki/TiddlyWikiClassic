@@ -1,4 +1,47 @@
 // <![CDATA[
+describe('Date components', {
+	'12-hour format (with zero-padding) should return correct result for AM times': function() {
+		var actual = new Date(2008,11,31,9,48).formatString("0hh12");
+		var expected = "09";
+		value_of(actual).should_be(expected);
+	},
+	'12-hour format (with zero-padding) should return correct result for PM times': function() {
+		var actual = new Date(2008,11,31,21,48).formatString("0hh12");
+		var expected = "09";
+		value_of(actual).should_be(expected);
+	},
+	'12-hour format (without zero-padding) should return correct result for AM times': function() {
+		var actual = new Date(2008,11,31,9,48).formatString("hh12");
+		var expected = "9";
+		value_of(actual).should_be(expected);
+	},
+	'12-hour format (without zero-padding) should return correct result for PM times': function() {
+		var actual = new Date(2008,11,31,21,48).formatString("hh12");
+		var expected = "9";
+		value_of(actual).should_be(expected);
+	},
+	'24-hour format (with zero-padding) should return correct result for AM times': function() {
+		var actual = new Date(2008,11,31,9,48).formatString("0hh");
+		var expected = "09";
+		value_of(actual).should_be(expected);
+	},
+	'24-hour format (with zero-padding) should return correct result for PM times': function() {
+		var actual = new Date(2008,11,31,21,48).formatString("0hh");
+		var expected = "21";
+		value_of(actual).should_be(expected);
+	},
+	'24-hour format (without zero-padding) should return correct result for AM times': function() {
+		var actual = new Date(2008,11,31,9,48).formatString("hh");
+		var expected = "9";
+		value_of(actual).should_be(expected);
+	},
+	'24-hour format (without zero-padding) should return correct result for PM times': function() {
+		var actual = new Date(2008,11,31,21,48).formatString("hh");
+		var expected = "21";
+		value_of(actual).should_be(expected);
+	}
+});
+
 describe('Date formatting', {
 	'Date formatting YYYY MMM DD': function() {
 		var actual = new Date(2007,2,1).formatString("YYYY MMM DD");
