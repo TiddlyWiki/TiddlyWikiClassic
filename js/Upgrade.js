@@ -8,7 +8,7 @@ config.macros.upgrade.handler = function(place,macroName,params,wikifier,paramSt
 	w.createWizard(place,this.wizardTitle);
 	w.addStep(this.step1Title,this.step1Html.format([this.source,this.source]));
 	w.setButtons([{caption: this.upgradeLabel, tooltip: this.upgradePrompt, onClick: this.onClickUpgrade}]);
-}
+};
 
 config.macros.upgrade.onClickUpgrade = function(e)
 {
@@ -34,7 +34,7 @@ config.macros.upgrade.onClickUpgrade = function(e)
 		alert(me.errorLoadingCore);
 		return;
 	}
-}
+};
 
 config.macros.upgrade.onLoadCore = function(status,params,responseText,url,xhr)
 {
@@ -56,7 +56,7 @@ config.macros.upgrade.onLoadCore = function(status,params,responseText,url,xhr)
 	w.setButtons([],me.statusReloadingCore);
 	var backupPath = w.getValue("backupPath");
 	window.location = document.location.toString() + '?time=' + new Date().convertToYYYYMMDDHHMM()  + '#upgrade:[[' + encodeURI(backupPath) + ']]';
-}
+};
 
 function upgradeFrom(path)
 {
