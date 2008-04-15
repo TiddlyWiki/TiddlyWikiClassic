@@ -6,5 +6,6 @@ jsspecsrc=<script type="text/javascript" src="../jsspec/testRGB.jsspec.js"></scr
 jsspecsrc=<script type="text/javascript" src="../jsspec/testShadows.jsspec.js"></script>
 jsspecsrc=<script type="text/javascript" src="../jsspec/testStrings.jsspec.js"></script>
 jsspecsrc=<script type="text/javascript" src="../jsspec/testTiddler.jsspec.js"></script>
+jsspecsrc=<script type="text/javascript" src="../jsspec/testTW21Saver.jsspec.js"></script>
 jsspecsrc=<script type="text/javascript" src="../jsspec/testVersion.jsspec.js"></script>
 jsspecsrc=<script type="text/javascript" src="../jsspec/testWikifier.jsspec.js"></script>
