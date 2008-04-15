@@ -99,6 +99,11 @@ function convertUriToUTF8(uri,charSet)
 	return converter.convertURISpecToUTF8(uri,charSet);
 }
 
+function copyFile(dest,source)
+{
+	return config.browser.isIE ? ieCopyFile(dest,source) : false;
+}
+
 function saveFile(fileUrl,content)
 {
 	var r = mozillaSaveFile(fileUrl,content);

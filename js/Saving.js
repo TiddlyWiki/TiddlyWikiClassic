@@ -124,10 +124,13 @@ function saveChanges(onlyIfDirty,tiddlers)
 		alert(config.messages.invalidFileError.format([localPath]));
 		return;
 	}
-	saveBackup(localPath,original);
-	saveRss(localPath);
-	saveEmpty(localPath,original,posDiv);
 	saveMain(localPath,original,posDiv);
+	if(config.options.chkSaveBackups)
+		saveBackup(localPath,original);
+	if(config.options.chkSaveEmptyTemplate)
+		saveEmpty(localPath,original,posDiv);
+	if(config.options.chkGenerateAnRssFeed)
+		saveRss(localPath);
 	if(config.options.chkDisplayInstrumentation)
 		displayMessage("saveChanges " + (new Date()-t0) + " ms");
 }
@@ -135,34 +138,34 @@ function saveChanges(onlyIfDirty,tiddlers)
 function saveBackup(localPath,original)
 {
 	//# Save the backup
-	if(config.options.chkSaveBackups) {
-		var backupPath = getBackupPath(localPath);
-		var backup = config.browser.isIE ? ieCopyFile(backupPath,localPath) : saveFile(backupPath,original);
-		if(backup)
-			displayMessage(config.messages.backupSaved,"file://" + backupPath);
-		else
-			alert(config.messages.backupFailed);
-	}
+	var backupPath = getBackupPath(localPath);
+	var backup = copyFile(backupPath,localPath);
+	//# Browser does not support copy, so use save instead
+	if(!backup)
+		backup = saveFile(backupPath,original);
+	if(backup)
+		displayMessage(config.messages.backupSaved,"file://" + backupPath);
+	else
+		alert(config.messages.backupFailed);
 }
 
 function saveEmpty(localPath,original,posDiv)
 {
 	//# Save empty template
-	if(config.options.chkSaveEmptyTemplate) {
-		var emptyPath,p;
-		if((p = localPath.lastIndexOf("/")) != -1)
-			emptyPath = localPath.substr(0,p) + "/empty.html";
-		else if((p = localPath.lastIndexOf("\\")) != -1)
-			emptyPath = localPath.substr(0,p) + "\\empty.html";
-		else
-			emptyPath = localPath + ".empty.html";
-		var empty = original.substr(0,posDiv[0] + startSaveArea.length) + original.substr(posDiv[1]);
-		var emptySave = saveFile(emptyPath,empty);
-		if(emptySave)
-			displayMessage(config.messages.emptySaved,"file://" + emptyPath);
-		else
-			alert(config.messages.emptyFailed);
-	}
+	var emptyPath,p;
+	if((p = localPath.lastIndexOf("/")) != -1)
+		emptyPath = localPath.substr(0,p) + "/";
+	else if((p = localPath.lastIndexOf("\\")) != -1)
+		emptyPath = localPath.substr(0,p) + "\\";
+	else
+		emptyPath = localPath + ".";
+	emptyPath += "empty.html";
+	var empty = original.substr(0,posDiv[0] + startSaveArea.length) + original.substr(posDiv[1]);
+	var emptySave = saveFile(emptyPath,empty);
+	if(emptySave)
+		displayMessage(config.messages.emptySaved,"file://" + emptyPath);
+	else
+		alert(config.messages.emptyFailed);
 }
 
 function saveMain(localPath,original,posDiv)
@@ -186,13 +189,11 @@ function saveMain(localPath,original,posDiv)
 function saveRss(localPath)
 {
 	//# Save Rss
-	if(config.options.chkGenerateAnRssFeed) {
-		var rssPath = localPath.substr(0,localPath.lastIndexOf(".")) + ".xml";
-		if(saveFile(rssPath,convertUnicodeToUTF8(generateRss())))
-			displayMessage(config.messages.rssSaved,"file://" + rssPath);
-		else
-			alert(config.messages.rssFailed);
-	}
+	var rssPath = localPath.substr(0,localPath.lastIndexOf(".")) + ".xml";
+	if(saveFile(rssPath,convertUnicodeToUTF8(generateRss())))
+		displayMessage(config.messages.rssSaved,"file://" + rssPath);
+	else
+		alert(config.messages.rssFailed);
 }
 
 function getLocalPath(origPath)
