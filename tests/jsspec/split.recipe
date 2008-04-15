@@ -1,8 +1,10 @@
-jsspec: testVersion.jsspec.js
-jsspec: testStrings.jsspec.js
+jsspec: testBasicTypes.jsspec.js
 jsspec: testDates.jsspec.js
-jsspec: testRGB.jsspec.js
 jsspec: testDom.jsspec.js
-jsspec: testWikifier.jsspec.js
-jsspec: testTiddler.jsspec.js
+jsspec: testGenerateRss.jsspec.js
+jsspec: testRGB.jsspec.js
 jsspec: testShadows.jsspec.js
+jsspec: testStrings.jsspec.js
+jsspec: testTiddler.jsspec.js
+jsspec: testVersion.jsspec.js
+jsspec: testWikifier.jsspec.js
