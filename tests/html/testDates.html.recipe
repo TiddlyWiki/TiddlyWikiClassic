@@ -1,4 +1,3 @@
-template: test.template.html
-jsspec: ../jsspec/testDates.jsspec.js
-recipe: ../../tiddlers/split.recipe
-recipe: ../../js/split.recipe
+recipe: test.recipe
+title=TiddlyWiki date tests
+jsspecsrc=<script type="text/javascript" src="../jsspec/testDates.jsspec.js"></script>
