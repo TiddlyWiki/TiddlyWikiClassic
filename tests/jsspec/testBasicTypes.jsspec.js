@@ -1,6 +1,6 @@
 // <![CDATA[
 
-describe('testBasicTypes : Number.clamp()', {
+describe('BasicTypes : Number.clamp()', {
 
 	before_each: function(){
 		max = 10;
@@ -27,7 +27,7 @@ describe('testBasicTypes : Number.clamp()', {
 
 });
 
-describe('testBasicTypes : Array.indexOf()', {
+describe('BasicTypes : Array.indexOf()', {
 
 	before_each: function(){
 		test_arr = ['item1', 'item2','item3'];
