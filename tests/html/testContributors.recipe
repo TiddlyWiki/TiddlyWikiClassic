@@ -1,4 +1,4 @@
 template: testContributors.template.html
 style: ../../html/style.txt
-recipe: ../../tiddlers/split.recipe
+recipe: ../../shadows/split.recipe
 recipe: ../../js/split.recipe
