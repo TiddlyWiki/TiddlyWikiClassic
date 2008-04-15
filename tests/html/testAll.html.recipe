@@ -1,3 +1,10 @@
-template: test.template.html
 recipe: test.recipe
-recipe: ../jsspec/split.recipe
+title=TiddlyWiki All tests
+jsspecsrc=<script type="text/javascript" src="../jsspec/testDates.jsspec.js"></script>
+jsspecsrc=<script type="text/javascript" src="../jsspec/testDom.jsspec.js"></script>
+jsspecsrc=<script type="text/javascript" src="../jsspec/testRGB.jsspec.js"></script>
+jsspecsrc=<script type="text/javascript" src="../jsspec/testShadows.jsspec.js"></script>
+jsspecsrc=<script type="text/javascript" src="../jsspec/testStrings.jsspec.js"></script>
+jsspecsrc=<script type="text/javascript" src="../jsspec/testTiddler.jsspec.js"></script>
+jsspecsrc=<script type="text/javascript" src="../jsspec/testVersion.jsspec.js"></script>
+jsspecsrc=<script type="text/javascript" src="../jsspec/testWikifier.jsspec.js"></script>
