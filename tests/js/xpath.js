@@ -17,12 +17,9 @@
 
 */
 
-var isIe = /MSIE [56789]/.test(navigator.userAgent) && (navigator.platform == "Win32");
-
-// Mozilla has support by default, we don't have an implementation for the rest
-if (isIe)
+// Mozilla, Firefox, Safari etc have support by default, we don't have an implementation for the rest
+if (!(XPathResult.NUMBER_TYPE +  XPathResult.NUMBER_TYPE))
 {
-	
 	window._content = window;
 
 	var _tb_windowEvents = new Array();
