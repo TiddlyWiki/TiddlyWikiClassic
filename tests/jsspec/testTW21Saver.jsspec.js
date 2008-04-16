@@ -35,7 +35,7 @@ describe('TW21Saver', {
 		tiddler.modified = new Date(Date.UTC(2008,3,17,12,34));
 
 		var actual = saver.externalizeTiddler(store,tiddler);
-		var expected = "<div title=\"test\" modified=\"200804171234\" created=\"200804161234\">\n<pre></pre>\n</div>";
+		var expected = "<div title=\"test\" created=\"200804161234\" modified=\"200804171234\">\n<pre></pre>\n</div>";
 		value_of(actual).should_be(expected);
 	},
 	'Saving tiddler with text': function() {
