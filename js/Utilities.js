@@ -32,7 +32,7 @@ function createTiddlyButton(parent,text,tooltip,action,className,id,accessKey,at
 //#   place - element where the link should be created
 //#   title - title of target tiddler
 //#   includeText - flag for whether to include the title as the text of the link
-//#   theClass - custom CSS class for the link
+//#   className - custom CSS class for the link
 //#   linkedFromTiddler - tiddler from which to inherit extended fields
 //#   noToggle - flag to force the link to open the target, even if chkToggleLinks is on
 function createTiddlyLink(place,title,includeText,className,isStatic,linkedFromTiddler,noToggle)
