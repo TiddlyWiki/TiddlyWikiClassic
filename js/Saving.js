@@ -135,6 +135,24 @@ function saveChanges(onlyIfDirty,tiddlers)
 		displayMessage("saveChanges " + (new Date()-t0) + " ms");
 }
 
+function saveMain(localPath,original,posDiv)
+{
+	var save;
+	try {
+		//# Save new file
+		var revised = updateOriginal(original,posDiv);
+		save = saveFile(localPath,revised);
+	} catch (ex) {
+		showException(ex);
+	}
+	if(save) {
+		displayMessage(config.messages.mainSaved,"file://" + localPath);
+		store.setDirty(false);
+	} else {
+		alert(config.messages.mainFailed);
+	}
+}
+
 function saveBackup(localPath,original)
 {
 	//# Save the backup
@@ -166,24 +184,6 @@ function saveEmpty(localPath,original,posDiv)
 		displayMessage(config.messages.emptySaved,"file://" + emptyPath);
 	else
 		alert(config.messages.emptyFailed);
-}
-
-function saveMain(localPath,original,posDiv)
-{
-	var save;
-	try {
-		//# Save new file
-		var revised = updateOriginal(original,posDiv);
-		save = saveFile(localPath,revised);
-	} catch (ex) {
-		showException(ex);
-	}
-	if(save) {
-		displayMessage(config.messages.mainSaved,"file://" + localPath);
-		store.setDirty(false);
-	} else {
-		alert(config.messages.mainFailed);
-	}
 }
 
 function saveRss(localPath)
