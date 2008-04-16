@@ -88,10 +88,13 @@ Date.prototype.convertToYYYYMMDDHHMMSSMMM = function()
 // Static method to create a date from a UTC YYYYMMDDHHMM format string
 Date.convertFromYYYYMMDDHHMM = function(d)
 {
+	var hh = d.substr(8,2) || "00";
+	var mm = d.substr(10,2) || "00";
 	return new Date(Date.UTC(parseInt(d.substr(0,4),10),
 			parseInt(d.substr(4,2),10)-1,
 			parseInt(d.substr(6,2),10),
-			parseInt(d.substr(8,2),10),
-			parseInt(d.substr(10,2),10),0,0));
+			parseInt(hh,10),
+			parseInt(mm,10),0,0));
 };
+
 
