@@ -2,6 +2,11 @@
 //-- TiddlyWiki-specific utility functions
 //--
 
+version.string = function()
+{
+	return this.major + "." + this.minor + "." + this.revision + (this.beta ? " (beta " + this.beta + ")" : "");
+};
+
 function createTiddlyButton(parent,text,tooltip,action,className,id,accessKey,attribs)
 {
 	var btn = document.createElement("a");

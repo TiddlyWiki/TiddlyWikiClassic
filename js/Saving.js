@@ -266,7 +266,7 @@ function generateRss()
 	s.push("<pubDate>" + d.toGMTString() + "</pubDate>");
 	s.push("<lastBuildDate>" + d.toGMTString() + "</lastBuildDate>");
 	s.push("<docs>http://blogs.law.harvard.edu/tech/rss</docs>");
-	s.push("<generator>TiddlyWiki " + version.major + "." + version.minor + "." + version.revision + "</generator>");
+	s.push("<generator>TiddlyWiki " + version.string() + "</generator>");
 	// The body
 	var tiddlers = store.getTiddlers("modified","excludeLists");
 	var n = config.numRssItems > tiddlers.length ? 0 : tiddlers.length-config.numRssItems;
@@ -279,4 +279,5 @@ function generateRss()
 	// Save it all
 	return s.join("\n");
 }
+
 

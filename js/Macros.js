@@ -11,7 +11,7 @@ config.macros.today.handler = function(place,macroName,params)
 
 config.macros.version.handler = function(place)
 {
-	createTiddlyElement(place,"span",null,null,version.major + "." + version.minor + "." + version.revision + (version.beta ? " (beta " + version.beta + ")" : ""));
+	createTiddlyElement(place,"span",null,null,version.string());
 };
 
 config.macros.list.handler = function(place,macroName,params)
