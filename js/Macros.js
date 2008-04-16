@@ -318,7 +318,8 @@ config.macros.view.views = {
 		createTiddlyLink(place,value,true);
 	},
 	wikified: function(value,place,params,wikifier,paramString,tiddler) {
-		value = params[2] ? ("" + params[2]).format([value]) : value;
+		if (params[2])
+			value=params[2].unescapeLineBreaks().format([value]);
 		wikify(value,place,highlightHack,tiddler);
 	},
 	date: function(value,place,params,wikifier,paramString,tiddler) {
