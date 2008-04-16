@@ -20,6 +20,7 @@ describe('Date components', {
 		var expected = "9";
 		value_of(actual).should_be(expected);
 	},
+
 	'24-hour format (with zero-padding) should return correct result for AM times': function() {
 		var actual = new Date(2008,11,31,9,48).formatString("0hh");
 		var expected = "09";
@@ -40,6 +41,7 @@ describe('Date components', {
 		var expected = "21";
 		value_of(actual).should_be(expected);
 	},
+
 	'short-month format should return "Jan" for month 0': function() {
 		var actual = new Date(2008,0).formatString("mmm");
 		var expected = "Jan";
@@ -100,6 +102,62 @@ describe('Date components', {
 		var expected = "Dec";
 		value_of(actual).should_be(expected);
 	},
+	'short-month format should return "Dec" for month 12': function() {
+		var actual = new Date(2008,11).formatString("mmm");
+		var expected = "Dec";
+		value_of(actual).should_be(expected);
+	},
+
+	'minutes format (with zero-padding) should return "00" for minute 0': function() {
+		var actual = new Date(2008,11,15,11,00).formatString("0mm");
+		var expected = "00";
+		value_of(actual).should_be(expected);
+	},
+	'minutes format (with zero-padding) should return "05" for minute 5': function() {
+		var actual = new Date(2008,11,15,11,5).formatString("0mm");
+		var expected = "05";
+		value_of(actual).should_be(expected);
+	},
+	'minutes format (with zero-padding) should return "30" for minute 30': function() {
+		var actual = new Date(2008,11,15,11,30).formatString("0mm");
+		var expected = "30";
+		value_of(actual).should_be(expected);
+	},
+	'minutes format (with zero-padding) should return "00" for minute 60': function() {
+		var actual = new Date(2008,11,15,11,60).formatString("0mm");
+		var expected = "00";
+		value_of(actual).should_be(expected);
+	},
+	'minutes format (without zero-padding) should return "0" for minute 0': function() {
+		var actual = new Date(2008,11,15,11,00).formatString("mm");
+		var expected = "0";
+		value_of(actual).should_be(expected);
+	},
+	'minutes format (without zero-padding) should return "5" for minute 5': function() {
+		var actual = new Date(2008,11,15,11,5).formatString("mm");
+		var expected = "5";
+		value_of(actual).should_be(expected);
+	},
+	'minutes format (without zero-padding) should return "30" for minute 30': function() {
+		var actual = new Date(2008,11,15,11,30).formatString("mm");
+		var expected = "30";
+		value_of(actual).should_be(expected);
+	},
+	'minutes format (without zero-padding) should return "0" for minute 60': function() {
+		var actual = new Date(2008,11,15,11,60).formatString("mm");
+		var expected = "0";
+		value_of(actual).should_be(expected);
+	},
+/*
+0ss
+ss
+[ap]m
+[AP]M
+wYYYY
+wYY
+YYYY
+YY
+*/
 	'full-month format should return "January" for month 0': function() {
 		var actual = new Date(2008,0).formatString("MMM");
 		var expected = "January";
@@ -161,6 +219,19 @@ describe('Date components', {
 		value_of(actual).should_be(expected);
 	}
 });
+
+/*
+0MM
+MM
+0WW
+WW
+DDD
+ddd
+0DD
+DDth
+DD
+TZD
+*/
 
 describe('Date formatting', {
 	'Date formatting YYYY MMM DD': function() {
