@@ -102,11 +102,6 @@ describe('Date components', {
 		var expected = "Dec";
 		value_of(actual).should_be(expected);
 	},
-	'short-month format should return "Dec" for month 12': function() {
-		var actual = new Date(2008,11).formatString("mmm");
-		var expected = "Dec";
-		value_of(actual).should_be(expected);
-	},
 
 	'minutes format (with zero-padding) should return "00" for minute 0': function() {
 		var actual = new Date(2008,11,15,11,00).formatString("0mm");
@@ -148,16 +143,7 @@ describe('Date components', {
 		var expected = "0";
 		value_of(actual).should_be(expected);
 	},
-/*
-0ss
-ss
-[ap]m
-[AP]M
-wYYYY
-wYY
-YYYY
-YY
-*/
+
 	'full-month format should return "January" for month 0': function() {
 		var actual = new Date(2008,0).formatString("MMM");
 		var expected = "January";
@@ -219,19 +205,6 @@ YY
 		value_of(actual).should_be(expected);
 	}
 });
-
-/*
-0MM
-MM
-0WW
-WW
-DDD
-ddd
-0DD
-DDth
-DD
-TZD
-*/
 
 describe('Date formatting', {
 	'Date formatting YYYY MMM DD': function() {
