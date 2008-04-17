@@ -2,9 +2,10 @@
 //-- TiddlyWiki-specific utility functions
 //--
 
-version.string = function()
+formatVersion = function(v)
 {
-	return this.major + "." + this.minor + "." + this.revision + (this.beta ? " (beta " + this.beta + ")" : "");
+	v = v ? v : version;
+	return v.major + "." + v.minor + "." + v.revision + (v.beta ? " (beta " + v.beta + ")" : "");
 };
 
 function createTiddlyButton(parent,text,tooltip,action,className,id,accessKey,attribs)

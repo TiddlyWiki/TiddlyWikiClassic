@@ -86,7 +86,7 @@ function doHttp(type,url,data,contentType,username,password,callback,params,head
 			for(var n in headers)
 				x.setRequestHeader(n,headers[n]);
 		}
-		x.setRequestHeader("X-Requested-With", "TiddlyWiki " + version.string());
+		x.setRequestHeader("X-Requested-With", "TiddlyWiki " + formatVersion());
 		x.send(data);
 	} catch(ex) {
 		return exceptionText(ex);
