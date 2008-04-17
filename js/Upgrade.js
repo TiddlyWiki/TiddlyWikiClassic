@@ -14,7 +14,7 @@ config.macros.upgrade.onClickUpgrade = function(e)
 {
 	var me = config.macros.upgrade;
 	var w = new Wizard(this);
-	//! Check that the store isn't dirty and there's no tiddlers in edit mode
+	//# Check that the store isn't dirty and there are no tiddlers in edit mode
 	var localPath = getLocalPath(document.location.toString());
 	var backupPath = getBackupPath(localPath,me.backupExtension);
 	w.setValue("backupPath",backupPath);
@@ -72,3 +72,4 @@ function upgradeFrom(path)
 	alert(config.messages.upgradeDone);
 	window.location = window.location.toString().substr(0,window.location.toString().lastIndexOf('?'));
 }
+
