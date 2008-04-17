@@ -606,7 +606,7 @@ Story.prototype.switchTheme = function(theme)
 {
 	if(safeMode)
 		return;
-		
+
 	isAvailable = function(title) {
 		var s = title ? title.indexOf(config.textPrimitives.sectionSeparator) : -1;
 		if(s!=-1)
