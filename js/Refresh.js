@@ -112,7 +112,7 @@ function refreshPageTemplate(title)
 		if(s!=-1) 
 			title = title.substr(0,s); 
 		return store.tiddlerExists(title) || store.isShadowTiddler(title);
- 	};
+	};
 	//# protect against non-existent pageTemplate
 	if(!title || !isAvailable(title))
 		title = config.refresherData.pageTemplate;
