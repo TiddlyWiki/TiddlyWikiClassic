@@ -106,8 +106,36 @@ describe('BasicTypes : Array.setItem()', {
 		test_arr.setItem('item4', 0);
 		value_of(test_arr.length).should_be(4);
 	}
-	
 
+});
+
+describe('BasicTypes : Array.containsAny()', {
+
+	before_each: function(){
+		test_strings_arr = ['item1', 'item2','item3'];
+	},
+
+	'given a test array containing on string which is present in the array, containsAny() returns true.' : function() {
+		var result = test_strings_arr.containsAny(['item1']);
+		value_of(result).should_be_true();
+	},
+	
+	'given a test array containing 2 strings which are present in the array, containsAny() returns true.' : function() {
+		var result = test_strings_arr.containsAny(['item1','item3']);
+		value_of(result).should_be_true();
+	},
+	
+	'given a test array containing a string which is not present in the array, containsAny() returns false.' : function() {
+		var result = test_strings_arr.containsAny(['item4']);
+		value_of(result).should_be_false();
+	},
+	
+	'given a test array containing one string which is present and one which is not present in the array, containsAny() returns true.' : function() {
+		var result = test_strings_arr.containsAny(['item1','item4']);
+		value_of(result).should_be_true();
+	}
+	
+	
 });
 
 // ]]>
