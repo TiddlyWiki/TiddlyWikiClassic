@@ -107,10 +107,10 @@ function refreshPageTemplate(title)
 	}
 	var wrapper = document.getElementById("contentWrapper");
 
-	isAvailable = function(title) { 
+	isAvailable = function(title) {
 		var s = title ? title.indexOf(config.textPrimitives.sectionSeparator) : -1;
-		if(s!=-1) 
-			title = title.substr(0,s); 
+		if(s!=-1)
+			title = title.substr(0,s);
 		return store.tiddlerExists(title) || store.isShadowTiddler(title);
 	};
 	//# protect against non-existent pageTemplate
