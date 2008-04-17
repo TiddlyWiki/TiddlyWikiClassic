@@ -104,7 +104,7 @@ describe('Date components', {
 	},
 
 	'minutes format (with zero-padding) should return "00" for minute 0': function() {
-		var actual = new Date(2008,11,15,11,00).formatString("0mm");
+		var actual = new Date(2008,11,15,11,0).formatString("0mm");
 		var expected = "00";
 		value_of(actual).should_be(expected);
 	},
@@ -124,7 +124,7 @@ describe('Date components', {
 		value_of(actual).should_be(expected);
 	},
 	'minutes format (without zero-padding) should return "0" for minute 0': function() {
-		var actual = new Date(2008,11,15,11,00).formatString("mm");
+		var actual = new Date(2008,11,15,11,0).formatString("mm");
 		var expected = "0";
 		value_of(actual).should_be(expected);
 	},
@@ -140,6 +140,47 @@ describe('Date components', {
 	},
 	'minutes format (without zero-padding) should return "0" for minute 60': function() {
 		var actual = new Date(2008,11,15,11,60).formatString("mm");
+		var expected = "0";
+		value_of(actual).should_be(expected);
+	},
+
+	'seconds format (with zero-padding) should return "00" for second 0': function() {
+		var actual = new Date(2008,11,15,11,1,0).formatString("0ss");
+		var expected = "00";
+		value_of(actual).should_be(expected);
+	},
+	'seconds format (with zero-padding) should return "05" for second 5': function() {
+		var actual = new Date(2008,11,15,11,1,5).formatString("0ss");
+		var expected = "05";
+		value_of(actual).should_be(expected);
+	},
+	'seconds format (with zero-padding) should return "30" for second 30': function() {
+		var actual = new Date(2008,11,15,11,1,30).formatString("0ss");
+		var expected = "30";
+		value_of(actual).should_be(expected);
+	},
+	'seconds format (with zero-padding) should return "00" for second 60': function() {
+		var actual = new Date(2008,11,15,11,1,60).formatString("0ss");
+		var expected = "00";
+		value_of(actual).should_be(expected);
+	},
+	'seconds format (without zero-padding) should return "0" for second 0': function() {
+		var actual = new Date(2008,11,15,11,1,0).formatString("ss");
+		var expected = "0";
+		value_of(actual).should_be(expected);
+	},
+	'seconds format (without zero-padding) should return "5" for second 5': function() {
+		var actual = new Date(2008,11,15,11,1,5).formatString("ss");
+		var expected = "5";
+		value_of(actual).should_be(expected);
+	},
+	'seconds format (without zero-padding) should return "30" for second 30': function() {
+		var actual = new Date(2008,11,15,11,1,30).formatString("ss");
+		var expected = "30";
+		value_of(actual).should_be(expected);
+	},
+	'seconds format (without zero-padding) should return "0" for second 60': function() {
+		var actual = new Date(2008,11,15,11,1,60).formatString("ss");
 		var expected = "0";
 		value_of(actual).should_be(expected);
 	},
@@ -246,12 +287,12 @@ describe('Date formatting', {
 
 describe('Information about dates', {
 	'Given an AM time, getAmPm returns am': function() {
-		var actual = new Date(2007,2,1,10,00).getAmPm();
+		var actual = new Date(2007,2,1,10,0).getAmPm();
 		var expected = "am";
 		value_of(actual).should_be(expected);
 	},
 	'Given an PM time, getAmPm returns pm': function() {
-		var actual = new Date(2007,2,1,13,00).getAmPm();
+		var actual = new Date(2007,2,1,13,0).getAmPm();
 		var expected = "pm";
 		value_of(actual).should_be(expected);
 	},
