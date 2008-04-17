@@ -39,6 +39,16 @@ describe('Strings', {
 		var actual = "hello Jon, is your favourite colour red?".format(["rhubarb"]);
 		var expected = "hello Jon, is your favourite colour red?";
 		value_of(actual).should_be(expected);
+	},
+	'String.encodeTiddlyLinkList with null parameter should return null string': function() {
+		var actual = String.encodeTiddlyLinkList();
+		var expected = "";
+		value_of(actual).should_be(expected);
+	},
+	'String.encodeTiddlyLinkList with empty array as parameter should return null string': function() {
+		var actual = String.encodeTiddlyLinkList([]);
+		var expected = "";
+		value_of(actual).should_be(expected);
 	}
 });
 // ]]>
