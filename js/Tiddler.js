@@ -5,10 +5,10 @@
 function Tiddler(title)
 {
 	this.title = title;
-	this.text = null;
+	this.text = "";
 	this.modifier = null;
-	this.modified = new Date();
 	this.created = new Date();
+	this.modified = this.created;
 	this.links = [];
 	this.linksUpdated = false;
 	this.tags = [];
