@@ -140,7 +140,7 @@ TiddlyWiki.prototype.getTiddlerText = function(title,defaultText)
 	if(tiddler) {
 		if(!section)
 			return tiddler.text;
-		var re = new RegExp("(^!{1,6}" + section.escapeRegExp() + " *\n)","mg");
+		var re = new RegExp("(^!{1,6}" + section.escapeRegExp() + "[ \t]*\n)","mg");
 		re.lastIndex = 0;
 		var match =  re.exec(tiddler.text);
 		if(match) {
