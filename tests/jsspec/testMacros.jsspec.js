@@ -1,9 +1,21 @@
 // <![CDATA[
-describe('Macros: text macros', {
+
+function __main() {
+	store = new TiddlyWiki();
+	loadShadowTiddlers();
+	formatter = new Formatter(config.formatters);
+}
+
+__title = {
+	all: "All tiddlers in alphabetical order",
+	missing: "Tiddlers that have links to them but are not defined",
+	orphans: "Tiddlers that are not linked to from any other tiddlers",
+	shadowed: "Tiddlers shadowed with default contents",
+}
+
+describe('Macros: version macro', {
 	before_each : function() {
-		store = new TiddlyWiki();
-		loadShadowTiddlers();
-		formatter = new Formatter(config.formatters);
+		__main();
 	},
 
 	'version macro should expand to the version string' : function() { 
@@ -13,10 +25,38 @@ describe('Macros: text macros', {
 		version.beta = "123456789";
 		value_of(wikifyStatic("<<version>>")).should_be("<span>123.456.789 (beta 123456789)</span>");
 	},
+});
+
+describe('Macros: today macro', {
+	before_each : function() {
+		__main();
+	},
 
 	'today macro should return a date shaped string' : function() { 
 		value_of(wikifyStatic("<<today>>")).should_match(/^<span>[A-Z][a-z]+\s[A-Z][a-z]+\s[0-9]{2}\s([0-9]){2}:[0-9]{2}:[0-9]{2} 2[0-9]{3}<\/span>$/);
 	},
 
 });
+
+describe('Macros: list macro', {
+	before_each : function() {
+		__main();
+	},
+
+	'list all by default expands to the listTitle and an empty list' : function() { 
+		value_of(wikifyStatic("<<list>>")).should_be('<ul><li class="listTitle">' + __title.all + '</li></ul>');
+	},
+	'list missing by default expands to the listTitle and an empty list' : function() { 
+		value_of(wikifyStatic("<<list missing>>")).should_be('<ul><li class="listTitle">' + __title.missing + '</li></ul>');
+	},
+	'list orphans by default expands to the listTitle and an empty list' : function() { 
+		value_of(wikifyStatic("<<list orphans>>")).should_be('<ul><li class="listTitle">' + __title.orphans + '</li></ul>');
+	},
+	'list shadowed by default expands to the listTitle and a list of builtin shadowed tiddlers' : function() { 
+		var pattern = new RegExp('^<ul><li class="listTitle">' + __title.shadowed + '</li><li>.*<\/li><\/ul>');
+		value_of(wikifyStatic("<<list shadowed>>")).should_match(pattern);
+	},
+
+});
+
 // ]]>
