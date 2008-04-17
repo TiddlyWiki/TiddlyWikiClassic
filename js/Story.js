@@ -604,15 +604,15 @@ Story.prototype.permaView = function()
 
 Story.prototype.switchTheme = function(theme)
 {
-	if(safeMode) 
+	if(safeMode)
 		return;
 		
-	isAvailable = function(title) { 
-		var s = title ? title.indexOf(config.textPrimitives.sectionSeparator) : -1; 
-		if(s!=-1) 
-			title = title.substr(0,s); 
-		return store.tiddlerExists(title) || store.isShadowTiddler(title); 
- 	};
+	isAvailable = function(title) {
+		var s = title ? title.indexOf(config.textPrimitives.sectionSeparator) : -1;
+		if(s!=-1)
+			title = title.substr(0,s);
+		return store.tiddlerExists(title) || store.isShadowTiddler(title);
+	};
 
 	getSlice = function(theme,slice) {
 		if(readOnly)
