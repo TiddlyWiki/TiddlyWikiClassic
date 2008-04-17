@@ -5,7 +5,7 @@
 config.macros.today.handler = function(place,macroName,params)
 {
 	var now = new Date();
-	var text = params[0] ? now.formatString(params[0].trim()) : text = now.toLocaleString();
+	var text = params[0] ? now.formatString(params[0].trim()) : now.toLocaleString();
 	createTiddlyElement(place,"span",null,null,text);
 };
 
