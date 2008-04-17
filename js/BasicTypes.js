@@ -107,3 +107,4 @@ Array.prototype.map = function(fn,thisObj)
 	}
 	return a;
 };}
+
