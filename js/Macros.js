@@ -324,7 +324,7 @@ config.macros.view.views = {
 	},
 	date: function(value,place,params,wikifier,paramString,tiddler) {
 		value = Date.convertFromYYYYMMDDHHMM(value);
-		createTiddlyText(place,value.formatString(params[2] ? params[2] : config.views.wikified.dateFormat));	
+		createTiddlyText(place,value.formatString(params[2] ? params[2] : config.views.wikified.dateFormat));
 	}
 };
 
