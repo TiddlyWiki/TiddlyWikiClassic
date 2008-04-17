@@ -38,7 +38,7 @@ LoaderBase.prototype.loadTiddlers = function(store,nodes)
 };
 
 //# SaverBase: a (abstract) storage saver that externalizes all tiddlers into a string,
-//# with every tiddler individually externalized (using this.externalizeTiddler) and joined with newlines 
+//# with every tiddler individually externalized (using this.externalizeTiddler) and joined with newlines
 //# Subclasses must implement:
 //#			function externalizeTiddler(store,tiddler)
 //#
@@ -51,8 +51,9 @@ SaverBase.prototype.externalize = function(store)
 	var results = [];
 	var tiddlers = store.getTiddlers("title");
 	for(var t = 0; t < tiddlers.length; t++) {
-		if(!tiddlers[t].doNotSave()) 
+		if(!tiddlers[t].doNotSave())
 			results.push(this.externalizeTiddler(store, tiddlers[t]));
 	}
 	return results.join("\n");
 };
+
