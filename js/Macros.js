@@ -318,7 +318,7 @@ config.macros.view.views = {
 		createTiddlyLink(place,value,true);
 	},
 	wikified: function(value,place,params,wikifier,paramString,tiddler) {
-		if (params[2])
+		if(params[2])
 			value=params[2].unescapeLineBreaks().format([value]);
 		wikify(value,place,highlightHack,tiddler);
 	},
