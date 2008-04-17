@@ -122,7 +122,7 @@ TiddlyWiki.prototype.getTiddler = function(title)
 
 TiddlyWiki.prototype.getTiddlerText = function(title,defaultText)
 {
-  	if(!title)
+	if(!title)
 		return defaultText;
 	var pos = title.indexOf(config.textPrimitives.sectionSeparator);
 	var section = null;
@@ -319,8 +319,7 @@ TiddlyWiki.prototype.createTiddler = function(title)
 {
 	var tiddler = this.fetchTiddler(title);
 	if(!tiddler) {
-		tiddler = new Tiddler();
-		tiddler.title = title;
+		tiddler = new Tiddler(title);
 		this.addTiddler(tiddler);
 		this.setDirty(true);
 	}
@@ -585,7 +584,7 @@ TiddlyWiki.prototype.filterTiddlers = function(filter)
 						break;
 					case "sort":
 						results = this.sortTiddlers(results,match[3]);
-						break; 
+						break;
 				}
 			}
 			match = re.exec(filter);
