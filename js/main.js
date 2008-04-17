@@ -187,7 +187,7 @@ function isPluginExecutable(plugin)
 		if(w == 0 && coreVersion[1])
 			w = parseInt(coreVersion[1]) - version.minor;
 		if(w == 0 && coreVersion[2])
-		 	w = parseInt(coreVersion[2]) - version.revision;
+			w = parseInt(coreVersion[2]) - version.revision;
 		if(w > 0)
 			return verifyTail(plugin,false,config.messages.pluginVersionError);
 		}
