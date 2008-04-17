@@ -192,7 +192,7 @@ FileAdaptor.prototype.getTiddler = function(title,context,userParams,callback)
 	context = this.setContext(context,userParams,callback);
 	context.title = title;
 	context.complete = FileAdaptor.getTiddlerComplete;
-	return context.adaptor.store ? 
+	return context.adaptor.store ?
 		context.complete(context,context.userParams) :
 		loadRemoteFile(context.host,FileAdaptor.loadTiddlyWikiCallback,context);
 };
@@ -223,3 +223,4 @@ FileAdaptor.prototype.close = function()
 config.adaptors[FileAdaptor.serverType] = FileAdaptor;
 
 config.defaultAdaptor = FileAdaptor.serverType;
+
