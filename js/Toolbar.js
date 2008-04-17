@@ -22,16 +22,16 @@ config.macros.toolbar.createCommand = function(place,commandName,tiddler,classNa
 		if(command.isEnabled ? command.isEnabled(tiddler) : this.isCommandEnabled(command,tiddler)) {
 			var text = command.getText ? command.getText(tiddler) : this.getCommandText(command,tiddler);
 			var tooltip = command.getTooltip ? command.getTooltip(tiddler) : this.getCommandTooltip(command,tiddler);
-			var cmd; 
-			switch(command.type) { 
-				case "popup": 
-					cmd = this.onClickPopup; 
-					break; 
-				case "command": 
-				default: 
-					cmd = this.onClickCommand; 
-					break; 
-			} 
+			var cmd;
+			switch(command.type) {
+				case "popup":
+					cmd = this.onClickPopup;
+					break;
+				case "command":
+				default:
+					cmd = this.onClickCommand;
+					break;
+			}
 			var btn = createTiddlyButton(null,text,tooltip,cmd);
 			btn.setAttribute("commandName",commandName);
 			btn.setAttribute("tiddler",tiddler.title);
