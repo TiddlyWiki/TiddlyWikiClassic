@@ -43,7 +43,7 @@ Popup.show = function(valign,halign,offset)
 		window.scrollTo(0,ensureVisible(curr.popup));
 };
 
-Popup.place = function(root,popup,valign,halign,offset) 
+Popup.place = function(root,popup,valign,halign,offset)
 {
 	if(!offset)
 		var offset = {x:0,y:0};
@@ -80,7 +80,7 @@ Popup.find = function(e)
 		if(isDescendant(e,this.stack[t].popup))
 			pos = i;
 	}
-	return pos;		
+	return pos;
 };
 
 Popup.remove = function(pos)
@@ -100,3 +100,4 @@ Popup.removeFrom = function(from)
 	}
 	Popup.stack = Popup.stack.slice(0,from);
 };
+
