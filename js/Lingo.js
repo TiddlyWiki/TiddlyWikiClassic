@@ -75,7 +75,7 @@ merge(config.messages,{
 	invalidFieldName: "Invalid field name %0",
 	fieldCannotBeChanged: "Field '%0' cannot be changed",
 	loadingMissingTiddler: "Attempting to retrieve the tiddler '%0' from the '%1' server at:\n\n'%2' in the workspace '%3'",
-	upgradeDone: "The upgrade is now complete\n\nClick 'OK' to reload the newly upgraded TiddlyWiki"});
+	upgradeDone: "The upgrade to version %0 is now complete\n\nClick 'OK' to reload the newly upgraded TiddlyWiki"});
 
 merge(config.messages.messageClose,{
 	text: "close",
@@ -296,8 +296,12 @@ merge(config.macros.upgrade,{
 	wizardTitle: "Upgrade TiddlyWiki core code",
 	step1Title: "Update or repair this TiddlyWiki to the latest release",
 	step1Html: "You are about to upgrade to the latest release of the TiddlyWiki core code (from <a href='%0' class='externalLink' target='_blank'>%1</a>). Your content will be preserved across the upgrade.<br><br>Note that core upgrades have been known to interfere with older plugins. If you run into problems with the upgraded file, see <a href='http://www.tiddlywiki.org/wiki/CoreUpgrades' class='externalLink' target='_blank'>http://www.tiddlywiki.org/wiki/CoreUpgrades</a>",
+	step2Title: "Confirm the upgrade details",
+	step2Html_downgrade: "You are about to downgrade to TiddlyWiki version %0 from %1.<br><br>Downgrading to an earlier version of the core code is not recommended",
+	step2Html_restore: "This TiddlyWiki appears to be already using the latest version of the core code (%0).<br><br>You can continue to upgrade anyway to ensure that the core code hasn't been corrupted or damaged",
+	step2Html_upgrade: "You are about to upgrade to TiddlyWiki version %0 from %1",
 	upgradeLabel: "upgrade",
-	upgradePrompt: "Start the upgrade process",
+	upgradePrompt: "Prepare for the upgrade process",
 	statusPreparingBackup: "Preparing backup",
 	statusSavingBackup: "Saving backup file",
 	errorSavingBackup: "There was a problem saving the backup file",
@@ -305,7 +309,13 @@ merge(config.macros.upgrade,{
 	errorLoadingCore: "Error loading the core code",
 	errorCoreFormat: "Error with the new core code",
 	statusSavingCore: "Saving the new core code",
-	statusReloadingCore: "Reloading the new core code"
+	statusReloadingCore: "Reloading the new core code",
+	startLabel: "start",
+	startPrompt: "Start the upgrade process",
+	cancelLabel: "cancel",
+	cancelPrompt: "Cancel the upgrade process",
+	step3Title: "Upgrade cancelled",
+	step3Html: "You have cancelled the upgrade process"
 	});
 
 merge(config.macros.sync,{
