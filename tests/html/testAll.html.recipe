@@ -5,7 +5,7 @@ jsspecsrc=<script type="text/javascript" src="../jsspec/testDates.jsspec.js"></s
 jsspecsrc=<script type="text/javascript" src="../jsspec/testDom.jsspec.js"></script>
 jsspecsrc=<script type="text/javascript" src="../jsspec/testGenerateRss.jsspec.js"></script>
 jsspecsrc=<script type="text/javascript" src="../jsspec/testMacros.jsspec.js"></script>
-jsspecsrc=<script type="text/javascript" src="../jsspec/testMessages.jsspec.js"></script>
+#jsspecsrc=<script type="text/javascript" src="../jsspec/testMessages.jsspec.js"></script>
 jsspecsrc=<script type="text/javascript" src="../jsspec/testRGB.jsspec.js"></script>
 jsspecsrc=<script type="text/javascript" src="../jsspec/testShadows.jsspec.js"></script>
 jsspecsrc=<script type="text/javascript" src="../jsspec/testStrings.jsspec.js"></script>
