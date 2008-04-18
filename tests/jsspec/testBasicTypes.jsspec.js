@@ -135,7 +135,33 @@ describe('BasicTypes : Array.containsAny()', {
 		value_of(result).should_be_true();
 	}
 	
-	
+});
+
+describe('BasicTypes : Array.containsAll()', {
+
+	before_each: function(){
+		test_strings_arr = ['item1','item2','item3'];
+	},
+
+	'given a list of string items, none of which are present in the target array, containsAll() returns false.' : function() {
+		var query_arr = ['itemA','itemB'];
+		var result = test_strings_arr.containsAll(query_arr);
+		value_of(result).should_be_false();
+	},
+
+	'given a list of string items, some of which are present in the target array, containsAll() returns false.' : function() {
+		var query_arr = ['item1','itemB'];
+		var result = test_strings_arr.containsAll(query_arr);
+		value_of(result).should_be_false();
+	},
+		
+	'given a list of string items, all of which are present in the target array, containsAll() returns true.' : function() {
+		var query_arr = ['item1','item2'];
+		var result = test_strings_arr.containsAll(query_arr);
+		value_of(result).should_be_true();
+	}
+
+
 });
 
 // ]]>
