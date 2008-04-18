@@ -11,7 +11,6 @@ js: Macros.js
 js: NewTiddler.js
 js: Search.js
 js: Tabs.js
-plugin: Sparkline.js title="SparklinePlugin" tags="systemConfig excludeLists excludeSearch" Description="Sparklines macro"
 js: Toolbar.js
 js: Commands.js
 js: Tiddler.js
@@ -48,5 +47,4 @@ js: Dom.js
 js: LoaderSaver.js
 js: TW21Loader.js
 js: TW21Saver.js
-plugin: Deprecated.js title="DeprecatedFunctionsPlugin" tags="systemConfig excludeLists excludeSearch" Description="Support for deprecated functions removed from core"
 
