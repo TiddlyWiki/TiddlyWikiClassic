@@ -4,7 +4,7 @@
 
 formatVersion = function(v)
 {
-	v = v ? v : version;
+	v = v || version;
 	return v.major + "." + v.minor + "." + v.revision + (v.beta ? " (beta " + v.beta + ")" : "");
 };
 
@@ -14,24 +14,14 @@ formatVersion = function(v)
 //#         -1 if v2 is earlier than v1
 compareVersions = function(v1,v2)
 {
-	if(v1.major < v2.major)
-		return +1;
-	else if(v1.major > v2.major)
-		return -1;
-	if(v1.minor < v2.minor)
-		return +1;
-	else if(v1.minor > v2.minor)
-		return -1;
-	if(v1.revision < v2.revision)
-		return +1;
-	else if(v1.revision > v2.revision)
-		return -1;
-	var v1beta = v1.beta ? v1.beta : 0;
-	var v2beta = v2.beta ? v2.beta : 0;
-	if(v1beta < v2beta)
-		return +1;
-	else if(v1beta > v2beta)
-		return -1;
+	var a = ["major","minor","revision","beta"];
+	for(var i = 0; i<a.length; i++) {
+		var x1 = v1[a[i]] || 0;
+		var x2 = v2[a[i]] || 0;
+		if(x1==x2)
+			continue;
+		return x1 < x2 ? 1 : -1;
+	}
 	return 0;
 };
 
