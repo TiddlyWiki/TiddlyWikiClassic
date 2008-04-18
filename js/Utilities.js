@@ -12,17 +12,23 @@ formatVersion = function(v)
 //# Returns +1 if v2 is later than v1
 //#          0 if v2 is the same as v1
 //#         -1 if v2 is earlier than v1
+//# version without a beta number is later than a version with a beta number
 compareVersions = function(v1,v2)
 {
-	var a = ["major","minor","revision","beta"];
+	var a = ["major","minor","revision"];
 	for(var i = 0; i<a.length; i++) {
 		var x1 = v1[a[i]] || 0;
 		var x2 = v2[a[i]] || 0;
-		if(x1==x2)
-			continue;
-		return x1 < x2 ? 1 : -1;
+		if(x1<x2)
+			return 1;
+		if(x1>x2)
+			return -1;
 	}
-	return 0;
+	x1 = v1.beta || 9999;
+	x2 = v2.beta || 9999;
+	if(x1<x2)
+		return 1;
+	return x1 > x2 ? -1 : 0;
 };
 
 function createTiddlyButton(parent,text,tooltip,action,className,id,accessKey,attribs)
