@@ -7,10 +7,13 @@ function __main() {
 }
 
 __title = {
-	all: "All tiddlers in alphabetical order",
-	missing: "Tiddlers that have links to them but are not defined",
-	orphans: "Tiddlers that are not linked to from any other tiddlers",
-	shadowed: "Tiddlers shadowed with default contents",
+	en: {
+	    all: "All tiddlers in alphabetical order",
+	    missing: "Tiddlers that have links to them but are not defined",
+	    orphans: "Tiddlers that are not linked to from any other tiddlers",
+	    shadowed: "Tiddlers shadowed with default contents",
+	    touched: "Tiddlers that have been modified locally",
+	}
 }
 
 describe('Macros: version macro', {
@@ -44,19 +47,24 @@ describe('Macros: list macro', {
 	},
 
 	'list all by default expands to the listTitle and an empty list' : function() { 
-		value_of(wikifyStatic("<<list>>")).should_be('<ul><li class="listTitle">' + __title.all + '</li></ul>');
+		value_of(wikifyStatic("<<list>>")).should_be('<ul><li class="listTitle">' + __title.en.all + '</li></ul>');
 	},
 	'list missing by default expands to the listTitle and an empty list' : function() { 
-		value_of(wikifyStatic("<<list missing>>")).should_be('<ul><li class="listTitle">' + __title.missing + '</li></ul>');
+		value_of(wikifyStatic("<<list missing>>")).should_be('<ul><li class="listTitle">' + __title.en.missing + '</li></ul>');
 	},
 	'list orphans by default expands to the listTitle and an empty list' : function() { 
-		value_of(wikifyStatic("<<list orphans>>")).should_be('<ul><li class="listTitle">' + __title.orphans + '</li></ul>');
+		value_of(wikifyStatic("<<list orphans>>")).should_be('<ul><li class="listTitle">' + __title.en.orphans + '</li></ul>');
 	},
-	'list shadowed by default expands to the listTitle and a list of builtin shadowed tiddlers' : function() { 
-		var pattern = new RegExp('^<ul><li class="listTitle">' + __title.shadowed + '</li><li>.*<\/li><\/ul>');
+	'list shadowed by default expands to the listTitle and a list of tiddlers' : function() { 
+		var pattern = new RegExp('^<ul><li class="listTitle">' + __title.en.shadowed + '</li><li>.*<\/li><\/ul>');
 		value_of(wikifyStatic("<<list shadowed>>")).should_match(pattern);
 	},
-
+	'list touched by default expands to the listTitle and empty list' : function() { 
+		value_of(wikifyStatic("<<list touched>>")).should_be('<ul><li class="listTitle">' + __title.en.touched + '</li></ul>');
+	},
+	'list filter by default expands to an empty list' : function() { 
+		value_of(wikifyStatic("<<list filter>>")).should_be('<ul></ul>');
+	},
 });
 
 // ]]>
