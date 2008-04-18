@@ -17,6 +17,10 @@ __title = {
 	}
 }
 
+function __re_escape(s) {
+	return s.replace('(','\\(').replace(')','\\)');
+}
+
 describe('Macros: version macro', {
 	before_each : function() {
 		__main();
@@ -72,8 +76,11 @@ describe('Macros: closeAll macro', {
 	before_each : function() {
 		__main();
 	},
-	'closeAll macro expands to stuff' : function() { 
-		value_of(wikifyStatic("<<closeAll>>")).should_be('<a class="button" title="' + __title.en.closeAll + '" href="javascript:;">close all</a>');
+	'closeAll macro expands to button' : function() { 
+		var t = wikifyStatic("<<closeAll>>");
+		var title = __re_escape(__title.en.closeAll);
+		var r = new RegExp('<a(( class="button")|( title="' + title + '")|( href="javascript:;")){3}>close all<\/a>');
+		value_of(t).should_match(r);
 	},
 
 });
