@@ -25,13 +25,13 @@ describe('Version', {
 	'the extensions value should be an object': function() {
 		value_of(typeof version.extensions).should_be('object');
 	},
-	'format version 1.2.3 beta 5 should be correct': function() {
+	'format version 1.2.3 beta 5 should match an asserted string': function() {
 		var v = {title: "TiddlyWiki", major: 1, minor: 2, revision: 3, beta: 5, date: new Date("Apr 17, 2008"), extensions: {}};
 		var expected = "1.2.3 (beta 5)";
 		var actual = formatVersion(v);
 		value_of(actual).should_be(expected);
 	},
-	'format version should be correct': function() {
+	'format version should match a constructed value': function() {
 		var expected = version.major + "." + version.minor + "." + version.revision + (version.beta ? " (beta " + version.beta + ")" : "");
 		var actual = formatVersion();
 		value_of(actual).should_be(expected);
@@ -62,11 +62,10 @@ describe('Version', {
 		var v2 = {title: "TiddlyWiki", major: 1, minor: 0, revision: 0, beta: 1, date: new Date("Apr 17, 2008"), extensions: {}};
 		value_of(compareVersions(v1,v2)).should_be(1);
 	},
-	'version 1.0.0 beta 1should be less than version 1.0.0 beta 2': function() {
+	'version 1.0.0 beta 1 should be less than version 1.0.0 beta 2': function() {
 		var v1 = {title: "TiddlyWiki", major: 1, minor: 0, revision: 0, beta: 1, date: new Date("Apr 17, 2008"), extensions: {}};
 		var v2 = {title: "TiddlyWiki", major: 1, minor: 0, revision: 0, beta: 2, date: new Date("Apr 17, 2008"), extensions: {}};
 		value_of(compareVersions(v1,v2)).should_be(1);
 	}
 });
 // ]]>
-
