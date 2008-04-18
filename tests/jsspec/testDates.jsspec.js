@@ -185,6 +185,128 @@ describe('Date components', {
 		value_of(actual).should_be(expected);
 	},
 
+	'am format should return "am" for pre-noon times (00:00:00)': function() {
+		var actual = new Date(2008,11,15,0).formatString("am");
+		var expected = "am";
+		value_of(actual).should_be(expected);
+	},
+	'am format should return "am" for pre-noon times (08:00:00)': function() {
+		var actual = new Date(2008,11,15,8).formatString("am");
+		var expected = "am";
+		value_of(actual).should_be(expected);
+	},
+	'am format should return "am" for pre-noon times (11:59:59)': function() {
+		var actual = new Date(2008,11,15,11,59,59).formatString("am");
+		var expected = "am";
+		value_of(actual).should_be(expected);
+	},
+	'pm format should return "am" for pre-noon times (00:00:00)': function() {
+		var actual = new Date(2008,11,15,0).formatString("pm");
+		var expected = "am";
+		value_of(actual).should_be(expected);
+	},
+	'pm format should return "am" for pre-noon times (08:00:00)': function() {
+		var actual = new Date(2008,11,15,8).formatString("pm");
+		var expected = "am";
+		value_of(actual).should_be(expected);
+	},
+	'pm format should return "am" for pre-noon times (11:59:59)': function() {
+		var actual = new Date(2008,11,15,11,59,59).formatString("pm");
+		var expected = "am";
+		value_of(actual).should_be(expected);
+	},
+	'am format should return "pm" for pre-midnight times (12:00:00)': function() {
+		var actual = new Date(2008,11,15,12).formatString("am");
+		var expected = "pm";
+		value_of(actual).should_be(expected);
+	},
+	'am format should return "pm" for pre-midnight times (20:00:00)': function() {
+		var actual = new Date(2008,11,15,20).formatString("am");
+		var expected = "pm";
+		value_of(actual).should_be(expected);
+	},
+	'am format should return "pm" for pre-midnight times (23:59:59)': function() {
+		var actual = new Date(2008,11,15,23,59,59).formatString("am");
+		var expected = "pm";
+		value_of(actual).should_be(expected);
+	},
+	'pm format should return "pm" for pre-midnight times (12:00:00)': function() {
+		var actual = new Date(2008,11,15,12).formatString("pm");
+		var expected = "pm";
+		value_of(actual).should_be(expected);
+	},
+	'pm format should return "pm" for pre-midnight times (20:00:00)': function() {
+		var actual = new Date(2008,11,15,20).formatString("pm");
+		var expected = "pm";
+		value_of(actual).should_be(expected);
+	},
+	'pm format should return "pm" for pre-midnight times (23:59:59)': function() {
+		var actual = new Date(2008,11,15,23,59,59).formatString("pm");
+		var expected = "pm";
+		value_of(actual).should_be(expected);
+	},
+
+	'AM format should return "AM" for pre-noon times (00:00:00)': function() {
+		var actual = new Date(2008,11,15,0).formatString("AM");
+		var expected = "AM";
+		value_of(actual).should_be(expected);
+	},
+	'AM format should return "AM" for pre-noon times (08:00:00)': function() {
+		var actual = new Date(2008,11,15,8).formatString("AM");
+		var expected = "AM";
+		value_of(actual).should_be(expected);
+	},
+	'AM format should return "AM" for pre-noon times (11:59:59)': function() {
+		var actual = new Date(2008,11,15,11,59,59).formatString("AM");
+		var expected = "AM";
+		value_of(actual).should_be(expected);
+	},
+	'PM format should return "AM" for pre-noon times (00:00:00)': function() {
+		var actual = new Date(2008,11,15,0).formatString("PM");
+		var expected = "AM";
+		value_of(actual).should_be(expected);
+	},
+	'PM format should return "AM" for pre-noon times (08:00:00)': function() {
+		var actual = new Date(2008,11,15,8).formatString("PM");
+		var expected = "AM";
+		value_of(actual).should_be(expected);
+	},
+	'PM format should return "AM" for pre-noon times (11:59:59)': function() {
+		var actual = new Date(2008,11,15,11,59,59).formatString("PM");
+		var expected = "AM";
+		value_of(actual).should_be(expected);
+	},
+	'AM format should return "PM" for pre-midnight times (12:00:00)': function() {
+		var actual = new Date(2008,11,15,12).formatString("AM");
+		var expected = "PM";
+		value_of(actual).should_be(expected);
+	},
+	'AM format should return "PM" for pre-midnight times (20:00:00)': function() {
+		var actual = new Date(2008,11,15,20).formatString("AM");
+		var expected = "PM";
+		value_of(actual).should_be(expected);
+	},
+	'AM format should return "PM" for pre-midnight times (23:59:59)': function() {
+		var actual = new Date(2008,11,15,23,59,59).formatString("AM");
+		var expected = "PM";
+		value_of(actual).should_be(expected);
+	},
+	'PM format should return "PM" for pre-midnight times (12:00:00)': function() {
+		var actual = new Date(2008,11,15,12).formatString("PM");
+		var expected = "PM";
+		value_of(actual).should_be(expected);
+	},
+	'PM format should return "PM" for pre-midnight times (20:00:00)': function() {
+		var actual = new Date(2008,11,15,20).formatString("PM");
+		var expected = "PM";
+		value_of(actual).should_be(expected);
+	},
+	'PM format should return "PM" for pre-midnight times (23:59:59)': function() {
+		var actual = new Date(2008,11,15,23,59,59).formatString("PM");
+		var expected = "PM";
+		value_of(actual).should_be(expected);
+	},
+
 	'full-month format should return "January" for month 0': function() {
 		var actual = new Date(2008,0).formatString("MMM");
 		var expected = "January";
