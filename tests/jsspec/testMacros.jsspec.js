@@ -79,8 +79,11 @@ describe('Macros: closeAll macro', {
 	'closeAll macro expands to button' : function() { 
 		var t = wikifyStatic("<<closeAll>>");
 		var title = __re_escape(__title.en.closeAll);
-		var r = new RegExp('<a(( class="button")|( title="' + title + '")|( href="javascript:;")){3}>close all<\/a>');
+		var r = new RegExp('<a(( class="button")|( title="' + title + '")|( href="javascript:;")){3}>close all<\/a>$');
 		value_of(t).should_match(r);
+		value_of(t).should_match(/class="/);
+		value_of(t).should_match(/title="/);
+		value_of(t).should_match(/href="/);
 	},
 
 });
