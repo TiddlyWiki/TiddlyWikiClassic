@@ -88,27 +88,57 @@ describe('Wikifier : wikifyStatic()', {
 	},
 	'Italic formatting': function() {
 		formatter = new Formatter(config.formatters);
-		var actual = wikifyStatic("//italic//").toLowerCase();;
+		var actual = wikifyStatic("//italic//").toLowerCase();
 		var expected = "<em>italic</em>";
 		value_of(actual).should_be(expected);
 	},
 	'Underline formatting': function() {
 		formatter = new Formatter(config.formatters);
-		var actual = wikifyStatic("__underline__").toLowerCase();;
+		var actual = wikifyStatic("__underline__").toLowerCase();
 		var expected = "<u>underline</u>";
 		value_of(actual).should_be(expected);
 	},
 	'Superscript formatting': function() {
 		formatter = new Formatter(config.formatters);
-		var actual = wikifyStatic("^^superscript^^").toLowerCase();;
+		var actual = wikifyStatic("^^superscript^^").toLowerCase();
 		var expected = "<sup>superscript</sup>";
 		value_of(actual).should_be(expected);
 	},
 	'Subscript formatting': function() {
 		formatter = new Formatter(config.formatters);
-		var actual = wikifyStatic("~~subscript~~").toLowerCase();;
+		var actual = wikifyStatic("~~subscript~~").toLowerCase();
 		var expected = "<sub>subscript</sub>";
 		value_of(actual).should_be(expected);
+	}
+});
+
+describe('Wikifier: wikify()', {
+
+	before_each: function() {
+		place = document.createElement("div");
+		d = document.body.appendChild(place);
+		d.style.display = "none";
+	},
+
+	after_each: function() {
+		removeNode(d);
+	},
+
+	'it should not call subWikify() if the "source" parameter is not provided': function() {
+		wikify();
+	},
+	
+	'it should not call subWikify() if the "source" parameter is an empty string': function() {
+		var source = "";
+		wikify(source);
+	},
+	
+	'it should call subWikify()': function() {
+		var called = false;
+		Wikifier.prototype.subWikify = function() {
+			called = true;
+			return;
+		};
 	}
 });
 
