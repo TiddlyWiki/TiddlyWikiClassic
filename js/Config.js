@@ -53,6 +53,7 @@ config.options = {
 	chkUsePreForStorage: true, // Whether to use <pre> format for storage
 	chkDisplayInstrumentation: false,
 	txtBackupFolder: "",
+	txtEditorFocus: "text",
 	txtMainTab: "tabTimeline",
 	txtMoreTab: "moreTabAll",
 	txtMaxEditRows: "30",

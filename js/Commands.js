@@ -25,7 +25,7 @@ config.commands.editTiddler.handler = function(event,src,title)
 	var tiddlerElem = story.getTiddler(title);
 	var fields = tiddlerElem.getAttribute("tiddlyFields");
 	story.displayTiddler(null,title,DEFAULT_EDIT_TEMPLATE,false,null,fields);
-	story.focusTiddler(title,"text");
+	story.focusTiddler(title,config.options.txtEditorFocus||"text");
 	return false;
 };
 
