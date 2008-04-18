@@ -1,0 +1,4 @@
+recipe: testmin.recipe
+title=TiddlyWiki messages tests
+jsspecsrc=<script type="text/javascript" src="../js/tiddlywiki.js"></script>
+jsspecsrc=<script type="text/javascript" src="../jsspec/testMessages.jsspec.js"></script>
