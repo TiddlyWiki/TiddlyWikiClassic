@@ -616,7 +616,7 @@ Story.prototype.switchTheme = function(theme)
 
 	getSlice = function(theme,slice) {
 		if(readOnly)
-			var r = store.getTiddlerSlice(theme,slice+"ReadOnly");
+			var r = store.getTiddlerSlice(theme,slice+"ReadOnly") || store.getTiddlerSlice(theme,"Web"+slice);
 		r = r || store.getTiddlerSlice(theme,slice);
 		if(r && r.indexOf(config.textPrimitives.sectionSeparator)==0)
 			r = theme + r;
