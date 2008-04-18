@@ -632,7 +632,7 @@ Story.prototype.switchTheme = function(theme)
 		return name;
 	};
 
-	var pt = config.refreshers.pageTemplate;
+	var pt = config.refresherData.pageTemplate;
 	var vi = DEFAULT_VIEW_TEMPLATE;
 	var vt = config.tiddlerTemplates[vi];
 	var ei = DEFAULT_EDIT_TEMPLATE;
@@ -662,7 +662,7 @@ Story.prototype.switchTheme = function(theme)
 			refreshAll();
 			story.refreshAllTiddlers(true);
 		} else {
-			setStylesheet(store.getRecursiveTiddlerText(config.refreshers.styleSheet,"",10),config.refreshers.styleSheet);
+			setStylesheet(store.getRecursiveTiddlerText(config.refresherData.styleSheet,"",10),config.refreshers.styleSheet);
 		}
 		config.options.txtTheme = theme;
 		saveOptionCookie("txtTheme");
