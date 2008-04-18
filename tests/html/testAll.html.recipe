@@ -10,3 +10,5 @@ jsspecsrc=<script type="text/javascript" src="../jsspec/testTiddler.jsspec.js"><
 jsspecsrc=<script type="text/javascript" src="../jsspec/testTW21Saver.jsspec.js"></script>
 jsspecsrc=<script type="text/javascript" src="../jsspec/testVersion.jsspec.js"></script>
 jsspecsrc=<script type="text/javascript" src="../jsspec/testWikifier.jsspec.js"></script>
+jsspecsrc=<script type="text/javascript" src="../jsspec/testMacros.jsspec.js"></script>
+jsspecsrc=<script type="text/javascript" src="../jsspec/testGenerateRss.jsspec.js"></script>
