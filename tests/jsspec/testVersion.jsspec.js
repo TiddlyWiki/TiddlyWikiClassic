@@ -57,15 +57,20 @@ describe('Version', {
 		var v2 = {title: "TiddlyWiki", major: 1, minor: 0, revision: 1, date: new Date("Apr 17, 2008"), extensions: {}};
 		value_of(compareVersions(v1,v2)).should_be(1);
 	},
-	'version 1.0.0 should be less than version 1.0.0 beta 1': function() {
+	'version 1.0.0 (no beta) should be more than version 1.0.0 beta 1': function() {
 		var v1 = {title: "TiddlyWiki", major: 1, minor: 0, revision: 0, date: new Date("Apr 17, 2008"), extensions: {}};
 		var v2 = {title: "TiddlyWiki", major: 1, minor: 0, revision: 0, beta: 1, date: new Date("Apr 17, 2008"), extensions: {}};
-		value_of(compareVersions(v1,v2)).should_be(1);
+		value_of(compareVersions(v1,v2)).should_be(-1);
 	},
 	'version 1.0.0 beta 1 should be less than version 1.0.0 beta 2': function() {
 		var v1 = {title: "TiddlyWiki", major: 1, minor: 0, revision: 0, beta: 1, date: new Date("Apr 17, 2008"), extensions: {}};
 		var v2 = {title: "TiddlyWiki", major: 1, minor: 0, revision: 0, beta: 2, date: new Date("Apr 17, 2008"), extensions: {}};
 		value_of(compareVersions(v1,v2)).should_be(1);
+	},
+	'version 1.2.3 (no beta) should be more than version 1.2.3 beta 4': function() {
+		var v1 = {title: "TiddlyWiki", major: 1, minor: 2, revision: 3, date: new Date("Apr 17, 2008"), extensions: {}};
+		var v2 = {title: "TiddlyWiki", major: 1, minor: 2, revision: 3, beta: 4, date: new Date("Apr 17, 2008"), extensions: {}};
+		value_of(compareVersions(v1,v2)).should_be(-1);
 	}
 });
 // ]]>
