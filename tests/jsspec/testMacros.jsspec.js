@@ -13,6 +13,7 @@ __title = {
 	    orphans: "Tiddlers that are not linked to from any other tiddlers",
 	    shadowed: "Tiddlers shadowed with default contents",
 	    touched: "Tiddlers that have been modified locally",
+	    closeAll: "Close all displayed tiddlers (except any that are being edited)",
 	}
 }
 
@@ -65,6 +66,16 @@ describe('Macros: list macro', {
 	'list filter by default expands to an empty list' : function() { 
 		value_of(wikifyStatic("<<list filter>>")).should_be('<ul></ul>');
 	},
+});
+
+describe('Macros: closeAll macro', {
+	before_each : function() {
+		__main();
+	},
+	'closeAll macro expands to stuff' : function() { 
+		value_of(wikifyStatic("<<closeAll>>")).should_be('<a class="button" title="' + __title.en.closeAll + '" href="javascript:;">close all</a>');
+	},
+
 });
 
 // ]]>
