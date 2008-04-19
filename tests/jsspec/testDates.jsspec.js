@@ -307,6 +307,32 @@ describe('Date components', {
 		value_of(actual).should_be(expected);
 	},
 
+	'week-based four-digit year number should return the year based on the week number': function() {
+		var actual = new Date(2007,11,31).formatString("wYYYY");
+		var expected = "2008";
+		value_of(actual).should_be(expected);
+	},
+	'week-based two-digit year number should return the year based on the week number': function() {
+		var actual = new Date(2007,11,31).formatString("wYY");
+		var expected = "08";
+		value_of(actual).should_be(expected);
+	},
+	'four-digit year number should return the correct year': function() {
+		var actual = new Date(2007,11,31).formatString("YYYY");
+		var expected = "2007";
+		value_of(actual).should_be(expected);
+	},
+	'four-digit year number should return the correct year based on 20th century': function() {
+		var actual = new Date(7,11,31).formatString("YYYY");
+		var expected = "1907";
+		value_of(actual).should_be(expected);
+	},
+	'two-digit year number should return the correct year': function() {
+		var actual = new Date(2007,11,31).formatString("YY");
+		var expected = "07";
+		value_of(actual).should_be(expected);
+	},
+
 	'full-month format should return "January" for month 0': function() {
 		var actual = new Date(2008,0).formatString("MMM");
 		var expected = "January";
