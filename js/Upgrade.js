@@ -14,7 +14,10 @@ config.macros.upgrade.onClickUpgrade = function(e)
 {
 	var me = config.macros.upgrade;
 	var w = new Wizard(this);
-	//# Check that the store isn't dirty and there are no tiddlers in edit mode
+	if(story.areAnyDirty() || store.isDirty()) {
+		alert(me.errorNotSaved);
+		return;
+	}
 	var localPath = getLocalPath(document.location.toString());
 	var backupPath = getBackupPath(localPath,me.backupExtension);
 	w.setValue("backupPath",backupPath);
