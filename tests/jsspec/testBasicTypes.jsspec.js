@@ -161,8 +161,39 @@ describe('BasicTypes : Array.containsAll()', {
 		value_of(result).should_be_true();
 	}
 
+});
+
+describe('BasicTypes : Array.pushUnique()', {
+
+	before_each: function(){
+		test_strings_arr = ['item1','item2','item3'];
+	},
+	
+	'given a string value which is not present in the target array, pushUnique() adds the value to the array' : function() {
+		var originalLength = test_strings_arr.length;
+		test_strings_arr.pushUnique('item4');
+		var modifiedLength = test_strings_arr.length;
+		value_of(modifiedLength).should_be(originalLength+1);
+	},
+	
+	'given a string value which is already present in the target array, pushUnique() does not change the target array.' : function() {
+		var originalLength = test_strings_arr.length;
+		test_strings_arr.pushUnique('item2');
+		var modifiedLength = test_strings_arr.length;
+		value_of(modifiedLength).should_be(originalLength);
+	},
+	
+	'given a string value which is already present in the target array and a value of false in the unique parameter, pushUnique() add the item to the target array.' : function() {
+		var originalLength = test_strings_arr.length;
+		test_strings_arr.pushUnique('item2',false);
+		var modifiedLength = test_strings_arr.length;
+		value_of(modifiedLength).should_be(originalLength + 1);
+	}
+	
 
 });
+
+
 
 // ]]>
 
