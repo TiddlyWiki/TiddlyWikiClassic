@@ -43,6 +43,19 @@ describe('Tiddler: tiddler.clearChangeCount()',{
 		value_of(tiddler.isTouched()).should_be(true);
 		tiddler.clearChangeCount();
 		value_of(tiddler.isTouched()).should_be(false);
+	},
+});
+
+describe('Tiddler: tiddler.assign()',{
+	'Assigning value to tiddler title should override old title': function() {
+		var tiddler = new Tiddler("temp");
+		tiddler.text = "some text";
+		tiddler.modifier = "a modifier";
+		tiddler.created = new Date(2008,04,21,01,02,03);
+		tiddler.modified = new Date(2009,05,22,12,13,14);
+		tiddler.modified = this.created;
+		tiddler.assign("NewTitle");
+		value_of(tiddler.title).should_be("NewTitle");
 	}
 });
 // ]]>
