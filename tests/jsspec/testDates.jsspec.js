@@ -392,6 +392,37 @@ describe('Date components', {
 		var actual = new Date(2008,11).formatString("MMM");
 		var expected = "December";
 		value_of(actual).should_be(expected);
+	},
+
+	'months format (with zero-padding) should return "01" for January': function() {
+		var actual = new Date(2008,0).formatString("0MM");
+		var expected = "01";
+		value_of(actual).should_be(expected);
+	},
+	'months format (with zero-padding) should return "12" for December': function() {
+		var actual = new Date(2008,11).formatString("0MM");
+		var expected = "12";
+		value_of(actual).should_be(expected);
+	},
+	'months format (with zero-padding) should return "01" for month 13': function() {
+		var actual = new Date(2008,12).formatString("0MM");
+		var expected = "01";
+		value_of(actual).should_be(expected);
+	},
+	'months format (without zero-padding) should return "1" for January': function() {
+		var actual = new Date(2008,0).formatString("MM");
+		var expected = "1";
+		value_of(actual).should_be(expected);
+	},
+	'months format (without zero-padding) should return "12" for December': function() {
+		var actual = new Date(2008,11).formatString("MM");
+		var expected = "12";
+		value_of(actual).should_be(expected);
+	},
+	'months format (without zero-padding) should return "1" for month 13': function() {
+		var actual = new Date(2008,12).formatString("MM");
+		var expected = "1";
+		value_of(actual).should_be(expected);
 	}
 });
 
