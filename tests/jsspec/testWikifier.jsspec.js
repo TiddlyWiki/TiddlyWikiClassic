@@ -142,5 +142,75 @@ describe('Wikifier: wikify()', {
 	}
 });
 
+describe('Wikifier: wikifyStatic()', {
+
+	before_each: function() {
+		place = document.createElement("div");
+		d = document.body.appendChild(place);
+		d.style.display = "none";
+		source = "some text";
+	},
+	
+	after_each: function() {
+		removeNode(d);
+	},
+	
+	'it should return an empty string if source does not exist or is an empty string': function() {
+		var expected = "";
+		var actual = wikifyStatic(null);
+		value_of(actual).should_be(expected);
+		var actual = wikifyStatic("");
+		value_of(actual).should_be(expected);
+	},
+	
+	'it should not require a tiddler to work': function() {
+		var actual = wikifyStatic(source);
+		value_of(actual).should_not_be_null();
+	},
+	
+	'it should call subWikify() with the pre block as the only parameter': function() {
+		var called = false;
+		var elem;
+		Wikifier.prototype.subWikify = function(e) {
+			called = true;
+			elem = e;
+		};
+		wikifyStatic(source);
+		var expected = "PRE";
+		var actual = elem.nodeName;
+		value_of(called).should_be(true);
+		value_of(actual).should_be(expected);
+	},
+	
+	'it should return a text string': function() {
+		var expected = "string";
+		var actual = typeof wikifyStatic(source);
+	},
+	
+	'it should not leave any elements attached to the document body after returning': function() {
+		var expected = document.body.childNodes.length;
+		var html = wikifyStatic(source);
+		var actual = document.body.childNodes.length;
+		value_of(actual).should_be(expected);
+	}
+});
+
+function wikifyStatic(source,highlightRegExp,tiddler,format)
+{
+	var e = createTiddlyElement(document.body,"pre");
+	e.style.display = "none";
+	var html = "";
+	if(source && source != "") {
+		if(!tiddler)
+			tiddler = new Tiddler("temp");
+		var wikifier = new Wikifier(source,getParser(tiddler,format),highlightRegExp,tiddler);
+		wikifier.isStatic = true;
+		wikifier.subWikify(e);
+		html = e.innerHTML;
+		removeNode(e);
+	}
+	return html;
+}
+
 // ]]>
 
