@@ -43,19 +43,32 @@ describe('Tiddler: tiddler.clearChangeCount()',{
 		value_of(tiddler.isTouched()).should_be(true);
 		tiddler.clearChangeCount();
 		value_of(tiddler.isTouched()).should_be(false);
-	},
+	}
 });
 
 describe('Tiddler: tiddler.assign()',{
-	'Assigning value to tiddler title should override old title': function() {
-		var tiddler = new Tiddler("temp");
+	before_each: function(){
+		tiddler = new Tiddler("temp");
 		tiddler.text = "some text";
 		tiddler.modifier = "a modifier";
 		tiddler.created = new Date(2008,04,21,01,02,03);
 		tiddler.modified = new Date(2009,05,22,12,13,14);
-		tiddler.modified = this.created;
+	},
+	'Assigning value to tiddler title should override old title': function() {
 		tiddler.assign("NewTitle");
 		value_of(tiddler.title).should_be("NewTitle");
+		value_of(tiddler.text).should_be("some text");
+		value_of(tiddler.modifier).should_be("a modifier");
+		value_of(tiddler.created).should_be(new Date(2008,04,21,01,02,03));
+		value_of(tiddler.modified).should_be(new Date(2009,05,22,12,13,14));
+	},
+	'Assigning value to tiddler text should override old text': function() {
+		tiddler.assign(null,"new text");
+		value_of(tiddler.title).should_be("temp");
+		value_of(tiddler.text).should_be("new text");
+		value_of(tiddler.modifier).should_be("a modifier");
+		value_of(tiddler.created).should_be(new Date(2008,04,21,01,02,03));
+		value_of(tiddler.modified).should_be(new Date(2009,05,22,12,13,14));
 	}
 });
 // ]]>
