@@ -125,12 +125,25 @@ describe('Wikifier: wikify()', {
 	},
 
 	'it should not call subWikify() if the "source" parameter is not provided': function() {
+		var called = false;
+		Wikifier.prototype.subWikify = function(source) {
+			called = true;
+			return;
+		};
+		var source = "";
 		wikify();
+		value_of(called).should_be_false();
 	},
 	
 	'it should not call subWikify() if the "source" parameter is an empty string': function() {
+		var called = false;
+		Wikifier.prototype.subWikify = function(source) {
+			called = true;
+			return;
+		};
 		var source = "";
 		wikify(source);
+		value_of(called).should_be_false();
 	},
 	
 	'it should call subWikify()': function() {
@@ -139,6 +152,9 @@ describe('Wikifier: wikify()', {
 			called = true;
 			return;
 		};
+		var source = "hello";
+		wikify(source);
+		value_of(called).should_be(true);
 	}
 });
 
@@ -195,22 +211,42 @@ describe('Wikifier: wikifyStatic()', {
 	}
 });
 
-function wikifyStatic(source,highlightRegExp,tiddler,format)
-{
-	var e = createTiddlyElement(document.body,"pre");
-	e.style.display = "none";
-	var html = "";
-	if(source && source != "") {
-		if(!tiddler)
-			tiddler = new Tiddler("temp");
-		var wikifier = new Wikifier(source,getParser(tiddler,format),highlightRegExp,tiddler);
-		wikifier.isStatic = true;
-		wikifier.subWikify(e);
-		html = e.innerHTML;
-		removeNode(e);
+describe('Wikifier: wikifyPlain', {
+
+	before_each: function() {
+		store = new TiddlyWiki();
+		loadShadowTiddlers();
+		store.saveTiddler("t","t","text");
+		formatter = new Formatter(config.formatters);
+	},
+
+	'it should use the store if only a title parameter is provided': function() {
+		var actual = wikifyPlain("t");
+		value_of(actual).should_not_be_null();
+	},
+
+	'it should call wikifyPlainText() if the tiddler exists in the store or is a shadow tiddler': function() {
+		var called = false;
+		wikifyPlainText = function() {
+			called = true;
+		};
+		wikifyPlainText("t");
+		value_of(called).should_be_true();
+		called = false;
+		var t = store.isShadowTiddler("SiteTitle");
+		value_of(t).should_be_true();
+		wikifyPlainText("SiteTitle");
+		value_of(called).should_be_true();
+	},
+
+	'it should return an empty string if the tiddler isn\'t in the store or a shadow tiddler': function() {
+		var tiddler = store.getTiddler("foo");
+		value_of(tiddler).should_be(null);
+		var actual = wikifyPlain("foo");
+		var expected = "";
+		value_of(actual).should_be(expected);
 	}
-	return html;
-}
+});
 
 // ]]>
 
