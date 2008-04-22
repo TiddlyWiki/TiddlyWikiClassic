@@ -423,6 +423,202 @@ describe('Date components', {
 		var actual = new Date(2008,12).formatString("MM");
 		var expected = "1";
 		value_of(actual).should_be(expected);
+	},
+
+	'weeks format (with zero-padding) should return "01" for the first day of the year': function() {
+		var actual = new Date(2008,0,1).formatString("0WW");
+		var expected = "01";
+		value_of(actual).should_be(expected);
+	},
+	'weeks format (with zero-padding) should return "52" for the last Sunday of the year': function() {
+		var actual = new Date(2008,11,28).formatString("0WW");
+		var expected = "52";
+		value_of(actual).should_be(expected);
+	},
+	'weeks format (without zero-padding) should return "1" for the first day of the year': function() {
+		var actual = new Date(2008,0,1).formatString("WW");
+		var expected = "1";
+		value_of(actual).should_be(expected);
+	},
+	'weeks format (without zero-padding) should return "52" for the last Sunday of the year': function() {
+		var actual = new Date(2008,11,28).formatString("WW");
+		var expected = "52";
+		value_of(actual).should_be(expected);
+	},
+
+	'full-day format should return "Monday" for the first day of the week': function() {
+		var actual = new Date(2008,0,7).formatString("DDD");
+		var expected = "Monday";
+		value_of(actual).should_be(expected);
+	},
+	'full-day format should return "Tuesday" for the second day of the week': function() {
+		var actual = new Date(2008,0,8).formatString("DDD");
+		var expected = "Tuesday";
+		value_of(actual).should_be(expected);
+	},
+	'full-day format should return "Wednesday" for the third day of the week': function() {
+		var actual = new Date(2008,0,9).formatString("DDD");
+		var expected = "Wednesday";
+		value_of(actual).should_be(expected);
+	},
+	'full-day format should return "Thursday" for the fourth day of the week': function() {
+		var actual = new Date(2008,0,10).formatString("DDD");
+		var expected = "Thursday";
+		value_of(actual).should_be(expected);
+	},
+	'full-day format should return "Friday" for the fifth day of the week': function() {
+		var actual = new Date(2008,0,11).formatString("DDD");
+		var expected = "Friday";
+		value_of(actual).should_be(expected);
+	},
+	'full-day format should return "Saturday" for the sixth day of the week': function() {
+		var actual = new Date(2008,0,12).formatString("DDD");
+		var expected = "Saturday";
+		value_of(actual).should_be(expected);
+	},
+	'full-day format should return "Sunday" for the seventh day of the week': function() {
+		var actual = new Date(2008,0,13).formatString("DDD");
+		var expected = "Sunday";
+		value_of(actual).should_be(expected);
+	},
+
+	'short-day format should return "Mon" for the first day of the week': function() {
+		var actual = new Date(2008,0,7).formatString("ddd");
+		var expected = "Mon";
+		value_of(actual).should_be(expected);
+	},
+	'short-day format should return "Tue" for the second day of the week': function() {
+		var actual = new Date(2008,0,8).formatString("ddd");
+		var expected = "Tue";
+		value_of(actual).should_be(expected);
+	},
+	'short-day format should return "Wed" for the third day of the week': function() {
+		var actual = new Date(2008,0,9).formatString("ddd");
+		var expected = "Wed";
+		value_of(actual).should_be(expected);
+	},
+	'short-day format should return "Thu" for the fourth day of the week': function() {
+		var actual = new Date(2008,0,10).formatString("ddd");
+		var expected = "Thu";
+		value_of(actual).should_be(expected);
+	},
+	'short-day format should return "Fri" for the fifth day of the week': function() {
+		var actual = new Date(2008,0,11).formatString("ddd");
+		var expected = "Fri";
+		value_of(actual).should_be(expected);
+	},
+	'short-day format should return "Sat" for the sixth day of the week': function() {
+		var actual = new Date(2008,0,12).formatString("ddd");
+		var expected = "Sat";
+		value_of(actual).should_be(expected);
+	},
+	'short-day format should return "Sun" for the seventh day of the week': function() {
+		var actual = new Date(2008,0,13).formatString("ddd");
+		var expected = "Sun";
+		value_of(actual).should_be(expected);
+	},
+
+	'days format (with zero-padding) should return "01" for the first day of the month': function() {
+		var actual = new Date(2008,5,1).formatString("0DD");
+		var expected = "01";
+		value_of(actual).should_be(expected);
+	},
+	'days format (with zero-padding) should return "31" for January 31': function() {
+		var actual = new Date(2008,0,31).formatString("0DD");
+		var expected = "31";
+		value_of(actual).should_be(expected);
+	},
+	'days format (with zero-padding) should return "01" for January 32 [sic]': function() {
+		var actual = new Date(2008,0,32).formatString("0DD");
+		var expected = "01";
+		value_of(actual).should_be(expected);
+	},
+	'days format (with zero-padding) should return "29" for February 29, 2008': function() {
+		var actual = new Date(2008,1,29).formatString("0DD");
+		var expected = "29";
+		value_of(actual).should_be(expected);
+	},
+	'days format (with zero-padding) should return "01" for February 29 [sic], 2009': function() {
+		var actual = new Date(2009,1,29).formatString("0DD");
+		var expected = "01";
+		value_of(actual).should_be(expected);
+	},
+
+	'days format (without zero-padding) should return "1" for the first day of the month': function() {
+		var actual = new Date(2008,5,1).formatString("DD");
+		var expected = "1";
+		value_of(actual).should_be(expected);
+	},
+	'days format (without zero-padding) should return "31" for January 31': function() {
+		var actual = new Date(2008,0,31).formatString("DD");
+		var expected = "31";
+		value_of(actual).should_be(expected);
+	},
+	'days format (without zero-padding) should return "1" for January 32 [sic]': function() {
+		var actual = new Date(2008,0,32).formatString("DD");
+		var expected = "1";
+		value_of(actual).should_be(expected);
+	},
+	'days format (without zero-padding) should return "29" for February 29, 2008': function() {
+		var actual = new Date(2008,1,29).formatString("DD");
+		var expected = "29";
+		value_of(actual).should_be(expected);
+	},
+	'days format (without zero-padding) should return "1" for February 29 [sic], 2009': function() {
+		var actual = new Date(2009,1,29).formatString("DD");
+		var expected = "1";
+		value_of(actual).should_be(expected);
+	},
+
+	'day-with-suffix format should return "1st" for the first day of the month': function() {
+		var actual = new Date(2008,5,1).formatString("DDth");
+		var expected = "1st";
+		value_of(actual).should_be(expected);
+	},
+	'day-with-suffix format should return "2nd" for the second day of the month': function() {
+		var actual = new Date(2008,5,2).formatString("DDth");
+		var expected = "2nd";
+		value_of(actual).should_be(expected);
+	},
+	'day-with-suffix format should return "3rd" for the third day of the month': function() {
+		var actual = new Date(2008,5,3).formatString("DDth");
+		var expected = "3rd";
+		value_of(actual).should_be(expected);
+	},
+	'day-with-suffix format should return "4th" for the fourth day of the month': function() {
+		var actual = new Date(2008,5,4).formatString("DDth");
+		var expected = "4th";
+		value_of(actual).should_be(expected);
+	},
+	'day-with-suffix format should return "11th" for the eleventh day of the month': function() {
+		var actual = new Date(2008,5,11).formatString("DDth");
+		var expected = "11th";
+		value_of(actual).should_be(expected);
+	},
+	'day-with-suffix format should return "21st" for the twenty-first day of the month': function() {
+		var actual = new Date(2008,5,21).formatString("DDth");
+		var expected = "21st";
+		value_of(actual).should_be(expected);
+	},
+	'day-with-suffix format should return "22nd" for the twenty-second day of the month': function() {
+		var actual = new Date(2008,5,22).formatString("DDth");
+		var expected = "22nd";
+		value_of(actual).should_be(expected);
+	},
+	'day-with-suffix format should return "23rd" for the twenty-third day of the month': function() {
+		var actual = new Date(2008,5,23).formatString("DDth");
+		var expected = "23rd";
+		value_of(actual).should_be(expected);
+	},	
+	'day-with-suffix format should return "24th" for the twenty-fourth day of the month': function() {
+		var actual = new Date(2008,5,24).formatString("DDth");
+		var expected = "24th";
+		value_of(actual).should_be(expected);
+	},
+	'day-with-suffix format should return "1st" for the January 32 [sic]': function() {
+		var actual = new Date(2008,0,32).formatString("DDth");
+		var expected = "1st";
+		value_of(actual).should_be(expected);
 	}
 });
 
