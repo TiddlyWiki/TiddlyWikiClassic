@@ -190,9 +190,26 @@ describe('BasicTypes : Array.pushUnique()', {
 		value_of(modifiedLength).should_be(originalLength + 1);
 	}
 	
-
 });
 
+describe('BasicTypes : Array.remove()', {
+	
+	before_each: function(){
+		test_strings_arr = ['item1', 'item2', 'item3'];
+	},
+	
+	'given a string which is present as an item in the array, Array.remove() will remove the item from the array.' : function() {
+		test_strings_arr.remove('item1');
+		var ispresent = test_strings_arr.indexOf('item1');
+		value_of(ispresent).should_be(-1);
+	},
+
+	'given a string which is not present as an item in the array, Array.remove() takes no action and throws no errors.' : function() {
+		test_strings_arr.remove('itemA');
+		value_of(test_strings_arr.length).should_be(3);
+	}
+	
+});
 
 
 // ]]>
