@@ -212,5 +212,18 @@ describe('BasicTypes : Array.remove()', {
 });
 
 
+describe('BasicTypes : Array.map()', {
+		
+	'mapping a function onto an array will allow that function to be called on any item in the array ' : function() {
+		var numbers = [0,1,2,3,4,5];
+		var fn = function(n) { return n*n; };
+		var squared = numbers.map(fn);
+		var three_squared = squared[3];
+		value_of(three_squared).should_be(9); 
+	}
+	
+});
+
+
 // ]]>
 
