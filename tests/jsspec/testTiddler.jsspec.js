@@ -69,6 +69,30 @@ describe('Tiddler: tiddler.assign()',{
 		value_of(tiddler.modifier).should_be("a modifier");
 		value_of(tiddler.created).should_be(new Date(2008,04,21,01,02,03));
 		value_of(tiddler.modified).should_be(new Date(2009,05,22,12,13,14));
+	},
+	'Assigning value to tiddler modifier should override old modifier': function() {
+		tiddler.assign(null,null,"new modifier");
+		value_of(tiddler.title).should_be("temp");
+		value_of(tiddler.text).should_be("some text");
+		value_of(tiddler.modifier).should_be("new modifier");
+		value_of(tiddler.created).should_be(new Date(2008,04,21,01,02,03));
+		value_of(tiddler.modified).should_be(new Date(2009,05,22,12,13,14));
+	},
+	'Assigning value to tiddler created date should override old created date': function() {
+		tiddler.assign(null,null,null,null,null,new Date(2007,03,20,00,01,02));
+		value_of(tiddler.title).should_be("temp");
+		value_of(tiddler.text).should_be("some text");
+		value_of(tiddler.modifier).should_be("a modifier");
+		value_of(tiddler.created).should_be(new Date(2007,03,20,00,01,02));
+		value_of(tiddler.modified).should_be(new Date(2009,05,22,12,13,14));
+	},
+	'Assigning value to tiddler modified date should override old modified date': function() {
+		tiddler.assign(null,null,null,new Date(2010,06,23,13,14,15));
+		value_of(tiddler.title).should_be("temp");
+		value_of(tiddler.text).should_be("some text");
+		value_of(tiddler.modifier).should_be("a modifier");
+		value_of(tiddler.created).should_be(new Date(2008,04,21,01,02,03));
+		value_of(tiddler.modified).should_be(new Date(2010,06,23,13,14,15));
 	}
 });
 // ]]>
