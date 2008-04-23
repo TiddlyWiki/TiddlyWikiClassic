@@ -126,6 +126,7 @@ describe('Wikifier: wikify()', {
 
 	'it should not call subWikify() if the "source" parameter is not provided': function() {
 		var called = false;
+		var original = Wikifier.prototype.subWikify;
 		Wikifier.prototype.subWikify = function(source) {
 			called = true;
 			return;
@@ -133,10 +134,12 @@ describe('Wikifier: wikify()', {
 		var source = "";
 		wikify();
 		value_of(called).should_be_false();
+		Wikifier.prototype.subWikify = original;
 	},
 	
 	'it should not call subWikify() if the "source" parameter is an empty string': function() {
 		var called = false;
+		var original = Wikifier.prototype.subWikify;
 		Wikifier.prototype.subWikify = function(source) {
 			called = true;
 			return;
@@ -144,10 +147,12 @@ describe('Wikifier: wikify()', {
 		var source = "";
 		wikify(source);
 		value_of(called).should_be_false();
+		Wikifier.prototype.subWikify = original;
 	},
 	
 	'it should call subWikify()': function() {
 		var called = false;
+		var original = Wikifier.prototype.subWikify;
 		Wikifier.prototype.subWikify = function() {
 			called = true;
 			return;
@@ -155,6 +160,7 @@ describe('Wikifier: wikify()', {
 		var source = "hello";
 		wikify(source);
 		value_of(called).should_be(true);
+		Wikifier.prototype.subWikify = original;
 	}
 });
 
@@ -187,6 +193,7 @@ describe('Wikifier: wikifyStatic()', {
 	'it should call subWikify() with the pre block as the only parameter': function() {
 		var called = false;
 		var elem;
+		var original = Wikifier.prototype.subWikify;
 		Wikifier.prototype.subWikify = function(e) {
 			called = true;
 			elem = e;
@@ -196,6 +203,7 @@ describe('Wikifier: wikifyStatic()', {
 		var actual = elem.nodeName;
 		value_of(called).should_be(true);
 		value_of(actual).should_be(expected);
+		Wikifier.prototype.subWikify = original;
 	},
 	
 	'it should return a text string': function() {
@@ -226,17 +234,24 @@ describe('Wikifier: wikifyPlain', {
 	},
 
 	'it should call wikifyPlainText() if the tiddler exists in the store or is a shadow tiddler': function() {
-		var called = false;
-		wikifyPlainText = function() {
-			called = true;
-		};
-		wikifyPlainText("t");
-		value_of(called).should_be_true();
-		called = false;
+		var mockVars = mock_once('wikifyPlainText',function(){
+			return;
+		});
+		wikifyPlain("t");
+		var expected = mockVars.called;
+		value_of(expected).should_be_true();
+	},
+
+	'it should call wikifyPlainText() if the tiddler is a shadow tiddler': function() {
+		
 		var t = store.isShadowTiddler("SiteTitle");
 		value_of(t).should_be_true();
-		wikifyPlainText("SiteTitle");
-		value_of(called).should_be_true();
+		mockVars = mock_once('wikifyPlainText',function(){
+			return;
+		});
+		wikifyPlain("SiteTitle");
+		var expected = mockVars.called;
+		value_of(expected).should_be_true();
 	},
 
 	'it should return an empty string if the tiddler isn\'t in the store or a shadow tiddler': function() {
@@ -245,6 +260,36 @@ describe('Wikifier: wikifyPlain', {
 		var actual = wikifyPlain("foo");
 		var expected = "";
 		value_of(actual).should_be(expected);
+	}
+});
+
+describe('Wikifier: wikifyPlainText', {
+
+	before_each: function() {
+		store = new TiddlyWiki();
+		loadShadowTiddlers();
+		formatter = new Formatter(config.formatters);
+	},
+
+	'if a limit parameter is provided and the input text is greater in length than the limit, the number of characters generated should equal the limit': function() {
+		var limit = 5;
+		var input = "APhraseof21characters";
+		var actual = wikifyPlainText(input,limit).length;
+		var expected = limit;
+		value_of(actual).should_be(expected);
+	},
+
+	'it should call Wikifier.prototype.wikifyPlain()': function() {
+		var mockVars = mock_once('Wikifier.prototype.wikifyPlain',function(){
+			return;
+		});
+		wikifyPlainText("hello",1,new Tiddler("temp"));
+		var expected = mockVars.called;
+		value_of(expected).should_be_true();
+	},
+	
+	'it should take an optional tiddler parameter that sets the context for the wikification': function() {
+		value_of().should_fail("TODO");
 	}
 });
 
