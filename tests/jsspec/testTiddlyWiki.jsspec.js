@@ -56,6 +56,48 @@ describe('Slices', {
 		var actual = store.calcAllSlices(title);
 		var expected = { foo: "bar", lorem: "ipsum" };
 		value_of(actual).should_be(expected);
+	},
+
+	'calcAllSlices() should strip bold markup from slice labels': function() {
+		var title = "tiddler";
+		var text = "|''foo''|bar|";
+		store.saveTiddler(title, title, text);
+		var actual = store.calcAllSlices(title);
+		var expected = { foo: "bar" };
+		value_of(actual).should_be(expected);
+	},
+	'calcAllSlices() should strip italic markup from slice labels': function() {
+		var title = "tiddler";
+		var text = "|//foo//|bar|";
+		store.saveTiddler(title, title, text);
+		var actual = store.calcAllSlices(title);
+		var expected = { foo: "bar" };
+		value_of(actual).should_be(expected);
+	},
+	'calcAllSlices() should not strip markup from slice values': function() {
+		var title = "tiddler";
+		var text = "|foo|''bar''|";
+		store.saveTiddler(title, title, text);
+		var actual = store.calcAllSlices(title);
+		var expected = { foo: "''bar''" };
+		value_of(actual).should_be(expected);
+	},
+
+	'calcAllSlices() should strip heading markup from slice labels (table notation)': function() {
+		var title = "tiddler";
+		var text = "|!foo|bar|";
+		store.saveTiddler(title, title, text);
+		var actual = store.calcAllSlices(title);
+		var expected = { foo: "bar" };
+		value_of(actual).should_be(expected);
+	},
+	'calcAllSlices() should strip trailing colons from slice labels (table notation)': function() {
+		var title = "tiddler";
+		var text = "|foo:|bar|";
+		store.saveTiddler(title, title, text);
+		var actual = store.calcAllSlices(title);
+		var expected = { foo: "bar" };
+		value_of(actual).should_be(expected);
 	}
 });
 // ]]>
