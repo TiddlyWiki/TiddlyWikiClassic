@@ -577,10 +577,9 @@ TiddlyWiki.prototype.filterTiddlers = function(filter)
 				//# matches (eg) [text[more text]]
 				switch(match[2]) {
 					case "tag":
-						this.forEachTiddler(function(title,tiddler) {
-							if(tiddler.isTagged(match[3]))
-								results.pushUnique(tiddler);
-						});
+						var matched = this.getTaggedTiddlers(match[3]);
+						for(var m = 0; m < matched.length; m++)
+							results.pushUnique(matched[m]);
 						break;
 					case "sort":
 						results = this.sortTiddlers(results,match[3]);
