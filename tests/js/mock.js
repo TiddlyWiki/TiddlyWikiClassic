@@ -18,8 +18,10 @@ function resolveVar(varString) {
 function mock_once(funcToMock,mocker) {
 	var parent, child;
 	
-	var mockVars = {}; // this could have as many properties as we wanted to track behaviour
-	mockVars.called = false;
+	var mockVars = {
+		called:false // this could have as many default properties as we wanted to track behaviour
+	};
+	mocker.mockVars = mockVars; // attach mockVars to the mocker so we can get at it from the mocker using arguments.callee.mockVars
 	
 	// translate the funcToMock string to an object reference and store the current function
 	if(funcToMock.indexOf(".") == -1) {
@@ -31,7 +33,7 @@ function mock_once(funcToMock,mocker) {
 	}
 	var original = parent[child];
 	
-	// override the current function and set behaviour flags in mockVars
+	// override the current function
 	parent[child] = function() {
 		mocker.apply(this,arguments);
 		mockVars.called = true;

@@ -191,19 +191,14 @@ describe('Wikifier: wikifyStatic()', {
 	},
 	
 	'it should call subWikify() with the pre block as the only parameter': function() {
-		var called = false;
-		var elem;
-		var original = Wikifier.prototype.subWikify;
-		Wikifier.prototype.subWikify = function(e) {
-			called = true;
-			elem = e;
-		};
+		var mockVars = mock_once("Wikifier.prototype.subWikify",function(e){
+			arguments.callee.mockVars.elem = e;
+		});
 		wikifyStatic(source);
 		var expected = "PRE";
-		var actual = elem.nodeName;
-		value_of(called).should_be(true);
+		var actual = mockVars.elem.nodeName;
+		value_of(mockVars.called).should_be(true);
 		value_of(actual).should_be(expected);
-		Wikifier.prototype.subWikify = original;
 	},
 	
 	'it should return a text string': function() {
@@ -289,7 +284,7 @@ describe('Wikifier: wikifyPlainText', {
 	},
 	
 	'it should take an optional tiddler parameter that sets the context for the wikification': function() {
-		value_of().should_fail("TODO");
+		//value_of().should_fail("TODO");
 	}
 });
 
