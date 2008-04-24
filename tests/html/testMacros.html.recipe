@@ -1,0 +1,5 @@
+recipe: test.recipe
+title=TiddlyWiki Macros tests
+jsspecsrc=<script type="text/javascript" src="../js/Version.js"></script>
+jsspecsrc=<script type="text/javascript" src="../js/tiddlywiki.js"></script>
+jsspecsrc=<script type="text/javascript" src="../jsspec/testMacros.jsspec.js"></script>
