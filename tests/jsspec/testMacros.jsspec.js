@@ -16,6 +16,7 @@ __title = {
 	    shadowed: "Tiddlers shadowed with default contents",
 	    touched: "Tiddlers that have been modified locally",
 	    closeAll: "Close all displayed tiddlers (except any that are being edited)",
+	    permaview: "Link to an URL that retrieves all the currently displayed tiddlers",
 	}
 }
 
@@ -92,6 +93,27 @@ describe('Macros: closeAll macro', {
 		tests_mock.before('story.closeAllTiddlers');
 		config.macros.closeAll.onClick();
 		value_of(tests_mock.after('story.closeAllTiddlers')).should_be(1);
+	},
+
+});
+
+describe('Macros: permaview macro', {
+	before_each : function() {
+		__main();
+	},
+	'permaview macro expands to button' : function() { 
+		var t = wikifyStatic("<<permaview>>");
+		var title = __re_escape(__title.en.permaview);
+		var r = new RegExp('<a(( class="button")|( title="' + title + '")|( href="javascript:;")){3}>permaview<\/a>$');
+		value_of(t).should_match(r);
+		value_of(t).should_match(/class="/);
+		value_of(t).should_match(/title="/);
+		value_of(t).should_match(/href="/);
+	},
+	'permaview.onClick calls the story.permaView function' : function() { 
+		tests_mock.before('story.permaView');
+		config.macros.permaview.onClick();
+		value_of(tests_mock.after('story.permaView')).should_be(1);
 	},
 
 });
