@@ -13,7 +13,7 @@ describe('Macros: list macro', {
 		__main();
 	},
 
-	'list shadowed by default expands to the listTitle and a list of builtin shadowed tiddlers' : function() { 
+	'should fail due to the macro not existing' : function() { 
 		
 	var input = wikifyStatic('<<NOEXISTANTMACRO>>');
 	var should_be = '<a errortext="Error while executing macro &lt;&lt;NOEXISTANTMACRO&gt;&gt;:\nNo such macro" class="errorButton" href="javascript:;">Error in macro &lt;&lt;NOEXISTANTMACRO&gt;&gt;</a>';
