@@ -91,7 +91,7 @@ describe('Slices', {
 		value_of(actual).should_be(expected);
 	},
 
-	'calcAllSlices() should ignore the escaping character for WikiWords': function() {
+	'calcAllSlices() should ignore the escaping character for WikiWords in slice labels': function() {
 		var title = "tiddler";
 		var text = "|~FooBar|baz|";
 		store.saveTiddler(title, title, text);
@@ -99,12 +99,28 @@ describe('Slices', {
 		var expected = { FooBar: "baz" };
 		value_of(actual).should_be(expected);
 	},
-	'calcAllSlices() should ignore the escaping character for non-WikiWords': function() {
+	'calcAllSlices() should ignore the escaping character for non-WikiWords in slice labels': function() {
 		var title = "tiddler";
 		var text = "|~foo|bar|";
 		store.saveTiddler(title, title, text);
 		var actual = store.calcAllSlices(title);
 		var expected = { foo: "bar" };
+		value_of(actual).should_be(expected);
+	},
+	'calcAllSlices() should not ignore the escaping character for WikiWords in slice values': function() {
+		var title = "tiddler";
+		var text = "|foo|~BarBaz|";
+		store.saveTiddler(title, title, text);
+		var actual = store.calcAllSlices(title);
+		var expected = { foo: "~BarBaz" };
+		value_of(actual).should_be(expected);
+	},
+	'calcAllSlices() should not ignore the escaping character for non-WikiWords in slice values': function() {
+		var title = "tiddler";
+		var text = "|foo|~bar|";
+		store.saveTiddler(title, title, text);
+		var actual = store.calcAllSlices(title);
+		var expected = { foo: "~bar" };
 		value_of(actual).should_be(expected);
 	},
 
