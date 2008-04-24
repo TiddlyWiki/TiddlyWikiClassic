@@ -30,6 +30,7 @@ config.messages = {
 config.options = {
 	chkRegExpSearch: false,
 	chkCaseSensitiveSearch: false,
+	chkIncrementalSearch: true,
 	chkAnimate: true,
 	chkSaveBackups: true,
 	chkAutoSave: false,
@@ -243,6 +244,7 @@ merge(config.optionsDesc,{
 	txtUserName: "Username for signing your edits",
 	chkRegExpSearch: "Enable regular expressions for searches",
 	chkCaseSensitiveSearch: "Case-sensitive searching",
+	chkIncrementalSearch: "Incremental key-by-key searching",
 	chkAnimate: "Enable animations",
 	chkSaveBackups: "Keep backup file when saving changes",
 	chkAutoSave: "Automatically save changes",
@@ -517,6 +519,8 @@ merge(config.macros.upgrade,{
 	wizardTitle: "Upgrade TiddlyWiki core code",
 	step1Title: "Update or repair this TiddlyWiki to the latest release",
 	step1Html: "You are about to upgrade to the latest release of the TiddlyWiki core code (from <a href='%0' class='externalLink' target='_blank'>%1</a>). Your content will be preserved across the upgrade.<br><br>Note that core upgrades have been known to interfere with older plugins. If you run into problems with the upgraded file, see <a href='http://www.tiddlywiki.org/wiki/CoreUpgrades' class='externalLink' target='_blank'>http://www.tiddlywiki.org/wiki/CoreUpgrades</a>",
+	errorCantUpgrade: "Unable to upgrade this TiddlyWiki. You can only perform upgrades on TiddlyWiki files stored locally",
+	errorNotSaved: "You must save changes before you can perform an upgrade",
 	step2Title: "Confirm the upgrade details",
 	step2Html_downgrade: "You are about to downgrade to TiddlyWiki version %0 from %1.<br><br>Downgrading to an earlier version of the core code is not recommended",
 	step2Html_restore: "This TiddlyWiki appears to be already using the latest version of the core code (%0).<br><br>You can continue to upgrade anyway to ensure that the core code hasn't been corrupted or damaged",
@@ -2366,16 +2370,18 @@ config.macros.search.onKeyPress = function(ev)
 			clearMessage();
 			break;
 	}
-	if(this.value.length > 2) {
-		if(this.value != this.getAttribute("lastSearchText")) {
+	if(config.options.chkIncrementalSearch) {
+		if(this.value.length > 2) {
+			if(this.value != this.getAttribute("lastSearchText")) {
+				if(config.macros.search.timeout)
+					clearTimeout(config.macros.search.timeout);
+				var txt = this;
+				config.macros.search.timeout = setTimeout(function() {config.macros.search.doSearch(txt);},500);
+			}
+		} else {
 			if(config.macros.search.timeout)
 				clearTimeout(config.macros.search.timeout);
-			var txt = this;
-			config.macros.search.timeout = setTimeout(function() {config.macros.search.doSearch(txt);},500);
 		}
-	} else {
-		if(config.macros.search.timeout)
-			clearTimeout(config.macros.search.timeout);
 	}
 };
 
@@ -3472,10 +3478,9 @@ TiddlyWiki.prototype.filterTiddlers = function(filter)
 			} else if(match[2]) {
 				switch(match[2]) {
 					case "tag":
-						this.forEachTiddler(function(title,tiddler) {
-							if(tiddler.isTagged(match[3]))
-								results.pushUnique(tiddler);
-						});
+						var matched = this.getTaggedTiddlers(match[3]);
+						for(var m = 0; m < matched.length; m++)
+							results.pushUnique(matched[m]);
 						break;
 					case "sort":
 						results = this.sortTiddlers(results,match[3]);
@@ -4166,8 +4171,9 @@ Story.prototype.switchTheme = function(theme)
 	};
 
 	getSlice = function(theme,slice) {
+		var r;
 		if(readOnly)
-			var r = store.getTiddlerSlice(theme,slice+"ReadOnly") || store.getTiddlerSlice(theme,"Web"+slice);
+			r = store.getTiddlerSlice(theme,slice+"ReadOnly") || store.getTiddlerSlice(theme,"Web"+slice);
 		r = r || store.getTiddlerSlice(theme,slice);
 		if(r && r.indexOf(config.textPrimitives.sectionSeparator)==0)
 			r = theme + r;
@@ -4758,6 +4764,14 @@ config.macros.upgrade.onClickUpgrade = function(e)
 {
 	var me = config.macros.upgrade;
 	var w = new Wizard(this);
+	if(window.location.protocol != "file:") {
+		alert(me.errorCantUpgrade);
+		return false;
+	}	
+	if(story.areAnyDirty() || store.isDirty()) {
+		alert(me.errorNotSaved);
+		return false;
+	}
 	var localPath = getLocalPath(document.location.toString());
 	var backupPath = getBackupPath(localPath,me.backupExtension);
 	w.setValue("backupPath",backupPath);
@@ -4768,15 +4782,16 @@ config.macros.upgrade.onClickUpgrade = function(e)
 	if(backup != true) {
 		w.setButtons([],me.errorSavingBackup);
 		alert(me.errorSavingBackup);
-		return;
+		return false;
 	}
 	w.setButtons([],me.statusLoadingCore);
 	var load = loadRemoteFile(me.source,me.onLoadCore,w);
 	if(typeof load == "string") {
 		w.setButtons([],me.errorLoadingCore);
 		alert(me.errorLoadingCore);
-		return;
+		return false;
 	}
+	return false;
 };
 
 config.macros.upgrade.onLoadCore = function(status,params,responseText,url,xhr)
@@ -4814,6 +4829,7 @@ config.macros.upgrade.onCancel = function(e)
 	var w = new Wizard(this);
 	w.addStep(me.step3Title,me.step3Html);
 	w.setButtons([]);
+	return false;
 }
 
 config.macros.upgrade.extractVersion = function(upgradeFile)
@@ -4826,7 +4842,10 @@ config.macros.upgrade.extractVersion = function(upgradeFile)
 function upgradeFrom(path)
 {
 	var importStore = new TiddlyWiki();
-	importStore.importTiddlyWiki(loadFile(path));
+	var tw = loadFile(path);
+	if(window.netscape !== undefined)
+		tw = convertUTF8ToUnicode(tw);
+	importStore.importTiddlyWiki(tw);
 	importStore.forEachTiddler(function(title,tiddler) {
 		if(!store.getTiddler(title)) {
 			store.addTiddler(tiddler);
@@ -5634,7 +5653,7 @@ function updateMarkupBlock(s,blockName,tiddlerName)
 	return s.replaceChunk(
 			"<!--%0-START-->".format([blockName]),
 			"<!--%0-END-->".format([blockName]),
-			"\n" + store.getRecursiveTiddlerText(tiddlerName,"") + "\n");
+			"\n" + convertUnicodeToUTF8(store.getRecursiveTiddlerText(tiddlerName,"")) + "\n");
 }
 
 function updateOriginal(original,posDiv)
@@ -8145,8 +8164,8 @@ function removeStyleSheet(id)
 function forceReflow()
 {
 	if(config.browser.isGecko) {
-		setStylesheet("body {top:-1em;margin-top:1em;}");
-		setStylesheet("");
+		setStylesheet("body {top:0px;margin-top:0px;}","forceReflow");
+		setTimeout(function() {setStylesheet("","forceReflow");},1);
 	}
 }
 
