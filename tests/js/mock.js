@@ -6,8 +6,12 @@ tests_mock = {
 		frame.savedFunc = eval(funcName); 
 		frame.was_called = 0;
 
+		var mocker = arguments[1];
+
 		var mockFunction = function() { 
-			tests_mock.saved[funcName].was_called = 1; 
+			tests_mock.saved[funcName].was_called++; 
+			if (mocker)
+			    return mocker.apply(this, arguments);
 		}
 		eval(funcName + "=mockFunction");
 

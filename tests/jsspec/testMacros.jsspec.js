@@ -5,7 +5,7 @@ function __main()
 	store = new TiddlyWiki();
 	loadShadowTiddlers();
 	formatter = new Formatter(config.formatters);
-	story = {};
+        story = new Story("tiddlerDisplay","tiddler");
 }
 
 __title = {
@@ -23,21 +23,6 @@ function __re_escape(s)
 {
 	return s.replace('(','\\(').replace(')','\\)');
 }
-
-__mock = {
-	before: function(s) 
-	{
-		this.was_called = 0;
-		this.name = s;
-		this.saved = eval(s); 
-		story.closeAllTiddlers = function() { __mock.was_called = 1; }
-	},
-	after: function() 
-	{
-		eval(this.name + '=this.saved');
-		return this.was_called;
-	}
-};
 
 describe('Macros: version macro', {
 	before_each : function() {
@@ -104,10 +89,9 @@ describe('Macros: closeAll macro', {
 		value_of(t).should_match(/href="/);
 	},
 	'closeAll.onClick calls the story.closeAllTiddlers function' : function() { 
-		__mock.before('story.closeAllTiddlers');
+		tests_mock.before('story.closeAllTiddlers');
 		config.macros.closeAll.onClick();
-		__mock.after();
-		value_of(__mock.was_called).should_be(1);
+		value_of(tests_mock.after('story.closeAllTiddlers')).should_be(1);
 	},
 
 });
