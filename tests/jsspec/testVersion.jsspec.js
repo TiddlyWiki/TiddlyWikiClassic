@@ -7,16 +7,16 @@ describe('Version', {
 		value_of(version.title).should_be('TiddlyWiki');
 	},
 	'the major value should be a number': function() {
-		value_of(typeof version.major).should_be('number');
+		value_of(parseInt(version.major)).should_not_be(NaN);
 	},
 	'the minor value should be a number': function() {
-		value_of(typeof version.minor).should_be('number');
+		value_of(parseInt(version.minor)).should_not_be(NaN);
 	},
 	'the revision value should be a number': function() {
-		value_of(typeof version.revision).should_be('number');
+		value_of(parseInt(version.revision)).should_not_be(NaN);
 	},
 	'the beta value should be a number': function() {
-		value_of(typeof version.beta).should_be('number');
+		value_of(parseInt(version.beta)).should_not_be(NaN);
 	},
 	'the date value should be a TiddlyWiki Date object': function() {
 		value_of(typeof version.date).should_be('object');
