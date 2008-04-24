@@ -1,6 +1,8 @@
 recipe: test.recipe
 title=TiddlyWiki All tests
+jsspecsrc=<script type="text/javascript" src="../js/mock.js"></script>
 jsspecsrc=<script type="text/javascript" src="../jsspec/testBasicTypes.jsspec.js"></script>
+jsspecsrc=<script type="text/javascript" src="../jsspec/testCrypto.jsspec.js"></script>
 jsspecsrc=<script type="text/javascript" src="../jsspec/testDates.jsspec.js"></script>
 jsspecsrc=<script type="text/javascript" src="../jsspec/testDom.jsspec.js"></script>
 jsspecsrc=<script type="text/javascript" src="../jsspec/testGenerateRss.jsspec.js"></script>
