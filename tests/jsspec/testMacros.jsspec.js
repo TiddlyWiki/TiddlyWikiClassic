@@ -17,13 +17,37 @@ __title = {
 	    touched: "Tiddlers that have been modified locally",
 	    closeAll: "Close all displayed tiddlers (except any that are being edited)",
 	    permaview: "Link to an URL that retrieves all the currently displayed tiddlers",
+	    saveChanges: "Save all tiddlers to create a new TiddlyWiki",
+	    refreshDisplay: "Redraw the entire TiddlyWiki display"
 	}
 }
 
 function __re_escape(s) 
 {
+	s = "" + s;
 	return s.replace('(','\\(').replace(')','\\)');
 }
+
+function testing_check_button(name,text,accesskey) 
+{
+	var t = wikifyStatic("<<"+name+">>");
+	var title = __re_escape(__title.en[name]);
+	var r = new RegExp('<a(( accesskey="'+accesskey+'")|( class="button")|( title="' + title + '")|( href="javascript:;")){3,4}>'+text+'<\/a>$');
+	value_of(t).should_match(r);
+	value_of(t).should_match(/class="/);
+	value_of(t).should_match(/title="/);
+	value_of(t).should_match(/href="/);
+	if (accesskey)
+	    value_of(t).should_match(/accesskey="/);
+}
+
+function testing_check_button_onclick(name,func) 
+{
+	tests_mock.before(func);
+	config.macros[name].onClick();
+	value_of(tests_mock.after(func)).should_be(1);
+}
+
 
 describe('Macros: version macro', {
 	before_each : function() {
@@ -36,7 +60,7 @@ describe('Macros: version macro', {
 		version.revision = "789";
 		version.beta = "123456789";
 		value_of(wikifyStatic("<<version>>")).should_be("<span>123.456.789 (beta 123456789)</span>");
-	},
+	}
 });
 
 describe('Macros: today macro', {
@@ -46,8 +70,7 @@ describe('Macros: today macro', {
 
 	'today macro should return a date shaped string' : function() { 
 		value_of(wikifyStatic("<<today>>")).should_match(/^<span>[A-Z][a-z]+\s[A-Z][a-z]+\s[0-9]{2}\s[0-9]{2}:[0-9]{2}:[0-9]{2} 2[0-9]{3}<\/span>$/);
-	},
-
+	}
 });
 
 describe('Macros: list macro', {
@@ -73,7 +96,7 @@ describe('Macros: list macro', {
 	},
 	'list filter by default expands to an empty list' : function() { 
 		value_of(wikifyStatic("<<list filter>>")).should_be('<ul></ul>');
-	},
+	}
 });
 
 describe('Macros: closeAll macro', {
@@ -81,19 +104,11 @@ describe('Macros: closeAll macro', {
 		__main();
 	},
 	'closeAll macro expands to button' : function() { 
-		var t = wikifyStatic("<<closeAll>>");
-		var title = __re_escape(__title.en.closeAll);
-		var r = new RegExp('<a(( class="button")|( title="' + title + '")|( href="javascript:;")){3}>close all<\/a>$');
-		value_of(t).should_match(r);
-		value_of(t).should_match(/class="/);
-		value_of(t).should_match(/title="/);
-		value_of(t).should_match(/href="/);
+		testing_check_button("closeAll","close all");
 	},
 	'closeAll.onClick calls the story.closeAllTiddlers function' : function() { 
-		tests_mock.before('story.closeAllTiddlers');
-		config.macros.closeAll.onClick();
-		value_of(tests_mock.after('story.closeAllTiddlers')).should_be(1);
-	},
+		testing_check_button_onclick("closeAll","story.closeAllTiddlers");
+	}
 
 });
 
@@ -102,20 +117,60 @@ describe('Macros: permaview macro', {
 		__main();
 	},
 	'permaview macro expands to button' : function() { 
-		var t = wikifyStatic("<<permaview>>");
-		var title = __re_escape(__title.en.permaview);
-		var r = new RegExp('<a(( class="button")|( title="' + title + '")|( href="javascript:;")){3}>permaview<\/a>$');
-		value_of(t).should_match(r);
-		value_of(t).should_match(/class="/);
-		value_of(t).should_match(/title="/);
-		value_of(t).should_match(/href="/);
+		testing_check_button("permaview","permaview");
 	},
 	'permaview.onClick calls the story.permaView function' : function() { 
-		tests_mock.before('story.permaView');
-		config.macros.permaview.onClick();
-		value_of(tests_mock.after('story.permaView')).should_be(1);
-	},
+		testing_check_button_onclick("permaview","story.permaView");
+	}
+});
 
+describe('Macros: saveChanges macro', {
+	before_each : function() {
+		__main();
+	},
+	'saveChanges macro doesn\'t expand to button when readOnly' : function() { 
+		readOnly = true;
+		value_of(wikifyStatic("<<saveChanges>>")).should_be("");
+	},
+	'saveChanges macro expands to button when not readOnly' : function() { 
+		readOnly = false;
+		testing_check_button("saveChanges","save changes","S");
+	},
+	'saveChanges.onClick calls the saveChanges function' : function() { 
+		testing_check_button_onclick("saveChanges","saveChanges");
+	}
+});
+
+describe('Macros: refreshDisplay macro', {
+	before_each : function() {
+		__main();
+	},
+	'refreshDisplay macro expands to button' : function() { 
+		testing_check_button("refreshDisplay","refresh");
+	},
+	'refreshDisplay.onClick calls the refreshAll function' : function() { 
+		testing_check_button_onclick("refreshDisplay","refreshAll");
+	}
+});
+
+describe('Macros: annotations macro', {
+	before_each : function() {
+		store = new TiddlyWiki();
+		loadShadowTiddlers();
+		store.saveTiddler("t","t","text");
+		formatter = new Formatter(config.formatters);
+	},
+	'annotations macro for a non-tiddler expands the empty string' : function() { 
+		value_of(wikifyStatic("<<annotations>>")).should_be('');
+	},
+	'annotations macro expands to empty string for tiddler not in config.annotations' : function() { 
+		value_of(wikifyStatic("<<annotations>>",null,new Tiddler("temp"))).should_be('');
+	},
+	'annotations macro expands to config.annotations defined text' : function() { 
+		var title = "This is the title text";
+		config.annotations.temp = title;
+		value_of(wikifyStatic("<<annotations>>",null,new Tiddler("temp"))).should_be('<div class="annotation">'+title+'</div>');
+	}
 });
 
 // ]]>
