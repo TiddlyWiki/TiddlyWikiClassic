@@ -317,8 +317,8 @@ function removeStyleSheet(id)
 function forceReflow()
 {
 	if(config.browser.isGecko) {
-		setStylesheet("body {top:-1em;margin-top:1em;}");
-		setStylesheet("");
+		setStylesheet("body {top:0px;margin-top:0px;}","forceReflow");
+		setTimeout(function() {setStylesheet("","forceReflow");},1);
 	}
 }
 
