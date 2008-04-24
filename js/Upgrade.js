@@ -16,11 +16,11 @@ config.macros.upgrade.onClickUpgrade = function(e)
 	var w = new Wizard(this);
 	if(window.location.protocol != "file:") {
 		alert(me.errorCantUpgrade);
-		return;
+		return false;
 	}	
 	if(story.areAnyDirty() || store.isDirty()) {
 		alert(me.errorNotSaved);
-		return;
+		return false;
 	}
 	var localPath = getLocalPath(document.location.toString());
 	var backupPath = getBackupPath(localPath,me.backupExtension);
@@ -32,15 +32,16 @@ config.macros.upgrade.onClickUpgrade = function(e)
 	if(backup != true) {
 		w.setButtons([],me.errorSavingBackup);
 		alert(me.errorSavingBackup);
-		return;
+		return false;
 	}
 	w.setButtons([],me.statusLoadingCore);
 	var load = loadRemoteFile(me.source,me.onLoadCore,w);
 	if(typeof load == "string") {
 		w.setButtons([],me.errorLoadingCore);
 		alert(me.errorLoadingCore);
-		return;
+		return false;
 	}
+	return false;
 };
 
 config.macros.upgrade.onLoadCore = function(status,params,responseText,url,xhr)
@@ -78,6 +79,7 @@ config.macros.upgrade.onCancel = function(e)
 	var w = new Wizard(this);
 	w.addStep(me.step3Title,me.step3Html);
 	w.setButtons([]);
+	return false;
 }
 
 config.macros.upgrade.extractVersion = function(upgradeFile)
