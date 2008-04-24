@@ -21,6 +21,7 @@ merge(config.optionsDesc,{
 	txtUserName: "Username for signing your edits",
 	chkRegExpSearch: "Enable regular expressions for searches",
 	chkCaseSensitiveSearch: "Case-sensitive searching",
+	chkIncrementalSearch: "Incremental key-by-key searching",
 	chkAnimate: "Enable animations",
 	chkSaveBackups: "Keep backup file when saving changes",
 	chkAutoSave: "Automatically save changes",

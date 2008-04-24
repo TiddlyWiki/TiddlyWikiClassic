@@ -39,6 +39,7 @@ config.messages = {
 config.options = {
 	chkRegExpSearch: false,
 	chkCaseSensitiveSearch: false,
+	chkIncrementalSearch: true,
 	chkAnimate: true,
 	chkSaveBackups: true,
 	chkAutoSave: false,

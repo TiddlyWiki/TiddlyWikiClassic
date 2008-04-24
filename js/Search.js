@@ -53,16 +53,18 @@ config.macros.search.onKeyPress = function(ev)
 			clearMessage();
 			break;
 	}
-	if(this.value.length > 2) {
-		if(this.value != this.getAttribute("lastSearchText")) {
+	if(config.options.chkIncrementalSearch) {
+		if(this.value.length > 2) {
+			if(this.value != this.getAttribute("lastSearchText")) {
+				if(config.macros.search.timeout)
+					clearTimeout(config.macros.search.timeout);
+				var txt = this;
+				config.macros.search.timeout = setTimeout(function() {config.macros.search.doSearch(txt);},500);
+			}
+		} else {
 			if(config.macros.search.timeout)
 				clearTimeout(config.macros.search.timeout);
-			var txt = this;
-			config.macros.search.timeout = setTimeout(function() {config.macros.search.doSearch(txt);},500);
 		}
-	} else {
-		if(config.macros.search.timeout)
-			clearTimeout(config.macros.search.timeout);
 	}
 };
 
