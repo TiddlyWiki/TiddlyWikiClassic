@@ -1,20 +1,10 @@
 // <![CDATA[
 
-function __main() 
-{
-	store = new TiddlyWiki();
-	loadShadowTiddlers();
-	formatter = new Formatter(config.formatters);
-        story = new Story("tiddlerDisplay","tiddler");
-}
-
-mock_me = function() {
-	return "ha-ha!";
-}
-
 describe('Mock: testing framework mock functions', {
 	before_each : function() {
-		__main();
+	    mock_me = function() {
+		return "ha-ha!";
+	    }
 	},
 	'mocking a function restores orignial function afterwards' : function() { 
 		tests_mock.before('mock_me');
@@ -36,11 +26,17 @@ describe('Mock: testing framework mock functions', {
 		    mock_me();
 		value_of(tests_mock.after('mock_me')).should_be(1001);
 	},
-	'mocked function should return the expected value' : function() { 
+	'mocked function should be able to return a hard-coded value' : function() { 
 		tests_mock.before('mock_me', function() { return "hoho" });
 		var returnValue = mock_me();
 		value_of(tests_mock.after('mock_me')).should_be(1);
 		value_of(returnValue).should_be('hoho');
+	},
+	'mocked function should be able to process passed arguments' : function() { 
+		tests_mock.before('mock_me', function(p1,p2,p3,p4,p5) { return p1+p2+p3+p4+p5 });
+		var returnValue = mock_me(5,3,2,99,101);
+		value_of(tests_mock.after('mock_me')).should_be(1);
+		value_of(returnValue).should_be(210);
 	},
 });
 
