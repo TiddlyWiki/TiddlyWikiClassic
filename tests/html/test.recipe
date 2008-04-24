@@ -2,3 +2,4 @@ template: test.template.html
 style: ../../html/style.txt
 recipe: ../../shadows/split.recipe
 recipe: ../../js/split.recipe
+jsspecsrc=<script type="text/javascript" src="../js/mock.js"></script>
