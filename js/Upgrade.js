@@ -90,7 +90,10 @@ config.macros.upgrade.extractVersion = function(upgradeFile)
 function upgradeFrom(path)
 {
 	var importStore = new TiddlyWiki();
-	importStore.importTiddlyWiki(loadFile(path));
+	var tw = loadFile(path);
+	if(window.netscape !== undefined)
+		tw = convertUTF8ToUnicode(tw);
+	importStore.importTiddlyWiki(tw);
 	importStore.forEachTiddler(function(title,tiddler) {
 		if(!store.getTiddler(title)) {
 			store.addTiddler(tiddler);
