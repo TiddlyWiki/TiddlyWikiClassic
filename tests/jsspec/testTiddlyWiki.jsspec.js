@@ -82,7 +82,6 @@ describe('Slices', {
 		var expected = { foo: "''bar''" };
 		value_of(actual).should_be(expected);
 	},
-
 	'calcAllSlices() should strip heading markup from slice labels (table notation)': function() {
 		var title = "tiddler";
 		var text = "|!foo|bar|";
@@ -91,6 +90,41 @@ describe('Slices', {
 		var expected = { foo: "bar" };
 		value_of(actual).should_be(expected);
 	},
+
+	'calcAllSlices() should ignore the escaping character for WikiWords': function() {
+		var title = "tiddler";
+		var text = "|~FooBar|baz|";
+		store.saveTiddler(title, title, text);
+		var actual = store.calcAllSlices(title);
+		var expected = { FooBar: "baz" };
+		value_of(actual).should_be(expected);
+	},
+	'calcAllSlices() should ignore the escaping character for non-WikiWords': function() {
+		var title = "tiddler";
+		var text = "|~foo|bar|";
+		store.saveTiddler(title, title, text);
+		var actual = store.calcAllSlices(title);
+		var expected = { foo: "bar" };
+		value_of(actual).should_be(expected);
+	},
+
+	'calcAllSlices() should ignore slices whose label contains spaces': function() {
+		var title = "tiddler";
+		var text = "|foo bar|baz|";
+		store.saveTiddler(title, title, text);
+		var actual = store.calcAllSlices(title);
+		var expected = {};
+		value_of(actual).should_be(expected);
+	},
+	'calcAllSlices() should not ignore slices whose value contains spaces': function() {
+		var title = "tiddler";
+		var text = "|foo|bar baz|";
+		store.saveTiddler(title, title, text);
+		var actual = store.calcAllSlices(title);
+		var expected = { foo: "bar baz" };
+		value_of(actual).should_be(expected);
+	},
+
 	'calcAllSlices() should strip trailing colons from slice labels (table notation)': function() {
 		var title = "tiddler";
 		var text = "|foo:|bar|";
