@@ -14,6 +14,10 @@ config.macros.upgrade.onClickUpgrade = function(e)
 {
 	var me = config.macros.upgrade;
 	var w = new Wizard(this);
+	if(window.location.protocol != "file:") {
+		alert(me.errorCantUpgrade);
+		return;
+	}	
 	if(story.areAnyDirty() || store.isDirty()) {
 		alert(me.errorNotSaved);
 		return;
