@@ -184,4 +184,49 @@ describe('Slices: calcAllSlices()', {
 		value_of(actual).should_be(expected);
 	}
 });
+
+describe('Slices: getTiddlerSlice()', {
+	before_each: function() {
+		store = new TiddlyWiki();
+		//loadShadowTiddlers();
+		//store.saveTiddler("t","t","text");
+		//formatter = new Formatter(config.formatters);
+	},
+
+	'should return undefined when not passed any arguments': function() {
+		var actual = store.getTiddlerSlice();
+		var expected = undefined;
+		value_of(actual).should_be(expected);
+	},
+	'should return undefined when pointed to non-existing tiddler': function() {
+		var actual = store.getTiddlerSlice("tiddler", "foo");
+		var expected = undefined;
+		value_of(actual).should_be(expected);
+	},
+	'should return undefined when pointed to non-existing slice': function() {
+		var title = "tiddler";
+		var text = "foo bar\nbaz";
+		store.saveTiddler(title, title, text);
+		var actual = store.getTiddlerSlice(title, "foo");
+		var expected = undefined;
+		value_of(actual).should_be(expected);
+	},
+
+	'should return slice value when given slice label (colon notation)': function() {
+		var title = "tiddler";
+		var text = "foo: bar";
+		store.saveTiddler(title, title, text);
+		var actual = store.getTiddlerSlice(title, "foo");
+		var expected = "bar";
+		value_of(actual).should_be(expected);
+	},
+	'should return slice value when given slice label (table notation)': function() {
+		var title = "tiddler";
+		var text = "|foo|bar|";
+		store.saveTiddler(title, title, text);
+		var actual = store.getTiddlerSlice(title, "foo");
+		var expected = "bar";
+		value_of(actual).should_be(expected);
+	}
+});
 // ]]>
