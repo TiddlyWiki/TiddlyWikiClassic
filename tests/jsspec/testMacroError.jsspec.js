@@ -3,9 +3,7 @@
 function __main() {
 	store = new TiddlyWiki();
 	loadShadowTiddlers();
-	formatter = new Formatter(config.formatters);
-
-	
+	formatter = new Formatter(config.formatters);	
 }
 
 describe('Macros: list macro', {
@@ -13,12 +11,12 @@ describe('Macros: list macro', {
 		__main();
 	},
 
-	'should fail due to the macro not existing' : function() { 
-		
-	var input = wikifyStatic('<<NOEXISTANTMACRO>>');
-	var should_be = '<a errortext="Error while executing macro &lt;&lt;NOEXISTANTMACRO&gt;&gt;:\nNo such macro" class="errorButton" href="javascript:;">Error in macro &lt;&lt;NOEXISTANTMACRO&gt;&gt;</a>';
+	'The specified macro should not exist and result in a string containing the text errortext' : function() { 	
+		value_of(wikifyStatic('<<NOEXISTANTMACRO>>')).should_match(/errortext/);
+	},
 
-value_of(input).should_be(should_be);
+	'should pass becuase the macro exists and does not contain any errors' : function() { 			
+		value_of(wikifyStatic('<<list all>>')).should_not_match(/errortext/);
 	},
 
 });
