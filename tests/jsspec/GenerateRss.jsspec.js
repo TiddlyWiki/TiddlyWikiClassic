@@ -1,35 +1,4 @@
 // <![CDATA[
-function __getXML(text) {
-        if(window.ActiveXObject) {
-                var doc = new ActiveXObject("Microsoft.XMLDOM");
-                doc.async="false";
-                doc.loadXML(text);
-        } else {
-                var parser=  new DOMParser();
-                var doc = parser.parseFromString(text,"text/xml");
-        }
-        if(!doc) {
-		return null;
-	}
-	doc.xpath = function(expression, type) {
-	    var t;
-
-	    if(type == "string") t = XPathResult.STRING_TYPE;
-	    if(type == "number") t = XPathResult.NUMBER_TYPE;
-	    if(type == "boolean") t = XPathResult.BOOLEAN_TYPE;
-	    if(type == "singlenode") t = XPathResult.SINGLENODE_TYPE;
-
-	    var res = this.evaluate(expression, this, null, t, null);
-
-	    if(type == "string") return res.stringValue;
-	    if(type == "number") return res.numberValue;
-	    if(type == "boolean") return res.booleanValue;
-	    if(type == "singleNode") return this.singleNodeValue;
-	    return null;
-	}
-	return doc;
-};
-
 
 function __main() {
 	store = new TiddlyWiki();
@@ -53,7 +22,7 @@ describe('GenerateRss: generateRss text', {
                 value_of(rss).should_match(/^<\?xml\s+version=(["'])1.0\1\s*(encoding=(["'])utf-8\2)?\s*\?>/);
         },
         'should be well-formed XML' : function() { 
-                xml = __getXML(rss);
+                xml = tests_xml.parse(rss);
                 value_of(typeof xml).should_match('object');
 	},
 });
@@ -79,7 +48,7 @@ describe('GenerateRss: generateRss default XML', {
         before_each : function() {
 		__main();
 		rss = generateRss();
-                xml = __getXML(rss);
+                xml = tests_xml.parse(rss);
         },
         'document node should be "rss"' : function() { 
                 value_of(xml.documentElement.nodeName).should_be("rss");
