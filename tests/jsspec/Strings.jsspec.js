@@ -74,4 +74,30 @@ describe('Strings: html encoding/decoding', {
 		value_of(actual).should_be(s);
 	}
 });
+
+describe('Strings: parseParams', {
+	'String should correctly parseParams for single name value pair': function() {
+		var actual = "aName:aValue".parseParams();
+		var expected = [{"aName":["aValue"]},{name:"aName",value:"aValue"}];		
+		value_of(actual).should_be(expected);
+	},
+	'String should correctly parseParams for two name value pairs': function() {
+		var actual = "aName:'aValue' aName2:'aValue2'".parseParams();
+		var expected = [{"aName":["aValue"], "aName2":["aValue2"]},{name:"aName",value:"aValue"},{name:"aName2",value:"aValue2"}];		
+		value_of(actual).should_be(expected);
+	},
+});
+
+describe('Strings: encodeTiddlyLink', {
+	'String should correctly encodeTiddlyLink with no spaces': function() {
+		var actual = String.encodeTiddlyLink("title");
+		var expected = "title";		
+		value_of(actual).should_be(expected);
+	},
+	'String should correctly encodeTiddlyLink with spaces': function() {
+		var actual = String.encodeTiddlyLink("the title");
+		var expected = "[[the title]]";		
+		value_of(actual).should_be(expected);
+	}
+});
 // ]]>
