@@ -1,6 +1,5 @@
 recipe: test.recipe
 title=TiddlyWiki All tests
-jsspecsrc=<script type="text/javascript" src="../js/mock.js"></script>
 jsspecsrc=<script type="text/javascript" src="../jsspec/BasicTypes.jsspec.js"></script>
 jsspecsrc=<script type="text/javascript" src="../jsspec/Crypto.jsspec.js"></script>
 jsspecsrc=<script type="text/javascript" src="../jsspec/Dates.jsspec.js"></script>
@@ -15,3 +14,4 @@ jsspecsrc=<script type="text/javascript" src="../jsspec/Tiddler.jsspec.js"></scr
 jsspecsrc=<script type="text/javascript" src="../jsspec/TW21Saver.jsspec.js"></script>
 jsspecsrc=<script type="text/javascript" src="../jsspec/Version.jsspec.js"></script>
 jsspecsrc=<script type="text/javascript" src="../jsspec/Wikifier.jsspec.js"></script>
+jsspecsrc=<script type="text/javascript" src="../jsspec/Mocks.jsspec.js"></script>
