@@ -1,0 +1,6 @@
+recipe: testmin.recipe
+title=TiddlyWiki RGB tests
+jsspecsrc=<script type="text/javascript" src="../../js/BasicTypes.js" />
+jsspecsrc=<script type="text/javascript" src="../../js/Strings.js" />
+jsspecsrc=<script type="text/javascript" src="../../js/RGB.js" />
+jsspecsrc=<script type="text/javascript" src="../jsspec/RGB.jsspec.js" />
