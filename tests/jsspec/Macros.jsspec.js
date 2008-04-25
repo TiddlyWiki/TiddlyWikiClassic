@@ -45,7 +45,7 @@ function testing_check_button_onclick(name,func)
 {
 	tests_mock.before(func);
 	config.macros[name].onClick();
-	value_of(tests_mock.after(func)).should_be(1);
+	value_of(tests_mock.after(func).called).should_be(1);
 }
 
 describe('Macros: macro errors', {
