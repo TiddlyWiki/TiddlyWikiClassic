@@ -86,13 +86,24 @@ describe('Slices: calcAllSlices()', {
 		/*
 		 * FAILURE
 		 * ticket #370 (http://trac.tiddlywiki.org/ticket/370)
-		 * ticket #522 (http://trac.tiddlywiki.org/ticket/522)
 		 */
 		var title = "tiddler";
 		var text = "|!foo|bar|";
 		store.saveTiddler(title, title, text);
 		var actual = store.calcAllSlices(title);
 		var expected = { foo: "bar" };
+		value_of(actual).should_be(expected);
+	},
+	'should strip double brackets (PrettyLinks) from slice labels': function() {
+		/*
+		 * FAILURE
+		 * ticket #370 (http://trac.tiddlywiki.org/ticket/370)
+		 */
+		var title = "tiddler";
+		var text = "[[foo]]: bar";
+		store.saveTiddler(title, title, text);
+		var actual = store.calcAllSlices(title);
+		var expected = { "foo": "bar" };
 		value_of(actual).should_be(expected);
 	},
 
@@ -167,7 +178,6 @@ describe('Slices: calcAllSlices()', {
 		/*
 		 * FAILURE
 		 * ticket #370 (http://trac.tiddlywiki.org/ticket/370)
-		 * ticket #522 (http://trac.tiddlywiki.org/ticket/522)
 		 */
 		var title = "tiddler";
 		var text = "|''//~FooBar//'':|baz|";
@@ -194,12 +204,24 @@ describe('Slices: calcAllSlices()', {
 		value_of(actual).should_be(expected);
 	},
 
-	'should allow dots in slice label': function() {
+	'should allow dots in slice labels': function() {
 		var title = "tiddler";
 		var text = "foo.bar: baz";
 		store.saveTiddler(title, title, text);
 		var actual = store.calcAllSlices(title);
 		var expected = { "foo.bar": "baz" };
+		value_of(actual).should_be(expected);
+	},
+	'should allow brackets in slice labels': function() {
+		/*
+		 * FAILURE
+		 * ticket #370 (http://trac.tiddlywiki.org/ticket/370)
+		 */
+		var title = "tiddler";
+		var text = "[foo]: bar";
+		store.saveTiddler(title, title, text);
+		var actual = store.calcAllSlices(title);
+		var expected = { "[foo]": "bar" };
 		value_of(actual).should_be(expected);
 	}
 });
