@@ -1,16 +1,19 @@
 tests_mock = {
 	saved:  {},
-	before: function(funcName)
+	before: function(funcName,mocker)
 	{
 		var frame = {};
 		frame.was_called = 0;
 		frame.savedFunc = eval(funcName); 
 
+<<<<<<< .mine
+=======
 		if (typeof frame.savedFunc != "function") 
 			throw(funcName +" is not a function: " + (typeof frame.savedFunc));
 
 		var mocker = arguments[1];
 
+>>>>>>> .r4678
 		var mockFunction = function() { 
 			tests_mock.saved[funcName].was_called++; 
 			if (mocker)

@@ -191,13 +191,18 @@ describe('Wikifier: wikifyStatic()', {
 	},
 	
 	'it should call subWikify() with the pre block as the only parameter': function() {
-		var mockVars = mock_once("Wikifier.prototype.subWikify",function(e){
-			arguments.callee.mockVars.elem = e;
+		tests_mock.before('Wikifier.prototype.subWikify',function() {
+			/* console.log("in mocker");
+			console.log(this);
+			console.log(arguments.callee.name);
+			console.log(arguments.callee.toString());
+			console.log("----"); */
 		});
 		wikifyStatic(source);
+		var called = tests_mock.after('Wikifier.prototype.subWikify');
 		var expected = "PRE";
-		var actual = mockVars.elem.nodeName;
-		value_of(mockVars.called).should_be(true);
+		var actual = "what do we set this to?";
+		value_of(called).should_be(true);
 		value_of(actual).should_be(expected);
 	},
 	
@@ -229,24 +234,20 @@ describe('Wikifier: wikifyPlain', {
 	},
 
 	'it should call wikifyPlainText() if the tiddler exists in the store or is a shadow tiddler': function() {
-		var mockVars = mock_once('wikifyPlainText',function(){
-			return;
-		});
+		tests_mock.before('wikifyPlainText');
 		wikifyPlain("t");
-		var expected = mockVars.called;
-		value_of(expected).should_be_true();
+		var actual = tests_mock.after('wikifyPlainText');
+		value_of(actual).should_be_true();
 	},
 
 	'it should call wikifyPlainText() if the tiddler is a shadow tiddler': function() {
 		
 		var t = store.isShadowTiddler("SiteTitle");
 		value_of(t).should_be_true();
-		mockVars = mock_once('wikifyPlainText',function(){
-			return;
-		});
+		mockVars = tests_mock.before('wikifyPlainText');
 		wikifyPlain("SiteTitle");
-		var expected = mockVars.called;
-		value_of(expected).should_be_true();
+		var actual = tests_mock.after('wikifyPlainText');
+		value_of(actual).should_be_true();
 	},
 
 	'it should return an empty string if the tiddler isn\'t in the store or a shadow tiddler': function() {
@@ -268,23 +269,27 @@ describe('Wikifier: wikifyPlainText', {
 
 	'if a limit parameter is provided and the input text is greater in length than the limit, the number of characters generated should equal the limit': function() {
 		var limit = 5;
-		var input = "APhraseof21characters";
-		var actual = wikifyPlainText(input,limit).length;
+		var	source = "aphraseof21characters";
+		var actual = wikifyPlainText(source,limit).length;
 		var expected = limit;
 		value_of(actual).should_be(expected);
 	},
 
 	'it should call Wikifier.prototype.wikifyPlain()': function() {
-		var mockVars = mock_once('Wikifier.prototype.wikifyPlain',function(){
-			return;
-		});
+		tests_mock.before('Wikifier.prototype.wikifyPlain');
 		wikifyPlainText("hello",1,new Tiddler("temp"));
-		var expected = mockVars.called;
-		value_of(expected).should_be_true();
+		var actual = tests_mock.after('Wikifier.prototype.wikifyPlain');
+		value_of(actual).should_be_true();
 	},
 	
 	'it should take an optional tiddler parameter that sets the context for the wikification': function() {
-		//value_of().should_fail("TODO");
+		var tiddler = new Tiddler("temp");
+		var source = "<<view text>>";
+		tiddler.text = "the text of a tiddler";
+		var expected = tiddler.text;
+		store.saveTiddler("temp","temp",tiddler.text);
+		var actual = wikifyPlainText(source,null,tiddler);
+		value_of(actual).should_be(expected);
 	}
 });
 
