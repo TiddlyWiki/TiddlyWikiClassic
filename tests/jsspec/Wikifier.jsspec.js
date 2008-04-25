@@ -125,42 +125,27 @@ describe('Wikifier: wikify()', {
 	},
 
 	'it should not call subWikify() if the "source" parameter is not provided': function() {
-		var called = false;
-		var original = Wikifier.prototype.subWikify;
-		Wikifier.prototype.subWikify = function(source) {
-			called = true;
-			return;
-		};
-		var source = "";
+		var funcToMock = 'Wikifier.prototype.subWikify';
+		tests_mock.before(funcToMock);
 		wikify();
-		value_of(called).should_be_false();
-		Wikifier.prototype.subWikify = original;
+		var actual = tests_mock.after(funcToMock).called;
+		value_of(actual).should_be_false();
 	},
 	
 	'it should not call subWikify() if the "source" parameter is an empty string': function() {
-		var called = false;
-		var original = Wikifier.prototype.subWikify;
-		Wikifier.prototype.subWikify = function(source) {
-			called = true;
-			return;
-		};
+		var funcToMock = 'Wikifier.prototype.subWikify';
+		tests_mock.before(funcToMock);
 		var source = "";
 		wikify(source);
-		value_of(called).should_be_false();
-		Wikifier.prototype.subWikify = original;
+		value_of(tests_mock.after(funcToMock).called).should_be_false();
 	},
 	
 	'it should call subWikify()': function() {
-		var called = false;
-		var original = Wikifier.prototype.subWikify;
-		Wikifier.prototype.subWikify = function() {
-			called = true;
-			return;
-		};
+		var funcToMock = 'Wikifier.prototype.subWikify';
+		tests_mock.before(funcToMock);
 		var source = "hello";
 		wikify(source);
-		value_of(called).should_be(true);
-		Wikifier.prototype.subWikify = original;
+		value_of(tests_mock.after(funcToMock).called).should_be(true);
 	}
 });
 
@@ -191,19 +176,16 @@ describe('Wikifier: wikifyStatic()', {
 	},
 	
 	'it should call subWikify() with the pre block as the only parameter': function() {
-		tests_mock.before('Wikifier.prototype.subWikify',function() {
-			/* console.log("in mocker");
-			console.log(this);
-			console.log(arguments.callee.name);
-			console.log(arguments.callee.toString());
-			console.log("----"); */
+		var funcToMock = 'Wikifier.prototype.subWikify';
+		tests_mock.before(funcToMock,function() {
+			tests_mock.frame[funcToMock].funcArgs = arguments;
 		});
 		wikifyStatic(source);
-		var called = tests_mock.after('Wikifier.prototype.subWikify');
+		var tests_mock_return = tests_mock.after(funcToMock);
 		var expected = "PRE";
-		var actual = "what do we set this to?";
-		value_of(called).should_be(true);
-		value_of(actual).should_be(expected);
+		value_of(tests_mock_return.called).should_be(true);
+		value_of(tests_mock_return.funcArgs.length).should_be(1);
+		value_of(tests_mock_return.funcArgs[0].nodeName).should_be(expected);
 	},
 	
 	'it should return a text string': function() {
@@ -236,7 +218,7 @@ describe('Wikifier: wikifyPlain', {
 	'it should call wikifyPlainText() if the tiddler exists in the store or is a shadow tiddler': function() {
 		tests_mock.before('wikifyPlainText');
 		wikifyPlain("t");
-		var actual = tests_mock.after('wikifyPlainText');
+		var actual = tests_mock.after('wikifyPlainText').called;
 		value_of(actual).should_be_true();
 	},
 
@@ -246,7 +228,7 @@ describe('Wikifier: wikifyPlain', {
 		value_of(t).should_be_true();
 		mockVars = tests_mock.before('wikifyPlainText');
 		wikifyPlain("SiteTitle");
-		var actual = tests_mock.after('wikifyPlainText');
+		var actual = tests_mock.after('wikifyPlainText').called;
 		value_of(actual).should_be_true();
 	},
 
@@ -278,7 +260,7 @@ describe('Wikifier: wikifyPlainText', {
 	'it should call Wikifier.prototype.wikifyPlain()': function() {
 		tests_mock.before('Wikifier.prototype.wikifyPlain');
 		wikifyPlainText("hello",1,new Tiddler("temp"));
-		var actual = tests_mock.after('Wikifier.prototype.wikifyPlain');
+		var actual = tests_mock.after('Wikifier.prototype.wikifyPlain').called;
 		value_of(actual).should_be_true();
 	},
 	
