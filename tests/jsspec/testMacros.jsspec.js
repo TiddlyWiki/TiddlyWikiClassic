@@ -48,6 +48,15 @@ function testing_check_button_onclick(name,func)
 	value_of(tests_mock.after(func)).should_be(1);
 }
 
+describe('Macros: macro errors', {
+	before_each : function() {
+		__main();
+	},
+
+	'missing macro should produce errortext' : function() { 	
+		value_of(wikifyStatic('<<NOEXISTANTMACRO>>')).should_match(/errortext/);
+	}
+});
 
 describe('Macros: version macro', {
 	before_each : function() {

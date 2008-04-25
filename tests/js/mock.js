@@ -3,8 +3,11 @@ tests_mock = {
 	before: function(funcName)
 	{
 		var frame = {};
-		frame.savedFunc = eval(funcName); 
 		frame.was_called = 0;
+		frame.savedFunc = eval(funcName); 
+
+		if (typeof frame.savedFunc != "function") 
+			throw(funcName +" is not a function: " + (typeof frame.savedFunc));
 
 		var mocker = arguments[1];
 
