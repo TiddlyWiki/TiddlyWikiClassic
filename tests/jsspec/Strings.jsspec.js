@@ -51,4 +51,27 @@ describe('Strings', {
 		value_of(actual).should_be(expected);
 	}
 });
+
+describe('Strings: html encoding/decoding', {
+	'String should correctly htmlEncode &<>"': function() {
+		var actual = '&<>"'.htmlEncode();
+		var expected = '&amp;&lt;&gt;&quot;';		
+		value_of(actual).should_be(expected);
+	},
+	'String should correctly htmlDecode &amp;&lt;&gt;&quot;': function() {
+		var actual = '&amp;&lt;&gt;&quot;'.htmlDecode();
+		var expected = '&<>"';		
+		value_of(actual).should_be(expected);
+	},
+	'htmlEncode followed by htmlDecode of complex string should leave string unchanged': function() {
+		var s = '&&&""<">>&>&"'
+		var actual = s.htmlEncode().htmlDecode();		
+		value_of(actual).should_be(s);
+	},
+	'htmlDecode followed by htmlEncode of complex string should leave string unchanged': function() {
+		var s = '&&&""<">>&>&"'
+		var actual = s.htmlEncode().htmlDecode();		
+		value_of(actual).should_be(s);
+	}
+});
 // ]]>
