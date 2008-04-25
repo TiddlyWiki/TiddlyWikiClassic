@@ -1,0 +1,4 @@
+recipe: testmin.recipe
+title=TiddlyWiki Dom tests
+jsspecsrc=<script type="text/javascript" src="../../js/Dom.js" />
+jsspecsrc=<script type="text/javascript" src="../jsspec/Dom.jsspec.js" />
