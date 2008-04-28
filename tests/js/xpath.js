@@ -26,7 +26,7 @@ if (!(XPathResult.NUMBER_TYPE +  XPathResult.NUMBER_TYPE))
 
 	window.addEventListener = function(event, handler, flag) {
 	    _tb_windowEvents[event] = handler;
-	}
+	};
 
 	function _tb_postProcess() {
 	    if (_tb_windowEvents["load"]) {
@@ -54,22 +54,22 @@ if (!(XPathResult.NUMBER_TYPE +  XPathResult.NUMBER_TYPE))
 		this.ThrowNotImplemented = function(message)
 		{
 			ThrowError(this.NOT_IMPLEMENTED_ERR, "This functionality is not implemented.", message);
-		}
+		};
 		
 		this.ThrowInvalidExpression = function(message)
 		{
 			ThrowError(this.INVALID_EXPRESSION_ERR, "Invalid expression", message);
-		}
+		};
 		
 		this.ThrowType = function(message)
 		{
 			ThrowError(this.TYPE_ERR, "Type error", message);
-		}
+		};
 		
 		this.Throw = function(message)
 		{
 			ThrowError(this.RUNTIME_ERR, "Run-time error", message);
-		}
+		};
 		
 		function ThrowError(code, description, message)
 		{
@@ -88,7 +88,7 @@ if (!(XPathResult.NUMBER_TYPE +  XPathResult.NUMBER_TYPE))
 		this.ThrowInvalidState = function(message)
 		{
 			ThrowError(13, "The state of the object is no longer valid", message);
-		}
+		};
 
 		function ThrowError(code, description, message)
 		{
@@ -111,7 +111,7 @@ if (!(XPathResult.NUMBER_TYPE +  XPathResult.NUMBER_TYPE))
 	{
 		// returns XPathExpression object
 		return new XPathExpression(expression, resolver);
-	}
+	};
 
 	// XPathNSResolver createNSResolver(nodeResolver)
 	document.createNSResolver = function
@@ -121,7 +121,7 @@ if (!(XPathResult.NUMBER_TYPE +  XPathResult.NUMBER_TYPE))
 	{
 		// returns XPathNSResolver
 		return new XPathNSResolver(nodeResolver);
-	}
+	};
 
 	// XPathResult evaluate(String expresison, Node contextNode, XPathNSResolver resolver, Number type, XPathResult result)
 	document.evaluate = function
@@ -136,7 +136,7 @@ if (!(XPathResult.NUMBER_TYPE +  XPathResult.NUMBER_TYPE))
 	{
 		// return XPathResult
 		return document.createExpression(expression, resolver).evaluate(contextNode, type, result);
-	}
+	};
 
 	// XPathExpression
 	function XPathExpression
@@ -159,12 +159,12 @@ if (!(XPathResult.NUMBER_TYPE +  XPathResult.NUMBER_TYPE))
 		{
 			// return XPathResult
 			return (result && result.constructor == XPathResult ? result.initialize(this, contextNode, resolver, type) : new XPathResult(this, contextNode, resolver, type));
-		}
+		};
 		
 		this.toString = function()
 		{
 			return "[XPathExpression]";
-		}
+		};
 	}
 
 	// XPathNSResolver
@@ -181,12 +181,12 @@ if (!(XPathResult.NUMBER_TYPE +  XPathResult.NUMBER_TYPE))
 			XPathException.ThrowNotImplemented();
 			// return String
 			return null;
-		}
+		};
 
 		this.toString = function()
 		{
 			return "[XPathNSResolver]";
-		}
+		};
 	}
 
 	// XPathResult
@@ -232,14 +232,14 @@ if (!(XPathResult.NUMBER_TYPE +  XPathResult.NUMBER_TYPE))
 				this._isNodeSet = true;
 			}
 			return this;
-		}
+		};
 		
 		this.initialize(expression, contextNode, resolver, type);
 		
 		this.getInvalidIteratorState = function()
 		{
 			return documentChangeDetected() || !this._isIterator;			
-		}
+		};
 		
 		this.getSnapshotLength = function()
 			// raises XPathException
@@ -251,7 +251,7 @@ if (!(XPathResult.NUMBER_TYPE +  XPathResult.NUMBER_TYPE))
 			activateResult(this);
 			// return Number
 			return this._domResult.length;
-		}
+		};
 		
 		// Node iterateNext()
 		this.iterateNext = function()
@@ -268,7 +268,7 @@ if (!(XPathResult.NUMBER_TYPE +  XPathResult.NUMBER_TYPE))
 			}
 			// return Node
 			return getNextNode(this);
-		}
+		};
 		
 		// Node snapshotItem(Number index)
 		this.snapshotItem = function(index)
@@ -280,12 +280,12 @@ if (!(XPathResult.NUMBER_TYPE +  XPathResult.NUMBER_TYPE))
 			}
 			// return Node
 			return getItemNode(this, index); 
-		}
+		};
 		
 		this.toString = function()
 		{
 			return "[XPathResult]";
-		}
+		};
 		
 		// returns string value of the result, if result type is STRING_TYPE
 		// otherwise throws an XPathException
@@ -296,7 +296,7 @@ if (!(XPathResult.NUMBER_TYPE +  XPathResult.NUMBER_TYPE))
 				XPathException.ThrowType("The expression can not be converted to return String");
 			}
 			return getNodeText(this);
-		}
+		};
 		
 		// returns number value of the result, if the result is NUMBER_TYPE
 		// otherwise throws an XPathException
@@ -312,7 +312,7 @@ if (!(XPathResult.NUMBER_TYPE +  XPathResult.NUMBER_TYPE))
 				XPathException.ThrowType("The result can not be converted to Number");
 			}
 			return number;
-		}
+		};
 		
 		// returns boolean value of the result, if the result is BOOLEAN_TYPE
 		// otherwise throws an XPathException
@@ -331,7 +331,7 @@ if (!(XPathResult.NUMBER_TYPE +  XPathResult.NUMBER_TYPE))
 				return bool;
 			}
 			XPathException.ThrowType("The result can not be converted to Boolean");
-		}
+		};
 		
 		// returns single node, if the result is ANY_UNORDERED_NODE_TYPE or FIRST_ORDERED_NODE_TYPE
 		// otherwise throws an XPathException
@@ -343,7 +343,7 @@ if (!(XPathResult.NUMBER_TYPE +  XPathResult.NUMBER_TYPE))
 				XPathException.ThrowType("The expression can not be converted to return single Node value");
 			}
 			return getSingleNode(this);
-		}
+		};
 		
 		function documentChangeDetected()
 		{
@@ -464,7 +464,7 @@ if (!(XPathResult.NUMBER_TYPE +  XPathResult.NUMBER_TYPE))
 	document.reloadDom = function()
 	{
 		document._XPathMsxmlDocumentHelper.reset();
-	}
+	};
 
 	document._XPathMsxmlDocumentHelper = new _XPathMsxmlDocumentHelper();
 	function _XPathMsxmlDocumentHelper()
@@ -473,13 +473,13 @@ if (!(XPathResult.NUMBER_TYPE +  XPathResult.NUMBER_TYPE))
 		{
 			activateDom(this);
 			return this.dom;
-		}
+		};
 		
 		this.getXml = function()
 		{
 			activateDom(this);
 			return this.dom.xml;
-		}
+		};
 		
 		this.getTextResult = function(expression)
 		{
@@ -498,22 +498,22 @@ if (!(XPathResult.NUMBER_TYPE +  XPathResult.NUMBER_TYPE))
 				alert("Error: " + error.description);
 			}
 			return result;
-		}
+		};
 		
 		this.reset = function()
 		{
 			this.dom = null;
-		}
+		};
 		
 		function onPropertyChangeEventHandler()
 		{
 			document._propertyChangeDetected = true;
-		}
+		};
 		
 		this.documentChangeDetected = function()
 		{
 			return (document.ignoreDocumentChanges ? false : this._currentElementCount != document.all.length || document._propertyChangeDetected);
-		}
+		};
 		
 		function activateDom(helper)
 		{
@@ -588,39 +588,39 @@ if (!(XPathResult.NUMBER_TYPE +  XPathResult.NUMBER_TYPE))
 }
 else
 {
-	document.reloadDom = function() {}
+	document.reloadDom = function() {};
 	XPathResult.prototype.getStringValue = function()
 	{
 		return this.stringValue;
-	}
+	};
 	
 	XPathResult.prototype.getNumberValue = function()
 	{
 		return this.numberValue;
-	}
+	};
 	
 	XPathResult.prototype.getBooleanValue = function()
 	{
 		return this.booleanValue;
-	}
+	};
 	
 	XPathResult.prototype.getSingleNodeValue = function()
 	{
 		return this.singleNodeValue;	
-	}
+	};
 	
 	XPathResult.prototype.getInvalidIteratorState = function()
 	{
 		return this.invalidIteratorState;
-	}
+	};
 	
 	XPathResult.prototype.getSnapshotLength = function()
 	{
 		return this.snapshotLength;
-	}
+	};
 	
 	XPathResult.prototype.getResultType = function()
 	{
 		return this.resultType;
-	}
+	};
 }
