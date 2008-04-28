@@ -16,3 +16,4 @@ jsspecsrc=<script type="text/javascript" src="../jsspec/TW21Saver.jsspec.js"></s
 jsspecsrc=<script type="text/javascript" src="../jsspec/Version.jsspec.js"></script>
 jsspecsrc=<script type="text/javascript" src="../jsspec/Wikifier.jsspec.js"></script>
 jsspecsrc=<script type="text/javascript" src="../jsspec/Mocks.jsspec.js"></script>
+jsspecsrc=<script type="text/javascript" src="../jsspec/XML.jsspec.js"></script>
