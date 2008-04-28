@@ -73,12 +73,12 @@ describe('Strings: html encoding/decoding', {
 		value_of(actual).should_be(expected);
 	},
 	'htmlEncode followed by htmlDecode of complex string should leave string unchanged': function() {
-		var s = '&&&""<">>&>&"'
+		var s = '&&&""<">>&>&"';
 		var actual = s.htmlEncode().htmlDecode();		
 		value_of(actual).should_be(s);
 	},
 	'htmlDecode followed by htmlEncode of complex string should leave string unchanged': function() {
-		var s = '&&&""<">>&>&"'
+		var s = '&&&""<">>&>&"';
 		var actual = s.htmlEncode().htmlDecode();		
 		value_of(actual).should_be(s);
 	}
@@ -94,7 +94,7 @@ describe('Strings: parseParams', {
 		var actual = "aName:'aValue' aName2:'aValue2'".parseParams();
 		var expected = [{"aName":["aValue"], "aName2":["aValue2"]},{name:"aName",value:"aValue"},{name:"aName2",value:"aValue2"}];		
 		value_of(actual).should_be(expected);
-	},
+	}
 });
 
 describe('Strings: encodeTiddlyLink', {
