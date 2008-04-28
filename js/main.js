@@ -54,6 +54,7 @@ function main()
 	store.notifyAll();
 	t7 = new Date();
 	restart();
+	refreshDisplay();
 	t8 = new Date();
 	if(pluginProblem) {
 		story.displayTiddler(null,"PluginManager");
