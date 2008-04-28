@@ -24,7 +24,7 @@ describe('GenerateRss: generateRss text', {
         'should be well-formed XML' : function() { 
                 xml = tests_xml.parse(rss);
                 value_of(typeof xml).should_match('object');
-	},
+	}
 });
 
 /*
@@ -71,7 +71,7 @@ describe('GenerateRss: generateRss default XML', {
         'channel copyright should be "TiddlyWiki YYYY YourName"' : function() { 
 		// Y2K+99 issue :)
 		value_of(xml.xpath("/rss/channel/copyright", "string")).should_match(/Copyright 20[0-9]{2,2} YourName/);
-        },
+        }
 
 });
 

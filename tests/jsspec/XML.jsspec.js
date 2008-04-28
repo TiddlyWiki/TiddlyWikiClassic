@@ -32,7 +32,7 @@ describe('XML: testing framework XML functions', {
         'XPath count of nodeset containing elements' : function() { 
                 xml = tests_xml.parse('<foo><bar/><bar/><bar/></foo>');
 		value_of(xml.xpath("count(/foo/bar)", "number")).should_be(3);
-        },
+        }
 });
 
 // ]]>
