@@ -49,6 +49,15 @@ describe('Strings', {
 		var actual = String.encodeTiddlyLinkList([]);
 		var expected = "";
 		value_of(actual).should_be(expected);
+	},
+	'String "abcdefghijklmnopqrstuvwxyz" startsWith "abc"': function() {
+		value_of("abcdefghijklmnopqrstuvwxyz".startsWith("abc")).should_be(true);
+	},
+	'String "abcdefghijklmnopqrstuvwxyz" does not startsWith "def"': function() {
+		value_of("abcdefghijklmnopqrstuvwxyz".startsWith("def")).should_be(false);
+	},
+	'String "abcdefghijklmnopqrstuvwxyz" startsWith ""': function() {
+		value_of("abcdefghijklmnopqrstuvwxyz".startsWith("")).should_be(true);
 	}
 });
 
