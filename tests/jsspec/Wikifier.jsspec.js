@@ -275,5 +275,45 @@ describe('Wikifier: wikifyPlainText', {
 	}
 });
 
+describe('Wikifier: highlightify', {
+
+	before_each: function() {
+		output = document.body.appendChild(document.createElement("div"));
+		source = "test text";
+		highlightregexp = new RegExp("text","img");
+		tiddler = new Tiddler("temp");
+	},
+
+	'it should not add anything to the "output" element if the source parameter is empty': function() {
+		var actual = highlightify(null,output);
+		value_of(actual).shoufld_be_null;
+	},
+	
+	'it should highlight output text by wrapping with a span of class "highlight"': function() {
+		var expected = 'test <span class="highlight">text</span>';
+		highlightify(source,output,highlightregexp,tiddler);
+		actual = output.innerHTML;
+		value_of(actual).should_be(expected);
+	},
+	
+	after_each: function() {
+		removeNode(output);
+	}
+
+});
+
+describe('Wikifier: Wikifier()', {
+
+	'it should return a Wikifier object': function() {
+		var actual = new Wikifier();
+		value_of(actual instanceof Wikifier).should_be_true();
+	},
+	
+	'it should return an object with properties source, output, formatter, nextMatch, autoLinkWikiWords, highlightRegExp, highlightMatch, isStatic, tiddler': function() {
+	
+	}
+
+});
+
 // ]]>
 
