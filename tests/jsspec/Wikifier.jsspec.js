@@ -293,6 +293,8 @@ describe('Wikifier: highlightify', {
 	'it should highlight output text by wrapping with a span of class "highlight"': function() {
 		var expected = 'test <span class="highlight">text</span>';
 		highlightify(source,output,highlightregexp,tiddler);
+		// value in IE is: test <SPAN class=highlight>text</SPAN>
+		// note SPAN is capitals and no quotes
 		actual = output.innerHTML;
 		value_of(actual).should_be(expected);
 	},
@@ -484,7 +486,10 @@ describe('Wikifier: Wikifier.prototype.outputText', {
 		w.outputText(output,0,source.length);
 		var actual = output.innerHTML;
 		var match = actual.match("<span");
-		value_of(match.length).should_be(1);
+		if(!match)
+			match = actual.match("<SPAN");
+		var length = match ? match.length : -1;
+		value_of(length).should_be(1);
 	},
 	
 	after_each: function() {
