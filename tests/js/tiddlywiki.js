@@ -745,6 +745,7 @@ function main()
 	store.notifyAll();
 	t7 = new Date();
 	restart();
+	refreshDisplay();
 	t8 = new Date();
 	if(pluginProblem) {
 		story.displayTiddler(null,"PluginManager");
@@ -3680,7 +3681,7 @@ Story.prototype.displayTiddlers = function(srcElement,titles,template,animate,un
 		this.displayTiddler(srcElement,titles[t],template,animate,unused,customFields);
 };
 
-Story.prototype.displayTiddler = function(srcElement,tiddler,template,animate,unused,customFields,toggle)
+Story.prototype.displayTiddler = function(srcElement,tiddler,template,animate,unused,customFields,toggle,animationSrc)
 {
 	var title = (tiddler instanceof Tiddler)? tiddler.title : tiddler;
 	var tiddlerElem = this.getTiddler(title);
@@ -3693,6 +3694,9 @@ Story.prototype.displayTiddler = function(srcElement,tiddler,template,animate,un
 		var place = this.getContainer();
 		var before = this.positionTiddler(srcElement);
 		tiddlerElem = this.createTiddler(place,before,title,template,customFields);
+	}
+	if(animationSrc && typeof animationSrc !== "string") {
+		srcElement = animationSrc;
 	}
 	if(srcElement && typeof srcElement !== "string") {
 		if(config.options.chkAnimate && (animate == undefined || animate == true) && anim && typeof Zoomer == "function" && typeof Scroller == "function")
@@ -7342,6 +7346,17 @@ Array.prototype.map = function(fn,thisObj)
 	}
 	return a;
 };}
+
+function objectsMatch (obj1, obj2) {
+	var match = true;
+	for(var p in obj1){
+		if(typeof obj1[p] == 'object' && typeof obj2[p] == 'object');
+			match = objectsMatch(obj1[p], obj2[p]);
+		if(obj1[p] !== obj2[p] || match == false)
+			return false;
+	}
+	return true;
+}
 
 String.prototype.right = function(n)
 {
