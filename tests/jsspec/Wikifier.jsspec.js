@@ -80,35 +80,36 @@ describe('Wikifier : getParser()', {
 
 describe('Wikifier : wikifyStatic()', {
 
-	'Bold formatting': function() {
+	'testing input strings for Formatter.characterFormat': function() {
+	
+		wikifier_input_strings = {
+			bold:"''bold''",
+			italic:"//italic//",
+			underline:"__underline__",
+			superscript:"^^superscript^^",
+			subscript:"~~subscript~~",
+			strikeout:"--strikeout--",
+			code:"{{{code}}}"
+		};
+
+		wikifier_output_strings = {
+			bold:"<strong>bold</strong>",
+			italic:"<em>italic</em>",
+			underline:"<u>underline</u>",
+			superscript:"<sup>superscript</sup>",
+			subscript:"<sub>subscript</sub>",
+			strikeout:"<strike>strikeout</strike>",
+			code:"<code>code</code>"
+		};
+	
 		formatter = new Formatter(config.formatters);
-		var actual = (wikifyStatic("''bold''")).toLowerCase();
-		var expected = "<strong>bold</strong>";
-		value_of(actual).should_be(expected);
-	},
-	'Italic formatting': function() {
-		formatter = new Formatter(config.formatters);
-		var actual = wikifyStatic("//italic//").toLowerCase();
-		var expected = "<em>italic</em>";
-		value_of(actual).should_be(expected);
-	},
-	'Underline formatting': function() {
-		formatter = new Formatter(config.formatters);
-		var actual = wikifyStatic("__underline__").toLowerCase();
-		var expected = "<u>underline</u>";
-		value_of(actual).should_be(expected);
-	},
-	'Superscript formatting': function() {
-		formatter = new Formatter(config.formatters);
-		var actual = wikifyStatic("^^superscript^^").toLowerCase();
-		var expected = "<sup>superscript</sup>";
-		value_of(actual).should_be(expected);
-	},
-	'Subscript formatting': function() {
-		formatter = new Formatter(config.formatters);
-		var actual = wikifyStatic("~~subscript~~").toLowerCase();
-		var expected = "<sub>subscript</sub>";
-		value_of(actual).should_be(expected);
+		var actual = "";
+		var expected = "";
+		for (var i in wikifier_input_strings) {
+			actual = wikifyStatic(wikifier_input_strings[i]).toLowerCase();
+			expected = wikifier_output_strings[i];
+			value_of(actual).should_be(expected);
+		}
 	}
 });
 
@@ -310,7 +311,187 @@ describe('Wikifier: Wikifier()', {
 	},
 	
 	'it should return an object with properties source, output, formatter, nextMatch, autoLinkWikiWords, highlightRegExp, highlightMatch, isStatic, tiddler': function() {
+		var actual = new Wikifier();
+		value_of(actual.hasOwnProperty("source")).should_be_true();
+		value_of(actual.hasOwnProperty("output")).should_be_true();
+		value_of(actual.hasOwnProperty("formatter")).should_be_true();
+		value_of(actual.hasOwnProperty("nextMatch")).should_be_true();
+		value_of(actual.hasOwnProperty("autoLinkWikiWords")).should_be_true();
+		value_of(actual.hasOwnProperty("highlightRegExp")).should_be_true();
+		value_of(actual.hasOwnProperty("highlightMatch")).should_be_true();
+		value_of(actual.hasOwnProperty("isStatic")).should_be_true();
+		value_of(actual.hasOwnProperty("tiddler")).should_be_true();
+
+	}
+
+});
+
+describe('Wikifier: Wikifier.prototype.wikifyPlain', {
+
+	'it should return the plain text value of the return value of this.subWikify()': function() {
+		store = new TiddlyWiki();
+		formatter = new Formatter(config.formatters);
+		var source = "a StringWith some [[wikitext]] ''inside''";
+		var w = new Wikifier(source,formatter);
+		var actual = w.wikifyPlain();
+		var expected = "a StringWith some wikitext inside";
+		value_of(actual).should_be(expected);
+	}
+});
+
+describe('Wikifier: Wikifier.prototype.subWikify', {
+
+	before_each: function() {
+		formatter = new Formatter(config.formatters);
+		output = document.body.appendChild(document.createElement("div"));
+		terminator = "";
+		w = new Wikifier("test",formatter);
+	},
+
+	'it should call this.subWikifyUnterm if second parameter is not provided': function() {
+		tests_mock.before('Wikifier.prototype.subWikifyUnterm');
+		w.subWikify(output);
+		var actual = tests_mock.after('Wikifier.prototype.subWikifyUnterm').called;
+		value_of(actual).should_be_true;
+	},
+
+	'it should call this.subWikifyTerm if a second parameter is provided': function() {
+		tests_mock.before('Wikifier.prototype.subWikifyTerm');
+		w.subWikify(output,terminator);
+		var actual = tests_mock.after('Wikifier.prototype.subWikifyTerm').called;
+		value_of(actual).should_be_true;
+	},
 	
+	after_each: function() {
+		removeNode(output);
+		delete formatter;
+		delete terminator;
+		delete w;
+	}
+});
+
+describe('Wikifier: Wikifier.prototype.subWikifyUnterm', {
+
+	before_each: function() {
+		formatter = new Formatter([{
+			name: "test",
+			match: "test",
+			handler: function(w)
+			{
+				createTiddlyText(w.output,w.matchText);
+			}
+		}]);
+		
+		output = document.body.appendChild(document.createElement("div"));
+		source = "some test input for a test of a function";
+		w = new Wikifier(source,formatter);
+	},
+
+	'it should pass any text that matches the formatter\'s regexp to the correct handler in the formatter': function() {
+		w.subWikifyUnterm(output);
+		var actual = output.innerHTML;
+		var expected = source;
+		value_of(actual).should_be(expected);
+	},
+	
+	'it should output any text before, between or after a match': function() {
+		tests_mock.before('Wikifier.prototype.outputText');
+		w.subWikifyUnterm(output);
+		var actual = tests_mock.after('Wikifier.prototype.outputText').called;
+		value_of(actual).should_be(3);
+		var actual = output.innerHTML;
+		var expected = "testtest";
+		value_of(actual).should_be(expected);
+	},
+	
+	after_each: function() {
+		removeNode(output);
+		delete formatter;
+		delete source;
+		delete w;
+	}
+});
+
+describe('Wikifier: Wikifier.prototype.subWikifyTerm', {
+
+	before_each: function() {
+		formatter = new Formatter([{
+			name: "test",
+			match: "test",
+			handler: function(w)
+			{
+				createTiddlyText(w.output,w.matchText);
+			}
+		}]);
+		
+		termRegExp = /(\n)/mg;
+		output = document.body.appendChild(document.createElement("div"));
+		source = "some test multi-line test input \n for a test of a function";
+		w = new Wikifier(source,formatter);
+	},
+
+	'it should ignore all input after a match with termRegExp': function() {
+		w.subWikifyTerm(output,termRegExp);
+		var actual = output.innerHTML;
+		var expected = source.substring(0,source.indexOf("\n"));
+		value_of(actual).should_be(expected);
+	},
+	
+	'it should pass any text that matches the formatter\'s regexp to the correct handler in the formatter': function() {
+		tests_mock.before('formatter.formatters[0].handler');
+		w.subWikifyTerm(output,termRegExp);
+		var actual = tests_mock.after('formatter.formatters[0].handler').called;
+		value_of(actual).should_be(2);
+	},
+	
+	'it should output any text before, between or after a formatter match': function() {
+		tests_mock.before('Wikifier.prototype.outputText');
+		w.subWikifyTerm(output,termRegExp);
+		var actual = tests_mock.after('Wikifier.prototype.outputText').called;
+		value_of(actual).should_be(3);
+		var actual = output.innerHTML;
+		var expected = "testtest";
+		value_of(actual).should_be(expected);
+	},
+	
+	after_each: function() {
+		removeNode(output);
+		delete formatter;
+		delete termRegExp;
+		delete source;
+		delete w;
+	}
+});
+
+describe('Wikifier: Wikifier.prototype.outputText', {
+
+	before_each: function() {
+		formatter = new Formatter(config.formatters);
+		source = "some test input";
+		highlightRegExp = /test/g;
+		output = document.body.appendChild(document.createElement("div"));
+	},
+
+	'it should output all the input text if the Wikifier object\'s highlightRegExp property is null': function() {
+		w = new Wikifier(source,formatter);
+		w.outputText(output,0,source.length);
+		var actual = output.innerHTML;
+		value_of(actual).should_be(source);
+	},
+	
+	'it should wrap any text that matched by the Wikifier object\'s highlightRegExp in <span> tags with a class of "highlight"': function() {
+		w = new Wikifier(source,formatter,highlightRegExp);
+		w.outputText(output,0,source.length);
+		var actual = output.innerHTML;
+		var match = actual.match("<span");
+		value_of(match.length).should_be(1);
+	},
+	
+	after_each: function() {
+		removeNode(output);
+		delete formatter;
+		delete source;
+		delete highlightRegExp;
 	}
 
 });
