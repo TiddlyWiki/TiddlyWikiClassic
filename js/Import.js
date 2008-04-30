@@ -105,7 +105,7 @@ config.macros.importTiddlers.onOpen = function(e)
 	var wizard = new Wizard(this);
 	var fileInput = wizard.getElement("txtPath");
 	var url = fileInput.value;
-	var serverType = wizard.getElement("selTypes").value;
+	var serverType = wizard.getElement("selTypes").value || config.defaultAdaptor;
 	var adaptor = new config.adaptors[serverType];
 	wizard.setValue("adaptor",adaptor);
 	wizard.setValue("serverType",serverType);
