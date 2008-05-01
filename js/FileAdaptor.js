@@ -65,7 +65,7 @@ FileAdaptor.loadTiddlyWikiCallback = function(status,context,responseText,url,xh
 {
 	context.status = status;
 	if(!status) {
-		context.statusText = "Error reading file: " + xhr.statusText;
+		context.statusText = "Error reading file";
 	} else {
 		//# Load the content into a TiddlyWiki() object
 		context.adaptor.store = new TiddlyWiki();
@@ -149,18 +149,20 @@ FileAdaptor.prototype.getTiddlerList = function(context,userParams,callback,filt
 
 FileAdaptor.getTiddlerListComplete = function(context,userParams)
 {
-	if(context.filter) {
-		context.tiddlers = context.adaptor.store.filterTiddlers(context.filter);
-	} else {
-		context.tiddlers = [];
-		context.adaptor.store.forEachTiddler(function(title,tiddler) {context.tiddlers.push(tiddler);});
+	if(context.status) {
+		if(context.filter) {
+			context.tiddlers = context.adaptor.store.filterTiddlers(context.filter);
+		} else {
+			context.tiddlers = [];
+			context.adaptor.store.forEachTiddler(function(title,tiddler) {context.tiddlers.push(tiddler);});
+		}
+		for(var i=0; i<context.tiddlers.length; i++) {
+			context.tiddlers[i].fields['server.type'] = FileAdaptor.serverType;
+			context.tiddlers[i].fields['server.host'] = FileAdaptor.minHostName(context.host);
+			context.tiddlers[i].fields['server.page.revision'] = context.tiddlers[i].modified.convertToYYYYMMDDHHMM();
+		}
+		context.status = true;
 	}
-	for(var i=0; i<context.tiddlers.length; i++) {
-		context.tiddlers[i].fields['server.type'] = FileAdaptor.serverType;
-		context.tiddlers[i].fields['server.host'] = FileAdaptor.minHostName(context.host);
-		context.tiddlers[i].fields['server.page.revision'] = context.tiddlers[i].modified.convertToYYYYMMDDHHMM();
-	}
-	context.status = true;
 	if(context.callback) {
 		window.setTimeout(function() {context.callback(context,userParams);},10);
 	}

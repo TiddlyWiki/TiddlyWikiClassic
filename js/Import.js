@@ -205,8 +205,10 @@ config.macros.importTiddlers.onOpenWorkspace = function(context,wizard)
 
 config.macros.importTiddlers.onGetTiddlerList = function(context,wizard)
 {
-	if(context.status !== true)
-		displayMessage("Error in importTiddlers.onGetTiddlerList: " + context.statusText);
+	if(context.status !== true) {
+		wizard.setButtons([{caption: config.macros.importTiddlers.cancelLabel, tooltip: config.macros.importTiddlers.cancelPrompt, onClick: config.macros.importTiddlers.onCancel}],config.macros.importTiddlers.errorGettingTiddlerList);
+		return;
+	}
 	// Extract data for the listview
 	var listedTiddlers = [];
 	if(context.tiddlers) {
