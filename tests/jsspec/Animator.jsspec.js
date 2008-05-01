@@ -22,6 +22,16 @@ describe('Animator : constructor', {
 		value_of(a.animations.length).should_be(0);
 	}
 
+});
+
+describe('Animator : functions', {
+
+	'given a float value, Animator.slowInSlowOut() returns the result of the correct mathematical transformation.' : function() {
+		var expected = ".2061";
+		var actual = Animator.slowInSlowOut(0.3);
+		actual = actual.toString().substr(1,5);
+		value_of(actual).should_be(expected);
+	}
 
 });
 
