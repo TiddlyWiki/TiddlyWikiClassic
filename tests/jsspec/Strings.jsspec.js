@@ -76,12 +76,13 @@ describe('Strings: html encoding/decoding', {
 		var s = '&&&""<">>&>&"';
 		var actual = s.htmlEncode().htmlDecode();		
 		value_of(actual).should_be(s);
-	},
-	'htmlDecode followed by htmlEncode of complex string should leave string unchanged': function() {
-		var s = '&&&""<">>&>&"';
-		var actual = s.htmlEncode().htmlDecode();		
-		value_of(actual).should_be(s);
 	}
+	// NO IT SHOULDN'T! YOU CAN'T DECODE SOMETHING THAT IS NOT ENCODED
+	//'htmlDecode followed by htmlEncode of complex string should leave string unchanged': function() {
+	//	var s = '&&&""<">>&>&"';
+	//	var actual = s.htmlDecode().htmlEncode();		
+	//	value_of(actual).should_be(s);
+	//}
 });
 
 describe('Strings: parseParams', {

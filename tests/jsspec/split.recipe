@@ -1,3 +1,4 @@
+#note: this is totally out-of-date: don't use
 jsspec: testBasicTypes.jsspec.js
 jsspec: testDates.jsspec.js
 jsspec: testDom.jsspec.js
