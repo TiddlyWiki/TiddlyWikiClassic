@@ -68,7 +68,7 @@ describe('Macros: version macro', {
 		version.minor = "456";
 		version.revision = "789";
 		version.beta = "123456789";
-		value_of(wikifyStatic("<<version>>")).should_be("<span>123.456.789 (beta 123456789)</span>");
+		value_of(wikifyStatic("<<version>>")).should_match(/^<(span|SPAN)>123.456.789 \(beta 123456789\)<\/(span|SPAN)>$/);
 	}
 });
 
@@ -78,7 +78,7 @@ describe('Macros: today macro', {
 	},
 
 	'today macro should return a date shaped string' : function() { 
-		value_of(wikifyStatic("<<today>>")).should_match(/^<span>[A-Z][a-z]+\s[A-Z][a-z]+\s[0-9]{2}\s[0-9]{2}:[0-9]{2}:[0-9]{2} 2[0-9]{3}<\/span>$/);
+		value_of(wikifyStatic("<<today>>")).should_match(/^<(span|SPAN)>[A-Z][a-z]+\s[A-Z][a-z]+\s+[0-9]{1,2}\s[0-9]{2}:[0-9]{2}:[0-9]{2} 2[0-9]{3}<\/(span|SPAN)>$/);
 	}
 });
 
