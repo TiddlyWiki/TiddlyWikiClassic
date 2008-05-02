@@ -31,6 +31,12 @@ describe('Animator : functions', {
 		var actual = Animator.slowInSlowOut(0.3);
 		actual = actual.toString().substr(1,5);
 		value_of(actual).should_be(expected);
+	},
+	
+	'given a value above the max of valid input, Animator.slowInSlowOut() clamps its output appropriately. ' : function() {
+		var expected = 0;
+		var actual = Animator.slowInSlowOut(2);
+		value_of(actual).should_be(expected);
 	}
 
 });
