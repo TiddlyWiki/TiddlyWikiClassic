@@ -2,17 +2,17 @@
 describe('Strings', {
 	'String right': function() {
 		var actual = "abcdef".right(3);
-		var expected = "def";		
+		var expected = "def";
 		value_of(actual).should_be(expected);
 	},
 	'String trim': function() {
 		var actual = " abcdef ".trim();
-		var expected = "abcdef";		
+		var expected = "abcdef";
 		value_of(actual).should_be(expected);
 	},
 	'String undash': function() {
 		var actual = "background-color".unDash();
-		var expected = "backgroundColor";		
+		var expected = "backgroundColor";
 		value_of(actual).should_be(expected);
 	},
 	'String format with an empty substring array should return input string': function() {
@@ -64,23 +64,23 @@ describe('Strings', {
 describe('Strings: html encoding/decoding', {
 	'String should correctly htmlEncode &<>"': function() {
 		var actual = '&<>"'.htmlEncode();
-		var expected = '&amp;&lt;&gt;&quot;';		
+		var expected = '&amp;&lt;&gt;&quot;';
 		value_of(actual).should_be(expected);
 	},
 	'String should correctly htmlDecode &amp;&lt;&gt;&quot;': function() {
 		var actual = '&amp;&lt;&gt;&quot;'.htmlDecode();
-		var expected = '&<>"';		
+		var expected = '&<>"';
 		value_of(actual).should_be(expected);
 	},
 	'htmlEncode followed by htmlDecode of complex string should leave string unchanged': function() {
 		var s = '&&&""<">>&>&"';
-		var actual = s.htmlEncode().htmlDecode();		
+		var actual = s.htmlEncode().htmlDecode();
 		value_of(actual).should_be(s);
 	}
 	// NO IT SHOULDN'T! YOU CAN'T DECODE SOMETHING THAT IS NOT ENCODED
 	//'htmlDecode followed by htmlEncode of complex string should leave string unchanged': function() {
 	//	var s = '&&&""<">>&>&"';
-	//	var actual = s.htmlDecode().htmlEncode();		
+	//	var actual = s.htmlDecode().htmlEncode();
 	//	value_of(actual).should_be(s);
 	//}
 });
@@ -88,12 +88,12 @@ describe('Strings: html encoding/decoding', {
 describe('Strings: parseParams', {
 	'String should correctly parseParams for single name value pair': function() {
 		var actual = "aName:aValue".parseParams();
-		var expected = [{"aName":["aValue"]},{name:"aName",value:"aValue"}];		
+		var expected = [{"aName":["aValue"]},{name:"aName",value:"aValue"}];
 		value_of(actual).should_be(expected);
 	},
 	'String should correctly parseParams for two name value pairs': function() {
 		var actual = "aName:'aValue' aName2:'aValue2'".parseParams();
-		var expected = [{"aName":["aValue"], "aName2":["aValue2"]},{name:"aName",value:"aValue"},{name:"aName2",value:"aValue2"}];		
+		var expected = [{"aName":["aValue"], "aName2":["aValue2"]},{name:"aName",value:"aValue"},{name:"aName2",value:"aValue2"}];
 		value_of(actual).should_be(expected);
 	}
 });
@@ -101,12 +101,12 @@ describe('Strings: parseParams', {
 describe('Strings: encodeTiddlyLink', {
 	'String should correctly encodeTiddlyLink with no spaces': function() {
 		var actual = String.encodeTiddlyLink("title");
-		var expected = "title";		
+		var expected = "title";
 		value_of(actual).should_be(expected);
 	},
 	'String should correctly encodeTiddlyLink with spaces': function() {
 		var actual = String.encodeTiddlyLink("the title");
-		var expected = "[[the title]]";		
+		var expected = "[[the title]]";
 		value_of(actual).should_be(expected);
 	}
 });
