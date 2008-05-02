@@ -52,7 +52,6 @@ describe('Macros: macro errors', {
 	before_each : function() {
 		__main();
 	},
-
 	'missing macro should produce errortext' : function() { 	
 		value_of(wikifyStatic('<<NOEXISTANTMACRO>>')).should_match(/errortext/);
 	}
@@ -62,7 +61,6 @@ describe('Macros: version macro', {
 	before_each : function() {
 		__main();
 	},
-
 	'version macro should expand to the version string' : function() { 
 		version.major = "123";
 		version.minor = "456";
@@ -76,7 +74,6 @@ describe('Macros: today macro', {
 	before_each : function() {
 		__main();
 	},
-
 	'today macro should return a date shaped string' : function() { 
 		value_of(wikifyStatic("<<today>>")).should_match(/^<(span|SPAN)>[A-Z][a-z]+\s[A-Z][a-z]+\s+[0-9]{1,2}\s[0-9]{2}:[0-9]{2}:[0-9]{2} 2[0-9]{3}<\/(span|SPAN)>$/);
 	}
@@ -86,7 +83,6 @@ describe('Macros: list macro', {
 	before_each : function() {
 		__main();
 	},
-
 	'list all by default expands to the listTitle and an empty list' : function() { 
 		value_of(wikifyStatic("<<list>>")).should_be('<ul><li class="listTitle">' + __title.en.all + '</li></ul>');
 	},
@@ -148,6 +144,24 @@ describe('Macros: saveChanges macro', {
 	'saveChanges.onClick calls the saveChanges function' : function() { 
 		testing_check_button_onclick("saveChanges","saveChanges");
 	}
+});
+
+describe('Macros: message macro', {
+	before_each : function() {
+		__main();
+		__txtUserName = config.options.txtUserName;
+	},
+	after_each : function() {
+		config.options.txtUserName = __txtUserName;
+	},
+	'message with no parameters returns an empty string' : function() { 
+		value_of(wikifyStatic("<<message>>")).should_be('');
+	},
+	'message with returns an empty string' : function() { 
+		var username = "MyAssertedUserName";
+		config.options.txtUserName = username;
+		value_of(wikifyStatic("<<message config.options.txtUserName>>")).should_be(username);
+	},
 });
 
 describe('Macros: refreshDisplay macro', {
