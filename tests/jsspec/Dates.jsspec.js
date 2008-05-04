@@ -307,27 +307,27 @@ describe('Date components', {
 		value_of(actual).should_be(expected);
 	},
 
-	'week-based four-digit year number should return the year based on the week number': function() {
+	'week-based four-digit year format should return the year based on the week number': function() {
 		var actual = new Date(2007,11,31).formatString("wYYYY");
 		var expected = "2008";
 		value_of(actual).should_be(expected);
 	},
-	'week-based two-digit year number should return the year based on the week number': function() {
+	'week-based two-digit year format should return the year based on the week number': function() {
 		var actual = new Date(2007,11,31).formatString("wYY");
 		var expected = "08";
 		value_of(actual).should_be(expected);
 	},
-	'four-digit year number should return the correct year': function() {
+	'four-digit year format should return the correct year': function() {
 		var actual = new Date(2007,11,31).formatString("YYYY");
 		var expected = "2007";
 		value_of(actual).should_be(expected);
 	},
-	'four-digit year number should return the correct year based on 20th century': function() {
+	'four-digit year format should return the correct year based on 20th century': function() {
 		var actual = new Date(7,11,31).formatString("YYYY");
 		var expected = "1907";
 		value_of(actual).should_be(expected);
 	},
-	'two-digit year number should return the correct year': function() {
+	'two-digit year format should return the correct year': function() {
 		var actual = new Date(2007,11,31).formatString("YY");
 		var expected = "07";
 		value_of(actual).should_be(expected);
@@ -618,6 +618,19 @@ describe('Date components', {
 	'day-with-suffix format should return "1st" for the January 32 [sic]': function() {
 		var actual = new Date(2008,0,32).formatString("DDth");
 		var expected = "1st";
+		value_of(actual).should_be(expected);
+	}
+});
+
+describe('Escaping (cf. ticket #623; http://trac.tiddlywiki.org/ticket/623)', {
+	'should not convert escaped four-digit year format': function() {
+		var actual = new Date(2008,0,31,1,2,3).formatString("\Y\Y\Y\Y");
+		var expected = "YYYY";
+		value_of(actual).should_be(expected);
+	},
+	'should not convert escaped two-digit year format': function() {
+		var actual = new Date(2008,0,31,1,2,3).formatString("\Y\Y");
+		var expected = "YY";
 		value_of(actual).should_be(expected);
 	}
 });
