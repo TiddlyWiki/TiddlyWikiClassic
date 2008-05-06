@@ -8,6 +8,8 @@ describe('Mock: testing framework mock functions', {
 	    mock_me2 = function() {
 		return "tee-hee!";
 	    }
+	    tests_mock_test_var1 = "original value 1";
+	    tests_mock_test_var2 = "original value 2";
 	},
 	'mocking a function restores orignial function afterwards' : function() { 
 		tests_mock.before('mock_me');
@@ -67,7 +69,14 @@ describe('Mock: testing framework mock functions', {
 		mock_me();
 		value_of(tests_mock.after('mock_me').called).should_be(1003);
 		value_of(tests_mock.after('mock_me2').called).should_be(1001);
-	}
+	},
+	'saving a global variable restores orignial value afterwards' : function() { 
+		var original = tests_mock_test_var1;
+		tests_mock.save('tests_mock_test_var1');
+		tests_mock_test_var1 = "foo foo foo";
+		tests_mock.restore();
+		value_of(tests_mock_test_var1).should_be(original);
+	},
 });
 
 // ]]>

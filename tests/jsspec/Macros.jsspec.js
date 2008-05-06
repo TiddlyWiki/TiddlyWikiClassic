@@ -149,10 +149,10 @@ describe('Macros: saveChanges macro', {
 describe('Macros: message macro', {
 	before_each : function() {
 		__main();
-		__txtUserName = config.options.txtUserName;
+		tests_mock.save('config.options.txtUserName');
 	},
 	after_each : function() {
-		config.options.txtUserName = __txtUserName;
+		tests_mock.restore();
 	},
 	'message with no parameters returns an empty string' : function() { 
 		value_of(wikifyStatic("<<message>>")).should_be('');
