@@ -622,19 +622,6 @@ describe('Date components', {
 	}
 });
 
-describe('Escaping (cf. ticket #623; http://trac.tiddlywiki.org/ticket/623)', {
-	'should not convert escaped four-digit year format': function() {
-		var actual = new Date(2008,0,31,1,2,3).formatString("\Y\Y\Y\Y");
-		var expected = "YYYY";
-		value_of(actual).should_be(expected);
-	},
-	'should not convert escaped two-digit year format': function() {
-		var actual = new Date(2008,0,31,1,2,3).formatString("\Y\Y");
-		var expected = "YY";
-		value_of(actual).should_be(expected);
-	}
-});
-
 describe('Date formatting', {
 	'Date formatting YYYY MMM DD': function() {
 		var actual = new Date(2007,2,1).formatString("YYYY MMM DD");
