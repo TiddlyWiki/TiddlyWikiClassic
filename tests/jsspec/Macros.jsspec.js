@@ -18,6 +18,7 @@ __title = {
 	    closeAll: "Close all displayed tiddlers (except any that are being edited)",
 	    permaview: "Link to an URL that retrieves all the currently displayed tiddlers",
 	    saveChanges: "Save all tiddlers to create a new TiddlyWiki",
+	    tagChooser: "Choose existing tags to add to this tiddler",
 	    refreshDisplay: "Redraw the entire TiddlyWiki display"
 	}
 }
@@ -162,6 +163,27 @@ describe('Macros: message macro', {
 		config.options.txtUserName = username;
 		value_of(wikifyStatic("<<message config.options.txtUserName>>")).should_be(username);
 	},
+});
+
+describe('Macros: tagChooser macro', {
+	before_each : function() {
+		__main();
+		tests_mock.save('config.options.txtUserName');
+	},
+	after_each : function() {
+		tests_mock.restore();
+	},
+	'tagChooser with no parameters returns an empty string' : function() { 
+		var t = wikifyStatic("<<tagChooser>>");
+		var title = __title.en.tagChooser;
+		var text = "tags";
+		var r = new RegExp('<a(( tiddler="temp")|( class="button")|( title="' + title + '")|( href="javascript:;")){4,4}>'+text+'<\/a>$');
+		value_of(t).should_match(r);
+		value_of(t).should_match(/tiddler="/);
+		value_of(t).should_match(/class="/);
+		value_of(t).should_match(/title="/);
+		value_of(t).should_match(/href="/);
+	}
 });
 
 describe('Macros: refreshDisplay macro', {
