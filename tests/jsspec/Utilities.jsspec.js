@@ -105,25 +105,133 @@ describe('Utilities: compareVersions', {
 
 });
 
-//# Compares two TiddlyWiki version objects
-//# Returns +1 if v2 is later than v1
-//#          0 if v2 is the same as v1
-//#         -1 if v2 is earlier than v1
-//# version without a beta number is later than a version with a beta number
-compareVersions = function(v1,v2)
-{
-	var a = ["major","minor","revision"];
-	for(var i = 0; i<a.length; i++) {
-		var x1 = v1[a[i]] || 0;
-		var x2 = v2[a[i]] || 0;
-		if(x1<x2)
-			return 1;
-		if(x1>x2)
-			return -1;
+describe('Utilities: createTiddlyButton(parent,text,tooltip,action,className,id,accessKey,attribs)', {
+
+	before_each: function() {
+		parent = document.body;
+		text = "hi!";
+		tooltip = "a tooltip";
+		action = function() { alert('clicked!'); };
+		className = "testButton";
+		id = "testButtonId";
+		accessKey = "b";
+		attribs = {
+			style:"display:none;"
+		};
+		btn = createTiddlyButton(parent,text,tooltip,action,className,id,accessKey,attribs);
+	},
+
+	'it should create an anchor element as a child of the parent element provided': function() {
+		var before = document.body.childNodes.length;
+		btn = createTiddlyButton(parent,text,tooltip,action,className,id,accessKey,attribs);
+		var after = document.body.childNodes.length;
+		var actual = after-before;
+		var expected = 1;
+		value_of(actual).should_be(expected);
+		actual = document.body.childNodes[after-1].nodeName;
+		expected = "A";
+		value_of(actual).should_be(expected);
+	},
+	
+	'it should set the onclick function to the provided action parameter': function() {
+		var actual = btn.onclick;
+		var expected = action;
+		value_of(actual).should_be(expected);
+	},
+	
+	'it should set the anchor href to null if no action parameter is provided': function() {
+		var actual = btn.href;
+		var expected = "javascript:;";
+		value_of(actual).should_be(expected);
+	},
+	
+	'it should set the anchor title to the provided tooltip paramater': function() {
+		var actual = btn.title;
+		var expected = tooltip;
+		value_of(actual).should_be(expected);
+	},
+	
+	'it should set the contained text to the provided text parameter': function() {
+		var actual = btn.innerText || btn.textContent;
+		var expected = text;
+		value_of(actual).should_be(expected);
+	},
+	
+	'it should set the anchor class to the provdided className parameter': function() {
+		var actual = btn.className;
+		var expected = className;
+	},
+	
+	'it should set the anchor class to "button" if no className parameter is provided': function() {
+		var btn2 = createTiddlyButton(parent,text,tooltip,action,null,id,accessKey,attribs);
+		var actual = btn2.className;
+		var expected = "button";
+		value_of(actual).should_be(expected);
+	},
+	
+	'it should set the anchor id to the provided id parameter': function() {
+		var actual = btn.id;
+		var expected = id;
+		value_of(actual).should_be(expected);
+	},
+	
+	'it should set any attributes on the anchor that are provided in the attribs object': function() {
+		for(var i in attribs) {
+			value_of(btn.i).should_be(attribs.i);
+		}
+	},
+	
+	'it should set the anchor accessKey attribute to the provided accessKey parameter': function() {
+
+	},
+	
+	'it should return the anchor element': function() {
+		var actual = btn.nodeName;
+		var expected = "A";
+		value_of(actual).should_be(expected);
+	},
+	
+	'it should not require any parameters and still return an anchor element': function() {
+		var actual = createTiddlyButton().nodeName;
+		var expected = "A";
+		value_of(actual).should_be(expected);
+	},
+	
+	after_each: function() {
+		delete btn;
+		delete parent;
+		delete text;
+		delete tooltip;
+		delete action;
+		delete className;
+		delete id;
+		delete accessKey;
+		delete attribs;
 	}
-	x1 = v1.beta || 9999;
-	x2 = v2.beta || 9999;
-	if(x1<x2)
-		return 1;
-	return x1 > x2 ? -1 : 0;
-};
+});
+
+function createTiddlyButton(parent,text,tooltip,action,className,id,accessKey,attribs)
+{
+	var btn = document.createElement("a");
+	if(action) {
+		btn.onclick = action;
+		btn.setAttribute("href","javascript:;");
+	}
+	if(tooltip)
+		btn.setAttribute("title",tooltip);
+	if(text)
+		btn.appendChild(document.createTextNode(text));
+	btn.className = className ? className : "button";
+	if(id)
+		btn.id = id;
+	if(attribs) {
+		for(var n in attribs) {
+			btn.setAttribute(n,attribs[n]);
+		}
+	}
+	if(parent)
+		parent.appendChild(btn);
+	if(accessKey)
+		btn.setAttribute("accessKey",accessKey);
+	return btn;
+}
