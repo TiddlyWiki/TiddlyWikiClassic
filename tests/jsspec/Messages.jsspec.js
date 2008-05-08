@@ -19,8 +19,6 @@ describe('displayMessage',
 		});
 		displayMessage(text);
 		frame = tests_mock.after('alert');
-		console.log(frame.called);
-		console.log(frame.args);
 		value_of(frame.called).should_be(1);	
 		value_of(frame.args[0]).should_be(text);	
 	},
