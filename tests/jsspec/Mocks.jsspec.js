@@ -34,7 +34,7 @@ describe('Mock: testing framework mock functions', {
 	'shouldn\'t be able to mock a non-existant function' : function() { 
 		var caught = "no error";
 		try { tests_mock.before('nonexistant_function') } catch(e) { caught = e.message }
-		value_of(caught).should_be("nonexistant_function is not defined");
+		value_of(caught).should_match(/nonexistant_function/);
 	},
 	'mocked function should be able to return a hard-coded value' : function() { 
 		tests_mock.before('mock_me', function() { return "hoho" });
