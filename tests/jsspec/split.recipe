@@ -3,6 +3,7 @@ jsspec: BasicTypes.jsspec.js
 jsspec: Crypto.jsspec.js
 jsspec: Dates.jsspec.js
 jsspec: Dom.jsspec.js
+jsspec: FileSystem.jsspec.js
 jsspec: GenerateRss.jsspec.js
 jsspec: Macros.jsspec.js
 jsspec: Messages.jsspec.js
