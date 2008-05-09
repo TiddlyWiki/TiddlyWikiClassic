@@ -63,19 +63,6 @@ config.options = {
 	};
 config.optionsDesc = {};
 
-// List of notification functions to be called when certain tiddlers are changed or deleted
-config.notifyTiddlers = [
-	{name: "StyleSheetLayout", notify: refreshStyles},
-	{name: "StyleSheetColors", notify: refreshStyles},
-	{name: "StyleSheet", notify: refreshStyles},
-	{name: "StyleSheetPrint", notify: refreshStyles},
-	{name: "PageTemplate", notify: refreshPageTemplate},
-	{name: "SiteTitle", notify: refreshPageTitle},
-	{name: "SiteSubtitle", notify: refreshPageTitle},
-	{name: "ColorPalette", notify: refreshColorPalette},
-	{name: null, notify: refreshDisplay}
-];
-
 // Default tiddler templates
 var DEFAULT_VIEW_TEMPLATE = 1;
 var DEFAULT_EDIT_TEMPLATE = 2;

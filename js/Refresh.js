@@ -2,6 +2,19 @@
 //-- Refresh mechanism
 //--
 
+//# List of notification functions to be called when certain tiddlers are changed or deleted
+config.notifyTiddlers = [
+	{name: "StyleSheetLayout", notify: refreshStyles},
+	{name: "StyleSheetColors", notify: refreshStyles},
+	{name: "StyleSheet", notify: refreshStyles},
+	{name: "StyleSheetPrint", notify: refreshStyles},
+	{name: "PageTemplate", notify: refreshPageTemplate},
+	{name: "SiteTitle", notify: refreshPageTitle},
+	{name: "SiteSubtitle", notify: refreshPageTitle},
+	{name: "ColorPalette", notify: refreshColorPalette},
+	{name: null, notify: refreshDisplay}
+];
+
 //# refresher functions
 config.refreshers = {
 	link: function(e,changeList)
