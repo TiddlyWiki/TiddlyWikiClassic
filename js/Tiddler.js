@@ -96,19 +96,19 @@ Tiddler.prototype.set = function(title,text,modifier,modified,tags,created,field
 // Change the text and other attributes of a tiddler without triggered a tiddler.changed() call
 Tiddler.prototype.assign = function(title,text,modifier,modified,tags,created,fields)
 {
-	if(title != undefined)
+	if(title)
 		this.title = title;
-	if(text != undefined)
+	if(text)
 		this.text = text;
-	if(modifier != undefined)
+	if(modifier)
 		this.modifier = modifier;
-	if(modified != undefined)
+	if(modified)
 		this.modified = modified;
-	if(created != undefined)
+	if(created)
 		this.created = created;
-	if(fields != undefined)
+	if(fields)
 		this.fields = fields;
-	if(tags != undefined)
+	if(tags)
 		this.tags = (typeof tags == "string") ? tags.readBracketedList() : tags;
 	else if(this.tags == undefined)
 		this.tags = [];
@@ -203,7 +203,7 @@ Tiddler.prototype.generateFingerprint = function()
 Tiddler.prototype.getServerType = function()
 {
 	var serverType = null;
-	if(this.fields && this.fields['server.type'])
+	if(this.fields['server.type'])
 		serverType = this.fields['server.type'];
 	if(!serverType)
 		serverType = this.fields['wikiformat'];
