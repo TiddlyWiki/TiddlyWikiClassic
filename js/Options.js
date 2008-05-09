@@ -44,7 +44,7 @@ function saveOptionCookie(name)
 
 function encodeCookie(s)
 {
-	return escape(manualConvertUnicodeToUTF8(s));
+	return escape(convertUnicodeToHtmlEntities(s));
 }
 
 function decodeCookie(s)

@@ -16,7 +16,7 @@
 
 function convertUTF8ToUnicode(u)
 {
-	return window.netscape == undefined ? manualConvertUTF8ToUnicode(u) : mozConvertUTF8ToUnicode(u);
+	return config.browser.isOpera || !window.netscape ? manualConvertUTF8ToUnicode(u) : mozConvertUTF8ToUnicode(u);
 }
 
 function manualConvertUTF8ToUnicode(utf)
@@ -55,21 +55,31 @@ function mozConvertUTF8ToUnicode(u)
 	} // fallback
 	var s = converter.ConvertToUnicode(u);
 	var fin = converter.Finish();
-	return (fin.length > 0) ? s+fin : s;
+	return fin.length > 0 ? s+fin : s;
+}
+
+//# convert unicode string to a format suitable for saving to file
+//# this should be UTF8, unless the browser does not support saving non-ASCII characters
+function convertUnicodeToFileFormat(u)
+{
+	return config.browser.isOpera || !window.netscape ? convertUnicodeToHtmlEntities(u) : mozConvertUnicodeToUTF8(u);
+}
+
+function convertUnicodeToHtmlEntities(s)
+{
+	var re = /[^\u0000-\u007F]/g;
+	return s.replace(re,function($0) {return "&#" + $0.charCodeAt(0).toString() + ";";});
+
 }
 
 function convertUnicodeToUTF8(s)
 {
-	if(window.netscape == undefined)
-		return manualConvertUnicodeToUTF8(s);
-	else
-		return mozConvertUnicodeToUTF8(s);
+	return config.browser.isOpera || !window.netscape ? manualConvertUnicodeToUTF8(s) : mozConvertUTF8ToUnicode(s);
 }
 
 function manualConvertUnicodeToUTF8(s)
 {
-	var re = /[^\u0000-\u007F]/g ;
-	return s.replace(re,function($0) {return "&#" + $0.charCodeAt(0).toString() + ";";});
+	return unescape(encodeURIComponent(s));
 }
 
 function mozConvertUnicodeToUTF8(s)
@@ -255,9 +265,7 @@ function javaUrlToFilename(url)
 	if(url.indexOf(f) == 0)
 		return url.substring(f.length);
 	var i = url.indexOf(":");
-	if(i > 0)
-		return url.substring(i-1);
-	return url;
+	return i > 0 ? url.substring(i-1) : url;
 }
 
 function javaSaveFile(filePath,content)

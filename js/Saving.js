@@ -47,7 +47,7 @@ function updateMarkupBlock(s,blockName,tiddlerName)
 	return s.replaceChunk(
 			"<!--%0-START-->".format([blockName]),
 			"<!--%0-END-->".format([blockName]),
-			"\n" + convertUnicodeToUTF8(store.getRecursiveTiddlerText(tiddlerName,"")) + "\n");
+			"\n" + convertUnicodeToFileFormat(store.getRecursiveTiddlerText(tiddlerName,"")) + "\n");
 }
 
 function updateOriginal(original,posDiv)
@@ -59,9 +59,9 @@ function updateOriginal(original,posDiv)
 		return null;
 	}
 	var revised = original.substr(0,posDiv[0] + startSaveArea.length) + "\n" +
-				convertUnicodeToUTF8(store.allTiddlersAsHtml()) + "\n" +
+				convertUnicodeToFileFormat(store.allTiddlersAsHtml()) + "\n" +
 				original.substr(posDiv[1]);
-	var newSiteTitle = convertUnicodeToUTF8(getPageTitle()).htmlEncode();
+	var newSiteTitle = convertUnicodeToFileFormat(getPageTitle()).htmlEncode();
 	revised = revised.replaceChunk("<title"+">","</title"+">"," " + newSiteTitle + " ");
 	revised = updateLanguageAttribute(revised);
 	revised = updateMarkupBlock(revised,"PRE-HEAD","MarkupPreHead");
@@ -190,7 +190,7 @@ function saveRss(localPath)
 {
 	//# Save Rss
 	var rssPath = localPath.substr(0,localPath.lastIndexOf(".")) + ".xml";
-	if(saveFile(rssPath,convertUnicodeToUTF8(generateRss())))
+	if(saveFile(rssPath,convertUnicodeToFileFormat(generateRss())))
 		displayMessage(config.messages.rssSaved,"file://" + rssPath);
 	else
 		alert(config.messages.rssFailed);
