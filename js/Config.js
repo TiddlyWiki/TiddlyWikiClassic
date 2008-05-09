@@ -71,7 +71,7 @@ config.tiddlerTemplates = {
 	2: "EditTemplate"
 };
 
-// More messages (rather a legacy layout that shouldn't really be like this)
+// More messages (rather a legacy layout that should not really be like this)
 config.views = {
 	wikified: {
 		tag: {}
