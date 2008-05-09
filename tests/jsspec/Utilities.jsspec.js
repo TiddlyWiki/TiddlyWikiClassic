@@ -19,7 +19,7 @@ describe('Utilities: formatVersion', {
 	},
 	'it doesn\'t need to take an argument, in which case it will use the global "version" variable': function() {
 		var actual = formatVersion();
-		var expected = version.major+"."+version.minor+"."+version.revision+" ("+(version.beta?"beta "+version.beta+")" : "");
+		var expected = version.major+"."+version.minor+"."+version.revision+(version.beta?" (beta "+version.beta+")" : "");
 		value_of(actual).should_be(expected);
 	},
 	'it should return a string': function() {
@@ -210,28 +210,99 @@ describe('Utilities: createTiddlyButton(parent,text,tooltip,action,className,id,
 	}
 });
 
-function createTiddlyButton(parent,text,tooltip,action,className,id,accessKey,attribs)
-{
-	var btn = document.createElement("a");
-	if(action) {
-		btn.onclick = action;
-		btn.setAttribute("href","javascript:;");
+describe('Utilities: createTiddlyLink(place,title,includeText,className,isStatic,linkedFromTiddler,noToggle)', {
+
+	before_each: function() {
+		store = new TiddlyWiki();
+		title = "test";
+		t = new Tiddler(title);
+		t_linked_from = new Tiddler("linkedFrom");
+		place = document.body;
+		includeText = true;
+		className = "testLink";
+		isStatic = "true";
+		linkedFromTiddler = t_linked_from;
+		noToggle = "true";
+		btn = createTiddlyLink(place,title,includeText,className,isStatic,linkedFromTiddler,noToggle);
+	},
+
+	'it should add a link as child of the "place" DOM element ': function() {
+		var before = place.childNodes;
+		var expected = before.length+1;
+		createTiddlyLink(place,title);
+		var actual = place.childNodes.length;
+		value_of(actual).should_be(expected);
+		actual = place.childNodes[place.childNodes.length-1].nodeName;
+		expected = "A";
+		value_of(actual).should_be(expected);
+	},
+	
+	'it should set the "tiddlyLink" attribute on the link to the provided "title" parameter': function() {
+		var actual = btn.getAttribute("tiddlyLink");
+		var expected = title;
+		value_of(actual).should_be(expected);
+	},
+	/* BUG IN DOCS: THIS IS ONLY TRUE IF THE LINK IS INTERNAL
+	'it should include the title as the text of this link if the "includeText" parameter is set to true': function() {
+		var actual = btn.innerText || btn.textContent;
+		var expected = title;
+		value_of(actual).should_be(expected);
+	},
+	*/
+	'it should not include any text in the link if the "includeText" parameter is not set or false': function() {
+		btn = createTiddlyLink(place,title);
+		var actual = btn.innerText || btn.textContent;
+		var expected = "";
+		value_of(actual).should_be(expected);
+	},
+	/* BUG IN DOCS: THIS IS ONLY TRUE IF THE LINK IS INTERNAL
+	'it should add the provided "className" parameter as the class of the link': function() {
+		var actual = btn.className;
+		console.log(btn);
+		var expected = className;
+		value_of(actual).should_be(expected);
+	},
+	*/
+	/* BUG IN DOCS: THIS IS ONLY TRUE IF THE LINK IS INTERNAL
+	'it should set the "tiddlyFields" attribute on the link to be the fields from any tiddler referred to in the provided "linkedFromTiddler" parameter': function() {
+		var actual = btn.getAttribute("tiddlyFields");
+		var expected = linkedFromTiddler.getInheritedFields();
+		value_of(actual).should_be(expected);
+	},
+	*/
+	'it should set the "noToggle" attribute on the link to "true" if the provided "noToggle" parameter is set': function() {
+		var actual = btn.getAttribute("noToggle");
+		var expected = "true";
+		value_of(actual).should_be(expected);
+	},
+	
+	'it should set the "refresh" attribute on the link to "link"': function() {
+		var actual = btn.getAttribute("refresh");
+		var expected = "link";
+		value_of(actual).should_be(expected);
+	},
+	
+	'it should create a permalink if the "isStatic" parameter is set': function() {
+		var actual = btn.href.indexOf("#") != -1;
+		value_of(actual).should_be_true;
+	},
+	
+	'it should return a reference to the link': function() {
+		var actual = btn.nodeName;
+		var expected = "A";
+		value_of(actual).should_be(expected);
+	},
+	
+	after_each: function() {
+		delete store;
+		delete t_linked_from;
+		delete place;
+		delete title;
+		delete includeText;
+		delete className;
+		delete isStatic;
+		delete linkedFromTiddler;
+		delete noToggle;
+		removeNode(btn);
 	}
-	if(tooltip)
-		btn.setAttribute("title",tooltip);
-	if(text)
-		btn.appendChild(document.createTextNode(text));
-	btn.className = className ? className : "button";
-	if(id)
-		btn.id = id;
-	if(attribs) {
-		for(var n in attribs) {
-			btn.setAttribute(n,attribs[n]);
-		}
-	}
-	if(parent)
-		parent.appendChild(btn);
-	if(accessKey)
-		btn.setAttribute("accessKey",accessKey);
-	return btn;
-}
+});
