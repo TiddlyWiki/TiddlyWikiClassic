@@ -60,8 +60,7 @@ config.paramifiers.searchRegExp = {
 
 config.paramifiers.tag = {
 	onstart: function(v) {
-		var tagged = store.getTaggedTiddlers(v,"title");
-		story.displayTiddlers(null,tagged,null,false,null);
+		story.displayTiddlers(null,store.getTaggedTiddlers(v,"title"),null,false,null);
 	}
 };
 
