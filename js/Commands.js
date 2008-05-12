@@ -146,12 +146,12 @@ config.commands.syncing.onChooseServer = function(e)
 	var serverType = this.getAttribute("server.type");
 	if(serverType) {
 		store.addTiddlerFields(tiddler,{
-			'server.type': serverType,
-			'server.host': this.getAttribute("server.host"),
-			'server.workspace': this.getAttribute("server.workspace")
+			"server.type": serverType,
+			"server.host": this.getAttribute("server.host"),
+			"server.workspace": this.getAttribute("server.workspace")
 			});
 	} else {
-		store.setValue(tiddler,'server',null);
+		store.setValue(tiddler,"server",null);
 	}
 	return false;
 };
