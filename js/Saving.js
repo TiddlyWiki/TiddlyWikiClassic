@@ -129,7 +129,7 @@ function saveChanges(onlyIfDirty,tiddlers)
 		saveBackup(localPath,original);
 	if(config.options.chkSaveEmptyTemplate)
 		saveEmpty(localPath,original,posDiv);
-	if(config.options.chkGenerateAnRssFeed)
+	if(config.options.chkGenerateAnRssFeed && saveRss instanceof Function)
 		saveRss(localPath);
 	if(config.options.chkDisplayInstrumentation)
 		displayMessage("saveChanges " + (new Date()-t0) + " ms");
@@ -186,16 +186,6 @@ function saveEmpty(localPath,original,posDiv)
 		alert(config.messages.emptyFailed);
 }
 
-function saveRss(localPath)
-{
-	//# Save Rss
-	var rssPath = localPath.substr(0,localPath.lastIndexOf(".")) + ".xml";
-	if(saveFile(rssPath,convertUnicodeToFileFormat(generateRss())))
-		displayMessage(config.messages.rssSaved,"file://" + rssPath);
-	else
-		alert(config.messages.rssFailed);
-}
-
 function getLocalPath(origPath)
 {
 	var originalPath = convertUriToUTF8(origPath,config.options.txtFileSystemCharSet);
@@ -248,6 +238,16 @@ function getBackupPath(localPath,title,extension)
 	return backupPath;
 }
 
+function saveRss(localPath)
+{
+	//# Save Rss
+	var rssPath = localPath.substr(0,localPath.lastIndexOf(".")) + ".xml";
+	if(saveFile(rssPath,convertUnicodeToFileFormat(generateRss())))
+		displayMessage(config.messages.rssSaved,"file://" + rssPath);
+	else
+		alert(config.messages.rssFailed);
+}
+
 function generateRss()
 {
 	var s = [];
@@ -279,5 +279,4 @@ function generateRss()
 	// Save it all
 	return s.join("\n");
 }
-
 
