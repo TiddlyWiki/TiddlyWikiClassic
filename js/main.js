@@ -180,8 +180,10 @@ function getPluginInfo(tiddler)
 // Check that a particular plugin is valid for execution
 function isPluginExecutable(plugin)
 {
-	if(plugin.tiddler.isTagged("systemConfigForce"))
-		return verifyTail(plugin,true,config.messages.pluginForced);
+	if(plugin.tiddler.isTagged("systemConfigForce")) {
+		plugin.log.push(config.messages.pluginForced);
+		return true;
+	}
 	if(plugin["CoreVersion"]) {
 		var coreVersion = plugin["CoreVersion"].split(".");
 		var w = parseInt(coreVersion[0]) - version.major;
@@ -189,23 +191,21 @@ function isPluginExecutable(plugin)
 			w = parseInt(coreVersion[1]) - version.minor;
 		if(w == 0 && coreVersion[2])
 			w = parseInt(coreVersion[2]) - version.revision;
-		if(w > 0)
-			return verifyTail(plugin,false,config.messages.pluginVersionError);
+		if(w > 0) {
+			plugin.log.push(config.messages.pluginVersionError);
+			return false;
 		}
+	}
 	return true;
 }
 
 function isPluginEnabled(plugin)
 {
-	if(plugin.tiddler.isTagged("systemConfigDisable"))
-		return verifyTail(plugin,false,config.messages.pluginDisabled);
+	if(plugin.tiddler.isTagged("systemConfigDisable")) {
+		plugin.log.push(config.messages.pluginDisabled);
+		return false;
+	}
 	return true;
-}
-
-function verifyTail(plugin,result,message)
-{
-	plugin.log.push(message);
-	return result;
 }
 
 function invokeMacro(place,macro,params,wikifier,tiddler)
