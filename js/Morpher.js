@@ -63,7 +63,7 @@ Morpher.prototype.tick = function()
 	for(var t=0; t<this.properties.length; t++) {
 		var p = this.properties[t];
 		if(p.start !== undefined && p.end !== undefined) {
-			var template = p.template ? p.template : "%0";
+			var template = p.template || "%0";
 			switch(p.format) {
 				case undefined:
 				case "style":
