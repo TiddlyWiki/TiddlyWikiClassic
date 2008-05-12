@@ -66,7 +66,7 @@ config.macros.upgrade.onLoadCore = function(status,params,responseText,url,xhr)
 		w.setButtons([],me.statusReloadingCore);
 		var backupPath = w.getValue("backupPath");
 		var newLoc = document.location.toString() + '?time=' + new Date().convertToYYYYMMDDHHMM()  + '#upgrade:[[' + encodeURI(backupPath) + ']]';
-		window.setTimeout(function () {window.location = newLoc;},10)
+		window.setTimeout(function () {window.location = newLoc;},10);
 	};
 	var step2 = [me.step2Html_downgrade,me.step2Html_restore,me.step2Html_upgrade][compareVersions(version,newVer) + 1];
 	w.addStep(me.step2Title,step2.format([formatVersion(newVer),formatVersion(version)]));
@@ -80,7 +80,7 @@ config.macros.upgrade.onCancel = function(e)
 	w.addStep(me.step3Title,me.step3Html);
 	w.setButtons([]);
 	return false;
-}
+};
 
 config.macros.upgrade.extractVersion = function(upgradeFile)
 {
