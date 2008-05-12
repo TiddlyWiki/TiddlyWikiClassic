@@ -306,3 +306,90 @@ describe('Utilities: createTiddlyLink(place,title,includeText,className,isStatic
 		removeNode(btn);
 	}
 });
+
+describe('Utilities: refreshTiddlyLink(e,title)', {
+
+	before_each: function() {
+		store = new TiddlyWiki();
+		loadShadowTiddlers();
+		not_a_tiddler = null;
+		store.saveTiddler("a_tiddler","a_tiddler");
+		store.saveTiddler("another_tiddler","another_tiddler");
+		place = document.body;
+		btn = createTiddlyLink(place,"a_tiddler");
+	},
+
+	'it should update the className attribute of the "e" element if "title" is the name of a non-existant tiddler': function() {
+		refreshTiddlyLink(btn,not_a_tiddler);
+		var expected = ["tiddlyLink","tiddlyLinkNonExisting"];
+		var actual = btn.className.readBracketedList();
+		for(var i=0;i<expected.length;i++) {
+			value_of(actual.contains(expected[i])).should_be_true();
+		}
+		value_of(actual.length).should_be(expected.length);
+	},
+	
+	'it should update the className attribute of the "e" element if "title" is the name of a tiddler': function() {
+		refreshTiddlyLink(btn,"another_tiddler");
+		var expected = ["tiddlyLink","tiddlyLinkExisting"];
+		var actual = btn.className.readBracketedList();
+		for(var i=0;i<expected.length;i++) {
+			value_of(actual.contains(expected[i])).should_be_true();
+		}
+		value_of(actual.length).should_be(expected.length);
+	},
+	
+	'it should update the className attribute of the "e" element if "title" is the name of a shadow tiddler': function() {
+		value_of(store.isShadowTiddler("SiteTitle")).should_be_true();
+		refreshTiddlyLink(btn,"SiteTitle");
+		var expected = ["tiddlyLink", "tiddlyLinkNonExisting", "shadow"];
+		var actual = btn.className.readBracketedList();
+		for(var i=0;i<expected.length;i++) {
+			value_of(actual.contains(expected[i])).should_be_true();
+		}
+		value_of(actual.length).should_be(expected.length);
+	},
+	
+	'it should update the title attribute of the "e" element if "title" is the name of a non-existant tiddler': function() {
+		refreshTiddlyLink(btn,"not_a_tiddler");
+		var expected = config.messages.undefinedTiddlerToolTip.format(["not_a_tiddler"]);
+		var actual = btn.title;
+		value_of(actual).should_be(expected);
+	},
+	
+	'it should update the title attribute of the "e" element if "title" is the name of a tiddler': function() {
+		refreshTiddlyLink(btn,"another_tiddler");
+		var expected = store.getTiddler("another_tiddler").getSubtitle();
+		var actual = btn.title;
+		value_of(actual).should_be(expected);
+	},
+	
+	'it should update the title attribute of the "e" element if "title" is the name of a shadow tiddler with an annotation': function() {
+		var title = "SiteTitle";
+		value_of(store.isShadowTiddler(title)).should_be_true();
+		refreshTiddlyLink(btn,title);
+		var expected = config.annotations[title];
+		var actual = btn.title;
+		value_of(actual).should_be(expected);
+	},
+	
+	'it should update the title attribute of the "e" element if "title" is the name of a shadow tiddler without an annotation': function() {
+		merge(config.shadowTiddlers,{
+			testShadow: "some test text"
+		});
+		var title = "testShadow";
+		value_of(store.isShadowTiddler(title)).should_be_true();
+		refreshTiddlyLink(btn,title);
+		var expected = config.messages.shadowedTiddlerToolTip.format([title]);
+		var actual = btn.title;
+		value_of(actual).should_be(expected);
+		delete config.shadowTiddlers.testShadow;
+	},
+
+	after_each: function() {
+		delete store;
+		delete not_a_tiddler;
+		delete place;
+		delete btn;
+	}
+});
