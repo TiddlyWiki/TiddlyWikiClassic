@@ -24,13 +24,13 @@ config.macros.toolbar.createCommand = function(place,commandName,tiddler,classNa
 			var tooltip = command.getTooltip ? command.getTooltip(tiddler) : this.getCommandTooltip(command,tiddler);
 			var cmd;
 			switch(command.type) {
-				case "popup":
-					cmd = this.onClickPopup;
-					break;
-				case "command":
-				default:
-					cmd = this.onClickCommand;
-					break;
+			case "popup":
+				cmd = this.onClickPopup;
+				break;
+			case "command":
+			default:
+				cmd = this.onClickCommand;
+				break;
 			}
 			var btn = createTiddlyButton(null,text,tooltip,cmd);
 			btn.setAttribute("commandName",commandName);
@@ -111,28 +111,28 @@ config.macros.toolbar.handler = function(place,macroName,params,wikifier,paramSt
 	for(var t=0; t<params.length; t++) {
 		var c = params[t];
 		switch(c) {
-			case '>':
-				var btn = createTiddlyButton(place,this.moreLabel,this.morePrompt,config.macros.toolbar.onClickMore);
-				addClass(btn,"moreCommand");
-				var e = createTiddlyElement(place,"span",null,"moreCommand");
-				e.style.display = "none";
-				place = e;
+		case '>':
+			var btn = createTiddlyButton(place,this.moreLabel,this.morePrompt,config.macros.toolbar.onClickMore);
+			addClass(btn,"moreCommand");
+			var e = createTiddlyElement(place,"span",null,"moreCommand");
+			e.style.display = "none";
+			place = e;
+			break;
+		default:
+			var className = "";
+			switch(c.substr(0,1)) {
+			case "+":
+				className = "defaultCommand";
+				c = c.substr(1);
 				break;
-			default:
-				var className = "";
-				switch(c.substr(0,1)) {
-					case "+":
-						className = "defaultCommand";
-						c = c.substr(1);
-						break;
-					case "-":
-						className = "cancelCommand";
-						c = c.substr(1);
-						break;
-				}
-				if(c in config.commands)
-					this.createCommand(place,c,tiddler,className);
+			case "-":
+				className = "cancelCommand";
+				c = c.substr(1);
 				break;
+			}
+			if(c in config.commands)
+				this.createCommand(place,c,tiddler,className);
+			break;
 		}
 	}
 };
