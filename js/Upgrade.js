@@ -2,7 +2,7 @@
 //-- Upgrade macro
 //--
 
-config.macros.upgrade.handler = function(place,macroName,params,wikifier,paramString,tiddler)
+config.macros.upgrade.handler = function(place)
 {
 	var w = new Wizard();
 	w.createWizard(place,this.wizardTitle);
