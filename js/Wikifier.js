@@ -26,9 +26,12 @@ function getParser(tiddler,format)
 
 function wikify(source,output,highlightRegExp,tiddler)
 {
-	if(source && source != "") {
+	if(source) {
 		var wikifier = new Wikifier(source,getParser(tiddler),highlightRegExp,tiddler);
+		var t0 = new Date();
 		wikifier.subWikify(output);
+		if(tiddler && config.options.chkDisplayInstrumentation)
+			displayMessage("wikify:" +tiddler.title+ " in " + (new Date()-t0) + " ms");
 	}
 }
 
@@ -76,7 +79,7 @@ function wikifyPlainText(text,limit,tiddler)
 //# Highlight plain text into an element
 function highlightify(source,output,highlightRegExp,tiddler)
 {
-	if(source && source != "") {
+	if(source) {
 		var wikifier = new Wikifier(source,formatter,highlightRegExp,tiddler);
 		wikifier.outputText(output,0,source.length);
 	}
