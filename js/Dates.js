@@ -97,4 +97,3 @@ Date.convertFromYYYYMMDDHHMM = function(d)
 			parseInt(mm,10),0,0));
 };
 
-
