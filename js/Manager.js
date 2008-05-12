@@ -2,7 +2,7 @@
 //-- Manager UI for groups of tiddlers
 //--
 
-config.macros.plugins.handler = function(place,macroName,params,wikifier,paramString,tiddler)
+config.macros.plugins.handler = function(place,macroName,params,wikifier,paramString)
 {
 	var wizard = new Wizard();
 	wizard.createWizard(place,this.wizardTitle);
@@ -80,7 +80,7 @@ config.macros.plugins.doDelete = function(e)
 		alert(config.messages.nothingSelected);
 	} else {
 		if(confirm(config.macros.plugins.confirmDeleteText.format([rowNames.join(", ")]))) {
-			for(t=0; t<rowNames.length; t++) {
+			for(var t=0; t<rowNames.length; t++) {
 				store.removeTiddler(rowNames[t]);
 				story.closeTiddler(rowNames[t],true);
 			}
