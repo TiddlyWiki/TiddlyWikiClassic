@@ -386,7 +386,7 @@ config.macros.tagChooser.onClick = function(ev)
 	if(e.metaKey || e.ctrlKey) stopEvent(e); //# keep popup open on CTRL-click
 	var lingo = config.views.editor.tagChooser;
 	var popup = Popup.create(this);
-	var tags = store.getTags();
+	var tags = store.getTags("excludeLists");
 	if(tags.length == 0)
 		createTiddlyText(createTiddlyElement(popup,"li"),lingo.popupNone);
 	for(var t=0; t<tags.length; t++) {
