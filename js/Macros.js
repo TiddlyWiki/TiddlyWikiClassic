@@ -383,7 +383,6 @@ config.macros.edit.handler = function(place,macroName,params,wikifier,paramStrin
 config.macros.tagChooser.onClick = function(ev)
 {
 	var e = ev ? ev : window.event;
-	if(e.metaKey || e.ctrlKey) stopEvent(e); //# keep popup open on CTRL-click
 	var lingo = config.views.editor.tagChooser;
 	var popup = Popup.create(this);
 	var tags = store.getTags("excludeLists");
@@ -403,6 +402,7 @@ config.macros.tagChooser.onClick = function(ev)
 config.macros.tagChooser.onTagClick = function(ev)
 {
 	var e = ev ? ev : window.event;
+	if(e.metaKey || e.ctrlKey) stopEvent(e); //# keep popup open on CTRL-click
 	var tag = this.getAttribute("tag");
 	var title = this.getAttribute("tiddler");
 	if(!readOnly)
