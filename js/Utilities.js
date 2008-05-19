@@ -42,12 +42,12 @@ function createTiddlyButton(parent,text,tooltip,action,className,id,accessKey,at
 		btn.setAttribute("title",tooltip);
 	if(text)
 		btn.appendChild(document.createTextNode(text));
-	btn.className = className ? className : "button";
+	btn.className = className || "button";
 	if(id)
 		btn.id = id;
 	if(attribs) {
-		for(var n in attribs) {
-			btn.setAttribute(n,attribs[n]);
+		for(var i in attribs) {
+			btn.setAttribute(i,attribs[i]);
 		}
 	}
 	if(parent)
@@ -210,10 +210,8 @@ function onClickTag(ev)
 // Event handler for 'open all' on a tiddler popup
 function onClickTagOpenAll(ev)
 {
-	var e = ev ? ev : window.event;
-	var tag = this.getAttribute("tag");
-	var tagged = store.getTaggedTiddlers(tag);
-	story.displayTiddlers(this,tagged);
+	var tiddlers = store.getTaggedTiddlers(this.getAttribute("tag"));
+	story.displayTiddlers(this,tiddlers);
 	return false;
 }
 
@@ -286,7 +284,7 @@ function merge(dst,src,preserveExisting)
 // Returns a string containing the description of an exception, optionally prepended by a message
 function exceptionText(e,message)
 {
-	var s = e.description ? e.description : e.toString();
+	var s = e.description || e.toString();
 	return message ? "%0:\n%1".format([message,s]) : s;
 }
 
@@ -316,5 +314,4 @@ function glyph(name)
 		return "";
 	return g.codes[name][b];
 }
-
 
