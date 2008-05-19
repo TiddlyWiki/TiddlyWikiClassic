@@ -102,9 +102,8 @@ function removeClass(e,className)
 
 function hasClass(e,className)
 {
-	if(e.className) {
-		if(e.className.split(" ").indexOf(className) != -1)
-			return true;
+	if(e.className && e.className.split(" ").indexOf(className) != -1) {
+		return true;
 	}
 	return false;
 }
@@ -112,8 +111,8 @@ function hasClass(e,className)
 // Find the closest relative with a given property value (property defaults to tagName, relative defaults to parentNode)
 function findRelated(e,value,name,relative)
 {
-	name = name ? name : "tagName";
-	relative = relative ? relative : "parentNode";
+	name = name || "tagName";
+	relative = relative || "parentNode";
 	if(name == "className") {
 		while(e && !hasClass(e,value)) {
 			e = e[relative];
@@ -182,25 +181,25 @@ function ensureVisible(e)
 // Get the current width of the display window
 function findWindowWidth()
 {
-	return window.innerWidth ? window.innerWidth : document.documentElement.clientWidth;
+	return window.innerWidth || document.documentElement.clientWidth;
 }
 
 // Get the current height of the display window
 function findWindowHeight()
 {
-	return window.innerHeight ? window.innerHeight : document.documentElement.clientHeight;
+	return window.innerHeight || document.documentElement.clientHeight;
 }
 
 // Get the current horizontal page scroll position
 function findScrollX()
 {
-	return window.scrollX ? window.scrollX : document.documentElement.scrollLeft;
+	return window.scrollX || document.documentElement.scrollLeft;
 }
 
 // Get the current vertical page scroll position
 function findScrollY()
 {
-	return window.scrollY ? window.scrollY : document.documentElement.scrollTop;
+	return window.scrollY || document.documentElement.scrollTop;
 }
 
 function findPosX(obj)
@@ -226,7 +225,7 @@ function findPosY(obj)
 // Blur a particular element
 function blurElement(e)
 {
-	if(e != null && e.focus && e.blur) {
+	if(e && e.focus && e.blur) {
 		e.focus();
 		e.blur();
 	}
