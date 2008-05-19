@@ -80,6 +80,7 @@ config.macros.sync.processSyncableTiddlers = function(syncList)
 	for(var i=0; i<syncList.length; i++) {
 		si = syncList[i];
 		si.rowElement.style.backgroundColor = si.syncStatus.color;
+		si.rowElement.style.display = si.syncStatus.display;
 	}
 };
 
@@ -176,6 +177,7 @@ config.macros.sync.updateSyncStatus = function(syncItem)
 	removeChildren(e);
 	createTiddlyText(e,syncItem.syncStatus.text);
 	syncItem.rowElement.style.backgroundColor = syncItem.syncStatus.color;
+	syncItem.rowElement.style.display = syncItem.syncStatus.display;
 };
 
 config.macros.sync.doSync = function(e)
