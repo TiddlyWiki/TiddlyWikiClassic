@@ -12,7 +12,7 @@ var ListView = {};
 //#   className - optional classname for the <table> element
 ListView.create = function(place,listObject,listTemplate,callback,className)
 {
-	var table = createTiddlyElement(place,"table",null,className ? className : "listView twtable");
+	var table = createTiddlyElement(place,"table",null,className || "listView twtable");
 	var thead = createTiddlyElement(table,"thead");
 	var r = createTiddlyElement(thead,"tr");
 	for(var t=0; t<listTemplate.columns.length; t++) {
@@ -166,7 +166,7 @@ ListView.columnTypes.Link = {
 			var v = listObject[field];
 			var c = columnTemplate.text;
 			if(v != undefined)
-				createTiddlyText(createExternalLink(place,v),c ? c : v);
+				createTiddlyText(createExternalLink(place,v),c || v);
 		}
 };
 
