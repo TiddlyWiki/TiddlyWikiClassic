@@ -223,6 +223,35 @@ describe('Slices: calcAllSlices()', {
 		var actual = store.calcAllSlices(title);
 		var expected = { "[foo]": "bar" };
 		value_of(actual).should_be(expected);
+	},
+
+	'should disregard apparent slices within code sections': function() {
+		/*
+		 * FAILURE
+		 * ticket #522 (http://trac.tiddlywiki.org/ticket/522)
+		 */
+		var title = "tiddler";
+		var text = "//{{{\n"
+			+ "foo: bar;\n"
+			+ "//}}}";
+		store.saveTiddler(title, title, text);
+		var actual = store.calcAllSlices(title);
+		var expected = {};
+		value_of(actual).should_be(expected);
+	},
+	'should disregard slices within JSON structures': function() {
+		/*
+		 * FAILURE
+		 * ticket #522 (http://trac.tiddlywiki.org/ticket/522)
+		 */
+		var title = "tiddler";
+		var text = "{\n"
+			+ "\tfoo: 'bar'\n"
+			+ "}\n";
+		store.saveTiddler(title, title, text);
+		var actual = store.calcAllSlices(title);
+		var expected = {};
+		value_of(actual).should_be(expected);
 	}
 });
 
