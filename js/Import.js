@@ -97,7 +97,7 @@ config.macros.importTiddlers.onBrowseChange = function(e)
 	fileInput.value = "file:///" + this.value;
 	var serverType = wizard.getElement("selTypes");
 	serverType.value = "file";
-	return false;
+	return true;
 };
 
 config.macros.importTiddlers.onOpen = function(e)
