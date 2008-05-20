@@ -69,7 +69,6 @@ function convertUnicodeToHtmlEntities(s)
 {
 	var re = /[^\u0000-\u007F]/g;
 	return s.replace(re,function($0) {return "&#" + $0.charCodeAt(0).toString() + ";";});
-
 }
 
 function convertUnicodeToUTF8(s)
