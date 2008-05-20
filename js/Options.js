@@ -81,7 +81,7 @@ config.macros.option.genericOnChange = function(e)
 		var handler = config.macros.option.types[optType];
 		if(handler.elementType && handler.valueField)
 			config.macros.option.propagateOption(opt,handler.valueField,this[handler.valueField],handler.elementType);
-		}
+	}
 	return true;
 };
 
