@@ -25,7 +25,7 @@ function generateRss()
 	if(u)
 		s.push("<link>" + u.htmlEncode() + "</link>");
 	s.push("<description>" + wikifyPlain("SiteSubtitle").htmlEncode() + "</description>");
-	s.push("<language>en-us</language>");
+	s.push("<language>" + config.locale + "</language>");
 	s.push("<copyright>Copyright " + d.getFullYear() + " " + config.options.txtUserName.htmlEncode() + "</copyright>");
 	s.push("<pubDate>" + d.toGMTString() + "</pubDate>");
 	s.push("<lastBuildDate>" + d.toGMTString() + "</lastBuildDate>");
