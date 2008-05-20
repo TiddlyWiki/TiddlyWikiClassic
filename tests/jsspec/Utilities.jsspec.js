@@ -217,16 +217,23 @@ describe('Utilities: createTiddlyLink(place,title,includeText,className,isStatic
 		title = "test";
 		t = new Tiddler(title);
 		t_linked_from = new Tiddler("linkedFrom");
+		t_linked_from.fields = {
+			"server.host":"host",
+			"server.workspace":"workspace",
+			"wikiformat":"wikiformat",
+			"server.type":"type"
+		};
 		place = document.body;
 		includeText = true;
 		className = "testLink";
 		isStatic = "true";
 		linkedFromTiddler = t_linked_from;
 		noToggle = "true";
-		btn = createTiddlyLink(place,title,includeText,className,isStatic,linkedFromTiddler,noToggle);
+		btn = createTiddlyLink(place,title,includeText,className,false,linkedFromTiddler,noToggle);
+		btn_external = createTiddlyLink(place,title,includeText,className,isStatic,linkedFromTiddler,noToggle);
 	},
 
-	'it should add a link as child of the "place" DOM element ': function() {
+	'it should add a link as child of the "place" DOM element (internal)': function() {
 		var before = place.childNodes;
 		var expected = before.length+1;
 		createTiddlyLink(place,title);
@@ -237,58 +244,101 @@ describe('Utilities: createTiddlyLink(place,title,includeText,className,isStatic
 		value_of(actual).should_be(expected);
 	},
 	
-	'it should set the "tiddlyLink" attribute on the link to the provided "title" parameter': function() {
+	'it should set the "tiddlyLink" attribute on the link to the provided "title" parameter (internal)': function() {
 		var actual = btn.getAttribute("tiddlyLink");
 		var expected = title;
 		value_of(actual).should_be(expected);
 	},
-	/* BUG IN DOCS: THIS IS ONLY TRUE IF THE LINK IS INTERNAL
-	'it should include the title as the text of this link if the "includeText" parameter is set to true': function() {
+	
+	'it should set the "tiddlyLink" attribute on the link to the provided "title" parameter (external)': function() {
+		var actual = btn_external.getAttribute("tiddlyLink");
+		var expected = title;
+		value_of(actual).should_be(expected);
+	},
+
+	'it should include the title as the text of this link if the "includeText" parameter is set to true (internal)': function() {
 		var actual = btn.innerText || btn.textContent;
 		var expected = title;
 		value_of(actual).should_be(expected);
 	},
-	*/
+
+	'it should include the title as the text of this link if the "includeText" parameter is set to true (external)': function() {
+		var actual = btn_external.innerText || btn.textContent;
+		var expected = title;
+		value_of(actual).should_be(expected);
+	},
+
 	'it should not include any text in the link if the "includeText" parameter is not set or false': function() {
 		btn = createTiddlyLink(place,title);
 		var actual = btn.innerText || btn.textContent;
 		var expected = "";
 		value_of(actual).should_be(expected);
 	},
-	/* BUG IN DOCS: THIS IS ONLY TRUE IF THE LINK IS INTERNAL
-	'it should add the provided "className" parameter as the class of the link': function() {
-		var actual = btn.className;
-		console.log(btn);
-		var expected = className;
-		value_of(actual).should_be(expected);
+
+	'it should add the provided "className" parameter to the class of the link (internal)': function() {
+		var actual = btn.className.indexOf(className) != -1;
+		value_of(actual).should_be_true();
+	},
+	/* BUG IN DOCS: THIS IS ONLY TRUE IF THE LINK IS INTERNAL	
+	'it should add the provided "className" parameter to the class of the link (external)': function() {
+		var actual = btn_external.className.indexOf(className) != -1;
+		value_of(actual).should_be_true();
 	},
 	*/
-	/* BUG IN DOCS: THIS IS ONLY TRUE IF THE LINK IS INTERNAL
-	'it should set the "tiddlyFields" attribute on the link to be the fields from any tiddler referred to in the provided "linkedFromTiddler" parameter': function() {
+	'it should set the "tiddlyFields" attribute on the link to be the fields from any tiddler referred to in the provided "linkedFromTiddler" parameter (internal)': function() {
 		var actual = btn.getAttribute("tiddlyFields");
 		var expected = linkedFromTiddler.getInheritedFields();
 		value_of(actual).should_be(expected);
 	},
-	*/
-	'it should set the "noToggle" attribute on the link to "true" if the provided "noToggle" parameter is set': function() {
+
+	'it should set the "tiddlyFields" attribute on the link to be the fields from any tiddler referred to in the provided "linkedFromTiddler" parameter (external)': function() {
+		var actual = btn_external.getAttribute("tiddlyFields");
+		var expected = linkedFromTiddler.getInheritedFields();
+		value_of(actual).should_be(expected);
+	},
+
+	'it should set the "noToggle" attribute on the link to "true" if the provided "noToggle" parameter is set (internal)': function() {
 		var actual = btn.getAttribute("noToggle");
 		var expected = "true";
 		value_of(actual).should_be(expected);
 	},
 	
-	'it should set the "refresh" attribute on the link to "link"': function() {
+	'it should set the "noToggle" attribute on the link to "true" if the provided "noToggle" parameter is set (external)': function() {
+		var actual = btn_external.getAttribute("noToggle");
+		var expected = "true";
+		value_of(actual).should_be(expected);
+	},
+	
+	'it should set the "refresh" attribute on the link to "link" (internal)': function() {
 		var actual = btn.getAttribute("refresh");
 		var expected = "link";
 		value_of(actual).should_be(expected);
 	},
 	
-	'it should create a permalink if the "isStatic" parameter is set': function() {
+	'it should set the "refresh" attribute on the link to "link" (external)': function() {
+		var actual = btn_external.getAttribute("refresh");
+		var expected = "link";
+		value_of(actual).should_be(expected);
+	},
+	
+	'it should create a permalink if the "isStatic" parameter is set (internal)': function() {
 		var actual = btn.href.indexOf("#") != -1;
 		value_of(actual).should_be_true;
 	},
 	
-	'it should return a reference to the link': function() {
+	'it should create a permalink if the "isStatic" parameter is set (external)': function() {
+		var actual = btn_external.href.indexOf("#") != -1;
+		value_of(actual).should_be_true;
+	},
+	
+	'it should return a reference to the link (internal)': function() {
 		var actual = btn.nodeName;
+		var expected = "A";
+		value_of(actual).should_be(expected);
+	},
+	
+	'it should return a reference to the link (external)': function() {
+		var actual = btn_external.nodeName;
 		var expected = "A";
 		value_of(actual).should_be(expected);
 	},
@@ -304,6 +354,7 @@ describe('Utilities: createTiddlyLink(place,title,includeText,className,isStatic
 		delete linkedFromTiddler;
 		delete noToggle;
 		removeNode(btn);
+		removeNode(btn_external);
 	}
 });
 
