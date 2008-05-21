@@ -49,6 +49,11 @@ config.macros.importTiddlers.restart = function(wizard)
 	fileInput.onchange = config.macros.importTiddlers.onBrowseChange;
 	fileInput.onkeyup = config.macros.importTiddlers.onBrowseChange;
 	wizard.setButtons([{caption: this.openLabel, tooltip: this.openPrompt, onClick: config.macros.importTiddlers.onOpen}]);
+	wizard.formElem.action = "javascript:;";
+	wizard.formElem.onsubmit = function() {
+		if(this.txtPath.value.length)
+			this.lastChild.firstChild.onclick();
+	};
 };
 
 config.macros.importTiddlers.getFeeds = function()
