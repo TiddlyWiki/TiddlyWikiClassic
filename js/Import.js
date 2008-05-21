@@ -99,10 +99,35 @@ config.macros.importTiddlers.onBrowseChange = function(e)
 {
 	var wizard = new Wizard(this);
 	var fileInput = wizard.getElement("txtPath");
-	fileInput.value = "file:///" + this.value;
+	fileInput.value = config.macros.importTiddlers.getURLFromLocalPath(this.value);
 	var serverType = wizard.getElement("selTypes");
 	serverType.value = "file";
 	return true;
+};
+
+config.macros.importTiddlers.getURLFromLocalPath = function(v)
+{
+	if(!v||!v.length)
+		return v;
+	v = v.replace(/\\/g,"/"); // use "/" for cross-platform consistency
+	var u;
+	var t = v.split(":");
+	var p = t[1]||t[0]; // remove drive letter (if any)
+	if (t[1] && (t[0]=="http"||t[0]=="https"||t[0]=="file")) {
+		//# input is already a URL
+		u = v;
+	} else if(p.substr(0,1)=="/") {
+		//# path is absolute, add protocol+domain+extra slash (if drive letter)
+		u = document.location.protocol + "//" + document.location.hostname + (t[1] ? "/" : "") + v;
+	} else {
+		//# path is relative, add current document protocol+domain+path
+		var c = document.location.href.replace(/\\/g,"/");
+		var pos = c.lastIndexOf("/");
+		if (pos!=-1)
+			c = c.substr(0,pos); // remove filename
+		u = c + "/" + p;
+	}
+	return u;
 };
 
 config.macros.importTiddlers.onOpen = function(e)
