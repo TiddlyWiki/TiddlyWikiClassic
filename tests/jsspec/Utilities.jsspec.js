@@ -441,6 +441,100 @@ describe('Utilities: refreshTiddlyLink(e,title)', {
 		delete store;
 		delete not_a_tiddler;
 		delete place;
-		delete btn;
+		removeNode(btn);
 	}
+});
+
+describe('Utilities: getTiddlyLinkInfo(title,currClasses)', {
+
+	before_each: function() {
+		store = new TiddlyWiki();
+		loadShadowTiddlers();
+		title = "test";
+		store.createTiddler(title);
+		currClasses = "test test2";
+		obj = getTiddlyLinkInfo(title,currClasses);
+	},
+
+	'it should return an object with two named properties - the first a string named "classes" and the second a string named "subTitle"': function() {
+		var expected = "string";
+		var actual = typeof obj["classes"];
+		value_of(actual).should_be(expected);
+	},
+	
+	'it should add "shadow" to the classes string if the tiddler is a shadow tiddler': function() {
+		title = "SiteTitle";
+		obj = getTiddlyLinkInfo(title,null);
+		var actual = obj.classes.split(" ").contains("shadow");
+		value_of(actual).should_be_true();
+	},
+	
+	'it should add "tiddlyLinkExisting" to the classes string if the tiddler is in the store': function() {
+		var actual = obj.classes.split(" ").contains("tiddlyLinkExisting");
+		value_of(actual).should_be_true();
+	},
+	
+	'it should add "tiddlyLinkNonExisting" to the classes string if the tiddler is not in the store': function() {
+		title = "not_in_the_store";
+		obj = getTiddlyLinkInfo(title,null);
+		var actual = obj.classes.split(" ").contains("tiddlyLinkNonExisting");
+		value_of(actual).should_be_true();
+	},
+	
+	'it should add "tiddlyLink" to the classes string whether the tiddler is a shadow, in the store or not': function() {
+		var actual = obj.classes.split(" ").contains("tiddlyLink");
+		value_of(actual).should_be_true();
+		title = "not_in_the_store";
+		obj = getTiddlyLinkInfo(title,null);
+		var actual = obj.classes.split(" ").contains("tiddlyLink");
+		value_of(actual).should_be_true();
+		title = "SiteTitle";
+		obj = getTiddlyLinkInfo(title,null);
+		var actual = obj.classes.split(" ").contains("tiddlyLink");
+		value_of(actual).should_be_true();
+	},
+	
+	'it should maintain any classes passed in, through the currClasses string, in the classes string': function() {
+		var actual = currClasses.split(" ");
+		var expected = obj.classes.split(" ");
+		for(var i=0;i<actual.length;i++) {
+			value_of(expected.contains(actual[i]) != -1).should_be_true();
+		}
+		title = "not_in_the_store";
+		obj = getTiddlyLinkInfo(title,null);
+		actual = obj.classes.split(" ");
+		for(i=0;i<actual.length;i++) {
+			value_of(expected.contains(actual[i]) != -1).should_be_true();
+		}
+		title = "SiteTitle";
+		obj = getTiddlyLinkInfo(title,null);
+		actual = obj.classes.split(" ");
+		for(i=0;i<actual.length;i++) {
+			value_of(expected.contains(actual[i]) != -1).should_be_true();
+		}
+	},
+	
+	'it should get subTitle from config.annotations if there is an entry there for the title parameter': function() {
+		title = "SiteTitle";
+		obj = getTiddlyLinkInfo(title,null);
+		var expected = config.annotations["SiteTitle"];
+		var actual = obj.subTitle;
+		value_of(actual).should_be(expected);
+	},
+	
+	'it should get subTitle by calling tiddler.getSubtitle() if there is no entry in config.annotations': function() {
+		var funcToMock = 'Tiddler.prototype.getSubtitle';
+		tests_mock.before(funcToMock);
+		obj = getTiddlyLinkInfo(title,currClasses);
+		var actual = tests_mock.after(funcToMock).called;
+		value_of(actual).should_be_true();
+	},
+	
+	after_each: function() {
+		delete store;
+		delete title;
+		delete currClasses;
+		delete obj;
+	}
+
 });
