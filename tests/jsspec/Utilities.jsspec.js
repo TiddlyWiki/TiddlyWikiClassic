@@ -279,12 +279,13 @@ describe('Utilities: createTiddlyLink(place,title,includeText,className,isStatic
 		var actual = btn.className.indexOf(className) != -1;
 		value_of(actual).should_be_true();
 	},
-	/* BUG IN DOCS: THIS IS ONLY TRUE IF THE LINK IS INTERNAL	
+	/* BUG IN DOCS: THIS IS ONLY TRUE IF THE LINK IS INTERNAL */
+	/* see http://groups.google.com/group/TiddlyWikiDev/browse_thread/thread/3e8c2de8d7b0fbfa */
 	'it should add the provided "className" parameter to the class of the link (external)': function() {
 		var actual = btn_external.className.indexOf(className) != -1;
 		value_of(actual).should_be_true();
 	},
-	*/
+	
 	'it should set the "tiddlyFields" attribute on the link to be the fields from any tiddler referred to in the provided "linkedFromTiddler" parameter (internal)': function() {
 		var actual = btn.getAttribute("tiddlyFields");
 		var expected = linkedFromTiddler.getInheritedFields();
@@ -536,5 +537,10 @@ describe('Utilities: getTiddlyLinkInfo(title,currClasses)', {
 		delete currClasses;
 		delete obj;
 	}
+});
 
+describe('Utilities: createExternalLink(place,url)', {
+	'it should ': function() {
+	
+	},
 });
