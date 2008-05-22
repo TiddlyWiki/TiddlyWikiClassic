@@ -1,5 +1,5 @@
 // <![CDATA[
-describe('Date components', {
+describe('Date: components', {
 	'12-hour format (with zero-padding) should return correct result for AM times': function() {
 		var actual = new Date(2008,11,31,9,48).formatString("0hh12");
 		var expected = "09";
@@ -622,7 +622,7 @@ describe('Date components', {
 	}
 });
 
-describe('Date formatting', {
+describe('Date: formatting', {
 	'Date formatting YYYY MMM DD': function() {
 		var actual = new Date(2007,2,1).formatString("YYYY MMM DD");
 		var expected = "2007 March 1";
@@ -660,7 +660,7 @@ describe('Date formatting', {
 	}
 });
 
-describe('Information about dates', {
+describe('Date: information', {
 	'Given an AM time, getAmPm returns am': function() {
 		var actual = new Date(2007,2,1,10,0).getAmPm();
 		var expected = "am";
@@ -678,7 +678,7 @@ describe('Information about dates', {
 	}
 });
 
-describe('Escaping', {
+describe('Date: escaping', {
 	'should not convert escaped four-digit year format': function() {
 		var actual = new Date(2008,0,31,1,2,3).formatString("Y\\Y\\Y\\Y");
 		var expected = "YYYY";
