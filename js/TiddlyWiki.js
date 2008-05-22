@@ -161,7 +161,7 @@ TiddlyWiki.prototype.getTiddlerText = function(title,defaultText)
 	return null;
 };
 
-TiddlyWiki.prototype.slicesRE = /(?:[\'\/]*~?([\.\w]+)[\'\/]*\:[\'\/]*\s*(.*?)\s*$)|(?:\|[\'\/]*~?([\.\w]+)\:?[\'\/]*\|\s*(.*?)\s*\|)/gm;
+TiddlyWiki.prototype.slicesRE = /(?:([\'\/]{0,2})~?([\.\w]+)\:\1\s*([^\|\n]+)\s*$)|(?:\|([\'\/]{0,2})~?([\.\w]+)\:?\4\|\s*([^\|\n]+)\s*\|$)/gm;
 
 // @internal
 TiddlyWiki.prototype.calcAllSlices = function(title)
@@ -169,15 +169,14 @@ TiddlyWiki.prototype.calcAllSlices = function(title)
 	var slices = {};
 	var text = this.getTiddlerText(title,"");
 	this.slicesRE.lastIndex = 0;
-	do {
-		var m = this.slicesRE.exec(text);
-		if(m) {
-			if(m[1])
-				slices[m[1]] = m[2];
-			else
-				slices[m[3]] = m[4];
-		}
-	} while(m);
+	var m = this.slicesRE.exec(text);
+	while(m) {
+		if(m[2])
+			slices[m[2]] = m[3];
+		else
+			slices[m[5]] = m[6];
+		m = this.slicesRE.exec(text);
+	}
 	return slices;
 };
 
@@ -278,10 +277,10 @@ TiddlyWiki.prototype.saveTiddler = function(title,newTitle,newBody,modifier,modi
 {
 	var tiddler = this.fetchTiddler(title);
 	if(tiddler) {
-		created = created ? created : tiddler.created; // Preserve created date
+		created = created || tiddler.created; // Preserve created date
 		this.deleteTiddler(title);
 	} else {
-		created = created ? created : modified;
+		created = created || modified;
 		tiddler = new Tiddler();
 	}
 	tiddler.set(newTitle,newBody,modifier,modified,tags,created,fields);
@@ -564,7 +563,7 @@ TiddlyWiki.prototype.filterTiddlers = function(filter)
 		while(match) {
 			if(match[1] || match[4]) {
 				//# matches (eg) text or [[tiddler title]]
-				var title = match[1] ? match[1] : match[4];
+				var title = match[1] || match[4];
 				tiddler = this.fetchTiddler(title);
 				if(tiddler) {
 					results.pushUnique(tiddler);
