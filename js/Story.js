@@ -59,7 +59,7 @@ Story.prototype.displayTiddlers = function(srcElement,titles,template,animate,un
 //# toggle - if true, causes the tiddler to be closed if it is already opened
 Story.prototype.displayTiddler = function(srcElement,tiddler,template,animate,unused,customFields,toggle)
 {
-	var title = (tiddler instanceof Tiddler)? tiddler.title : tiddler;
+	var title = (tiddler instanceof Tiddler) ? tiddler.title : tiddler;
 	var tiddlerElem = this.getTiddler(title);
 	if(tiddlerElem) {
 		if(toggle)
@@ -89,12 +89,12 @@ Story.prototype.positionTiddler = function(srcElement)
 	var before = null;
 	if(typeof srcElement == "string") {
 		switch(srcElement) {
-			case "top":
-				before = place.firstChild;
-				break;
-			case "bottom":
-				before = null;
-				break;
+		case "top":
+			before = place.firstChild;
+			break;
+		case "bottom":
+			before = null;
+			break;
 		}
 	} else {
 		var after = this.findContainingTiddler(srcElement);
@@ -137,7 +137,7 @@ Story.prototype.createTiddler = function(place,before,title,template,customField
 Story.prototype.loadMissingTiddler = function(title,fields,tiddlerElem)
 {
 	var tiddler = new Tiddler(title);
-	tiddler.fields = typeof fields == "string" ? fields.decodeHashMap() : (fields ? fields : {});
+	tiddler.fields = typeof fields == "string" ? fields.decodeHashMap() : (fields || {});
 	var serverType = tiddler.getServerType();
 	var host = tiddler.fields['server.host'];
 	var workspace = tiddler.fields['server.workspace'];
@@ -215,7 +215,7 @@ Story.prototype.refreshTiddler = function(title,template,force,customFields,defa
 					var text = template=="EditTemplate" ?
 								config.views.editor.defaultText.format([title]) :
 								config.views.wikified.defaultText.format([title]);
-					text = defaultText ? defaultText : text;
+					text = defaultText || text;
 					var fields = customFields ? customFields.decodeHashMap() : null;
 					tiddler.set(title,text,config.views.wikified.defaultModifier,version.date,[],version.date,fields);
 				}
@@ -292,17 +292,16 @@ Story.prototype.onTiddlerMouseOut = function(e)
 Story.prototype.onTiddlerDblClick = function(ev)
 {
 	var e = ev ? ev : window.event;
-	var theTarget = resolveTarget(e);
-	if(theTarget && theTarget.nodeName.toLowerCase() != "input" && theTarget.nodeName.toLowerCase() != "textarea") {
+	var target = resolveTarget(e);
+	if(target && target.nodeName.toLowerCase() != "input" && target.nodeName.toLowerCase() != "textarea") {
 		if(document.selection && document.selection.empty)
 			document.selection.empty();
 		config.macros.toolbar.invokeCommand(this,"defaultCommand",e);
 		e.cancelBubble = true;
 		if(e.stopPropagation) e.stopPropagation();
 		return true;
-	} else {
-		return false;
 	}
+	return false;
 };
 
 Story.prototype.onTiddlerKeyPress = function(ev)
@@ -313,32 +312,32 @@ Story.prototype.onTiddlerKeyPress = function(ev)
 	var title = this.getAttribute("tiddler");
 	var target = resolveTarget(e);
 	switch(e.keyCode) {
-		case 9: // Tab
-			if(config.options.chkInsertTabs && target.tagName.toLowerCase() == "textarea") {
-				replaceSelection(target,String.fromCharCode(9));
-				consume = true;
-			}
-			if(config.isOpera) {
-				target.onblur = function() {
-					this.focus();
-					this.onblur = null;
-				};
-			}
-			break;
-		case 13: // Ctrl-Enter
-		case 10: // Ctrl-Enter on IE PC
-		case 77: // Ctrl-Enter is "M" on some platforms
-			if(e.ctrlKey) {
-				blurElement(this);
-				config.macros.toolbar.invokeCommand(this,"defaultCommand",e);
-				consume = true;
-			}
-			break;
-		case 27: // Escape
-			blurElement(this);
-			config.macros.toolbar.invokeCommand(this,"cancelCommand",e);
+	case 9: // Tab
+		if(config.options.chkInsertTabs && target.tagName.toLowerCase() == "textarea") {
+			replaceSelection(target,String.fromCharCode(9));
 			consume = true;
-			break;
+		}
+		if(config.isOpera) {
+			target.onblur = function() {
+				this.focus();
+				this.onblur = null;
+			};
+		}
+		break;
+	case 13: // Ctrl-Enter
+	case 10: // Ctrl-Enter on IE PC
+	case 77: // Ctrl-Enter is "M" on some platforms
+		if(e.ctrlKey) {
+			blurElement(this);
+			config.macros.toolbar.invokeCommand(this,"defaultCommand",e);
+			consume = true;
+		}
+		break;
+	case 27: // Escape
+		blurElement(this);
+		config.macros.toolbar.invokeCommand(this,"cancelCommand",e);
+		consume = true;
+		break;
 	}
 	e.cancelBubble = consume;
 	if(consume) {
@@ -355,7 +354,7 @@ Story.prototype.getTiddlerField = function(title,field)
 {
 	var tiddlerElem = this.getTiddler(title);
 	var e = null;
-	if(tiddlerElem != null) {
+	if(tiddlerElem ) {
 		var children = tiddlerElem.getElementsByTagName("*");
 		for(var t=0; t<children.length; t++) {
 			var c = children[t];
@@ -384,7 +383,7 @@ Story.prototype.focusTiddler = function(title,field)
 Story.prototype.blurTiddler = function(title)
 {
 	var tiddlerElem = this.getTiddler(title);
-	if(tiddlerElem != null && tiddlerElem.focus && tiddlerElem.blur) {
+	if(tiddlerElem && tiddlerElem.focus && tiddlerElem.blur) {
 		tiddlerElem.focus();
 		tiddlerElem.blur();
 	}
@@ -417,7 +416,7 @@ Story.prototype.setTiddlerTag = function(title,tag,mode)
 Story.prototype.closeTiddler = function(title,animate,unused)
 {
 	var tiddlerElem = this.getTiddler(title);
-	if(tiddlerElem != null) {
+	if(tiddlerElem) {
 		clearMessage();
 		this.scrubTiddler(tiddlerElem);
 		if(config.options.chkAnimate && animate && anim && typeof Slider == "function")
@@ -443,7 +442,7 @@ Story.prototype.scrubTiddler = function(tiddlerElem)
 Story.prototype.setDirty = function(title,dirty)
 {
 	var tiddlerElem = this.getTiddler(title);
-	if(tiddlerElem != null)
+	if(tiddlerElem)
 		tiddlerElem.setAttribute("dirty",dirty ? "true" : "false");
 };
 
@@ -451,7 +450,7 @@ Story.prototype.setDirty = function(title,dirty)
 Story.prototype.isDirty = function(title)
 {
 	var tiddlerElem = this.getTiddler(title);
-	if(tiddlerElem != null)
+	if(tiddlerElem)
 		return tiddlerElem.getAttribute("dirty") == "true";
 	return null;
 };
@@ -492,7 +491,7 @@ Story.prototype.isEmpty = function()
 Story.prototype.search = function(text,useCaseSensitive,useRegExp)
 {
 	this.closeAllTiddlers();
-	highlightHack = new RegExp(useRegExp ?	 text : text.escapeRegExp(),useCaseSensitive ? "mg" : "img");
+	highlightHack = new RegExp(useRegExp ? text : text.escapeRegExp(),useCaseSensitive ? "mg" : "img");
 	var matches = store.search(highlightHack,"title","excludeSearch");
 	this.displayTiddlers(null,matches);
 	highlightHack = null;
@@ -535,7 +534,7 @@ Story.prototype.gatherSaveFields = function(e,fields)
 Story.prototype.hasChanges = function(title)
 {
 	var e = this.getTiddler(title);
-	if(e != null) {
+	if(e) {
 		var fields = {};
 		this.gatherSaveFields(e,fields);
 		var tiddler = store.fetchTiddler(title);
@@ -556,7 +555,7 @@ Story.prototype.hasChanges = function(title)
 Story.prototype.saveTiddler = function(title,minorUpdate)
 {
 	var tiddlerElem = this.getTiddler(title);
-	if(tiddlerElem != null) {
+	if(tiddlerElem) {
 		var fields = {};
 		this.gatherSaveFields(tiddlerElem,fields);
 		var newTitle = fields.title ? fields.title : title;
