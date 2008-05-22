@@ -678,4 +678,18 @@ describe('Information about dates', {
 	}
 });
 
+describe('Escaping', {
+	'should not convert escaped four-digit year format': function() {
+		var actual = new Date(2008,0,31,1,2,3).formatString("Y\\Y\\Y\\Y");
+		var expected = "YYYY";
+		value_of(actual).should_be(expected);
+	},
+	'should not convert escaped two-digit year format': function() {
+		var actual = new Date(2008,0,31,1,2,3).formatString("Y\\Y");
+		var expected = "YY";
+		value_of(actual).should_be(expected);
+	}
+});
+
+
 // ]]>
