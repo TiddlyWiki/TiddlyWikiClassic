@@ -29,6 +29,7 @@ Date.prototype.formatString = function(template)
 	var tz = this.getTimezoneOffset();
 	var atz = Math.abs(tz);
 	t = t.replace(/TZD/g,(tz < 0 ? '+' : '-') + String.zeroPad(Math.floor(atz / 60),2) + ':' + String.zeroPad(atz % 60,2));
+	t = t.replace(/\\/g,"");
 	return t;
 };
 
