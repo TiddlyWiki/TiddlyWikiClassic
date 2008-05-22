@@ -171,7 +171,7 @@ function getPageTitle()
 
 function refreshStyles(title,doc)
 {
-	setStylesheet(title == null ? "" : store.getRecursiveTiddlerText(title,"",10),title,doc ? doc : document);
+	setStylesheet(title == null ? "" : store.getRecursiveTiddlerText(title,"",10),title,doc || document);
 }
 
 function refreshColorPalette(title)
