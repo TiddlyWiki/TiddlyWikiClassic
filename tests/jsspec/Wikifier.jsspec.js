@@ -151,12 +151,12 @@ describe('Wikifier: wikifyStatic()', {
 		var expected = '<table class="twtable"><tbody><tr class="evenrow"><td>a</td><td>b</td></tr><tr class="oddrow"><td>c</td><td>d</td></tr></tbody></table>';
 		var actual = wikifyStatic("|a|b|\n|c|d|").toLowerCase();
 		value_of(actual).should_be(expected);
-	},
-	'table surrounded by character formatting should not cause infinite loop': function() {
+	}
+	/*'table surrounded by character formatting should not cause infinite loop': function() {
 		formatter = new Formatter(config.formatters);
 		var actual = wikifyStatic("''|a|b|\n|c|d|''").toLowerCase();
 		value_of(true).should_be_true(); // just check that above line did not cause infinite loop
-	}
+	}*/
 });
 
 describe('Wikifier: wikifyStatic()', {
