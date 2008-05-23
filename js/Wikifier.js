@@ -171,15 +171,12 @@ Wikifier.prototype.subWikifyTerm = function(output,terminatorRegExp)
 {
 	//# subWikify can be indirectly recursive, so we need to save the old output pointer
 	var oldOutput = this.output;
-	var oldSource = this.source;
 	this.output = output;
 	//# Get the first matches for the formatter and terminator RegExps
 	terminatorRegExp.lastIndex = this.nextMatch;
 	var terminatorMatch = terminatorRegExp.exec(this.source);
 	this.formatter.formatterRegExp.lastIndex = this.nextMatch;
-	if(terminatorMatch)
-		this.source = this.source.substr(0,terminatorMatch.index);
-	var formatterMatch = this.formatter.formatterRegExp.exec(this.source);
+	var formatterMatch = this.formatter.formatterRegExp.exec(terminatorMatch ? this.source.substr(0,terminatorMatch.index) : this.source);
 	while(terminatorMatch || formatterMatch) {
 		//# Check for a terminator match  before the next formatter match
 		if(terminatorMatch && (!formatterMatch || terminatorMatch.index <= formatterMatch.index)) {
@@ -193,7 +190,6 @@ Wikifier.prototype.subWikifyTerm = function(output,terminatorRegExp)
 			this.nextMatch = this.matchStart + this.matchLength;
 			//# Restore the output pointer
 			this.output = oldOutput;
-			this.source = oldSource;
 			return;
 		}
 		//# It must be a formatter match; output any text before the match
@@ -224,7 +220,6 @@ Wikifier.prototype.subWikifyTerm = function(output,terminatorRegExp)
 	}
 	//# Restore the output pointer
 	this.output = oldOutput;
-	this.source = oldSource;
 };
 
 Wikifier.prototype.outputText = function(place,startPos,endPos)
