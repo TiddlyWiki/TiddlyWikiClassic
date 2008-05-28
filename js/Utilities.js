@@ -2,18 +2,18 @@
 //-- TiddlyWiki-specific utility functions
 //--
 
-formatVersion = function(v)
+function formatVersion(v)
 {
 	v = v || version;
 	return v.major + "." + v.minor + "." + v.revision + (v.beta ? " (beta " + v.beta + ")" : "");
-};
+}
 
 //# Compares two TiddlyWiki version objects
 //# Returns +1 if v2 is later than v1
 //#          0 if v2 is the same as v1
 //#         -1 if v2 is earlier than v1
 //# version without a beta number is later than a version with a beta number
-compareVersions = function(v1,v2)
+function compareVersions(v1,v2)
 {
 	var a = ["major","minor","revision"];
 	for(var i = 0; i<a.length; i++) {
@@ -29,7 +29,7 @@ compareVersions = function(v1,v2)
 	if(x1<x2)
 		return 1;
 	return x1 > x2 ? -1 : 0;
-};
+}
 
 function createTiddlyButton(parent,text,tooltip,action,className,id,accessKey,attribs)
 {

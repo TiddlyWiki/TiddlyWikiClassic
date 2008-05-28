@@ -32,15 +32,15 @@ function Morpher(element,duration,properties,callback)
 Morpher.prototype.assignStyle = function(element,style,value)
 {
 	switch(style) {
-		case "-tw-vertScroll":
-			window.scrollTo(findScrollX(),value);
-			break;
-		case "-tw-horizScroll":
-			window.scrollTo(value,findScrollY());
-			break;
-		default:
-			element.style[style] = value;
-			break;
+	case "-tw-vertScroll":
+		window.scrollTo(findScrollX(),value);
+		break;
+	case "-tw-horizScroll":
+		window.scrollTo(value,findScrollY());
+		break;
+	default:
+		element.style[style] = value;
+		break;
 	}
 };
 
@@ -59,19 +59,19 @@ Morpher.prototype.stop = function()
 Morpher.prototype.tick = function()
 {
 	var currTime = Number(new Date());
-	progress = Animator.slowInSlowOut(Math.min(1,(currTime-this.startTime)/this.duration));
+	var progress = Animator.slowInSlowOut(Math.min(1,(currTime-this.startTime)/this.duration));
 	for(var t=0; t<this.properties.length; t++) {
 		var p = this.properties[t];
 		if(p.start !== undefined && p.end !== undefined) {
 			var template = p.template || "%0";
 			switch(p.format) {
-				case undefined:
-				case "style":
-					var v = p.start + (p.end-p.start) * progress;
-					this.assignStyle(this.element,p.style,template.format([v]));
-					break;
-				case "color":
-					break;
+			case undefined:
+			case "style":
+				var v = p.start + (p.end-p.start) * progress;
+				this.assignStyle(this.element,p.style,template.format([v]));
+				break;
+			case "color":
+				break;
 			}
 		}
 	}

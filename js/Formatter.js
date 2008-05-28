@@ -463,9 +463,9 @@ config.formatters = [
 			w.subWikifyTerm(e,/(@@)/mg);
 			break;
 		case "{{":
-			lookaheadRegExp = /\{\{[\s]*([\w]+[\s\w]*)[\s]*\{(\n?)/mg;
+			var lookaheadRegExp = /\{\{[\s]*([\w]+[\s\w]*)[\s]*\{(\n?)/mg;
 			lookaheadRegExp.lastIndex = w.matchStart;
-			lookaheadMatch = lookaheadRegExp.exec(w.source);
+			var lookaheadMatch = lookaheadRegExp.exec(w.source);
 			if(lookaheadMatch) {
 				w.nextMatch = lookaheadRegExp.lastIndex;
 				e = createTiddlyElement(w.output,lookaheadMatch[2] == "\n" ? "div" : "span",null,lookaheadMatch[1]);

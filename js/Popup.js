@@ -78,7 +78,7 @@ Popup.find = function(e)
 	var pos = -1;
 	for (var t=this.stack.length-1; t>=0; t--) {
 		if(isDescendant(e,this.stack[t].popup))
-			pos = i;
+			pos = t;
 	}
 	return pos;
 };

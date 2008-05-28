@@ -24,7 +24,7 @@ ListView.create = function(place,listObject,listTemplate,callback,className)
 	}
 	var tbody = createTiddlyElement(table,"tbody");
 	for(var rc=0; rc<listObject.length; rc++) {
-		rowObject = listObject[rc];
+		var rowObject = listObject[rc];
 		r = createTiddlyElement(tbody,"tr");
 		for(c=0; c<listTemplate.rowClasses.length; c++) {
 			if(rowObject[listTemplate.rowClasses[c].field])

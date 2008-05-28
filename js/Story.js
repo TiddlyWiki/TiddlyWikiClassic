@@ -606,14 +606,14 @@ Story.prototype.switchTheme = function(theme)
 	if(safeMode)
 		return;
 
-	isAvailable = function(title) {
+	var isAvailable = function(title) {
 		var s = title ? title.indexOf(config.textPrimitives.sectionSeparator) : -1;
 		if(s!=-1)
 			title = title.substr(0,s);
 		return store.tiddlerExists(title) || store.isShadowTiddler(title);
 	};
 
-	getSlice = function(theme,slice) {
+	var getSlice = function(theme,slice) {
 		var r;
 		if(readOnly)
 			r = store.getTiddlerSlice(theme,slice+"ReadOnly") || store.getTiddlerSlice(theme,"Web"+slice);
@@ -623,7 +623,7 @@ Story.prototype.switchTheme = function(theme)
 		return isAvailable(r) ? r : slice;
 	};
 
-	replaceNotification = function(i,name,theme,slice) {
+	var replaceNotification = function(i,name,theme,slice) {
 		var newName = getSlice(theme,slice);
 		if(name!=newName && store.namedNotifications[i].name==name) {
 			store.namedNotifications[i].name = newName;

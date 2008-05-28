@@ -120,7 +120,7 @@ function refreshPageTemplate(title)
 	}
 	var wrapper = document.getElementById("contentWrapper");
 
-	isAvailable = function(title) {
+	var isAvailable = function(title) {
 		var s = title ? title.indexOf(config.textPrimitives.sectionSeparator) : -1;
 		if(s!=-1)
 			title = title.substr(0,s);
@@ -131,8 +131,7 @@ function refreshPageTemplate(title)
 		title = config.refresherData.pageTemplate;
 	if(!isAvailable(title))
 		title = config.refresherData.defaultPageTemplate; //# this one is always avaialable
-	html = store.getRecursiveTiddlerText(title,null,10);
-	wrapper.innerHTML = html;
+	wrapper.innerHTML = store.getRecursiveTiddlerText(title,null,10);
 	applyHtmlMacros(wrapper);
 	refreshElements(wrapper);
 	display = story.getContainer();

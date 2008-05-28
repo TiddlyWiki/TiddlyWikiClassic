@@ -69,7 +69,7 @@ config.macros.sync.getSyncableTiddlers = function()
 config.macros.sync.preProcessSyncableTiddlers = function(syncList)
 {
 	for(var i=0; i<syncList.length; i++) {
-		si = syncList[i];
+		var si = syncList[i];
 		si.serverUrl = si.syncTask.syncMachine.generateTiddlerInfo(si.tiddler).uri;
 
 	}
@@ -78,7 +78,7 @@ config.macros.sync.preProcessSyncableTiddlers = function(syncList)
 config.macros.sync.processSyncableTiddlers = function(syncList)
 {
 	for(var i=0; i<syncList.length; i++) {
-		si = syncList[i];
+		var si = syncList[i];
 		si.rowElement.style.backgroundColor = si.syncStatus.color;
 		si.rowElement.style.display = si.syncStatus.display;
 	}
@@ -86,7 +86,7 @@ config.macros.sync.processSyncableTiddlers = function(syncList)
 
 config.macros.sync.createSyncTasks = function(syncList)
 {
-	syncTasks = [];
+	var syncTasks = [];
 	for(var i=0; i<syncList.length; i++) {
 		var si = syncList[i];
 		var r = null;
