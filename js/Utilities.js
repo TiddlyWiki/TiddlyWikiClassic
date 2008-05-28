@@ -274,9 +274,9 @@ function createTiddlyError(place,title,text)
 
 function merge(dst,src,preserveExisting)
 {
-	for(p in src) {
-		if(!preserveExisting || dst[p] === undefined)
-			dst[p] = src[p];
+	for(var i in src) {
+		if(!preserveExisting || dst[i] === undefined)
+			dst[i] = src[i];
 	}
 	return dst;
 }
