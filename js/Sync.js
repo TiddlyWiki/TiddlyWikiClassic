@@ -210,7 +210,7 @@ config.macros.sync.doSync = function(e)
 function SyncMachine(serverType,steps)
 {
 	this.serverType = serverType;
-	this.adaptor = new config.adaptors[serverType];
+	this.adaptor = new config.adaptors[serverType]();
 	this.steps = steps;
 }
 
