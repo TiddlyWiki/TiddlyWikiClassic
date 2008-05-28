@@ -186,11 +186,11 @@ function isPluginExecutable(plugin)
 	}
 	if(plugin["CoreVersion"]) {
 		var coreVersion = plugin["CoreVersion"].split(".");
-		var w = parseInt(coreVersion[0]) - version.major;
+		var w = parseInt(coreVersion[0],10) - version.major;
 		if(w == 0 && coreVersion[1])
-			w = parseInt(coreVersion[1]) - version.minor;
+			w = parseInt(coreVersion[1],10) - version.minor;
 		if(w == 0 && coreVersion[2])
-			w = parseInt(coreVersion[2]) - version.revision;
+			w = parseInt(coreVersion[2],10) - version.revision;
 		if(w > 0) {
 			plugin.log.push(config.messages.pluginVersionError);
 			return false;
