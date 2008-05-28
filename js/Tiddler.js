@@ -39,7 +39,7 @@ Tiddler.prototype.getInheritedFields = function()
 Tiddler.prototype.incChangeCount = function()
 {
 	var c = this.fields['changecount'];
-	c = c ? parseInt(c) : 0;
+	c = c ? parseInt(c,10) : 0;
 	this.fields['changecount'] = String(c+1);
 };
 
