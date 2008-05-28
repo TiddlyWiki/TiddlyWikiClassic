@@ -108,7 +108,7 @@ Tiddler.prototype.assign = function(title,text,modifier,modified,tags,created,fi
 		this.created = created;
 	if(fields)
 		this.fields = fields;
-	if(tags)
+	if(tags != undefined)
 		this.tags = (typeof tags == "string") ? tags.readBracketedList() : tags;
 	else if(this.tags == undefined)
 		this.tags = [];
