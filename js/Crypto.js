@@ -8,7 +8,7 @@ function Crypto() {}
 // Convert a string to an array of big-endian 32-bit words
 Crypto.strToBe32s = function(str)
 {
-	var be=Array();
+	var be=[];
 	var len=Math.floor(str.length/4);
 	var i, j;
 	for(i=0, j=0; i<len; i++, j+=4) {
@@ -25,8 +25,9 @@ Crypto.strToBe32s = function(str)
 Crypto.be32sToStr = function(be)
 {
 	var str='';
-	for(var i=0;i<be.length*32;i+=8)
+	for(var i=0;i<be.length*32;i+=8) {
 		str += String.fromCharCode((be[i>>5]>>>(24-i%32)) & 0xff);
+	}
 	return str;
 };
 
@@ -35,8 +36,9 @@ Crypto.be32sToHex = function(be)
 {
 	var hex='0123456789ABCDEF';
 	var str='';
-	for(var i=0;i<be.length*4;i++)
+	for(var i=0;i<be.length*4;i++) {
 		str += hex.charAt((be[i>>2]>>((3-i%4)*8+4))&0xF) + hex.charAt((be[i>>2]>>((3-i%4)*8))&0xF);
+	}
 	return str;
 };
 
@@ -84,7 +86,7 @@ Crypto.sha1 = function(x,blen)
 	x[len>>5] |= 0x80 << (24-len%32);
 	//# Append length
 	x[((len+64>>9)<<4)+15]=len;
-	var w=Array(80);
+	var w=new Array(80);
 
 	var k1=0x5A827999;
 	var k2=0x6ED9EBA1;
