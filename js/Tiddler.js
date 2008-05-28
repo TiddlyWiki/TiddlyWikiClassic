@@ -215,6 +215,6 @@ Tiddler.prototype.getServerType = function()
 Tiddler.prototype.getAdaptor = function()
 {
 	var serverType = this.getServerType();
-	return serverType ? new config.adaptors[serverType] : null;
+	return serverType ? new config.adaptors[serverType]() : null;
 };
 
