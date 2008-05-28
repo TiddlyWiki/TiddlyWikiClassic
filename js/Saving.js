@@ -50,7 +50,7 @@ function updateMarkupBlock(s,blockName,tiddlerName)
 			"\n" + convertUnicodeToFileFormat(store.getRecursiveTiddlerText(tiddlerName,"")) + "\n");
 }
 
-function updateOriginal(original,posDiv)
+function updateOriginal(original,posDiv,localPath)
 {
 	if(!posDiv)
 		posDiv = locateStoreArea(original);
@@ -140,7 +140,7 @@ function saveMain(localPath,original,posDiv)
 	var save;
 	try {
 		//# Save new file
-		var revised = updateOriginal(original,posDiv);
+		var revised = updateOriginal(original,posDiv,localPath);
 		save = saveFile(localPath,revised);
 	} catch (ex) {
 		showException(ex);
