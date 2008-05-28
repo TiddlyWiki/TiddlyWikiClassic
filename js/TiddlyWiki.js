@@ -600,12 +600,13 @@ TiddlyWiki.prototype.sortTiddlers = function(tiddlers,field)
 {
 	var asc = +1;
 	switch(field.substr(0,1)) {
-		case "-":
-			asc = -1;
-			// Note: this fall-through is intentional
-		case "+":
-			field = field.substr(1);
-			break;
+	case "-":
+		asc = -1;
+		// Note: this fall-through is intentional
+		/*jsl:fallthru*/
+	case "+":
+		field = field.substr(1);
+		break;
 	}
 	if(TiddlyWiki.standardFieldAccess[field])
 		tiddlers.sort(function(a,b) {return a[field] < b[field] ? -asc : (a[field] == b[field] ? 0 : asc);});
