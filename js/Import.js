@@ -136,7 +136,7 @@ config.macros.importTiddlers.onOpen = function(e)
 	var fileInput = wizard.getElement("txtPath");
 	var url = fileInput.value;
 	var serverType = wizard.getElement("selTypes").value || config.defaultAdaptor;
-	var adaptor = new config.adaptors[serverType];
+	var adaptor = new config.adaptors[serverType]();
 	wizard.setValue("adaptor",adaptor);
 	wizard.setValue("serverType",serverType);
 	wizard.setValue("host",url);
@@ -307,7 +307,7 @@ config.macros.importTiddlers.doImport = function(e)
 	var listView = wizard.getValue("listView");
 	var rowNames = ListView.getSelectedRows(listView);
 	var adaptor = wizard.getValue("adaptor");
-	var overwrite = new Array();
+	var overwrite = [];
 	var t;
 	for(t=0; t<rowNames.length; t++) {
 		if(store.tiddlerExists(rowNames[t]))
