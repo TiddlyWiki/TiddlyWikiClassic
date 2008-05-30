@@ -427,8 +427,8 @@ merge(config.commands.fields,{
 			]}});
 
 merge(config.shadowTiddlers,{
-	DefaultTiddlers: "GettingStarted",
-	MainMenu: "GettingStarted",
+	DefaultTiddlers: "[[GettingStarted]]",
+	MainMenu: "[[GettingStarted]]",
 	SiteTitle: "My TiddlyWiki",
 	SiteSubtitle: "a reusable non-linear personal web notebook",
 	SiteUrl: "http://www.tiddlywiki.com/",
