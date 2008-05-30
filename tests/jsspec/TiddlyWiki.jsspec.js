@@ -80,27 +80,6 @@ describe('Slices: calcAllSlices()', {
 		var expected = { foo: "''bar''" };
 		value_of(actual).should_be(expected);
 	},
-	/*'should strip heading markup from slice labels (table notation)': function() {
-		// FAILURE
-		// ticket #370 (http://trac.tiddlywiki.org/ticket/370)
-		var title = "tiddler";
-		var text = "|!foo|bar|";
-		store.saveTiddler(title, title, text);
-		var actual = store.calcAllSlices(title);
-		var expected = { foo: "bar" };
-		value_of(actual).should_be(expected);
-	},
-	'should strip double brackets (PrettyLinks) from slice labels': function() {
-		// FAILURE
-		// ticket #370 (http://trac.tiddlywiki.org/ticket/370)
-		var title = "tiddler";
-		var text = "[[foo]]: bar";
-		store.saveTiddler(title, title, text);
-		var actual = store.calcAllSlices(title);
-		var expected = { "foo": "bar" };
-		value_of(actual).should_be(expected);
-	},*/
-
 	'should ignore the escaping character for WikiWords in slice labels': function() {
 		var title = "tiddler";
 		var text = "|~FooBar|baz|";
@@ -204,15 +183,6 @@ describe('Slices: calcAllSlices()', {
 		var expected = { foo: "bar: baz" };
 		value_of(actual).should_be(expected);
 	},
-	/*'should ignore additional columns (table notation)': function() {
-		var title = "tiddler";
-		var text = "|foo|bar|baz|";
-		store.saveTiddler(title, title, text);
-		var actual = store.calcAllSlices(title);
-		var expected = { foo: "bar" };
-		value_of(actual).should_be(expected);
-	},*/
-
 	'should allow dots in slice labels': function() {
 		var title = "tiddler";
 		var text = "foo.bar: baz";
@@ -221,14 +191,12 @@ describe('Slices: calcAllSlices()', {
 		var expected = { "foo.bar": "baz" };
 		value_of(actual).should_be(expected);
 	},
-	/*'should allow brackets in slice labels': function() {
-		// FAILURE
-		// ticket #370 (http://trac.tiddlywiki.org/ticket/370)
+	/*'should ignore additional columns (table notation)': function() {
 		var title = "tiddler";
-		var text = "[foo]: bar";
+		var text = "|foo|bar|baz|";
 		store.saveTiddler(title, title, text);
 		var actual = store.calcAllSlices(title);
-		var expected = { "[foo]": "bar" };
+		var expected = { foo: "bar" };
 		value_of(actual).should_be(expected);
 	},*/
 
@@ -298,4 +266,36 @@ describe('Slices: getTiddlerSlice()', {
 		value_of(actual).should_be(expected);
 	}
 });
+	/*'should strip heading markup from slice labels (table notation)': function() {
+		// FAILURE
+		// ticket #370 (http://trac.tiddlywiki.org/ticket/370)
+		var title = "tiddler";
+		var text = "|!foo|bar|";
+		store.saveTiddler(title, title, text);
+		var actual = store.calcAllSlices(title);
+		var expected = { foo: "bar" };
+		value_of(actual).should_be(expected);
+	},
+	'should strip double brackets (PrettyLinks) from slice labels': function() {
+		// FAILURE
+		// ticket #370 (http://trac.tiddlywiki.org/ticket/370)
+		var title = "tiddler";
+		var text = "[[foo]]: bar";
+		store.saveTiddler(title, title, text);
+		var actual = store.calcAllSlices(title);
+		var expected = { "foo": "bar" };
+		value_of(actual).should_be(expected);
+	},*/
+	/*'should allow brackets in slice labels': function() {
+		// FAILURE
+		// ticket #370 (http://trac.tiddlywiki.org/ticket/370)
+		var title = "tiddler";
+		var text = "[foo]: bar";
+		store.saveTiddler(title, title, text);
+		var actual = store.calcAllSlices(title);
+		var expected = { "[foo]": "bar" };
+		value_of(actual).should_be(expected);
+	},*/
+
+
 // ]]>
