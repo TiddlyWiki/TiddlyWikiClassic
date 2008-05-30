@@ -92,6 +92,7 @@ function applyHtmlMacros(root,tiddler)
 		if(e.getAttribute) {
 			var macro = e.getAttribute("macro");
 			if(macro) {
+				e.removeAttribute("macro");
 				var params = "";
 				var p = macro.indexOf(" ");
 				if(p != -1) {
