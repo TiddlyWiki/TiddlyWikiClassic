@@ -1,5 +1,5 @@
 recipe: test.recipe
 title=TiddlyWiki store tests
 
-jsspecsrc=<script type="text/javascript" src="../js/tiddlywiki.js"></script>
-jsspecsrc=<script type="text/javascript" src="../jsspec/TiddlyWiki.jsspec.js"></script>
+jsspecsrc=<script type="text/javascript" src="../../js/TiddlyWiki.js" />
+jsspecsrc=<script type="text/javascript" src="../jsspec/TiddlyWiki.jsspec.js" />
