@@ -540,7 +540,57 @@ describe('Utilities: getTiddlyLinkInfo(title,currClasses)', {
 });
 
 describe('Utilities: createExternalLink(place,url)', {
-	'it should ': function() {
-	
+	before_each: function() {
+		place = document.body;
+		url = "http://www.tiddlywiki.com";
+		link = createExternalLink(place,url);
 	},
+	
+	after_each: function() {
+		delete place;
+		delete url;
+		delete link;
+	},
+	
+	'it should return an anchor element': function() {
+		var expected = "A";
+		var actual = link.nodeName;
+		value_of(actual).should_be(expected);
+	},
+	
+	'it should set the anchor href to the "url" argument with a "/" on the end if one is missing': function() {
+		var expected = url + "/";
+		var actual = link.href;
+		value_of(actual).should_be(expected);
+	},
+	
+	'it should set the anchor className to "externalLink"': function() {
+		var expected = "externalLink";
+		var actual = link.className;
+		value_of(actual).should_be(expected);
+	},
+	
+	'it should append the anchor as a child element of the "place" argument': function() {
+		var actual = place.childNodes.length;
+		link = createExternalLink(place,url);
+		actual = place.childNodes.length - actual;
+		var expected = "1";
+		value_of(actual).should_be(expected);
+	},
+	
+	'it should set the anchor title to config.messages.externalLinkTooltip.format([url])': function() {
+		var expected = config.messages.externalLinkTooltip.format([url]);
+		var actual = link.title;
+		value_of(actual).should_be(expected);
+	},
+	
+	'it should set the anchor target to "_blank" if config.options.chkOpenInNewWindow is true': function() {
+		var expected = "_blank";
+		var oldOption = config.options.chkOpenInNewWindow;
+		config.options.chkOpenInNewWindow = true;
+		link = createExternalLink(place,url);
+		var actual = link.target;
+		config.options.chkOpenInNewWindow = oldOption; // restore public variable
+		value_of(actual).should_be(expected);
+	}
 });
