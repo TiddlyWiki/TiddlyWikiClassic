@@ -35,14 +35,15 @@ config.macros.newTiddler.onClickNewTiddler = function()
 {
 	var title = this.getAttribute("newTitle");
 	if(this.getAttribute("isJournal") == "true") {
-		var now = new Date();
-		title = now.formatString(title.trim());
+		title = new Date().formatString(title.trim());
 	}
 	var params = this.getAttribute("params");
 	var tags = params ? params.split("|") : [];
 	var focus = this.getAttribute("newFocus");
 	var template = this.getAttribute("newTemplate");
 	var customFields = this.getAttribute("customFields");
+	if(!customFields && !store.isShadowTiddler(title))
+		customFields = String.encodeHashMap(config.defaultCustomFields);
 	story.displayTiddler(null,title,template,false,null,null);
 	var tiddlerElem = story.getTiddler(title);
 	if(customFields)
