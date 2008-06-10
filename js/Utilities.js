@@ -130,7 +130,7 @@ function createExternalLink(place,url)
 // Event handler for clicking on a tiddly link
 function onClickTiddlerLink(ev)
 {
-	var e = ev ? ev : window.event;
+	var e = ev || window.event;
 	var target = resolveTarget(e);
 	var link = target;
 	var title = null;
@@ -174,7 +174,7 @@ function createTagButton(place,tag,excludeTiddler,title,tooltip)
 // Event handler for clicking on a tiddler tag
 function onClickTag(ev)
 {
-	var e = ev ? ev : window.event;
+	var e = ev || window.event;
 	var popup = Popup.create(this);
 	var tag = this.getAttribute("tag");
 	var title = this.getAttribute("tiddler");
@@ -217,7 +217,7 @@ function onClickTagOpenAll(ev)
 
 function onClickError(ev)
 {
-	var e = ev ? ev : window.event;
+	var e = ev || window.event;
 	var popup = Popup.create(this);
 	var lines = this.getAttribute("errorText").split("\n");
 	for(var t=0; t<lines.length; t++)
@@ -254,7 +254,7 @@ function createTiddlyPopup(place,caption,tooltip,tiddler)
 
 function onClickTiddlyPopup(ev)
 {
-	var e = ev ? ev : window.event;
+	var e = ev || window.event;
 	var tiddler = this.tiddler;
 	if(tiddler.text) {
 		var popup = Popup.create(this,"div","popupTiddler");

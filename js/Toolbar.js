@@ -52,17 +52,17 @@ config.macros.toolbar.isCommandEnabled = function(command,tiddler)
 
 config.macros.toolbar.getCommandText = function(command,tiddler)
 {
-	return tiddler.isReadOnly() && command.readOnlyText ? command.readOnlyText : command.text;
+	return tiddler.isReadOnly() && command.readOnlyText || command.text;
 };
 
 config.macros.toolbar.getCommandTooltip = function(command,tiddler)
 {
-	return tiddler.isReadOnly() && command.readOnlyTooltip ? command.readOnlyTooltip : command.tooltip;
+	return tiddler.isReadOnly() && command.readOnlyTooltip || command.tooltip;
 };
 
 config.macros.toolbar.onClickCommand = function(ev)
 {
-	var e = ev ? ev : window.event;
+	var e = ev || window.event;
 	e.cancelBubble = true;
 	if(e.stopPropagation) e.stopPropagation();
 	var command = config.commands[this.getAttribute("commandName")];
@@ -71,7 +71,7 @@ config.macros.toolbar.onClickCommand = function(ev)
 
 config.macros.toolbar.onClickPopup = function(ev)
 {
-	var e = ev ? ev : window.event;
+	var e = ev || window.event;
 	e.cancelBubble = true;
 	if(e.stopPropagation) e.stopPropagation();
 	var popup = Popup.create(this);

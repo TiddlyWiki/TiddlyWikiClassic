@@ -16,7 +16,7 @@ config.macros.version.handler = function(place)
 
 config.macros.list.handler = function(place,macroName,params)
 {
-	var type = params[0] ? params[0] : "all";
+	var type = params[0] || "all";
 	var list = document.createElement("ul");
 	place.appendChild(list);
 	if(this[type].prompt)
@@ -87,11 +87,11 @@ config.macros.allTags.handler = function(place,macroName,params)
 
 config.macros.timeline.handler = function(place,macroName,params)
 {
-	var field = params[0] ? params[0] : "modified";
+	var field = params[0] || "modified";
 	var tiddlers = store.reverseLookup("tags","excludeLists",false,field);
 	var lastDay = "";
 	var last = params[1] ? tiddlers.length-Math.min(tiddlers.length,parseInt(params[1])) : 0;
-	var dateFormat = params[2] ? params[2] : this.dateFormat;
+	var dateFormat = params[2] || this.dateFormat;
 	for(var t=tiddlers.length-1; t>=last; t--) {
 		var tiddler = tiddlers[t];
 		var theDay = tiddler[field].convertToLocalYYYYMMDDHHMM().substr(0,8);
@@ -110,7 +110,7 @@ config.macros.tiddler.handler = function(place,macroName,params,wikifier,paramSt
 	params = paramString.parseParams("name",null,true,false,true);
 	var names = params[0]["name"];
 	var tiddlerName = names[0];
-	var className = names[1] ? names[1] : null;
+	var className = names[1] || null;
 	var args = params[0]["with"];
 	var wrapper = createTiddlyElement(place,"span",null,className);
 	if(!args) {
@@ -224,7 +224,7 @@ config.macros.saveChanges.onClick = function(e)
 
 config.macros.slider.onClickSlider = function(ev)
 {
-	var e = ev ? ev : window.event;
+	var e = ev || window.event;
 	var n = this.nextSibling;
 	var cookie = n.getAttribute("cookie");
 	var isOpen = n.style.display != "none";
@@ -239,7 +239,7 @@ config.macros.slider.onClickSlider = function(ev)
 
 config.macros.slider.createSlider = function(place,cookie,title,tooltip)
 {
-	var c = cookie ? cookie : "";
+	var c = cookie || "";
 	var btn = createTiddlyButton(place,title,tooltip,this.onClickSlider);
 	var panel = createTiddlyElement(null,"div",null,"sliderPanel");
 	panel.setAttribute("cookie",c);
@@ -333,7 +333,7 @@ config.macros.view.handler = function(place,macroName,params,wikifier,paramStrin
 	if((tiddler instanceof Tiddler) && params[0]) {
 		var value = store.getValue(tiddler,params[0]);
 		if(value) {
-			var type = params[1] ? params[1] : config.macros.view.defaultView;
+			var type = params[1] || config.macros.view.defaultView;
 			var handler = config.macros.view.views[type];
 			if(handler)
 				handler(value,place,params,wikifier,paramString,tiddler);
@@ -366,7 +366,7 @@ config.macros.edit.handler = function(place,macroName,params,wikifier,paramStrin
 			if(tiddler.isReadOnly())
 				e.setAttribute("readOnly","readOnly");
 			e.value = v = store.getValue(tiddler,field) || defVal;
-			rows = rows ? rows : 10;
+			rows = rows || 10;
 			var lines = v.match(/\n/mg);
 			var maxLines = Math.max(parseInt(config.options.txtMaxEditRows),5);
 			if(lines != null && lines.length > rows)
@@ -382,7 +382,7 @@ config.macros.edit.handler = function(place,macroName,params,wikifier,paramStrin
 
 config.macros.tagChooser.onClick = function(ev)
 {
-	var e = ev ? ev : window.event;
+	var e = ev || window.event;
 	var lingo = config.views.editor.tagChooser;
 	var popup = Popup.create(this);
 	var tags = store.getTags("excludeLists");
@@ -401,7 +401,7 @@ config.macros.tagChooser.onClick = function(ev)
 
 config.macros.tagChooser.onTagClick = function(ev)
 {
-	var e = ev ? ev : window.event;
+	var e = ev || window.event;
 	if(e.metaKey || e.ctrlKey) stopEvent(e); //# keep popup open on CTRL-click
 	var tag = this.getAttribute("tag");
 	var title = this.getAttribute("tiddler");

@@ -42,7 +42,7 @@ config.macros.search.onClick = function(e)
 
 config.macros.search.onKeyPress = function(ev)
 {
-	var e = ev ? ev : window.event;
+	var e = ev || window.event;
 	switch(e.keyCode) {
 		case 13: // Ctrl-Enter
 		case 10: // Ctrl-Enter on IE PC

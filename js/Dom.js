@@ -141,7 +141,7 @@ function resolveTarget(e)
 // Prevent an event from bubbling
 function stopEvent(e)
 {
-	var ev = e ? e : window.event;
+	var ev = e || window.event;
 	ev.cancelBubble = true;
 	if(ev.stopPropagation) ev.stopPropagation();
 	return false;

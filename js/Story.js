@@ -291,7 +291,7 @@ Story.prototype.onTiddlerMouseOut = function(e)
 //# Default tiddler ondblclick event handler
 Story.prototype.onTiddlerDblClick = function(ev)
 {
-	var e = ev ? ev : window.event;
+	var e = ev || window.event;
 	var target = resolveTarget(e);
 	if(target && target.nodeName.toLowerCase() != "input" && target.nodeName.toLowerCase() != "textarea") {
 		if(document.selection && document.selection.empty)
@@ -306,7 +306,7 @@ Story.prototype.onTiddlerDblClick = function(ev)
 
 Story.prototype.onTiddlerKeyPress = function(ev)
 {
-	var e = ev ? ev : window.event;
+	var e = ev || window.event;
 	clearMessage();
 	var consume = false;
 	var title = this.getAttribute("tiddler");
@@ -558,7 +558,7 @@ Story.prototype.saveTiddler = function(title,minorUpdate)
 	if(tiddlerElem) {
 		var fields = {};
 		this.gatherSaveFields(tiddlerElem,fields);
-		var newTitle = fields.title ? fields.title : title;
+		var newTitle = fields.title || title;
 		if(!store.tiddlerExists(newTitle))
 			newTitle = newTitle.trim();
 		if(store.tiddlerExists(newTitle) && newTitle != title) {

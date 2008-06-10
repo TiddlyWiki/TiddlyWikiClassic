@@ -79,7 +79,7 @@ function doHttp(type,url,data,contentType,username,password,callback,params,head
 			url = url + (url.indexOf("?") < 0 ? "?" : "&") + "nocache=" + Math.random();
 		x.open(type,url,true,username,password);
 		if(data)
-			x.setRequestHeader("Content-Type", contentType ? contentType : "application/x-www-form-urlencoded");
+			x.setRequestHeader("Content-Type", contentType || "application/x-www-form-urlencoded");
 		if(x.overrideMimeType)
 			x.setRequestHeader("Connection", "close");
 		if(headers) {
