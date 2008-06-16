@@ -17,7 +17,7 @@ tests_mock = {
 			tests_mock.frame[funcName].called++; 
 			if (mocker)
 			    return mocker.apply(this, arguments);
-		}
+		};
 		eval(funcName + "=mockFunction");
 
 		this.frame[funcName] = frame;
