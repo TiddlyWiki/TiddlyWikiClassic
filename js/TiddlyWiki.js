@@ -161,7 +161,7 @@ TiddlyWiki.prototype.getTiddlerText = function(title,defaultText)
 	return null;
 };
 
-TiddlyWiki.prototype.slicesRE = /(?:([\'\/]{0,2})~?([\.\w]+)\:\1\s*([^\|\n]+)\s*$)|(?:\|([\'\/]{0,2})~?([\.\w]+)\:?\4\|\s*([^\|\n]+)\s*\|$)/gm;
+TiddlyWiki.prototype.slicesRE = /(?:^([\'\/]{0,2})~?([\.\w]+)\:\1\s*([^\|\n]+)\s*$)|(?:^\|([\'\/]{0,2})~?([\.\w]+)\:?\4\|\s*([^\|\n]+)\s*\|$)/gm;
 
 // @internal
 TiddlyWiki.prototype.calcAllSlices = function(title)
