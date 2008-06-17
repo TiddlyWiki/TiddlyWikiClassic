@@ -12,7 +12,8 @@ function Story(containerId,idPrefix)
 	this.highlightRegExp = null;
 	//# generate tiddler ID
 	this.tiddlerId = function(title) {
-		return this.idPrefix + title;
+		var id = this.idPrefix + title;
+		return id==this.container ? this.idPrefix + "_" + title : id;
 	};
 	this.containerId = function() {
 		return this.container;
