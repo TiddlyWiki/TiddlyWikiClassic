@@ -304,10 +304,10 @@ config.formatters = [
 				// Pretty bracketted link
 				var link = lookaheadMatch[3];
 				e = (!lookaheadMatch[2] && config.formatterHelpers.isExternalLink(link)) ?
-						createExternalLink(w.output,link) : createTiddlyLink(w.output,link,false,null,w.isStatic,w.tiddler);
+						createExternalLink(w.output,link) : createTiddlyLink(w.output,decodeURIComponent(link),false,null,w.isStatic,w.tiddler);
 			} else {
 				// Simple bracketted link
-				e = createTiddlyLink(w.output,text,false,null,w.isStatic,w.tiddler);
+				e = createTiddlyLink(w.output,decodeURIComponent(text),false,null,w.isStatic,w.tiddler);
 			}
 			createTiddlyText(e,text);
 			w.nextMatch = this.lookaheadRegExp.lastIndex;
