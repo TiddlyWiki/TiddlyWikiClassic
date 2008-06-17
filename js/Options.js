@@ -80,7 +80,7 @@ config.macros.option.genericOnChange = function(e)
 		var optType = opt.substr(0,3);
 		var handler = config.macros.option.types[optType];
 		if(handler.elementType && handler.valueField)
-			config.macros.option.propagateOption(opt,handler.valueField,this[handler.valueField],handler.elementType);
+			config.macros.option.propagateOption(opt,handler.valueField,this[handler.valueField],handler.elementType,this);
 	}
 	return true;
 };
@@ -105,14 +105,14 @@ config.macros.option.types = {
 	}
 };
 
-config.macros.option.propagateOption = function(opt,valueField,value,elementType)
+config.macros.option.propagateOption = function(opt,valueField,value,elementType,elem)
 {
 	config.options[opt] = value;
 	saveOptionCookie(opt);
 	var nodes = document.getElementsByTagName(elementType);
 	for(var t=0; t<nodes.length; t++) {
 		var optNode = nodes[t].getAttribute("option");
-		if(opt == optNode)
+		if(opt == optNode && nodes[t]!=elem)
 			nodes[t][valueField] = value;
 	}
 };
