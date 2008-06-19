@@ -200,6 +200,23 @@ describe('Slices: calcAllSlices()', {
 		value_of(actual).should_be(expected);
 	},*/
 
+	'should properly return PrettyLinks in slice values (colon notation)': function() {
+		var title = "tiddler";
+		var text = "foo: [[bar|baz]]";
+		store.saveTiddler(title, title, text);
+		var actual = store.calcAllSlices(title);
+		var expected = { foo: "[[bar|baz]]" };
+		value_of(actual).should_be(expected);
+	},
+	'should properly return image markup in slice values (colon notation)': function() {
+		var title = "tiddler";
+		var text = "foo: [img[qux|bar.baz]]";
+		store.saveTiddler(title, title, text);
+		var actual = store.calcAllSlices(title);
+		var expected = { foo: "[img[qux|bar.baz]]" };
+		value_of(actual).should_be(expected);
+	},
+
 	'should disregard apparent slices within code sections': function() {
 		// FAILURE
 		// ticket #522 (http://trac.tiddlywiki.org/ticket/522)
