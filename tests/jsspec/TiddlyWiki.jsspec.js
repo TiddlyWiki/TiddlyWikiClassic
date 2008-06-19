@@ -200,20 +200,24 @@ describe('Slices: calcAllSlices()', {
 		value_of(actual).should_be(expected);
 	},*/
 
-	'should properly return PrettyLinks in slice values (colon notation)': function() {
+	'should retrieve slices containing PrettyLinks (colon notation)': function() {
+		// FAILURE
+		// ticket #685 (http://trac.tiddlywiki.org/ticket/685)
 		var title = "tiddler";
-		var text = "foo: [[bar|baz]]";
+		var text = "foo: lorem [[bar|baz]] ipsum";
 		store.saveTiddler(title, title, text);
 		var actual = store.calcAllSlices(title);
-		var expected = { foo: "[[bar|baz]]" };
+		var expected = { foo: "lorem [[bar|baz]] ipsum" };
 		value_of(actual).should_be(expected);
 	},
-	'should properly return image markup in slice values (colon notation)': function() {
+	'should retrieve slices containing image markup (colon notation)': function() {
+		// FAILURE
+		// ticket #685 (http://trac.tiddlywiki.org/ticket/685)
 		var title = "tiddler";
-		var text = "foo: [img[qux|bar.baz]]";
+		var text = "foo: lorem [img[qux|bar.baz]] ipsum";
 		store.saveTiddler(title, title, text);
 		var actual = store.calcAllSlices(title);
-		var expected = { foo: "[img[qux|bar.baz]]" };
+		var expected = { foo: "lorem [img[qux|bar.baz]] ipsum" };
 		value_of(actual).should_be(expected);
 	},
 
@@ -228,8 +232,6 @@ describe('Slices: calcAllSlices()', {
 		value_of(actual).should_be(expected);
 	},
 	'should disregard slices within JSON structures': function() {
-		// FAILURE
-		// ticket #522 (http://trac.tiddlywiki.org/ticket/522)
 		var title = "tiddler";
 		var text = "{\n\tfoo: 'bar'\n}\n";
 		store.saveTiddler(title, title, text);
