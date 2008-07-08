@@ -41,7 +41,7 @@ config.refreshers = {
 		var force = e.getAttribute("force");
 		if(force != null || changeList == null || changeList.indexOf(title) != -1) {
 			removeChildren(e);
-			wikify(store.getTiddlerText(title,title),e,null,store.fetchTiddler(title));
+			wikify(store.getTiddlerText(title,""),e,null,store.fetchTiddler(title));
 			return true;
 		} else
 			return false;
