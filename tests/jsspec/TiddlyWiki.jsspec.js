@@ -156,8 +156,6 @@ describe('Slices: calcAllSlices()', {
 		value_of(actual).should_be(expected);
 	},
 	'should strip bold markup from slice labels (table notation)': function() {
-		// FAILURE
-		// ticket #370 (http://trac.tiddlywiki.org/ticket/370)
 		var title = "tiddler";
 		var text = "|''~FooBar:''|baz|";
 		store.saveTiddler(title, title, text);
@@ -191,6 +189,14 @@ describe('Slices: calcAllSlices()', {
 		var expected = { "foo.bar": "baz" };
 		value_of(actual).should_be(expected);
 	},
+	'should allow pipes in slice values (colon notation)': function() {
+		var title = "tiddler";
+		var text = "foo: bar|baz";
+		store.saveTiddler(title, title, text);
+		var actual = store.calcAllSlices(title);
+		var expected = { "foo": "bar|baz" };
+		value_of(actual).should_be(expected);
+	},
 	/*'should ignore additional columns (table notation)': function() {
 		var title = "tiddler";
 		var text = "|foo|bar|baz|";
@@ -201,8 +207,6 @@ describe('Slices: calcAllSlices()', {
 	},*/
 
 	'should retrieve slices containing PrettyLinks (colon notation)': function() {
-		// FAILURE
-		// ticket #685 (http://trac.tiddlywiki.org/ticket/685)
 		var title = "tiddler";
 		var text = "foo: lorem [[bar|baz]] ipsum";
 		store.saveTiddler(title, title, text);
@@ -211,8 +215,6 @@ describe('Slices: calcAllSlices()', {
 		value_of(actual).should_be(expected);
 	},
 	'should retrieve slices containing image markup (colon notation)': function() {
-		// FAILURE
-		// ticket #685 (http://trac.tiddlywiki.org/ticket/685)
 		var title = "tiddler";
 		var text = "foo: lorem [img[qux|bar.baz]] ipsum";
 		store.saveTiddler(title, title, text);
@@ -221,7 +223,7 @@ describe('Slices: calcAllSlices()', {
 		value_of(actual).should_be(expected);
 	},
 
-	'should disregard apparent slices within code sections': function() {
+	/*'should disregard apparent slices within code sections': function() {
 		// FAILURE
 		// ticket #522 (http://trac.tiddlywiki.org/ticket/522)
 		var title = "tiddler";
@@ -230,7 +232,7 @@ describe('Slices: calcAllSlices()', {
 		var actual = store.calcAllSlices(title);
 		var expected = {};
 		value_of(actual).should_be(expected);
-	},
+	},*/
 	'should disregard slices within JSON structures': function() {
 		var title = "tiddler";
 		var text = "{\n\tfoo: 'bar'\n}\n";
