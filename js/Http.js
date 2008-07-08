@@ -4,7 +4,7 @@
 
 //# Load a file over http
 //#   url - the source url
-//#   callback - function to call when there's a response
+//#   callback - function to call when there is a response
 //#   params - parameter object that gets passed to the callback for storing it's state
 //# Return value is the underlying XMLHttpRequest object, or a string if there was an error
 //# Callback function is called like this:
@@ -15,20 +15,8 @@
 //#     xhr - the underlying XMLHttpRequest object
 function loadRemoteFile(url,callback,params)
 {
-	return doHttp("GET",url,null,null,null,null,callback,params,null);
+	return httpReq("GET",url,callback,params);
 }
-
-// HTTP status codes
-var httpStatus = {
-	OK: 200,
-	ContentCreated: 201,
-	NoContent: 204,
-	MultiStatus: 207,
-	Unauthorized: 401,
-	Forbidden: 403,
-	NotFound: 404,
-	MethodNotAllowed: 405
-};
 
 //# Perform an http request
 //#   type - GET/POST/PUT/DELETE
@@ -37,7 +25,7 @@ var httpStatus = {
 //#   contentType - optionalContent type for the data (defaults to application/x-www-form-urlencoded)
 //#   username - optional username for basic authentication
 //#   password - optional password for basic authentication
-//#   callback - function to call when there's a response
+//#   callback - function to call when there is a response
 //#   params - parameter object that gets passed to the callback for storing it's state
 //#   headers - optional hashmap of additional headers
 //#   allowCache - unless true, adds a "nocache=" parameter to the URL
@@ -49,10 +37,18 @@ var httpStatus = {
 //#     responseText - the text of the file
 //#     url - requested URL
 //#     xhr - the underlying XMLHttpRequest object
-function doHttp(type,url,data,contentType,username,password,callback,params,headers,allowCache)
+function httpReq(type,url,callback,params,headers,data,contentType,username,password,allowCache)
 {
 	//# Get an xhr object
-	var x = getXMLHttpRequest();
+	var x = null;
+	try {
+		x = new XMLHttpRequest(); //# Modern
+	} catch(ex) {
+		try {
+			x = new ActiveXObject("Msxml2.XMLHTTP"); //# IE 6
+		} catch(ex2) {
+		}
+	}
 	if(!x)
 		return "Can't create XMLHttpRequest object";
 	//# Install callback
@@ -63,7 +59,7 @@ function doHttp(type,url,data,contentType,username,password,callback,params,head
 			status = false;
 		}
 		if(x.readyState == 4 && callback && (status !== undefined)) {
-			if([0, httpStatus.OK, httpStatus.ContentCreated, httpStatus.NoContent, httpStatus.MultiStatus].contains(status))
+			if([0, 200, 201, 204, 207].contains(status))
 				callback(true,params,x.responseText,url,x);
 			else
 				callback(false,params,null,url,x);
@@ -94,7 +90,7 @@ function doHttp(type,url,data,contentType,username,password,callback,params,head
 	return x;
 }
 
-//# Obtain an XMLHttpRequest object, or null if there is a problem
+// included for compatibility
 function getXMLHttpRequest()
 {
 	try {
@@ -107,5 +103,11 @@ function getXMLHttpRequest()
 		}
 	}
 	return x;
+}
+
+// included for compatibility
+function  doHttp(type,url,data,contentType,username,password,callback,params,headers,allowCache)
+{
+	return httpReq(type,url,callback,params,headers,data,contentType,username,password,allowCache);
 }
 
