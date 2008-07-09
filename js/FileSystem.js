@@ -145,23 +145,21 @@ function ieCreatePath(path)
 	//# Remove the filename, if present.  Use trailing slash (i.e. "foo\bar\") if no filename.
 	var pos = path.lastIndexOf("\\");
 	if(pos!=-1)
-		path = path.substring(0, pos+1);
+		path = path.substring(0,pos+1);
 
 	//# Walk up the path until we find a folder that exists
-	var scan = [];
-	scan.push(path);
-	var i = 0;
-	do {
-		var parent = fso.GetParentFolderName(scan[i++]);
-		if(fso.FolderExists(parent))
-			break;
+	var scan = [path];
+	var parent = fso.GetParentFolderName(path);
+	while(parent && !fso.FolderExists(parent)) {
 		scan.push(parent);
-	} while(true);
+		parent = fso.GetParentFolderName(parent);
+	}
 
 	//# Walk back down the path, creating folders
 	for(i=scan.length-1;i>=0;i--) {
-		if(!fso.FolderExists(scan[i]))
+		if(!fso.FolderExists(scan[i])) {
 			fso.CreateFolder(scan[i]);
+		}
 	}
 	return true;
 }
