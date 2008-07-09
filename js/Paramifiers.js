@@ -103,3 +103,13 @@ config.paramifiers.upgrade = {
 	}
 };
 
+config.paramifiers.recent= {
+	onstart: function(v) {
+		var titles=[];
+		var tiddlers=store.getTiddlers("modified","excludeLists").reverse();
+		for (var i=0; i<v && i<tiddlers.length; i++)
+			titles.push(tiddlers[i].title);
+		story.displayTiddlers(null,titles); 
+	}
+};
+
