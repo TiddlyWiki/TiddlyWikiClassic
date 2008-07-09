@@ -15,6 +15,7 @@ config.macros.tabs.handler = function(place,macroName,params)
 		var prompt = params[t*3+2];
 		var content = params[t*3+3];
 		var tab = createTiddlyButton(tabset,label,prompt,this.onClickTab,"tab tabUnselected");
+		createTiddlyElement(tab,"span",null,null," ",{style:"font-size:0pt;line-height:0px"}); //# hidden word-break
 		tab.setAttribute("tab",label);
 		tab.setAttribute("content",content);
 		tab.title = prompt;
