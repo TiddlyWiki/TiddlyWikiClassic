@@ -69,6 +69,8 @@ function createTiddlyLink(place,title,includeText,className,isStatic,linkedFromT
 	var text = includeText ? title : null;
 	var i = getTiddlyLinkInfo(title,className);
 	var btn = isStatic ? createExternalLink(place,store.getTiddlerText("SiteUrl",null) + "#" + title) : createTiddlyButton(place,text,i.subTitle,onClickTiddlerLink,i.classes);
+	if(isStatic)
+		btn.className += ' ' + className;
 	btn.setAttribute("refresh","link");
 	btn.setAttribute("tiddlyLink",title);
 	if(noToggle)
