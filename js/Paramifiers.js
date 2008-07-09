@@ -113,3 +113,9 @@ config.paramifiers.recent= {
 	}
 };
 
+config.paramifiers.filter = {
+	onstart: function(v) {
+		story.displayTiddlers(null,store.filterTiddlers(v),null,false);
+	}
+};
+
