@@ -58,7 +58,9 @@ Story.prototype.displayTiddlers = function(srcElement,titles,template,animate,un
 //# animate - whether to perform animations
 //# customFields - an optional list of name:"value" pairs to be assigned as tiddler fields (for edit templates)
 //# toggle - if true, causes the tiddler to be closed if it is already opened
-Story.prototype.displayTiddler = function(srcElement,tiddler,template,animate,unused,customFields,toggle)
+//# animationSrc - optional. If provided, this will specify the element which is to act as the start of the animation -or-
+//#                the source of the animation will be the srcElement.
+Story.prototype.displayTiddler = function(srcElement,tiddler,template,animate,unused,customFields,toggle,animationSrc)
 {
 	var title = (tiddler instanceof Tiddler) ? tiddler.title : tiddler;
 	var tiddlerElem = this.getTiddler(title);
@@ -71,6 +73,9 @@ Story.prototype.displayTiddler = function(srcElement,tiddler,template,animate,un
 		var place = this.getContainer();
 		var before = this.positionTiddler(srcElement);
 		tiddlerElem = this.createTiddler(place,before,title,template,customFields);
+	}
+	if(animationSrc && typeof animationSrc !== "string") {
+		srcElement = animationSrc;
 	}
 	if(srcElement && typeof srcElement !== "string") {
 		if(config.options.chkAnimate && (animate == undefined || animate == true) && anim && typeof Zoomer == "function" && typeof Scroller == "function")
