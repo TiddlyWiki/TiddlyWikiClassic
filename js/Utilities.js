@@ -315,3 +315,12 @@ function glyph(name)
 	return g.codes[name][b];
 }
 
+function log(message)
+{
+	if(window.console) {
+		console.log.apply(this,arguments);
+	} else {
+		displayMessage(message);
+	}
+}
+
