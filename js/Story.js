@@ -20,6 +20,17 @@ function Story(containerId,idPrefix)
 	};
 }
 
+//# retrieve tiddler element
+Story.prototype.getTiddler = function(title)
+{
+	return document.getElementById(this.tiddlerId(title));
+};
+
+Story.prototype.getContainer = function()
+{
+	return document.getElementById(this.containerId());
+};
+
 //# Iterate through all the tiddlers in a story
 //# fn - callback function to be called for each tiddler. Arguments are:
 //#      tiddler - reference to Tiddler object
@@ -436,7 +447,7 @@ Story.prototype.closeTiddler = function(title,animate,unused)
 
 //# Scrub IDs from a tiddler. This is so that the 'ghost' of a tiddler while it is being closed
 //# does not interfere with things
-//# tiddler - reference to the tiddler element
+//# tiddlerElem - reference to the tiddler element
 Story.prototype.scrubTiddler = function(tiddlerElem)
 {
 	tiddlerElem.id = null;
@@ -674,16 +685,4 @@ Story.prototype.switchTheme = function(theme)
 		saveOptionCookie("txtTheme");
 	}
 };
-
-//# retrieve tiddler element
-Story.prototype.getTiddler = function(title)
-{
-	return document.getElementById(this.tiddlerId(title));
-};
-
-Story.prototype.getContainer = function()
-{
-	return document.getElementById(this.containerId());
-};
-
 
