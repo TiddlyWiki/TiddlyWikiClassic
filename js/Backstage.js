@@ -157,8 +157,10 @@ var backstage = {
 	},
 
 	hidePanel: function() {
-		backstage.currTabName = null;
+		if(backstage.currTabElem)
+			removeClass(backstage.currTabElem,"backstageSelTab");
 		backstage.currTabElem = null;
+		backstage.currTabName = null;
 		if(anim && config.options.chkAnimate) {
 			var p = [
 				{style: "top", start: 0, end: -(backstage.panel.offsetHeight), template: "%0px"},
