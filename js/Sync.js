@@ -71,7 +71,6 @@ config.macros.sync.preProcessSyncableTiddlers = function(syncList)
 	for(var i=0; i<syncList.length; i++) {
 		var si = syncList[i];
 		si.serverUrl = si.syncTask.syncMachine.generateTiddlerInfo(si.tiddler).uri;
-
 	}
 };
 
@@ -125,8 +124,8 @@ config.macros.sync.createSyncTask = function(syncItem)
 		},
 		onGetTiddlerList: function(context) {
 			var tiddlers = context.tiddlers;
-			for(var t=0; t<st.syncItems.length; t++) {
-				var si = st.syncItems[t];
+			for(var i=0; i<st.syncItems.length; i++) {
+				var si = st.syncItems[i];
 				var f = tiddlers.findByField("title",si.title);
 				if(f !== null) {
 					if(tiddlers[f].fields['server.page.revision'] > si.tiddler.fields['server.page.revision']) {
