@@ -283,13 +283,14 @@ Story.prototype.addCustomFields = function(place,customFields)
 //# Refresh all tiddlers in the Story
 Story.prototype.refreshAllTiddlers = function(force)
 {
-	var place = this.getContainer();
-	var e = place.firstChild;
-	if(!e)
-		return;
-	this.refreshTiddler(e.getAttribute("tiddler"),force ? null : e.getAttribute("template"),true);
-	while((e = e.nextSibling) != null)
-		this.refreshTiddler(e.getAttribute("tiddler"),force ? null : e.getAttribute("template"),true);
+	var e = this.getContainer().firstChild;
+	while(e) {
+		var template = e.getAttribute("template");
+		if(template && template.toLowerCase().indexOf("edit")==-1) {
+			this.refreshTiddler(e.getAttribute("tiddler"),force ? null : template,true);
+		}
+		e = e.nextSibling;
+	}
 };
 
 //# Default tiddler onmouseover/out event handlers
