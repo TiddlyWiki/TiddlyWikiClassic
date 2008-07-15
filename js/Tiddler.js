@@ -96,17 +96,17 @@ Tiddler.prototype.set = function(title,text,modifier,modified,tags,created,field
 // Change the text and other attributes of a tiddler without triggered a tiddler.changed() call
 Tiddler.prototype.assign = function(title,text,modifier,modified,tags,created,fields)
 {
-	if(title)
+	if(title != undefined)
 		this.title = title;
-	if(text)
+	if(text != undefined)
 		this.text = text;
-	if(modifier)
+	if(modifier != undefined)
 		this.modifier = modifier;
-	if(modified)
+	if(modified != undefined)
 		this.modified = modified;
-	if(created)
+	if(created != undefined)
 		this.created = created;
-	if(fields)
+	if(fields != undefined)
 		this.fields = fields;
 	if(tags != undefined)
 		this.tags = (typeof tags == "string") ? tags.readBracketedList() : tags;
