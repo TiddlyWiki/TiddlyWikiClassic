@@ -75,7 +75,7 @@ describe('Macros: today macro', {
 	before_each : function() {
 		__main();
 	},
-	'today macro should return a date shaped string' : function() { 
+	'today macro should return a date-shaped string [known to fail]' : function() { 
 		value_of(wikifyStatic("<<today>>")).should_match(/^<(span|SPAN)>[A-Z][a-z]+\s[A-Z][a-z]+\s+[0-9]{1,2}\s[0-9]{2}:[0-9]{2}:[0-9]{2} 2[0-9]{3}<\/(span|SPAN)>$/);
 	}
 });

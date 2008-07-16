@@ -65,7 +65,7 @@ describe('GenerateRss: generateRss default XML', {
         'channel description should be the default TiddlyWiki subtitle' : function() { 
 		value_of(xml.xpath("/rss/channel/description", "string")).should_be('a reusable non-linear personal web notebook');
         },
-        'channel language should be "en-us"' : function() { 
+        'channel language should be "en-us" [known to fail]' : function() { 
 		value_of(xml.xpath("/rss/channel/language", "string")).should_be('en-us');
         },
         'channel copyright should be "TiddlyWiki YYYY YourName"' : function() { 
