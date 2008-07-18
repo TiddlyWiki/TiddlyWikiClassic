@@ -56,61 +56,6 @@ TiddlyWiki.prototype.isShadowTiddler = function(title)
 	return typeof config.shadowTiddlers[title] == "string";
 };
 
-TiddlyWiki.prototype.suspendNotifications = function()
-{
-	this.notificationLevel--;
-};
-
-TiddlyWiki.prototype.resumeNotifications = function()
-{
-	this.notificationLevel++;
-};
-
-// Invoke the notification handlers for a particular tiddler
-TiddlyWiki.prototype.notify = function(title,doBlanket)
-{
-	if(!this.notificationLevel) {
-		for(var t=0; t<this.namedNotifications.length; t++) {
-			var n = this.namedNotifications[t];
-			if((n.name == null && doBlanket) || (n.name == title))
-				n.notify(title);
-		}
-	}
-};
-
-// Invoke the notification handlers for all tiddlers
-TiddlyWiki.prototype.notifyAll = function()
-{
-	if(!this.notificationLevel) {
-		for(var t=0; t<this.namedNotifications.length; t++) {
-			var n = this.namedNotifications[t];
-			if(n.name)
-				n.notify(n.name);
-		}
-	}
-};
-
-// Add a notification handler to a tiddler
-TiddlyWiki.prototype.addNotification = function(title,fn)
-{
-	for(var i=0; i<this.namedNotifications.length; i++) {
-		if((this.namedNotifications[i].name == title) && (this.namedNotifications[i].notify == fn))
-			return this;
-	}
-	this.namedNotifications.push({name: title, notify: fn});
-	return this;
-};
-
-TiddlyWiki.prototype.removeTiddler = function(title)
-{
-	var tiddler = this.fetchTiddler(title);
-	if(tiddler) {
-		this.deleteTiddler(title);
-		this.notify(title,true);
-		this.setDirty(true);
-	}
-};
-
 TiddlyWiki.prototype.getTiddler = function(title)
 {
 	var t = this.fetchTiddler(title);
@@ -245,6 +190,61 @@ TiddlyWiki.prototype.getTiddlerSlices = function(title,sliceNames)
 	return r;
 };
 
+TiddlyWiki.prototype.suspendNotifications = function()
+{
+	this.notificationLevel--;
+};
+
+TiddlyWiki.prototype.resumeNotifications = function()
+{
+	this.notificationLevel++;
+};
+
+// Invoke the notification handlers for a particular tiddler
+TiddlyWiki.prototype.notify = function(title,doBlanket)
+{
+	if(!this.notificationLevel) {
+		for(var t=0; t<this.namedNotifications.length; t++) {
+			var n = this.namedNotifications[t];
+			if((n.name == null && doBlanket) || (n.name == title))
+				n.notify(title);
+		}
+	}
+};
+
+// Invoke the notification handlers for all tiddlers
+TiddlyWiki.prototype.notifyAll = function()
+{
+	if(!this.notificationLevel) {
+		for(var t=0; t<this.namedNotifications.length; t++) {
+			var n = this.namedNotifications[t];
+			if(n.name)
+				n.notify(n.name);
+		}
+	}
+};
+
+// Add a notification handler to a tiddler
+TiddlyWiki.prototype.addNotification = function(title,fn)
+{
+	for(var i=0; i<this.namedNotifications.length; i++) {
+		if((this.namedNotifications[i].name == title) && (this.namedNotifications[i].notify == fn))
+			return this;
+	}
+	this.namedNotifications.push({name: title, notify: fn});
+	return this;
+};
+
+TiddlyWiki.prototype.removeTiddler = function(title)
+{
+	var tiddler = this.fetchTiddler(title);
+	if(tiddler) {
+		this.deleteTiddler(title);
+		this.notify(title,true);
+		this.setDirty(true);
+	}
+};
+
 TiddlyWiki.prototype.setTiddlerTag = function(title,status,tag)
 {
 	var tiddler = this.fetchTiddler(title);
@@ -323,6 +323,20 @@ TiddlyWiki.prototype.createTiddler = function(title)
 		this.setDirty(true);
 	}
 	return tiddler;
+};
+
+TiddlyWiki.prototype.getLoader = function()
+{
+	if(!this.loader)
+		this.loader = new TW21Loader();
+	return this.loader;
+};
+
+TiddlyWiki.prototype.getSaver = function()
+{
+	if(!this.saver)
+		this.saver = new TW21Saver();
+	return this.saver;
 };
 
 // Return all tiddlers formatted as an HTML string
@@ -534,20 +548,6 @@ TiddlyWiki.prototype.resolveTiddler = function(tiddler)
 {
 	var t = (typeof tiddler == 'string') ? this.getTiddler(tiddler) : tiddler;
 	return t instanceof Tiddler ? t : null;
-};
-
-TiddlyWiki.prototype.getLoader = function()
-{
-	if(!this.loader)
-		this.loader = new TW21Loader();
-	return this.loader;
-};
-
-TiddlyWiki.prototype.getSaver = function()
-{
-	if(!this.saver)
-		this.saver = new TW21Saver();
-	return this.saver;
 };
 
 // Filter a list of tiddlers
