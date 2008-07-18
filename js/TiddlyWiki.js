@@ -56,6 +56,17 @@ TiddlyWiki.prototype.isShadowTiddler = function(title)
 	return typeof config.shadowTiddlers[title] == "string";
 };
 
+TiddlyWiki.prototype.createTiddler = function(title)
+{
+	var tiddler = this.fetchTiddler(title);
+	if(!tiddler) {
+		tiddler = new Tiddler(title);
+		this.addTiddler(tiddler);
+		this.setDirty(true);
+	}
+	return tiddler;
+};
+
 TiddlyWiki.prototype.getTiddler = function(title)
 {
 	var t = this.fetchTiddler(title);
@@ -245,6 +256,17 @@ TiddlyWiki.prototype.removeTiddler = function(title)
 	}
 };
 
+// Reset the sync status of a freshly synced tiddler
+TiddlyWiki.prototype.resetTiddler = function(title)
+{
+	var tiddler = this.fetchTiddler(title);
+	if(tiddler) {
+		tiddler.clearChangeCount();
+		this.notify(title,true);
+		this.setDirty(true);
+	}
+};
+
 TiddlyWiki.prototype.setTiddlerTag = function(title,status,tag)
 {
 	var tiddler = this.fetchTiddler(title);
@@ -296,33 +318,11 @@ TiddlyWiki.prototype.saveTiddler = function(title,newTitle,newBody,modifier,modi
 	return tiddler;
 };
 
-// Reset the sync status of a freshly synced tiddler
-TiddlyWiki.prototype.resetTiddler = function(title)
-{
-	var tiddler = this.fetchTiddler(title);
-	if(tiddler) {
-		tiddler.clearChangeCount();
-		this.notify(title,true);
-		this.setDirty(true);
-	}
-};
-
 TiddlyWiki.prototype.incChangeCount = function(title)
 {
 	var tiddler = this.fetchTiddler(title);
 	if(tiddler)
 		tiddler.incChangeCount();
-};
-
-TiddlyWiki.prototype.createTiddler = function(title)
-{
-	var tiddler = this.fetchTiddler(title);
-	if(!tiddler) {
-		tiddler = new Tiddler(title);
-		this.addTiddler(tiddler);
-		this.setDirty(true);
-	}
-	return tiddler;
 };
 
 TiddlyWiki.prototype.getLoader = function()
