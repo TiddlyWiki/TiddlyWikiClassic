@@ -45,6 +45,17 @@ TiddlyWiki.prototype.isDirty = function()
 	return this.dirty;
 };
 
+TiddlyWiki.prototype.tiddlerExists = function(title)
+{
+	var t = this.fetchTiddler(title);
+	return t != undefined;
+};
+
+TiddlyWiki.prototype.isShadowTiddler = function(title)
+{
+	return typeof config.shadowTiddlers[title] == "string";
+};
+
 TiddlyWiki.prototype.suspendNotifications = function()
 {
 	this.notificationLevel--;
@@ -100,17 +111,6 @@ TiddlyWiki.prototype.removeTiddler = function(title)
 	}
 };
 
-TiddlyWiki.prototype.tiddlerExists = function(title)
-{
-	var t = this.fetchTiddler(title);
-	return t != undefined;
-};
-
-TiddlyWiki.prototype.isShadowTiddler = function(title)
-{
-	return typeof config.shadowTiddlers[title] == "string";
-};
-
 TiddlyWiki.prototype.getTiddler = function(title)
 {
 	var t = this.fetchTiddler(title);
@@ -159,6 +159,32 @@ TiddlyWiki.prototype.getTiddlerText = function(title,defaultText)
 	if(defaultText != undefined)
 		return defaultText;
 	return null;
+};
+
+TiddlyWiki.prototype.getRecursiveTiddlerText = function(title,defaultText,depth)
+{
+	var bracketRegExp = new RegExp("(?:\\[\\[([^\\]]+)\\]\\])","mg");
+	var text = this.getTiddlerText(title,null);
+	if(text == null)
+		return defaultText;
+	var textOut = [];
+	var lastPos = 0;
+	do {
+		var match = bracketRegExp.exec(text);
+		if(match) {
+			textOut.push(text.substr(lastPos,match.index-lastPos));
+			if(match[1]) {
+				if(depth <= 0)
+					textOut.push(match[1]);
+				else
+					textOut.push(this.getRecursiveTiddlerText(match[1],"[[" + match[1] + "]]",depth-1));
+			}
+			lastPos = match.index + match[0].length;
+		} else {
+			textOut.push(text.substr(lastPos));
+		}
+	} while(match);
+	return textOut.join("");
 };
 
 TiddlyWiki.prototype.slicesRE = /(?:^([\'\/]{0,2})~?([\.\w]+)\:\1\s*([^\n]+)\s*$)|(?:^\|([\'\/]{0,2})~?([\.\w]+)\:?\4\|\s*([^\|\n]+)\s*\|$)/gm;
@@ -219,32 +245,6 @@ TiddlyWiki.prototype.getTiddlerSlices = function(title,sliceNames)
 	return r;
 };
 
-TiddlyWiki.prototype.getRecursiveTiddlerText = function(title,defaultText,depth)
-{
-	var bracketRegExp = new RegExp("(?:\\[\\[([^\\]]+)\\]\\])","mg");
-	var text = this.getTiddlerText(title,null);
-	if(text == null)
-		return defaultText;
-	var textOut = [];
-	var lastPos = 0;
-	do {
-		var match = bracketRegExp.exec(text);
-		if(match) {
-			textOut.push(text.substr(lastPos,match.index-lastPos));
-			if(match[1]) {
-				if(depth <= 0)
-					textOut.push(match[1]);
-				else
-					textOut.push(this.getRecursiveTiddlerText(match[1],"[[" + match[1] + "]]",depth-1));
-			}
-			lastPos = match.index + match[0].length;
-		} else {
-			textOut.push(text.substr(lastPos));
-		}
-	} while(match);
-	return textOut.join("");
-};
-
 TiddlyWiki.prototype.setTiddlerTag = function(title,status,tag)
 {
 	var tiddler = this.fetchTiddler(title);
@@ -255,7 +255,7 @@ TiddlyWiki.prototype.setTiddlerTag = function(title,status,tag)
 		if(status)
 			tiddler.tags.push(tag);
 		tiddler.changed();
-		this.incChangeCount(title);
+		tiddler.incChangeCount(title);
 		this.notify(title,true);
 		this.setDirty(true);
 	}
@@ -268,7 +268,7 @@ TiddlyWiki.prototype.addTiddlerFields = function(title,fields)
 		return;
 	merge(tiddler.fields,fields);
 	tiddler.changed();
-	this.incChangeCount(title);
+	tiddler.incChangeCount(title);
 	this.notify(title,true);
 	this.setDirty(true);
 };
@@ -325,6 +325,12 @@ TiddlyWiki.prototype.createTiddler = function(title)
 	return tiddler;
 };
 
+// Return all tiddlers formatted as an HTML string
+TiddlyWiki.prototype.allTiddlersAsHtml = function()
+{
+	return store.getSaver().externalize(store);
+};
+
 // Load contents of a TiddlyWiki from an HTML DIV
 TiddlyWiki.prototype.loadFromDiv = function(src,idPrefix,noUpdate)
 {
@@ -375,12 +381,6 @@ TiddlyWiki.prototype.updateTiddlers = function()
 	this.forEachTiddler(function(title,tiddler) {
 		tiddler.changed();
 	});
-};
-
-// Return all tiddlers formatted as an HTML string
-TiddlyWiki.prototype.allTiddlersAsHtml = function()
-{
-	return store.getSaver().externalize(store);
 };
 
 // Return an array of tiddlers matching a search regular expression
