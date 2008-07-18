@@ -84,10 +84,7 @@ function main()
 function restart()
 {
 	invokeParamifier(params,"onstart");
-	if(story.isEmpty()) {
-		var tiddlers = store.filterTiddlers(store.getTiddlerText("DefaultTiddlers"));
-		story.displayTiddlers(null,tiddlers);
-	}
+	story.displayDefaultTiddlers();
 	window.scrollTo(0,0);
 }
 

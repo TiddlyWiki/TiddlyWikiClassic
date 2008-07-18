@@ -49,6 +49,14 @@ Story.prototype.forEachTiddler = function(fn)
 	}
 };
 
+Story.prototype.displayDefaultTiddlers = function()
+{
+	if(this.isEmpty()) {
+		var tiddlers = store.filterTiddlers(store.getTiddlerText("DefaultTiddlers"));
+		story.displayTiddlers(null,tiddlers);
+	}
+};
+
 //# Display several tiddlers given their titles in an array. Parameters same as displayTiddler(), except:
 //# titles - array of tiddlers or string titles
 Story.prototype.displayTiddlers = function(srcElement,titles,template,animate,unused,customFields,toggle)
