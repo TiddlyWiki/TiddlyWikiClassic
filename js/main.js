@@ -44,12 +44,12 @@ function main()
 	invokeParamifier(params,"onload");
 	t4 = new Date();
 	readOnly = (window.location.protocol == "file:") ? false : config.options.chkHttpReadOnly;
-	showBackstage = !readOnly;
 	var pluginProblem = loadPlugins();
 	t5 = new Date();
 	formatter = new Formatter(config.formatters);
 	story.switchTheme(config.options.txtTheme);
 	invokeParamifier(params,"onconfig");
+	showBackstage = !readOnly;
 	t6 = new Date();
 	store.notifyAll();
 	t7 = new Date();
