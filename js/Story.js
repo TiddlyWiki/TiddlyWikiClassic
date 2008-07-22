@@ -53,7 +53,7 @@ Story.prototype.displayDefaultTiddlers = function()
 {
 	if(this.isEmpty()) {
 		var tiddlers = store.filterTiddlers(store.getTiddlerText("DefaultTiddlers"));
-		story.displayTiddlers(null,tiddlers);
+		this.displayTiddlers(null,tiddlers);
 	}
 };
 
@@ -423,8 +423,7 @@ Story.prototype.blurTiddler = function(title)
 //#  field - name of field (eg "tags")
 Story.prototype.setTiddlerField = function(title,tag,mode,field)
 {
-	var c = story.getTiddlerField(title,field);
-
+	var c = this.getTiddlerField(title,field);
 	var tags = c.value.readBracketedList();
 	tags.setItem(tag,mode);
 	c.value = String.encodeTiddlyLinkList(tags);
@@ -433,7 +432,7 @@ Story.prototype.setTiddlerField = function(title,tag,mode,field)
 //# The same as setTiddlerField but preset to the "tags" field
 Story.prototype.setTiddlerTag = function(title,tag,mode)
 {
-	Story.prototype.setTiddlerField(title,tag,mode,"tags");
+	this.setTiddlerField(title,tag,mode,"tags");
 };
 
 //# Close a specified tiddler
@@ -686,7 +685,7 @@ Story.prototype.switchTheme = function(theme)
 	if(!startingUp) {
 		if(config.refresherData.pageTemplate!=pt || config.tiddlerTemplates[vi]!=vt || config.tiddlerTemplates[ei]!=et) {
 			refreshAll();
-			story.refreshAllTiddlers(true);
+			this.refreshAllTiddlers(true);
 		} else {
 			setStylesheet(store.getRecursiveTiddlerText(config.refresherData.styleSheet,"",10),config.refreshers.styleSheet);
 		}

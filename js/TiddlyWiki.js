@@ -342,7 +342,7 @@ TiddlyWiki.prototype.getSaver = function()
 // Return all tiddlers formatted as an HTML string
 TiddlyWiki.prototype.allTiddlersAsHtml = function()
 {
-	return store.getSaver().externalize(store);
+	return this.getSaver().externalize(store);
 };
 
 // Load contents of a TiddlyWiki from an HTML DIV
@@ -429,7 +429,7 @@ TiddlyWiki.prototype.getTags = function(excludeTag)
 				}
 			}
 			if(n && excludeTag) {
-				var t = store.fetchTiddler(tag);
+				var t = this.fetchTiddler(tag);
 				if(t && t.isTagged(excludeTag))
 					n = false;
 			}
@@ -567,9 +567,9 @@ TiddlyWiki.prototype.filterTiddlers = function(filter)
 				tiddler = this.fetchTiddler(title);
 				if(tiddler) {
 					results.pushUnique(tiddler);
-				} else if(store.isShadowTiddler(title)) {
+				} else if(this.isShadowTiddler(title)) {
 					tiddler = new Tiddler();
-					tiddler.set(title,store.getTiddlerText(title));
+					tiddler.set(title,this.getTiddlerText(title));
 					results.pushUnique(tiddler);
 				}
 			} else if(match[2]) {
