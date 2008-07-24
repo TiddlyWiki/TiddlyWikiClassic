@@ -73,7 +73,7 @@ function refreshElements(root,changeList)
 	var nodes = root.childNodes;
 	for(var c=0; c<nodes.length; c++) {
 		var e = nodes[c], type = null;
-		if(e.getAttribute  && (e.tagName ? e.tagName != "IFRAME" : true))
+		if(e.getAttribute && (e.tagName ? e.tagName != "IFRAME" : true))
 			type = e.getAttribute("refresh");
 		var refresher = config.refreshers[type];
 		var refreshed = false;

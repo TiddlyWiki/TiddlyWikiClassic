@@ -17,7 +17,7 @@ config.macros.upgrade.onClickUpgrade = function(e)
 	if(window.location.protocol != "file:") {
 		alert(me.errorCantUpgrade);
 		return false;
-	}	
+	}
 	if(story.areAnyDirty() || store.isDirty()) {
 		alert(me.errorNotSaved);
 		return false;
@@ -65,7 +65,7 @@ config.macros.upgrade.onLoadCore = function(status,params,responseText,url,xhr)
 		saveFile(localPath,responseText);
 		w.setButtons([],me.statusReloadingCore);
 		var backupPath = w.getValue("backupPath");
-		var newLoc = document.location.toString() + '?time=' + new Date().convertToYYYYMMDDHHMM()  + '#upgrade:[[' + encodeURI(backupPath) + ']]';
+		var newLoc = document.location.toString() + '?time=' + new Date().convertToYYYYMMDDHHMM() + '#upgrade:[[' + encodeURI(backupPath) + ']]';
 		window.setTimeout(function () {window.location = newLoc;},10);
 	};
 	var step2 = [me.step2Html_downgrade,me.step2Html_restore,me.step2Html_upgrade][compareVersions(version,newVer) + 1];

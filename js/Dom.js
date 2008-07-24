@@ -70,7 +70,7 @@ function addEvent(obj,type,fn)
 	}
 }
 
-//# Remove  an event handler
+//# Remove an event handler
 //# Thanks to John Resig, via QuirksMode
 function removeEvent(obj,type,fn)
 {

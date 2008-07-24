@@ -203,7 +203,7 @@ config.macros.importTiddlers.onWorkspaceChange = function(e)
 {
 	var wizard = new Wizard(this);
 	var t = wizard.getElement("txtWorkspace");
-	t.value  = this.value;
+	t.value = this.value;
 	this.selectedIndex = 0;
 	return false;
 };
@@ -267,7 +267,7 @@ config.macros.importTiddlers.onGetTiddlerList = function(context,wizard)
 	txtSaveTiddler.value = config.macros.importTiddlers.generateSystemServerName(wizard);
 	wizard.setButtons([
 			{caption: config.macros.importTiddlers.cancelLabel, tooltip: config.macros.importTiddlers.cancelPrompt, onClick: config.macros.importTiddlers.onCancel},
-			{caption: config.macros.importTiddlers.importLabel, tooltip: config.macros.importTiddlers.importPrompt, onClick:  config.macros.importTiddlers.doImport}
+			{caption: config.macros.importTiddlers.importLabel, tooltip: config.macros.importTiddlers.importPrompt, onClick: config.macros.importTiddlers.doImport}
 		]);
 };
 

@@ -142,7 +142,7 @@ function ieCreatePath(path)
 		return null;
 	}
 
-	//# Remove the filename, if present.  Use trailing slash (i.e. "foo\bar\") if no filename.
+	//# Remove the filename, if present. Use trailing slash (i.e. "foo\bar\") if no filename.
 	var pos = path.lastIndexOf("\\");
 	if(pos!=-1)
 		path = path.substring(0,pos+1);

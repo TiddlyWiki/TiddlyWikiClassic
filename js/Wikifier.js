@@ -178,7 +178,7 @@ Wikifier.prototype.subWikifyTerm = function(output,terminatorRegExp)
 	this.formatter.formatterRegExp.lastIndex = this.nextMatch;
 	var formatterMatch = this.formatter.formatterRegExp.exec(terminatorMatch ? this.source.substr(0,terminatorMatch.index) : this.source);
 	while(terminatorMatch || formatterMatch) {
-		//# Check for a terminator match  before the next formatter match
+		//# Check for a terminator match before the next formatter match
 		if(terminatorMatch && (!formatterMatch || terminatorMatch.index <= formatterMatch.index)) {
 			//# Output any text before the match
 			if(terminatorMatch.index > this.nextMatch)

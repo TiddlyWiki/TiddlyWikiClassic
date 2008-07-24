@@ -106,7 +106,7 @@ function getXMLHttpRequest()
 }
 
 // included for compatibility
-function  doHttp(type,url,data,contentType,username,password,callback,params,headers,allowCache)
+function doHttp(type,url,data,contentType,username,password,callback,params,headers,allowCache)
 {
 	return httpReq(type,url,callback,params,headers,data,contentType,username,password,allowCache);
 }

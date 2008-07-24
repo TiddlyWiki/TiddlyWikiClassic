@@ -98,7 +98,7 @@ TiddlyWiki.prototype.getTiddlerText = function(title,defaultText)
 			return tiddler.text;
 		var re = new RegExp("(^!{1,6}" + section.escapeRegExp() + "[ \t]*\n)","mg");
 		re.lastIndex = 0;
-		var match =  re.exec(tiddler.text);
+		var match = re.exec(tiddler.text);
 		if(match) {
 			var t = tiddler.text.substr(match.index+match[1].length);
 			var re2 = /^!/mg;
