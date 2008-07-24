@@ -89,7 +89,7 @@ config.macros.option.types = {
 	'txt': {
 		elementType: "input",
 		valueField: "value",
-		eventName: "onkeyup",
+		eventName: "onchange",
 		className: "txtOptionInput",
 		create: config.macros.option.genericCreate,
 		onChange: config.macros.option.genericOnChange
