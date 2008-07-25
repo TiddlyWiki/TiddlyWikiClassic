@@ -346,13 +346,13 @@ merge(config.macros.sync,{
 	hasChanged: "Changed while unplugged",
 	hasNotChanged: "Unchanged while unplugged",
 	syncStatusList: {
-		none: {text: "...", color: "transparent", display:null},
-		changedServer: {text: "Changed on server", color: '#8080ff', display:null},
-		changedLocally: {text: "Changed while unplugged", color: '#80ff80', display:null},
-		changedBoth: {text: "Changed while unplugged and on server", color: '#ff8080', display:null},
-		notFound: {text: "Not found on server", color: '#ffff80', display:null},
-		putToServer: {text: "Saved update on server", color: '#ff80ff', display:null},
-		gotFromServer: {text: "Retrieved update from server", color: '#80ffff', display:null}
+		none: {text: "...", display:null, className:'notChanged'},
+		changedServer: {text: "Changed on server", display:null, className:'changedServer'},
+		changedLocally: {text: "Changed while unplugged", display:null, className:'changedLocally'},
+		changedBoth: {text: "Changed while unplugged and on server", display:null, className:'changedBoth'},
+		notFound: {text: "Not found on server", display:null, className:'notFound'},
+		putToServer: {text: "Saved update on server", display:null, className:'putToServer'},
+		gotFromServer: {text: "Retrieved update from server", display:null, className:'gotFromServer'}
 		}
 	});
 

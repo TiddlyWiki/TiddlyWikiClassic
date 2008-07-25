@@ -50,6 +50,14 @@ h2,h3 {border-bottom:1px solid [[ColorPalette::TertiaryLight]];}
 .wizard .button:hover {color:[[ColorPalette::Foreground]]; background:[[ColorPalette::Background]];}
 .wizard .button:active {color:[[ColorPalette::Background]]; background:[[ColorPalette::Foreground]]; border: 1px solid;
 	border-color:[[ColorPalette::PrimaryDark]] [[ColorPalette::PrimaryPale]] [[ColorPalette::PrimaryPale]] [[ColorPalette::PrimaryDark]];}
+	
+.wizard .notChanged {background:transparent;}
+.wizard .changedLocally {background:#80ff80;}
+.wizard .changedServer {background:#8080ff;}
+.wizard .changedBoth {background:#ff8080;}
+.wizard .notFound {background:#ffff80;}
+.wizard .putToServer {background:#ff80ff;}
+.wizard .gotFromServer {background:#80ffff;}
 
 #messageArea {border:1px solid [[ColorPalette::SecondaryMid]]; background:[[ColorPalette::SecondaryLight]]; color:[[ColorPalette::Foreground]];}
 #messageArea .button {color:[[ColorPalette::PrimaryMid]]; background:[[ColorPalette::SecondaryPale]]; border:none;}
