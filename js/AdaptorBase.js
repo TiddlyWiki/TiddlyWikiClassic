@@ -21,8 +21,8 @@ AdaptorBase.prototype.fullHostName = function(host)
 	host = host.trim();
 	if(!host.match(/:\/\//))
 		host = 'http://' + host;
-	if(host.substr(host.length-1) != '/')
-		host = host + '/';
+	if(host.substr(host.length-1) == '/')
+		host = host.substr(0,host.length-1)
 	return host;
 };
 
