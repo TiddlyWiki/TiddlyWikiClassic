@@ -84,7 +84,9 @@ function main()
 function restart()
 {
 	invokeParamifier(params,"onstart");
-	story.displayDefaultTiddlers();
+	if(story.isEmpty()) {
+		story.displayDefaultTiddlers();
+	}
 	window.scrollTo(0,0);
 }
 
