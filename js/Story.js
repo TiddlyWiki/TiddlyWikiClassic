@@ -291,7 +291,7 @@ Story.prototype.refreshAllTiddlers = function(force)
 	var e = this.getContainer().firstChild;
 	while(e) {
 		var template = e.getAttribute("template");
-		if(template && template.toLowerCase().indexOf("edit")==-1) {
+		if(template && e.getAttribute("dirty") != "true") {
 			this.refreshTiddler(e.getAttribute("tiddler"),force ? null : template,true);
 		}
 		e = e.nextSibling;
