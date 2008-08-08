@@ -6,7 +6,7 @@
 //# there are some intricacies that make it tricky to use these
 //# functions with full UTF-8 files. For more details, see:
 //# 
-//# http://doc.tiddlywiki.org/#FileSystemFunctions
+//# http://trac.tiddlywiki.org/ticket/99
 //#
 //#
 //# UTF-8 encoding rules:
