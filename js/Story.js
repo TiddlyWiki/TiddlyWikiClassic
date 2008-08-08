@@ -31,9 +31,9 @@ Story.prototype.getContainer = function()
 	return document.getElementById(this.containerId());
 };
 
-//# Iterate through all the tiddlers in a story
+//# Iterate through all the tiddlers currently opened in a story
 //# fn - callback function to be called for each tiddler. Arguments are:
-//#      tiddler - reference to Tiddler object
+//#      tiddlerTitle - title of the tiddler
 //#      element - reference to tiddler display element
 Story.prototype.forEachTiddler = function(fn)
 {
