@@ -78,7 +78,8 @@ config.macros.sync.processSyncableTiddlers = function(syncList)
 {
 	for(var i=0; i<syncList.length; i++) {
 		var si = syncList[i];
-		si.rowElement.style.display = si.syncStatus.display;
+		if(si.syncStatus.display)
+			si.rowElement.style.display = si.syncStatus.display;
 		if(si.syncStatus.className)
 			si.rowElement.className = si.syncStatus.className;
 	}
@@ -275,6 +276,8 @@ SyncMachine.prototype.getTiddler = function(title,nextStep)
 SyncMachine.prototype.putTiddler = function(tiddler,nextStep)
 {
 	var me = this;
-	return me.adaptor.putTiddler(tiddler,null,null,function(context) {me.go(nextStep,context);});
+	if(me.adaptor.putTiddler)
+		return me.adaptor.putTiddler(tiddler,null,null,function(context) {me.go(nextStep,context);});
+	return false;
 };
 
