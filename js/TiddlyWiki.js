@@ -53,7 +53,7 @@ TiddlyWiki.prototype.tiddlerExists = function(title)
 
 TiddlyWiki.prototype.isShadowTiddler = function(title)
 {
-	return typeof config.shadowTiddlers[title] == "string";
+	return config.shadowTiddlers[title] === undefined ? false : true;
 };
 
 TiddlyWiki.prototype.createTiddler = function(title)
@@ -75,6 +75,14 @@ TiddlyWiki.prototype.getTiddler = function(title)
 	else
 		return null;
 };
+
+TiddlyWiki.prototype.getShadowTiddlerText = function(title)
+{
+	if(typeof config.shadowTiddlers[title] == "string")
+		return config.shadowTiddlers[title];
+	else
+		return "";
+}
 
 TiddlyWiki.prototype.getTiddlerText = function(title,defaultText)
 {
@@ -111,7 +119,7 @@ TiddlyWiki.prototype.getTiddlerText = function(title,defaultText)
 		return defaultText;
 	}
 	if(this.isShadowTiddler(title))
-		return config.shadowTiddlers[title];
+		return this.getShadowTiddlerText(title);
 	if(defaultText != undefined)
 		return defaultText;
 	return null;
@@ -524,7 +532,7 @@ TiddlyWiki.prototype.getShadowed = function()
 {
 	var results = [];
 	for(var t in config.shadowTiddlers) {
-		if(typeof config.shadowTiddlers[t] == "string")
+		if(this.isShadowTiddler(t))
 			results.push(t);
 	}
 	results.sort();
