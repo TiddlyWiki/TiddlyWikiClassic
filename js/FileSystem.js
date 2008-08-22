@@ -144,6 +144,8 @@ function ieCreatePath(path)
 
 	//# Remove the filename, if present. Use trailing slash (i.e. "foo\bar\") if no filename.
 	var pos = path.lastIndexOf("\\");
+	if(pos==-1)
+		pos = path.lastIndexOf("/");
 	if(pos!=-1)
 		path = path.substring(0,pos+1);
 
