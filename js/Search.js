@@ -6,21 +6,22 @@ config.macros.search.handler = function(place,macroName,params)
 {
 	var searchTimeout = null;
 	var btn = createTiddlyButton(place,this.label,this.prompt,this.onClick,"searchButton");
-	var txt = createTiddlyElement(place,"input",null,"txtOptionInput searchField");
+	var txt = createTiddlyElement(null,"input",null,"txtOptionInput searchField");
 	if(params[0])
 		txt.value = params[0];
-	txt.onkeyup = this.onKeyPress;
-	txt.onfocus = this.onFocus;
-	txt.setAttribute("size",this.sizeTextbox);
-	txt.setAttribute("accessKey",this.accessKey);
-	txt.setAttribute("autocomplete","off");
-	txt.setAttribute("lastSearchText","");
 	if(config.browser.isSafari) {
 		txt.setAttribute("type","search");
 		txt.setAttribute("results","5");
 	} else {
 		txt.setAttribute("type","text");
 	}
+	place.appendChild(txt);
+	txt.onkeyup = this.onKeyPress;
+	txt.onfocus = this.onFocus;
+	txt.setAttribute("size",this.sizeTextbox);
+	txt.setAttribute("accessKey",this.accessKey);
+	txt.setAttribute("autocomplete","off");
+	txt.setAttribute("lastSearchText","");
 };
 
 // Global because there's only ever one outstanding incremental search timer
