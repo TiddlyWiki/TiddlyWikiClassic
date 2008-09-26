@@ -82,7 +82,7 @@ TiddlyWiki.prototype.getShadowTiddlerText = function(title)
 		return config.shadowTiddlers[title];
 	else
 		return "";
-}
+};
 
 TiddlyWiki.prototype.getTiddlerText = function(title,defaultText)
 {
