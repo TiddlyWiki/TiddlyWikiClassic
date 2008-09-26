@@ -84,6 +84,9 @@ config.views = {
 // Backstage tasks
 config.backstageTasks = ["save","sync","importTask","tweak","upgrade","plugins"];
 
+// Extensions
+config.extensions = {};
+
 // Macros; each has a 'handler' member that is inserted later
 config.macros = {
 	today: {},
