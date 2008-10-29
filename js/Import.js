@@ -329,7 +329,7 @@ config.macros.importTiddlers.doImport = function(e)
 			{caption: config.macros.importTiddlers.cancelLabel, tooltip: config.macros.importTiddlers.cancelPrompt, onClick: config.macros.importTiddlers.onCancel}
 		],config.macros.importTiddlers.statusDoingImport);
 	for(t=0; t<rowNames.length; t++) {
-		var context = {context.allowSynchronous:true,tiddler:wizard.adaptor.context.tiddlers[t]};
+		var context = {allowSynchronous:true,tiddler:wizard.adaptor.context.tiddlers[t]};
 		adaptor.getTiddler(rowNames[t],context,wizard,config.macros.importTiddlers.onGetTiddler);
 	}
 	return false;
