@@ -16,7 +16,13 @@ function drawGradient(place,horiz,locolors,hicolors)
 		bar.style.height = horiz ? "100%" : (101-t) + "%";
 		bar.style.zIndex = -1;
 		var p = t/100*(locolors.length-1);
-		bar.style.backgroundColor = hicolors[Math.floor(p)].mix(locolors[Math.ceil(p)],p-Math.floor(p)).toString();
+		var hc = hicolors[Math.floor(p)];
+		if(typeof hc == "string")
+			hc = new RGB(hc);
+		var lc = locolors[Math.ceil(p)];
+		if(typeof lc == "string")
+			lc = new RGB(lc);
+		bar.style.backgroundColor = hc.mix(lc,p-Math.floor(p)).toString();
 	}
 }
 

@@ -272,7 +272,7 @@ config.macros.gradient.handler = function(place,macroName,params,wikifier,paramS
 	params = paramString.parseParams("color");
 	var locolors = [], hicolors = [];
 	for(var t=2; t<params.length; t++) {
-		var c = new RGB(params[t].value);
+		var c = params[t].value;
 		if(params[t].name == "snap") {
 			hicolors[hicolors.length-1] = c;
 		} else {
