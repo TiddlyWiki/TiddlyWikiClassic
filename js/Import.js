@@ -263,6 +263,7 @@ config.macros.importTiddlers.onGetTiddlerList = function(context,wizard)
 	markList.parentNode.insertBefore(listWrapper,markList);
 	var listView = ListView.create(listWrapper,listedTiddlers,config.macros.importTiddlers.listViewTemplate);
 	wizard.setValue("listView",listView);
+	wizard.setValue("context",context);
 	var txtSaveTiddler = wizard.getElement("txtSaveTiddler");
 	txtSaveTiddler.value = config.macros.importTiddlers.generateSystemServerName(wizard);
 	wizard.setButtons([
@@ -328,11 +329,13 @@ config.macros.importTiddlers.doImport = function(e)
 	wizard.setButtons([
 			{caption: config.macros.importTiddlers.cancelLabel, tooltip: config.macros.importTiddlers.cancelPrompt, onClick: config.macros.importTiddlers.onCancel}
 		],config.macros.importTiddlers.statusDoingImport);
+	var wizardContext = wizard.getValue("context");
+	var tiddlers = wizardContext ? wizardContext.tiddlers : [];
 	for(t=0; t<rowNames.length; t++) {
-		var context = {allowSynchronous:true};
-		if(wizard.adaptor) {
-			context.tiddler = wizard.adaptor.context.tiddlers[t];
-		}
+		var context = {
+			allowSynchronous:true,
+			tiddler:tiddlers[tiddlers.findByField("title",rowNames[t])]
+		};
 		adaptor.getTiddler(rowNames[t],context,wizard,config.macros.importTiddlers.onGetTiddler);
 	}
 	return false;
