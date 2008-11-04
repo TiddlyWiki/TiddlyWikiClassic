@@ -4,13 +4,23 @@
 
 function saveRss(localPath)
 {
-	//# Save Rss
 	var rssPath = localPath.substr(0,localPath.lastIndexOf(".")) + ".xml";
 	if(saveFile(rssPath,convertUnicodeToFileFormat(generateRss())))
 		displayMessage(config.messages.rssSaved,"file://" + rssPath);
 	else
 		alert(config.messages.rssFailed);
 }
+
+tiddlerToRssItem = function(tiddler,uri)
+{
+	var s = "<title" + ">" + tiddler.title.htmlEncode() + "</title" + ">\n";
+	s += "<description>" + wikifyStatic(tiddler.text,null,tiddler).htmlEncode() + "</description>\n";
+	for(var i=0; i<tiddler.tags.length; i++)
+		s += "<category>" + tiddler.tags[i] + "</category>\n";
+	s += "<link>" + uri + "#" + encodeURIComponent(String.encodeTiddlyLink(tiddler.title)) + "</link>\n";
+	s +="<pubDate>" + tiddler.modified.toGMTString() + "</pubDate>\n";
+	return s;
+};
 
 function generateRss()
 {
@@ -34,8 +44,8 @@ function generateRss()
 	// The body
 	var tiddlers = store.getTiddlers("modified","excludeLists");
 	var n = config.numRssItems > tiddlers.length ? 0 : tiddlers.length-config.numRssItems;
-	for(var t=tiddlers.length-1; t>=n; t--) {
-		s.push("<item>\n" + tiddlers[t].toRssItem(u) + "\n</item>");
+	for(var i=tiddlers.length-1; i>=n; i--) {
+		s.push("<item>\n" + tiddlerToRssItem(tiddlers[i],u) + "\n</item>");
 	}
 	// And footer
 	s.push("</channel>");
