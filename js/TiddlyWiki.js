@@ -285,7 +285,7 @@ TiddlyWiki.prototype.setTiddlerTag = function(title,status,tag)
 		if(status)
 			tiddler.tags.push(tag);
 		tiddler.changed();
-		tiddler.incChangeCount(title);
+		tiddler.incChangeCount();
 		this.notify(title,true);
 		this.setDirty(true);
 	}
@@ -298,7 +298,7 @@ TiddlyWiki.prototype.addTiddlerFields = function(title,fields)
 		return;
 	merge(tiddler.fields,fields);
 	tiddler.changed();
-	tiddler.incChangeCount(title);
+	tiddler.incChangeCount();
 	this.notify(title,true);
 	this.setDirty(true);
 };
