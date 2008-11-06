@@ -172,7 +172,6 @@ describe('Slices: calcAllSlices()', {
 		value_of(actual).should_be(expected);
 	},
 
-
 	'should ignore colons in slice values (colon notation)': function() {
 		var title = "tiddler";
 		var text = "foo: bar: baz";
@@ -197,14 +196,14 @@ describe('Slices: calcAllSlices()', {
 		var expected = { "foo": "bar|baz" };
 		value_of(actual).should_be(expected);
 	},
-	/*'should ignore additional columns (table notation)': function() {
+	'should allow pipes in slice values (table notation)': function() {
 		var title = "tiddler";
 		var text = "|foo|bar|baz|";
 		store.saveTiddler(title, title, text);
 		var actual = store.calcAllSlices(title);
-		var expected = { foo: "bar" };
+		var expected = { "foo": "bar|baz" };
 		value_of(actual).should_be(expected);
-	},*/
+	},
 
 	'should retrieve slices containing PrettyLinks (colon notation)': function() {
 		var title = "tiddler";
