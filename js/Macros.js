@@ -14,6 +14,33 @@ config.macros.version.handler = function(place)
 	createTiddlyElement(place,"span",null,null,formatVersion());
 };
 
+config.macros.info.init = function() { // XXX: does not belong here!?
+	config.documentInfo = [ // TODO: add license (link?)
+		{
+			desc: version.title,
+			value: formatVersion(version,config.views.wikified.dateFormat) // XXX: requires changes in ticket #833
+		}, {
+			desc: "last modification",
+			value: new Date (document.lastModified).formatString(config.views.wikified.dateFormat)
+		}, {
+			desc: "number of tiddlers",
+			value: store.getTiddlers().length
+		}, {
+			desc: "number of plugins",
+			value: store.getTaggedTiddlers("systemConfig").length
+		}
+	];
+}
+
+config.macros.info.handler = function(place) // XXX: rename to "documentInfo"?
+{
+	var info = "";
+	for(var i=0; i<config.documentInfo.length; i++) {
+		info += "|''" + config.documentInfo[i].desc + "''|" + config.documentInfo[i].value + "|\n";
+	}
+	wikify(info,place);
+};
+
 config.macros.list.handler = function(place,macroName,params)
 {
 	var type = params[0] || "all";

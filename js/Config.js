@@ -91,6 +91,7 @@ config.extensions = {};
 config.macros = {
 	today: {},
 	version: {},
+	info: {},
 	search: {sizeTextbox: 15},
 	tiddler: {},
 	tag: {},
