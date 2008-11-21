@@ -14,7 +14,7 @@ merge(config.tasks,{
 	tweak: {text: "tweak", tooltip: "Tweak the appearance and behaviour of TiddlyWiki", content: '<<options>>'},
 	upgrade: {text: "upgrade", tooltip: "Upgrade TiddlyWiki core code", content: '<<upgrade>>'},
 	plugins: {text: "plugins", tooltip: "Manage installed plugins", content: '<<plugins>>'},
-	info: {text: "info", tooltip: "document information", content: '<<info>>'} // XXX: rename to "documentInfo"? -- TODO: needs styling!?
+	info: {text: "info", tooltip: "document information", content: '<<info>>'} // XXX: needs wizard-like styling!?
 });
 
 // Options that can be set in the options panel and/or cookies

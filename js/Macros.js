@@ -18,7 +18,7 @@ config.macros.info.init = function() { // XXX: does not belong here!?
 	config.documentInfo = [ // TODO: add license (link?)
 		{
 			desc: version.title,
-			value: formatVersion(version,config.views.wikified.dateFormat) // XXX: requires changes in ticket #833
+			value: formatVersion(null,config.views.wikified.dateFormat) // XXX: cf. ticket #833
 		}, {
 			desc: "last modification",
 			value: new Date (document.lastModified).formatString(config.views.wikified.dateFormat)
@@ -32,7 +32,7 @@ config.macros.info.init = function() { // XXX: does not belong here!?
 	];
 }
 
-config.macros.info.handler = function(place) // XXX: rename to "documentInfo"?
+config.macros.info.handler = function(place)
 {
 	var info = "";
 	for(var i=0; i<config.documentInfo.length; i++) {

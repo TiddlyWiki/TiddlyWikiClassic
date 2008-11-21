@@ -91,7 +91,7 @@ config.extensions = {};
 config.macros = {
 	today: {},
 	version: {},
-	info: {},
+	info: {}, // XXX: rename to "documentInfo"?
 	search: {sizeTextbox: 15},
 	tiddler: {},
 	tag: {},
