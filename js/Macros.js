@@ -18,16 +18,16 @@ config.macros.info.init = function() { // XXX: does not belong here!?
 	config.documentInfo = [ // TODO: add license (link?)
 		{
 			desc: version.title,
-			value: formatVersion(null,config.views.wikified.dateFormat) // XXX: cf. ticket #833
+			value: function() { return formatVersion(null,config.views.wikified.dateFormat); } // XXX: cf. ticket #833
 		}, {
 			desc: "last modification",
-			value: new Date (document.lastModified).formatString(config.views.wikified.dateFormat)
+			value: function() { return new Date (document.lastModified).formatString(config.views.wikified.dateFormat); }
 		}, {
 			desc: "number of tiddlers",
-			value: store.getTiddlers().length
+			value: function() { return store.getTiddlers().length; }
 		}, {
 			desc: "number of plugins",
-			value: store.getTaggedTiddlers("systemConfig").length
+			value: function() { return store.getTaggedTiddlers("systemConfig").length; }
 		}
 	];
 }
@@ -36,7 +36,7 @@ config.macros.info.handler = function(place)
 {
 	var info = "";
 	for(var i=0; i<config.documentInfo.length; i++) {
-		info += "|''" + config.documentInfo[i].desc + "''|" + config.documentInfo[i].value + "|\n";
+		info += "|''" + config.documentInfo[i].desc + "''|" + config.documentInfo[i].value() + "|\n";
 	}
 	wikify(info,place);
 };
