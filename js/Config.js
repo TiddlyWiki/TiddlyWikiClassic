@@ -82,7 +82,7 @@ config.views = {
 };
 
 // Backstage tasks
-config.backstageTasks = ["save","sync","importTask","tweak","upgrade","plugins"];
+config.backstageTasks = ["save","sync","importTask","tweak","upgrade","plugins","info"]; // XXX: rename to "documentInfo"?
 
 // Extensions
 config.extensions = {};
