@@ -13,8 +13,7 @@ merge(config.tasks,{
 	importTask: {text: "import", tooltip: "Import tiddlers and plugins from other TiddlyWiki files and servers", content: '<<importTiddlers>>'},
 	tweak: {text: "tweak", tooltip: "Tweak the appearance and behaviour of TiddlyWiki", content: '<<options>>'},
 	upgrade: {text: "upgrade", tooltip: "Upgrade TiddlyWiki core code", content: '<<upgrade>>'},
-	plugins: {text: "plugins", tooltip: "Manage installed plugins", content: '<<plugins>>'},
-	info: {text: "info", tooltip: "document information", content: '<<info>>'} // XXX: needs wizard-like styling!?
+	plugins: {text: "plugins", tooltip: "Manage installed plugins", content: '<<plugins>>'}
 });
 
 // Options that can be set in the options panel and/or cookies
