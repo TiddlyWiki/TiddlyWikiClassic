@@ -231,7 +231,7 @@ config.formatters = [
 
 {
 	name: "rule",
-	match: "^----+$\\n?",
+	match: "^----+$\\n?|<hr ?/?>\\n?",
 	handler: function(w)
 	{
 		createTiddlyElement(w.output,"hr");
