@@ -136,10 +136,19 @@ Tiddler.prototype.escapeLineBreaks = function()
 Tiddler.prototype.changed = function()
 {
 	this.links = [];
+	var text = this.text;
+	// remove 'quoted' text before scanning tiddler source
+	text = text.replace(/\/%((?:.|\n)*?)%\//g,""); // /%...%/
+	text = text.replace(/\{{3}((?:.|\n)*?)\}{3}/g,""); // {{{...}}}
+	text = text.replace(/"""((?:.|\n)*?)"""/g,""); // """..."""
+	text = text.replace(/\<nowiki\>((?:.|\n)*?)\<\/nowiki\>/g,""); // <nowiki>...</nowiki>
+	text = text.replace(/\<html\>((?:.|\n)*?)\<\/html\>/g,""); // <html>...</html>
+	text = text.replace(/\<script((?:.|\n)*?)\<\/script\>/g,""); // <script>...</script>
+
 	var t = this.autoLinkWikiWords() ? 0 : 1;
 	var tiddlerLinkRegExp = t==0 ? config.textPrimitives.tiddlerAnyLinkRegExp : config.textPrimitives.tiddlerForcedLinkRegExp;
 	tiddlerLinkRegExp.lastIndex = 0;
-	var formatMatch = tiddlerLinkRegExp.exec(this.text);
+	var formatMatch = tiddlerLinkRegExp.exec(text);
 	while(formatMatch) {
 		var lastIndex = tiddlerLinkRegExp.lastIndex;
 		if(t==0 && formatMatch[1] && formatMatch[1] != this.title) {
@@ -147,7 +156,7 @@ Tiddler.prototype.changed = function()
 			if(formatMatch.index > 0) {
 				var preRegExp = new RegExp(config.textPrimitives.unWikiLink+"|"+config.textPrimitives.anyLetter,"mg");
 				preRegExp.lastIndex = formatMatch.index-1;
-				var preMatch = preRegExp.exec(this.text);
+				var preMatch = preRegExp.exec(text);
 				if(preMatch.index != formatMatch.index-1)
 					this.links.pushUnique(formatMatch[1]);
 			} else {
@@ -160,7 +169,7 @@ Tiddler.prototype.changed = function()
 			this.links.pushUnique(formatMatch[4-t]);
 		//# Do not add link if match urlPattern (formatMatch[5-t])
 		tiddlerLinkRegExp.lastIndex = lastIndex;
-		formatMatch = tiddlerLinkRegExp.exec(this.text);
+		formatMatch = tiddlerLinkRegExp.exec(text);
 	}
 	this.linksUpdated = true;
 };
