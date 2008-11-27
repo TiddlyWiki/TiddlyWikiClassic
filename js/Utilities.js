@@ -318,6 +318,6 @@ function glyph(name)
 }
 
 if(!window.console) {
-	console = {log:function(message) {displayMessage(message);}};
+	console = {tiddlywiki:true,log:function(message) {displayMessage(message);}};
 }
 
