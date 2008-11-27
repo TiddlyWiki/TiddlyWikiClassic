@@ -17,10 +17,16 @@ function invokeParamifier(params,handler)
 {
 	if(!params || params.length == undefined || params.length <= 1)
 		return;
-	for(var t=1; t<params.length; t++) {
-		var p = config.paramifiers[params[t].name];
+	for(var i=1; i<params.length; i++) {
+		var p = config.paramifiers[params[i].name];
 		if(p && p[handler] instanceof Function)
-			p[handler](params[t].value);
+			p[handler](params[i].value);
+		else {
+			//# not a paramifier with handler()... check for an 'option' prefix
+			var h = config.optionHandlers[params[i].name.substr(0,3)];
+			if(h && h.set instanceof Function)
+				h.set(params[i].name,params[i].value);
+		}
 	}
 }
 
