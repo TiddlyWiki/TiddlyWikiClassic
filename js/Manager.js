@@ -44,6 +44,7 @@ config.macros.plugins.refresh = function(listWrapper,params)
 		p.forced = p.tiddler.isTagged("systemConfigForce");
 		p.disabled = p.tiddler.isTagged("systemConfigDisable");
 		p.Selected = selectedRows.indexOf(plugins[t].title) != -1;
+		p.desc = store.getTiddlerSlice(p.tiddler.title,"Description");
 	}
 	if(plugins.length == 0) {
 		createTiddlyElement(listWrapper,"em",null,null,this.noPluginText);
