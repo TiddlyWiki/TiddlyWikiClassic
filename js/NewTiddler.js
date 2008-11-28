@@ -49,7 +49,7 @@ config.macros.newTiddler.onClickNewTiddler = function()
 	if(customFields)
 		story.addCustomFields(tiddlerElem,customFields);
 	var text = this.getAttribute("newText");
-	if(typeof text == "string")
+	if(typeof text == "string" && story.getTiddlerField(title,"text"))
 		story.getTiddlerField(title,"text").value = text.format([title]);
 	for(var t=0;t<tags.length;t++)
 		story.setTiddlerTag(title,tags[t],+1);
