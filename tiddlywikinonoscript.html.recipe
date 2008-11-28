@@ -1,0 +1,4 @@
+recipe: html/splitnonoscript.recipe
+recipe: shadows/split.recipe
+recipe: js/split.recipe
+copy: java/TiddlySaver.jar
