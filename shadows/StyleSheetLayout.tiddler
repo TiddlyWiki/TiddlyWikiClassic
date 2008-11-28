@@ -170,5 +170,6 @@ table.listView th, table.listView td, table.listView tr {padding:0px 3px 0px 3px
 
 .whenBackstage {display:none;}
 .backstageVisible .whenBackstage {display:block;}
-/*}}}*/</pre>
+/*}}}*/
+</pre>
 </div>
