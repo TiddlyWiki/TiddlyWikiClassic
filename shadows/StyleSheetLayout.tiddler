@@ -91,12 +91,14 @@ a.tiddlyLinkNonExisting.shadow {font-weight:bold;}
 .listBreak {font-size:1px; line-height:1px;}
 .listBreak div {margin:2px 0;}
 
-.tabset {padding:1em 0em 0em 0.5em;}
-.tab {margin:0em 0em 0em 0.25em; padding:2px;}
-.tabContents {padding:0.5em;}
+.tabset {padding:0 0em 0em 0.5em;}
+.tabsetWrapper {padding:1em 0 0 0;}
+.tab {margin:0em 0em 0em 0.25em; padding:2px; float:left; white-space:nowrap;}
+.tabContents {padding:0.5em; clear:left;}
 .tabContents ul, .tabContents ol {margin:0; padding:0;}
 .txtMainTab .tabContents li {list-style:none;}
 .tabContents li.listLink { margin-left:.75em;}
+.tabSelected { padding-top:1px; }
 
 #contentWrapper {display:block;}
 #splashScreen {display:none;}
