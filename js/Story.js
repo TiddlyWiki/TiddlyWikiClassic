@@ -232,7 +232,8 @@ Story.prototype.refreshTiddler = function(title,template,force,customFields,defa
 			if(!tiddler) {
 				tiddler = new Tiddler();
 				if(store.isShadowTiddler(title)) {
-					tiddler.set(title,store.getTiddlerText(title),config.views.wikified.shadowModifier,version.date,[],version.date);
+					var tags = [];
+					tiddler.set(title,store.getTiddlerText(title),config.views.wikified.shadowModifier,version.date,tags,version.date);
 				} else {
 					var text = template=="EditTemplate" ?
 								config.views.editor.defaultText.format([title]) :
