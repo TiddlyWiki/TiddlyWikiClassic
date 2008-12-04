@@ -579,6 +579,8 @@ TiddlyWiki.prototype.filterTiddlers = function(filter)
 					tiddler = new Tiddler();
 					tiddler.set(title,this.getTiddlerText(title));
 					results.pushUnique(tiddler);
+				} else {
+					results.pushUnique(new Tiddler(title));
 				}
 			} else if(match[2]) {
 				//# matches (eg) [text[more text]]
