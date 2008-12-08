@@ -51,20 +51,20 @@ function main()
 	story.switchTheme(config.options.txtTheme);
 	showBackstage = !readOnly;
 	t6 = new Date();
-	store.notifyAll();
-	t7 = new Date();
-	restart();
-	refreshDisplay();
-	t8 = new Date();
-	if(pluginProblem) {
-		story.displayTiddler(null,"PluginManager");
-		displayMessage(config.messages.customConfigError);
-	}
 	for(var m in config.macros) {
 		if(config.macros[m].init)
 			config.macros[m].init();
 	}
+	t7 = new Date();
+	store.notifyAll();
+	t8 = new Date();
+	restart();
+	refreshDisplay();
 	t9 = new Date();
+	if(pluginProblem) {
+		story.displayTiddler(null,"PluginManager");
+		displayMessage(config.messages.customConfigError);
+	}
 	if(showBackstage)
 		backstage.init();
 	t10 = new Date();
@@ -72,9 +72,9 @@ function main()
 		displayMessage("LoadShadows " + (t2-t1) + " ms");
 		displayMessage("LoadFromDiv " + (t3-t2) + " ms");
 		displayMessage("LoadPlugins " + (t5-t4) + " ms");
-		displayMessage("Notify " + (t7-t6) + " ms");
-		displayMessage("Restart " + (t8-t7) + " ms");
-		displayMessage("Macro init " + (t9-t8) + " ms");
+		displayMessage("Macro init " + (t7-t6) + " ms");
+		displayMessage("Notify " + (t8-t7) + " ms");
+		displayMessage("Restart " + (t9-t8) + " ms");
 		displayMessage("Total: " + (t10-t0) + " ms");
 	}
 	startingUp = false;
