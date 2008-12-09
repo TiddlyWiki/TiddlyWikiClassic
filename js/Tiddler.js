@@ -66,18 +66,6 @@ Tiddler.prototype.isTouched = function()
 	return changeCount > 0;
 };
 
-// Deprecated, use tiddlerToRssItem(tiddler,uri) instead
-Tiddler.prototype.toRssItem = function(uri)
-{
-	return tiddlerToRssItem(this,uri);
-};
-
-// Deprecated, use "<item>\n" + tiddlerToRssItem(tiddler,uri)  + "\n</item>" instead
-Tiddler.prototype.saveToRss = function(uri)
-{
-	return "<item>\n" + tiddlerToRssItem(this,uri) + "\n</item>";
-};
-
 // Change the text and other attributes of a tiddler
 Tiddler.prototype.set = function(title,text,modifier,modified,tags,created,fields)
 {
