@@ -1,4 +1,5 @@
 recipe: html/splitnonoscript.recipe
 recipe: shadows/split.recipe
 recipe: js/split.recipe
+recipe: deprecated/split.recipe
 copy: java/TiddlySaver.jar
