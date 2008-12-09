@@ -385,7 +385,7 @@ config.macros.tagChooser.onClick = function(ev)
 	var e = ev || window.event;
 	var lingo = config.views.editor.tagChooser;
 	var popup = Popup.create(this);
-	var tags = store.getTags("excludeLists");
+	var tags = store.getTags(this.getAttribute("tags"));
 	if(tags.length == 0)
 		createTiddlyText(createTiddlyElement(popup,"li"),lingo.popupNone);
 	for(var t=0; t<tags.length; t++) {
@@ -416,6 +416,7 @@ config.macros.tagChooser.handler = function(place,macroName,params,wikifier,para
 		var lingo = config.views.editor.tagChooser;
 		var btn = createTiddlyButton(place,lingo.text,lingo.tooltip,this.onClick);
 		btn.setAttribute("tiddler",tiddler.title);
+		btn.setAttribute("tags",params[0]);
 	}
 };
 

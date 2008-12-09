@@ -5,6 +5,6 @@
 <div class='editor' macro='edit title'></div>
 <div macro='annotations'></div>
 <div class='editor' macro='edit text'></div>
-<div class='editor' macro='edit tags'></div><div class='editorFooter'><span macro='message views.editor.tagPrompt'></span><span macro='tagChooser'></span></div>
+<div class='editor' macro='edit tags'></div><div class='editorFooter'><span macro='message views.editor.tagPrompt'></span><span macro='tagChooser excludeLists'></span></div>
 <!--}}}--></pre>
 </div>
