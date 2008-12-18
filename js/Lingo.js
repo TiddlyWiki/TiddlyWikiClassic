@@ -44,7 +44,7 @@ merge(config.messages,{
 	pluginForced: "Executed because forced via 'systemConfigForce' tag",
 	pluginVersionError: "Not executed because this plugin needs a newer version of TiddlyWiki",
 	nothingSelected: "Nothing is selected. You must select one or more items first",
-	savedSnapshotError: "It appears that this TiddlyWiki has been incorrectly saved. Please see http://www.tiddlywiki.com/#DownloadSoftware for details",
+	savedSnapshotError: "It appears that this TiddlyWiki has been incorrectly saved. Please see http://www.tiddlywiki.com/#Download for details",
 	subtitleUnknown: "(unknown)",
 	undefinedTiddlerToolTip: "The tiddler '%0' doesn't yet exist",
 	shadowedTiddlerToolTip: "The tiddler '%0' doesn't yet exist, but has a pre-defined shadow value",
