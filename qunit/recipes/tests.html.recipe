@@ -1,0 +1,16 @@
+recipe: ../../html/split.recipe
+# jQuery
+recipe: ../../jquery/split.recipe
+# TiddlyWiki components
+recipe: ../../shadows/split.recipe
+recipe: ../../js/split.recipe
+recipe: ../../deprecated/split.recipe
+
+# copy: ../../java/TiddlySaver.jar
+
+# Test framework
+recipe: ../qunit/split.recipe
+recipe: ../html/split.recipe
+
+# tests
+recipe: ../tests/split.recipe
