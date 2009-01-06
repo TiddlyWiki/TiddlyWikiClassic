@@ -1,12 +1,13 @@
-recipe: ../../html/split.recipe
-# jQuery
-recipe: ../../jquery/split.recipe
 # TiddlyWiki components
+recipe: ../../html/split.recipe
 recipe: ../../shadows/split.recipe
 recipe: ../../js/split.recipe
 recipe: ../../deprecated/split.recipe
 
 # copy: ../../java/TiddlySaver.jar
+
+# jQuery
+recipe: ../../jquery/split.recipe
 
 # Test framework
 recipe: ../qunit/split.recipe
