@@ -1,37 +1,36 @@
 /*
-jquery.tw.macro
+jquery.tw.macro.js
 macro parameter expansion
 */
+
 (function($) {
-	$.fn.extend({
-		tw_expandMacroParams: function(args) {
+	$.tw.extend({
+		expandMacroParams: function(params) {
 			// expand the macro parameters into a name:value hash
 			// unnamed parameters are given a numeric name, starting at 1
 			var opts = {};
-			var t = $.trim(args);
 			var unnamed = 1;
+			var name,val;
+			var t = $.trim(params);
 			var s = 0;
 			var i = findNakedSpace(t,s);
-			var val;
 			var param = i==-1 ? t.substr(s) : t.substring(s,i);
 			while(true) {
 				var ci = param.indexOf(':');
 				if(ci==-1) {
 					// parameter is unnamed
-					val = $.trim(param);
-					if(val.charAt(0)=='"' && val.charAt(val.length-1)=='"') {
-						val = val.substr(1,val.length-2);
-					}
-					opts[unnamed++] = val;
+					name = unnamed++;
+					val = param;
 				} else {
-					var name = param.substr(0,ci);
+					name = param.substr(0,ci);
 					val = param.substr(ci+1);
-					val = $.trim(val);
-					if(val.charAt(0)=='"' && val.charAt(val.length-1)=='"') {
-						val = val.substr(1,val.length-2);
-					}
-					opts[name] = val; 
+					//#unamed++;
 				}
+				val = $.trim(val);
+				if(val.charAt(0)=='"' && val.charAt(val.length-1)=='"') {
+					val = val.substr(1,val.length-2);
+				}
+				opts[name] = val; 
 				if(i==-1)
 					break;
 				s = i+1;
