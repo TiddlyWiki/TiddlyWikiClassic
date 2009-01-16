@@ -15,6 +15,7 @@ var showBackstage; // Whether to include the backstage area
 var installedPlugins = []; // Information filled in when plugins are executed
 var startingUp = false; // Whether we're in the process of starting up
 var pluginInfo,tiddler; // Used to pass information to plugins in loadPlugins()
+var jq = jQuery.noConflict(); // the global jQuery object
 
 // Whether to use the JavaSaver applet
 var useJavaSaver = (config.browser.isSafari || config.browser.isOpera) && (document.location.toString().substr(0,4) != "http");
@@ -149,8 +150,10 @@ function loadPlugins()
 				p.executed = true;
 				var startTime = new Date();
 				try {
-					if(tiddler.text)
-						window.eval(tiddler.text);
+					var js = p.tiddler.text;
+					if(js) {
+						window.eval(js);
+					}
 					nLoaded++;
 				} catch(ex) {
 					p.log.push(config.messages.pluginError.format([exceptionText(ex)]));
@@ -211,11 +214,13 @@ function invokeMacro(place,macro,params,wikifier,tiddler)
 {
 	try {
 		var m = config.macros[macro];
-		if(m && m.handler) {
-			var tiddlerElem = story.findContainingTiddler(place);
-			//# Provide context for evaluated macro parameters (eg <<myMacro {{tiddler.title}}>>)
-			window.tiddler = tiddlerElem ? store.getTiddler(tiddlerElem.getAttribute("tiddler")) : null;
-			window.place = place;
+		var j = jQuery.tw()[macro];
+		//#var j = jQuery(place)["tw_macro_"+macro];
+		if(j) {
+			var p = jq.tw.expandMacroParams(params);
+			p.tw = {"macro":macro,"wikifier":wikifier,"tiddler":tiddler};
+			j.call(new jQuery.fn.init(place),p);
+		} else if(m && m.handler) {
 			m.handler(place,macro,params.readMacroParams(),wikifier,params,tiddler);
 		} else {
 			createTiddlyError(place,config.messages.macroError.format([macro]),config.messages.macroErrorDetails.format([macro,config.messages.missingMacro]));

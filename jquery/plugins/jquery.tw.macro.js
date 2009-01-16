@@ -7,7 +7,7 @@ macro parameter expansion
 	$.tw.extend({
 		expandMacroParams: function(params) {
 			// expand the macro parameters into a name:value hash
-			// unnamed parameters are given a numeric name, starting at 1
+			// all parameters are also given a numeric name, starting at 1
 			var opts = {};
 			var unnamed = 1;
 			var name,val;
@@ -19,18 +19,19 @@ macro parameter expansion
 				var ci = param.indexOf(':');
 				if(ci==-1) {
 					// parameter is unnamed
-					name = unnamed++;
+					name = null;
 					val = param;
 				} else {
 					name = param.substr(0,ci);
 					val = param.substr(ci+1);
-					//#unamed++;
 				}
 				val = $.trim(val);
 				if(val.charAt(0)=='"' && val.charAt(val.length-1)=='"') {
 					val = val.substr(1,val.length-2);
 				}
-				opts[name] = val; 
+				if(name)
+					opts[name] = val;
+				opts[unnamed++] = val; // always give numeric name
 				if(i==-1)
 					break;
 				s = i+1;
