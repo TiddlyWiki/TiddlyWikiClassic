@@ -2,7 +2,6 @@
 jquery.tw.macro.js
 macro parameter expansion
 */
-
 (function($) {
 	$.tw.extend({
 		expandMacroParams: function(params) {
@@ -19,7 +18,7 @@ macro parameter expansion
 				var ci = param.indexOf(':');
 				if(ci==-1) {
 					// parameter is unnamed
-					name = null;
+					name = param ? unnamed++ : null;
 					val = param;
 				} else {
 					name = param.substr(0,ci);
@@ -31,7 +30,6 @@ macro parameter expansion
 				}
 				if(name)
 					opts[name] = val;
-				opts[unnamed++] = val; // always give numeric name
 				if(i==-1)
 					break;
 				s = i+1;
