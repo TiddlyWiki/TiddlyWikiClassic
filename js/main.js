@@ -214,12 +214,9 @@ function invokeMacro(place,macro,params,wikifier,tiddler)
 {
 	try {
 		var m = config.macros[macro];
-		var j = jQuery.tw()[macro];
-		//#var j = jQuery(place)["tw_macro_"+macro];
+		var j = jQuery()["tw_"+macro];
 		if(j) {
-			var p = jq.tw.expandMacroParams(params);
-			p.tw = {"macro":macro,"wikifier":wikifier,"tiddler":tiddler,"paramString":params};
-			j.call(new jQuery.fn.init(place),p);
+			j.call(jq(place),jq.tw.expandMacroParams(params),{"macro":macro,"wikifier":wikifier,"tiddler":tiddler,"paramString":params,"store":store,"story":story});
 		} else if(m && m.handler) {
 			m.handler(place,macro,params.readMacroParams(),wikifier,params,tiddler);
 		} else {
