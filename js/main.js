@@ -15,7 +15,6 @@ var showBackstage; // Whether to include the backstage area
 var installedPlugins = []; // Information filled in when plugins are executed
 var startingUp = false; // Whether we're in the process of starting up
 var pluginInfo,tiddler; // Used to pass information to plugins in loadPlugins()
-var jq = jQuery.noConflict(); // the global jQuery object
 
 // Whether to use the JavaSaver applet
 var useJavaSaver = (config.browser.isSafari || config.browser.isOpera) && (document.location.toString().substr(0,4) != "http");
@@ -25,6 +24,7 @@ function main()
 {
 	var t10,t9,t8,t7,t6,t5,t4,t3,t2,t1,t0 = new Date();
 	startingUp = true;
+	jQuery.noConflict();
 	window.onbeforeunload = function(e) {if(window.confirmExit) return confirmExit();};
 	params = getParameters();
 	if(params)
@@ -214,10 +214,7 @@ function invokeMacro(place,macro,params,wikifier,tiddler)
 {
 	try {
 		var m = config.macros[macro];
-		var j = jQuery()["tw_"+macro];
-		if(j) {
-			j.call(jq(place),jq.tw.expandMacroParams(params),{"macro":macro,"wikifier":wikifier,"tiddler":tiddler,"paramString":params,"store":store,"story":story});
-		} else if(m && m.handler) {
+		if(m && m.handler) {
 			m.handler(place,macro,params.readMacroParams(),wikifier,params,tiddler);
 		} else {
 			createTiddlyError(place,config.messages.macroError.format([macro]),config.messages.macroErrorDetails.format([macro,config.messages.missingMacro]));
