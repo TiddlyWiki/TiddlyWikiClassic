@@ -150,10 +150,8 @@ function loadPlugins()
 				p.executed = true;
 				var startTime = new Date();
 				try {
-					var js = p.tiddler.text;
-					if(js) {
-						window.eval(js);
-					}
+					if(tiddler.text)
+						window.eval(tiddler.text);
 					nLoaded++;
 				} catch(ex) {
 					p.log.push(config.messages.pluginError.format([exceptionText(ex)]));
@@ -215,6 +213,10 @@ function invokeMacro(place,macro,params,wikifier,tiddler)
 	try {
 		var m = config.macros[macro];
 		if(m && m.handler) {
+			var tiddlerElem = story.findContainingTiddler(place);
+			//# Provide context for evaluated macro parameters (eg <<myMacro {{tiddler.title}}>>)
+			window.tiddler = tiddlerElem ? store.getTiddler(tiddlerElem.getAttribute("tiddler")) : null;
+			window.place = place;
 			m.handler(place,macro,params.readMacroParams(),wikifier,params,tiddler);
 		} else {
 			createTiddlyError(place,config.messages.macroError.format([macro]),config.messages.macroErrorDetails.format([macro,config.messages.missingMacro]));
