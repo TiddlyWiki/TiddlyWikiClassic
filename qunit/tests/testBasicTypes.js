@@ -81,4 +81,49 @@ jQuery(document).ready(function() {
 		expected = false;
 		equals(actual, expected, "returns false if no match was found"); // XXX: not actually desired; cf. ticket #966
 	});
+
+	test("Array containsAny", function() {
+		expect(4);
+		var actual, expected;
+
+		var L = ["foo", "bar", "baz"];
+
+		try { // XXX: exception detection not supported by QUnit?
+			actual = L.containsAny();
+		} catch(ex) {
+			actual = null;
+		}
+		expected = null;
+		equals(actual, expected, "throws exception if no argument is specified");
+
+		actual = L.containsAny("foo");
+		expected = false;
+		equals(actual, expected, "returns false if argument is not an array"); // XXX: not actually desired!?
+
+		actual = L.containsAny(["lorem", "bar"]);
+		expected = true;
+		equals(actual, expected, "returns true if a matching item has been found");
+
+		actual = L.containsAny(["lorem", "ipsum"]);
+		expected = false;
+		equals(actual, expected, "returns false if no matching item has been found");
+	});
+
+	test("Array containsAll", function() { // TODO
+		//expect(3);
+		var actual, expected;
+
+		//actual = ;
+		//expected = ;
+		//equals(actual, expected, "");
+	});
+
+	test("Array setItem", function() { // TODO
+		//expect(3);
+		var actual, expected;
+
+		//actual = ;
+		//expected = ;
+		//equals(actual, expected, "");
+	});
 });
