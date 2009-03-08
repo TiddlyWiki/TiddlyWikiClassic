@@ -6,7 +6,7 @@ jQuery(document).ready(function() {
 		var actual, expected;
 
 		actual = (99).clamp();
-		expected = 99;
+		expected = 999;
 		equals(actual, expected, "return original number if no range is specified");
 
 		actual = (11).clamp(20);
