@@ -110,6 +110,42 @@ jQuery(document).ready(function() {
 	});
 
 	test("Array containsAll", function() { // TODO
+		expect(4);
+		var actual, expected;
+
+		var L = ["foo", "bar", "baz"];
+
+		try {
+			actual = L.containsAll();
+		} catch(ex) {
+			actual = null;
+		}
+		expected = null;
+		equals(actual, expected, "throws exception if no argument is specified");
+
+		actual = L.containsAll("foo");
+		expected = false;
+		equals(actual, expected, "returns false if argument is not an array"); // XXX: not actually desired!?
+
+		actual = L.containsAll(["foo", "bar"]);
+		expected = true;
+		equals(actual, expected, "returns true if all given items have been found");
+
+		actual = L.containsAll(["lorem", "bar"]);
+		expected = false;
+		equals(actual, expected, "returns false if not all given items have been found");
+	});
+
+	test("Array pushUnique", function() { // TODO
+		//expect(3);
+		var actual, expected;
+
+		//actual = ;
+		//expected = ;
+		//equals(actual, expected, "");
+	});
+
+	test("Array remove", function() { // TODO
 		//expect(3);
 		var actual, expected;
 
