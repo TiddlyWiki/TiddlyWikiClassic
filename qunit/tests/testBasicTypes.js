@@ -2,7 +2,6 @@ jQuery(document).ready(function() {
 	module("Basic Types");
 
 	test("Number clamp", function() {
-		expect(5);
 		var actual, expected;
 
 		actual = (99).clamp();
@@ -27,7 +26,6 @@ jQuery(document).ready(function() {
 	});
 
 	test("Array indexOf", function() {
-		expect(3);
 		var actual, expected;
 
 		actual = typeof [].indexOf;
@@ -44,7 +42,6 @@ jQuery(document).ready(function() {
 	});
 
 	test("Array findByField", function() {
-		expect(3);
 		var actual, expected;
 
 		var L = [{ foo: "lorem", bar: "ipsum" }, { bar: "dolor", baz: "sit" }, { bar: "dolor" }];
@@ -64,7 +61,6 @@ jQuery(document).ready(function() {
 	});
 
 	test("Array contains", function() {
-		expect(3);
 		var actual, expected;
 
 		var L = ["foo", "bar", "baz", "bar"];
@@ -83,7 +79,6 @@ jQuery(document).ready(function() {
 	});
 
 	test("Array containsAny", function() {
-		expect(4);
 		var actual, expected;
 
 		var L = ["foo", "bar", "baz"];
@@ -110,7 +105,6 @@ jQuery(document).ready(function() {
 	});
 
 	test("Array containsAll", function() { // TODO
-		expect(4);
 		var actual, expected;
 
 		var L = ["foo", "bar", "baz"];
@@ -137,7 +131,6 @@ jQuery(document).ready(function() {
 	});
 
 	test("Array pushUnique", function() { // TODO
-		//expect(3);
 		var actual, expected;
 
 		//actual = ;
@@ -146,7 +139,6 @@ jQuery(document).ready(function() {
 	});
 
 	test("Array remove", function() { // TODO
-		//expect(3);
 		var actual, expected;
 
 		//actual = ;
@@ -155,7 +147,6 @@ jQuery(document).ready(function() {
 	});
 
 	test("Array setItem", function() { // TODO
-		//expect(3);
 		var actual, expected;
 
 		//actual = ;
