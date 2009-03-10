@@ -14,3 +14,9 @@ Tiddler.prototype.saveToRss = function(uri)
 	return "<item>\n" + tiddlerToRssItem(this,uri) + "\n</item>";
 };
 
+// @Deprecated: Use jQuery.encoding.digests.hexSha1Str instead
+Tiddler.prototype.generateFingerprint = function()
+{
+	return "0x" + Crypto.hexSha1Str(this.text);
+};
+

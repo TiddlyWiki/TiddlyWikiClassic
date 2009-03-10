@@ -184,11 +184,6 @@ Tiddler.prototype.autoLinkWikiWords = function()
 	return !(this.isTagged("systemConfig") || this.isTagged("excludeMissing"));
 };
 
-Tiddler.prototype.generateFingerprint = function()
-{
-	return "0x" + Crypto.hexSha1Str(this.text);
-};
-
 Tiddler.prototype.getServerType = function()
 {
 	var serverType = null;
