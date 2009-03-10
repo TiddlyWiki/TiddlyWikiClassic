@@ -6,19 +6,19 @@ jQuery(document).ready(function() {
 
 		actual = (99).clamp();
 		expected = 99;
-		equals(actual, expected, "return original number if no range is specified");
+		equals(actual, expected, "returns original number if no arguments are specified");
 
 		actual = (11).clamp(20);
 		expected = 20;
-		equals(actual, expected, "if only one argument is specified, use it as minimum");
+		equals(actual, expected, "if only one argument is specified, uses it as minimum");
 
 		actual = (55).clamp(20, 80);
 		expected = 55;
-		equals(actual, expected, "return original number if it is between minimum and maximum");
+		equals(actual, expected, "returns original number if it is between minimum and maximum");
 
 		actual = (11).clamp(20, 80);
 		expected = 20;
-		equals(actual, expected, "return minimum if number is smaller than minimum");
+		equals(actual, expected, "returns minimum if number is smaller than minimum");
 
 		actual = (99).clamp(20, 80);
 		expected = 80;
@@ -38,7 +38,15 @@ jQuery(document).ready(function() {
 
 		actual = ["foo", "bar"].indexOf("baz");
 		expected = -1;
-		equals(actual, expected, "returns -1 if element not found");
+		equals(actual, expected, "returns -1 if element not present");
+
+		actual = ["foo", "bar", "baz"].indexOf("baz", 1);
+		expected = 2;
+		equals(actual, expected, "returns element position if element is present within given range");
+
+		actual = ["foo", "bar", "baz"].indexOf("foo", 1);
+		expected = -1;
+		equals(actual, expected, "returns -1 if element is not present within given range");
 	});
 
 	test("Array findByField", function() {
@@ -89,7 +97,7 @@ jQuery(document).ready(function() {
 			actual = null;
 		}
 		expected = null;
-		equals(actual, expected, "throws exception if no argument is specified");
+		equals(actual, expected, "throws exception if no arguments are specified");
 
 		actual = L.containsAny("foo");
 		expected = false;
@@ -115,7 +123,7 @@ jQuery(document).ready(function() {
 			actual = null;
 		}
 		expected = null;
-		equals(actual, expected, "throws exception if no argument is specified");
+		equals(actual, expected, "throws exception if no arguments are specified");
 
 		actual = L.containsAll("foo");
 		expected = false;
