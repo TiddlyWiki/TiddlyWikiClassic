@@ -28,8 +28,10 @@ config.macros.upgrade.onClickUpgrade = function(e)
 	w.setButtons([],me.statusPreparingBackup);
 	var original = loadOriginal(localPath);
 	w.setButtons([],me.statusSavingBackup);
-	var backup = config.browser.isIE ? ieCopyFile(backupPath,localPath) : saveFile(backupPath,original);
-	if(backup != true) {
+	var backup = copyFile(backupPath,localPath);
+	if(!backup)
+		backup = saveFile(backupPath,original);
+	if(!backup) {
 		w.setButtons([],me.errorSavingBackup);
 		alert(me.errorSavingBackup);
 		return false;
