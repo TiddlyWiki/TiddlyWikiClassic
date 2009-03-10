@@ -21,8 +21,6 @@ jQuery plugin for saving data to a file
 		},
 		save: function(args) {
 			var opts = $.extend({},this.defaults,args);
-			if(!opts.fileUrl)
-				return saveChanges();
 			var r = mozillaSaveFile(opts.fileUrl,opts.content);
 			if(!r)
 				r = ieSaveFile(opts.fileUrl,opts.content);
@@ -34,65 +32,6 @@ jQuery plugin for saving data to a file
 			return $.browser.msie ? ieCopyFile(dest,source) : false;
 		}
 	});
-
-	// Private functions.
-	function log() {
-		if (window.console && window.console.log)
-			window.console.log(arguments);
-	}
-
-	function getLocalPath(origPath) {
-		var originalPath = convertUriToUTF8(origPath,'UTF-8');
-		// Remove any location or query part of the URL
-		var argPos = originalPath.indexOf("?");
-		if(argPos != -1)
-			originalPath = originalPath.substr(0,argPos);
-		var hashPos = originalPath.indexOf("#");
-		if(hashPos != -1)
-			originalPath = originalPath.substr(0,hashPos);
-		// Convert file://localhost/ to file:///
-		if(originalPath.indexOf("file://localhost/") == 0)
-			originalPath = "file://" + originalPath.substr(16);
-		// Convert to a native file format
-		//# "file:///x:/path/path/path..." - pc local file --> "x:\path\path\path..."
-		//# "file://///server/share/path/path/path..." - FireFox pc network file --> "\\server\share\path\path\path..."
-		//# "file:///path/path/path..." - mac/unix local file --> "/path/path/path..."
-		//# "file://server/share/path/path/path..." - pc network file --> "\\server\share\path\path\path..."
-		var localPath;
-		if(originalPath.charAt(9) == ":") // pc local file
-			localPath = unescape(originalPath.substr(8)).replace(new RegExp("/","g"),"\\");
-		else if(originalPath.indexOf("file://///") == 0) // FireFox pc network file
-			localPath = "\\\\" + unescape(originalPath.substr(10)).replace(new RegExp("/","g"),"\\");
-		else if(originalPath.indexOf("file:///") == 0) // mac/unix local file
-			localPath = unescape(originalPath.substr(7));
-		else if(originalPath.indexOf("file:/") == 0) // mac/unix local file
-			localPath = unescape(originalPath.substr(5));
-		else // pc network file
-			localPath = "\\\\" + unescape(originalPath.substr(7)).replace(new RegExp("/","g"),"\\");
-		return localPath;
-	}
-
-	// Save this tiddlywiki with the pending changes
-	function saveChanges() {
-		//# Get the URL of the document
-		var originalPath = document.location.toString();
-		var localPath = getLocalPath(originalPath);
-		var save = false;
-		try {
-			//# Save new file
-			var head = $('head').html();
-			var body = $('body').html();
-			var revised = '<html>'+ head + body +'</html>';
-			save = this.save(localPath,revised);
-		} catch (ex) {
-			log('exception ', ex);
-		}
-		if(save) {
-			alert("Saved!");
-		} else {
-			alert("Save failed");
-		}
-	}
 
 	function ieCreatePath(path) {
 		try {

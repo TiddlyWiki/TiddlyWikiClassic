@@ -26,7 +26,6 @@ jQuery plugin for loading a file
 	});
 
 	// Private functions.
-	
 	function ieLoadFile(filePath) {
 		// Returns null if it can't do it, false if there's an error, or a string of the content if successful
 		try {
