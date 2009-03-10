@@ -1,10 +1,5 @@
 # TiddlyWiki components
-recipe: ../../html/split.recipe
-recipe: ../../shadows/split.recipe
-recipe: ../../js/split.recipe
-recipe: ../../deprecated/split.recipe
-
-# copy: ../../java/TiddlySaver.jar
+recipe: ../../tiddlywiki.html.recipe
 
 # jQuery
 recipe: ../../jquery/split.recipe
