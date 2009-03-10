@@ -6,23 +6,23 @@ jQuery(document).ready(function() {
 
 		actual = (99).clamp();
 		expected = 99;
-		equals(actual, expected, "returns original number if no arguments are specified");
+		same(actual, expected, "returns original number if no arguments are specified");
 
 		actual = (11).clamp(20);
 		expected = 20;
-		equals(actual, expected, "if only one argument is specified, uses it as minimum");
+		same(actual, expected, "if only one argument is specified, uses it as minimum");
 
 		actual = (55).clamp(20, 80);
 		expected = 55;
-		equals(actual, expected, "returns original number if it is between minimum and maximum");
+		same(actual, expected, "returns original number if it is between minimum and maximum");
 
 		actual = (11).clamp(20, 80);
 		expected = 20;
-		equals(actual, expected, "returns minimum if number is smaller than minimum");
+		same(actual, expected, "returns minimum if number is smaller than minimum");
 
 		actual = (99).clamp(20, 80);
 		expected = 80;
-		equals(actual, expected, "return maximum if number is greater than maximum");
+		same(actual, expected, "return maximum if number is greater than maximum");
 	});
 
 	test("Array indexOf", function() {
@@ -30,23 +30,23 @@ jQuery(document).ready(function() {
 
 		actual = typeof [].indexOf;
 		expected = "function";
-		equals(actual, expected, "method exists");
+		same(actual, expected, "method exists");
 
 		actual = ["foo", "bar", "baz"].indexOf("bar");
 		expected = 1;
-		equals(actual, expected, "returns element postion");
+		same(actual, expected, "returns element postion");
 
 		actual = ["foo", "bar"].indexOf("baz");
 		expected = -1;
-		equals(actual, expected, "returns -1 if element not present");
+		same(actual, expected, "returns -1 if element not present");
 
 		actual = ["foo", "bar", "baz"].indexOf("baz", 1);
 		expected = 2;
-		equals(actual, expected, "returns element position if element is present within given range");
+		same(actual, expected, "returns element position if element is present within given range");
 
 		actual = ["foo", "bar", "baz"].indexOf("foo", 1);
 		expected = -1;
-		equals(actual, expected, "returns -1 if element is not present within given range");
+		same(actual, expected, "returns -1 if element is not present within given range");
 	});
 
 	test("Array findByField", function() {
@@ -56,15 +56,15 @@ jQuery(document).ready(function() {
 
 		actual = L.findByField();
 		expected = 0;
-		equals(actual, expected, "returns 0 if no arguments are specified"); // XXX: not actually desired; cf. ticket #964
+		same(actual, expected, "returns 0 if no arguments are specified"); // XXX: not actually desired; cf. ticket #964
 
 		actual = L.findByField("bar", "dolor");
 		expected = 1;
-		equals(actual, expected, "returns the position of the first matching element");
+		same(actual, expected, "returns the position of the first matching element");
 
 		actual = L.findByField("bar", "xxx");
 		expected = null;
-		equals(actual, expected, "returns null if no match was found"); // XXX: not actually desired; cf. ticket #966
+		same(actual, expected, "returns null if no match was found"); // XXX: not actually desired; cf. ticket #966
 
 	});
 
@@ -75,15 +75,15 @@ jQuery(document).ready(function() {
 
 		actual = L.contains();
 		expected = false;
-		equals(actual, expected, "returns false if no arguments are specified"); // XXX: not actually desired; cf. ticket #966
+		same(actual, expected, "returns false if no arguments are specified");
 
 		actual = L.contains("bar");
-		expected = 1;
-		equals(actual, expected, "returns the position of the first matching element");
+		expected = true;
+		same(actual, expected, "returns true if a matching element was found");
 
 		actual = L.contains("xxx");
 		expected = false;
-		equals(actual, expected, "returns false if no match was found"); // XXX: not actually desired; cf. ticket #966
+		same(actual, expected, "returns false if no matching element was found");
 	});
 
 	test("Array containsAny", function() {
@@ -97,15 +97,15 @@ jQuery(document).ready(function() {
 
 		actual = L.containsAny("foo");
 		expected = false;
-		equals(actual, expected, "returns false if argument is not an array"); // XXX: not actually desired!?
+		same(actual, expected, "returns false if argument is not an array"); // XXX: not actually desired!?
 
 		actual = L.containsAny(["lorem", "bar"]);
 		expected = true;
-		equals(actual, expected, "returns true if a matching item has been found");
+		same(actual, expected, "returns true if a matching item has been found");
 
 		actual = L.containsAny(["lorem", "ipsum"]);
 		expected = false;
-		equals(actual, expected, "returns false if no matching item has been found");
+		same(actual, expected, "returns false if no matching item has been found");
 	});
 
 	test("Array containsAll", function() {
@@ -119,15 +119,15 @@ jQuery(document).ready(function() {
 
 		actual = L.containsAll("foo");
 		expected = false;
-		equals(actual, expected, "returns false if argument is not an array"); // XXX: not actually desired!?
+		same(actual, expected, "returns false if argument is not an array"); // XXX: not actually desired!?
 
 		actual = L.containsAll(["foo", "bar"]);
 		expected = true;
-		equals(actual, expected, "returns true if all given items have been found");
+		same(actual, expected, "returns true if all given items have been found");
 
 		actual = L.containsAll(["lorem", "bar"]);
 		expected = false;
-		equals(actual, expected, "returns false if not all given items have been found");
+		same(actual, expected, "returns false if not all given items have been found");
 	});
 
 	test("Array pushUnique", function() { // TODO
@@ -135,7 +135,7 @@ jQuery(document).ready(function() {
 
 		//actual = ;
 		//expected = ;
-		//equals(actual, expected, "");
+		//same(actual, expected, "");
 	});
 
 	test("Array remove", function() { // TODO
@@ -143,7 +143,7 @@ jQuery(document).ready(function() {
 
 		//actual = ;
 		//expected = ;
-		//equals(actual, expected, "");
+		//same(actual, expected, "");
 	});
 
 	test("Array setItem", function() { // TODO
@@ -151,6 +151,6 @@ jQuery(document).ready(function() {
 
 		//actual = ;
 		//expected = ;
-		//equals(actual, expected, "");
+		//same(actual, expected, "");
 	});
 });
