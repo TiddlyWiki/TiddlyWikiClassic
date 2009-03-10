@@ -87,17 +87,13 @@ jQuery(document).ready(function() {
 	});
 
 	test("Array containsAny", function() {
-		var actual, expected;
+		var actual, expression, expected;
 
 		var L = ["foo", "bar", "baz"];
 
-		try { // XXX: exception detection not supported by QUnit?
-			actual = L.containsAny();
-		} catch(ex) {
-			actual = null;
-		}
-		expected = null;
-		equals(actual, expected, "throws exception if no arguments are specified");
+		expression = function() { L.containsAny(); };
+		expected = "TypeError";
+		raises(expression, expected, "raises exception if no arguments are specified");
 
 		actual = L.containsAny("foo");
 		expected = false;
@@ -112,18 +108,14 @@ jQuery(document).ready(function() {
 		equals(actual, expected, "returns false if no matching item has been found");
 	});
 
-	test("Array containsAll", function() { // TODO
-		var actual, expected;
+	test("Array containsAll", function() {
+		var actual, expression, expected;
 
 		var L = ["foo", "bar", "baz"];
 
-		try {
-			actual = L.containsAll();
-		} catch(ex) {
-			actual = null;
-		}
-		expected = null;
-		equals(actual, expected, "throws exception if no arguments are specified");
+		expression = function() { L.containsAll(); };
+		expected = "TypeError";
+		raises(expression, expected, "raises exception if no arguments are specified");
 
 		actual = L.containsAll("foo");
 		expected = false;
