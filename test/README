@@ -1,0 +1,7 @@
+This directory contains the test suite for the TiddlyWiki core.
+The framework being used is QUnit (http://docs.jquery.com/QUnit).
+
+/html       required HTML components
+/qunit      testing framework
+/recipes    recipes to build test suite
+/tests      actual test code for core modules
