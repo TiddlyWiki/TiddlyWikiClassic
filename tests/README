@@ -2,7 +2,8 @@ This directory contains the test suite for the TiddlyWiki core.
 The framework being used is JSSpec (http://jania.pe.kr/aw/moin.cgi/JSSpec).
 
 N.B.:
-The use of JSSpec is being phased out in favor of QUnit.
+The use of JSSpec is gradually being phased out in favor of QUnit.
+QUnit-based tests are contained in the core/test directory.
 cf. http://trac.tiddlywiki.org/ticket/963
 
 /html      recipes for building the test suite
