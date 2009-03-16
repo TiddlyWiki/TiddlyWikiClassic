@@ -60,7 +60,7 @@ jQuery(document).ready(function() {
 
 		actual = L.findByField("bar", "dolor");
 		expected = 1;
-		same(actual, expected, "returns the position of the first matching element");
+		same(actual, expected, "returns position of first matching element");
 
 		actual = L.findByField("bar", "xxx");
 		expected = null;
@@ -130,27 +130,115 @@ jQuery(document).ready(function() {
 		same(actual, expected, "returns false if not all given items have been found");
 	});
 
-	test("Array pushUnique", function() { // TODO
+	test("Array pushUnique", function() {
 		var actual, expected;
 
-		//actual = ;
-		//expected = ;
-		//same(actual, expected, "");
+		/* XXX: behavior currently undefined
+		actual = ["foo", "bar"];
+		actual.pushUnique();
+		expected = ["foo", "bar"];
+		same(actual, expected, "does not modify array if no arguments are specified");
+		*/
+
+		actual = ["foo", "bar"];
+		actual.pushUnique("baz");
+		expected = ["foo", "bar", "baz"];
+		same(actual, expected, "appends given item to original array, provided an identical element is not present yet");
+
+		actual = ["foo", "bar", "baz"];
+		actual.pushUnique("baz");
+		expected = ["foo", "bar", "baz"];
+		same(actual, expected, "does not modify original array if given item is already present");
+
+		actual = [{ foo: "lorem" }, { bar: "ipsum" }];
+		actual.pushUnique({ bar: "ipsum" });
+		expected = [{ foo: "lorem" }, { bar: "ipsum" }, { bar: "ipsum" }];
+		same(actual, expected, "appends given item to original array if it is an object (deep comparison is not supported)");
 	});
 
-	test("Array remove", function() { // TODO
-		var actual, expected;
+	test("Array remove", function() {
+		var actual, expected, L;
 
-		//actual = ;
-		//expected = ;
-		//same(actual, expected, "");
+		actual = ["foo", "bar", "baz"];
+		actual.remove();
+		expected = ["foo", "bar", "baz"];
+		same(actual, expected, "does not modify original array if no arguments are specified");
+
+		actual = ["foo", "bar", "baz"];
+		actual.remove("bar");
+		expected = ["foo", "baz"];
+		same(actual, expected, "removes given item from original array, provided such an element is present");
+
+		actual = ["foo", "bar", "baz"];
+		actual.remove("lorem");
+		expected = ["foo", "bar", "baz"];
+		same(actual, expected, "does not modify original array if given item is not present");
+
+		actual = [{ foo: "lorem" }, { bar: "ipsum" }];
+		actual.remove({ bar: "ipsum" });
+		expected = [{ foo: "lorem" }, { bar: "ipsum" }];
+		same(actual, expected, "does not modify original array if given item is an object (deep comparison is not supported)");
 	});
 
-	test("Array setItem", function() { // TODO
+	test("Array setItem", function() {
 		var actual, expected;
 
-		//actual = ;
-		//expected = ;
-		//same(actual, expected, "");
+		actual = ["foo", "bar", "baz"];
+		actual.setItem();
+		expected = ["foo", "bar", "baz"];
+		same(actual, expected, "does not modify array if no arguments are specified");
+
+		actual = ["foo", "bar", "baz"];
+		actual.setItem("foo");
+		expected = ["foo", "bar", "baz"];
+		same(actual, expected, "does not modify original array if mode is not specified");
+
+		actual = ["foo", "bar"];
+		actual.setItem("baz", 0);
+		expected = ["foo", "bar", "baz"];
+		same(actual, expected, "appends given item to original array if mode is 0 and element is not present");
+
+		actual = ["foo", "bar", "baz"];
+		actual.setItem("bar", 0);
+		expected = ["foo", "baz"];
+		same(actual, expected, "removes given item from original array if mode 0 and element is present");
+
+		actual = ["foo", "bar"];
+		actual.setItem("baz", +1);
+		expected = ["foo", "bar", "baz"];
+		same(actual, expected, "appends given item to original array if mode is +1 and element is not present");
+
+		actual = ["foo", "bar"];
+		actual.setItem("bar", +1);
+		expected = ["foo", "bar"];
+		same(actual, expected, "does not modify original array if mode is +1 and element is present");
+
+		actual = ["foo", "bar", "baz"];
+		actual.setItem("bar", -1);
+		expected = ["foo", "baz"];
+		same(actual, expected, "removes given item from original array if mode is -1 and element is present");
+
+		actual = ["foo", "bar"];
+		actual.setItem("baz", -1);
+		expected = ["foo", "bar"];
+		same(actual, expected, "does not modify original array if mode is -1 and element is not present");
+	});
+
+	test("Array map", function() {
+		var actual, expected, L;
+
+		L = ["foo", "lorem", "amet"];
+
+		actual = L.map(function(item, i) {
+			return item.substr(2, 1);
+		});
+		expected = ["o", "r", "e"];
+		same(actual, expected, "returns an array of elements defined by the specified callback");
+
+		actual = L.map(function(item, i) {
+			return item.length + i;
+		});
+		expected = [3, 6, 6];
+		same(actual, expected, "passes element value and index to the callback");
 	});
 });
