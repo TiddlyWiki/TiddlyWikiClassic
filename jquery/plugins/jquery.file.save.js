@@ -6,26 +6,16 @@ jQuery plugin for saving data to a file
 (function($) {
 
 	if(!$.file) {
-		$.file = $.extend({});
+		$.file = {};
 	}
 
-	$.file.extend({
-		defaults : {
-			fileUrl: null,
-			content: null,
-			verbose: false
-		},
-		setDefaults: function(path,filename) {
-			this.defaults.path = path;
-			this.defaults.filename = filename;
-		},
-		save: function(args) {
-			var opts = $.extend({},this.defaults,args);
-			var r = mozillaSaveFile(opts.fileUrl,opts.content);
+	$.extend($.file,{
+		save: function(filePath,content) {
+			var r = mozillaSaveFile(filePath,content);
 			if(!r)
-				r = ieSaveFile(opts.fileUrl,opts.content);
+				r = ieSaveFile(filePath,content);
 			if(!r)
-				r = javaSaveFile(opts.fileUrl,opts.content);
+				r = javaSaveFile(filePath,content);
 			return r;
 		},
 		copy: function(dest,source) {

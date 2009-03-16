@@ -6,21 +6,16 @@ jQuery plugin for loading a file
 (function($) {
 
 	if(!$.file) {
-		$.file = $.extend({});
+		$.file = {};
 	}
 
-	$.file.extend({
-		defaults : {
-			fileUrl: null,
-			verbose: false
-		},
-		load: function(args) {
-			var opts = $.extend({},this.defaults,args);
-			var r = mozillaLoadFile(opts.fileUrl);
+	$.extend($.file,{
+		load: function(filePath) {
+			var r = mozillaLoadFile(filePath);
 			if((r == null) || (r == false))
-				r = ieLoadFile(opts.fileUrl);
+				r = ieLoadFile(filePath);
 			if((r == null) || (r == false))
-				r = javaLoadFile(opts.fileUrl);
+				r = javaLoadFile(filePath);
 			return r;
 		}
 	});

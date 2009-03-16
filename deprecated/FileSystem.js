@@ -3,14 +3,14 @@
 //-- Use the jQuery.file functions directly instead
 //--
 
-function saveFile(fileUrl,content)
+function saveFile(filePath,content)
 {
-	return jQuery.file.save({fileUrl:fileUrl,content:content});
+	return jQuery.file.save(filePath,content);
 }
 
-function loadFile(fileUrl)
+function loadFile(filePath)
 {
-	return jQuery.file.load({fileUrl:fileUrl});
+	return jQuery.file.load(filePath);
 }
 
 function copyFile(dest,source)
