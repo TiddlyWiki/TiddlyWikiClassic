@@ -3,3 +3,4 @@ jshead: testDOM.js
 jshead: testDates.js
 #jshead: testEncoding.js
 jshead: testStrings.js
+jshead: testRGB.js
