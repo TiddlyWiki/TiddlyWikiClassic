@@ -1,4 +1,5 @@
 jshead: testBasicTypes.js
+jshead: testCrypto.js
 jshead: testDOM.js
 jshead: testDates.js
 #jshead: testEncoding.js
