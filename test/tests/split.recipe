@@ -7,5 +7,6 @@ jshead: Dates.js
 jshead: RGB.js
 jshead: FileSystem.js
 jshead: Strings.js
+jshead: Tiddler.js
 jshead: Utilities.js
 jshead: Wikifier.js
