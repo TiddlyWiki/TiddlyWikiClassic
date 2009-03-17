@@ -10,4 +10,4 @@ recipe: ../jqMock/split.recipe
 recipe: ../html/split.recipe
 
 # tests
-recipe: ../tests/split.recipe
+recipe: ../js/split.recipe
