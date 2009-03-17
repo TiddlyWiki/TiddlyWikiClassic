@@ -67,4 +67,18 @@ jQuery(document).ready(function(){
 		config.parsers.tag = {};
 		config.parsers.parameter = {};
 	});
+	
+	test('wikify(): it should not call subWikify() if the "source" parameter is not provided', function() {
+		expect(1);
+	
+		var place = document.createElement("div");
+		var d = document.body.appendChild(place);
+		d.style.display = "none";
+		
+		var subWikifyMock = new jqMock.Mock(Wikifier.prototype, "subWikify");
+		subWikifyMock.modify().args().multiplicity(0);
+		wikify();
+		subWikifyMock.verifyAll();
+		subWikifyMock.restore();
+	});
 });

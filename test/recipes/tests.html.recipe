@@ -6,6 +6,7 @@ recipe: ../../jquery/split.recipe
 
 # Test framework
 recipe: ../qunit/split.recipe
+recipe: ../jqMock/split.recipe
 recipe: ../html/split.recipe
 
 # tests
