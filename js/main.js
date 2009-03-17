@@ -79,6 +79,7 @@ function main()
 		displayMessage("Total: " + (t10-t0) + " ms");
 	}
 	startingUp = false;
+	jQuery().trigger('startup');
 }
 
 // Restarting
@@ -105,6 +106,7 @@ function loadShadowTiddlers()
 	shadows.loadFromDiv("shadowArea","shadows",true);
 	shadows.forEachTiddler(function(title,tiddler){config.shadowTiddlers[title] = tiddler.text;});
 	delete shadows;
++	jQuery().trigger('loadShadows');
 }
 
 function loadPlugins()
@@ -165,6 +167,7 @@ function loadPlugins()
 			p.warning = true;
 		}
 	}
+	jQuery().trigger('loadPlugins');
 	return nLoaded != nPlugins;
 }
 
