@@ -5,11 +5,33 @@ function makeTestNode() {
 	return ele;
 }
 
+function removeTestNode() {
+	jQuery('#testElement').remove();
+}
+
 
 jQuery(document).ready(function(){
 
 	module("DOM.js");
 
+	test("createTiddlyElement", function() {
+		expect(4);
+		
+		ok(createTiddlyElement(null,"div"), "Element creation should create the DOM element");
+		
+		createTiddlyElement( makeTestNode(),"div");
+		ok(jQuery('#testElement div'), 'Setting the parent parameter should append the new DOM element to the parent');
+		removeTestNode();
+		
+		createTiddlyElement(null,"div",'testID');		
+		ok(jQuery('#testID'), 'Setting the element id parameter should set the id on the DOM element');
+		
+		createTiddlyElement(null,"div", null, 'testClass');		
+		ok(jQuery('div.testClass'), 'Setting the element class parameter should set the class on the DOM element');
+		
+	});
+
+	
 	test("CSS classes", function() {
 		expect(4);
 		var ele = makeTestNode();
