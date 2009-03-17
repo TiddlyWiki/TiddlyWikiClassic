@@ -2,12 +2,18 @@
 describe('Wikifier: getParser()', {
 
 	before_each: function(){
-		var formatter = new Formatter(config.formatters);
+		formatter = new Formatter(config.formatters);
+	},
+	
+	after_each: function() {
+		formatter = null;
 	},
 
 	'it should return the default formatter if no tiddler argument is provided': function() {
 		var actual = getParser(null,null);
+		console.log(actual);
 		var expected = formatter;
+		console.log(expected);
 		value_of(actual).should_be(expected);
 	},
 
