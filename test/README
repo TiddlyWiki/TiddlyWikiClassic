@@ -7,6 +7,6 @@ Existing JSSpec-based tests are contained in the core/tests directory.
 cf. http://trac.tiddlywiki.org/ticket/963
 
 /html       required HTML components
+/js         actual test code for core modules
 /qunit      testing framework
 /recipes    recipes to build test suite
-/tests      actual test code for core modules
