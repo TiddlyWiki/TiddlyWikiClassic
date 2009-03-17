@@ -265,7 +265,7 @@ $(window).load(function() {
 		$("li.fail:contains('missing test - untested code is broken code')").parent('ol').parent('li.fail')[this.checked ? 'hide' : 'show']();
 	});
 	$("#filter-missing").after('<label for="filter-missing">Hide missing tests (untested code is broken code)</label>');
-	runTest();	
+	runTest();
 });
 
 function synchronize(callback) {
