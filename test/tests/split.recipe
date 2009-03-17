@@ -4,5 +4,6 @@ jshead: testDOM.js
 jshead: testDates.js
 #jshead: testEncoding.js
 jshead: testRGB.js
+jshead: testFileSystem.js
 jshead: testStrings.js
 jshead: testWikifier.js

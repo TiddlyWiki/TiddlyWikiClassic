@@ -1,4 +1,7 @@
 // <![CDATA[
+
+/* migrated to QUnit */
+
 describe('FileSystem: convertUTF8ToUnicode', {
 	'ASCII characters should remain unchanged when converted from UTF8 to Unicode using convert': function() {
 		var expected = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
