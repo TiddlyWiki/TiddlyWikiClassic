@@ -10,6 +10,8 @@ function removeTestNode() {
 }
 
 
+
+
 jQuery(document).ready(function(){
 
 	module("DOM.js");
@@ -32,43 +34,60 @@ jQuery(document).ready(function(){
 	});
 
 	
-	test("CSS classes", function() {
-		expect(4);
-		var ele = makeTestNode();
-
-		// addClass()
-		addClass(ele,'testClass');
-		ok(jQuery('#testElement').hasClass('testClass'), "addClass() adds a css class to a given DOM element");
-
-		// removeClass()
-		removeClass(ele,'testClass');
-		ok(!jQuery('#testElement').hasClass('testClass'), "removeClass() removes a css class from a given DOM element");
-
-		// hasClass()
-		ok(!hasClass(ele, 'testClass'), "hasClass() returns false when looking for a class which is not present on an element");
-		jQuery(ele).addClass('testClass');
-		ok(hasClass(ele, 'testClass'), "hasClass() returns true when looking for a class which is present on an element");
-
-	});
-
-
-	test("Events", function() {
+	test("addClass", function() {
 		expect(1);
 		var ele = makeTestNode();
 
-		// resolveTarget()
+		addClass(ele,'testClass');
+		ok(jQuery('#testElement').hasClass('testClass'), "addClass() adds a css class to a given DOM element");
+		
+		removeTestNode();
+	});	
+	
+	
+	
+	test("removeClass", function() {
+		expect(1);
+		var ele = makeTestNode();
+
+		removeClass(ele,'testClass');
+		ok(!jQuery('#testElement').hasClass('testClass'), "removeClass() removes a css class from a given DOM element");
+		
+		removeTestNode();
+	});	
+
+
+	test("hasClass", function() {
+		expect(2);
+		var ele = makeTestNode();
+
+		ok(!hasClass(ele, 'testClass'), "hasClass() returns false when looking for a class which is not present on an element");
+
+		jQuery(ele).addClass('testClass');
+		ok(hasClass(ele, 'testClass'), "hasClass() returns true when looking for a class which is present on an element");
+
+		removeTestNode();
+	});
+
+
+	test("resolveTarget", function() {
+		expect(1);
+		var ele = makeTestNode();
+
 		var target;
 		jQuery(ele).click(function(ev){
 			target = resolveTarget(ev);
 		});
 		jQuery(ele).click();
 		equals(target, ele, "resolveTarget correctly identifies the target of a click event");
+		
+		removeTestNode();
 	});
 
 
-	test('Text', function(){
+	test('getPlainText', function(){
 		jQuery('body').append("<div id='text_test'>foo bar baz</div>");
-		var d = document.getElementById('text_test');
+		var d = jQuery('#text_test').get(0);
 		equals(getPlainText(d), "foo bar baz", "getPlainText() returns the plain text of an element.");
 		jQuery("#text_test").remove();
 	});
