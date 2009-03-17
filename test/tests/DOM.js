@@ -86,10 +86,25 @@ jQuery(document).ready(function(){
 
 
 	test('getPlainText', function(){
+		expect(1);
+
 		jQuery('body').append("<div id='text_test'>foo bar baz</div>");
 		var d = jQuery('#text_test').get(0);
 		equals(getPlainText(d), "foo bar baz", "getPlainText() returns the plain text of an element.");
 		jQuery("#text_test").remove();
+	});
+	
+	
+	test("findWindowHeight", function() {
+			expect(2);
+			equals(typeof findWindowHeight(), "number", "returns an number");
+			equals($(window).height(), findWindowHeight(), "return the current height of the display window");
+	});
+
+	test("findWindowWidth", function() {
+			expect(2);
+			equals(typeof findWindowWidth(), "number", "returns an number");
+			equals($(window).width(), findWindowWidth(), "return the current width of the display window");
 	});
 
 });
