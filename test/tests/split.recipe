@@ -3,5 +3,6 @@ jshead: testCrypto.js
 jshead: testDOM.js
 jshead: testDates.js
 #jshead: testEncoding.js
-jshead: testStrings.js
 jshead: testRGB.js
+jshead: testStrings.js
+jshead: testWikifier.js
