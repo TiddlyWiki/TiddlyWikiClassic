@@ -2,7 +2,7 @@ jQuery(document).ready(function(){
 
 	module("Crypto");
 
-	test("Date functions", function() {
+	test("SHA-1 functions", function() {
 		var actual = Crypto.hexSha1Str("").toLowerCase();
 		var expected = "da39a3ee5e6b4b0d3255bfef95601890afd80709";
 		same(actual,expected,'SHA-1 hash of empty string should be correct');
