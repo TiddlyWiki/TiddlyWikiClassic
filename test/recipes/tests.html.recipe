@@ -8,6 +8,7 @@ recipe: ../../jquery/split.recipe
 recipe: ../qunit/split.recipe
 recipe: ../jqMock/split.recipe
 recipe: ../html/split.recipe
+js: ../qunit/delayTestExecution.js
 
 # tests
 recipe: ../tests/split.recipe
