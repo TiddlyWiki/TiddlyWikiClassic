@@ -9,7 +9,6 @@ function makeTestNode() {
 jQuery(document).ready(function(){
 
 	module("DOM.js");
-	var jq = jQuery.noConflict(); // the global jQuery object
 
 	test("CSS classes", function() {
 		expect(4);
@@ -17,15 +16,15 @@ jQuery(document).ready(function(){
 
 		// addClass()
 		addClass(ele,'testClass');
-		ok(jq('#testElement').hasClass('testClass'), "addClass() adds a css class to a given DOM element");
+		ok(jQuery('#testElement').hasClass('testClass'), "addClass() adds a css class to a given DOM element");
 
 		// removeClass()
 		removeClass(ele,'testClass');
-		ok(!jq('#testElement').hasClass('testClass'), "removeClass() removes a css class from a given DOM element");
+		ok(!jQuery('#testElement').hasClass('testClass'), "removeClass() removes a css class from a given DOM element");
 
 		// hasClass()
 		ok(!hasClass(ele, 'testClass'), "hasClass() returns false when looking for a class which is not present on an element");
-		jq(ele).addClass('testClass');
+		jQuery(ele).addClass('testClass');
 		ok(hasClass(ele, 'testClass'), "hasClass() returns true when looking for a class which is present on an element");
 
 	});
@@ -37,19 +36,19 @@ jQuery(document).ready(function(){
 
 		// resolveTarget()
 		var target;
-		jq(ele).click(function(ev){
+		jQuery(ele).click(function(ev){
 			target = resolveTarget(ev);
 		});
-		jq(ele).click();
+		jQuery(ele).click();
 		equals(target, ele, "resolveTarget correctly identifies the target of a click event");
 	});
 
 
 	test('Text', function(){
-		jq('body').append("<div id='text_test'>foo bar baz</div>");
+		jQuery('body').append("<div id='text_test'>foo bar baz</div>");
 		var d = document.getElementById('text_test');
 		equals(getPlainText(d), "foo bar baz", "getPlainText() returns the plain text of an element.");
-		jq("#text_test").remove();
+		jQuery("#text_test").remove();
 	});
 
 });
