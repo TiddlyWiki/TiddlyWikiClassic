@@ -37,70 +37,76 @@ tests_xml = {
         }
 };
 
-jQuery(document).ready(function() {
-	module("GenerateRss");
+jQuery(document).ready(function(){
 
-	/*
-		<rss version="2.0">
-		<channel>
-			<title>My TiddlyWiki</title>
-			<link>http://www.tiddlywiki.com/</link>
-			<description>a reusable non-linear personal web notebook</description>
-			<language>en-us</language>
-			<copyright>Copyright 2008 YourName</copyright>
-			<pubDate>Tue, 15 Apr 2008 11:11:50 GMT</pubDate>
-			<lastBuildDate>Tue, 15 Apr 2008 11:11:50 GMT</lastBuildDate>
-			<docs>http://blogs.law.harvard.edu/tech/rss</docs>
-			<generator>TiddlyWiki 2.4.0</generator>
-		</channel>
-		</rss>
-	*/
-	test("generateRss: feed for an empty store", function() {
+	// wait until TiddlyWiki has finished its startup process before running the tests.
+	jQuery().bind('startup', function(){		
 
-		var actual, expected;
-		var rss = generateRss();
+		module("GenerateRss");
 
-                actual = (typeof rss);
-                expected = 'string';
-		same(actual, expected, 'produces a string value');
+		/*
+			<rss version="2.0">
+			<channel>
+				<title>My TiddlyWiki</title>
+				<link>http://www.tiddlywiki.com/</link>
+				<description>a reusable non-linear personal web notebook</description>
+				<language>en-us</language>
+				<copyright>Copyright 2008 YourName</copyright>
+				<pubDate>Tue, 15 Apr 2008 11:11:50 GMT</pubDate>
+				<lastBuildDate>Tue, 15 Apr 2008 11:11:50 GMT</lastBuildDate>
+				<docs>http://blogs.law.harvard.edu/tech/rss</docs>
+				<generator>TiddlyWiki 2.4.0</generator>
+			</channel>
+			</rss>
+		*/
+		test("generateRss: feed for an empty store", function() {
 
-		// <?xml version='1.0'?>
-		// <?xml version="1.0" ?>
-		// <?xml version="1.0" encoding='utf-8' ?>
-                actual = rss.match(new RegEx(/^<\?xml\s+version=(["'])1.0\1\s*(encoding=(["'])utf-8\2)?\s*\?>/));
-		ok(actual, expected, 'should start with an XML 1.0 declaration');
+			var actual, expected;
+			var rss = generateRss();
 
-                xml = tests_xml.parse(rss);
-                value_of(typeof xml).should_match('object');
-		ok('should be well-formed XML');
+			actual = (typeof rss);
+			expected = 'string';
+			same(actual, expected, 'produces a string value');
 
-                actual = xml.documentElement.nodeName;
-		expected = "rss";
-                same(actual, expected, 'document node should be "rss"');
+			// <?xml version='1.0'?>
+			// <?xml version="1.0" ?>
+			// <?xml version="1.0" encoding='utf-8' ?>
+			actual = rss.match(new RegExp(/^<\?xml\s+version=(["'])1.0\1\s*(encoding=(["'])utf-8\2)?\s*\?>/));
+			ok(actual, 'should start with an XML 1.0 declaration');
 
-                actual = xml.documentElement.getAttribute("version");
-		expected = "2.0";
-		same(actual, expected, 'rss version should be "2.0"');
+			xml = tests_xml.parse(rss);
+			actual = typeof xml;
+			expected = 'object';
+			same(actual, expected, 'should be well-formed XML');
 
-		actual = xml.xpath("count(/rss/channel)", "number");
-		expected = 1;
-		same(actual, expected, 'document should have a single channel element');
+			actual = xml.documentElement.nodeName;
+			expected = "rss";
+			same(actual, expected, 'document node should be "rss"');
 
-		actual = xml.xpath("/rss/channel/title", "string");
-		expected = 'My TiddlyWiki';
-		same(actual, expected, 'channel title should be the default TiddlyWiki title');
+			actual = xml.documentElement.getAttribute("version");
+			expected = "2.0";
+			same(actual, expected, 'rss version should be "2.0"');
 
-		actual = xml.xpath("/rss/channel/description", "string");
-		expected = 'a reusable non-linear personal web notebook';
-		same(actual, expected, 'channel description should be the default TiddlyWiki subtitle');
+			actual = xml.xpath("count(/rss/channel)", "number");
+			expected = 1;
+			same(actual, expected, 'document should have a single channel element');
 
-		actual = xml.xpath("/rss/channel/language", "string");
-		expected = 'en-us';
-		same(actual, expected, 'channel language should be "en-us" [known to fail]');
+			actual = xml.xpath("/rss/channel/title", "string");
+			expected = 'My TiddlyWiki';
+			same(actual, expected, 'channel title should be the default TiddlyWiki title');
 
-		// Y2K+99 issue
-		var message = xml.xpath("/rss/channel/copyright", "string");
-                actual = message.match(new RegEx(/Copyright 20[0-9]{2,2} YourName/));
-		ok(actual, 'channel copyright should be "TiddlyWiki YYYY YourName"');
+			actual = xml.xpath("/rss/channel/description", "string");
+			expected = 'a reusable non-linear personal web notebook';
+			same(actual, expected, 'channel description should be the default TiddlyWiki subtitle');
+
+			actual = xml.xpath("/rss/channel/language", "string");
+			expected = 'en-us';
+			same(actual, expected, 'channel language should be "en-us" [known to fail]');
+
+			// Y2K+99 issue
+			var message = xml.xpath("/rss/channel/copyright", "string");
+			actual = message.match(new RegExp(/Copyright 20[0-9]{2,2} YourName/));
+			ok(actual, 'channel copyright should be "TiddlyWiki YYYY YourName"');
+		});
 	});
 });
