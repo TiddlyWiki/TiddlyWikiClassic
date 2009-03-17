@@ -13,7 +13,7 @@ tests_mock = {
 		if (typeof frame.savedFunc != "function") 
 			throw(funcName +" is not a function: " + (typeof frame.savedFunc));
 
-		var mockFunction = function() { 
+		var mockFunction = function() {
 			tests_mock.frame[funcName].called++; 
 			if (mocker)
 			    return mocker.apply(this, arguments);
