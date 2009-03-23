@@ -39,13 +39,16 @@ function main()
 		store.addNotification(config.notifyTiddlers[s].name,config.notifyTiddlers[s].notify);
 	t1 = new Date();
 	loadShadowTiddlers();
+	jQuery().trigger("loadShadows");
 	t2 = new Date();
 	store.loadFromDiv("storeArea","store",true);
+	jQuery().trigger("loadTiddlers");
 	t3 = new Date();
 	invokeParamifier(params,"onload");
 	t4 = new Date();
 	readOnly = (window.location.protocol == "file:") ? false : config.options.chkHttpReadOnly;
 	var pluginProblem = loadPlugins();
+	jQuery().trigger("loadPlugins");
 	t5 = new Date();
 	formatter = new Formatter(config.formatters);
 	invokeParamifier(params,"onconfig");
@@ -79,7 +82,7 @@ function main()
 		displayMessage("Total: " + (t10-t0) + " ms");
 	}
 	startingUp = false;
-	jQuery().trigger('startup');
+	jQuery().trigger("startup");
 }
 
 // Restarting
@@ -106,7 +109,6 @@ function loadShadowTiddlers()
 	shadows.loadFromDiv("shadowArea","shadows",true);
 	shadows.forEachTiddler(function(title,tiddler){config.shadowTiddlers[title] = tiddler.text;});
 	delete shadows;
-+	jQuery().trigger('loadShadows');
 }
 
 function loadPlugins()
@@ -167,7 +169,6 @@ function loadPlugins()
 			p.warning = true;
 		}
 	}
-	jQuery().trigger('loadPlugins');
 	return nLoaded != nPlugins;
 }
 

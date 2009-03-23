@@ -1,6 +1,7 @@
-recipe: html/split.recipe
+#recipe: $TW_ROOT/core/html/split.recipe
+recipe: /Users/martinbudden/Documents/TiddlyWiki/Tags/core/REL-2.5.0_Final/html/split.recipe
 recipe: shadows/split.recipe
 recipe: js/split.recipe
 recipe: deprecated/split.recipe
 recipe: jquery/split.recipe
-copy: java/TiddlySaver.jar
+#copy: java/TiddlySaver.jar
