@@ -402,14 +402,6 @@ merge(config.commands.references,{
 merge(config.commands.jump,{
 	text: "jump",
 	tooltip: "Jump to another open tiddler"});
-
-merge(config.commands.more,{
-	text: "more",
-	tooltip: "Show additional commands"});
-
-merge(config.commands.less,{
-	text: "less",
-	tooltip: "Hide additional commands"});
 		
 merge(config.commands.syncing,{
 	text: "syncing",

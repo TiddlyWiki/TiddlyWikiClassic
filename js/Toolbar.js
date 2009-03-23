@@ -98,13 +98,21 @@ config.macros.toolbar.invokeCommand = function(place,className,event)
 	}
 };
 
+config.macros.toolbar.onClickMore = function(ev) 
+{ 
+	var e = this.nextSibling; 
+	e.style.display = "inline"; 
+	removeNode(this); 
+	return false;
+};
+
 config.macros.toolbar.handler = function(place,macroName,params,wikifier,paramString,tiddler)
 {
 	for(var t=0; t<params.length; t++) {
 		var c = params[t];
 		switch(c) {
 		case '>':
-			var btn = createTiddlyButton(place,this.moreLabel,this.morePrompt,config.commands.more.handler);
+			var btn = createTiddlyButton(place,this.moreLabel,this.morePrompt,config.macros.toolbar.onClickMore); 
 			addClass(btn,"moreCommand");
 			var e = createTiddlyElement(place,"span",null,"moreCommand");
 			e.style.display = "none";
