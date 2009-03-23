@@ -90,20 +90,12 @@ config.macros.toolbar.invokeCommand = function(place,className,event)
 	var children = place.getElementsByTagName("a");
 	for(var t=0; t<children.length; t++) {
 		var c = children[t];
-		if(hasClass(c,className) && c.getAttribute && c.getAttribute("commandName")) {
+		if(jQuery(c).hasClass(className) && c.getAttribute && c.getAttribute("commandName")) {
 			if(c.onclick instanceof Function)
 				c.onclick.call(c,event);
 			break;
 		}
 	}
-};
-
-config.macros.toolbar.onClickMore = function(ev)
-{
-	var e = this.nextSibling;
-	e.style.display = "inline";
-	removeNode(this);
-	return false;
 };
 
 config.macros.toolbar.handler = function(place,macroName,params,wikifier,paramString,tiddler)
@@ -112,7 +104,7 @@ config.macros.toolbar.handler = function(place,macroName,params,wikifier,paramSt
 		var c = params[t];
 		switch(c) {
 		case '>':
-			var btn = createTiddlyButton(place,this.moreLabel,this.morePrompt,config.macros.toolbar.onClickMore);
+			var btn = createTiddlyButton(place,this.moreLabel,this.morePrompt,config.commands.more.handler);
 			addClass(btn,"moreCommand");
 			var e = createTiddlyElement(place,"span",null,"moreCommand");
 			e.style.display = "none";

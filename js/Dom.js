@@ -26,11 +26,6 @@ function drawGradient(place,horiz,locolors,hicolors)
 	}
 }
 
-function createTiddlyText(parent,text)
-{
-	return parent.appendChild(document.createTextNode(text));
-}
-
 function createTiddlyCheckbox(parent,caption,checked,onChange)
 {
 	var cb = document.createElement("input");
@@ -88,31 +83,6 @@ function removeEvent(obj,type,fn)
 	}
 }
 
-function addClass(e,className)
-{
-	var currClass = e.className.split(" ");
-	if(currClass.indexOf(className) == -1)
-		e.className += " " + className;
-}
-
-function removeClass(e,className)
-{
-	var currClass = e.className.split(" ");
-	var i = currClass.indexOf(className);
-	while(i != -1) {
-		currClass.splice(i,1);
-		i = currClass.indexOf(className);
-	}
-	e.className = currClass.join(" ");
-}
-
-function hasClass(e,className)
-{
-	if(e.className && e.className.split(" ").indexOf(className) != -1) {
-		return true;
-	}
-	return false;
-}
 
 // Find the closest relative with a given property value (property defaults to tagName, relative defaults to parentNode)
 function findRelated(e,value,name,relative)
@@ -120,7 +90,7 @@ function findRelated(e,value,name,relative)
 	name = name || "tagName";
 	relative = relative || "parentNode";
 	if(name == "className") {
-		while(e && !hasClass(e,value)) {
+		while(e && !jQuery(e).hasClass(value)) {
 			e = e[relative];
 		}
 	} else {
@@ -142,26 +112,6 @@ function resolveTarget(e)
 	if(obj.nodeType == 3) // defeat Safari bug
 		obj = obj.parentNode;
 	return obj;
-}
-
-// Prevent an event from bubbling
-function stopEvent(e)
-{
-	var ev = e || window.event;
-	ev.cancelBubble = true;
-	if(ev.stopPropagation) ev.stopPropagation();
-	return false;
-}
-
-// Return the content of an element as plain text with no formatting
-function getPlainText(e)
-{
-	var text = "";
-	if(e.innerText)
-		text = e.innerText;
-	else if(e.textContent)
-		text = e.textContent;
-	return text;
 }
 
 // Get the scroll position for window.scrollTo necessary to scroll a given element into view
@@ -244,44 +194,6 @@ function insertSpacer(place)
 	if(place)
 		place.appendChild(e);
 	return e;
-}
-
-// Remove all children of a node
-function removeChildren(e)
-{
-	while(e && e.hasChildNodes())
-		removeNode(e.firstChild);
-}
-
-// Remove a node and all it's children
-function removeNode(e)
-{
-	scrubNode(e);
-	e.parentNode.removeChild(e);
-}
-
-// Remove any event handlers or non-primitve custom attributes
-function scrubNode(e)
-{
-	if(!config.browser.isIE)
-		return;
-	var att = e.attributes;
-	if(att) {
-		for(var t=0; t<att.length; t++) {
-			var n = att[t].name;
-			if(n !== 'style' && (typeof e[n] === 'function' || (typeof e[n] === 'object' && e[n] != null))) {
-				try {
-					e[n] = null;
-				} catch(ex) {
-				}
-			}
-		}
-	}
-	var c = e.firstChild;
-	while(c) {
-		scrubNode(c);
-		c = c.nextSibling;
-	}
 }
 
 // Add a stylesheet, replacing any previous custom stylesheet
@@ -372,4 +284,70 @@ function isDescendant(e,ancestor)
 	}
 	return false;
 }
+
+
+// deprecate the following...
+
+function createTiddlyText(parent,text) {
+	return jQuery(parent).append(text);
+}
+
+function addClass(e,className) {
+	jQuery(e).addClass(className);
+}
+
+function removeClass(e,className) {
+	jQuery(e).removeClass(className);
+}
+
+
+// Resolve the target object of an event
+function resolveTarget(e) {
+	return jQuery(e.target)[0];
+}
+
+// Prevent an event from bubbling
+function stopEvent(e) {
+	jQuery(e).stopPropagation();
+	return false;
+}
+
+// Return the content of an element as plain text with no formatting
+function getPlainText(e) {
+	return jQuery(e).text();
+}
+
+
+// Remove a node and all it's children
+function removeNode(e)
+{
+	jQuery(e).remove();
+}
+
+// No longer called directy in the core..... wait! check the template HTML!
+// Remove any event handlers or non-primitve custom attributes
+function scrubNode(e)
+{
+	if(!config.browser.isIE)
+		return;
+	var att = e.attributes;
+	if(att) {
+		for(var t=0; t<att.length; t++) {
+			var n = att[t].name;
+			if(n !== 'style' && (typeof e[n] === 'function' || (typeof e[n] === 'object' && e[n] != null))) {
+				try {
+					e[n] = null;
+				} catch(ex) {
+				}
+			}
+		}
+	}
+	var c = e.firstChild;
+	while(c) {
+		scrubNode(c);
+		c = c.nextSibling;
+	}
+}
+
+
 

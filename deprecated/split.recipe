@@ -1,2 +1,3 @@
 jsdeprecated: FileSystem.js
 jsdeprecated: Tiddler.js
+jsdeprecated: Dom.js

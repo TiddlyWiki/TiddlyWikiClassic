@@ -4368,7 +4368,7 @@ var backstage = {
 	preparePanel: function() {
 		backstage.cloak.style.height = findWindowHeight() + "px";
 		backstage.cloak.style.display = "block";
-		removeChildren(backstage.panelBody);
+		jQuery(backstage.panelBody).empty();
 		return backstage.panelBody;
 	},
 
@@ -5038,7 +5038,7 @@ config.macros.sync.createSyncTask = function(syncItem)
 config.macros.sync.updateSyncStatus = function(syncItem)
 {
 	var e = syncItem.colElements["status"];
-	removeChildren(e);
+	jQuery(e).empty();
 	createTiddlyText(e,syncItem.syncStatus.text);
 	syncItem.rowElement.style.backgroundColor = syncItem.syncStatus.color;
 	syncItem.rowElement.style.display = syncItem.syncStatus.display;
@@ -5164,7 +5164,7 @@ config.macros.plugins.refresh = function(listWrapper,params)
 			if(e.checked)
 				selectedRows.push(e.getAttribute("rowName"));
 		});
-	removeChildren(listWrapper);
+	jQuery(listWrapper).empty();
 	params = params.parseParams("anon");
 	var plugins = installedPlugins.slice(0);
 	var t,tiddler,p;

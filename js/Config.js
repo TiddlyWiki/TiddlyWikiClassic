@@ -144,7 +144,9 @@ config.commands = {
 	references: {type: "popup"},
 	jump: {type: "popup"},
 	syncing: {type: "popup"},
-	fields: {type: "popup"}
+	fields: {type: "popup"},
+	more: {},
+	less: {}
 };
 
 // Browser detection... In a very few places, there's nothing else for it but to know what browser we're using.
@@ -234,6 +236,6 @@ config.shadowTiddlers = {
 	TabMoreShadowed: '<<list shadowed>>',
 	AdvancedOptions: '<<options>>',
 	PluginManager: '<<plugins>>',
-	ToolbarCommands: '|~ViewToolbar|closeTiddler closeOthers +editTiddler > fields syncing permalink references jump|\n|~EditToolbar|+saveTiddler -cancelTiddler deleteTiddler|'
+	ToolbarCommands: '|~ViewToolbar|closeTiddler closeOthers +editTiddler > fields syncing permalink references jump less|\n|~EditToolbar|+saveTiddler -cancelTiddler deleteTiddler|'
 };
 

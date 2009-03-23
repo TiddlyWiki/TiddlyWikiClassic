@@ -40,7 +40,7 @@ config.refreshers = {
 		var title = e.getAttribute("tiddler");
 		var force = e.getAttribute("force");
 		if(force != null || changeList == null || changeList.indexOf(title) != -1) {
-			removeChildren(e);
+			jQuery(e).empty();
 			wikify(store.getTiddlerText(title,""),e,null,store.fetchTiddler(title));
 			return true;
 		} else
@@ -136,7 +136,7 @@ function refreshPageTemplate(title)
 	applyHtmlMacros(wrapper);
 	refreshElements(wrapper);
 	display = story.getContainer();
-	removeChildren(display);
+	jQuery(display).empty();
 	if(!display)
 		display = createTiddlyElement(wrapper,"div",story.containerId());
 	nodes = stash.childNodes;

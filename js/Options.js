@@ -178,7 +178,7 @@ config.macros.options.onChangeUnknown = function(e)
 {
 	var wizard = new Wizard(this);
 	var listWrapper = wizard.getValue("listWrapper");
-	removeChildren(listWrapper);
+	jQuery(listWrapper).empty();
 	config.macros.options.refreshOptions(listWrapper,this.checked);
 	return false;
 };

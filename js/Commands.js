@@ -90,6 +90,24 @@ config.commands.jump.handlePopup = function(popup,title)
 		});
 };
 
+config.commands.more.handler = function(event,src,title)
+{
+	var e = this.nextSibling;
+	e.style.display = "inline";
+	this.style.display = 'none';
+	return false;
+};
+
+config.commands.less.handler = function(event,src,title)
+{
+	var e = resolveTarget(event).parentNode;
+	var m = e.previousSibling;
+	e.style.display = "none";
+	m.style.display = "inline";
+	return false;
+};
+
+
 config.commands.syncing.handlePopup = function(popup,title)
 {
 	var tiddler = store.fetchTiddler(title);

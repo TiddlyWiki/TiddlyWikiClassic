@@ -1,8 +1,7 @@
 function makeTestNode() {
-	var ele = document.createElement('div');
-	document.body.appendChild(ele);
-	ele.id = 'testElement';
-	return ele;
+	var ele = jQuery('<div id="testElement" class="testClass"></div>');
+	ele.appendTo('body');
+	return ele.get(0);
 }
 
 function removeTestNode() {
@@ -59,12 +58,8 @@ jQuery(document).ready(function(){
 	test("hasClass", function() {
 		expect(2);
 		var ele = makeTestNode();
-
-		ok(!hasClass(ele, 'testClass'), "hasClass() returns false when looking for a class which is not present on an element");
-
-		jQuery(ele).addClass('testClass');
+		ok(!hasClass(ele, 'nullClass'), "hasClass() returns false when looking for a class which is not present on an element");
 		ok(hasClass(ele, 'testClass'), "hasClass() returns true when looking for a class which is present on an element");
-
 		removeTestNode();
 	});
 
