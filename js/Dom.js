@@ -324,7 +324,6 @@ function removeNode(e)
 	jQuery(e).remove();
 }
 
-// No longer called directy in the core..... wait! check the template HTML!
 // Remove any event handlers or non-primitve custom attributes
 function scrubNode(e)
 {
