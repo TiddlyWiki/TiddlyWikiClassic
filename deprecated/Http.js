@@ -50,12 +50,17 @@ function httpReq(type,url,callback,params,headers,data,contentType,username,pass
 		url:url,
 		processData:false,
 		data:data,
-		cache:allowCache ? false : true
+		cache:allowCache ? false : true,
+		beforeSend: function(xhr) {
+			for(var i in headers)
+				xhr.setRequestHeader(i,headers[i]);
+			xhr.setRequestHeader("X-Requested-With", "TiddlyWiki " + formatVersion());
+		}
 	};
 
 	if(callback) {
 		options.complete = function(xhr,textStatus) {
-			if(xhr && (xhr.status==0 || (xhr.status >= 200 && xhr.status < 300)))
+			if(jQuery.httpSuccess(xhr))
 				callback(true,params,xhr.responseText,url,xhr);
 			else
 				callback(false,params,null,url,xhr);
@@ -67,11 +72,6 @@ function httpReq(type,url,callback,params,headers,data,contentType,username,pass
 		options.username = username;
 	if(password)
 		options.password = password;
-	options.beforeSend = function(xhr) {
-		for(var i in headers)
-			xhr.setRequestHeader(i,headers[i]);
-		xhr.setRequestHeader("X-Requested-With", "TiddlyWiki " + formatVersion());
-	};
 	if(window.Components && window.netscape && window.netscape.security && document.location.protocol.indexOf("http") == -1)
 		window.netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
 	jQuery.ajax(options);
