@@ -45,7 +45,7 @@ function doHttp(type,url,data,contentType,username,password,callback,params,head
 //#     xhr - the underlying XMLHttpRequest object
 function httpReq(type,url,callback,params,headers,data,contentType,username,password,allowCache)
 {
-	options = {
+	var options = {
 		type:type,
 		url:url,
 		processData:false,
@@ -72,9 +72,8 @@ function httpReq(type,url,callback,params,headers,data,contentType,username,pass
 			xhr.setRequestHeader(i,headers[i]);
 		xhr.setRequestHeader("X-Requested-With", "TiddlyWiki " + formatVersion());
 	};
-	//if(window.Components && window.netscape && window.netscape.security && document.location.protocol.indexOf("http") == -1)
-	//	window.netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
-	console.log('jQuery ajax');
+	if(window.Components && window.netscape && window.netscape.security && document.location.protocol.indexOf("http") == -1)
+		window.netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
 	jQuery.ajax(options);
 }
 
