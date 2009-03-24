@@ -305,8 +305,11 @@ function resolveTarget(e) {
 
 // Prevent an event from bubbling
 function stopEvent(e) {
-	e.stopPropagation();
+	var ev = e || window.event;
+	ev.cancelBubble = true;
+	if(ev.stopPropagation) ev.stopPropagation();
 	return false;
+
 }
 
 // Return the content of an element as plain text with no formatting
