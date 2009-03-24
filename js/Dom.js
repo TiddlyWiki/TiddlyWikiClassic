@@ -308,7 +308,7 @@ function resolveTarget(e) {
 
 // Prevent an event from bubbling
 function stopEvent(e) {
-	jQuery(e).stopPropagation();
+	e.stopPropagation();
 	return false;
 }
 
