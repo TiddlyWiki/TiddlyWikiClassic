@@ -121,13 +121,13 @@ ListView.columnTypes = {};
 ListView.columnTypes.String = {
 	createHeader: function(place,columnTemplate,col)
 		{
-			createTiddlyText(place,columnTemplate.title);
+			jQuery(place).append(columnTemplate.title);
 		},
 	createItem: function(place,listObject,field,columnTemplate,col,row)
 		{
 			var v = listObject[field];
 			if(v != undefined)
-				createTiddlyText(place,v);
+				jQuery(place).append(v);
 		}
 };
 
@@ -160,7 +160,7 @@ ListView.columnTypes.Size = {
 				var t = 0;
 				while(t<config.messages.sizeTemplates.length-1 && v<config.messages.sizeTemplates[t].unit)
 					t++;
-				createTiddlyText(place,config.messages.sizeTemplates[t].template.format([Math.round(v/config.messages.sizeTemplates[t].unit)]));
+				jQuery(place).append(config.messages.sizeTemplates[t].template.format([Math.round(v/config.messages.sizeTemplates[t].unit)]));
 			}
 		}
 };
@@ -172,7 +172,7 @@ ListView.columnTypes.Link = {
 			var v = listObject[field];
 			var c = columnTemplate.text;
 			if(v != undefined)
-				createTiddlyText(createExternalLink(place,v),c || v);
+				jQuery(createExternalLink(place,v)).append(c || v);
 		}
 };
 
@@ -182,7 +182,7 @@ ListView.columnTypes.Date = {
 		{
 			var v = listObject[field];
 			if(v != undefined)
-				createTiddlyText(place,v.formatString(columnTemplate.dateFormat));
+				jQuery(place).append(v.formatString(columnTemplate.dateFormat));
 		}
 };
 
@@ -193,7 +193,7 @@ ListView.columnTypes.StringList = {
 			var v = listObject[field];
 			if(v != undefined) {
 				for(var t=0; t<v.length; t++) {
-					createTiddlyText(place,v[t]);
+					jQuery(place).append(v[t]);
 					createTiddlyElement(place,"br");
 				}
 			}
@@ -227,7 +227,7 @@ ListView.columnTypes.Tags = {
 	createItem: function(place,listObject,field,columnTemplate,col,row)
 		{
 			var tags = listObject[field];
-			createTiddlyText(place,String.encodeTiddlyLinkList(tags));
+			jQuery(place).append(String.encodeTiddlyLinkList(tags));
 		}
 };
 
@@ -236,9 +236,9 @@ ListView.columnTypes.Boolean = {
 	createItem: function(place,listObject,field,columnTemplate,col,row)
 		{
 			if(listObject[field] == true)
-				createTiddlyText(place,columnTemplate.trueText);
+				jQuery(place).append(columnTemplate.trueText);
 			if(listObject[field] == false)
-				createTiddlyText(place,columnTemplate.falseText);
+				jQuery(place).append(columnTemplate.falseText);
 		}
 };
 
@@ -265,7 +265,7 @@ ListView.columnTypes.TiddlerLink = {
 			var v = listObject[field];
 			if(v != undefined) {
 				var link = createTiddlyLink(place,listObject[columnTemplate.tiddlerLink],false,null);
-				createTiddlyText(link,listObject[field]);
+				jQuery(link).append(listObject[field]);
 			}
 		}
 };

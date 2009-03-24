@@ -30,7 +30,7 @@ jQuery(document).ready(function(){
 		ok(jQuery('div.testClass'), 'Setting the element class parameter should set the class on the DOM element');
 
 	});
-
+	
 
 	test("addClass", function() {
 		expect(1);

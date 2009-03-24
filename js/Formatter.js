@@ -309,7 +309,7 @@ config.formatters = [
 				// Simple bracketted link
 				e = createTiddlyLink(w.output,decodeURIComponent(text),false,null,w.isStatic,w.tiddler);
 			}
-			createTiddlyText(e,text);
+			jQuery(e).append(text);
 			w.nextMatch = this.lookaheadRegExp.lastIndex;
 		}
 	}

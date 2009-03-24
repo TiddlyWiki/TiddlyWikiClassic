@@ -11,5 +11,10 @@ function removeChildren(e) {
 	jQuery(e).empty();
 }
 
+function createTiddlyText(parent,text) {
+	return jQuery(parent).append(text);
+}
+
+
 
 

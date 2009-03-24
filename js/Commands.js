@@ -80,7 +80,7 @@ config.commands.references.handlePopup = function(popup,title)
 		}
 	}
 	if(!c)
-		createTiddlyText(createTiddlyElement(popup,"li",null,"disabled"),this.popupNone);
+		jQuery("<li></li>").text(this.popupNone).addClass('disabled').appendTo(jQuery(popup));
 };
 
 config.commands.jump.handlePopup = function(popup,title)

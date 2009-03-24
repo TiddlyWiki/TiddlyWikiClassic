@@ -288,9 +288,6 @@ function isDescendant(e,ancestor)
 
 // deprecate the following...
 
-function createTiddlyText(parent,text) {
-	return jQuery(parent).append(text);
-}
 
 function addClass(e,className) {
 	jQuery(e).addClass(className);

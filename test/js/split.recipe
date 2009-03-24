@@ -10,3 +10,4 @@ jshead: Strings.js
 jshead: Tiddler.js
 jshead: Utilities.js
 jshead: Wikifier.js
+jshead: Main.js
