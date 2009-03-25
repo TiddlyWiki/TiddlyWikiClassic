@@ -4,10 +4,10 @@ jshead: Crypto.js
 jshead: DOM.js
 jshead: Dates.js
 #jshead: Encoding.js
-jshead: RGB.js
 jshead: FileSystem.js
+#jshead: main.js
+jshead: RGB.js
 jshead: Strings.js
 jshead: Tiddler.js
 jshead: Utilities.js
 jshead: Wikifier.js
-jshead: Main.js
