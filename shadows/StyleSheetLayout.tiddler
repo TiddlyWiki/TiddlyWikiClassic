@@ -50,8 +50,8 @@ a.tiddlyLinkNonExisting.shadow {font-weight:bold;}
 
 .header {position:relative;}
 .header a:hover {background:transparent;}
-.headerShadow {position:relative; padding:4.5em 0em 1em 1em; left:-1px; top:-1px;}
-.headerForeground {position:absolute; padding:4.5em 0em 1em 1em; left:0px; top:0px;}
+.headerShadow {position:relative; padding:4.5em 0 1em 1em; left:-1px; top:-1px;}
+.headerForeground {position:absolute; padding:4.5em 0 1em 1em; left:0px; top:0px;}
 
 .siteTitle {font-size:3em;}
 .siteSubtitle {font-size:1.2em;}
@@ -60,39 +60,39 @@ a.tiddlyLinkNonExisting.shadow {font-weight:bold;}
 
 #sidebar {position:absolute; right:3px; width:16em; font-size:.9em;}
 #sidebarOptions {padding-top:0.3em;}
-#sidebarOptions a {margin:0em 0.2em; padding:0.2em 0.3em; display:block;}
+#sidebarOptions a {margin:0 0.2em; padding:0.2em 0.3em; display:block;}
 #sidebarOptions input {margin:0.4em 0.5em;}
 #sidebarOptions .sliderPanel {margin-left:1em; padding:0.5em; font-size:.85em;}
 #sidebarOptions .sliderPanel a {font-weight:bold; display:inline; padding:0;}
-#sidebarOptions .sliderPanel input {margin:0 0 .3em 0;}
+#sidebarOptions .sliderPanel input {margin:0 0 0.3em 0;}
 #sidebarTabs .tabContents {width:15em; overflow:hidden;}
 
-.wizard {padding:0.1em 1em 0em 2em;}
-.wizard h1 {font-size:2em; font-weight:bold; background:none; padding:0em 0em 0em 0em; margin:0.4em 0em 0.2em 0em;}
-.wizard h2 {font-size:1.2em; font-weight:bold; background:none; padding:0em 0em 0em 0em; margin:0.4em 0em 0.2em 0em;}
+.wizard {padding:0.1em 1em 0 2em;}
+.wizard h1 {font-size:2em; font-weight:bold; background:none; padding:0; margin:0.4em 0 0.2em;}
+.wizard h2 {font-size:1.2em; font-weight:bold; background:none; padding:0; margin:0.4em 0 0.2em;}
 .wizardStep {padding:1em 1em 1em 1em;}
-.wizard .button {margin:0.5em 0em 0em 0em; font-size:1.2em;}
-.wizardFooter {padding:0.8em 0.4em 0.8em 0em;}
-.wizardFooter .status {padding:0em 0.4em 0em 0.4em; margin-left:1em;}
-.wizard .button {padding:0.1em 0.2em 0.1em 0.2em;}
+.wizard .button {margin:0.5em 0 0; font-size:1.2em;}
+.wizardFooter {padding:0.8em 0.4em 0.8em 0;}
+.wizardFooter .status {padding:0 0.4em; margin-left:1em;}
+.wizard .button {padding:0.1em 0.2em;}
 
-#messageArea {position:fixed; top:2em; right:0em; margin:0.5em; padding:0.5em; z-index:2000; _position:absolute;}
-.messageToolbar {display:block; text-align:right; padding:0.2em 0.2em 0.2em 0.2em;}
+#messageArea {position:fixed; top:2em; right:0; margin:0.5em; padding:0.5em; z-index:2000; _position:absolute;}
+.messageToolbar {display:block; text-align:right; padding:0.2em;}
 #messageArea a {text-decoration:underline;}
 
-.tiddlerPopupButton {padding:0.2em 0.2em 0.2em 0.2em;}
-.popupTiddler {position: absolute; z-index:300; padding:1em 1em 1em 1em; margin:0;}
+.tiddlerPopupButton {padding:0.2em;}
+.popupTiddler {position: absolute; z-index:300; padding:1em; margin:0;}
 
 .popup {position:absolute; z-index:300; font-size:.9em; padding:0; list-style:none; margin:0;}
 .popup .popupMessage {padding:0.4em;}
-.popup hr {display:block; height:1px; width:auto; padding:0; margin:0.2em 0em;}
+.popup hr {display:block; height:1px; width:auto; padding:0; margin:0.2em 0;}
 .popup li.disabled {padding:0.4em;}
 .popup li a {display:block; padding:0.4em; font-weight:normal; cursor:pointer;}
 .listBreak {font-size:1px; line-height:1px;}
 .listBreak div {margin:2px 0;}
 
-.tabset {padding:1em 0em 0em 0.5em;}
-.tab {margin:0em 0em 0em 0.25em; padding:2px;}
+.tabset {padding:1em 0 0 0.5em;}
+.tab {margin:0 0 0 0.25em; padding:2px;}
 .tabContents {padding:0.5em;}
 .tabContents ul, .tabContents ol {margin:0; padding:0;}
 .txtMainTab .tabContents li {list-style:none;}
@@ -101,11 +101,11 @@ a.tiddlyLinkNonExisting.shadow {font-weight:bold;}
 #contentWrapper {display:block;}
 #splashScreen {display:none;}
 
-#displayArea {margin:1em 17em 0em 14em;}
+#displayArea {margin:1em 17em 0 14em;}
 
 .toolbar {text-align:right; font-size:.9em;}
 
-.tiddler {padding:1em 1em 0em 1em;}
+.tiddler {padding:1em 1em 0;}
 
 .missing .viewer,.missing .title {font-style:italic;}
 
@@ -130,7 +130,7 @@ a.tiddlyLinkNonExisting.shadow {font-weight:bold;}
 
 * html .viewer pre {width:99%; padding:0 0 1em 0;}
 .viewer {line-height:1.4em; padding-top:0.5em;}
-.viewer .button {margin:0em 0.25em; padding:0em 0.25em;}
+.viewer .button {margin:0 0.25em; padding:0 0.25em;}
 .viewer blockquote {line-height:1.5em; padding-left:0.8em;margin-left:2.5em;}
 .viewer ul, .viewer ol {margin-left:0.5em; padding-left:1.5em;}
 
@@ -144,10 +144,10 @@ table.listView th, table.listView td, table.listView tr {padding:0px 3px 0px 3px
 
 .editor {font-size:1.1em;}
 .editor input, .editor textarea {display:block; width:100%; font:inherit;}
-.editorFooter {padding:0.25em 0em; font-size:.9em;}
+.editorFooter {padding:0.25em 0; font-size:.9em;}
 .editorFooter .button {padding-top:0px; padding-bottom:0px;}
 
-.fieldsetFix {border:0; padding:0; margin:1px 0px 1px 0px;}
+.fieldsetFix {border:0; padding:0; margin:1px 0px;}
 
 .sparkline {line-height:1em;}
 .sparktick {outline:0;}
@@ -157,15 +157,15 @@ table.listView th, table.listView td, table.listView tr {padding:0px 3px 0px 3px
 
 * html #backstage {width:99%;}
 * html #backstageArea {width:99%;}
-#backstageArea {display:none; position:relative; overflow: hidden; z-index:150; padding:0.3em 0.5em 0.3em 0.5em;}
+#backstageArea {display:none; position:relative; overflow: hidden; z-index:150; padding:0.3em 0.5em;}
 #backstageToolbar {position:relative;}
-#backstageArea a {font-weight:bold; margin-left:0.5em; padding:0.3em 0.5em 0.3em 0.5em;}
-#backstageButton {display:none; position:absolute; z-index:175; top:0em; right:0em;}
-#backstageButton a {padding:0.1em 0.4em 0.1em 0.4em; margin:0.1em 0.1em 0.1em 0.1em;}
+#backstageArea a {font-weight:bold; margin-left:0.5em; padding:0.3em 0.5em;}
+#backstageButton {display:none; position:absolute; z-index:175; top:0; right:0;}
+#backstageButton a {padding:0.1em 0.4em; margin:0.1em;}
 #backstage {position:relative; width:100%; z-index:50;}
-#backstagePanel {display:none; z-index:100; position:absolute; width:90%; margin:0em 3em 0em 3em; padding:1em 1em 1em 1em;}
+#backstagePanel {display:none; z-index:100; position:absolute; width:90%; margin-left:3em; padding:1em;}
 .backstagePanelFooter {padding-top:0.2em; float:right;}
-.backstagePanelFooter a {padding:0.2em 0.4em 0.2em 0.4em;}
+.backstagePanelFooter a {padding:0.2em 0.4em;}
 #backstageCloak {display:none; z-index:20; position:absolute; width:100%; height:100px;}
 
 .whenBackstage {display:none;}
