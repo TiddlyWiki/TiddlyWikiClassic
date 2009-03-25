@@ -158,43 +158,31 @@ Story.prototype.createTiddler = function(place,before,title,template,customField
 //#   tiddlerElem - reference to the element that will contain the tiddler
 Story.prototype.loadMissingTiddler = function(title,fields,tiddlerElem)
 {
+	var getTiddlerCallback = function(context)
+	{
+		var tiddler = context.tiddler;
+		if(tiddler && tiddler.text) {
+			if(!tiddler.created)
+				tiddler.created = new Date();
+			if(!tiddler.modified)
+				tiddler.modified = tiddler.created;
+			store.saveTiddler(tiddler.title,tiddler.title,tiddler.text,tiddler.modifier,tiddler.modified,tiddler.tags,tiddler.fields,true,tiddler.created);
+			autoSaveChanges();
+		}
+		context.adaptor.close();
+		delete context.adpator;
+	};
+
 	var tiddler = new Tiddler(title);
-	tiddler.fields = typeof fields == "string" ? fields.decodeHashMap() : (fields || {});
-	var serverType = tiddler.getServerType();
-	var host = tiddler.fields['server.host'];
-	var workspace = tiddler.fields['server.workspace'];
-	if(!serverType || !host)
-		return null;
-	var sm = new SyncMachine(serverType,{
-			start: function() {
-				return this.openHost(host,"openWorkspace");
-			},
-			openWorkspace: function() {
-				return this.openWorkspace(workspace,"getTiddler");
-			},
-			getTiddler: function() {
-				return this.getTiddler(title,"onGetTiddler");
-			},
-			onGetTiddler: function(context) {
-				var tiddler = context.tiddler;
-				if(tiddler && tiddler.text) {
-					var downloaded = new Date();
-					if(!tiddler.created)
-						tiddler.created = downloaded;
-					if(!tiddler.modified)
-						tiddler.modified = tiddler.created;
-					store.saveTiddler(tiddler.title,tiddler.title,tiddler.text,tiddler.modifier,tiddler.modified,tiddler.tags,tiddler.fields,true,tiddler.created);
-					autoSaveChanges();
-				}
-				delete this;
-				return true;
-			},
-			error: function(message) {
-				displayMessage("Error loading missing tiddler from %0: %1".format([host,message]));
-			}
-		});
-	sm.go();
-	return config.messages.loadingMissingTiddler.format([title,serverType,host,workspace]);
+	tiddler.fields = typeof fields == "string" ? fields.decodeHashMap() : fields||{};
+	var context = {serverType:tiddler.getServerType()};
+	if(!context.serverType)
+		return;
+	context.host = tiddler.fields['server.host'];
+	context.workspace = tiddler.fields['server.workspace'];
+	var adaptor = new config.adaptors[context.serverType];
+	adaptor.getTiddler(title,context,null,getTiddlerCallback);
+	return config.messages.loadingMissingTiddler.format([title,context.serverType,context.host,context.workspace]);
 };
 
 //# Overridable for choosing the name of the template to apply for a tiddler
