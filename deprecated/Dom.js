@@ -15,6 +15,3 @@ function createTiddlyText(parent,text) {
 	return jQuery(parent).append(text);
 }
 
-
-
-

@@ -77,4 +77,3 @@ function httpReq(type,url,callback,params,headers,data,contentType,username,pass
 	jQuery.ajax(options);
 }
 
-
