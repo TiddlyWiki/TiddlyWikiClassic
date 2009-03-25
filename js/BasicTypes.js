@@ -10,7 +10,7 @@ Number.prototype.clamp = function(min,max)
 		c = min;
 	if(c > max)
 		c = max;
-	return c;
+	return Number(c);
 };
 
 // Add indexOf function if browser does not support it
