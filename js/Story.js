@@ -262,9 +262,8 @@ Story.prototype.refreshTiddler = function(title,template,force,customFields,defa
 Story.prototype.addCustomFields = function(place,customFields)
 {
 	var fields = customFields.decodeHashMap();
-	var w = document.createElement("div");
+	var w = createTiddlyElement(place,"div",null,"customFields");
 	w.style.display = "none";
-	place.appendChild(w);
 	for(var t in fields) {
 		var e = document.createElement("input");
 		e.setAttribute("type","text");
