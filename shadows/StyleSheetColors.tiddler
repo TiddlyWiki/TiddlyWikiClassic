@@ -133,6 +133,6 @@ h2,h3 {border-bottom:1px solid [[ColorPalette::TertiaryLight]];}
 #backstagePanel {background:[[ColorPalette::Background]]; border-color: [[ColorPalette::Background]] [[ColorPalette::TertiaryDark]] [[ColorPalette::TertiaryDark]] [[ColorPalette::TertiaryDark]];}
 .backstagePanelFooter .button {border:none; color:[[ColorPalette::Background]];}
 .backstagePanelFooter .button:hover {color:[[ColorPalette::Foreground]];}
-#backstageCloak {background:[[ColorPalette::Foreground]]; opacity:0.6; filter:'alpha(opacity:60)';}
+#backstageCloak {background:[[ColorPalette::Foreground]]; opacity:0.6; filter:'alpha(opacity=60)';}
 /*}}}*/</pre>
 </div>
