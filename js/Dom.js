@@ -101,19 +101,6 @@ function findRelated(e,value,name,relative)
 	return e;
 }
 
-// Resolve the target object of an event
-function resolveTarget(e)
-{
-	var obj;
-	if(e.target)
-		obj = e.target;
-	else if(e.srcElement)
-		obj = e.srcElement;
-	if(obj.nodeType == 3) // defeat Safari bug
-		obj = obj.parentNode;
-	return obj;
-}
-
 // Get the scroll position for window.scrollTo necessary to scroll a given element into view
 function ensureVisible(e)
 {
