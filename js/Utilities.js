@@ -133,7 +133,7 @@ function createExternalLink(place,url)
 function onClickTiddlerLink(ev)
 {
 	var e = ev || window.event;
-	var target = resolveTarget(e);
+	var target = jQuery(e.target)[0];
 	var link = target;
 	var title = null;
 	var fields = null;

@@ -303,7 +303,7 @@ Story.prototype.onTiddlerMouseOut = function(e)
 Story.prototype.onTiddlerDblClick = function(ev)
 {
 	var e = ev || window.event;
-	var target = resolveTarget(e);
+	var target = jQuery(e.target)[0];
 	if(target && target.nodeName.toLowerCase() != "input" && target.nodeName.toLowerCase() != "textarea") {
 		if(document.selection && document.selection.empty)
 			document.selection.empty();
@@ -321,7 +321,7 @@ Story.prototype.onTiddlerKeyPress = function(ev)
 	clearMessage();
 	var consume = false;
 	var title = this.getAttribute("tiddler");
-	var target = resolveTarget(e);
+	var target = jQuery(e.target)[0];
 	switch(e.keyCode) {
 	case 9: // Tab
 		if(config.options.chkInsertTabs && target.tagName.toLowerCase() == "textarea") {

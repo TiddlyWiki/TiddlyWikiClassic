@@ -284,12 +284,6 @@ function removeClass(e,className) {
 	jQuery(e).removeClass(className);
 }
 
-
-// Resolve the target object of an event
-function resolveTarget(e) {
-	return jQuery(e.target)[0];
-}
-
 // Prevent an event from bubbling
 function stopEvent(e) {
 	var ev = e || window.event;

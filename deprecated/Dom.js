@@ -15,3 +15,9 @@ function createTiddlyText(parent,text) {
 	return jQuery(parent).append(text);
 }
 
+// Resolve the target object of an event
+function resolveTarget(e) {
+	return jQuery(e.target)[0];
+}
+
+
