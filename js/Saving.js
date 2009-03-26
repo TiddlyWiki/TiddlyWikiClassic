@@ -231,7 +231,7 @@ function getBackupPath(localPath,title,extension)
 		backupFolder = ".";
 	var backupPath = localPath.substr(0,dirPathPos) + slash + backupFolder + localPath.substr(dirPathPos);
 	backupPath = backupPath.substr(0,backupPath.lastIndexOf(".")) + ".";
-	//# replace illegal filename characters(// \/:*?"<>|) and space with underscore 
+	//# replace illegal filename characters(// \/:*?"<>|) and space with underscore
 	if(title)
 		backupPath += title.replace(/[\\\/\*\?\":<> ]/g,"_") + ".";
 	backupPath += (new Date()).convertToYYYYMMDDHHMMSSMMM() + "." + (extension || "html");

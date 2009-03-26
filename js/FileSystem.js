@@ -5,7 +5,7 @@
 //# This code is designed to be reusable, but please take care,
 //# there are some intricacies that make it tricky to use these
 //# functions with full UTF-8 files. For more details, see:
-//# 
+//#
 //# http://trac.tiddlywiki.org/ticket/99
 //#
 //#
