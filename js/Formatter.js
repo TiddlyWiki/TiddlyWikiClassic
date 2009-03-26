@@ -40,8 +40,8 @@ config.formatters = [
 					w.subWikifyTerm(rowContainer,this.rowTermRegExp);
 				} else {
 					var theRow = createTiddlyElement(rowContainer,"tr",null,(rowCount&1)?"oddRow":"evenRow");
-					theRow.onmouseover = function() {addClass(this,"hoverRow");};
-					theRow.onmouseout = function() {removeClass(this,"hoverRow");};
+					theRow.onmouseover = function() {jQuery(this).addClass("hoverRow");};
+					theRow.onmouseout = function() {jQuery(this).removeClass("hoverRow");};
 					this.rowHandler(w,theRow,prevColumns);
 					rowCount++;
 				}
@@ -365,7 +365,7 @@ config.formatters = [
 			if(lookaheadMatch[5]) {
 				var link = lookaheadMatch[5];
 				e = config.formatterHelpers.isExternalLink(link) ? createExternalLink(w.output,link) : createTiddlyLink(w.output,link,false,null,w.isStatic,w.tiddler);
-				addClass(e,"imageLink");
+				jQuery(e).addClass("imageLink");
 			}
 			var img = createTiddlyElement(e,"img");
 			if(lookaheadMatch[1])

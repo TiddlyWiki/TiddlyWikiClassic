@@ -2,6 +2,11 @@
 //-- Deprecated Dom code
 //-- Use the equivalent jQuery functions directly instead
 //--
+
+function addClass(e,className) {
+	jQuery(e).addClass(className);
+}
+
 function hasClass(e,className) {
 	return jQuery(e).hasClass(className);
 }

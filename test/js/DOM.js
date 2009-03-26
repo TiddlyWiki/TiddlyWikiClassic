@@ -70,7 +70,7 @@ jQuery(document).ready(function(){
 
 		var target;
 		jQuery(ele).click(function(ev){
-			target = jQuery(e.target)[0];
+			target = jQuery(ev.target)[0];
 		});
 		jQuery(ele).click();
 		equals(target, ele, "resolveTarget correctly identifies the target of a click event");

@@ -22,7 +22,7 @@ ListView.create = function(place,listObject,listTemplate,callback,className)
 		if(colType && colType.createHeader) {
 			colType.createHeader(c,columnTemplate,t);
 			if(columnTemplate.className)
-				addClass(c,columnTemplate.className);
+				jQuery(c).addClass(columnTemplate.className);
 		}
 	}
 	var tbody = createTiddlyElement(table,"tbody");
@@ -31,7 +31,7 @@ ListView.create = function(place,listObject,listTemplate,callback,className)
 		r = createTiddlyElement(tbody,"tr");
 		for(c=0; c<listTemplate.rowClasses.length; c++) {
 			if(rowObject[listTemplate.rowClasses[c].field])
-				addClass(r,listTemplate.rowClasses[c].className);
+				jQuery(r).addClass(listTemplate.rowClasses[c].className);
 		}
 		rowObject.rowElement = r;
 		rowObject.colElements = {};
@@ -43,7 +43,7 @@ ListView.create = function(place,listObject,listTemplate,callback,className)
 			if(colType && colType.createItem) {
 				colType.createItem(c,rowObject,field,columnTemplate,cc,rc);
 				if(columnTemplate.className)
-					addClass(c,columnTemplate.className);
+					jQuery(c).addClass(columnTemplate.className);
 			}
 			rowObject.colElements[field] = c;
 		}

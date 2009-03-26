@@ -275,11 +275,6 @@ function isDescendant(e,ancestor)
 
 // deprecate the following...
 
-
-function addClass(e,className) {
-	jQuery(e).addClass(className);
-}
-
 function removeClass(e,className) {
 	jQuery(e).removeClass(className);
 }
@@ -290,7 +285,6 @@ function stopEvent(e) {
 	ev.cancelBubble = true;
 	if(ev.stopPropagation) ev.stopPropagation();
 	return false;
-
 }
 
 // Remove any event handlers or non-primitve custom attributes
