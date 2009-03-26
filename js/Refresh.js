@@ -110,7 +110,7 @@ function applyHtmlMacros(root,tiddler)
 
 function refreshPageTemplate(title)
 {
-	var stash = jQuery('<div></div>').appendTo('body').hide();
+	var stash = jQuery('<div></div>').appendTo('body').hide()[0];
 	var display = story.getContainer();
 	var nodes,t;
 	if(display) {

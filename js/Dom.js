@@ -299,12 +299,6 @@ function getPlainText(e) {
 }
 
 
-// Remove a node and all it's children
-function removeNode(e)
-{
-	jQuery(e).remove();
-}
-
 // Remove any event handlers or non-primitve custom attributes
 function scrubNode(e)
 {
