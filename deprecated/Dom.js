@@ -15,6 +15,11 @@ function createTiddlyText(parent,text) {
 	return jQuery(parent).append(text);
 }
 
+// Return the content of an element as plain text with no formatting
+function getPlainText(e) {
+	return jQuery(e).text();
+}
+
 // Resolve the target object of an event
 function resolveTarget(e) {
 	return jQuery(e.target)[0];

@@ -293,12 +293,6 @@ function stopEvent(e) {
 
 }
 
-// Return the content of an element as plain text with no formatting
-function getPlainText(e) {
-	return jQuery(e).text();
-}
-
-
 // Remove any event handlers or non-primitve custom attributes
 function scrubNode(e)
 {

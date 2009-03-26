@@ -112,7 +112,7 @@ Wikifier.prototype.wikifyPlain = function()
 	var e = createTiddlyElement(document.body,"div");
 	e.style.display = "none";
 	this.subWikify(e);
-	var text = getPlainText(e);
+	var text = jQuery(e).text();
 	jQuery(e).remove();
 	return text;
 };
