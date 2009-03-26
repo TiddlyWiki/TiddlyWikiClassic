@@ -110,8 +110,7 @@ function applyHtmlMacros(root,tiddler)
 
 function refreshPageTemplate(title)
 {
-	var stash = createTiddlyElement(document.body,"div");
-	stash.style.display = "none";
+	var stash = jQuery('<div></div>').appendTo('body').hide();
 	var display = story.getContainer();
 	var nodes,t;
 	if(display) {
@@ -142,7 +141,7 @@ function refreshPageTemplate(title)
 	nodes = stash.childNodes;
 	for(t=nodes.length-1; t>=0; t--)
 		display.appendChild(nodes[t]);
-	removeNode(stash);
+	jQuery(stash).remove();
 }
 
 function refreshDisplay(hint)

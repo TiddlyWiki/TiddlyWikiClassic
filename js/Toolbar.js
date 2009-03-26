@@ -102,7 +102,7 @@ config.macros.toolbar.onClickMore = function(ev)
 { 
 	var e = this.nextSibling; 
 	e.style.display = "inline"; 
-	removeNode(this); 
+	jQuery(this).remove(); 
 	return false;
 };
 

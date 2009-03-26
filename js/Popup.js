@@ -95,8 +95,8 @@ Popup.removeFrom = function(from)
 {
 	for(var t=Popup.stack.length-1; t>=from; t--) {
 		var p = Popup.stack[t];
-		removeClass(p.root,"highlight");
-		removeNode(p.popup);
+		jQuery(p.root).removeClass('highlight');
+		jQuery(p.popup).remove();
 	}
 	Popup.stack = Popup.stack.slice(0,from);
 };

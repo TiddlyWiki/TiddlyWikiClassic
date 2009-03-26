@@ -47,7 +47,7 @@ function wikifyStatic(source,highlightRegExp,tiddler,format)
 		wikifier.isStatic = true;
 		wikifier.subWikify(e);
 		html = e.innerHTML;
-		removeNode(e);
+		jQuery(e).remove();
 	}
 	return html;
 }
@@ -113,7 +113,7 @@ Wikifier.prototype.wikifyPlain = function()
 	e.style.display = "none";
 	this.subWikify(e);
 	var text = getPlainText(e);
-	removeNode(e);
+	jQuery(e).remove();
 	return text;
 };
 
