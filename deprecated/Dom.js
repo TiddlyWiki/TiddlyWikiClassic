@@ -7,6 +7,10 @@ function addClass(e,className) {
 	jQuery(e).addClass(className);
 }
 
+function removeClass(e,className) {
+	jQuery(e).removeClass(className);
+}
+
 function hasClass(e,className) {
 	return jQuery(e).hasClass(className);
 }

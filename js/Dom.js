@@ -275,10 +275,6 @@ function isDescendant(e,ancestor)
 
 // deprecate the following...
 
-function removeClass(e,className) {
-	jQuery(e).removeClass(className);
-}
-
 // Prevent an event from bubbling
 function stopEvent(e) {
 	var ev = e || window.event;
