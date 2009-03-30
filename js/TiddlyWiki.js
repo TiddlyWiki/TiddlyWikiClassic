@@ -303,6 +303,18 @@ TiddlyWiki.prototype.addTiddlerFields = function(title,fields)
 	this.setDirty(true);
 };
 
+// Save tiddler to store
+//#
+//# @param {String} title existing tiddler's title
+//# @param {String} newTitle target tiddler's title
+//# @param {String} newBody tiddler contents
+//# @param {String} modifier username
+//# @param {Date} modified last-change date
+//# @param {Array} tags list of tags
+//# @param {Object} fields extended fields
+//#        should use existing tiddler's fields or fall back to config.defaultCustomFields
+//# @param {Boolean} clearChangeCount reset tiddler's changecount
+//# @param {Date} created date of initial creation
 TiddlyWiki.prototype.saveTiddler = function(title,newTitle,newBody,modifier,modified,tags,fields,clearChangeCount,created)
 {
 	var tiddler = this.fetchTiddler(title);
