@@ -5,7 +5,9 @@
 function formatVersion(v)
 {
 	v = v || version;
-	return v.major + "." + v.minor + "." + v.revision + (v.beta ? " (beta " + v.beta + ")" : "");
+	return v.major + "." + v.minor + "." + v.revision +
+		(v.alpha ? " (alpha " + v.alpha + ")" : "") +
+		(v.beta ? " (beta " + v.beta + ")" : "");
 }
 
 //# Compares two TiddlyWiki version objects
