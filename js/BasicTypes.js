@@ -30,7 +30,7 @@ Array.prototype.indexOf = function(item,from)
 Array.prototype.findByField = function(field,value)
 {
 	for(var t=0; t<this.length; t++) {
-		if(this[t][field] == value)
+		if(this[t][field] === value)
 			return t;
 	}
 	return null;
