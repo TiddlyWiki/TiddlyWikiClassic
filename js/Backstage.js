@@ -114,8 +114,10 @@ var backstage = {
 				tabElem = e;
 			e = e.nextSibling;
 			}
-		if(tabName == backstage.currTabName)
+		if(tabName == backstage.currTabName) {
+			backstage.hidePanel();
 			return;
+		}
 		if(backstage.currTabElem) {
 			jQuery(this.currTabElem).removeClass("backstageSelTab");
 		}
