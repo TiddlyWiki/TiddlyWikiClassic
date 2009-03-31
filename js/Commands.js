@@ -80,7 +80,7 @@ config.commands.references.handlePopup = function(popup,title)
 		}
 	}
 	if(!c)
-		jQuery("<li></li>").text(this.popupNone).addClass('disabled').appendTo(jQuery(popup));
+		jQuery("<li/>").text(this.popupNone).addClass('disabled').appendTo(jQuery(popup));
 };
 
 config.commands.jump.handlePopup = function(popup,title)
