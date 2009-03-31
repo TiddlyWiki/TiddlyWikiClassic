@@ -1,5 +1,5 @@
 // Returns true if path is a valid field name (path),
-// i.e. a sequence of identifiers, separated by '.'
+// i.e. a sequence of identifiers, separated by "."
 TiddlyWiki.isValidFieldName = function(name)
 {
 	var match = /[a-zA-Z_]\w*(\.[a-zA-Z_]\w*)*/.exec(name);
@@ -91,7 +91,7 @@ TiddlyWiki.prototype.setValue = function(tiddler,fieldName,value)
 				// no concrete value is defined for the fieldName
 				// so we guess this is a namespace path.
 				// delete all fields in a namespace
-				var re = new RegExp('^'+fieldName+'\\.');
+				var re = new RegExp("^"+fieldName+"\\.");
 				var dirty = false;
 				for(var n in t.fields) {
 					if(n.match(re)) {

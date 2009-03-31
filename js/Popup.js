@@ -26,10 +26,10 @@ Popup.onDocumentClick = function(ev)
 	return true;
 };
 
-//# valign : 'top' or 'bottom' (optional)
-//#   defaults to 'bottom' for regular popups, 'top' for nested popups
-//# halign : 'left' or 'right' (optional)
-//#   defaults to 'left' for regular popups, 'right' for nested popups
+//# valign : "top" or "bottom" (optional)
+//#   defaults to "bottom" for regular popups, "top" for nested popups
+//# halign : "left" or "right" (optional)
+//#   defaults to "left" for regular popups, "right" for nested popups
 //# offset : {x: number, y: number} (optional)
 //#   defaults to {x:0,y:0}
 Popup.show = function(valign,halign,offset)
@@ -50,8 +50,8 @@ Popup.place = function(root,popup,valign,halign,offset)
 	if(popup.stackPosition >= 0 && !valign && !halign) {
 		offset.x = offset.x + root.offsetWidth;
 	} else {
-		offset.x = (halign == 'right') ? offset.x + root.offsetWidth : offset.x;
-		offset.y = (valign == 'top') ? offset.y : offset.y + root.offsetHeight;
+		offset.x = (halign == "right") ? offset.x + root.offsetWidth : offset.x;
+		offset.y = (valign == "top") ? offset.y : offset.y + root.offsetHeight;
 	}
 	var rootLeft = findPosX(root);
 	var rootTop = findPosY(root);
@@ -63,7 +63,7 @@ Popup.place = function(root,popup,valign,halign,offset)
 	var popupWidth = popup.offsetWidth;
 	var scrollWidth = winWidth - document.body.offsetWidth;
 	if(popupLeft + popupWidth > winWidth - scrollWidth - 1) {
-		if(halign == 'right')
+		if(halign == "right")
 			popupLeft = popupLeft - root.offsetWidth - popupWidth;
 		else
 			popupLeft = winWidth - popupWidth - scrollWidth - 1;
@@ -95,7 +95,7 @@ Popup.removeFrom = function(from)
 {
 	for(var t=Popup.stack.length-1; t>=from; t--) {
 		var p = Popup.stack[t];
-		jQuery(p.root).removeClass('highlight');
+		jQuery(p.root).removeClass("highlight");
 		jQuery(p.popup).remove();
 	}
 	Popup.stack = Popup.stack.slice(0,from);

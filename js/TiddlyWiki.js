@@ -378,7 +378,7 @@ TiddlyWiki.prototype.loadFromDiv = function(src,idPrefix,noUpdate)
 		for(var i = 0;i<tiddlers.length; i++)
 			tiddlers[i].changed();
 	}
-	jQuery().trigger('loadTiddlers');
+	jQuery().trigger("loadTiddlers");
 };
 
 // Load contents of a TiddlyWiki from a string
@@ -567,7 +567,7 @@ TiddlyWiki.prototype.getTouched = function()
 // Resolves a Tiddler reference or tiddler title into a Tiddler object, or null if it doesn't exist
 TiddlyWiki.prototype.resolveTiddler = function(tiddler)
 {
-	var t = (typeof tiddler == 'string') ? this.getTiddler(tiddler) : tiddler;
+	var t = (typeof tiddler == "string") ? this.getTiddler(tiddler) : tiddler;
 	return t instanceof Tiddler ? t : null;
 };
 
@@ -617,8 +617,8 @@ TiddlyWiki.prototype.filterTiddlers = function(filter)
 // Sort a list of tiddlers
 //# tiddlers - array of Tiddler() objects to be sorted
 //# field - name of field (or extended field) to sort by;
-//#         precede with '+' for ascending sort (the default)
-//#			or '-' for descending sort
+//#         precede with "+" for ascending sort (the default)
+//#			or "-" for descending sort
 TiddlyWiki.prototype.sortTiddlers = function(tiddlers,field)
 {
 	var asc = +1;

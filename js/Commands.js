@@ -80,7 +80,7 @@ config.commands.references.handlePopup = function(popup,title)
 		}
 	}
 	if(!c)
-		jQuery("<li/>").text(this.popupNone).addClass('disabled').appendTo(jQuery(popup));
+		jQuery("<li/>").text(this.popupNone).addClass("disabled").appendTo(jQuery(popup));
 };
 
 config.commands.jump.handlePopup = function(popup,title)
@@ -96,8 +96,8 @@ config.commands.syncing.handlePopup = function(popup,title)
 	if(!tiddler)
 		return;
 	var serverType = tiddler.getServerType();
-	var serverHost = tiddler.fields['server.host'];
-	var serverWorkspace = tiddler.fields['server.workspace'];
+	var serverHost = tiddler.fields["server.host"];
+	var serverWorkspace = tiddler.fields["server.workspace"];
 	if(!serverWorkspace)
 		serverWorkspace = "";
 	if(serverType) {

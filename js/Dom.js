@@ -63,9 +63,9 @@ function createTiddlyElement(parent,element,id,className,text,attribs)
 function addEvent(obj,type,fn)
 {
 	if(obj.attachEvent) {
-		obj['e'+type+fn] = fn;
-		obj[type+fn] = function(){obj['e'+type+fn](window.event);};
-		obj.attachEvent('on'+type,obj[type+fn]);
+		obj["e"+type+fn] = fn;
+		obj[type+fn] = function(){obj["e"+type+fn](window.event);};
+		obj.attachEvent("on"+type,obj[type+fn]);
 	} else {
 		obj.addEventListener(type,fn,false);
 	}
@@ -76,7 +76,7 @@ function addEvent(obj,type,fn)
 function removeEvent(obj,type,fn)
 {
 	if(obj.detachEvent) {
-		obj.detachEvent('on'+type,obj[type+fn]);
+		obj.detachEvent("on"+type,obj[type+fn]);
 		obj[type+fn] = null;
 	} else {
 		obj.removeEventListener(type,fn,false);
@@ -234,8 +234,8 @@ function replaceSelection(e,text)
 		var isRange = e.selectionEnd > e.selectionStart;
 		e.value = e.value.substr(0,e.selectionStart) + text + e.value.substr(e.selectionEnd);
 		e.setSelectionRange(isRange ? oldpos : oldpos + text.length,oldpos + text.length);
-		var linecount = e.value.split('\n').length;
-		var thisline = e.value.substr(0,e.selectionStart).split('\n').length-1;
+		var linecount = e.value.split("\n").length;
+		var thisline = e.value.substr(0,e.selectionStart).split("\n").length-1;
 		e.scrollTop = Math.floor((thisline - e.rows / 2) * e.scrollHeight / linecount);
 	} else if(document.selection) {
 		var range = document.selection.createRange();
@@ -243,7 +243,7 @@ function replaceSelection(e,text)
 			var isCollapsed = range.text == "";
 			range.text = text;
 			if(!isCollapsed) {
-				range.moveStart('character', -text.length);
+				range.moveStart("character", -text.length);
 				range.select();
 			}
 		}
@@ -292,7 +292,7 @@ function scrubNode(e)
 	if(att) {
 		for(var t=0; t<att.length; t++) {
 			var n = att[t].name;
-			if(n !== 'style' && (typeof e[n] === 'function' || (typeof e[n] === 'object' && e[n] != null))) {
+			if(n !== "style" && (typeof e[n] === "function" || (typeof e[n] === "object" && e[n] != null))) {
 				try {
 					e[n] = null;
 				} catch(ex) {
