@@ -43,7 +43,6 @@ js: ListView.js
 js: BasicTypes.js
 js: Strings.js
 js: Dates.js
-js: Crypto.js
 js: RGB.js
 js: Dom.js
 js: LoaderSaver.js
