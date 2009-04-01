@@ -19,7 +19,7 @@ config.macros.search.handler = function(place,macroName,params)
 	txt.onkeyup = this.onKeyPress;
 	txt.onfocus = this.onFocus;
 	txt.setAttribute("size",this.sizeTextbox);
-	txt.setAttribute("accessKey",this.accessKey);
+	txt.setAttribute("accessKey",params[1] || this.accessKey);
 	txt.setAttribute("autocomplete","off");
 	txt.setAttribute("lastSearchText","");
 };
