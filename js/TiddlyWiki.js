@@ -305,6 +305,8 @@ TiddlyWiki.prototype.addTiddlerFields = function(title,fields)
 
 // Save tiddler to store
 //#
+//# N.B.: Does not trigger [[autoSaveChanges]].
+//#
 //# @param {String} title existing tiddler's title
 //# @param {String} newTitle target tiddler's title
 //# @param {String} newBody tiddler contents
