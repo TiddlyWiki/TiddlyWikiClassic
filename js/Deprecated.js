@@ -87,3 +87,4 @@ var regexpBackSlash = new RegExp("\\\\","mg");
 var regexpBackSlashEss = new RegExp("\\\\s","mg");
 var regexpNewLine = new RegExp("\n","mg");
 var regexpCarriageReturn = new RegExp("\r","mg");
+

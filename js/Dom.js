@@ -321,5 +321,3 @@ function scrubNode(e)
 	}
 }
 
-
-

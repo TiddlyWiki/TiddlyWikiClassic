@@ -403,7 +403,7 @@ merge(config.commands.references,{
 merge(config.commands.jump,{
 	text: "jump",
 	tooltip: "Jump to another open tiddler"});
-		
+
 merge(config.commands.syncing,{
 	text: "syncing",
 	tooltip: "Control synchronisation of this tiddler with a server or external file",

@@ -108,3 +108,4 @@ function convertUriToUTF8(uri,charSet)
 	}
 	return converter.convertURISpecToUTF8(uri,charSet);
 }
+

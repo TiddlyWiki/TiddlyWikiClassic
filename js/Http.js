@@ -10,4 +10,3 @@ function ajaxReq(args)
 	return jQuery.ajax(args);
 }
 
-

@@ -2,6 +2,7 @@
 //-- TiddlyWiki-specific utility functions
 //--
 
+// Returns TiddlyWiki version string
 function formatVersion(v)
 {
 	v = v || version;
@@ -163,7 +164,6 @@ function onClickTiddlerLink(ev)
 	clearMessage();
 	return false;
 }
-
 
 // Create a button for a tag with a popup listing all the tiddlers that it tags
 //# title and tooltip arguments are optional
