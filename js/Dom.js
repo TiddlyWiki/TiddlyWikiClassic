@@ -3,7 +3,8 @@
 //--
 
 // Resolve the target object of an event
-function resolveTarget(e) {
+function resolveTarget(e)
+{
 	var obj;
 	if(e.target)
 		obj = e.target;
@@ -288,7 +289,8 @@ function isDescendant(e,ancestor)
 // deprecate the following...
 
 // Prevent an event from bubbling
-function stopEvent(e) {
+function stopEvent(e)
+{
 	var ev = e || window.event;
 	ev.cancelBubble = true;
 	if(ev.stopPropagation) ev.stopPropagation();
