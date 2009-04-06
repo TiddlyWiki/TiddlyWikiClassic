@@ -135,7 +135,7 @@ function createExternalLink(place,url)
 function onClickTiddlerLink(ev)
 {
 	var e = ev || window.event;
-	var target = jQuery(e.target)[0];
+	var target = resolveTarget(e);
 	var link = target;
 	var title = null;
 	var fields = null;
@@ -163,6 +163,7 @@ function onClickTiddlerLink(ev)
 	clearMessage();
 	return false;
 }
+
 
 // Create a button for a tag with a popup listing all the tiddlers that it tags
 //# title and tooltip arguments are optional

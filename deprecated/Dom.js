@@ -29,14 +29,8 @@ function getPlainText(e) {
 	return jQuery(e).text();
 }
 
-// Resolve the target object of an event
-function resolveTarget(e) {
-	return jQuery(e.target)[0];
-}
-
 // Remove a node and all it's children
-function removeNode(e)
-{
+function removeNode(e) {
 	jQuery(e).remove();
 }
 

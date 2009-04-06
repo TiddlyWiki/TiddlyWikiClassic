@@ -2,6 +2,18 @@
 //-- DOM utilities - many derived from www.quirksmode.org
 //--
 
+// Resolve the target object of an event
+function resolveTarget(e) {
+	var obj;
+	if(e.target)
+		obj = e.target;
+	else if(e.srcElement)
+		obj = e.srcElement;
+	if(obj.nodeType == 3) // defeat Safari bug
+		obj = obj.parentNode;
+	return obj;
+}
+
 function drawGradient(place,horiz,locolors,hicolors)
 {
 	if(!hicolors)
