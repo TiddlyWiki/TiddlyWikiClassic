@@ -584,7 +584,11 @@ Story.prototype.saveTiddler = function(title,minorUpdate)
 		if(!store.tiddlerExists(newTitle))
 			minorUpdate = false;
 		var newDate = new Date();
-		var extendedFields = store.tiddlerExists(newTitle) ? store.fetchTiddler(newTitle).fields : (newTitle!=title && store.tiddlerExists(title) ? store.fetchTiddler(title).fields : merge({},config.defaultCustomFields));
+		if(store.tiddlerExists(title)) {
+			var extendedFields = store.fetchTiddler(title).fields;
+		} else {
+			extendedFields = merge({},config.defaultCustomFields);
+		}
 		for(var n in fields) {
 			if(!TiddlyWiki.isStandardField(n))
 				extendedFields[n] = fields[n];
