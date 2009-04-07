@@ -51,7 +51,7 @@ config.macros.importTiddlers.restart = function(wizard)
 	wizard.setButtons([{caption: this.openLabel, tooltip: this.openPrompt, onClick: config.macros.importTiddlers.onOpen}]);
 	wizard.formElem.action = "javascript:;";
 	wizard.formElem.onsubmit = function() {
-		if(this.txtPath.value.length)
+		if(!this.txtPath || this.txtPath.value.length) //# check for manually entered path in first step
 			this.lastChild.firstChild.onclick();
 	};
 };
