@@ -51,7 +51,8 @@ config.macros.importTiddlers.restart = function(wizard)
 	wizard.setButtons([{caption: this.openLabel, tooltip: this.openPrompt, onClick: config.macros.importTiddlers.onOpen}]);
 	wizard.formElem.action = "javascript:;";
 	wizard.formElem.onsubmit = function() {
-		if(this.txtPath.value.length)
+		var value = jQuery("[name='txtWorkspace']", wizard.formElem).val();
+		if(value.length)
 			this.lastChild.firstChild.onclick();
 	};
 };
