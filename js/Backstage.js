@@ -169,8 +169,8 @@ var backstage = {
 			];
 			var c = function(element,properties) {backstage.cloak.style.display = "none";};
 			anim.startAnimating(new Morpher(backstage.panel,config.animDuration,p,c));
-		 } else {
-			jQuery(backstage.panel, backstage.cloak).hide();
+		} else {
+			jQuery([backstage.panel,backstage.cloak]).hide();
 		}
 	}
 };
