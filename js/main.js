@@ -85,6 +85,15 @@ function main()
 	jQuery().trigger("startup");
 }
 
+// Called on unload. All functions called conditionally since they themselves may have been unloaded.
+function unload()
+{
+	if(window.checkUnsavedChanges)
+		checkUnsavedChanges();
+	if(window.scrubNodes)
+		scrubNodes(document.body);
+}
+
 // Restarting
 function restart()
 {
