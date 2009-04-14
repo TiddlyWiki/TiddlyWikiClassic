@@ -40,7 +40,7 @@ config.refreshers = {
 		var title = e.getAttribute("tiddler");
 		var force = e.getAttribute("force");
 		if(force != null || changeList == null || changeList.indexOf(title) != -1) {
-			jQuery(e).empty();
+			jq(e).empty();
 			wikify(store.getTiddlerText(title,""),e,null,store.fetchTiddler(title));
 			return true;
 		} else
@@ -110,7 +110,7 @@ function applyHtmlMacros(root,tiddler)
 
 function refreshPageTemplate(title)
 {
-	var stash = jQuery("<div/>").appendTo("body").hide()[0];
+	var stash = jq("<div/>").appendTo("body").hide()[0];
 	var display = story.getContainer();
 	var nodes,t;
 	if(display) {
@@ -135,13 +135,13 @@ function refreshPageTemplate(title)
 	applyHtmlMacros(wrapper);
 	refreshElements(wrapper);
 	display = story.getContainer();
-	jQuery(display).empty();
+	jq(display).empty();
 	if(!display)
 		display = createTiddlyElement(wrapper,"div",story.containerId());
 	nodes = stash.childNodes;
 	for(t=nodes.length-1; t>=0; t--)
 		display.appendChild(nodes[t]);
-	jQuery(stash).remove();
+	jq(stash).remove();
 }
 
 function refreshDisplay(hint)

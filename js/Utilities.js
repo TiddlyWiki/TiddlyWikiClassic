@@ -200,11 +200,11 @@ function onClickTag(ev)
 				createTiddlyLink(createTiddlyElement(popup,"li"),titles[r],true);
 			}
 		} else {
-			jQuery("<li/>").addClass("disabled").text(lingo.popupNone.format([tag])).appendTo(popup);
+			jq("<li/>").addClass("disabled").text(lingo.popupNone.format([tag])).appendTo(popup);
 		}
 		createTiddlyElement(createTiddlyElement(popup,"li",null,"listBreak"),"div");
 		var h = createTiddlyLink(createTiddlyElement(popup,"li"),tag,false);
-		jQuery(h).append(lingo.openTag.format([tag]));
+		jq(h).append(lingo.openTag.format([tag]));
 	}
 	Popup.show();
 	e.cancelBubble = true;
@@ -253,7 +253,7 @@ function createTiddlyPopup(place,caption,tooltip,tiddler)
 		var btn = createTiddlyButton(place,glyph("downArrow"),tooltip,onClickTiddlyPopup,"tiddlerPopupButton");
 		btn.tiddler = tiddler;
 	} else {
-		jQuery(place).append(caption);
+		jq(place).append(caption);
 	}
 }
 

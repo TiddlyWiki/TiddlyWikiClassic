@@ -47,7 +47,7 @@ function wikifyStatic(source,highlightRegExp,tiddler,format)
 		wikifier.isStatic = true;
 		wikifier.subWikify(e);
 		html = e.innerHTML;
-		jQuery(e).remove();
+		jq(e).remove();
 	}
 	return html;
 }
@@ -112,8 +112,8 @@ Wikifier.prototype.wikifyPlain = function()
 	var e = createTiddlyElement(document.body,"div");
 	e.style.display = "none";
 	this.subWikify(e);
-	var text = jQuery(e).text();
-	jQuery(e).remove();
+	var text = jq(e).text();
+	jq(e).remove();
 	return text;
 };
 
@@ -228,7 +228,7 @@ Wikifier.prototype.outputText = function(place,startPos,endPos)
 	while(this.highlightMatch && (this.highlightRegExp.lastIndex > startPos) && (this.highlightMatch.index < endPos) && (startPos < endPos)) {
 		//# Deal with any plain text before the highlight
 		if(this.highlightMatch.index > startPos) {
-			jQuery(place).append(this.source.substring(startPos,this.highlightMatch.index));
+			jq(place).append(this.source.substring(startPos,this.highlightMatch.index));
 			startPos = this.highlightMatch.index;
 		}
 		//# Deal with the highlight
@@ -241,7 +241,7 @@ Wikifier.prototype.outputText = function(place,startPos,endPos)
 	}
 	//# Do the unhighlighted text left over
 	if(startPos < endPos) {
-		jQuery(place).append(this.source.substring(startPos,endPos));
+		jq(place).append(this.source.substring(startPos,endPos));
 	}
 };
 

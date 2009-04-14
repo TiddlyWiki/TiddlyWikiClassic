@@ -36,7 +36,7 @@ config.macros.toolbar.createCommand = function(place,commandName,tiddler,classNa
 			btn.setAttribute("commandName",commandName);
 			btn.setAttribute("tiddler",tiddler.title);
 			if(className)
-				jQuery(btn).addClass(className);
+				jq(btn).addClass(className);
 			place.appendChild(btn);
 		}
 	}
@@ -90,7 +90,7 @@ config.macros.toolbar.invokeCommand = function(place,className,event)
 	var children = place.getElementsByTagName("a");
 	for(var t=0; t<children.length; t++) {
 		var c = children[t];
-		if(jQuery(c).hasClass(className) && c.getAttribute && c.getAttribute("commandName")) {
+		if(jq(c).hasClass(className) && c.getAttribute && c.getAttribute("commandName")) {
 			if(c.onclick instanceof Function)
 				c.onclick.call(c,event);
 			break;
@@ -102,7 +102,7 @@ config.macros.toolbar.onClickMore = function(ev)
 {
 	var e = this.nextSibling;
 	e.style.display = "inline";
-	jQuery(this).remove();
+	jq(this).remove();
 	return false;
 };
 
@@ -113,7 +113,7 @@ config.macros.toolbar.handler = function(place,macroName,params,wikifier,paramSt
 		switch(c) {
 		case '>':
 			var btn = createTiddlyButton(place,this.moreLabel,this.morePrompt,config.macros.toolbar.onClickMore);
-			jQuery(btn).addClass("moreCommand");
+			jq(btn).addClass("moreCommand");
 			var e = createTiddlyElement(place,"span",null,"moreCommand");
 			e.style.display = "none";
 			place = e;

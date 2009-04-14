@@ -73,7 +73,7 @@ config.macros.option.genericCreate = function(place,type,opt,className,desc)
 		c.setAttribute("title",config.optionsDesc[opt]);
 	place.appendChild(c);
 	if(desc != "no")
-		jQuery(place).append(config.optionsDesc[opt] || opt);
+		jq(place).append(config.optionsDesc[opt] || opt);
 	c[typeInfo.valueField] = config.options[opt];
 	return c;
 };
@@ -178,7 +178,7 @@ config.macros.options.onChangeUnknown = function(e)
 {
 	var wizard = new Wizard(this);
 	var listWrapper = wizard.getValue("listWrapper");
-	jQuery(listWrapper).empty();
+	jq(listWrapper).empty();
 	config.macros.options.refreshOptions(listWrapper,this.checked);
 	return false;
 };

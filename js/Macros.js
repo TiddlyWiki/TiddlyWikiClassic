@@ -6,12 +6,12 @@ config.macros.today.handler = function(place,macroName,params)
 {
 	var now = new Date();
 	var text = params[0] ? now.formatString(params[0].trim()) : now.toLocaleString();
-	jQuery("<span/>").text(text).appendTo(place);
+	jq("<span/>").text(text).appendTo(place);
 };
 
 config.macros.version.handler = function(place)
 {
-	jQuery("<span/>").text(formatVersion()).appendTo(place);
+	jq("<span/>").text(formatVersion()).appendTo(place);
 };
 
 config.macros.list.handler = function(place,macroName,params)
@@ -163,12 +163,9 @@ config.macros.tags.handler = function(place,macroName,params,wikifier,paramStrin
 	var prompt = tiddler.tags.length == 0 ? lingo.labelNoTags : lingo.labelTags;
 	createTiddlyElement(ul,"li",null,"listTitle",prompt.format([tiddler.title]));
 	for(var t=0; t<tiddler.tags.length; t++) {
-		var tag = store.getTiddler(tiddler.tags[t]);
-		if(!tag || !tag.tags.contains("excludeLists")) {
-			createTagButton(createTiddlyElement(ul,"li"),tiddler.tags[t],tiddler.title);
-			if(t<tiddler.tags.length-1)
-				jQuery(ul).append(sep);
-		}
+		createTagButton(createTiddlyElement(ul,"li"),tiddler.tags[t],tiddler.title);
+		if(t<tiddler.tags.length-1)
+			jq(ul).append(sep);
 	}
 };
 
@@ -187,7 +184,7 @@ config.macros.tagging.handler = function(place,macroName,params,wikifier,paramSt
 	for(var t=0; t<tagged.length; t++) {
 		createTiddlyLink(createTiddlyElement(ul,"li"),tagged[t].title,true);
 		if(t<tagged.length-1)
-			jQuery(ul).append(sep);
+			jq(ul).append(sep);
 	}
 };
 
@@ -308,7 +305,7 @@ config.macros.message.handler = function(place,macroName,params)
 		var m = lookupMessage(config,0);
 		if(m == null)
 			m = lookupMessage(window,0);
-		jQuery(place).append(m.toString().format(params.splice(1)));
+		jq(place).append(m.toString().format(params.splice(1)));
 	}
 };
 
@@ -327,7 +324,7 @@ config.macros.view.views = {
 	},
 	date: function(value,place,params,wikifier,paramString,tiddler) {
 		value = Date.convertFromYYYYMMDDHHMM(value);
-		jQuery(place).append(value.formatString(params[2] ? params[2] : config.views.wikified.dateFormat));
+		jq(place).append(value.formatString(params[2] ? params[2] : config.views.wikified.dateFormat));
 	}
 };
 
@@ -390,7 +387,7 @@ config.macros.tagChooser.onClick = function(ev)
 	var popup = Popup.create(this);
 	var tags = store.getTags(this.getAttribute("tags"));
 	if(tags.length == 0)
-		jQuery("<li/>").text(lingo.popupNone).appendTo(jQuery(popup));
+		jq("<li/>").text(lingo.popupNone).appendTo(jq(popup));
 	for(var t=0; t<tags.length; t++) {
 		var tag = createTiddlyButton(createTiddlyElement(popup,"li"),tags[t][0],lingo.tagTooltip.format([tags[t][0]]),config.macros.tagChooser.onTagClick);
 		tag.setAttribute("tag",tags[t][0]);

@@ -380,7 +380,7 @@ TiddlyWiki.prototype.loadFromDiv = function(src,idPrefix,noUpdate)
 		for(var i = 0;i<tiddlers.length; i++)
 			tiddlers[i].changed();
 	}
-	jQuery().trigger("loadTiddlers");
+	jq().trigger("loadTiddlers");
 };
 
 // Load contents of a TiddlyWiki from a string

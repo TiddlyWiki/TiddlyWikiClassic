@@ -40,8 +40,8 @@ config.formatters = [
 					w.subWikifyTerm(rowContainer,this.rowTermRegExp);
 				} else {
 					var theRow = createTiddlyElement(rowContainer,"tr",null,(rowCount&1)?"oddRow":"evenRow");
-					theRow.onmouseover = function() {jQuery(this).addClass("hoverRow");};
-					theRow.onmouseout = function() {jQuery(this).removeClass("hoverRow");};
+					theRow.onmouseover = function() {jq(this).addClass("hoverRow");};
+					theRow.onmouseout = function() {jq(this).removeClass("hoverRow");};
 					this.rowHandler(w,theRow,prevColumns);
 					rowCount++;
 				}
@@ -309,7 +309,7 @@ config.formatters = [
 				// Simple bracketted link
 				e = createTiddlyLink(w.output,decodeURIComponent(text),false,null,w.isStatic,w.tiddler);
 			}
-			jQuery(e).append(text);
+			jq(e).append(text);
 			w.nextMatch = this.lookaheadRegExp.lastIndex;
 		}
 	}
@@ -365,7 +365,7 @@ config.formatters = [
 			if(lookaheadMatch[5]) {
 				var link = lookaheadMatch[5];
 				e = config.formatterHelpers.isExternalLink(link) ? createExternalLink(w.output,link) : createTiddlyLink(w.output,link,false,null,w.isStatic,w.tiddler);
-				jQuery(e).addClass("imageLink");
+				jq(e).addClass("imageLink");
 			}
 			var img = createTiddlyElement(e,"img");
 			if(lookaheadMatch[1])

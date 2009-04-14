@@ -34,7 +34,7 @@ function displayMessage(text,linkText)
 
 function clearMessage()
 {
-	jQuery("#messageArea").hide().empty();
+	jq("#messageArea").hide().empty();
 	return false;
 }
 

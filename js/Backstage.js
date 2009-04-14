@@ -33,14 +33,14 @@ var backstage = {
 		this.panelFooter = createTiddlyElement(this.panel,"div",null,"backstagePanelFooter");
 		this.panelBody = createTiddlyElement(this.panel,"div",null,"backstagePanelBody");
 		this.cloak.onmousedown = function(e) {backstage.switchTab(null);};
-		jQuery(this.toolbar).append(cmb.prompt);
+		jq(this.toolbar).append(cmb.prompt);
 		for(t=0; t<config.backstageTasks.length; t++) {
 			var taskName = config.backstageTasks[t];
 			var task = config.tasks[taskName];
 			var handler = task.action ? this.onClickCommand : this.onClickTab;
 			var text = task.text + (task.action ? "" : glyph("downTriangle"));
 			var btn = createTiddlyButton(this.toolbar,text,task.tooltip,handler,"backstageTab");
-			jQuery(btn).attr("task", taskName).addClass(task.action ? "backstageAction" : "backstageTask");
+			jq(btn).attr("task", taskName).addClass(task.action ? "backstageAction" : "backstageTask");
 			}
 		this.content = document.getElementById("contentWrapper");
 		if(config.options.chkBackstage)
@@ -62,11 +62,11 @@ var backstage = {
 		} else {
 			backstage.area.style.left = "0px";
 		}
-		jQuery(this.showButton).hide();
-		jQuery(this.hideButton).show();
+		jq(this.showButton).hide();
+		jq(this.hideButton).show();
 		config.options.chkBackstage = true;
 		saveOptionCookie("chkBackstage");
-		jQuery(this.content).addClass("backstageVisible");
+		jq(this.content).addClass("backstageVisible");
 	},
 
 	hide: function() {
@@ -85,7 +85,7 @@ var backstage = {
 			this.hideButton.style.display = "none";
 			config.options.chkBackstage = false;
 			saveOptionCookie("chkBackstage");
-			jQuery(this.content).removeClass("backstageVisible");
+			jq(this.content).removeClass("backstageVisible");
 		}
 	},
 
@@ -119,11 +119,11 @@ var backstage = {
 			return;
 		}
 		if(backstage.currTabElem) {
-			jQuery(this.currTabElem).removeClass("backstageSelTab");
+			jq(this.currTabElem).removeClass("backstageSelTab");
 		}
 		if(tabElem && tabName) {
 			backstage.preparePanel();
-			jQuery(tabElem).addClass("backstageSelTab");
+			jq(tabElem).addClass("backstageSelTab");
 			var task = config.tasks[tabName];
 			wikify(task.content,backstage.panelBody,null,null);
 			backstage.showPanel();
@@ -141,7 +141,7 @@ var backstage = {
 	preparePanel: function() {
 		backstage.cloak.style.height = findWindowHeight() + "px";
 		backstage.cloak.style.display = "block";
-		jQuery(backstage.panelBody).empty();
+		jq(backstage.panelBody).empty();
 		return backstage.panelBody;
 	},
 
@@ -159,7 +159,7 @@ var backstage = {
 
 	hidePanel: function() {
 		if(backstage.currTabElem)
-			jQuery(backstage.currTabElem).removeClass("backstageSelTab");
+			jq(backstage.currTabElem).removeClass("backstageSelTab");
 		backstage.currTabElem = null;
 		backstage.currTabName = null;
 		if(anim && config.options.chkAnimate) {
@@ -170,7 +170,7 @@ var backstage = {
 			var c = function(element,properties) {backstage.cloak.style.display = "none";};
 			anim.startAnimating(new Morpher(backstage.panel,config.animDuration,p,c));
 		} else {
-			jQuery([backstage.panel,backstage.cloak]).hide();
+			jq([backstage.panel,backstage.cloak]).hide();
 		}
 	}
 };

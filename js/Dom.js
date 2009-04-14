@@ -103,7 +103,7 @@ function findRelated(e,value,name,relative)
 	name = name || "tagName";
 	relative = relative || "parentNode";
 	if(name == "className") {
-		while(e && !jQuery(e).hasClass(value)) {
+		while(e && !jq(e).hasClass(value)) {
 			e = e[relative];
 		}
 	} else {

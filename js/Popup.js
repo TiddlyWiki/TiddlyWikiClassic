@@ -36,7 +36,7 @@ Popup.show = function(valign,halign,offset)
 {
 	var curr = Popup.stack[Popup.stack.length-1];
 	this.place(curr.root,curr.popup,valign,halign,offset);
-	jQuery(curr.root).addClass("highlight");
+	jq(curr.root).addClass("highlight");
 	if(config.options.chkAnimate && anim && typeof Scroller == "function")
 		anim.startAnimating(new Scroller(curr.popup));
 	else
@@ -95,8 +95,8 @@ Popup.removeFrom = function(from)
 {
 	for(var t=Popup.stack.length-1; t>=from; t--) {
 		var p = Popup.stack[t];
-		jQuery(p.root).removeClass("highlight");
-		jQuery(p.popup).remove();
+		jq(p.root).removeClass("highlight");
+		jq(p.popup).remove();
 	}
 	Popup.stack = Popup.stack.slice(0,from);
 };

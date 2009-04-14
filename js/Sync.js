@@ -155,8 +155,8 @@ config.macros.sync.createSyncTask = function(syncItem)
 config.macros.sync.updateSyncStatus = function(syncItem)
 {
 	var e = syncItem.colElements["status"];
-	jQuery(e).empty();
-	jQuery(e).append(syncItem.syncStatus.text);
+	jq(e).empty();
+	jq(e).append(syncItem.syncStatus.text);
 	if(syncItem.syncStatus.display)
 		syncItem.rowElement.style.display = syncItem.syncStatus.display;
 	if(syncItem.syncStatus.className)

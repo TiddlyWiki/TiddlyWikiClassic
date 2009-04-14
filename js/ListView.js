@@ -22,7 +22,7 @@ ListView.create = function(place,listObject,listTemplate,callback,className)
 		if(colType && colType.createHeader) {
 			colType.createHeader(c,columnTemplate,t);
 			if(columnTemplate.className)
-				jQuery(c).addClass(columnTemplate.className);
+				jq(c).addClass(columnTemplate.className);
 		}
 	}
 	var tbody = createTiddlyElement(table,"tbody");
@@ -31,7 +31,7 @@ ListView.create = function(place,listObject,listTemplate,callback,className)
 		r = createTiddlyElement(tbody,"tr");
 		for(c=0; c<listTemplate.rowClasses.length; c++) {
 			if(rowObject[listTemplate.rowClasses[c].field])
-				jQuery(r).addClass(listTemplate.rowClasses[c].className);
+				jq(r).addClass(listTemplate.rowClasses[c].className);
 		}
 		rowObject.rowElement = r;
 		rowObject.colElements = {};
@@ -43,7 +43,7 @@ ListView.create = function(place,listObject,listTemplate,callback,className)
 			if(colType && colType.createItem) {
 				colType.createItem(c,rowObject,field,columnTemplate,cc,rc);
 				if(columnTemplate.className)
-					jQuery(c).addClass(columnTemplate.className);
+					jq(c).addClass(columnTemplate.className);
 			}
 			rowObject.colElements[field] = c;
 		}
@@ -121,13 +121,13 @@ ListView.columnTypes = {};
 ListView.columnTypes.String = {
 	createHeader: function(place,columnTemplate,col)
 		{
-			jQuery(place).append(columnTemplate.title);
+			jq(place).append(columnTemplate.title);
 		},
 	createItem: function(place,listObject,field,columnTemplate,col,row)
 		{
 			var v = listObject[field];
 			if(v != undefined)
-				jQuery(place).append(v);
+				jq(place).append(v);
 		}
 };
 
@@ -160,7 +160,7 @@ ListView.columnTypes.Size = {
 				var t = 0;
 				while(t<config.messages.sizeTemplates.length-1 && v<config.messages.sizeTemplates[t].unit)
 					t++;
-				jQuery(place).append(config.messages.sizeTemplates[t].template.format([Math.round(v/config.messages.sizeTemplates[t].unit)]));
+				jq(place).append(config.messages.sizeTemplates[t].template.format([Math.round(v/config.messages.sizeTemplates[t].unit)]));
 			}
 		}
 };
@@ -172,7 +172,7 @@ ListView.columnTypes.Link = {
 			var v = listObject[field];
 			var c = columnTemplate.text;
 			if(v != undefined)
-				jQuery(createExternalLink(place,v)).append(c || v);
+				jq(createExternalLink(place,v)).append(c || v);
 		}
 };
 
@@ -182,7 +182,7 @@ ListView.columnTypes.Date = {
 		{
 			var v = listObject[field];
 			if(v != undefined)
-				jQuery(place).append(v.formatString(columnTemplate.dateFormat));
+				jq(place).append(v.formatString(columnTemplate.dateFormat));
 		}
 };
 
@@ -193,7 +193,7 @@ ListView.columnTypes.StringList = {
 			var v = listObject[field];
 			if(v != undefined) {
 				for(var t=0; t<v.length; t++) {
-					jQuery(place).append(v[t]);
+					jq(place).append(v[t]);
 					createTiddlyElement(place,"br");
 				}
 			}
@@ -227,7 +227,7 @@ ListView.columnTypes.Tags = {
 	createItem: function(place,listObject,field,columnTemplate,col,row)
 		{
 			var tags = listObject[field];
-			jQuery(place).append(String.encodeTiddlyLinkList(tags));
+			jq(place).append(String.encodeTiddlyLinkList(tags));
 		}
 };
 
@@ -236,9 +236,9 @@ ListView.columnTypes.Boolean = {
 	createItem: function(place,listObject,field,columnTemplate,col,row)
 		{
 			if(listObject[field] == true)
-				jQuery(place).append(columnTemplate.trueText);
+				jq(place).append(columnTemplate.trueText);
 			if(listObject[field] == false)
-				jQuery(place).append(columnTemplate.falseText);
+				jq(place).append(columnTemplate.falseText);
 		}
 };
 
@@ -265,7 +265,7 @@ ListView.columnTypes.TiddlerLink = {
 			var v = listObject[field];
 			if(v != undefined) {
 				var link = createTiddlyLink(place,listObject[columnTemplate.tiddlerLink],false,null);
-				jQuery(link).append(listObject[field]);
+				jq(link).append(listObject[field]);
 			}
 		}
 };
