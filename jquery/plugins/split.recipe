@@ -1,3 +1,2 @@
-jquery: jquery.file.load.js
-jquery: jquery.file.save.js
+jquery: jquery.file.js
 jquery: jquery.encoding.digests.sha1.js
