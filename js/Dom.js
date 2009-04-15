@@ -103,7 +103,7 @@ function findRelated(e,value,name,relative)
 	name = name || "tagName";
 	relative = relative || "parentNode";
 	if(name == "className") {
-		while(e && !jq(e).hasClass(value)) {
+		while(e && !hasClass(e,value)) {
 			e = e[relative];
 		}
 	} else {
@@ -356,6 +356,6 @@ function getPlainText(e)
 // Remove a node and all it's children
 function removeNode(e)
 {
-	jQuery(e).remove();
+	jq(e).remove();
 }
 
