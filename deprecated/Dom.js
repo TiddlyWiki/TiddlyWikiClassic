@@ -3,11 +3,6 @@
 //-- Use the equivalent jQuery functions directly instead
 //--
 
-function createTiddlyText(parent,text)
-{
-	return jQuery(parent).append(text);
-}
-
 // Return the content of an element as plain text with no formatting
 function getPlainText(e)
 {

@@ -73,7 +73,7 @@ config.macros.option.genericCreate = function(place,type,opt,className,desc)
 		c.setAttribute("title",config.optionsDesc[opt]);
 	place.appendChild(c);
 	if(desc != "no")
-		jq(place).append(config.optionsDesc[opt] || opt);
+		createTiddlyText(place,config.optionsDesc[opt] || opt);
 	c[typeInfo.valueField] = config.options[opt];
 	return c;
 };

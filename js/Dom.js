@@ -323,21 +323,26 @@ function scrubNode(e)
 
 function addClass(e,className)
 {
-	jQuery(e).addClass(className);
+	jq(e).addClass(className);
 }
 
 function removeClass(e,className)
 {
-	jQuery(e).removeClass(className);
+	jq(e).removeClass(className);
 }
 
 function hasClass(e,className)
 {
-	return jQuery(e).hasClass(className);
+	return jq(e).hasClass(className);
 }
 
 // Remove all children of a node
 function removeChildren(e)
 {
-	jQuery(e).empty();
+	jq(e).empty();
+}
+
+function createTiddlyText(parent,text)
+{
+	return jq(parent).append(text);
 }

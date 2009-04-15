@@ -228,7 +228,7 @@ Wikifier.prototype.outputText = function(place,startPos,endPos)
 	while(this.highlightMatch && (this.highlightRegExp.lastIndex > startPos) && (this.highlightMatch.index < endPos) && (startPos < endPos)) {
 		//# Deal with any plain text before the highlight
 		if(this.highlightMatch.index > startPos) {
-			jq(place).append(this.source.substring(startPos,this.highlightMatch.index));
+			createTiddlyText(place,this.source.substring(startPos,this.highlightMatch.index));
 			startPos = this.highlightMatch.index;
 		}
 		//# Deal with the highlight
@@ -241,7 +241,7 @@ Wikifier.prototype.outputText = function(place,startPos,endPos)
 	}
 	//# Do the unhighlighted text left over
 	if(startPos < endPos) {
-		jq(place).append(this.source.substring(startPos,endPos));
+		createTiddlyText(place,this.source.substring(startPos,endPos));
 	}
 };
 

@@ -33,7 +33,7 @@ var backstage = {
 		this.panelFooter = createTiddlyElement(this.panel,"div",null,"backstagePanelFooter");
 		this.panelBody = createTiddlyElement(this.panel,"div",null,"backstagePanelBody");
 		this.cloak.onmousedown = function(e) {backstage.switchTab(null);};
-		jq(this.toolbar).append(cmb.prompt);
+		createTiddlyText(this.toolbar,cmb.prompt);
 		for(t=0; t<config.backstageTasks.length; t++) {
 			var taskName = config.backstageTasks[t];
 			var task = config.tasks[taskName];

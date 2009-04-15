@@ -204,7 +204,7 @@ function onClickTag(ev)
 		}
 		createTiddlyElement(createTiddlyElement(popup,"li",null,"listBreak"),"div");
 		var h = createTiddlyLink(createTiddlyElement(popup,"li"),tag,false);
-		jq(h).append(lingo.openTag.format([tag]));
+		createTiddlyText(h,lingo.openTag.format([tag]));
 	}
 	Popup.show();
 	e.cancelBubble = true;
@@ -253,7 +253,7 @@ function createTiddlyPopup(place,caption,tooltip,tiddler)
 		var btn = createTiddlyButton(place,glyph("downArrow"),tooltip,onClickTiddlyPopup,"tiddlerPopupButton");
 		btn.tiddler = tiddler;
 	} else {
-		jq(place).append(caption);
+		createTiddlyText(place,caption);
 	}
 }
 

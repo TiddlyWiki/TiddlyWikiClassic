@@ -165,7 +165,7 @@ config.macros.tags.handler = function(place,macroName,params,wikifier,paramStrin
 	for(var t=0; t<tiddler.tags.length; t++) {
 		createTagButton(createTiddlyElement(ul,"li"),tiddler.tags[t],tiddler.title);
 		if(t<tiddler.tags.length-1)
-			jq(ul).append(sep);
+			createTiddlyText(ul,sep);
 	}
 };
 
@@ -184,7 +184,7 @@ config.macros.tagging.handler = function(place,macroName,params,wikifier,paramSt
 	for(var t=0; t<tagged.length; t++) {
 		createTiddlyLink(createTiddlyElement(ul,"li"),tagged[t].title,true);
 		if(t<tagged.length-1)
-			jq(ul).append(sep);
+			createTiddlyText(ul,sep);
 	}
 };
 
@@ -305,7 +305,7 @@ config.macros.message.handler = function(place,macroName,params)
 		var m = lookupMessage(config,0);
 		if(m == null)
 			m = lookupMessage(window,0);
-		jq(place).append(m.toString().format(params.splice(1)));
+		createTiddlyText(place,m.toString().format(params.splice(1)));
 	}
 };
 
@@ -324,7 +324,7 @@ config.macros.view.views = {
 	},
 	date: function(value,place,params,wikifier,paramString,tiddler) {
 		value = Date.convertFromYYYYMMDDHHMM(value);
-		jq(place).append(value.formatString(params[2] ? params[2] : config.views.wikified.dateFormat));
+		createTiddlyText(place,value.formatString(params[2] ? params[2] : config.views.wikified.dateFormat));
 	}
 };
 
