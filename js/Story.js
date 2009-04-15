@@ -430,7 +430,7 @@ Story.prototype.closeTiddler = function(title,animate,unused)
 		if(config.options.chkAnimate && animate && anim && typeof Slider == "function")
 			anim.startAnimating(new Slider(tiddlerElem,false,null,"all"));
 		else {
-			jQuery(tiddlerElem).remove();
+			removeNode(tiddlerElem);
 			forceReflow();
 		}
 	}

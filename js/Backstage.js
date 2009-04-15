@@ -40,7 +40,8 @@ var backstage = {
 			var handler = task.action ? this.onClickCommand : this.onClickTab;
 			var text = task.text + (task.action ? "" : glyph("downTriangle"));
 			var btn = createTiddlyButton(this.toolbar,text,task.tooltip,handler,"backstageTab");
-			jq(btn).attr("task", taskName).addClass(task.action ? "backstageAction" : "backstageTask");
+			addClass(btn,task.action ? "backstageAction" : "backstageTask");
+			btn.setAttribute("task", taskName);
 			}
 		this.content = document.getElementById("contentWrapper");
 		if(config.options.chkBackstage)
@@ -66,7 +67,7 @@ var backstage = {
 		jq(this.hideButton).show();
 		config.options.chkBackstage = true;
 		saveOptionCookie("chkBackstage");
-		jq(this.content).addClass("backstageVisible");
+		addClass(this.content,"backstageVisible");
 	},
 
 	hide: function() {
@@ -85,7 +86,7 @@ var backstage = {
 			this.hideButton.style.display = "none";
 			config.options.chkBackstage = false;
 			saveOptionCookie("chkBackstage");
-			jq(this.content).removeClass("backstageVisible");
+			removeClass(this.content, "backstageVisible");
 		}
 	},
 
@@ -119,11 +120,11 @@ var backstage = {
 			return;
 		}
 		if(backstage.currTabElem) {
-			jq(this.currTabElem).removeClass("backstageSelTab");
+			removeClass(this.currTabElem, "backstageSelTab");
 		}
 		if(tabElem && tabName) {
 			backstage.preparePanel();
-			jq(tabElem).addClass("backstageSelTab");
+			addClass(tabElem,"backstageSelTab");
 			var task = config.tasks[tabName];
 			wikify(task.content,backstage.panelBody,null,null);
 			backstage.showPanel();
@@ -159,7 +160,7 @@ var backstage = {
 
 	hidePanel: function() {
 		if(backstage.currTabElem)
-			jq(backstage.currTabElem).removeClass("backstageSelTab");
+			removeClass(backstage.currTabElem, "backstageSelTab");
 		backstage.currTabElem = null;
 		backstage.currTabName = null;
 		if(anim && config.options.chkAnimate) {

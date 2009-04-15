@@ -26,7 +26,7 @@ function Slider(element,opening,unused,deleteMode)
 		p.push({style: 'filter', start: 100, end: 0, template: 'alpha(opacity:%0)'});
 		switch(deleteMode) {
 		case "all":
-			c = function(element,properties) {jq(element).remove();};
+			c = function(element,properties) {removeNode(element);};
 			break;
 		case "children":
 			c = function(element,properties) {removeChildren(element);};

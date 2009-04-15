@@ -200,7 +200,7 @@ function onClickTag(ev)
 				createTiddlyLink(createTiddlyElement(popup,"li"),titles[r],true);
 			}
 		} else {
-			jq("<li/>").addClass("disabled").text(lingo.popupNone.format([tag])).appendTo(popup);
+			createTiddlyElement(popup,"li",null,"disabled",lingo.popupNone.format([tag]));
 		}
 		createTiddlyElement(createTiddlyElement(popup,"li",null,"listBreak"),"div");
 		var h = createTiddlyLink(createTiddlyElement(popup,"li"),tag,false);

@@ -48,7 +48,7 @@ config.macros.tabs.switchTab = function(tabset,tab)
 	}
 	if(theTab) {
 		if(tabset.nextSibling && tabset.nextSibling.className == "tabContents")
-			jq(tabset.nextSibling).remove();
+			removeNode(tabset.nextSibling);
 		var tabContent = createTiddlyElement(null,"div",null,"tabContents");
 		tabset.parentNode.insertBefore(tabContent,tabset.nextSibling);
 		var contentTitle = theTab.getAttribute("content");
