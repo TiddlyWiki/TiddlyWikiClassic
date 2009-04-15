@@ -4,11 +4,6 @@
 //--
 
 
-function hasClass(e,className)
-{
-	return jQuery(e).hasClass(className);
-}
-
 // Remove all children of a node
 function removeChildren(e)
 {
