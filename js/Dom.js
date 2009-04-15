@@ -346,3 +346,9 @@ function createTiddlyText(parent,text)
 {
 	return jq(parent).append(text);
 }
+
+// Return the content of an element as plain text with no formatting
+function getPlainText(e)
+{
+	return jq(e).text();
+}
