@@ -3,10 +3,6 @@
 //-- Use the equivalent jQuery functions directly instead
 //--
 
-function removeClass(e,className)
-{
-	jQuery(e).removeClass(className);
-}
 
 function hasClass(e,className)
 {
