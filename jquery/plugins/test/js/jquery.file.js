@@ -1,5 +1,5 @@
 jQuery(document).ready(function() {
-	module("jquery.file.load");
+	module("jquery.file");
 
 	test("load", function() {
 		var actual, expected, filepath;
@@ -28,8 +28,6 @@ jQuery(document).ready(function() {
 		expected = null;
 		same(actual, expected, "returns null if specified file path is not absolute");
 	});
-
-	module("jquery.file.save");
 
 	test("save", function() {
 		var actual, expression, expected, str;
@@ -70,7 +68,12 @@ jQuery(document).ready(function() {
 	// helper function to retrieve current document's file path
 	var getDocumentPath = function() {
 		var path = document.location.pathname;
-		var pos = path.lastIndexOf("/");
-		return path.substring(0, pos);
+		var startpos = 0;
+		var endpos = path.lastIndexOf("/");
+		if(path.charAt(2) == ":") {
+			startpos = 1;
+			path = path.replace(new RegExp("/","g"),"\\")
+		}
+		return unescape(path.substring(startpos, endpos));
 	};
 });
