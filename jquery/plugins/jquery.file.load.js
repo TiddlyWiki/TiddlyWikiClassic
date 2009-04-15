@@ -76,14 +76,17 @@ Dual licensed under the MIT and GPL licenses:
 	}
 
 	function javaLoadFile(filePath) {
+		var r;
 		try {
-			if(document.applets["TiddlySaver"])
-				return String(document.applets["TiddlySaver"].loadFile(javaUrlToFilename(filePath),"UTF-8"));
+			if(document.applets["TiddlySaver"]) {
+				r = document.applets["TiddlySaver"].loadFile(javaUrlToFilename(filePath),"UTF-8");
+				return (r === undefined || r === null) ? null : String(r);
+			}
 		} catch(ex) {
 		}
 		var content = [];
 		try {
-			var r = new java.io.BufferedReader(new java.io.FileReader(javaUrlToFilename(filePath)));
+			r = new java.io.BufferedReader(new java.io.FileReader(javaUrlToFilename(filePath)));
 			var line;
 			while((line = r.readLine()) != null)
 				content.push(new String(line));
