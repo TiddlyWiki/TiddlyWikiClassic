@@ -1,4 +1,4 @@
-jshead: delayTestExecution.js
-jshead: testrunner.js
-jshead: raiseAssertion.js
+jslib: delayTestExecution.js
+jslib: testrunner.js
+jslib: raiseAssertion.js
 style: testsuite.css
