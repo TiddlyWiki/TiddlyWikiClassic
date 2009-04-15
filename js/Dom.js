@@ -321,3 +321,9 @@ function scrubNode(e)
 	}
 }
 
+function addClass(e,className)
+{
+	jQuery(e).addClass(className);
+}
+
+
