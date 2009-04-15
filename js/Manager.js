@@ -24,7 +24,7 @@ config.macros.plugins.refresh = function(listWrapper,params)
 			if(e.checked)
 				selectedRows.push(e.getAttribute("rowName"));
 		});
-	jq(listWrapper).empty();
+	removeChildren(listWrapper);
 	params = params.parseParams("anon");
 	var plugins = installedPlugins.slice(0);
 	var t,tiddler,p;

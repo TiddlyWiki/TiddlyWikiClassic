@@ -34,7 +34,11 @@ function displayMessage(text,linkText)
 
 function clearMessage()
 {
-	jq("#messageArea").hide().empty();
+	var msgArea = document.getElementById("messageArea");
+	if(msgArea) {
+		removeChildren(msgArea);
+		msgArea.style.display = "none";
+	}
 	return false;
 }
 

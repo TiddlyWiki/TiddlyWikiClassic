@@ -36,12 +36,12 @@ Wizard.prototype.createWizard = function(place,title)
 
 Wizard.prototype.clear = function()
 {
-	jq(this.bodyElem).empty();
+	removeChildren(this.bodyElem);
 };
 
 Wizard.prototype.setButtons = function(buttonInfo,status)
 {
-	jq(this.footElem).empty();
+	removeChildren(this.footElem);
 	for(var t=0; t<buttonInfo.length; t++) {
 		createTiddlyButton(this.footElem,buttonInfo[t].caption,buttonInfo[t].tooltip,buttonInfo[t].onClick);
 		insertSpacer(this.footElem);
@@ -53,7 +53,7 @@ Wizard.prototype.setButtons = function(buttonInfo,status)
 
 Wizard.prototype.addStep = function(stepTitle,html)
 {
-	jq(this.bodyElem).empty();
+	removeChildren(this.bodyElem);
 	var w = createTiddlyElement(this.bodyElem,"div");
 	createTiddlyElement(w,"h2",null,null,stepTitle);
 	var step = createTiddlyElement(w,"div",null,"wizardStep");
