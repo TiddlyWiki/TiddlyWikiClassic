@@ -58,10 +58,10 @@ jQuery(document).ready(function() {
 			"\n" +
 			"foo bar baz\n" +
 			(new Date).toString();
-		jQuery.file.save(filepath, str);
-		actual = jQuery.file.load(filepath);
-		expected = str;
-		same(actual, expected, "writes given text content to specified file");
+		saveAndLoadString(filepath, str, "writes given ANSI text content to specified file");
+
+		str = "\xa9\u010d\u010c";
+		saveAndLoadString(filepath, str, "writes given UTF-8 text content to specified file");
 		
 		str = "\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d\x0e\x0f" +
 			  "\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f" +
@@ -79,13 +79,17 @@ jQuery(document).ready(function() {
 			  "\xd0\xd1\xd2\xd3\xd4\xd5\xd6\xd7\xd8\xd9\xda\xdb\xdc\xdd\xde\xdf" +
 			  "\xe0\xe1\xe2\xe3\xe4\xe5\xe6\xe7\xe8\xe9\xea\xeb\xec\xed\xee\xef" +
 			  "\xf0\xf1\xf2\xf3\xf4\xf5\xf6\xf7\xf8\xf9\xfa\xfb\xfc\xfd\xfe\xff";
-		var res = jQuery.file.save(filepath, str);
-		actual = jQuery.file.load(filepath);
-		expected = str;
-		same(actual, expected, "writes given binary content to specified file");
+		saveAndLoadString(filepath, str, "writes given binary content to specified file");
 		
 		jQuery.file.save(filepath, ""); // teardown: blank file contents (deletion impossible)
 	});
+
+	// helper function to save and load back a string to a file
+	var saveAndLoadString = function(filepath,str,desc) {
+		jQuery.file.save(filepath, str);
+		var actual = jQuery.file.load(filepath);
+		same(actual, str, desc);
+	}
 
 	// helper function to retrieve current document's file path
 	var getDocumentPath = function() {
