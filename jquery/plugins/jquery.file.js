@@ -69,12 +69,13 @@ Dual licensed under the MIT and GPL licenses:
 					return null;
 				var inputStream = Components.classes["@mozilla.org/network/file-input-stream;1"].createInstance(Components.interfaces.nsIFileInputStream);
 				inputStream.init(file,0x01,4,null);
-				var sInputStream = Components.classes["@mozilla.org/scriptableinputstream;1"].createInstance(Components.interfaces.nsIScriptableInputStream);
-				sInputStream.init(inputStream);
-				var contents = sInputStream.read(sInputStream.available());
-				sInputStream.close();
+				var converter = Components.classes["@mozilla.org/intl/converter-input-stream;1"].createInstance(Components.interfaces.nsIConverterInputStream);
+				converter.init(inputStream, "UTF-8", 0, 0);
+				var contents = {};
+				converter.readString(-1,contents);
+				converter.close();
 				inputStream.close();
-				return contents;
+				return contents.value;
 			} catch(ex) {
 				//# alert("Exception while attempting to load\n\n" + ex);
 				return false;
@@ -179,8 +180,10 @@ Dual licensed under the MIT and GPL licenses:
 					file.create(0,0664);
 				var out = Components.classes["@mozilla.org/network/file-output-stream;1"].createInstance(Components.interfaces.nsIFileOutputStream);
 				out.init(file,0x22,4,null);
-				out.write(content,content.length);
-				out.flush();
+				var converter = Components.classes["@mozilla.org/intl/converter-output-stream;1"].createInstance(Components.interfaces.nsIConverterOutputStream);
+				converter.init(out, "UTF-8", 0, 0);
+				converter.writeString(content);
+				converter.close();
 				out.close();
 				return true;
 			} catch(ex) {
