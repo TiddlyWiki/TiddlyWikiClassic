@@ -71,11 +71,14 @@ Dual licensed under the MIT and GPL licenses:
 				inputStream.init(file,0x01,4,null);
 				var converter = Components.classes["@mozilla.org/intl/converter-input-stream;1"].createInstance(Components.interfaces.nsIConverterInputStream);
 				converter.init(inputStream, "UTF-8", 0, 0);
-				var contents = {};
-				converter.readString(-1,contents);
+				var buffer = {};
+				var result = [];
+				while(converter.readString(-1,buffer) != 0) {
+					result.push(buffer.value);
+				}
 				converter.close();
 				inputStream.close();
-				return contents.value;
+				return result.join("");
 			} catch(ex) {
 				//# alert("Exception while attempting to load\n\n" + ex);
 				return false;
