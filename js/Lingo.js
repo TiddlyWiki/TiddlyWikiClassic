@@ -245,7 +245,10 @@ merge(config.macros.plugins,{
 
 merge(config.macros.toolbar,{
 	moreLabel: "more",
-	morePrompt: "Reveal further commands"
+	morePrompt: "Show additional commands",
+	lessLabel: "less",
+	lessPrompt: "Hide additional commands",
+	separator: "|"
 	});
 
 merge(config.macros.refreshDisplay,{
