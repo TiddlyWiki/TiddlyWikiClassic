@@ -5,16 +5,16 @@
 
 function saveFile(filePath,content)
 {
-	return jQuery.file.save(filePath,content);
+	return jq.file.save(filePath,content);
 }
 
 function loadFile(filePath)
 {
-	return jQuery.file.load(filePath);
+	return jq.file.load(filePath);
 }
 
 function copyFile(dest,source)
 {
-	return jQuery.file.copy(dest,source);
+	return jq.file.copy(dest,source);
 }
 

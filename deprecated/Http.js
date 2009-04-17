@@ -60,7 +60,7 @@ function httpReq(type,url,callback,params,headers,data,contentType,username,pass
 
 	if(callback) {
 		options.complete = function(xhr,textStatus) {
-			if(jQuery.httpSuccess(xhr))
+			if(jq.httpSuccess(xhr))
 				callback(true,params,xhr.responseText,url,xhr);
 			else
 				callback(false,params,null,url,xhr);
@@ -74,6 +74,6 @@ function httpReq(type,url,callback,params,headers,data,contentType,username,pass
 		options.password = password;
 	if(window.Components && window.netscape && window.netscape.security && document.location.protocol.indexOf("http") == -1)
 		window.netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
-	jQuery.ajax(options);
+	jq.ajax(options);
 }
 
