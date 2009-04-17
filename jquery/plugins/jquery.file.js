@@ -27,6 +27,8 @@ Dual licensed under the MIT and GPL licenses:
 			if((r == null) || (r == false))
 				r = ieLoadFile(filePath);
 			if((r == null) || (r == false))
+				r = appletLoadFile(filePath);
+			if((r == null) || (r == false))
 				r = javaLoadFile(filePath);
 			return r;
 		},
@@ -34,6 +36,8 @@ Dual licensed under the MIT and GPL licenses:
 			var r = mozillaSaveFile(filePath,content);
 			if(!r)
 				r = ieSaveFile(filePath,content);
+			if(!r)
+				r = appletSaveFile(filePath,content);
 			if(!r)
 				r = javaSaveFile(filePath,content);
 			return r;
@@ -95,7 +99,7 @@ Dual licensed under the MIT and GPL licenses:
 		return i > 0 ? url.substring(i-1) : url;
 	}
 
-	function javaLoadFile(filePath) {
+	function appletLoadFile(filePath) {
 		var r;
 		try {
 			if(document.applets["TiddlySaver"]) {
@@ -104,6 +108,11 @@ Dual licensed under the MIT and GPL licenses:
 			}
 		} catch(ex) {
 		}
+		return null;
+	}
+
+	function javaLoadFile(filePath) {
+		var r;
 		var content = [];
 		try {
 			r = new java.io.BufferedReader(new java.io.FileReader(javaUrlToFilename(filePath)));
@@ -114,7 +123,7 @@ Dual licensed under the MIT and GPL licenses:
 		} catch(ex) {
 			return null;
 		}
-		return content.join("\n");
+		return content.join("\n") + "\n";
 	}
 
 	function ieCreatePath(path) {
@@ -205,12 +214,16 @@ Dual licensed under the MIT and GPL licenses:
 		return i > 0 ? url.substring(i-1) : url;
 	}
 
-	function javaSaveFile(filePath,content) {
+	function appletSaveFile(filePath,content) {
 		try {
 			if(document.applets["TiddlySaver"])
 				return document.applets["TiddlySaver"].saveFile(javaUrlToFilename(filePath),"UTF-8",content);
 		} catch(ex) {
 		}
+		return null;
+	}
+
+	function javaSaveFile(filePath,content) {
 		try {
 			var s = new java.io.PrintStream(new java.io.FileOutputStream(javaUrlToFilename(filePath)));
 			s.print(content);
