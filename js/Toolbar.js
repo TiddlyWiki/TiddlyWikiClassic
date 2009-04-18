@@ -102,7 +102,7 @@ config.macros.toolbar.onClickMore = function(ev)
 {
 	var e = this.nextSibling;
 	e.style.display = "inline";
-	this.style.display = 'none';
+	this.style.display = "none";
 	return false;
 };
 
@@ -110,8 +110,8 @@ config.macros.toolbar.onClickLess = function(ev)
 {
 	var e = this.parentNode;
 	var m = e.previousSibling;
-	e.style.display = 'none';
-	m.style.display = 'inline';
+	e.style.display = "none";
+	m.style.display = "inline";
 	return false;
 };
 
@@ -120,17 +120,17 @@ config.macros.toolbar.handler = function(place,macroName,params,wikifier,paramSt
 	for(var t=0; t<params.length; t++) {
 		var c = params[t];
 		switch(c) {
-		case '!':
+		case "!":
 			createTiddlyText(place,this.separator);
 			break;
-		case '*':
-			createTiddlyElement(place,'BR');
+		case "*":
+			createTiddlyElement(place,"br");
 			break;
-		case '<':
+		case "<":
 			var btn = createTiddlyButton(place,this.lessLabel,this.lessPrompt,config.macros.toolbar.onClickLess);
 			jq(btn).addClass("lessCommand");
 			break;
-		case '>':
+		case ">":
 			var btn = createTiddlyButton(place,this.moreLabel,this.morePrompt,config.macros.toolbar.onClickMore);
 			jq(btn).addClass("moreCommand");
 			var e = createTiddlyElement(place,"span",null,"moreCommand");
