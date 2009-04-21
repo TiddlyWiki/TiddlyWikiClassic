@@ -105,23 +105,16 @@ Dual licensed under the MIT and GPL licenses:
 			return true;
 		},
 		saveFile: function(filePath,content) {
-alert("One");
 			// Returns null if it can't do it, false if there's an error, true if it saved OK
 			drivers.activeX.createPath(filePath);
-alert("2");
 			try {
 				var fso = new ActiveXObject("Scripting.FileSystemObject");
-alert("3");
 				var file = fso.OpenTextFile(filePath,2,-1,0);
-alert("3.2");
 				file.Write(content);
-alert("3.4");
 				file.Close();
-alert("4");
 			} catch (ex) {
 				return null;
 			}
-alert("5");
 			return true;
 		}
 	};
