@@ -84,6 +84,9 @@ TiddlyWiki.prototype.getShadowTiddlerText = function(title)
 		return "";
 };
 
+// Retrieve tiddler contents
+//# Supports tiddler slices or sections, encoded in {{{title}}} argument using
+//# the respective separator characters ({{{::}}} or {{{##}}}).
 TiddlyWiki.prototype.getTiddlerText = function(title,defaultText)
 {
 	if(!title)
@@ -303,20 +306,16 @@ TiddlyWiki.prototype.addTiddlerFields = function(title,fields)
 	this.setDirty(true);
 };
 
-// Save tiddler to store
+// Store tiddler in TiddlyWiki instance
+//# Existing tiddlers can be renamed using the {{{newTitle}}} argument.
+//#
+//# {{{created}}} and {{{modified}}} arguments are Date objects,
+//# {{{tags}}} argument is an array of strings.
+//#
+//# {{{fields}}} should retain existing tiddler's extended fields and use
+//# {{{config.defaultCustomFields}}} as fallback.
 //#
 //# N.B.: Does not trigger [[autoSaveChanges]].
-//#
-//# @param {String} title existing tiddler's title
-//# @param {String} newTitle target tiddler's title
-//# @param {String} newBody tiddler contents
-//# @param {String} modifier username
-//# @param {Date} modified last-change date
-//# @param {Array} tags list of tags
-//# @param {Object} fields extended fields
-//#        should use existing tiddler's fields or fall back to config.defaultCustomFields
-//# @param {Boolean} clearChangeCount reset tiddler's changecount
-//# @param {Date} created date of initial creation
 TiddlyWiki.prototype.saveTiddler = function(title,newTitle,newBody,modifier,modified,tags,fields,clearChangeCount,created)
 {
 	var tiddler = this.fetchTiddler(title);
