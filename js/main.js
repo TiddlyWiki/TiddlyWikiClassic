@@ -24,7 +24,7 @@ function main()
 {
 	var t10,t9,t8,t7,t6,t5,t4,t3,t2,t1,t0 = new Date();
 	startingUp = true;
-	jq = jQuery.noConflict(); // Note: omission of var is deliberate, jq is a global variable
+	jQuery.noConflict();
 	window.onbeforeunload = function(e) {if(window.confirmExit) return confirmExit();};
 	params = getParameters();
 	if(params)
@@ -39,16 +39,16 @@ function main()
 		store.addNotification(config.notifyTiddlers[s].name,config.notifyTiddlers[s].notify);
 	t1 = new Date();
 	loadShadowTiddlers();
-	jq().trigger("loadShadows");
+	jQuery().trigger("loadShadows");
 	t2 = new Date();
 	store.loadFromDiv("storeArea","store",true);
-	jq().trigger("loadTiddlers");
+	jQuery().trigger("loadTiddlers");
 	t3 = new Date();
 	invokeParamifier(params,"onload");
 	t4 = new Date();
 	readOnly = (window.location.protocol == "file:") ? false : config.options.chkHttpReadOnly;
 	var pluginProblem = loadPlugins();
-	jq().trigger("loadPlugins");
+	jQuery().trigger("loadPlugins");
 	t5 = new Date();
 	formatter = new Formatter(config.formatters);
 	invokeParamifier(params,"onconfig");
@@ -82,7 +82,7 @@ function main()
 		displayMessage("Total: " + (t10-t0) + " ms");
 	}
 	startingUp = false;
-	jq().trigger("startup");
+	jQuery().trigger("startup");
 }
 
 // Called on unload. All functions called conditionally since they themselves may have been unloaded.

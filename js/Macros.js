@@ -6,12 +6,12 @@ config.macros.today.handler = function(place,macroName,params)
 {
 	var now = new Date();
 	var text = params[0] ? now.formatString(params[0].trim()) : now.toLocaleString();
-	jq("<span/>").text(text).appendTo(place);
+	jQuery("<span/>").text(text).appendTo(place);
 };
 
 config.macros.version.handler = function(place)
 {
-	jq("<span/>").text(formatVersion()).appendTo(place);
+	jQuery("<span/>").text(formatVersion()).appendTo(place);
 };
 
 config.macros.list.handler = function(place,macroName,params)
@@ -387,7 +387,7 @@ config.macros.tagChooser.onClick = function(ev)
 	var popup = Popup.create(this);
 	var tags = store.getTags(this.getAttribute("tags"));
 	if(tags.length == 0)
-		jq("<li/>").text(lingo.popupNone).appendTo(jq(popup));
+		jQuery("<li/>").text(lingo.popupNone).appendTo(jQuery(popup));
 	for(var t=0; t<tags.length; t++) {
 		var tag = createTiddlyButton(createTiddlyElement(popup,"li"),tags[t][0],lingo.tagTooltip.format([tags[t][0]]),config.macros.tagChooser.onTagClick);
 		tag.setAttribute("tag",tags[t][0]);

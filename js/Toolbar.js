@@ -36,7 +36,7 @@ config.macros.toolbar.createCommand = function(place,commandName,tiddler,classNa
 			btn.setAttribute("commandName",commandName);
 			btn.setAttribute("tiddler",tiddler.title);
 			if(className)
-				jq(btn).addClass(className);
+				jQuery(btn).addClass(className);
 			place.appendChild(btn);
 		}
 	}
@@ -128,11 +128,11 @@ config.macros.toolbar.handler = function(place,macroName,params,wikifier,paramSt
 			break;
 		case "<":
 			var btn = createTiddlyButton(place,this.lessLabel,this.lessPrompt,config.macros.toolbar.onClickLess);
-			jq(btn).addClass("lessCommand");
+			jQuery(btn).addClass("lessCommand");
 			break;
 		case ">":
 			var btn = createTiddlyButton(place,this.moreLabel,this.morePrompt,config.macros.toolbar.onClickMore);
-			jq(btn).addClass("moreCommand");
+			jQuery(btn).addClass("moreCommand");
 			var e = createTiddlyElement(place,"span",null,"moreCommand");
 			e.style.display = "none";
 			place = e;

@@ -7,6 +7,6 @@ function ajaxReq(args)
 {
 	if(window.Components && window.netscape && window.netscape.security && document.location.protocol.indexOf("http") == -1)
 		window.netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
-	return jq.ajax(args);
+	return jQuery.ajax(args);
 }
 

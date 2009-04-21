@@ -323,39 +323,39 @@ function scrubNode(e)
 
 function addClass(e,className)
 {
-	jq(e).addClass(className);
+	jQuery(e).addClass(className);
 }
 
 function removeClass(e,className)
 {
-	jq(e).removeClass(className);
+	jQuery(e).removeClass(className);
 }
 
 function hasClass(e,className)
 {
-	return jq(e).hasClass(className);
+	return jQuery(e).hasClass(className);
 }
 
 // Remove all children of a node
 function removeChildren(e)
 {
-	jq(e).empty();
+	jQuery(e).empty();
 }
 
 function createTiddlyText(parent,text)
 {
-	return jq(parent).append(text);
+	return jQuery(parent).append(text);
 }
 
 // Return the content of an element as plain text with no formatting
 function getPlainText(e)
 {
-	return jq(e).text();
+	return jQuery(e).text();
 }
 
 // Remove a node and all it's children
 function removeNode(e)
 {
-	jq(e).remove();
+	jQuery(e).remove();
 }
 

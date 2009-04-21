@@ -63,8 +63,8 @@ var backstage = {
 		} else {
 			backstage.area.style.left = "0px";
 		}
-		jq(this.showButton).hide();
-		jq(this.hideButton).show();
+		jQuery(this.showButton).hide();
+		jQuery(this.hideButton).show();
 		config.options.chkBackstage = true;
 		saveOptionCookie("chkBackstage");
 		addClass(this.content,"backstageVisible");
@@ -171,7 +171,7 @@ var backstage = {
 			var c = function(element,properties) {backstage.cloak.style.display = "none";};
 			anim.startAnimating(new Morpher(backstage.panel,config.animDuration,p,c));
 		} else {
-			jq([backstage.panel,backstage.cloak]).hide();
+			jQuery([backstage.panel,backstage.cloak]).hide();
 		}
 	}
 };
