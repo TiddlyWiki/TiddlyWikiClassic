@@ -62,12 +62,10 @@ function mozConvertUTF8ToUnicode(u)
 //# this should be UTF8, unless the browser does not support saving non-ASCII characters
 function convertUnicodeToFileFormat(s)
 {
-	if(config.browser.isMozilla)
+	if(!config.browser.isIE)
 		return s;
-	else if(!config.browser.isIE)
-		return convertUnicodeToHtmlEntities(s);
 	else
-		return manualConvertUnicodeToUTF8(s);
+		return convertUnicodeToHtmlEntities(s);
 }
 
 function convertUnicodeToHtmlEntities(s)
