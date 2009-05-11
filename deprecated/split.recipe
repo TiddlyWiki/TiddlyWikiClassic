@@ -1,4 +1,5 @@
-jsdeprecated: FileSystem.js
-jsdeprecated: Tiddler.js
-jsdeprecated: Http.js
 jsdeprecated: Crypto.js
+jsdeprecated: Dom.js
+jsdeprecated: FileSystem.js
+jsdeprecated: Http.js
+jsdeprecated: Tiddler.js

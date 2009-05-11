@@ -196,40 +196,6 @@ function insertSpacer(place)
 	return e;
 }
 
-// Add a stylesheet, replacing any previous custom stylesheet
-function setStylesheet(s,id,doc)
-{
-	if(!id)
-		id = "customStyleSheet";
-	if(!doc)
-		doc = document;
-	var n = doc.getElementById(id);
-	if(doc.createStyleSheet) {
-		// Test for IE's non-standard createStyleSheet method
-		if(n)
-			n.parentNode.removeChild(n);
-		// This failed without the &nbsp;
-		doc.getElementsByTagName("head")[0].insertAdjacentHTML("beforeEnd","&nbsp;<style id='" + id + "'>" + s + "</style>");
-	} else {
-		if(n) {
-			n.replaceChild(doc.createTextNode(s),n.firstChild);
-		} else {
-			n = doc.createElement("style");
-			n.type = "text/css";
-			n.id = id;
-			n.appendChild(doc.createTextNode(s));
-			doc.getElementsByTagName("head")[0].appendChild(n);
-		}
-	}
-}
-
-function removeStyleSheet(id)
-{
-	var e = document.getElementById(id);
-	if(e)
-		e.parentNode.removeChild(e);
-}
-
 // Force the browser to do a document reflow when needed to workaround browser bugs
 function forceReflow()
 {
