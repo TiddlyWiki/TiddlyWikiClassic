@@ -14,7 +14,7 @@ jQuery(document).ready(function() {
 			"dolor sit amet\n" +
 			"\n" +
 			" !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~\n" +
-			"\n" +
+			"\xa9\u010d\u010c\n" +
 			"foo bar baz\n";
 		same(actual, expected, "returns contents of specified file");
 
@@ -55,15 +55,15 @@ jQuery(document).ready(function() {
 			"dolor sit amet\n" +
 			"\n" +
 			" !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~\n" +
-			"\n" +
+			"\xa9\u010d\u010c\n" +
 			"foo bar baz\n" +
 			(new Date).toString();
 		saveAndLoadString(filepath, str, "writes given ANSI text content to specified file");
 
-		str = "\xa9\u010d\u010c";
-		saveAndLoadString(filepath, str, "writes given UTF-8 text content to specified file");
+		//str = "\xa9\u010d\u010c";
+		//saveAndLoadString(filepath, str, "writes given UTF-8 text content to specified file");
 		
-		jQuery.file.save(filepath, ""); // teardown: blank file contents (deletion impossible)
+		//jQuery.file.save(filepath, ""); // teardown: blank file contents (deletion impossible)
 	});
 
 	// helper function to save and load back a string to a file
