@@ -5,7 +5,8 @@ jQuery plugin for loading a file and saving data to a file
 
 Copyright (c) UnaMesa Association 2009
 
-Dual licensed under the MIT and GPL licenses:
+Triple licensed under the BSD, MIT and GPL licenses:
+  http://www.opensource.org/licenses/bsd-license.php
   http://www.opensource.org/licenses/mit-license.php
   http://www.gnu.org/licenses/gpl.html
 */
@@ -28,6 +29,9 @@ Dual licensed under the MIT and GPL licenses:
 			}
 			return this.currentDriver;
 		},
+		init: function() {
+			this.getDriver();
+		},
 		load: function(filePath) {
 			return this.getDriver().loadFile(filePath);
 		},
@@ -41,10 +45,20 @@ Dual licensed under the MIT and GPL licenses:
 				return false;
 		}
 	});
+	
+	// Deferred initialisation for any drivers that need it	
+	$(function() {
+		for(var t in drivers) {
+			if(drivers[t].deferredInit)
+				drivers[t].deferredInit();
+		}
+	});
 
-	// Private implementations for each browser
+	// Private driver implementations for each browser
 	
 	var drivers = {};
+	
+	// Internet Explorer driver
 	
 	drivers.activeX = {
 		name: "activeX",
@@ -118,7 +132,9 @@ Dual licensed under the MIT and GPL licenses:
 			return true;
 		}
 	};
-
+	
+	// Mozilla driver
+	
 	drivers.mozilla = {
 		name: "mozilla",
 		isAvailable: function() {
@@ -178,13 +194,11 @@ Dual licensed under the MIT and GPL licenses:
 		}
 	};
 	
-	$(function() {
-		drivers.tiddlySaver.loadApplet();
-	});
+	// TiddlySaver driver
 
 	drivers.tiddlySaver = {
 		name: "tiddlySaver",
-		loadApplet: function() {
+		deferredInit: function() {
 			if(!document.applets["TiddlySaver"] && !$.browser.mozilla && !$.browser.msie) {
 				$(document.body).append("<applet style='position:absolute;left:-1px' name='TiddlySaver' code='TiddlySaver.class' archive='TiddlySaver.jar' width='1'height='1'></applet>");
 			}
@@ -212,6 +226,8 @@ Dual licensed under the MIT and GPL licenses:
 			return null;
 		}
 	}
+
+	// Java LiveConnect driver
 
 	drivers.javaLiveConnect = {
 		name: "javaLiveConnect",
@@ -243,6 +259,8 @@ Dual licensed under the MIT and GPL licenses:
 			return true;
 		}
 	}
+	
+	// Private utilities
 
 	function javaUrlToFilename(url) {
 		var f = "//localhost";
