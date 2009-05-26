@@ -1,11 +1,11 @@
 /*
-jquery.stylesheet.js
+jquery.twStylesheet.js
 
 jQuery plugin to dynamically insert CSS rules into a document
 
 Usage:
-  jQuery.stylesheet applies style definitions
-  jQuery.stylesheet.remove neutralizes style definitions
+  jQuery.twStylesheet applies style definitions
+  jQuery.twStylesheet.remove neutralizes style definitions
 
 Copyright (c) UnaMesa Association 2009
 
@@ -24,7 +24,7 @@ var defaultId = "customStyleSheet"; // XXX: rename to dynamicStyleSheet?
 // options.id is an optional name identifying the style sheet
 // options.doc is an optional document reference
 // N.B.: Uses DOM methods instead of jQuery to ensure cross-browser comaptibility.
-$.stylesheet = function(css, options) {
+$.twStylesheet = function(css, options) {
 	options = options || {};
 	var id = options.id || defaultId;
 	var doc = options.doc || document;
@@ -51,7 +51,7 @@ $.stylesheet = function(css, options) {
 // Remove existing style sheet
 // options.id is an optional name identifying the style sheet
 // options.doc is an optional document reference
-$.stylesheet.remove = function(options) {
+$.twStylesheet.remove = function(options) {
 	options = options || {};
 	var id = options.id || defaultId;
 	var doc = options.doc || document;

@@ -1,5 +1,5 @@
 /*
-jquery.file.js
+jquery.twFile.js
 
 jQuery plugin for loading a file and saving data to a file
 
@@ -12,11 +12,11 @@ Triple licensed under the BSD, MIT and GPL licenses:
 */
 
 (function($) {
-	if(!$.file) {
-		$.file = {};
+	if(!$.twFile) {
+		$.twFile = {};
 	}
 
-	$.extend($.file,{
+	$.extend($.twFile,{
 		currentDriver: null,
 		driverList: ["activeX", "mozilla", "tiddlySaver", "javaLiveConnect"],
 		

@@ -1,15 +1,15 @@
 jQuery(document).ready(function() {
-	module("jquery.file");
+	module("jquery.twFile");
 
 	test("load", function() {
 		var actual, expected, filepath;
 
-		actual = jQuery.file.load();
+		actual = jQuery.twFile.load();
 		expected = null;
 		same(actual, expected, "returns null if no argument is specified");
 
 		filepath = getDocumentPath() + "/sample.txt";
-		actual = jQuery.file.load(filepath);
+		actual = jQuery.twFile.load(filepath);
 		expected = "lorem ipsum\n" +
 			"dolor sit amet\n" +
 			"\n" +
@@ -19,12 +19,12 @@ jQuery(document).ready(function() {
 		same(actual, expected, "returns contents of specified file");
 
 		filepath = "/null";
-		actual = jQuery.file.load(filepath);
+		actual = jQuery.twFile.load(filepath);
 		expected = null;
 		same(actual, expected, "returns null if the specified file does not exist");
 
 		filepath = "sample.txt";
-		actual = jQuery.file.load(filepath);
+		actual = jQuery.twFile.load(filepath);
 		expected = null;
 		same(actual, expected, "returns null if specified file path is not absolute");
 	});
@@ -34,19 +34,19 @@ jQuery(document).ready(function() {
 		var filepath = getDocumentPath() + "/savetest.txt";
 
 		/* disabled as browser-level exceptions cannot be trapped
-		expression = function() { jQuery.file.save(); };
+		expression = function() { jQuery.twFile.save(); };
 		expected = "ReferenceError";
 		raises(expression, expected, "raises exception if no argument is specified");
 		*/
 
 		/* disabled as browser-level exceptions cannot be trapped
-		expression = function() { jQuery.file.save(filepath); };
+		expression = function() { jQuery.twFile.save(filepath); };
 		expected = "TypeError";
 		raises(expression, expected, "raises exception if no content argument is specified");
 		*/
 
 		/* disabled as browser-level exceptions cannot be trapped
-		expression = function() { jQuery.file.save("foo.txt", "sample content"); };
+		expression = function() { jQuery.twFile.save("foo.txt", "sample content"); };
 		expected = "ReferenceError";
 		raises(expression, expected, "raises exception if specified file path is not absolute");
 		*/
@@ -63,13 +63,13 @@ jQuery(document).ready(function() {
 		//str = "\xa9\u010d\u010c";
 		//saveAndLoadString(filepath, str, "writes given UTF-8 text content to specified file");
 		
-		//jQuery.file.save(filepath, ""); // teardown: blank file contents (deletion impossible)
+		//jQuery.twFile.save(filepath, ""); // teardown: blank file contents (deletion impossible)
 	});
 
 	// helper function to save and load back a string to a file
 	var saveAndLoadString = function(filepath,str,desc) {
-		jQuery.file.save(filepath, str);
-		var actual = jQuery.file.load(filepath);
+		jQuery.twFile.save(filepath, str);
+		var actual = jQuery.twFile.load(filepath);
 		same(actual, str, desc);
 	}
 
