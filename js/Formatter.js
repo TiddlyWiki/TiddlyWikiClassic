@@ -496,7 +496,7 @@ config.formatters = [
 
 {
 	name: "rawText",
-	match: "\\\"{3}|<nowiki>",
+	match: "\"{3}|<nowiki>",
 	lookaheadRegExp: /(?:\"{3}|<nowiki>)((?:.|\n)*?)(?:\"{3}|<\/nowiki>)/mg,
 	handler: function(w)
 	{
