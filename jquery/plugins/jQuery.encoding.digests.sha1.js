@@ -1,5 +1,5 @@
 /*
-jquery.encoding.digests.sha1.js
+jQuery.encoding.digests.sha1.js
 
 SHA-1 digest and associated utility functions
 
@@ -92,14 +92,14 @@ if(!$.encoding.digests)
 			var n=w[j-3]^w[j-8]^w[j-14]^w[j-16];
 			return (n>>>31)|(n<<1);
 		}
-	
+
 		var len=blen*8;
 		//# Append padding so length in bits is 448 mod 512
 		x[len>>5] |= 0x80 << (24-len%32);
 		//# Append length
 		x[((len+64>>9)<<4)+15]=len;
 		var w=new Array(80);
-	
+
 		var k1=0x5A827999;
 		var k2=0x6ED9EBA1;
 		var k3=0x8F1BBCDC;

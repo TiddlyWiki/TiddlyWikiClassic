@@ -1,5 +1,5 @@
 jQuery(document).ready(function() {
-	module("jquery.twFile");
+	module("jQuery.twFile");
 
 	test("load", function() {
 		var actual, expected, filepath;
@@ -62,7 +62,7 @@ jQuery(document).ready(function() {
 
 		//str = "\xa9\u010d\u010c";
 		//saveAndLoadString(filepath, str, "writes given UTF-8 text content to specified file");
-		
+
 		//jQuery.twFile.save(filepath, ""); // teardown: blank file contents (deletion impossible)
 	});
 

@@ -1,5 +1,5 @@
 /*
-jquery.twStylesheet.js
+jQuery.twStylesheet.js
 
 jQuery plugin to dynamically insert CSS rules into a document
 

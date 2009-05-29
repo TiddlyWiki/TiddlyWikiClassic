@@ -1,5 +1,5 @@
 /*
-jquery.twFile.js
+jQuery.twFile.js
 
 jQuery plugin for loading a file and saving data to a file
 
@@ -19,7 +19,7 @@ Triple licensed under the BSD, MIT and GPL licenses:
 	$.extend($.twFile,{
 		currentDriver: null,
 		driverList: ["activeX", "mozilla", "tiddlySaver", "javaLiveConnect"],
-		
+
 		getDriver: function() {
 			if(this.currentDriver === null) {
 				for(var t=0; t<this.driverList.length; t++) {
@@ -45,8 +45,8 @@ Triple licensed under the BSD, MIT and GPL licenses:
 				return false;
 		}
 	});
-	
-	// Deferred initialisation for any drivers that need it	
+
+	// Deferred initialisation for any drivers that need it
 	$(function() {
 		for(var t in drivers) {
 			if(drivers[t].deferredInit)
@@ -55,11 +55,11 @@ Triple licensed under the BSD, MIT and GPL licenses:
 	});
 
 	// Private driver implementations for each browser
-	
+
 	var drivers = {};
-	
+
 	// Internet Explorer driver
-	
+
 	drivers.activeX = {
 		name: "activeX",
 		isAvailable: function() {
@@ -132,9 +132,9 @@ Triple licensed under the BSD, MIT and GPL licenses:
 			return true;
 		}
 	};
-	
+
 	// Mozilla driver
-	
+
 	drivers.mozilla = {
 		name: "mozilla",
 		isAvailable: function() {
@@ -193,7 +193,7 @@ Triple licensed under the BSD, MIT and GPL licenses:
 			return null;
 		}
 	};
-	
+
 	// TiddlySaver driver
 
 	drivers.tiddlySaver = {
@@ -259,7 +259,7 @@ Triple licensed under the BSD, MIT and GPL licenses:
 			return true;
 		}
 	}
-	
+
 	// Private utilities
 
 	function javaUrlToFilename(url) {
