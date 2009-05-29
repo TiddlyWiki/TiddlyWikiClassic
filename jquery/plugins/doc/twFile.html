@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>jQuery.twFile</title>
+	<link rel="stylesheet" type="text/css" href="styles/main.css">
+</head>
+
+<body>
+	<h1>
+		<a href="http://jquery.tiddlywiki.org/twFile.html">jQuery.twFile</a>
+	</h1>
+	<p>
+		This <a href="http://jquery.com">jQuery</a> plugin provides access to
+		the local file system (for documents loaded from a <code>file://</code>
+		URI) to load and save file contents from the browser.
+	</p>
+	<p>
+		The code is based on <a href="http://tiddlywiki.com">TiddlyWiki</a>'s
+		self-saving capabilities.
+	</p>
+
+	<h2>Source</h2>
+	<p>
+		The source code is currently hosted in TiddlyWiki's
+		<a href="http://svn.tiddlywiki.org/Trunk/core/jquery/plugins/jQuery.twFile.js">Subversion repository</a>.
+	</p>
+	<p>
+		<a href="http://groups.google.com/group/TiddlyWikiDev/">Feedback</a> is welcome.
+	</p>
+
+	<h2>API</h2>
+	<ul>
+		<li>
+			<p><code>$.twFile.load(filePath)</code>: load contents from file</p>
+		</li>
+		<li>
+			<p><code>$.twFile.save(filePath, content)</code>: save contents to file</p>
+		</li>
+		<li>
+			<p><code>$.twFile.copy(dest, source)</code>: duplicate existing file</p>
+			<p><strong>N.B.:</strong> This is not supported on all browsers.</p>
+		</li>
+		<li>
+			<p><code>$.twFile.init()</code>: force internal initialization</p>
+			<p>
+				This would typically be used inside a
+				<code>$(document).ready</code> handler.
+			</p>
+		</li>
+	</ul>
+	<p>
+		<strong>N.B.:</strong> All file paths must be absolute (e.g.
+		<code>/tmp/foo.txt</code> or <code>C:\temp\foo.txt</code>).
+	</p>
+	<p>(full documentation in the code comments)</p>
+
+	<h2>Limitations</h2>
+	<ul>
+		<li>no Unicode support on Internet Explorer</li>
+	</ul>
+
+	<h2>Demo</h2>
+	[...]
+</body>
+
+</html>
