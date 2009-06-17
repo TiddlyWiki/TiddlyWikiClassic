@@ -22,28 +22,6 @@
 		self-saving capabilities.
 	</p>
 
-	<p>
-		Internally, the plugin uses four separate drivers to implement the functionality on different browsers:
-		<ul>
-			<li>
-				<code>activeX</code>: uses the <code>FileSystemObject</code> built into Internet Explorer 5 and above
-			</li>
-			<li>
-				<code>mozilla</code>: uses the XUL libraries built into Firefox
-			</li>
-			<li>
-				<code>tiddlySaver</code>: uses a custom Java applet that works on Safari, Chrome and Opera
-			</li>
-			<li>
-				<code>javaLiveConnect</code>: uses an ancient (and slow) binding technology to call Java runtime library routines directly - only works on Opera
-			</li>
-		</ul>
-	</p>
-
-	<p>
-		The plugin is designed to work with UTF-8 encoded text files. However, support in Internet Explorer is broken, and can only reliably save files that are encoded with the ANSI subset of UTF-8. In the case of HTML files, this problem can often be avoided by using HTML entity encodings.
-	</p>
-
 	<h2>Source</h2>
 	<p>
 		The source code is currently hosted in TiddlyWiki's
@@ -81,11 +59,39 @@
 
 	<h2>Limitations</h2>
 	<ul>
-		<li>currently unreliable UTF-8 support on Internet Explorer</li>
+		<li>
+			currently unreliable UTF-8 support on Internet Explorer
+			<p>
+				The plugin is designed to work with UTF-8 encoded text files.
+				However, support in Internet Explorer is broken, and can only
+				reliably save files that are encoded with the ANSI subset of
+				UTF-8. In the case of HTML files, this problem can often be
+				avoided by using HTML entity encodings.
+			</p>
+		</li>
 	</ul>
 
+	<h2>Internals</h2>
+	<p>
+		Internally, the plugin uses four separate drivers to implement the functionality on different browsers:
+		<ul>
+			<li>
+				<code>activeX</code>: uses the <code>FileSystemObject</code> built into Internet Explorer 5 and above
+			</li>
+			<li>
+				<code>mozilla</code>: uses the XUL libraries built into Firefox
+			</li>
+			<li>
+				<code>tiddlySaver</code>: uses a custom Java applet that works on Safari, Chrome and Opera
+			</li>
+			<li>
+				<code>javaLiveConnect</code>: uses an ancient (and slow) binding technology to call Java runtime library routines directly - only works on Opera
+			</li>
+		</ul>
+	</p>
+
 	<h2>Demo</h2>
-	[...]
+	[TBD]
 </body>
 
 </html>
