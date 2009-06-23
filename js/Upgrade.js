@@ -95,8 +95,6 @@ function upgradeFrom(path)
 {
 	var importStore = new TiddlyWiki();
 	var tw = loadFile(path);
-	if(window.netscape !== undefined)
-		tw = convertUTF8ToUnicode(tw);
 	importStore.importTiddlyWiki(tw);
 	importStore.forEachTiddler(function(title,tiddler) {
 		if(!store.getTiddler(title)) {
