@@ -51,12 +51,17 @@
 	<h2>Limitations</h2>
 	<ul>
 		<li>
-			plugin not available until after all document.onready handlers have completed
+			plugin unavailable until
+			<a href="http://docs.jquery.com/Events/ready">document.ready</a>
+			handlers have completed
 			<p>
-				Because the TiddlySaver applet cannot be synchronously injected
-				into the document, it is done during document.onready processing.
+				Since the TiddlySaver applet cannot be injected synchronously
+				into the document, this is done asynchronously during
+				<code>document.ready</code> processing.
+			</p>
+			<p>
 				This means that the plugin is not guaranteed to work properly
-				until after all document.onready handlers have completed.
+				until after all these handlers have completed.
 			</p>
 		</li>
 		<li>
