@@ -20,18 +20,6 @@ Triple licensed under the BSD, MIT and GPL licenses:
 		currentDriver: null,
 		driverList: ["activeX", "mozilla", "tiddlySaver", "javaLiveConnect"],
 
-		getDriver: function() {
-			if(this.currentDriver === null) {
-				for(var t=0; t<this.driverList.length; t++) {
-					if(this.currentDriver === null && drivers[this.driverList[t]].isAvailable && drivers[this.driverList[t]].isAvailable())
-						this.currentDriver = drivers[this.driverList[t]];
-				}
-			}
-			return this.currentDriver;
-		},
-		init: function() {
-			this.getDriver();
-		},
 		load: function(filePath) {
 			return this.getDriver().loadFile(filePath);
 		},
@@ -43,6 +31,15 @@ Triple licensed under the BSD, MIT and GPL licenses:
 				return this.currentDriver.copyFile(dest,source);
 			else
 				return false;
+		},
+		getDriver: function() {
+			if(this.currentDriver === null) {
+				for(var t=0; t<this.driverList.length; t++) {
+					if(this.currentDriver === null && drivers[this.driverList[t]].isAvailable && drivers[this.driverList[t]].isAvailable())
+						this.currentDriver = drivers[this.driverList[t]];
+				}
+			}
+			return this.currentDriver;
 		}
 	});
 

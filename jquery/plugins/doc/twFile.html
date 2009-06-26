@@ -41,13 +41,6 @@
 			<p><code>$.twFile.copy(dest, source)</code>: duplicate existing file</p>
 			<p><strong>N.B.:</strong> This is not supported on all browsers.</p>
 		</li>
-		<li>
-			<p><code>$.twFile.init()</code>: force internal initialization</p>
-			<p>
-				This would typically be used inside a
-				<code>$(document).ready</code> handler.
-			</p>
-		</li>
 	</ul>
 	<p>
 		<strong>N.B.:</strong> All file paths must be absolute (e.g.
@@ -57,6 +50,15 @@
 
 	<h2>Limitations</h2>
 	<ul>
+		<li>
+			plugin not available until after all document.onready handlers have completed
+			<p>
+				Because the TiddlySaver applet cannot be synchronously injected
+				into the document, it is done during document.onready processing.
+				This means that the plugin is not guaranteed to work properly
+				until after all document.onready handlers have completed.
+			</p>
+		</li>
 		<li>
 			currently unreliable UTF-8 support on Internet Explorer
 			<p>
