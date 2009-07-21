@@ -97,8 +97,8 @@ jQuery(document).ready(function(){
 		same(actual, expected, 'channel description should be the default TiddlyWiki subtitle');
 
 		actual = xml.xpath("/rss/channel/language", "string");
-		expected = 'en-us';
-		same(actual, expected, 'channel language should be "en-us" [known to fail]');
+		expected = 'en';
+		same(actual, expected, 'channel language should be "en"');
 
 		// Y2K+99 issue
 		var message = xml.xpath("/rss/channel/copyright", "string");
