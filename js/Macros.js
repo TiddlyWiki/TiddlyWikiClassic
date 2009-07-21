@@ -163,9 +163,12 @@ config.macros.tags.handler = function(place,macroName,params,wikifier,paramStrin
 	var prompt = tiddler.tags.length == 0 ? lingo.labelNoTags : lingo.labelTags;
 	createTiddlyElement(ul,"li",null,"listTitle",prompt.format([tiddler.title]));
 	for(var t=0; t<tiddler.tags.length; t++) {
-		createTagButton(createTiddlyElement(ul,"li"),tiddler.tags[t],tiddler.title);
-		if(t<tiddler.tags.length-1)
-			createTiddlyText(ul,sep);
+		var tag = store.getTiddler(tiddler.tags[t]); 
+		if(!tag || !tag.tags.contains("excludeLists")) { 
+			createTagButton(createTiddlyElement(ul,"li"),tiddler.tags[t],tiddler.title);
+			if(t<tiddler.tags.length-1)
+				createTiddlyText(ul,sep);
+		}
 	}
 };
 
