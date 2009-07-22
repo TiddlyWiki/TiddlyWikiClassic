@@ -11,5 +11,6 @@ jquery: Shadows.js
 jquery: Strings.js
 jquery: Tiddler.js
 jquery: Utilities.js
-jquery: Wikifier.js
 jquery: Version.js
+jquery: Wikifier.js
+jquery: Wizard.js
