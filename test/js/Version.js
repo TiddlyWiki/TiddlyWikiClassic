@@ -1,17 +1,11 @@
 jQuery(document).ready(function(){
 
-	module("TiddlyWiki core");
+	module("Utilitis.js");
 
 	test("Version", function() {
-		expect(18);
+		expect(17);
 
-		var actual = version;
-		ok(actual,'there should be a version value');
-
-		actual = new RGB("#f00").toString();
-		expected = "#ff0000";		
-		ok(actual==expected,'#ff0000 is the same as #f00');
-
+		ok(version,'there should be a version value');
 		ok(version.title=='TiddlyWiki','the title should be "TiddlyWiki"');
 		ok(parseInt(version.major)!=NaN,'the major value should be a number');
 		ok(parseInt(version.minor)!=NaN,'the minor value should be a number');
@@ -23,7 +17,7 @@ jQuery(document).ready(function(){
 
 		var v = {title: "TiddlyWiki", major: 1, minor: 2, revision: 3, beta: 5, date: new Date("Apr 17, 2008"), extensions: {}};
 		var expected = "1.2.3 (beta 5)";
-		actual = formatVersion(v);
+		var actual = formatVersion(v);
 		ok(actual==expected,'format version 1.2.3 beta 5 should match an asserted string');
 
 		expected = version.major + "." + version.minor + "." + version.revision + (version.alpha ? " (alpha " + version.alpha + ")" : (version.beta ? " (beta " + version.beta + ")" : ""));
