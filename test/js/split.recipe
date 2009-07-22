@@ -7,6 +7,7 @@ jquery: Dates.js
 jquery: FileSystem.js
 #jquery: main.js
 jquery: RGB.js
+jquery: Shadows.js
 jquery: Strings.js
 jquery: Tiddler.js
 jquery: Utilities.js
