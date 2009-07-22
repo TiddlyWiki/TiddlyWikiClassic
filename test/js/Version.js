@@ -22,7 +22,6 @@ jQuery(document).ready(function(){
 
 		expected = version.major + "." + version.minor + "." + version.revision + (version.alpha ? " (alpha " + version.alpha + ")" : (version.beta ? " (beta " + version.beta + ")" : ""));
 		actual = formatVersion();
-		console.log('actual',actual);
 		ok(actual==expected,'format version should match a constructed value');
 
 		var v1 = {title: "TiddlyWiki", major: 2, minor: 4, revision: 0, beta: 2, date: new Date("Apr 17, 2008"), extensions: {}};
