@@ -12,3 +12,4 @@ jquery: Strings.js
 jquery: Tiddler.js
 jquery: Utilities.js
 jquery: Wikifier.js
+jquery: Version.js
