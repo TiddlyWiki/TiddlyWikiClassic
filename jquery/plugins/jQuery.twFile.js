@@ -62,17 +62,17 @@ Triple licensed under the BSD, MIT and GPL licenses:
 			//# "file:///path/path/path..." - mac/unix local file --> "/path/path/path..."
 			//# "file://server/share/path/path/path..." - pc network file --> "\\server\share\path\path\path..."
 			var localPath;
-			if(originalPath.charAt(9) == ":") // pc local file
+			if(originalPath.charAt(9) == ":") // PC local file
 				localPath = unescape(originalPath.substr(8)).replace(new RegExp("/","g"),"\\");
-			else if(originalPath.indexOf("file://///") == 0) // FireFox pc network file
+			else if(originalPath.indexOf("file://///") == 0) // Firefox PC network file
 				localPath = "\\\\" + unescape(originalPath.substr(10)).replace(new RegExp("/","g"),"\\");
-			else if(originalPath.indexOf("file:///") == 0) // mac/unix local file
+			else if(originalPath.indexOf("file:///") == 0) // Mac/UNIX local file
 				localPath = unescape(originalPath.substr(7));
-			else if(originalPath.indexOf("file:/") == 0) // mac/unix local file
+			else if(originalPath.indexOf("file:/") == 0) // Mac/UNIX local file
 				localPath = unescape(originalPath.substr(5));
-			else if(originalPath.indexOf("//") == 0) // pc network file
+			else if(originalPath.indexOf("//") == 0) // PC network file
 				localPath = "\\\\" + unescape(originalPath.substr(7)).replace(new RegExp("/","g"),"\\");
-			return localPath;
+			return localPath || originalPath;
 		},
 		
 		// Private functions
