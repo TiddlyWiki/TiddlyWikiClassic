@@ -49,12 +49,10 @@ Triple licensed under the BSD, MIT and GPL licenses:
 		},
 		// Converts a local file path from the format returned by document.location into the format expected by this plugin
 		// url is the original URL of the file
-		// charSet is the optional character set identifier for the URL
 		// returns the equivalent local file path
-		convertUriToLocalPath: function (url,charSet) {
-			var originalPath = convertUriToUTF8(url,charSet);
+		convertUriToLocalPath: function (url) {
 			// Remove any location or query part of the URL
-			originalPath = originalPath.split("#")[0].split("?")[0];
+			var originalPath = url.split("#")[0].split("?")[0];
 			// Convert file://localhost/ to file:///
 			if(originalPath.indexOf("file://localhost/") == 0)
 				originalPath = "file://" + originalPath.substr(16);
@@ -193,19 +191,15 @@ Triple licensed under the BSD, MIT and GPL licenses:
 					var file = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
 					file.initWithPath(filePath);
 					if(!file.exists())
-						return false;
+						return null;
 					var inputStream = Components.classes["@mozilla.org/network/file-input-stream;1"].createInstance(Components.interfaces.nsIFileInputStream);
-					inputStream.init(file,0x01,4,null);
-					var converter = Components.classes["@mozilla.org/intl/converter-input-stream;1"].createInstance(Components.interfaces.nsIConverterInputStream);
-					converter.init(inputStream, "UTF-8", 0, 0);
-					var buffer = {};
-					var result = [];
-					while(converter.readString(-1,buffer) != 0) {
-						result.push(buffer.value);
-					}
-					converter.close();
+					inputStream.init(file,0x01,00004,null);
+					var sInputStream = Components.classes["@mozilla.org/scriptableinputstream;1"].createInstance(Components.interfaces.nsIScriptableInputStream);
+					sInputStream.init(inputStream);
+					var contents = sInputStream.read(sInputStream.available());
+					sInputStream.close();
 					inputStream.close();
-					return result.join("");
+					return contents;
 				} catch(ex) {
 					//# alert("Exception while attempting to load\n\n" + ex);
 					return false;
@@ -223,11 +217,9 @@ Triple licensed under the BSD, MIT and GPL licenses:
 					if(!file.exists())
 						file.create(0,0664);
 					var out = Components.classes["@mozilla.org/network/file-output-stream;1"].createInstance(Components.interfaces.nsIFileOutputStream);
-					out.init(file,0x22,4,null);
-					var converter = Components.classes["@mozilla.org/intl/converter-output-stream;1"].createInstance(Components.interfaces.nsIConverterOutputStream);
-					converter.init(out, "UTF-8", 0, 0);
-					converter.writeString(content);
-					converter.close();
+					out.init(file,0x20|0x02,00004,null);
+					out.write(content,content.length);
+					out.flush();
 					out.close();
 					return true;
 				} catch(ex) {

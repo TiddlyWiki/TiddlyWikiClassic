@@ -188,7 +188,8 @@ function saveEmpty(localPath,original,posDiv)
 
 function getLocalPath(origPath)
 {
-	return jQuery.twFile.convertUriToLocalPath(origPath,config.options.txtFileSystemCharSet);
+	origPath = convertUriToUTF8(origPath,config.options.txtFileSystemCharSet);
+	return jQuery.twFile.convertUriToLocalPath(origPath);
 }
 
 function getBackupPath(localPath,title,extension)
