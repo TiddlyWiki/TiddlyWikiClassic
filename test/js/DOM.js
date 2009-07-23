@@ -98,7 +98,7 @@ jQuery(document).ready(function(){
 	test("findWindowWidth", function() {
 			expect(1);
 			equals(typeof findWindowWidth(), "number", "returns a number value");
-			// following test does not work
+			// XXX: following test does not work
 			// equals($(window).width(), findWindowWidth(), "return the current width of the display window");
 	});
 
@@ -123,14 +123,8 @@ jQuery(document).ready(function(){
 		jQuery().scrollTop(scroll);
 
 		equals(typeof findScrollY(), "number", "returns a number value");		
-		// following test does not work
+		// XXX: following test does not work
 		// equals(findScrollY(), scroll, "returns the correct vertical scroll position of the window");
 
 	});	
 }); // document ready.
-
-
-
-
-
-
