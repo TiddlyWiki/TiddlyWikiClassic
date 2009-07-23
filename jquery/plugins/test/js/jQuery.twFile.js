@@ -14,7 +14,6 @@ jQuery(document).ready(function() {
 			"dolor sit amet\n" +
 			"\n" +
 			" !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~\n" +
-			"\xa9\u010d\u010c\n" +
 			"foo bar baz\n";
 		same(actual, expected, "returns contents of specified file");
 
@@ -55,7 +54,7 @@ jQuery(document).ready(function() {
 			"dolor sit amet\n" +
 			"\n" +
 			" !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~\n" +
-			"\xa9\u010d\u010c\n" +
+			//"\xa9\u010d\u010c\n" +
 			"foo bar baz\n" +
 			(new Date).toString();
 		saveAndLoadString(filepath, str, "writes given ANSI text content to specified file");
