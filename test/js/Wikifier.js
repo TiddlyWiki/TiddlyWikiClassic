@@ -81,4 +81,78 @@ jQuery(document).ready(function(){
 		subWikifyMock.verifyAll();
 		subWikifyMock.restore();
 	});
+
+	test('Wikifier: wikifyStatic()', function() {
+		wikifier_input_strings = {
+			bold:"''bold''",
+			italic:"//italic//",
+			underline:"__underline__",
+			superscript:"^^superscript^^",
+			subscript:"~~subscript~~",
+			strikeout:"--strikeout--",
+			code:"{{{code}}}"
+		};
+
+		wikifier_output_strings = {
+			bold:"<strong>bold</strong>",
+			italic:"<em>italic</em>",
+			underline:"<u>underline</u>",
+			superscript:"<sup>superscript</sup>",
+			subscript:"<sub>subscript</sub>",
+			strikeout:"<strike>strikeout</strike>",
+			code:"<code>code</code>"
+		};
+
+		formatter = new Formatter(config.formatters);
+		var actual = "";
+		var expected = "";
+		for (var i in wikifier_input_strings) {
+			actual = wikifyStatic(wikifier_input_strings[i]).toLowerCase();
+			expected = wikifier_output_strings[i];
+			equals(actual,expected,'testing input strings for Formatter.characterFormat'+wikifier_input_strings[i]);
+		}
+
+		formatter = new Formatter(config.formatters);
+		expected = '<table class="twtable"><tbody><tr class="evenrow"><td>a</td><td>b</td></tr><tr class="oddrow"><td>c</td><td>d</td></tr></tbody></table>';
+		actual = wikifyStatic("|a|b|\n|c|d|").toLowerCase();
+		equals(actual,expected,'testing table formatting');
+	});
+
+	test('Wikifier: wikifyStatic() 2', function() {
+		var expected = "";
+		var actual = wikifyStatic(null);
+		equals(actual,expected,'it should return an empty string if source does not exist');
+		actual = wikifyStatic("");
+		equals(actual,expected,'it should return an empty string if source is an empty string');
+
+		source = "some text";
+		actual = wikifyStatic(source);
+		ok(actual,'it should not require a tiddler to work');
+
+	/*'it should call subWikify() with the pre block as the only parameter': function() {
+		var funcToMock = 'Wikifier.prototype.subWikify';
+		tests_mock.before(funcToMock,function() {
+			tests_mock.frame[funcToMock].funcArgs = arguments;
+		});
+		wikifyStatic(source);
+		var tests_mock_return = tests_mock.after(funcToMock);
+		var expected = "PRE";
+		equals(tests_mock_return.called,true);
+		equals(tests_mock_return.funcArgs.length,1);
+		equals(tests_mock_return.funcArgs[0].nodeName,expected);
+	},*/
+
+		expected = "string";
+		actual = typeof wikifyStatic(source);
+		equals(actual,expected,'it should return a text string');
+
+		place = document.createElement("div");
+		d = document.body.appendChild(place);
+		d.style.display = "none";
+		expected = document.body.childNodes.length;
+		var html = wikifyStatic(source);
+		actual = document.body.childNodes.length;
+		equals(actual,expected,'it should not leave any elements attached to the document body after returning');
+		removeNode(d);
+	});
 });
