@@ -4,7 +4,6 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>jQuery.twFile</title>
-	<link rel="stylesheet" type="text/css" href="styles/main.css">
 </head>
 
 <body>
@@ -18,6 +17,12 @@
 	<p>
 		The code is based on <a href="http://tiddlywiki.com">TiddlyWiki</a>'s
 		self-saving capabilities.
+	</p>
+
+	<p id="TiddlySaver">
+		Note that the <a href="http://www.tiddlywiki.com/TiddlySaver.jar">TiddlySaver</a>
+		applet is required on Opera and WebKit-based browsers (Safari, Chrome).
+		The applet has to be present in the same folder as the respective HTML document.
 	</p>
 
 	<h2>Source</h2>
@@ -40,6 +45,12 @@
 		<li>
 			<p><code>$.twFile.copy(dest, source)</code>: duplicate existing file</p>
 			<p><strong>N.B.:</strong> This is not supported on all browsers.</p>
+		</li>
+		<li>
+			<p>
+				<code>$.twFile.convertUriToLocalPath(filePath)</code>:
+				normalizes specified absolute file path
+			</p>
 		</li>
 	</ul>
 	<p>
@@ -96,7 +107,17 @@
 	</p>
 
 	<h2>Demo</h2>
-	[TBD]
+	<p>
+		Download <a href="twFileDemo.html">this document</a> (and
+		<a href="#TiddlySaver">TiddlySaver</a> if necessary) and open it from
+		the local disk.
+	</p>
+	<p>
+		This demo illustrates self-saving capabilities by passing
+		<code>document.location.href</code> to <code>$.twFile.convertUriToLocalPath</code>,
+		using the return value in load and save functions.
+	</p>
+
 </body>
 
 </html>
