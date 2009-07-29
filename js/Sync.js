@@ -186,21 +186,29 @@ config.macros.sync.doSync = function(e)
 	for(var i=0; i<currSync.syncList.length; i++) {
 		var si = currSync.syncList[i];
 		if(rowNames.indexOf(si.title) != -1) {
-			var r = true;
-			switch(si.syncStatus) {
-			case sl.changedServer:
-				r = si.adaptor.getTiddler(syncItem.title,null,si,getTiddlerCallback);
-				break;
-			case sl.notFound:
-			case sl.changedLocally:
-			case sl.changedBoth:
-				r = si.adaptor.putTiddler(si.tiddler,null,si,putTiddlerCallback);
-				break;
-			default:
-				break;
+			var errorMsg = "Error in doSync: ";
+			try {
+				var r = true;
+				switch(si.syncStatus) {
+				case sl.changedServer:
+					r = si.adaptor.getTiddler(syncItem.title,null,si,getTiddlerCallback);
+					break;
+				case sl.notFound:
+				case sl.changedLocally:
+				case sl.changedBoth:
+					r = si.adaptor.putTiddler(si.tiddler,null,si,putTiddlerCallback);
+					break;
+				default:
+					break;
+				}
+				if(!r)
+					displayMessage(errorMsg + r);
+			} catch(ex) {
+				if(ex.name == "TypeError")
+					displayMessage("sync operation unsupported: " + ex.message);
+				else
+					displayMessage(errorMsg + ex.message);
 			}
-			if(!r)
-				displayMessage("Error in doSync: " + r);
 		}
 	}
 	return false;
