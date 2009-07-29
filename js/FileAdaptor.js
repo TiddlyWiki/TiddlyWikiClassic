@@ -8,8 +8,8 @@ function FileAdaptor()
 
 FileAdaptor.prototype = new AdaptorBase();
 
-FileAdaptor.serverType = 'file';
-FileAdaptor.serverLabel = 'TiddlyWiki';
+FileAdaptor.serverType = "file";
+FileAdaptor.serverLabel = "TiddlyWiki";
 
 FileAdaptor.loadTiddlyWikiCallback = function(status,context,responseText,url,xhr)
 {
@@ -87,9 +87,9 @@ FileAdaptor.getTiddlerListComplete = function(context,userParams)
 			context.adaptor.store.forEachTiddler(function(title,tiddler) {context.tiddlers.push(tiddler);});
 		}
 		for(var i=0; i<context.tiddlers.length; i++) {
-			context.tiddlers[i].fields['server.type'] = FileAdaptor.serverType;
-			context.tiddlers[i].fields['server.host'] = AdaptorBase.minHostName(context.host);
-			context.tiddlers[i].fields['server.page.revision'] = context.tiddlers[i].modified.convertToYYYYMMDDHHMM();
+			context.tiddlers[i].fields["server.type"] = FileAdaptor.serverType;
+			context.tiddlers[i].fields["server.host"] = AdaptorBase.minHostName(context.host);
+			context.tiddlers[i].fields["server.page.revision"] = context.tiddlers[i].modified.convertToYYYYMMDDHHMM();
 		}
 		context.status = true;
 	}
@@ -102,7 +102,7 @@ FileAdaptor.getTiddlerListComplete = function(context,userParams)
 FileAdaptor.prototype.generateTiddlerInfo = function(tiddler)
 {
 	var info = {};
-	info.uri = tiddler.fields['server.host'] + "#" + tiddler.title;
+	info.uri = tiddler.fields["server.host"] + "#" + tiddler.title;
 	return info;
 };
 
@@ -132,11 +132,15 @@ FileAdaptor.prototype.getTiddler = function(title,context,userParams,callback)
 FileAdaptor.getTiddlerComplete = function(context,userParams)
 {
 	var t = context.adaptor.store.fetchTiddler(context.title);
-	t.fields['server.type'] = FileAdaptor.serverType;
-	t.fields['server.host'] = AdaptorBase.minHostName(context.host);
-	t.fields['server.page.revision'] = t.modified.convertToYYYYMMDDHHMM();
-	context.tiddler = t;
-	context.status = true;
+	if(t) {
+		t.fields["server.type"] = FileAdaptor.serverType;
+		t.fields["server.host"] = AdaptorBase.minHostName(context.host);
+		t.fields["server.page.revision"] = t.modified.convertToYYYYMMDDHHMM();
+		context.tiddler = t;
+		context.status = true;
+	} else { //# tiddler does not exist in document
+		context.status = false;
+	}
 	if(context.allowSynchronous) {
 		context.isSynchronous = true;
 		context.callback(context,userParams);

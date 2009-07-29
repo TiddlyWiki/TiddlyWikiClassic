@@ -160,26 +160,27 @@ Story.prototype.loadMissingTiddler = function(title,fields,tiddlerElem)
 {
 	var getTiddlerCallback = function(context)
 	{
-		var tiddler = context.tiddler;
-		if(tiddler && tiddler.text) {
-			if(!tiddler.created)
-				tiddler.created = new Date();
-			if(!tiddler.modified)
-				tiddler.modified = tiddler.created;
-			store.saveTiddler(tiddler.title,tiddler.title,tiddler.text,tiddler.modifier,tiddler.modified,tiddler.tags,tiddler.fields,true,tiddler.created);
+		if(context.status) {
+			var t = context.tiddler;
+			if(!t.created)
+				t.created = new Date();
+			if(!t.modified)
+				t.modified = t.created;
+			store.saveTiddler(t.title,t.title,t.text,t.modifier,t.modified,t.tags,t.fields,true,t.created);
 			autoSaveChanges();
+		} else {
+			story.refreshTiddler(context.title,null,true);
 		}
 		context.adaptor.close();
-		delete context.adpator;
+		delete context.adaptor;
 	};
-
 	var tiddler = new Tiddler(title);
 	tiddler.fields = typeof fields == "string" ? fields.decodeHashMap() : fields||{};
 	var context = {serverType:tiddler.getServerType()};
 	if(!context.serverType)
 		return;
-	context.host = tiddler.fields['server.host'];
-	context.workspace = tiddler.fields['server.workspace'];
+	context.host = tiddler.fields["server.host"];
+	context.workspace = tiddler.fields["server.workspace"];
 	var adaptor = new config.adaptors[context.serverType];
 	adaptor.getTiddler(title,context,null,getTiddlerCallback);
 	return config.messages.loadingMissingTiddler.format([title,context.serverType,context.host,context.workspace]);
@@ -204,7 +205,7 @@ Story.prototype.getTemplateForTiddler = function(title,template,tiddler)
 //# Apply a template to an existing tiddler if it is not already displayed using that template
 //# title - title of tiddler to update
 //# template - the name of the tiddler containing the template or one of the constants DEFAULT_VIEW_TEMPLATE and DEFAULT_EDIT_TEMPLATE
-//# force - if true, forces the refresh even if the template hasn't changedd
+//# force - if true, forces the refresh even if the template hasn't changed
 //# customFields - an optional list of name/value pairs to be assigned as tiddler fields (for edit templates)
 //# defaultText - an optional string to replace the default text for non-existent tiddlers
 Story.prototype.refreshTiddler = function(title,template,force,customFields,defaultText)
