@@ -39,6 +39,11 @@ function drawGradient(place,horiz,locolors,hicolors)
 	}
 }
 
+function createTiddlyText(parent,text)
+{
+	return parent.appendChild(document.createTextNode(text));
+}
+
 function createTiddlyCheckbox(parent,caption,checked,onChange)
 {
 	var cb = document.createElement("input");
@@ -306,11 +311,6 @@ function hasClass(e,className)
 function removeChildren(e)
 {
 	jQuery(e).empty();
-}
-
-function createTiddlyText(parent,text)
-{
-	return jQuery(parent).append(text);
 }
 
 // Return the content of an element as plain text with no formatting

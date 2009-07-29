@@ -10,7 +10,7 @@ function removeTestNode() {
 
 
 
-jQuery(document).ready(function(){		
+jQuery(document).ready(function(){
 
 	module("DOM.js");
 
@@ -23,21 +23,33 @@ jQuery(document).ready(function(){
 		ok(jQuery('#testElement div'), 'Setting the parent parameter should append the new DOM element to the parent');
 		removeTestNode();
 
-		createTiddlyElement(null,"div",'testID');		
+		createTiddlyElement(null,"div",'testID');
 		ok(jQuery('#testID'), 'Setting the element id parameter should set the id on the DOM element');
 
-		createTiddlyElement(null,"div", null, 'testClass');		
+		createTiddlyElement(null,"div", null, 'testClass');
 		ok(jQuery('div.testClass'), 'Setting the element class parameter should set the class on the DOM element');
 
 	});
 	
 
+	test("createTiddlyText", function() { 
+		expect(1); 
+
+		var parent = makeTestNode(); 
+		createTiddlyText(parent, "<div>");
+		createTiddlyText(parent, "a"); 
+		createTiddlyText(parent, "</div>");
+		equals(parent.innerHTML, "&lt;div&gt;a&lt;/div&gt;", "createTiddlyText should append text node, not html element");
+
+		removeTestNode();
+	});
+
 	test("addClass", function() {
 		expect(1);
 		var ele = makeTestNode();
 
-		addClass(ele,'testClass');
-		ok(jQuery('#testElement').hasClass('testClass'), "addClass() adds a css class to a given DOM element");
+		addClass(ele,'testClass2');
+		ok(jQuery('#testElement').hasClass('testClass2'), "addClass() adds a css class to a given DOM element");
 
 		removeTestNode();
 	});	
@@ -114,7 +126,7 @@ jQuery(document).ready(function(){
 		equals(typeof findScrollX(), "number", "returns a number value");
 		equals(findScrollX(), scroll, "returns the correct horizontal scroll position of the window");
 
-		jQuery('#wiiide').remove();		
+		jQuery('#wiiide').remove();
 	});
 
 	test("findScrollY", function() {
