@@ -172,7 +172,7 @@ ListView.columnTypes.Link = {
 			var v = listObject[field];
 			var c = columnTemplate.text;
 			if(v != undefined)
-				createTiddlyText(createExternalLink(place,v),c || v);
+				createExternalLink(place,v,c || v);
 		}
 };
 

@@ -120,7 +120,11 @@ function getTiddlyLinkInfo(title,currClasses)
 	return {classes: classes.join(" "),subTitle: subTitle};
 }
 
-function createExternalLink(place,url)
+//# Create a link to an external resource
+//#   place - element where the link should be created
+//#   url - link target
+//#   label - link text (optional)
+function createExternalLink(place,url,label)
 {
 	var link = document.createElement("a");
 	link.className = "externalLink";
@@ -129,6 +133,8 @@ function createExternalLink(place,url)
 	if(config.options.chkOpenInNewWindow)
 		link.target = "_blank";
 	place.appendChild(link);
+	if(label)
+		createTiddlyText(link, label);
 	return link;
 }
 
