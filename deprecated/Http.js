@@ -50,7 +50,7 @@ function httpReq(type,url,callback,params,headers,data,contentType,username,pass
 		url:url,
 		processData:false,
 		data:data,
-		cache:allowCache,
+		cache:!!allowCache,
 		beforeSend: function(xhr) {
 			for(var i in headers)
 				xhr.setRequestHeader(i,headers[i]);
