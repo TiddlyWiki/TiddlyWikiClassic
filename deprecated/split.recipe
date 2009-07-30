@@ -2,4 +2,5 @@ jsdeprecated: Crypto.js
 jsdeprecated: Dom.js
 jsdeprecated: FileSystem.js
 jsdeprecated: Http.js
+jsdeprecated: Strings.js
 jsdeprecated: Tiddler.js
