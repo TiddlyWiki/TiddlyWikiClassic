@@ -28,22 +28,25 @@ Triple licensed under the BSD, MIT and GPL licenses:
 		//    /path/path/path/filename - Mac/Unix local file
 		// returns the text of the file, or null if the operation cannot be performed or false if there was an error 
 		load: function(filePath) {
-			return this.getDriver().loadFile(filePath);
+			var d = this.getDriver();
+			return d ? d.loadFile(filePath) : null;
 		},
 		// Saves a string to a text file on the local file system
 		// filePath is the path to the file in the format described above
 		// content is the string to save
 		// returns true if the file was saved successfully, or null if the operation cannot be performed or false if there was an error
 		save: function(filePath,content) {
-			return this.getDriver().saveFile(filePath,content);
+			var d = this.getDriver();
+			return d ? d.saveFile(filePath,content) : null;
 		},
 		// Copies a file on the local file system
 		// dest is the path to the destination file in the format described above
 		// source is the path to the source file in the format described above
 		// returns true if the file was copied successfully, or null if the operation cannot be performed or false if there was an error
 		copy: function(dest,source) {
-			if(this.getDriver().copyFile)
-				return this.currentDriver.copyFile(dest,source);
+			var d = this.getDriver();
+			if(d && d.copyFile)
+				return d.copyFile(dest,source);
 			else
 				return null;
 		},
