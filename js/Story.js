@@ -546,12 +546,17 @@ Story.prototype.hasChanges = function(title)
 	if(e) {
 		var fields = {};
 		this.gatherSaveFields(e,fields);
-		var tiddler = store.fetchTiddler(title);
-		if(!tiddler)
-			return false;
-		for(var n in fields) {
-			if(store.getValue(title,n) != fields[n])
+		if(store.fetchTiddler(title)) {
+			for(var n in fields) {
+				if(store.getValue(title,n) != fields[n]) //# tiddler changed
+					return true;
+			}
+		} else {
+			if(store.isShadowTiddler(title) && store.getShadowTiddlerText(title) == fields.text) { //# not checking for title or tags
+				return false;
+			} else { //# changed shadow or new tiddler
 				return true;
+			}
 		}
 	}
 	return false;
