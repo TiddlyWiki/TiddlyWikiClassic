@@ -188,34 +188,8 @@ function saveEmpty(localPath,original,posDiv)
 
 function getLocalPath(origPath)
 {
-	var originalPath = convertUriToUTF8(origPath,config.options.txtFileSystemCharSet);
-	// Remove any location or query part of the URL
-	var argPos = originalPath.indexOf("?");
-	if(argPos != -1)
-		originalPath = originalPath.substr(0,argPos);
-	var hashPos = originalPath.indexOf("#");
-	if(hashPos != -1)
-		originalPath = originalPath.substr(0,hashPos);
-	// Convert file://localhost/ to file:///
-	if(originalPath.indexOf("file://localhost/") == 0)
-		originalPath = "file://" + originalPath.substr(16);
-	// Convert to a native file format
-	//# "file:///x:/path/path/path..." - pc local file --> "x:\path\path\path..."
-	//# "file://///server/share/path/path/path..." - FireFox pc network file --> "\\server\share\path\path\path..."
-	//# "file:///path/path/path..." - mac/unix local file --> "/path/path/path..."
-	//# "file://server/share/path/path/path..." - pc network file --> "\\server\share\path\path\path..."
-	var localPath;
-	if(originalPath.charAt(9) == ":") // pc local file
-		localPath = unescape(originalPath.substr(8)).replace(new RegExp("/","g"),"\\");
-	else if(originalPath.indexOf("file://///") == 0) // FireFox pc network file
-		localPath = "\\\\" + unescape(originalPath.substr(10)).replace(new RegExp("/","g"),"\\");
-	else if(originalPath.indexOf("file:///") == 0) // mac/unix local file
-		localPath = unescape(originalPath.substr(7));
-	else if(originalPath.indexOf("file:/") == 0) // mac/unix local file
-		localPath = unescape(originalPath.substr(5));
-	else // pc network file
-		localPath = "\\\\" + unescape(originalPath.substr(7)).replace(new RegExp("/","g"),"\\");
-	return localPath;
+	origPath = convertUriToUTF8(origPath,config.options.txtFileSystemCharSet);
+	return jQuery.twFile.convertUriToLocalPath(origPath);
 }
 
 function getBackupPath(localPath,title,extension)
