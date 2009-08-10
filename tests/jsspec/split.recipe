@@ -18,4 +18,3 @@ jsspec: Version.jsspec.js
 jsspec: Wikifier.jsspec.js
 jsspec: Wizard.jsspec.js
 jsspec: XML.jsspec.js
-jsspec: Zoomer.jsspec.js

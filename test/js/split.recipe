@@ -16,3 +16,4 @@ jquery: Utilities.js
 jquery: Version.js
 jquery: Wikifier.js
 jquery: Wizard.js
+jquery: Zoomer.js
