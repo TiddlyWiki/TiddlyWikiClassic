@@ -1,4 +1,3 @@
-jsspec: Animator.jsspec.js
 jsspec: BasicTypes.jsspec.js
 jsspec: Crypto.jsspec.js
 jsspec: Dates.jsspec.js
