@@ -6,6 +6,7 @@ jquery: DOM.js
 jquery: Dates.js
 #jquery: Encoding.js
 jquery: FileSystem.js
+jquery: LoadingSaving.js
 #jquery: main.js
 jquery: RGB.js
 jquery: Shadows.js
