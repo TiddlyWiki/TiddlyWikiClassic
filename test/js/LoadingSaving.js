@@ -18,7 +18,8 @@ jQuery(document).ready(function() {
 			"@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\n" +
 			"\xa9\u010d\u010c\n" +
 			"foo bar baz\n";
-		same(actual, expected, "returns contents of specified file");
+		if(!config.browser.isOpera && window.netscape)
+			same(actual, expected, "returns contents of specified file");
 
 		filepath = "/null";
 		actual = loadFile(filepath);
@@ -63,17 +64,18 @@ jQuery(document).ready(function() {
 			(new Date).toString();
 		saveAndLoadString(filepath, str, "writes given ANSI text content to specified file");
 
-		//str = "\xa9\u010d\u010c";
-		//saveAndLoadString(filepath, str, "writes given UTF-8 text content to specified file");
+		str = "\xa9\u010d\u010c";
+		saveAndLoadString(filepath, str, "writes given UTF-8 text content to specified file");
 
 		//saveFile(filepath, ""); // teardown: blank file contents (deletion impossible)
 	});
 
 	// helper function to save and load back a string to a file
 	var saveAndLoadString = function(filepath,str,desc) {
-		saveFile(filepath, convertUnicodeToUTF8(str));
+		saveFile(filepath, convertUnicodeToUTF8(str)); // => entities if not firefox
 		var actual = convertUTF8ToUnicode(loadFile(filepath));
-		same(actual, str, desc);
+		var expected = config.browser.isOpera || !window.netscape ? convertUnicodeToHtmlEntities(str) : str;
+		same(actual, expected, desc);
 	}
 
 	// helper function to retrieve current document's file path
