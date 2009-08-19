@@ -74,6 +74,6 @@ function httpReq(type,url,callback,params,headers,data,contentType,username,pass
 		options.password = password;
 	if(window.Components && window.netscape && window.netscape.security && document.location.protocol.indexOf("http") == -1)
 		window.netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
-	jQuery.ajax(options);
+	return jQuery.ajax(options);
 }
 
