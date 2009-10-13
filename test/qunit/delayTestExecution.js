@@ -1,5 +1,5 @@
 jQuery(document).ready(function() {
-	test("dummy test (delay test execution until after TiddlyWiki startup)", function() {
+	test("Wait until TiddlyWiki starts", function() {
 		stop();
 	});
 });
