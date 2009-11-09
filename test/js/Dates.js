@@ -431,5 +431,36 @@ jQuery(document).ready(function(){
 		expected = "YY";
 		same(actual,expected,'should not convert escaped two-digit year format');
 	});
+
+	test("Date: conversions", function() {
+		same(typeof Date.convertFromYYYYMMDDHHMMSSMMM,"function",'should parse define a function');
+		same(typeof Date.convertFromYYYYMMDDHHMMSSMMM("20070228"),"object",'should return an object');
+		equals(Date.convertFromYYYYMMDDHHMMSSMMM(),"Invalid Date",'should parse null value should be invalid');
+		equals(Date.convertFromYYYYMMDDHHMMSSMMM("2006"),"Invalid Date",'should parse year only should be invalid');
+		equals(Date.convertFromYYYYMMDDHHMMSSMMM("20061"),"Invalid Date",'should parse year, short month only should be invalid');
+		equals(Date.convertFromYYYYMMDDHHMMSSMMM("200601"),"Invalid Date",'should parse year,month only should be invalid');
+		same(Date.convertFromYYYYMMDDHHMMSSMMM("20070228"),new Date(Date.UTC(2007,1,28)),'should parse date only');
+		same(Date.convertFromYYYYMMDDHHMMSSMMM("19691103"),new Date(Date.UTC(1969,10,3)),'should parse 1969 date only');
+		same(Date.convertFromYYYYMMDDHHMMSSMMM("2006011"),new Date(Date.UTC(2006,0,1)),'should parse year,month, short day');
+		same(Date.convertFromYYYYMMDDHHMMSSMMM("199912079"),new Date(Date.UTC(1999,11,7,9)),'should parse year,month,day short hour');
+		same(Date.convertFromYYYYMMDDHHMMSSMMM("1999121712"),new Date(Date.UTC(1999,11,17,12)),'should parse year,month,day,hour');
+		same(Date.convertFromYYYYMMDDHHMMSSMMM("199912598"),new Date(Date.UTC(1999,11,59,8)),'should parse year,month,day,hour short mins');
+		same(Date.convertFromYYYYMMDDHHMMSSMMM("199912150257"),new Date(Date.UTC(1999,11,15,2,57)),'should parse year,month,day,hour,mins');
+		same(Date.convertFromYYYYMMDDHHMMSSMMM("1999121512579"),new Date(Date.UTC(1999,11,15,12,57,9)),'should parse year,month,day,hour,mins,short secs');
+		same(Date.convertFromYYYYMMDDHHMMSSMMM("19991215125719"),new Date(Date.UTC(1999,11,15,12,57,19)),'should parse year,month,day,hour,mins,secs');
+		same(Date.convertFromYYYYMMDDHHMMSSMMM("199912151257198"),new Date(Date.UTC(1999,11,15,12,57,19,8)),'should parse year,month,day,hour,mins,secs,short milliseconds');
+		same(Date.convertFromYYYYMMDDHHMMSSMMM("1999121512571978"),new Date(Date.UTC(1999,11,15,12,57,19,78)),'should parse year,month,day,hour,mins,secs,medium milliseconds');
+		same(Date.convertFromYYYYMMDDHHMMSSMMM("19991215125719678"),new Date(Date.UTC(1999,11,15,12,57,19,678)),'should parse year,month,day,hour,mins,secs,long milliseconds');
+		same(Date.convertFromYYYYMMDDHHMMSSMMM("1999-12-15.12:57:19.678"),new Date(Date.UTC(1999,11,15,12,57,19,678)),'should parse ignoring punctuation');
+		same(Date.convertFromYYYYMMDDHHMMSSMMM("  1999/12/15   12:57:19  678    "),new Date(Date.UTC(1999,11,15,12,57,19,678)),'should parse ignoring whitespace');
+		same(Date.convertFromYYYYMMDDHHMMSSMMM("  1999/12/15   12:57:19  678  GMT (BST)  "),new Date(Date.UTC(1999,11,15,12,57,19,678)),'should parse ignoring trailing text');
+		same(Date.convertFromYYYYMMDDHHMM("  1999/12/15   12:57:19  678  GMT (BST)  "),new Date(Date.UTC(1999,11,15,12,57,0,0)),'should parse ignoring whitespace, punctuation and trailing text');
+		var d1 = new Date(Date.UTC(1987,09,29,21,43,57,678));
+		var s1 = d1.convertToYYYYMMDDHHMMSSMMM();
+		var d2 = Date.convertFromYYYYMMDDHHMMSSMMM(s1);
+		var s2 = d2.convertToYYYYMMDDHHMMSSMMM();
+		same(s2,s1,'should roundtrip current date from Date.convertToYYYYMMDDHHMMSSMMM');
+		same(d1,d2,'should roundtrip current date from Date.convertToYYYYMMDDHHMMSSMMM');
+	});
 });
 
