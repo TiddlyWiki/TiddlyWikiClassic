@@ -144,7 +144,7 @@ TiddlyWiki.prototype.getRecursiveTiddlerText = function(title,defaultText,depth)
 				if(depth <= 0)
 					textOut.push(match[1]);
 				else
-					textOut.push(this.getRecursiveTiddlerText(match[1],defaultText,depth-1));
+					textOut.push(this.getRecursiveTiddlerText(match[1],"",depth-1));
 			}
 			lastPos = match.index + match[0].length;
 		} else {
