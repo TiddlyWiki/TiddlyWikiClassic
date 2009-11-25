@@ -53,8 +53,8 @@ Popup.place = function(root,popup,valign,halign,offset)
 		offset.x = (halign == "right") ? offset.x + root.offsetWidth : offset.x;
 		offset.y = (valign == "top") ? offset.y : offset.y + root.offsetHeight;
 	}
-	var rootLeft = findPosX(root);
-	var rootTop = findPosY(root);
+	var rootLeft = findScrollOffsetX(root) + findPosX(root);
+	var rootTop = findScrollOffsetY(root) + findPosY(root);
 	var popupLeft = rootLeft + offset.x;
 	var popupTop = rootTop + offset.y;
 	var winWidth = findWindowWidth();
