@@ -11,6 +11,7 @@ config.notifyTiddlers = [
 	{name: "PageTemplate", notify: refreshPageTemplate},
 	{name: "SiteTitle", notify: refreshPageTitle},
 	{name: "SiteSubtitle", notify: refreshPageTitle},
+	{name: "WindowTitle", notify: refreshPageTitle},
 	{name: "ColorPalette", notify: refreshColorPalette},
 	{name: null, notify: refreshDisplay}
 ];
@@ -163,9 +164,7 @@ function refreshPageTitle()
 
 function getPageTitle()
 {
-	var st = wikifyPlain("SiteTitle");
-	var ss = wikifyPlain("SiteSubtitle");
-	return st + ((st == "" || ss == "") ? "" : " - ") + ss;
+	return wikifyPlain("WindowTitle");
 }
 
 function refreshStyles(title,doc)
