@@ -34,6 +34,7 @@ TW21Loader.prototype.internalizeTiddler = function(store,tiddler,title,node)
 		}
 		text = e.innerHTML.replace(/\r/mg,"").htmlDecode();
 	}
+	var creator = node.getAttribute("creator");
 	var modifier = node.getAttribute("modifier");
 	var c = node.getAttribute("created");
 	var m = node.getAttribute("modified");
@@ -48,7 +49,7 @@ TW21Loader.prototype.internalizeTiddler = function(store,tiddler,title,node)
 			fields[name] = attrs[i].value.unescapeLineBreaks();
 		}
 	}
-	tiddler.assign(title,text,modifier,modified,tags,created,fields);
+	tiddler.assign(title,text,modifier,modified,tags,created,fields,creator);
 	return tiddler;
 };
 

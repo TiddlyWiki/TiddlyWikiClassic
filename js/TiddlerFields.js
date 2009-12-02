@@ -51,6 +51,7 @@ TiddlyWiki.standardFieldAccess = {
 	"text":     new StringFieldAccess("text"),
 	"modifier": new StringFieldAccess("modifier"),
 	"modified": new DateFieldAccess("modified"),
+	"creator":  new StringFieldAccess("creator"),
 	"created":  new DateFieldAccess("created"),
 	"tags":     new LinksFieldAccess("tags")
 };

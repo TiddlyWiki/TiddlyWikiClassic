@@ -6,6 +6,7 @@ function Tiddler(title)
 {
 	this.title = title;
 	this.text = "";
+	this.creator = null;
 	this.modifier = null;
 	this.created = new Date();
 	this.modified = this.created;
@@ -67,15 +68,15 @@ Tiddler.prototype.isTouched = function()
 };
 
 // Change the text and other attributes of a tiddler
-Tiddler.prototype.set = function(title,text,modifier,modified,tags,created,fields)
+Tiddler.prototype.set = function(title,text,modifier,modified,tags,created,fields,creator)
 {
-	this.assign(title,text,modifier,modified,tags,created,fields);
+	this.assign(title,text,modifier,modified,tags,created,fields,creator);
 	this.changed();
 	return this;
 };
 
 // Change the text and other attributes of a tiddler without triggered a tiddler.changed() call
-Tiddler.prototype.assign = function(title,text,modifier,modified,tags,created,fields)
+Tiddler.prototype.assign = function(title,text,modifier,modified,tags,created,fields,creator)
 {
 	if(title != undefined)
 		this.title = title;
@@ -85,6 +86,8 @@ Tiddler.prototype.assign = function(title,text,modifier,modified,tags,created,fi
 		this.modifier = modifier;
 	if(modified != undefined)
 		this.modified = modified;
+	if(creator != undefined)
+		this.creator = creator;
 	if(created != undefined)
 		this.created = created;
 	if(fields != undefined)

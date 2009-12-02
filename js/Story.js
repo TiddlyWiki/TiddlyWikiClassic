@@ -166,7 +166,7 @@ Story.prototype.loadMissingTiddler = function(title,fields,tiddlerElem)
 				t.created = new Date();
 			if(!t.modified)
 				t.modified = t.created;
-			store.saveTiddler(t.title,t.title,t.text,t.modifier,t.modified,t.tags,t.fields,true,t.created);
+			store.saveTiddler(t.title,t.title,t.text,t.modifier,t.modified,t.tags,t.fields,true,t.created,t.creator);
 			autoSaveChanges();
 		} else {
 			story.refreshTiddler(context.title,null,true);
@@ -573,8 +573,10 @@ Story.prototype.saveTiddler = function(title,minorUpdate)
 		var fields = {};
 		this.gatherSaveFields(tiddlerElem,fields);
 		var newTitle = fields.title || title;
-		if(!store.tiddlerExists(newTitle))
+		if(!store.tiddlerExists(newTitle)) {
 			newTitle = newTitle.trim();
+			var creator = config.options.txtUserName;
+		}
 		if(store.tiddlerExists(newTitle) && newTitle != title) {
 			if(!confirm(config.messages.overwriteWarning.format([newTitle.toString()])))
 				return null;
@@ -591,7 +593,9 @@ Story.prototype.saveTiddler = function(title,minorUpdate)
 			minorUpdate = false;
 		var newDate = new Date();
 		if(store.tiddlerExists(title)) {
-			var extendedFields = store.fetchTiddler(title).fields;
+			var t = store.fetchTiddler(title);
+			var extendedFields = t.fields;
+			creator = t.creator;
 		} else {
 			extendedFields = merge({},config.defaultCustomFields);
 		}
@@ -599,7 +603,7 @@ Story.prototype.saveTiddler = function(title,minorUpdate)
 			if(!TiddlyWiki.isStandardField(n))
 				extendedFields[n] = fields[n];
 		}
-		var tiddler = store.saveTiddler(title,newTitle,fields.text,minorUpdate ? undefined : config.options.txtUserName,minorUpdate ? undefined : newDate,fields.tags,extendedFields);
+		var tiddler = store.saveTiddler(title,newTitle,fields.text,minorUpdate ? undefined : config.options.txtUserName,minorUpdate ? undefined : newDate,fields.tags,extendedFields,null,null,creator);
 		autoSaveChanges(null,[tiddler]);
 		return newTitle;
 	}
