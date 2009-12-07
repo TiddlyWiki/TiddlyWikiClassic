@@ -230,7 +230,7 @@ function invokeMacro(place,macro,params,wikifier,tiddler)
 			//# Provide context for evaluated macro parameters (eg <<myMacro {{tiddler.title}}>>)
 			window.tiddler = tiddlerElem ? store.getTiddler(tiddlerElem.getAttribute("tiddler")) : null;
 			window.place = place;
-			m.handler(place,macro,params.readMacroParams(),wikifier,params,tiddler);
+			m.handler(place,macro,m.noPreParse?null:params.readMacroParams(),wikifier,params,tiddler);
 		} else {
 			createTiddlyError(place,config.messages.macroError.format([macro]),config.messages.macroErrorDetails.format([macro,config.messages.missingMacro]));
 		}
