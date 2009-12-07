@@ -40,9 +40,10 @@ config.refreshers = {
 		{
 		var title = e.getAttribute("tiddler");
 		var force = e.getAttribute("force");
+		var args = e.getAttribute("args");
 		if(force != null || changeList == null || changeList.indexOf(title) != -1) {
 			removeChildren(e);
-			wikify(store.getTiddlerText(title,""),e,null,store.fetchTiddler(title));
+			config.macros.tiddler.transclude(e,title,args);
 			return true;
 		} else
 			return false;

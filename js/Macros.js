@@ -113,26 +113,33 @@ config.macros.tiddler.handler = function(place,macroName,params,wikifier,paramSt
 	var className = names[1] || null;
 	var args = params[0]["with"];
 	var wrapper = createTiddlyElement(place,"span",null,className);
-	if(!args) {
-		wrapper.setAttribute("refresh","content");
-		wrapper.setAttribute("tiddler",tiddlerName);
-	}
+	wrapper.setAttribute("refresh","content");
+	wrapper.setAttribute("tiddler",tiddlerName);
+	if(args!==undefined)
+		wrapper.setAttribute("args","[["+args.join("]] [[")+"]]");
+	this.transclude(wrapper,tiddlerName,args);
+};
+
+config.macros.tiddler.transclude = function(wrapper,tiddlerName,args)
+{
 	var text = store.getTiddlerText(tiddlerName);
-	if(text) {
-		var stack = config.macros.tiddler.tiddlerStack;
-		if(stack.indexOf(tiddlerName) !== -1)
-			return;
-		stack.push(tiddlerName);
-		try {
-			var n = args ? Math.min(args.length,9) : 0;
-			for(var i=0; i<n; i++) {
-				var placeholderRE = new RegExp("\\$" + (i + 1),"mg");
-				text = text.replace(placeholderRE,args[i]);
-			}
-			config.macros.tiddler.renderText(wrapper,text,tiddlerName,params);
-		} finally {
-			stack.pop();
+	if(!text)
+		return;
+	var stack = config.macros.tiddler.tiddlerStack;
+	if(stack.indexOf(tiddlerName) !== -1)
+		return;
+	stack.push(tiddlerName);
+	try {
+		if(typeof args == "string") 
+			args = args.readBracketedList();
+		var n = args ? Math.min(args.length,9) : 0;
+		for(var i=0; i<n; i++) {
+			var placeholderRE = new RegExp("\\$" + (i + 1),"mg");
+			text = text.replace(placeholderRE,args[i]);
 		}
+		config.macros.tiddler.renderText(wrapper,text,tiddlerName,params);
+	} finally {
+		stack.pop();
 	}
 };
 
