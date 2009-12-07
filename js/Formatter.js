@@ -66,6 +66,11 @@ config.formatters = [
 					last.element.setAttribute("rowspan",last.rowSpanCount);
 					last.element.setAttribute("rowSpan",last.rowSpanCount); // Needed for IE
 					last.element.valign = "center";
+					if(colSpanCount > 1) {
+						last.element.setAttribute("colspan",colSpanCount);
+						last.element.setAttribute("colSpan",colSpanCount); // Needed for IE
+						colSpanCount = 1;
+					}
 				}
 				w.nextMatch = this.cellRegExp.lastIndex-1;
 			} else if(cellMatch[1] == ">") {
