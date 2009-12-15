@@ -14,7 +14,7 @@ jQuery(document).ready(function(){
 		ok(actual==expected,'String trim');
 
 		actual = " abc def ".trim();
-		expected = "abcdef";
+		expected = "abc def";
 		ok(actual==expected,'String trim');
 
 		actual = "background-color".unDash();
