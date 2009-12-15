@@ -13,6 +13,10 @@ jQuery(document).ready(function(){
 		expected = "abcdef";
 		ok(actual==expected,'String trim');
 
+		actual = " abc def ".trim();
+		expected = "abcdef";
+		ok(actual==expected,'String trim');
+
 		actual = "background-color".unDash();
 		expected = "backgroundColor";
 		ok(actual==expected,'String undash');
