@@ -99,6 +99,7 @@ Story.prototype.displayTiddler = function(srcElement,tiddler,template,animate,un
 		else
 			window.scrollTo(0,ensureVisible(tiddlerElem));
 	}
+	return tiddlerElem;
 };
 
 //# Figure out the appropriate position for a newly opened tiddler
