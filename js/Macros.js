@@ -130,7 +130,7 @@ config.macros.tiddler.transclude = function(wrapper,tiddlerName,args)
 		return;
 	stack.push(tiddlerName);
 	try {
-		if(typeof args == "string") 
+		if(typeof args == "string")
 			args = args.readBracketedList();
 		var n = args ? Math.min(args.length,9) : 0;
 		for(var i=0; i<n; i++) {
@@ -170,8 +170,8 @@ config.macros.tags.handler = function(place,macroName,params,wikifier,paramStrin
 	var prompt = tiddler.tags.length == 0 ? lingo.labelNoTags : lingo.labelTags;
 	createTiddlyElement(ul,"li",null,"listTitle",prompt.format([tiddler.title]));
 	for(var t=0; t<tiddler.tags.length; t++) {
-		var tag = store.getTiddler(tiddler.tags[t]); 
-		if(!tag || !tag.tags.contains("excludeLists")) { 
+		var tag = store.getTiddler(tiddler.tags[t]);
+		if(!tag || !tag.tags.contains("excludeLists")) {
 			createTagButton(createTiddlyElement(ul,"li"),tiddler.tags[t],tiddler.title);
 			if(t<tiddler.tags.length-1)
 				createTiddlyText(ul,sep);
@@ -361,8 +361,6 @@ config.macros.edit.handler = function(place,macroName,params,wikifier,paramStrin
 		var e,v;
 		if(field != "text" && !rows) {
 			e = createTiddlyElement(null,"input");
-			if(tiddler.isReadOnly())
-				e.setAttribute("readOnly","readOnly");
 			e.setAttribute("edit",field);
 			e.setAttribute("type","text");
 			e.value = store.getValue(tiddler,field) || defVal;
@@ -373,8 +371,6 @@ config.macros.edit.handler = function(place,macroName,params,wikifier,paramStrin
 			var wrapper1 = createTiddlyElement(null,"fieldset",null,"fieldsetFix");
 			var wrapper2 = createTiddlyElement(wrapper1,"div");
 			e = createTiddlyElement(wrapper2,"textarea");
-			if(tiddler.isReadOnly())
-				e.setAttribute("readOnly","readOnly");
 			e.value = v = store.getValue(tiddler,field) || defVal;
 			rows = rows || 10;
 			var lines = v.match(/\n/mg);
@@ -385,6 +381,10 @@ config.macros.edit.handler = function(place,macroName,params,wikifier,paramStrin
 			e.setAttribute("rows",rows);
 			e.setAttribute("edit",field);
 			place.appendChild(wrapper1);
+		}
+		if(tiddler.isReadOnly()) {
+			e.setAttribute("readOnly","readOnly");
+			addClass(e,"readOnly");
 		}
 		return e;
 	}

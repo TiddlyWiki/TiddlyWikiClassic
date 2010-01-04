@@ -123,6 +123,7 @@ h2,h3 {border-bottom:1px solid [[ColorPalette::TertiaryLight]];}
 .editor input {border:1px solid [[ColorPalette::PrimaryMid]];}
 .editor textarea {border:1px solid [[ColorPalette::PrimaryMid]]; width:100%;}
 .editorFooter {color:[[ColorPalette::TertiaryMid]];}
+.readOnly {background:[[ColorPalette::TertiaryPale]];}
 
 #backstageArea {background:[[ColorPalette::Foreground]]; color:[[ColorPalette::TertiaryMid]];}
 #backstageArea a {background:[[ColorPalette::Foreground]]; color:[[ColorPalette::Background]]; border:none;}
