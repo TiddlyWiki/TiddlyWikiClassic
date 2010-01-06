@@ -97,6 +97,7 @@ config.macros.timeline.handler = function(place,macroName,params)
 		var theDay = tiddler[field].convertToLocalYYYYMMDDHHMM().substr(0,8);
 		if(theDay != lastDay) {
 			var ul = document.createElement("ul");
+			addClass(ul,"timeline");
 			place.appendChild(ul);
 			createTiddlyElement(ul,"li",null,"listTitle",tiddler[field].formatString(dateFormat));
 			lastDay = theDay;
