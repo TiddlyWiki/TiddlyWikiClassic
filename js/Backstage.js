@@ -92,7 +92,6 @@ var backstage = {
 
 	onClickCommand: function(e) {
 		var task = config.tasks[this.getAttribute("task")];
-		displayMessage(task);
 		if(task.action) {
 			backstage.switchTab(null);
 			task.action();
