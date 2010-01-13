@@ -82,6 +82,9 @@ config.macros.allTags.handler = function(place,macroName,params)
 		btn.setAttribute("tag",title);
 		btn.setAttribute("refresh","link");
 		btn.setAttribute("tiddlyLink",title);
+		if(params[1]) {
+			btn.setAttribute("sortby",params[1]);
+		}
 	}
 };
 
@@ -154,9 +157,13 @@ config.macros.tiddler.tiddlerStack = [];
 //# params[0] - tag
 //# params[1] - title (optional)
 //# params[2] - tooltip (optional)
+//# params[3] - sortby (optional)
 config.macros.tag.handler = function(place,macroName,params)
 {
 	createTagButton(place,params[0],null,params[1],params[2]);
+	if(params[3]) {
+		btn.setAttribute('sortby',params[3]);
+	}
 };
 
 config.macros.tags.handler = function(place,macroName,params,wikifier,paramString,tiddler)

@@ -191,7 +191,11 @@ function onClickTag(ev)
 	var tag = this.getAttribute("tag");
 	var title = this.getAttribute("tiddler");
 	if(popup && tag) {
-		var tagged = store.getTaggedTiddlers(tag);
+		var tagged = tag.indexOf("[")==-1 ? store.getTaggedTiddlers(tag) : store.filterTiddlers(tag);
+		var sortby = this.getAttribute("sortby");
+		if(sortby&&sortby.length) {
+			store.sortTiddlers(tagged,sortby);
+		}
 		var titles = [];
 		var li,r;
 		for(r=0;r<tagged.length;r++) {
@@ -202,6 +206,7 @@ function onClickTag(ev)
 		if(titles.length > 0) {
 			var openAll = createTiddlyButton(createTiddlyElement(popup,"li"),lingo.openAllText.format([tag]),lingo.openAllTooltip,onClickTagOpenAll);
 			openAll.setAttribute("tag",tag);
+			openAll.setAttribute("sortby",sortby);
 			createTiddlyElement(createTiddlyElement(popup,"li",null,"listBreak"),"div");
 			for(r=0; r<titles.length; r++) {
 				createTiddlyLink(createTiddlyElement(popup,"li"),titles[r],true);
@@ -223,6 +228,10 @@ function onClickTag(ev)
 function onClickTagOpenAll(ev)
 {
 	var tiddlers = store.getTaggedTiddlers(this.getAttribute("tag"));
+	var sortby = this.getAttribute("sortby");
+	if(sortby&&sortby.length) {
+		store.sortTiddlers(tiddlers,sortby);
+	}
 	story.displayTiddlers(this,tiddlers);
 	return false;
 }
