@@ -183,28 +183,6 @@ function findPosY(obj)
 	return curtop;
 }
 
-function findScrollOffsetX(obj)
-{
-	var x = 0;
-	while(obj) {
-		if(obj.scrollLeft && obj.nodeName!='HTML')
-			y += obj.scrollLeft;
-		obj = obj.parentNode;
-	}
-	return -x;
-}
-
-function findScrollOffsetY(obj)
-{
-	var y = 0;
-	while(obj) {
-		if(obj.scrollTop && obj.nodeName!='HTML')
-			y += obj.scrollTop;
-		obj = obj.parentNode;
-	}
-	return -y;
-}
-
 // Blur a particular element
 function blurElement(e)
 {
