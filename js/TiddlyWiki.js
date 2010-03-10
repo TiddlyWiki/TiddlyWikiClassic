@@ -327,6 +327,7 @@ TiddlyWiki.prototype.saveTiddler = function(title,newTitle,newBody,modifier,modi
 		created = created || modified;
 		tiddler = new Tiddler();
 	}
+	fields = merge({},fields);
 	tiddler.set(newTitle,newBody,modifier,modified,tags,created,fields,creator);
 	this.addTiddler(tiddler);
 	if(clearChangeCount)
