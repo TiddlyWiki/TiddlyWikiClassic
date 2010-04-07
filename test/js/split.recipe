@@ -4,7 +4,7 @@ jquery: BasicTypes.js
 jquery: Crypto.js
 jquery: DOM.js
 jquery: Dates.js
-#jquery: Encoding.js
+jquery: Encoding.js
 jquery: FileSystem.js
 jquery: LoadingSaving.js
 #jquery: main.js
@@ -14,8 +14,8 @@ jquery: Strings.js
 jquery: Tiddler.js
 jquery: TiddlyWiki.js
 jquery: TW21Saver.js
-jquery: Utilities.js
+#jquery: Utilities.js
 jquery: Version.js
 jquery: Wikifier.js
 jquery: Wizard.js
-jquery: Zoomer.js
+#jquery: Zoomer.js

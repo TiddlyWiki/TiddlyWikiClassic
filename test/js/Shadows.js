@@ -5,8 +5,8 @@ jQuery(document).ready(function(){
 	test("Shadow tiddler existence", function() {
 		expect(2);
 
-		var actual = config.shadowTiddlers["DefaultTiddlers"];
-		ok(actual,'DefaultTiddlers shadow tiddler should exist');
+		var actual = config.shadowTiddlers["EditTemplate"];
+		ok(actual,'EditTemplate shadow tiddler should exist');
 
 		loadShadowTiddlers();
 		actual = config.shadowTiddlers["StyleSheetColors"];

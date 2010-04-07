@@ -1,4 +1,4 @@
-jslib: delayTestExecution.js
-jslib: testrunner.js
+#jslib: delayTestExecution.js
 jslib: raiseAssertion.js
-style: testsuite.css
+jslib: qunit.js
+style: qunit.css

@@ -3,7 +3,7 @@ jQuery(document).ready(function(){
 	module("TiddlyWiki core");
 
 	test("String functions", function() {
-		expect(3);
+		expect(4);
 
 		var actual = "abcdef".right(3);
 		var expected = "def";
