@@ -19,8 +19,8 @@ var backstage = {
 	init: function() {
 		var cmb = config.messages.backstage;
 		this.area = document.getElementById("backstageArea");
-		this.toolbar = document.getElementById("backstageToolbar");
-		this.button = document.getElementById("backstageButton");
+		this.toolbar = jQuery("#backstageToolbar").empty()[0];
+		this.button = jQuery("#backstageButton").empty()[0];
 		this.button.style.display = "block";
 		var t = cmb.open.text + " " + glyph("bentArrowLeft");
 		this.showButton = createTiddlyButton(this.button,t,cmb.open.tooltip,
