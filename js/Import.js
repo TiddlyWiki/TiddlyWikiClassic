@@ -29,6 +29,7 @@ config.macros.importTiddlers.onClose = function(e)
 
 config.macros.importTiddlers.restart = function(wizard)
 {
+	var self = config.macros.importTiddlers;
 	wizard.addStep(this.step1Title,this.step1Html);
 	var s = wizard.getElement("selTypes");
 	for(var t in config.adaptors) {
@@ -44,11 +45,11 @@ config.macros.importTiddlers.restart = function(wizard)
 		e.value = t;
 	}
 	wizard.setValue("feeds",feeds);
-	s.onchange = config.macros.importTiddlers.onFeedChange;
+	s.onchange = self.onFeedChange;
 	var fileInput = wizard.getElement("txtBrowse");
-	fileInput.onchange = config.macros.importTiddlers.onBrowseChange;
-	fileInput.onkeyup = config.macros.importTiddlers.onBrowseChange;
-	wizard.setButtons([{caption: this.openLabel, tooltip: this.openPrompt, onClick: config.macros.importTiddlers.onOpen}]);
+	fileInput.onchange = self.onBrowseChange;
+	fileInput.onkeyup = self.onBrowseChange;
+	wizard.setButtons([{caption: this.openLabel, tooltip: this.openPrompt, onClick: self.onOpen}]);
 	wizard.formElem.action = "javascript:;";
 	wizard.formElem.onsubmit = function() {
 		if(!this.txtPath || this.txtPath.value.length) //# check for manually entered path in first step
@@ -132,6 +133,7 @@ config.macros.importTiddlers.getURLFromLocalPath = function(v)
 
 config.macros.importTiddlers.onOpen = function(e)
 {
+	var self = config.macros.importTiddlers;
 	var wizard = new Wizard(this);
 	var fileInput = wizard.getElement("txtPath");
 	var url = fileInput.value;
@@ -140,26 +142,28 @@ config.macros.importTiddlers.onOpen = function(e)
 	wizard.setValue("adaptor",adaptor);
 	wizard.setValue("serverType",serverType);
 	wizard.setValue("host",url);
-	var ret = adaptor.openHost(url,null,wizard,config.macros.importTiddlers.onOpenHost);
+	var ret = adaptor.openHost(url,null,wizard,self.onOpenHost);
 	if(ret !== true)
 		displayMessage(ret);
-	wizard.setButtons([{caption: config.macros.importTiddlers.cancelLabel, tooltip: config.macros.importTiddlers.cancelPrompt, onClick: config.macros.importTiddlers.onCancel}],config.macros.importTiddlers.statusOpenHost);
+	wizard.setButtons([{caption: self.cancelLabel, tooltip: self.cancelPrompt, onClick: self.onCancel}],self.statusOpenHost);
 	return false;
 };
 
 config.macros.importTiddlers.onOpenHost = function(context,wizard)
 {
+	var self = config.macros.importTiddlers;
 	var adaptor = wizard.getValue("adaptor");
 	if(context.status !== true)
 		displayMessage("Error in importTiddlers.onOpenHost: " + context.statusText);
-	var ret = adaptor.getWorkspaceList(context,wizard,config.macros.importTiddlers.onGetWorkspaceList);
+	var ret = adaptor.getWorkspaceList(context,wizard,self.onGetWorkspaceList);
 	if(ret !== true)
 		displayMessage(ret);
-	wizard.setButtons([{caption: config.macros.importTiddlers.cancelLabel, tooltip: config.macros.importTiddlers.cancelPrompt, onClick: config.macros.importTiddlers.onCancel}],config.macros.importTiddlers.statusGetWorkspaceList);
+	wizard.setButtons([{caption: self.cancelLabel, tooltip: self.cancelPrompt, onClick: self.onCancel}],self.statusGetWorkspaceList);
 };
 
 config.macros.importTiddlers.onGetWorkspaceList = function(context,wizard)
 {
+	var self = config.macros.importTiddlers;
 	if(context.status !== true)
 		displayMessage("Error in importTiddlers.onGetWorkspaceList: " + context.statusText);
 	wizard.setValue("context",context);
@@ -168,16 +172,16 @@ config.macros.importTiddlers.onGetWorkspaceList = function(context,wizard)
 		workspace = context.workspaces[0].title;
 	if(workspace) {
 		//# if there is only one workspace, then open it directly
-		var ret = context.adaptor.openWorkspace(workspace,context,wizard,config.macros.importTiddlers.onOpenWorkspace);
+		var ret = context.adaptor.openWorkspace(workspace,context,wizard,self.onOpenWorkspace);
 		if(ret !== true)
 			displayMessage(ret);
 		wizard.setValue("workspace",workspace);
-		wizard.setButtons([{caption: config.macros.importTiddlers.cancelLabel, tooltip: config.macros.importTiddlers.cancelPrompt, onClick: config.macros.importTiddlers.onCancel}],config.macros.importTiddlers.statusOpenWorkspace);
+		wizard.setButtons([{caption: self.cancelLabel, tooltip: self.cancelPrompt, onClick: self.onCancel}],self.statusOpenWorkspace);
 		return;
 	}
-	wizard.addStep(config.macros.importTiddlers.step2Title,config.macros.importTiddlers.step2Html);
+	wizard.addStep(self.step2Title,self.step2Html);
 	var s = wizard.getElement("selWorkspace");
-	s.onchange = config.macros.importTiddlers.onWorkspaceChange;
+	s.onchange = self.onWorkspaceChange;
 	for(var t=0; t<context.workspaces.length; t++) {
 		var e = createTiddlyElement(s,"option",null,null,context.workspaces[t].title);
 		e.value = context.workspaces[t].title;
@@ -196,7 +200,7 @@ config.macros.importTiddlers.onGetWorkspaceList = function(context,wizard)
 		t = wizard.getElement("txtWorkspace");
 		t.value = workspace;
 	}
-	wizard.setButtons([{caption: config.macros.importTiddlers.openLabel, tooltip: config.macros.importTiddlers.openPrompt, onClick: config.macros.importTiddlers.onChooseWorkspace}]);
+	wizard.setButtons([{caption: self.openLabel, tooltip: self.openPrompt, onClick: self.onChooseWorkspace}]);
 };
 
 config.macros.importTiddlers.onWorkspaceChange = function(e)
@@ -210,33 +214,36 @@ config.macros.importTiddlers.onWorkspaceChange = function(e)
 
 config.macros.importTiddlers.onChooseWorkspace = function(e)
 {
+	var self = config.macros.importTiddlers;
 	var wizard = new Wizard(this);
 	var adaptor = wizard.getValue("adaptor");
 	var workspace = wizard.getElement("txtWorkspace").value;
 	wizard.setValue("workspace",workspace);
 	var context = wizard.getValue("context");
-	var ret = adaptor.openWorkspace(workspace,context,wizard,config.macros.importTiddlers.onOpenWorkspace);
+	var ret = adaptor.openWorkspace(workspace,context,wizard,self.onOpenWorkspace);
 	if(ret !== true)
 		displayMessage(ret);
-	wizard.setButtons([{caption: config.macros.importTiddlers.cancelLabel, tooltip: config.macros.importTiddlers.cancelPrompt, onClick: config.macros.importTiddlers.onCancel}],config.macros.importTiddlers.statusOpenWorkspace);
+	wizard.setButtons([{caption: self.cancelLabel, tooltip: self.cancelPrompt, onClick: self.onCancel}],self.statusOpenWorkspace);
 	return false;
 };
 
 config.macros.importTiddlers.onOpenWorkspace = function(context,wizard)
 {
+	var self = config.macros.importTiddlers;
 	if(context.status !== true)
 		displayMessage("Error in importTiddlers.onOpenWorkspace: " + context.statusText);
 	var adaptor = wizard.getValue("adaptor");
-	var ret = adaptor.getTiddlerList(context,wizard,config.macros.importTiddlers.onGetTiddlerList,wizard.getValue("feedTiddlerFilter"));
+	var ret = adaptor.getTiddlerList(context,wizard,self.onGetTiddlerList,wizard.getValue("feedTiddlerFilter"));
 	if(ret !== true)
 		displayMessage(ret);
-	wizard.setButtons([{caption: config.macros.importTiddlers.cancelLabel, tooltip: config.macros.importTiddlers.cancelPrompt, onClick: config.macros.importTiddlers.onCancel}],config.macros.importTiddlers.statusGetTiddlerList);
+	wizard.setButtons([{caption: self.cancelLabel, tooltip: self.cancelPrompt, onClick: self.onCancel}],self.statusGetTiddlerList);
 };
 
 config.macros.importTiddlers.onGetTiddlerList = function(context,wizard)
 {
+	var self = config.macros.importTiddlers;
 	if(context.status !== true) {
-		wizard.setButtons([{caption: config.macros.importTiddlers.cancelLabel, tooltip: config.macros.importTiddlers.cancelPrompt, onClick: config.macros.importTiddlers.onCancel}],config.macros.importTiddlers.errorGettingTiddlerList);
+		wizard.setButtons([{caption: self.cancelLabel, tooltip: self.cancelPrompt, onClick: self.onCancel}],self.errorGettingTiddlerList);
 		return;
 	}
 	// Extract data for the listview
@@ -257,18 +264,18 @@ config.macros.importTiddlers.onGetTiddlerList = function(context,wizard)
 	}
 	listedTiddlers.sort(function(a,b) {return a.title < b.title ? -1 : (a.title == b.title ? 0 : +1);});
 	// Display the listview
-	wizard.addStep(config.macros.importTiddlers.step3Title,config.macros.importTiddlers.step3Html);
+	wizard.addStep(self.step3Title,self.step3Html);
 	var markList = wizard.getElement("markList");
 	var listWrapper = document.createElement("div");
 	markList.parentNode.insertBefore(listWrapper,markList);
-	var listView = ListView.create(listWrapper,listedTiddlers,config.macros.importTiddlers.listViewTemplate);
+	var listView = ListView.create(listWrapper,listedTiddlers,self.listViewTemplate);
 	wizard.setValue("listView",listView);
 	wizard.setValue("context",context);
 	var txtSaveTiddler = wizard.getElement("txtSaveTiddler");
-	txtSaveTiddler.value = config.macros.importTiddlers.generateSystemServerName(wizard);
+	txtSaveTiddler.value = self.generateSystemServerName(wizard);
 	wizard.setButtons([
-			{caption: config.macros.importTiddlers.cancelLabel, tooltip: config.macros.importTiddlers.cancelPrompt, onClick: config.macros.importTiddlers.onCancel},
-			{caption: config.macros.importTiddlers.importLabel, tooltip: config.macros.importTiddlers.importPrompt, onClick: config.macros.importTiddlers.doImport}
+			{caption: self.cancelLabel, tooltip: self.cancelPrompt, onClick: self.onCancel},
+			{caption: self.importLabel, tooltip: self.importPrompt, onClick: self.doImport}
 		]);
 };
 
@@ -283,9 +290,10 @@ config.macros.importTiddlers.generateSystemServerName = function(wizard)
 
 config.macros.importTiddlers.saveServerTiddler = function(wizard)
 {
+	var self = config.macros.importTiddlers;
 	var txtSaveTiddler = wizard.getElement("txtSaveTiddler").value;
 	if(store.tiddlerExists(txtSaveTiddler)) {
-		if(!confirm(config.macros.importTiddlers.confirmOverwriteSaveTiddler.format([txtSaveTiddler])))
+		if(!confirm(self.confirmOverwriteSaveTiddler.format([txtSaveTiddler])))
 			return;
 		store.suspendNotifications();
 		store.removeTiddler(txtSaveTiddler);
@@ -294,15 +302,16 @@ config.macros.importTiddlers.saveServerTiddler = function(wizard)
 	var serverType = wizard.getValue("serverType");
 	var host = wizard.getValue("host");
 	var workspace = wizard.getValue("workspace");
-	var text = config.macros.importTiddlers.serverSaveTemplate.format([serverType,host,workspace]);
-	store.saveTiddler(txtSaveTiddler,txtSaveTiddler,text,config.macros.importTiddlers.serverSaveModifier,new Date(),["systemServer"]);
+	var text = self.serverSaveTemplate.format([serverType,host,workspace]);
+	store.saveTiddler(txtSaveTiddler,txtSaveTiddler,text,self.serverSaveModifier,new Date(),["systemServer"]);
 };
 
 config.macros.importTiddlers.doImport = function(e)
 {
+	var self = config.macros.importTiddlers;
 	var wizard = new Wizard(this);
 	if(wizard.getElement("chkSave").checked)
-		config.macros.importTiddlers.saveServerTiddler(wizard);
+		self.saveServerTiddler(wizard);
 	var chkSync = wizard.getElement("chkSync").checked;
 	wizard.setValue("sync",chkSync);
 	var listView = wizard.getValue("listView");
@@ -315,10 +324,10 @@ config.macros.importTiddlers.doImport = function(e)
 			overwrite.push(rowNames[t]);
 	}
 	if(overwrite.length > 0) {
-		if(!confirm(config.macros.importTiddlers.confirmOverwriteText.format([overwrite.join(", ")])))
+		if(!confirm(self.confirmOverwriteText.format([overwrite.join(", ")])))
 			return false;
 	}
-	wizard.addStep(config.macros.importTiddlers.step4Title.format([rowNames.length]),config.macros.importTiddlers.step4Html);
+	wizard.addStep(self.step4Title.format([rowNames.length]),self.step4Html);
 	for(t=0; t<rowNames.length; t++) {
 		var link = document.createElement("div");
 		createTiddlyLink(link,rowNames[t],true);
@@ -327,8 +336,8 @@ config.macros.importTiddlers.doImport = function(e)
 	}
 	wizard.setValue("remainingImports",rowNames.length);
 	wizard.setButtons([
-			{caption: config.macros.importTiddlers.cancelLabel, tooltip: config.macros.importTiddlers.cancelPrompt, onClick: config.macros.importTiddlers.onCancel}
-		],config.macros.importTiddlers.statusDoingImport);
+			{caption: self.cancelLabel, tooltip: self.cancelPrompt, onClick: self.onCancel}
+		],self.statusDoingImport);
 	var wizardContext = wizard.getValue("context");
 	var tiddlers = wizardContext ? wizardContext.tiddlers : [];
 	for(t=0; t<rowNames.length; t++) {
@@ -336,13 +345,14 @@ config.macros.importTiddlers.doImport = function(e)
 			allowSynchronous:true,
 			tiddler:tiddlers[tiddlers.findByField("title",rowNames[t])]
 		};
-		adaptor.getTiddler(rowNames[t],context,wizard,config.macros.importTiddlers.onGetTiddler);
+		adaptor.getTiddler(rowNames[t],context,wizard,self.onGetTiddler);
 	}
 	return false;
 };
 
 config.macros.importTiddlers.onGetTiddler = function(context,wizard)
 {
+	var self = config.macros.importTiddlers;
 	if(!context.status)
 		displayMessage("Error in importTiddlers.onGetTiddler: " + context.statusText);
 	var tiddler = context.tiddler;
@@ -362,8 +372,8 @@ config.macros.importTiddlers.onGetTiddler = function(context,wizard)
 			refreshDisplay();
 		}
 		wizard.setButtons([
-				{caption: config.macros.importTiddlers.doneLabel, tooltip: config.macros.importTiddlers.donePrompt, onClick: config.macros.importTiddlers.onClose}
-			],config.macros.importTiddlers.statusDoneImport);
+				{caption: self.doneLabel, tooltip: self.donePrompt, onClick: self.onClose}
+			],self.statusDoneImport);
 		autoSaveChanges();
 	}
 };
