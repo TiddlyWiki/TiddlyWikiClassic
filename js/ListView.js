@@ -155,12 +155,13 @@ ListView.columnTypes.Size = {
 	createHeader: ListView.columnTypes.String.createHeader,
 	createItem: function(place,listObject,field,columnTemplate,col,row)
 		{
+			var msg = config.messages.sizeTemplates;
 			var v = listObject[field];
 			if(v != undefined) {
 				var t = 0;
-				while(t<config.messages.sizeTemplates.length-1 && v<config.messages.sizeTemplates[t].unit)
+				while(t<msg.length-1 && v<msg[t].unit)
 					t++;
-				createTiddlyText(place,config.messages.sizeTemplates[t].template.format([Math.round(v/config.messages.sizeTemplates[t].unit)]));
+				createTiddlyText(place,msg[t].template.format([Math.round(v/msg[t].unit)]));
 			}
 		}
 };

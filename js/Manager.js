@@ -18,6 +18,7 @@ config.macros.plugins.handler = function(place,macroName,params,wikifier,paramSt
 
 config.macros.plugins.refresh = function(listWrapper,params)
 {
+	var me = config.macros.plugins;
 	var wizard = new Wizard(listWrapper);
 	var selectedRows = [];
 	ListView.forEachSelector(listWrapper,function(e,rowName) {
@@ -52,8 +53,8 @@ config.macros.plugins.refresh = function(listWrapper,params)
 		var listView = ListView.create(listWrapper,plugins,this.listViewTemplate,this.onSelectCommand);
 		wizard.setValue("listView",listView);
 		wizard.setButtons([
-				{caption: config.macros.plugins.removeLabel, tooltip: config.macros.plugins.removePrompt, onClick: config.macros.plugins.doRemoveTag},
-				{caption: config.macros.plugins.deleteLabel, tooltip: config.macros.plugins.deletePrompt, onClick: config.macros.plugins.doDelete}
+				{caption: me.removeLabel, tooltip: me.removePrompt, onClick: me.doRemoveTag},
+				{caption: me.deleteLabel, tooltip: me.deletePrompt, onClick: me.doDelete}
 			]);
 	}
 };

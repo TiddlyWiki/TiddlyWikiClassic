@@ -24,8 +24,9 @@ function loadOptionsCookie()
 			var name = cookies[c].substr(0,p).trim();
 			var value = cookies[c].substr(p+1).trim();
 			var optType = name.substr(0,3);
-			if(config.optionHandlers[optType] && config.optionHandlers[optType].set)
-				config.optionHandlers[optType].set(name,value);
+			var handlers = config.optionHandlers;
+			if(handlers[optType] && handlers[optType].set)
+				handlers[optType].set(name,value);
 		}
 	}
 }
@@ -36,8 +37,9 @@ function saveOptionCookie(name)
 		return;
 	var c = name + "=";
 	var optType = name.substr(0,3);
-	if(config.optionHandlers[optType] && config.optionHandlers[optType].get)
-		c += config.optionHandlers[optType].get(name);
+	var handlers = config.optionHandlers;
+	if(handlers[optType] && handlers[optType].get)
+		c += handlers[optType].get(name);
 	c += "; expires=Fri, 1 Jan 2038 12:00:00 UTC; path=/";
 	document.cookie = c;
 }

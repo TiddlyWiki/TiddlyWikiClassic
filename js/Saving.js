@@ -100,28 +100,29 @@ function saveChanges(onlyIfDirty,tiddlers)
 		return;
 	clearMessage();
 	var t0 = new Date();
+	var msg = config.messages;
 	//# Get the URL of the document
 	var originalPath = document.location.toString();
 	//# Check we were loaded from a file URL
 	if(originalPath.substr(0,5) != "file:") {
-		alert(config.messages.notFileUrlError);
-		if(store.tiddlerExists(config.messages.saveInstructions))
-			story.displayTiddler(null,config.messages.saveInstructions);
+		alert(msg.notFileUrlError);
+		if(store.tiddlerExists(msg.saveInstructions))
+			story.displayTiddler(null,msg.saveInstructions);
 		return;
 	}
 	var localPath = getLocalPath(originalPath);
 	//# Load the original file
 	var original = loadOriginal(localPath);
 	if(original == null) {
-		alert(config.messages.cantSaveError);
-		if(store.tiddlerExists(config.messages.saveInstructions))
-			story.displayTiddler(null,config.messages.saveInstructions);
+		alert(msg.cantSaveError);
+		if(store.tiddlerExists(msg.saveInstructions))
+			story.displayTiddler(null,msg.saveInstructions);
 		return;
 	}
 	//# Locate the storeArea div's
 	var posDiv = locateStoreArea(original);
 	if(!posDiv) {
-		alert(config.messages.invalidFileError.format([localPath]));
+		alert(msg.invalidFileError.format([localPath]));
 		return;
 	}
 	saveMain(localPath,original,posDiv);

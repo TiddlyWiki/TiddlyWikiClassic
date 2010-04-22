@@ -92,6 +92,7 @@ config.commands.jump.handlePopup = function(popup,title)
 
 config.commands.syncing.handlePopup = function(popup,title)
 {
+	var me = config.commands.syncing;
 	var tiddler = store.fetchTiddler(title);
 	if(!tiddler)
 		return;
@@ -102,18 +103,18 @@ config.commands.syncing.handlePopup = function(popup,title)
 		serverWorkspace = "";
 	if(serverType) {
 		var e = createTiddlyElement(popup,"li",null,"popupMessage");
-		e.innerHTML = config.commands.syncing.currentlySyncing.format([serverType,serverHost,serverWorkspace]);
+		e.innerHTML = me.currentlySyncing.format([serverType,serverHost,serverWorkspace]);
 	} else {
-		createTiddlyElement(popup,"li",null,"popupMessage",config.commands.syncing.notCurrentlySyncing);
+		createTiddlyElement(popup,"li",null,"popupMessage",me.notCurrentlySyncing);
 	}
 	if(serverType) {
 		createTiddlyElement(createTiddlyElement(popup,"li",null,"listBreak"),"div");
-		var btn = createTiddlyButton(createTiddlyElement(popup,"li"),this.captionUnSync,null,config.commands.syncing.onChooseServer);
+		var btn = createTiddlyButton(createTiddlyElement(popup,"li"),this.captionUnSync,null,me.onChooseServer);
 		btn.setAttribute("tiddler",title);
 		btn.setAttribute("server.type","");
 	}
 	createTiddlyElement(createTiddlyElement(popup,"li",null,"listBreak"),"div");
-	createTiddlyElement(popup,"li",null,"popupMessage",config.commands.syncing.chooseServer);
+	createTiddlyElement(popup,"li",null,"popupMessage",me.chooseServer);
 	var feeds = store.getTaggedTiddlers("systemServer","title");
 	for(var t=0; t<feeds.length; t++) {
 		var f = feeds[t];
@@ -128,11 +129,11 @@ config.commands.syncing.handlePopup = function(popup,title)
 			feedServerWorkspace = "";
 		var caption = f.title;
 		if(serverType == feedServerType && serverHost == feedServerHost && serverWorkspace == feedServerWorkspace) {
-			caption = config.commands.syncing.currServerMarker + caption;
+			caption = me.currServerMarker + caption;
 		} else {
-			caption = config.commands.syncing.notCurrServerMarker + caption;
+			caption = me.notCurrServerMarker + caption;
 		}
-		btn = createTiddlyButton(createTiddlyElement(popup,"li"),caption,null,config.commands.syncing.onChooseServer);
+		btn = createTiddlyButton(createTiddlyElement(popup,"li"),caption,null,me.onChooseServer);
 		btn.setAttribute("tiddler",title);
 		btn.setAttribute("server.type",feedServerType);
 		btn.setAttribute("server.host",feedServerHost);

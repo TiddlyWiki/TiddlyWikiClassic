@@ -43,11 +43,12 @@ config.macros.search.onClick = function(e)
 
 config.macros.search.onKeyPress = function(ev)
 {
+	var me = config.macros.search;
 	var e = ev || window.event;
 	switch(e.keyCode) {
 		case 13: // Ctrl-Enter
 		case 10: // Ctrl-Enter on IE PC
-			config.macros.search.doSearch(this);
+			me.doSearch(this);
 			break;
 		case 27: // Escape
 			this.value = "";
@@ -57,14 +58,14 @@ config.macros.search.onKeyPress = function(ev)
 	if(config.options.chkIncrementalSearch) {
 		if(this.value.length > 2) {
 			if(this.value != this.getAttribute("lastSearchText")) {
-				if(config.macros.search.timeout)
-					clearTimeout(config.macros.search.timeout);
+				if(me.timeout)
+					clearTimeout(me.timeout);
 				var txt = this;
-				config.macros.search.timeout = setTimeout(function() {config.macros.search.doSearch(txt);},500);
+				me.timeout = setTimeout(function() {me.doSearch(txt);},500);
 			}
 		} else {
-			if(config.macros.search.timeout)
-				clearTimeout(config.macros.search.timeout);
+			if(me.timeout)
+				clearTimeout(me.timeout);
 		}
 	}
 };

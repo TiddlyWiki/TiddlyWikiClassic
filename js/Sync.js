@@ -126,6 +126,7 @@ config.macros.sync.createSyncTask = function(syncItem)
 	};
 
 	var getTiddlerListCallback = function(context,sycnItems) {
+		var me = config.macros.sync;
 		if(!context.status) {
 			displayMessage(context.statusText);
 			return false;
@@ -137,12 +138,12 @@ config.macros.sync.createSyncTask = function(syncItem)
 			var f = tiddlers.findByField("title",si.title);
 			if(f !== null) {
 				if(tiddlers[f].fields['server.page.revision'] > si.tiddler.fields['server.page.revision']) {
-					si.syncStatus = config.macros.sync.syncStatusList[si.isTouched ? 'changedBoth' : 'changedServer'];
+					si.syncStatus = me.syncStatusList[si.isTouched ? 'changedBoth' : 'changedServer'];
 				}
 			} else {
-				si.syncStatus = config.macros.sync.syncStatusList.notFound;
+				si.syncStatus = me.syncStatusList.notFound;
 			}
-			config.macros.sync.updateSyncStatus(si);
+			me.updateSyncStatus(si);
 		}
 		return true;
 	};
@@ -165,24 +166,25 @@ config.macros.sync.updateSyncStatus = function(syncItem)
 
 config.macros.sync.doSync = function(e)
 {
+	var me = config.macros.sync;
 	var getTiddlerCallback = function(context,syncItem) {
 		if(syncItem) {
 			var tiddler = context.tiddler;
 			store.saveTiddler(tiddler.title,tiddler.title,tiddler.text,tiddler.modifier,tiddler.modified,tiddler.tags,tiddler.fields,true,tiddler.created);
-			syncItem.syncStatus = config.macros.sync.syncStatusList.gotFromServer;
-			config.macros.sync.updateSyncStatus(syncItem);
+			syncItem.syncStatus = me.syncStatusList.gotFromServer;
+			me.updateSyncStatus(syncItem);
 		}
 	};
 	var putTiddlerCallback = function(context,syncItem) {
 		if(syncItem) {
 			store.resetTiddler(context.title);
-			syncItem.syncStatus = config.macros.sync.syncStatusList.putToServer;
-			config.macros.sync.updateSyncStatus(syncItem);
+			syncItem.syncStatus = me.syncStatusList.putToServer;
+			me.updateSyncStatus(syncItem);
 		}
 	};
 
 	var rowNames = ListView.getSelectedRows(currSync.listView);
-	var sl = config.macros.sync.syncStatusList;
+	var sl = me.syncStatusList;
 	for(var i=0; i<currSync.syncList.length; i++) {
 		var si = currSync.syncList[i];
 		if(rowNames.indexOf(si.title) != -1) {
