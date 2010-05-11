@@ -25,6 +25,8 @@ function main()
 	var t10,t9,t8,t7,t6,t5,t4,t3,t2,t1,t0 = new Date();
 	startingUp = true;
 	jQuery.noConflict();
+	_ = jQuery.gt.gettext;
+	n_ = jQuery.gt.ngettext;
 	window.onbeforeunload = function(e) {if(window.confirmExit) return confirmExit();};
 	params = getParameters();
 	if(params)
