@@ -34,7 +34,7 @@ $.twStylesheet = function(css, options) {
 			el.parentNode.removeChild(el);
 		}
 		doc.getElementsByTagName("head")[0].insertAdjacentHTML("beforeEnd",
-			"&nbsp;<style id='" + id + "'>" + css + "</style>"); // fails without &nbsp;
+			'&nbsp;<style id="' + id + '" type="text/css">' + css + '</style>'); // fails without &nbsp;
 	} else { // modern browsers
 		if(el) {
 			el.replaceChild(doc.createTextNode(css), el.firstChild);
