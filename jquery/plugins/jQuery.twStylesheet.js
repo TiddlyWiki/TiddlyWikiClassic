@@ -31,10 +31,11 @@ $.twStylesheet = function(css, options) {
 	var el = doc.getElementById(id);
 	if(doc.createStyleSheet) { // IE-specific handling
 		if(el) {
-			el.parentNode.removeChild(el);
+			el.cssText = css;
+		} else {
+			doc.getElementsByTagName("head")[0].insertAdjacentHTML("beforeEnd",
+				'&nbsp;<style id="' + id + '" type="text/css">' + css + '</style>'); // fails without &nbsp;
 		}
-		doc.getElementsByTagName("head")[0].insertAdjacentHTML("beforeEnd",
-			'&nbsp;<style id="' + id + '" type="text/css">' + css + '</style>'); // fails without &nbsp;
 	} else { // modern browsers
 		if(el) {
 			el.replaceChild(doc.createTextNode(css), el.firstChild);
