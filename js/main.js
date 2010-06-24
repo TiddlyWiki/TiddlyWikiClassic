@@ -135,7 +135,7 @@ function loadPlugins()
 	for(var i=0; i<nPlugins; i++) {
 		var p = getPluginInfo(tiddlers[i]);
 		installedPlugins[i] = p;
-		var n = p.Name;
+		var n = p.Name || p.title;
 		if(n)
 			map[n] = p;
 		n = p.Source;
