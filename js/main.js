@@ -55,7 +55,7 @@ function main()
 	formatter = new Formatter(config.formatters);
 	invokeParamifier(params,"onconfig");
 	story.switchTheme(config.options.txtTheme);
-	showBackstage = showBackstage || !readOnly;
+	showBackstage = showBackstage !== undefined ? showBackstage : !readOnly;
 	t6 = new Date();
 	for(var m in config.macros) {
 		if(config.macros[m].init)
