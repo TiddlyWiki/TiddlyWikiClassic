@@ -24,6 +24,7 @@ function main()
 {
 	var t10,t9,t8,t7,t6,t5,t4,t3,t2,t1,t0 = new Date();
 	startingUp = true;
+	var doc = jQuery(document);
 	jQuery.noConflict();
 	_ = jQuery.gt.gettext;
 	n_ = jQuery.gt.ngettext;
@@ -41,16 +42,16 @@ function main()
 		store.addNotification(config.notifyTiddlers[s].name,config.notifyTiddlers[s].notify);
 	t1 = new Date();
 	loadShadowTiddlers();
-	jQuery().trigger("loadShadows");
+	doc.trigger("loadShadows");
 	t2 = new Date();
 	store.loadFromDiv("storeArea","store",true);
-	jQuery().trigger("loadTiddlers");
+	doc.trigger("loadTiddlers");
 	t3 = new Date();
 	invokeParamifier(params,"onload");
 	t4 = new Date();
 	readOnly = (window.location.protocol == "file:") ? false : config.options.chkHttpReadOnly;
 	var pluginProblem = loadPlugins();
-	jQuery().trigger("loadPlugins");
+	doc.trigger("loadPlugins");
 	t5 = new Date();
 	formatter = new Formatter(config.formatters);
 	invokeParamifier(params,"onconfig");
@@ -84,7 +85,7 @@ function main()
 		displayMessage("Total: " + (t10-t0) + " ms");
 	}
 	startingUp = false;
-	jQuery().trigger("startup");
+	doc.trigger("startup");
 }
 
 // Called on unload. All functions called conditionally since they themselves may have been unloaded.
