@@ -172,6 +172,9 @@ function loadPlugins()
 				} catch(ex) {
 					p.log.push(config.messages.pluginError.format([exceptionText(ex)]));
 					p.error = true;
+					if(!console.tiddlywiki) {
+						console.log("error evaluating " + tiddler.title, ex);
+					}
 				}
 				pluginInfo.startupTime = String((new Date()) - startTime) + "ms";
 			} else {
