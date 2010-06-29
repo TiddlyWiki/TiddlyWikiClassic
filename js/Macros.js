@@ -116,9 +116,9 @@ config.macros.tiddler.handler = function(place,macroName,params,wikifier,paramSt
 	var tiddlerName = names[0];
 	var className = names[1] || null;
 	var args = params[0]["with"];
-	var wrapper = createTiddlyElement(place,"span",null,className);
-	wrapper.setAttribute("refresh","content");
-	wrapper.setAttribute("tiddler",tiddlerName);
+	var wrapper = createTiddlyElement(place,"span",null,className,null,{
+		refresh: "content", tiddler: tiddlerName
+	});
 	if(args!==undefined)
 		wrapper.setAttribute("args","[["+args.join("]] [[")+"]]");
 	this.transclude(wrapper,tiddlerName,args);
@@ -368,12 +368,10 @@ config.macros.edit.handler = function(place,macroName,params,wikifier,paramStrin
 		story.setDirty(tiddler.title,true);
 		var e,v;
 		if(field != "text" && !rows) {
-			e = createTiddlyElement(null,"input");
-			e.setAttribute("edit",field);
-			e.setAttribute("type","text");
+			e = createTiddlyElement(null,"input",null,null,null,{
+				type: "text", edit: field, size: "40", autocomplete: "off"
+			});
 			e.value = store.getValue(tiddler,field) || defVal;
-			e.setAttribute("size","40");
-			e.setAttribute("autocomplete","off");
 			place.appendChild(e);
 		} else {
 			var wrapper1 = createTiddlyElement(null,"fieldset",null,"fieldsetFix");
