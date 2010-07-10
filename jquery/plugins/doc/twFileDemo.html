@@ -394,8 +394,9 @@
 				// If the file loads succesfully create an editing element
 				if(text){
 					// Create a textarea
-					var textarea = $("<textarea></textarea><br>").css({
-						marginTop: "8px",
+					var textarea = $("<textarea></textarea>").css({
+						margin: "8px auto 0",
+						display: "block",
 						width: "90%",
 						height: "90%"
 					}).text(text);
