@@ -64,7 +64,7 @@ Story.prototype.displayTiddlers = function(srcElement,titles,template,animate,un
 
 //# Display a given tiddler with a given template. If the tiddler is already displayed but with a different
 //# template, it is switched to the specified template. If the tiddler does not exist, and if server hosting
-//# custom fields were provided, then an attempt is made to retrieve the tiddler from the server
+//# custom fields were provided, then an attempt is made to retrieve the tiddler from the server
 //# srcElement - reference to element from which this one is being opened -or-
 //#              special positions "top", "bottom"
 //# tiddler - tiddler or title of tiddler to display
@@ -81,10 +81,12 @@ Story.prototype.displayTiddler = function(srcElement,tiddler,template,animate,un
 	var title = (tiddler instanceof Tiddler) ? tiddler.title : tiddler;
 	var tiddlerElem = this.getTiddler(title);
 	if(tiddlerElem) {
-		if(toggle)
-			this.closeTiddler(title,true);
-		else
+		if(toggle) {
+			if(tiddlerElem.getAttribute("dirty") != "true")
+				this.closeTiddler(title,true);
+		} else {
 			this.refreshTiddler(title,template,false,customFields);
+		}
 	} else {
 		var place = this.getContainer();
 		var before = this.positionTiddler(srcElement);
