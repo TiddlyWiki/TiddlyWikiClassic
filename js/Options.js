@@ -35,6 +35,10 @@ function saveOptionCookie(name)
 {
 	if(safeMode)
 		return;
+	if(name.match(/[()\s]/g, "_")) {
+		alert(config.messages.invalidCookie.format([name]));
+		return;
+	}
 	var c = name + "=";
 	var optType = name.substr(0,3);
 	var handlers = config.optionHandlers;
