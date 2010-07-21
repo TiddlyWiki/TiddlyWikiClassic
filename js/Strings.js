@@ -22,8 +22,9 @@ String.prototype.unDash = function()
 };
 
 // Substitute substrings from an array into a format string that includes '%1'-type specifiers
-String.prototype.format = function(substrings)
+String.prototype.format = function(s)
 {
+	var substrings = s && s.constructor == Array ? s : arguments;
 	var subRegExp = /(?:%(\d+))/mg;
 	var currPos = 0;
 	var r = [];
