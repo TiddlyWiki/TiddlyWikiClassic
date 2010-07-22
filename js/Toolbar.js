@@ -150,10 +150,18 @@ config.macros.toolbar.handler = function(place,macroName,params,wikifier,paramSt
 				c = c.substr(1);
 				break;
 			}
-			if(c in config.commands)
+			if(c in config.commands) {
 				this.createCommand(place,c,tiddler,className);
+			} else {
+				this.customCommand(place,c,wikifier,tiddler);
+			}
 			break;
 		}
 	}
 };
+
+// Overrideable function to extend toolbar handler
+config.macros.toolbar.customCommand = function(place,command,wikifier,tiddler)
+{
+}
 
