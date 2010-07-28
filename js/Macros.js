@@ -175,16 +175,19 @@ config.macros.tags.handler = function(place,macroName,params,wikifier,paramStrin
 		tiddler = store.getTiddler(title);
 	var sep = getParam(params,"sep"," ");
 	var lingo = config.views.wikified.tag;
-	var prompt = tiddler.tags.length == 0 ? lingo.labelNoTags : lingo.labelTags;
-	createTiddlyElement(ul,"li",null,"listTitle",prompt.format([tiddler.title]));
+	var label = null;
 	for(var t=0; t<tiddler.tags.length; t++) {
 		var tag = store.getTiddler(tiddler.tags[t]);
 		if(!tag || !tag.tags.contains("excludeLists")) {
+			if(!label)
+				label = createTiddlyElement(ul,"li",null,"listTitle",lingo.labelTags.format([tiddler.title]));
 			createTagButton(createTiddlyElement(ul,"li"),tiddler.tags[t],tiddler.title);
 			if(t<tiddler.tags.length-1)
 				createTiddlyText(ul,sep);
 		}
 	}
+	if(!label)
+		createTiddlyElement(ul,"li",null,"listTitle",lingo.labelNoTags.format([tiddler.title]));
 };
 
 config.macros.tagging.handler = function(place,macroName,params,wikifier,paramString,tiddler)
