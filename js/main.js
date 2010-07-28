@@ -26,8 +26,6 @@ function main()
 	startingUp = true;
 	var doc = jQuery(document);
 	jQuery.noConflict();
-	_ = jQuery.gt.gettext;
-	n_ = jQuery.gt.ngettext;
 	window.onbeforeunload = function(e) {if(window.confirmExit) return confirmExit();};
 	params = getParameters();
 	if(params)
