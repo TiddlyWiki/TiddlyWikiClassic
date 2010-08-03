@@ -435,10 +435,16 @@ jQuery(document).ready(function(){
 	test("Date: conversions", function() {
 		same(typeof Date.convertFromYYYYMMDDHHMMSSMMM,"function",'should parse define a function');
 		same(typeof Date.convertFromYYYYMMDDHHMMSSMMM("20070228"),"object",'should return an object');
-		equals(Date.convertFromYYYYMMDDHHMMSSMMM(),"Invalid Date",'should parse null value should be invalid');
-		equals(Date.convertFromYYYYMMDDHHMMSSMMM("2006"),"Invalid Date",'should parse year only should be invalid');
-		equals(Date.convertFromYYYYMMDDHHMMSSMMM("20061"),"Invalid Date",'should parse year, short month only should be invalid');
-		equals(Date.convertFromYYYYMMDDHHMMSSMMM("200601"),"Invalid Date",'should parse year,month only should be invalid');
+
+		var actual = Date.convertFromYYYYMMDDHHMMSSMMM();
+		ok(actual=="Invalid Date"||isNaN(actual),'should parse null value should be invalid');
+		actual = Date.convertFromYYYYMMDDHHMMSSMMM("2006"),
+		ok(actual=="Invalid Date"||isNaN(actual),'should parse year only should be invalid');
+		actual = Date.convertFromYYYYMMDDHHMMSSMMM("20061"),
+		ok(actual=="Invalid Date"||isNaN(actual),'should parse year, short month only should be invalid');
+		actual = Date.convertFromYYYYMMDDHHMMSSMMM("200601")
+		ok(actual=="Invalid Date"||isNaN(actual),'should parse year,month only should be invalid');
+
 		same(Date.convertFromYYYYMMDDHHMMSSMMM("20070228"),new Date(Date.UTC(2007,1,28)),'should parse date only');
 		same(Date.convertFromYYYYMMDDHHMMSSMMM("19691103"),new Date(Date.UTC(1969,10,3)),'should parse 1969 date only');
 		same(Date.convertFromYYYYMMDDHHMMSSMMM("2006011"),new Date(Date.UTC(2006,0,1)),'should parse year,month, short day');
@@ -455,7 +461,7 @@ jQuery(document).ready(function(){
 		same(Date.convertFromYYYYMMDDHHMMSSMMM("  1999/12/15   12:57:19  678    "),new Date(Date.UTC(1999,11,15,12,57,19,678)),'should parse ignoring whitespace');
 		same(Date.convertFromYYYYMMDDHHMMSSMMM("  1999/12/15   12:57:19  678  GMT (BST)  "),new Date(Date.UTC(1999,11,15,12,57,19,678)),'should parse ignoring trailing text');
 		same(Date.convertFromYYYYMMDDHHMM("  1999/12/15   12:57:19  678  GMT (BST)  "),new Date(Date.UTC(1999,11,15,12,57,0,0)),'should parse ignoring whitespace, punctuation and trailing text');
-		var d1 = new Date(Date.UTC(1987,09,29,21,43,57,678));
+		var d1 = new Date(Date.UTC(1987,9,29,21,43,57,678));
 		var s1 = d1.convertToYYYYMMDDHHMMSSMMM();
 		var d2 = Date.convertFromYYYYMMDDHHMMSSMMM(s1);
 		var s2 = d2.convertToYYYYMMDDHHMMSSMMM();
