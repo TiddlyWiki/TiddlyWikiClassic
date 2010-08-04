@@ -99,6 +99,13 @@ config.macros.importTiddlers.onFeedChange = function(e)
 config.macros.importTiddlers.onBrowseChange = function(e)
 {
 	var wizard = new Wizard(this);
+	if (this.files && this.files[0]) {
+		try {
+			netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
+		} catch (ex) {
+			showException(ex);
+		}
+	}
 	var fileInput = wizard.getElement("txtPath");
 	fileInput.value = config.macros.importTiddlers.getURLFromLocalPath(this.value);
 	var serverType = wizard.getElement("selTypes");
