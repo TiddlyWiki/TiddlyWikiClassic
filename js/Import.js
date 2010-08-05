@@ -99,9 +99,9 @@ config.macros.importTiddlers.onFeedChange = function(e)
 config.macros.importTiddlers.onBrowseChange = function(e)
 {
 	var wizard = new Wizard(this);
-	if (this.files && this.files[0]) {
+	if(this.files && this.files[0]) {
 		try {
-			netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
+			netscape.security.PrivilegeManager.enablePrivilege("UniversalFileRead");
 		} catch (ex) {
 			showException(ex);
 		}
@@ -115,13 +115,13 @@ config.macros.importTiddlers.onBrowseChange = function(e)
 
 config.macros.importTiddlers.getURLFromLocalPath = function(v)
 {
-	if(!v||!v.length)
+	if(!v || !v.length)
 		return v;
 	v = v.replace(/\\/g,"/"); // use "/" for cross-platform consistency
 	var u;
 	var t = v.split(":");
-	var p = t[1]||t[0]; // remove drive letter (if any)
-	if (t[1] && (t[0]=="http"||t[0]=="https"||t[0]=="file")) {
+	var p = t[1] || t[0]; // remove drive letter (if any)
+	if(t[1] && (t[0] == "http" || t[0] == "https" || t[0] == "file")) {
 		//# input is already a URL
 		u = v;
 	} else if(p.substr(0,1)=="/") {
@@ -131,7 +131,7 @@ config.macros.importTiddlers.getURLFromLocalPath = function(v)
 		//# path is relative, add current document protocol+domain+path
 		var c = document.location.href.replace(/\\/g,"/");
 		var pos = c.lastIndexOf("/");
-		if (pos!=-1)
+		if(pos!=-1)
 			c = c.substr(0,pos); // remove filename
 		u = c + "/" + p;
 	}
