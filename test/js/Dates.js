@@ -461,6 +461,11 @@ jQuery(document).ready(function(){
 		same(Date.convertFromYYYYMMDDHHMMSSMMM("  1999/12/15   12:57:19  678    "),new Date(Date.UTC(1999,11,15,12,57,19,678)),'should parse ignoring whitespace');
 		same(Date.convertFromYYYYMMDDHHMMSSMMM("  1999/12/15   12:57:19  678  GMT (BST)  "),new Date(Date.UTC(1999,11,15,12,57,19,678)),'should parse ignoring trailing text');
 		same(Date.convertFromYYYYMMDDHHMM("  1999/12/15   12:57:19  678  GMT (BST)  "),new Date(Date.UTC(1999,11,15,12,57,0,0)),'should parse ignoring whitespace, punctuation and trailing text');
+		same(Date.convertFromYYYYMMDDHHMM("  1999/12/15   12:57:xx  "),new Date(Date.UTC(1999,11,15,12,57,0,0)),'should parse ignoring whitespace, punctuation and trailing text');
+		same(Date.convertFromYYYYMMDDHHMMSS("199912151257xx"),new Date(Date.UTC(1999,11,15,12,57,0,0)),'should parse ignoring trailing text');
+		same(Date.convertFromYYYYMMDDHHMMSS("19991215125719"),new Date(Date.UTC(1999,11,15,12,57,19,0)),'should parse including seconds');
+		same(Date.convertFromYYYYMMDDHHMMSS("19991215125709"),new Date(Date.UTC(1999,11,15,12,57,9,0)),'should parse including seconds');
+		same(Date.convertFromYYYYMMDDHHMMSS("1999121512571"),new Date(Date.UTC(1999,11,15,12,57,1,0)),'should parse including partial seconds');
 		var d1 = new Date(Date.UTC(1987,9,29,21,43,57,678));
 		var s1 = d1.convertToYYYYMMDDHHMMSSMMM();
 		var d2 = Date.convertFromYYYYMMDDHHMMSSMMM(s1);

@@ -93,6 +93,13 @@ Date.convertFromYYYYMMDDHHMM = function(d)
 	return Date.convertFromYYYYMMDDHHMMSSMMM(d.substr(0,12));
 };
 
+// Static method to create a date from a UTC YYYYMMDDHHMMSS format string
+Date.convertFromYYYYMMDDHHMMSS = function(d)
+{
+	d = d?d.replace(/[^0-9]/g, ""):""; 
+	return Date.convertFromYYYYMMDDHHMMSSMMM(d.substr(0,14));
+};
+
 // Static method to create a date from a UTC YYYYMMDDHHMMSSMMM format string
 Date.convertFromYYYYMMDDHHMMSSMMM = function(d)
 {
