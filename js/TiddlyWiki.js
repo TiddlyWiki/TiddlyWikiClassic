@@ -307,15 +307,19 @@ TiddlyWiki.prototype.addTiddlerFields = function(title,fields)
 };
 
 // Store tiddler in TiddlyWiki instance
-//# Existing tiddlers can be renamed using the {{{newTitle}}} argument.
 //#
-//# {{{created}}} and {{{modified}}} arguments are Date objects,
-//# {{{tags}}} argument is an array of strings.
+//# optionally accepts a Tiddler instance as first argument, rendering
+//# subsequent arguments obsolete
 //#
-//# {{{fields}}} should retain existing tiddler's extended fields and use
-//# {{{config.defaultCustomFields}}} as fallback.
+//# existing tiddlers can be renamed using the newTitle argument
 //#
-//# N.B.: Does not trigger [[autoSaveChanges]].
+//# created and modified arguments are Date objects,
+//# tags argument is an array of strings
+//#
+//# fields should retain existing tiddler's extended fields and use
+//# config.defaultCustomFields as fallback
+//#
+//# NB: Does not trigger autoSaveChanges.
 TiddlyWiki.prototype.saveTiddler = function(title,newTitle,newBody,modifier,modified,tags,fields,clearChangeCount,created,creator)
 {
 	var tiddler;
