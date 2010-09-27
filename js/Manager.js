@@ -50,12 +50,15 @@ config.macros.plugins.refresh = function(listWrapper,params)
 		createTiddlyElement(listWrapper,"em",null,null,this.noPluginText);
 		wizard.setButtons([]);
 	} else {
-		var listView = ListView.create(listWrapper,plugins,this.listViewTemplate,this.onSelectCommand);
+		var template = readOnly ? this.listViewTemplateReadOnly : this.listViewTemplate;
+		var listView = ListView.create(listWrapper,plugins,template,this.onSelectCommand);
 		wizard.setValue("listView",listView);
-		wizard.setButtons([
+		if(!readOnly) {
+			wizard.setButtons([
 				{caption: me.removeLabel, tooltip: me.removePrompt, onClick: me.doRemoveTag},
 				{caption: me.deleteLabel, tooltip: me.deletePrompt, onClick: me.doDelete}
 			]);
+		}
 	}
 };
 

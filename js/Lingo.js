@@ -241,6 +241,21 @@ merge(config.macros.plugins,{
 		rowClasses: [
 			{className: 'error', field: 'error'},
 			{className: 'warning', field: 'warning'}
+			]},
+	listViewTemplateReadOnly: {
+		columns: [
+			{name: 'Tiddler', field: 'tiddler', title: "Tiddler", type: 'Tiddler'},
+			{name: 'Description', field: 'Description', title: "Description", type: 'String'},
+			{name: 'Version', field: 'Version', title: "Version", type: 'String'},
+			{name: 'Size', field: 'size', tiddlerLink: 'size', title: "Size", type: 'Size'},
+			{name: 'Executed', field: 'executed', title: "Loaded", type: 'Boolean', trueText: "Yes", falseText: "No"},
+			{name: 'Startup Time', field: 'startupTime', title: "Startup Time", type: 'String'},
+			{name: 'Error', field: 'error', title: "Status", type: 'Boolean', trueText: "Error", falseText: "OK"},
+			{name: 'Log', field: 'log', title: "Log", type: 'StringList'}
+			],
+		rowClasses: [
+			{className: 'error', field: 'error'},
+			{className: 'warning', field: 'warning'}
 			]}
 	});
 
