@@ -102,8 +102,15 @@ String.prototype.parseParams = function(defaultName,defaultValue,allowEval,noNam
 		else if(match[p+3]) // Double-brace quoted
 			try {
 				n = match[p+3];
-				if(allowEval)
-					n = window.eval(n);
+				if(allowEval && config.evaluateMacroParameters != "none") {
+					if(config.evaluateMacroParameters == "restricted") {
+						if(window.restrictedEval) {
+							n = window.restrictedEval(n);
+						}
+					} else {
+						n = window.eval(n);
+					}
+				}
 			} catch(ex) {
 				throw "Unable to evaluate {{" + match[p+3] + "}}: " + exceptionText(ex);
 			}
@@ -159,9 +166,9 @@ String.prototype.parseParams = function(defaultName,defaultValue,allowEval,noNam
 // Process a string list of macro parameters into an array. Parameters can be quoted with "", '',
 // [[]], {{ }} or left unquoted (and therefore space-separated). Double-braces {{}} results in
 // an *evaluated* parameter: e.g. {{config.options.txtUserName}} results in the current user's name.
-String.prototype.readMacroParams = function()
+String.prototype.readMacroParams = function(notAllowEval)
 {
-	var p = this.parseParams("list",null,true,true);
+	var p = this.parseParams("list",null,!notAllowEval,true);
 	var n = [];
 	for(var t=1; t<p.length; t++)
 		n.push(p[t].value);

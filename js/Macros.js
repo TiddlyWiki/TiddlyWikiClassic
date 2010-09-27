@@ -111,7 +111,21 @@ config.macros.timeline.handler = function(place,macroName,params)
 
 config.macros.tiddler.handler = function(place,macroName,params,wikifier,paramString,tiddler)
 {
-	params = paramString.parseParams("name",null,true,false,true);
+	var allowEval = true;
+	var stack = config.macros.tiddler.tiddlerStack;
+	if(stack.length > 0 && config.evaluateMacroParameters == "system") {
+		// included tiddler and "system" evaluation required, so check tiddler tagged appropriately
+		var title = stack[stack.length-1];
+		var pos = title.indexOf(config.textPrimitives.sectionSeparator);
+		if(pos != -1) {
+			title = title.substr(0,pos); // get the base tiddler title
+		}
+		var t = store.getTiddler(title);
+		if(!t || t.tags.indexOf("systemScript") == -1) {
+			allowEval = false;
+		}
+	}
+	params = paramString.parseParams("name",null,allowEval,false,true);
 	var names = params[0]["name"];
 	var tiddlerName = names[0];
 	var className = names[1] || null;

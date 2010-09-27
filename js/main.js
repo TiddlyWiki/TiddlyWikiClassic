@@ -234,7 +234,13 @@ function invokeMacro(place,macro,params,wikifier,tiddler)
 			//# Provide context for evaluated macro parameters (eg <<myMacro {{tiddler.title}}>>)
 			window.tiddler = tiddlerElem ? store.getTiddler(tiddlerElem.getAttribute("tiddler")) : null;
 			window.place = place;
-			m.handler(place,macro,m.noPreParse?null:params.readMacroParams(),wikifier,params,tiddler);
+			var allowEval = true;
+			if(config.evaluateMacroParameters=="system") {
+				if(!tiddler || tiddler.tags.indexOf("systemScript") == -1) {
+					allowEval = false;
+				}
+			}
+			m.handler(place,macro,m.noPreParse?null:params.readMacroParams(!allowEval),wikifier,params,tiddler);
 		} else {
 			createTiddlyError(place,config.messages.macroError.format([macro]),config.messages.macroErrorDetails.format([macro,config.messages.missingMacro]));
 		}

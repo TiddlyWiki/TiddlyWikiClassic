@@ -163,6 +163,9 @@ config.browser = {
 	isWindows: config.userAgent.indexOf("win") != -1
 };
 
+// Control of macro parameter evaluation
+config.evaluateMacroParameters = "all";
+
 // Basic regular expressions
 config.textPrimitives = {
 	upperLetter: "[A-Z\u00c0-\u00de\u0150\u0170]",
