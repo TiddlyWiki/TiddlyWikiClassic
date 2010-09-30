@@ -44,6 +44,8 @@ function saveOptionCookie(name)
 	var handlers = config.optionHandlers;
 	if(handlers[optType] && handlers[optType].get)
 		c += handlers[optType].get(name);
+	else
+		c += "false"; // no get handler, so assign false
 	c += "; expires=Fri, 1 Jan 2038 12:00:00 UTC; path=/";
 	document.cookie = c;
 }
