@@ -345,6 +345,7 @@ config.macros.message.handler = function(place,macroName,params)
 };
 
 
+config.macros.view.depth = 0;
 config.macros.view.views = {
 	text: function(value,place,params,wikifier,paramString,tiddler) {
 		highlightify(value,place,highlightHack,tiddler);
@@ -353,9 +354,13 @@ config.macros.view.views = {
 		createTiddlyLink(place,value,true);
 	},
 	wikified: function(value,place,params,wikifier,paramString,tiddler) {
+		if(config.macros.view.depth>50)
+			return;
+		config.macros.view.depth++;
 		if(params[2])
 			value=params[2].unescapeLineBreaks().format([value]);
 		wikify(value,place,highlightHack,tiddler);
+		config.macros.view.depth--;
 	},
 	date: function(value,place,params,wikifier,paramString,tiddler) {
 		value = Date.convertFromYYYYMMDDHHMM(value);
