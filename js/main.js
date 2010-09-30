@@ -236,7 +236,7 @@ function invokeMacro(place,macro,params,wikifier,tiddler)
 			window.place = place;
 			var allowEval = true;
 			if(config.evaluateMacroParameters=="system") {
-				if(!tiddler || tiddler.tags.indexOf("systemScript") == -1) {
+				if(!tiddler || tiddler.tags.indexOf("systemAllowEval") == -1) {
 					allowEval = false;
 				}
 			}

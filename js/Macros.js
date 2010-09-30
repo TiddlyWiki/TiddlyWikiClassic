@@ -121,7 +121,7 @@ config.macros.tiddler.handler = function(place,macroName,params,wikifier,paramSt
 			title = title.substr(0,pos); // get the base tiddler title
 		}
 		var t = store.getTiddler(title);
-		if(!t || t.tags.indexOf("systemScript") == -1) {
+		if(!t || t.tags.indexOf("systemAllowEval") == -1) {
 			allowEval = false;
 		}
 	}
