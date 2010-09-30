@@ -326,6 +326,13 @@ Story.prototype.onTiddlerKeyPress = function(ev)
 	var target = resolveTarget(e);
 	switch(e.keyCode) {
 	case 9: // Tab
+		var ed = story.getTiddlerField(title,"text");
+		if(target.tagName.toLowerCase() == "input" && ed.value==config.views.editor.defaultText.format([title])) {
+			// moving from input field and editor still contains default text, so select it
+			ed.focus();
+			ed.select();
+			consume = true;
+		}
 		if(config.options.chkInsertTabs && target.tagName.toLowerCase() == "textarea") {
 			replaceSelection(target,String.fromCharCode(9));
 			consume = true;
@@ -367,7 +374,7 @@ Story.prototype.getTiddlerField = function(title,field)
 {
 	var tiddlerElem = this.getTiddler(title);
 	var e = null;
-	if(tiddlerElem ) {
+	if(tiddlerElem) {
 		var children = tiddlerElem.getElementsByTagName("*");
 		for(var t=0; t<children.length; t++) {
 			var c = children[t];

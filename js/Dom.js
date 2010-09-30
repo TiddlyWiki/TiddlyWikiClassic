@@ -234,6 +234,24 @@ function replaceSelection(e,text)
 	}
 }
 
+// Set the caret position in a text area
+function setCaretPosition(e,pos)
+{
+	if(e.selectionStart || e.selectionStart == '0') {
+		e.selectionStart = pos;
+		e.selectionEnd = pos;
+		e.focus();
+	} else if (document.selection) {
+		// IE support
+		e.focus ();
+		var sel = document.selection.createRange();
+		sel.moveStart('character', -e.value.length);
+		sel.moveStart('character',pos);
+		sel.moveEnd('character',0);
+		sel.select();
+	}
+}
+
 // Returns the text of the given (text) node, possibly merging subsequent text nodes
 function getNodeText(e)
 {
