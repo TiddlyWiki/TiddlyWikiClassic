@@ -36,6 +36,8 @@ config.formatterHelpers = {
 			}
 			if(s=="bgcolor")
 				s = "backgroundColor";
+			if(s=="float")
+				s = "cssFloat";
 			styles.push({style: s, value: v});
 			w.nextMatch = lookaheadMatch.index + lookaheadMatch[0].length;
 			config.textPrimitives.cssLookaheadRegExp.lastIndex = w.nextMatch;
