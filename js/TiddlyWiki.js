@@ -104,14 +104,18 @@ TiddlyWiki.prototype.getTiddlerText = function(title,defaultText)
 			return slice;
 	}
 	var tiddler = this.fetchTiddler(title);
-	if(tiddler) {
+	var text = tiddler ? tiddler.text : null;
+	if (this.isShadowTiddler(title)) {
+		text = this.getShadowTiddlerText(title);
+	}
+	if(text) {
 		if(!section)
-			return tiddler.text;
+			return text;
 		var re = new RegExp("(^!{1,6}[ \t]*" + section.escapeRegExp() + "[ \t]*\n)","mg");
 		re.lastIndex = 0;
-		var match = re.exec(tiddler.text);
+		var match = re.exec(text);
 		if(match) {
-			var t = tiddler.text.substr(match.index+match[1].length);
+			var t = text.substr(match.index+match[1].length);
 			var re2 = /^!/mg;
 			re2.lastIndex = 0;
 			match = re2.exec(t); //# search for the next heading
@@ -121,8 +125,6 @@ TiddlyWiki.prototype.getTiddlerText = function(title,defaultText)
 		}
 		return defaultText;
 	}
-	if(this.isShadowTiddler(title))
-		return this.getShadowTiddlerText(title);
 	if(defaultText != undefined)
 		return defaultText;
 	return null;
