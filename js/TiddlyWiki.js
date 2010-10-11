@@ -534,7 +534,7 @@ TiddlyWiki.prototype.getMissingLinks = function(sortField)
 			return;
 		for(var n=0; n<tiddler.links.length;n++) {
 			var link = tiddler.links[n];
-			if(this.getTiddlerText(link,null) == null && !this.isShadowTiddler(link))
+			if(this.getTiddlerText(link,null) == null && !this.isShadowTiddler(link) && !config.macros[link])
 				results.pushUnique(link);
 		}
 	});
