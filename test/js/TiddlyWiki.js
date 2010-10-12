@@ -23,7 +23,6 @@ jQuery(document).ready(function(){
 		store.saveTiddler(title, title, text);
 		actual = store.calcAllSlices(title);
 		expected = { "foo": "bar" };
-		console.log('actual',actual,expected);
 		same(actual,expected,'should return an existing slice (colon notation) as a label/value pair');
 
 		title = "tiddler";
