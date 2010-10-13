@@ -7,8 +7,9 @@ config.macros.search.handler = function(place,macroName,params)
 	var searchTimeout = null;
 	var btn = createTiddlyButton(place,this.label,this.prompt,this.onClick,"searchButton");
 	var txt = createTiddlyElement(null,"input",null,"txtOptionInput searchField");
-	if(params[0])
+	if(params[0]) {
 		txt.value = params[0];
+	}
 	if(config.browser.isSafari) {
 		txt.setAttribute("type","search");
 		txt.setAttribute("results","5");
@@ -60,14 +61,16 @@ config.macros.search.onKeyPress = function(ev)
 	if(config.options.chkIncrementalSearch) {
 		if(this.value.length > 2) {
 			if(this.value != this.getAttribute("lastSearchText")) {
-				if(me.timeout)
+				if(me.timeout) {
 					clearTimeout(me.timeout);
+				}
 				var txt = this;
 				me.timeout = setTimeout(function() {me.doSearch(txt);},500);
 			}
 		} else {
-			if(me.timeout)
+			if(me.timeout) {
 				clearTimeout(me.timeout);
+			}
 		}
 	}
 };
