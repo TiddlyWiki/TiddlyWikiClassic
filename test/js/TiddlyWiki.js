@@ -1,6 +1,24 @@
 jQuery(document).ready(function(){
-
-	module("TiddlyWiki.js");
+	var module_tiddlers = [{title: "tvalue1", tags: ["twtesthello"], fields: {xyz:"bar"}},
+		{title: "tvalue2", tags: []},
+		{title: "tvalue3", tags: ["twtesthello", "goodbye"], fields: {xyz: "bar"}},
+		{title: "tvalue4", tags: ["what"], fields:{xyz:"bar"}},
+		{title: "tvalue5", tags: [], fields:{xyz:"barz"}}
+	];
+	module("TiddlyWiki.js", {
+		setup: function() {
+			for(var i = 0; i < module_tiddlers.length; i++) {
+				var tid = module_tiddlers[i];
+				store.saveTiddler(tid.title, tid.title, tid.text, null, null, tid.tags, tid.fields);
+			}
+		},
+		teardown: function() {
+			for(var i = 0; i < module_tiddlers.length; i++) {
+				var tid = module_tiddlers[i];
+				store.removeTiddler(tid.title);
+			}
+		}
+	});
 
 	test("Slices: calcAllSlices()", function() {
 
@@ -267,4 +285,26 @@ jQuery(document).ready(function(){
 
 	});
 
+
+	test("getTaggedTiddlers", function() {
+		var tiddlers = store.getTaggedTiddlers("twtesthello");
+		strictEqual(tiddlers.length, 2, 'No message');
+	});
+	
+	test("getValueTiddlers", function() {
+		var tiddlers = store.getValueTiddlers("xyz", "bar");
+		var tiddlers2 = store.getValueTiddlers("tags", "twtesthello");
+		strictEqual(tiddlers.length, 3, 'No message');
+	});
+	
+	test("filterTiddlers", function() {
+		var tiddlers = store.filterTiddlers("[tag[twtesthello]]");
+		var tiddlers2 = store.filterTiddlers("[xyz[bar]]");
+		var tiddlers3 = store.filterTiddlers("[tag[twtesthello]][limit[1]]");
+		var tiddlers4 = store.filterTiddlers("[xyz[bar]][limit[2]]");
+		strictEqual(tiddlers.length, 2, 'No message');
+		strictEqual(tiddlers2.length, 3, 'No message');
+		strictEqual(tiddlers3.length, 1, 'No message');
+		strictEqual(tiddlers4.length, 2, 'No message');
+	});
 });
