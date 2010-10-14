@@ -506,8 +506,7 @@ TiddlyWiki.prototype.reverseLookup = function(lookupField,lookupValue,lookupMatc
 	});
 	if(!sortField)
 		sortField = "title";
-	results.sort(function(a,b) {return a[sortField] < b[sortField] ? -1 : (a[sortField] == b[sortField] ? 0 : +1);});
-	return results;
+	return this.sortTiddlers(results,sortField); 
 };
 
 // Return the tiddlers as a sorted array
@@ -646,7 +645,11 @@ TiddlyWiki.prototype.sortTiddlers = function(tiddlers,field)
 		break;
 	}
 	if(TiddlyWiki.standardFieldAccess[field]) {
-		tiddlers.sort(function(a,b) {return a[field] < b[field] ? -asc : (a[field] == b[field] ? 0 : asc);});
+		if(field=="title") {
+			tiddlers.sort(function(a,b) {return a[field].toLowerCase() < b[field].toLowerCase() ? -asc : (a[field].toLowerCase() == b[field].toLowerCase() ? 0 : asc);});
+		} else {
+			tiddlers.sort(function(a,b) {return a[field] < b[field] ? -asc : (a[field] == b[field] ? 0 : asc);});
+		}
 	} else {
 		tiddlers.sort(function(a,b) {return a.fields[field] < b.fields[field] ? -asc : (a.fields[field] == b.fields[field] ? 0 : +asc);});
 	}

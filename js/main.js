@@ -126,6 +126,8 @@ function loadPlugins()
 	if(safeMode)
 		return false;
 	var tiddlers = store.getTaggedTiddlers("systemConfig");
+	//# ensure the plugins are sorted into case sensitive order
+	tiddlers.sort(function(a,b) {return a.title < b.title ? -1 : (a.title == b.title ? 0 : 1);});
 	var toLoad = [];
 	var nLoaded = 0;
 	var map = {};
