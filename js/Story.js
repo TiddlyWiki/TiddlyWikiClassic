@@ -158,8 +158,8 @@ Story.prototype.createTiddler = function(place,before,title,template,customField
 //# Attempts to load a missing tiddler from the server specified in the custom fields
 //#   title - title of the missing tiddler
 //#   fields - string of name:"value" pairs or hashmap
-//#   tiddlerElem - reference to the element that will contain the tiddler
-Story.prototype.loadMissingTiddler = function(title,fields,tiddlerElem)
+//#   callback - optional function invoked with context argument upon completion; context provides context.tiddler if successful
+Story.prototype.loadMissingTiddler = function(title,fields,callback)
 {
 	var getTiddlerCallback = function(context)
 	{
@@ -169,13 +169,16 @@ Story.prototype.loadMissingTiddler = function(title,fields,tiddlerElem)
 				t.created = new Date();
 			if(!t.modified)
 				t.modified = t.created;
-			store.saveTiddler(t.title,t.title,t.text,t.modifier,t.modified,t.tags,t.fields,true,t.created,t.creator);
+			context.tiddler = store.saveTiddler(t.title,t.title,t.text,t.modifier,t.modified,t.tags,t.fields,true,t.created,t.creator);
 			autoSaveChanges();
 		} else {
 			story.refreshTiddler(context.title,null,true);
 		}
 		context.adaptor.close();
 		delete context.adaptor;
+		if(callback) {
+			callback(context);
+		}
 	};
 	var tiddler = new Tiddler(title);
 	tiddler.fields = typeof fields == "string" ? fields.decodeHashMap() : fields||{};
