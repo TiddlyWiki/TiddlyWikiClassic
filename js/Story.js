@@ -175,7 +175,6 @@ Story.prototype.loadMissingTiddler = function(title,fields,callback)
 			story.refreshTiddler(context.title,null,true);
 		}
 		context.adaptor.close();
-		delete context.adaptor;
 		if(callback) {
 			callback(context);
 		}

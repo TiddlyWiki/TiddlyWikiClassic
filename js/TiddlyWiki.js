@@ -517,7 +517,7 @@ TiddlyWiki.prototype.reverseLookup = function(lookupField,lookupValue,lookupMatc
 	});
 	if(!sortField)
 		sortField = "title";
-	return this.sortTiddlers(results,sortField); 
+	return this.sortTiddlers(results,sortField);
 };
 
 // Return the tiddlers as a sorted array

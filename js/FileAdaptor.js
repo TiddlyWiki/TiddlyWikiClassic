@@ -152,7 +152,6 @@ FileAdaptor.getTiddlerComplete = function(context,userParams)
 
 FileAdaptor.prototype.close = function()
 {
-	delete this.store;
 	this.store = null;
 };
 
