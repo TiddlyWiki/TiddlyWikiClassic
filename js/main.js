@@ -35,7 +35,6 @@ function main()
 	story = new Story("tiddlerDisplay","tiddler");
 	addEvent(document,"click",Popup.onDocumentClick);
 	saveTest();
-	loadOptionsCookie();
 	for(var s=0; s<config.notifyTiddlers.length; s++)
 		store.addNotification(config.notifyTiddlers[s].name,config.notifyTiddlers[s].notify);
 	t1 = new Date();
@@ -44,6 +43,7 @@ function main()
 	t2 = new Date();
 	store.loadFromDiv("storeArea","store",true);
 	doc.trigger("loadTiddlers");
+	loadOptions();
 	t3 = new Date();
 	invokeParamifier(params,"onload");
 	t4 = new Date();

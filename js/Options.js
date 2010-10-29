@@ -4,8 +4,8 @@
 
 config.optionHandlers = {
 	'txt': {
-		get: function(name) {return encodeCookie(config.options[name].toString());},
-		set: function(name,value) {config.options[name] = decodeCookie(value);}
+		get: function(name) {return config.options[name].toString();},
+		set: function(name,value) {config.options[name] = value;}
 	},
 	'chk': {
 		get: function(name) {return config.options[name] ? "true" : "false";},
@@ -13,25 +13,83 @@ config.optionHandlers = {
 	}
 };
 
-function loadOptionsCookie()
+function setOption(name,value)
+{
+	var optType = name.substr(0,3);
+	if(config.optionHandlers[optType] && config.optionHandlers[optType].set)
+		config.optionHandlers[optType].set(name,value);
+}
+
+// Gets the value of an option as a string. Most code should just read from config.options.* directly 
+function getOption(name)
+{
+	var optType = name.substr(0,3);
+	return config.optionHandlers[optType] && config.optionHandlers[optType].get ? config.optionHandlers[optType].get(name) : null;
+} 
+
+//# Loads config.options from cookies and SystemSettings 
+function loadOptions()
 {
 	if(safeMode)
 		return;
-	var cookies = document.cookie.split(";");
-	for(var c=0; c<cookies.length; c++) {
-		var p = cookies[c].indexOf("=");
+	loadSystemSettings();
+	loadCookies();
+}
+// Deprecated name for backwards compatibility 
+var loadOptionsCookie = loadOptions;
+
+function getCookies()
+{
+	var cookieList = document.cookie.split(";");
+	var cookies = {};
+	for(var i=0; i<cookieList.length; i++) {
+		var p = cookieList[i].indexOf("=");
 		if(p != -1) {
-			var name = cookies[c].substr(0,p).trim();
-			var value = cookies[c].substr(p+1).trim();
-			var optType = name.substr(0,3);
-			var handlers = config.optionHandlers;
-			if(handlers[optType] && handlers[optType].set)
-				handlers[optType].set(name,value);
+			var name = cookieList[i].substr(0,p).trim();
+			var value = cookieList[i].substr(p+1).trim()
+			cookies[name] = decodeCookie(value);
+		}
+	}
+	return cookies;
+}
+
+function loadCookies()
+{
+	var cookies = getCookies();
+	if(cookies["TiddlyWiki"]) {
+		cookies = cookies["TiddlyWiki"].decodeHashMap();
+	}
+	for(var i in cookies) {
+		if(config.optionSource[i] == 'cookie') {
+			setOption(i,cookies[i]);
 		}
 	}
 }
 
-function saveOptionCookie(name)
+function loadSystemSettings()
+{
+	var settings = store.calcAllSlices("SystemSettings");
+	for(var key in settings) {
+		var pos = key.indexOf('_');
+		var name = key;
+		var source = "setting";
+		if(pos !== -1) {
+			source = key.substr(pos+1);
+			name = key.substr(0,pos);
+		} 
+		setOption(name,settings[key]);
+		config.optionSource[name] = source;
+	} 
+}
+
+function onSystemSettingsChange()
+{
+	if(!startingUp) {
+		loadSystemSettings();
+	}
+}
+
+function saveOption(name)
 {
 	if(safeMode)
 		return;
@@ -39,34 +97,72 @@ function saveOptionCookie(name)
 		alert(config.messages.invalidCookie.format([name]));
 		return;
 	}
-	var c = name + "=";
-	var optType = name.substr(0,3);
-	var handlers = config.optionHandlers;
-	if(handlers[optType] && handlers[optType].get)
-		c += handlers[optType].get(name);
-	else
-		c += "false"; // no get handler, so assign false
-	c += "; expires=Fri, 1 Jan 2038 12:00:00 UTC; path=/";
-	document.cookie = c;
+	if(config.optionSource[name] == 'cookie') {
+		saveCookie(name);
+	} else {
+		saveSystemSetting(name);
+	}
 }
+// Deprecated names for backwards compatibility
+var saveOptionCookie = saveOption;
 
 function removeCookie(name)
 {
 	document.cookie = name + "=; expires=Thu, 01-Jan-1970 00:00:01 UTC; path=/;";
 }
 
+function saveCookie(name)
+{
+	var cookies = {};
+	for(var key in config.options) {
+		if(config.optionSource[key] == "cookie") {
+			var value = getOption(key);
+			value = value == null ? "" : value;
+			cookies[key] = value;
+		}
+	}
+	document.cookie = "TiddlyWiki=" + encodeCookie(String.encodeHashMap(cookies)) + "; expires=Fri, 1 Jan 2038 12:00:00 UTC; path=/";
+	cookies = getCookies();
+	for(var i in cookies) {
+		if(i != "TiddlyWiki")
+			removeCookie(i);
+	} 
+} 
+
+function saveSystemSetting(name)
+{
+	var settings = store.calcAllSlices("SystemSettings");
+	var key;
+	for(key in config.options) {
+		if(config.optionSource[key] == undefined || config.optionSource[key] == "setting") {
+			var value = getOption(key);
+			value = value == null ? "" : value;
+			if(settings[key] !== value)
+				settings[key] = value;
+		}
+	}
+	var text = [];
+	for(key in settings) {
+		text.push("%0: %1".format([key,settings[key]]));
+	}
+	text.sort();
+	store.saveTiddler("SystemSettings","SystemSettings",text.join("\n"),"System",new Date());
+	autoSaveChanges();
+}
+
+//# Flatten cookies to ANSI character set by substituting html character entities for non-ANSI characters 
 function encodeCookie(s)
 {
 	return escape(convertUnicodeToHtmlEntities(s));
 }
 
+//# Decode any html character entities to their unicode equivalent 
 function decodeCookie(s)
 {
 	s = unescape(s);
 	var re = /&#[0-9]{1,5};/g;
 	return s.replace(re,function($0) {return String.fromCharCode(eval($0.replace(/[&#;]/g,"")));});
 }
-
 
 config.macros.option.genericCreate = function(place,type,opt,className,desc)
 {
