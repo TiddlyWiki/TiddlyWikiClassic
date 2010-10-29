@@ -28,7 +28,7 @@ AdaptorBase.prototype.fullHostName = function(host)
 
 AdaptorBase.minHostName = function(host)
 {
-	return host ? host.replace(/^http:\/\//,'').replace(/\/$/,'') : '';
+	return host;
 };
 
 AdaptorBase.prototype.setContext = function(context,userParams,callback)
