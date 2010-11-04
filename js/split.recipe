@@ -15,6 +15,7 @@ js: Toolbar.js
 js: Commands.js
 js: Tiddler.js
 js: TiddlyWiki.js
+js: Filters.js
 js: TiddlerFields.js
 js: Story.js
 js: Backstage.js
