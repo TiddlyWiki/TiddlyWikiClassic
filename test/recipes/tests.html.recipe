@@ -12,3 +12,6 @@ recipe: ../html/split.recipe
 
 # tests
 recipe: ../js/split.recipe
+
+# testdata
+recipe: ../testdata/split.recipe
