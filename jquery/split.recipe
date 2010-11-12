@@ -1,2 +1,2 @@
-jslib: jquery-1.4.4.min.js
+jslib: jquery.js
 recipe: plugins/split.recipe
