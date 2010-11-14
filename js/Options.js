@@ -131,7 +131,8 @@ function saveCookie(name)
 
 function saveSystemSetting(name)
 {
-	var settings = store.calcAllSlices("SystemSettings");
+	var ss = "SystemSettings";
+	var settings = store.calcAllSlices(ss);
 	var key;
 	for(key in config.options) {
 		if(config.optionSource[key] == undefined || config.optionSource[key] == "setting") {
@@ -146,7 +147,13 @@ function saveSystemSetting(name)
 		text.push("%0: %1".format([key,settings[key]]));
 	}
 	text.sort();
-	store.saveTiddler("SystemSettings","SystemSettings",text.join("\n"),"System",new Date());
+	var tiddler = store.getTiddler(ss);
+	if(tiddler) {
+		tiddler.text = text.join("\n");
+		store.saveTiddler(tiddler);
+	} else {
+		store.saveTiddler(ss,ss,text.join("\n"),"System",new Date(),"excludeLists",config.defaultCustomFields);
+	}
 	autoSaveChanges();
 }
 

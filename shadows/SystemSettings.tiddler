@@ -1,5 +1,5 @@
 <div title="SystemSettings">
-<pre>chkAnimate_cookie: false
+<pre>chkAnimate_cookie: true
 chkAutoSave: false
 chkBackstage_cookie: false
 chkCaseSensitiveSearch: false
@@ -23,7 +23,7 @@ txtEditorFocus: text
 txtFileSystemCharSet: UTF-8
 txtMainTab_cookie: Timeline
 txtMaxEditRows: 30
-txtMoreTab_cookie: Shadow
+txtMoreTab_cookie: Shadowed
 txtTheme: 
 txtUserName: YourName</pre>
 </div>
