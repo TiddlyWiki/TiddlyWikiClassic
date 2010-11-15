@@ -35,7 +35,7 @@ function loadOptions()
 	loadSystemSettings();
 	loadCookies();
 }
-// Deprecated name for backwards compatibility
+// @Deprecated; retained for backwards compatibility
 var loadOptionsCookie = loadOptions;
 
 function getCookies()
@@ -103,7 +103,7 @@ function saveOption(name)
 		saveSystemSetting(name);
 	}
 }
-// Deprecated names for backwards compatibility
+// @Deprecated; retained for backwards compatibility
 var saveOptionCookie = saveOption;
 
 function removeCookie(name)
