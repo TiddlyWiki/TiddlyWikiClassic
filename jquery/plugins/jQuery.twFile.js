@@ -26,7 +26,7 @@ Triple licensed under the BSD, MIT and GPL licenses:
 		//    x:\path\path\path\filename - PC local file
 		//    \\server\share\path\path\path\filename - PC network file
 		//    /path/path/path/filename - Mac/Unix local file
-		// returns the text of the file, or null if the operation cannot be performed or false if there was an error 
+		// returns the text of the file, or null if the operation cannot be performed or false if there was an error
 		load: function(filePath) {
 			var d = this.getDriver();
 			return d ? d.loadFile(filePath) : null;
@@ -77,9 +77,9 @@ Triple licensed under the BSD, MIT and GPL licenses:
 				localPath = "\\\\" + unescape(originalPath.substr(7)).replace(new RegExp("/","g"),"\\");
 			return localPath || originalPath;
 		},
-		
+
 		// Private functions
-		
+
 		// Returns a reference to the current driver
 		getDriver: function() {
 			if(this.currentDriver === null) {
