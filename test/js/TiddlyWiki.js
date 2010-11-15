@@ -290,13 +290,13 @@ jQuery(document).ready(function(){
 		var tiddlers = store.getTaggedTiddlers("twtesthello");
 		strictEqual(tiddlers.length, 2, 'No message');
 	});
-	
+
 	test("getValueTiddlers", function() {
 		var tiddlers = store.getValueTiddlers("xyz", "bar");
 		var tiddlers2 = store.getValueTiddlers("tags", "twtesthello");
 		strictEqual(tiddlers.length, 3, 'No message');
 	});
-	
+
 	test("filterTiddlers", function() {
 		var tiddlers = store.filterTiddlers("[tag[twtesthello]]");
 		var tiddlers2 = store.filterTiddlers("[xyz[bar]]");

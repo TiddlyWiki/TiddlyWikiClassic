@@ -13,6 +13,6 @@ jQuery(document).ready(function(){
 		ok(actual,'StyleSheetColors shadow tiddler should exist');
 
 	});
-	
+
 
 });

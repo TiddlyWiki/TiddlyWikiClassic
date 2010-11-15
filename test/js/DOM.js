@@ -30,14 +30,14 @@ jQuery(document).ready(function(){
 		ok(jQuery('div.testClass'), 'Setting the element class parameter should set the class on the DOM element');
 
 	});
-	
 
-	test("createTiddlyText", function() { 
-		expect(1); 
 
-		var parent = makeTestNode(); 
+	test("createTiddlyText", function() {
+		expect(1);
+
+		var parent = makeTestNode();
 		createTiddlyText(parent, "<div>");
-		createTiddlyText(parent, "a"); 
+		createTiddlyText(parent, "a");
 		createTiddlyText(parent, "</div>");
 		equals(parent.innerHTML, "&lt;div&gt;a&lt;/div&gt;", "createTiddlyText should append text node, not html element");
 
@@ -52,7 +52,7 @@ jQuery(document).ready(function(){
 		ok(jQuery('#testElement').hasClass('testClass2'), "addClass() adds a css class to a given DOM element");
 
 		removeTestNode();
-	});	
+	});
 
 
 
@@ -64,7 +64,7 @@ jQuery(document).ready(function(){
 		ok(!jQuery('#testElement').hasClass('testClass'), "removeClass() removes a css class from a given DOM element");
 
 		removeTestNode();
-	});	
+	});
 
 
 	test("hasClass", function() {
@@ -133,9 +133,9 @@ jQuery(document).ready(function(){
 		var scroll = 200;
 		jQuery().scrollTop(scroll);
 
-		equals(typeof findScrollY(), "number", "returns a number value");		
+		equals(typeof findScrollY(), "number", "returns a number value");
 		// XXX: following test does not work
 		// equals(findScrollY(), scroll, "returns the correct vertical scroll position of the window");
 
-	});	
+	});
 }); // document ready.

@@ -53,6 +53,6 @@ jQuery(document).ready(function(){
 		ok(compareVersions(v1,v2)==-1,'version 1.2.3 (no beta) should be more than version 1.2.3 beta 4');
 
 	});
-	
+
 
 });

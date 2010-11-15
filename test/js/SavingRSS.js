@@ -1,4 +1,4 @@
-// carried over from jsspec testing 
+// carried over from jsspec testing
 // TBD: refactor out
 tests_xml = {
 

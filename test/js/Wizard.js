@@ -10,6 +10,6 @@ jQuery(document).ready(function(){
 		ok(actual==true,'properties should be null when constructed with no parameters');
 
 	});
-	
+
 
 });

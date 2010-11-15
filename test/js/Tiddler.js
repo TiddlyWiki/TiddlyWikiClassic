@@ -54,7 +54,7 @@ jQuery(document).ready(function(){
 		same(tiddler.modifier,"a modifier",'Assigning value to tiddler title should override old title 3');
 		same(tiddler.created,new Date(2008,04,21,01,02,03),'Assigning value to tiddler title should override old title 4');
 		same(tiddler.modified,new Date(2009,05,22,12,13,14),'Assigning value to tiddler title should override old title 5');
-		
+
 		tiddler = newTiddler();
 		tiddler.assign(null,"new text");
 		same(tiddler.title,"temp",'Assigning value to tiddler text should override old text 1');

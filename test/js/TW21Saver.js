@@ -46,6 +46,6 @@ jQuery(document).ready(function(){
 		ok(actual==expected,'Saving tiddler with text');
 
 	});
-	
+
 
 });
