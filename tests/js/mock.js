@@ -9,12 +9,12 @@ tests_mock = {
 	{
 		var frame = {};
 		frame.called = 0;
-		frame.savedFunc = eval(funcName); 
-		if (typeof frame.savedFunc != "function") 
+		frame.savedFunc = eval(funcName);
+		if (typeof frame.savedFunc != "function")
 			throw(funcName +" is not a function: " + (typeof frame.savedFunc));
 
 		var mockFunction = function() {
-			tests_mock.frame[funcName].called++; 
+			tests_mock.frame[funcName].called++;
 			if (mocker)
 			    return mocker.apply(this, arguments);
 		};
@@ -27,7 +27,7 @@ tests_mock = {
 	 *  restore named global function
 	 *  - return frame object, which includes a count of calls
 	 */
-	after: function(funcName) 
+	after: function(funcName)
 	{
 		frame = this.frame[funcName];
 		eval(funcName + '=frame.savedFunc');
@@ -41,8 +41,8 @@ tests_mock = {
 	{
 		var frame = {};
 		frame.restore = true;
-		frame.savedValue = eval(varName); 
-		if (typeof frame.savedValue == "function") 
+		frame.savedValue = eval(varName);
+		if (typeof frame.savedValue == "function")
 			throw(varName +" is a function: " + (typeof frame.savedValue));
 
 		this.frame[varName] = frame;
@@ -51,7 +51,7 @@ tests_mock = {
 	/*
 	 *  restore any named global variables
 	 */
-	restore: function() 
+	restore: function()
 	{
 		var varName;
 		for(varName in this.frame) {

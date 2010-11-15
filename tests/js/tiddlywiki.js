@@ -4782,7 +4782,7 @@ config.macros.upgrade.onClickUpgrade = function(e)
 	if(window.location.protocol != "file:") {
 		alert(me.errorCantUpgrade);
 		return false;
-	}	
+	}
 	if(story.areAnyDirty() || store.isDirty()) {
 		alert(me.errorNotSaved);
 		return false;
