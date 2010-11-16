@@ -203,19 +203,19 @@ config.macros.option.genericOnChange = function(e)
 
 config.macros.option.types = {
 	'txt': {
-		elementType: "input",
-		valueField: "value",
-		eventName: "onchange",
-		className: "txtOptionInput",
+		elementType: 'input',
+		valueField: 'value',
+		eventName: 'onchange',
+		className: 'txtOptionInput',
 		create: config.macros.option.genericCreate,
 		onChange: config.macros.option.genericOnChange
 	},
 	'chk': {
-		elementType: "input",
-		valueField: "checked",
-		eventName: "onclick",
-		className: "chkOptionInput",
-		typeValue: "checkbox",
+		elementType: 'input',
+		valueField: 'checked',
+		eventName: 'onclick',
+		className: 'chkOptionInput',
+		typeValue: 'checkbox',
 		create: config.macros.option.genericCreate,
 		onChange: config.macros.option.genericOnChange
 	}
@@ -227,7 +227,7 @@ config.macros.option.propagateOption = function(opt,valueField,value,elementType
 	saveOptionCookie(opt);
 	var nodes = document.getElementsByTagName(elementType);
 	for(var t=0; t<nodes.length; t++) {
-		var optNode = nodes[t].getAttribute("option");
+		var optNode = nodes[t].getAttribute('option');
 		if(opt == optNode && nodes[t]!=elem)
 			nodes[t][valueField] = value;
 	}
@@ -235,10 +235,10 @@ config.macros.option.propagateOption = function(opt,valueField,value,elementType
 
 config.macros.option.handler = function(place,macroName,params,wikifier,paramString)
 {
-	params = paramString.parseParams("anon",null,true,false,false);
-	var opt = (params[1] && params[1].name == "anon") ? params[1].value : getParam(params,"name",null);
-	var className = (params[2] && params[2].name == "anon") ? params[2].value : getParam(params,"class",null);
-	var desc = getParam(params,"desc","no");
+	params = paramString.parseParams('anon',null,true,false,false);
+	var opt = (params[1] && params[1].name == 'anon') ? params[1].value : getParam(params,'name',null);
+	var className = (params[2] && params[2].name == 'anon') ? params[2].value : getParam(params,'class',null);
+	var desc = getParam(params,'desc',"no");
 	var type = opt.substr(0,3);
 	var h = config.macros.option.types[type];
 	if(h && h.create)
@@ -247,18 +247,18 @@ config.macros.option.handler = function(place,macroName,params,wikifier,paramStr
 
 config.macros.options.handler = function(place,macroName,params,wikifier,paramString)
 {
-	params = paramString.parseParams("anon",null,true,false,false);
-	var showUnknown = getParam(params,"showUnknown","no");
+	params = paramString.parseParams('anon',null,true,false,false);
+	var showUnknown = getParam(params,'showUnknown',"no");
 	var wizard = new Wizard();
 	wizard.createWizard(place,this.wizardTitle);
 	wizard.addStep(this.step1Title,this.step1Html);
-	var markList = wizard.getElement("markList");
-	var chkUnknown = wizard.getElement("chkUnknown");
+	var markList = wizard.getElement('markList');
+	var chkUnknown = wizard.getElement('chkUnknown');
 	chkUnknown.checked = showUnknown == "yes";
 	chkUnknown.onchange = this.onChangeUnknown;
-	var listWrapper = document.createElement("div");
+	var listWrapper = document.createElement('div');
 	markList.parentNode.insertBefore(listWrapper,markList);
-	wizard.setValue("listWrapper",listWrapper);
+	wizard.setValue('listWrapper',listWrapper);
 	this.refreshOptions(listWrapper,showUnknown == "yes");
 };
 
@@ -267,7 +267,7 @@ config.macros.options.refreshOptions = function(listWrapper,showUnknown)
 	var opts = [];
 	for(var n in config.options) {
 		var opt = {};
-		opt.option = "";
+		opt.option = '';
 		opt.name = n;
 		opt.lowlight = !config.optionsDesc[n];
 		opt.description = opt.lowlight ? this.unknownDescription : config.optionsDesc[n];
@@ -288,7 +288,7 @@ config.macros.options.refreshOptions = function(listWrapper,showUnknown)
 config.macros.options.onChangeUnknown = function(e)
 {
 	var wizard = new Wizard(this);
-	var listWrapper = wizard.getValue("listWrapper");
+	var listWrapper = wizard.getValue('listWrapper');
 	removeChildren(listWrapper);
 	config.macros.options.refreshOptions(listWrapper,this.checked);
 	return false;
