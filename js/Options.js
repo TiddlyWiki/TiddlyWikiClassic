@@ -8,8 +8,8 @@ config.optionHandlers = {
 		set: function(name,value) {config.options[name] = value;}
 	},
 	'chk': {
-		get: function(name) {return config.options[name] ? "true" : "false";},
-		set: function(name,value) {config.options[name] = value == "true";}
+		get: function(name) {return config.options[name] ? 'true' : 'false';},
+		set: function(name,value) {config.options[name] = value == 'true';}
 	}
 };
 
@@ -40,10 +40,10 @@ var loadOptionsCookie = loadOptions;
 
 function getCookies()
 {
-	var cookieList = document.cookie.split(";");
+	var cookieList = document.cookie.split(';');
 	var cookies = {};
 	for(var i=0; i<cookieList.length; i++) {
-		var p = cookieList[i].indexOf("=");
+		var p = cookieList[i].indexOf('=');
 		if(p != -1) {
 			var name = cookieList[i].substr(0,p).trim();
 			var value = cookieList[i].substr(p+1).trim()
@@ -56,8 +56,8 @@ function getCookies()
 function loadCookies()
 {
 	var cookies = getCookies();
-	if(cookies["TiddlyWiki"]) {
-		cookies = cookies["TiddlyWiki"].decodeHashMap();
+	if(cookies['TiddlyWiki']) {
+		cookies = cookies['TiddlyWiki'].decodeHashMap();
 	}
 	for(var i in cookies) {
 		if(config.optionSource[i] == 'cookie') {
@@ -72,7 +72,7 @@ function loadSystemSettings()
 	for(var key in settings) {
 		var pos = key.indexOf('_');
 		var name = key;
-		var source = "setting";
+		var source = 'setting';
 		if(pos !== -1) {
 			source = key.substr(pos+1);
 			name = key.substr(0,pos);
@@ -93,7 +93,7 @@ function saveOption(name)
 {
 	if(safeMode)
 		return;
-	if(name.match(/[()\s]/g, "_")) {
+	if(name.match(/[()\s]/g, '_')) {
 		alert(config.messages.invalidCookie.format([name]));
 		return;
 	}
@@ -108,23 +108,23 @@ var saveOptionCookie = saveOption;
 
 function removeCookie(name)
 {
-	document.cookie = name + "=; expires=Thu, 01-Jan-1970 00:00:01 UTC; path=/;";
+	document.cookie = name + '=; expires=Thu, 01-Jan-1970 00:00:01 UTC; path=/;';
 }
 
 function saveCookie(name)
 {
 	var cookies = {};
 	for(var key in config.options) {
-		if(config.optionSource[key] == "cookie") {
+		if(config.optionSource[key] == 'cookie') {
 			var value = getOption(key);
-			value = value == null ? "" : value;
+			value = value == null ? '' : value;
 			cookies[key] = value;
 		}
 	}
-	document.cookie = "TiddlyWiki=" + encodeCookie(String.encodeHashMap(cookies)) + "; expires=Fri, 1 Jan 2038 12:00:00 UTC; path=/";
+	document.cookie = 'TiddlyWiki=' + encodeCookie(String.encodeHashMap(cookies)) + '; expires=Fri, 1 Jan 2038 12:00:00 UTC; path=/';
 	cookies = getCookies();
 	for(var i in cookies) {
-		if(i != "TiddlyWiki")
+		if(i != 'TiddlyWiki')
 			removeCookie(i);
 	}
 }
@@ -135,18 +135,18 @@ function saveSystemSetting(name)
 	var settings = store.calcAllSlices(title);
 	var key;
 	for(key in config.options) {
-		if(config.optionSource[key] == undefined || config.optionSource[key] == "setting") {
+		if(config.optionSource[key] == undefined || config.optionSource[key] == 'setting') {
 			var value = getOption(key);
-			value = value == null ? "" : value;
+			value = value == null ? '' : value;
 			if(settings[key] !== value)
 				settings[key] = value;
 		}
 	}
 	var text = [];
 	for(key in settings) {
-		text.push("%0: %1".format([key,settings[key]]));
+		text.push('%0: %1'.format([key,settings[key]]));
 	}
-	text = text.sort().join("\n");
+	text = text.sort().join('\n');
 	var tiddler = store.getTiddler(title);
 	if(tiddler) {
 		tiddler.text = text;
@@ -168,7 +168,7 @@ function decodeCookie(s)
 {
 	s = unescape(s);
 	var re = /&#[0-9]{1,5};/g;
-	return s.replace(re,function($0) {return String.fromCharCode(eval($0.replace(/[&#;]/g,"")));});
+	return s.replace(re,function($0) {return String.fromCharCode(eval($0.replace(/[&#;]/g,'')));});
 }
 
 config.macros.option.genericCreate = function(place,type,opt,className,desc)
@@ -176,12 +176,12 @@ config.macros.option.genericCreate = function(place,type,opt,className,desc)
 	var typeInfo = config.macros.option.types[type];
 	var c = document.createElement(typeInfo.elementType);
 	if(typeInfo.typeValue)
-		c.setAttribute("type",typeInfo.typeValue);
+		c.setAttribute('type',typeInfo.typeValue);
 	c[typeInfo.eventName] = typeInfo.onChange;
-	c.setAttribute("option",opt);
+	c.setAttribute('option',opt);
 	c.className = className || typeInfo.className;
 	if(config.optionsDesc[opt])
-		c.setAttribute("title",config.optionsDesc[opt]);
+		c.setAttribute('title',config.optionsDesc[opt]);
 	place.appendChild(c);
 	if(desc != "no")
 		createTiddlyText(place,config.optionsDesc[opt] || opt);
@@ -191,7 +191,7 @@ config.macros.option.genericCreate = function(place,type,opt,className,desc)
 
 config.macros.option.genericOnChange = function(e)
 {
-	var opt = this.getAttribute("option");
+	var opt = this.getAttribute('option');
 	if(opt) {
 		var optType = opt.substr(0,3);
 		var handler = config.macros.option.types[optType];
