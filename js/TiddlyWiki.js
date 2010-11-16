@@ -1,5 +1,5 @@
 //--
-//-- TiddlyWiki() object contains Tiddler()s
+//-- TiddlyWiki instance contains TiddlerS
 //--
 
 function TiddlyWiki()
