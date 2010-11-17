@@ -159,8 +159,7 @@ config.macros.sync.updateSyncStatus = function(syncItem)
 	var e = syncItem.colElements["status"];
 	removeChildren(e);
 	createTiddlyText(e,syncItem.syncStatus.text);
-	if(syncItem.syncStatus.display)
-		syncItem.rowElement.style.display = syncItem.syncStatus.display;
+	syncItem.rowElement.style.display = syncItem.syncStatus.display;
 	if(syncItem.syncStatus.className)
 		syncItem.rowElement.className = syncItem.syncStatus.className;
 };
