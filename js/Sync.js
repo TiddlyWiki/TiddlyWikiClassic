@@ -193,7 +193,8 @@ config.macros.sync.doSync = function(e)
 				var r = true;
 				switch(si.syncStatus) {
 				case sl.changedServer:
-					r = si.adaptor.getTiddler(si.title,null,si,getTiddlerCallback);
+					var context = {"workspace": si.serverWorkspace};
+					r = si.adaptor.getTiddler(si.title,context,si,getTiddlerCallback);
 					break;
 				case sl.notFound:
 				case sl.changedLocally:
