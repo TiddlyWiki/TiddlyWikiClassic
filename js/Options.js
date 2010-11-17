@@ -1,5 +1,5 @@
 //--
-//-- Options stuff
+//-- Option handling
 //--
 
 config.optionHandlers = {
@@ -20,20 +20,20 @@ function setOption(name,value)
 		config.optionHandlers[optType].set(name,value);
 }
 
-// Gets the value of an option as a string. Most code should just read from config.options.* directly
+// Gets the value of an option as a string. Most code should just read from config.options.* directly 
 function getOption(name)
 {
 	var optType = name.substr(0,3);
 	return config.optionHandlers[optType] && config.optionHandlers[optType].get ? config.optionHandlers[optType].get(name) : null;
-}
+} 
 
-//# Loads config.options from cookies and SystemSettings
+//# Loads config.options from cookies and SystemSettings 
 function loadOptions()
 {
 	if(safeMode)
 		return;
-	loadSystemSettings();
 	loadCookies();
+	loadSystemSettings();
 }
 // @Deprecated; retained for backwards compatibility
 var loadOptionsCookie = loadOptions;
@@ -68,7 +68,7 @@ function loadCookies()
 
 function loadSystemSettings()
 {
-	var settings = store.calcAllSlices("SystemSettings");
+	var settings = store.calcAllSlices('SystemSettings');
 	for(var key in settings) {
 		var pos = key.indexOf('_');
 		var name = key;
@@ -77,9 +77,11 @@ function loadSystemSettings()
 			source = key.substr(pos+1);
 			name = key.substr(0,pos);
 		}
-		setOption(name,settings[key]);
+		if (source == 'setting') { 
+			setOption(name,settings[key]);
+		}
 		config.optionSource[name] = source;
-	}
+	} 
 }
 
 function onSystemSettingsChange()
@@ -97,9 +99,8 @@ function saveOption(name)
 		alert(config.messages.invalidCookie.format([name]));
 		return;
 	}
-	if(config.optionSource[name] == 'cookie') {
-		saveCookie(name);
-	} else {
+	saveCookie(name);
+	if(config.optionSource[name] == 'setting') {
 		saveSystemSetting(name);
 	}
 }
@@ -115,23 +116,21 @@ function saveCookie(name)
 {
 	var cookies = {};
 	for(var key in config.options) {
-		if(config.optionSource[key] == 'cookie') {
-			var value = getOption(key);
-			value = value == null ? '' : value;
-			cookies[key] = value;
-		}
+		var value = getOption(key);
+		value = value == null ? '' : value;
+		cookies[key] = value;
 	}
 	document.cookie = 'TiddlyWiki=' + encodeCookie(String.encodeHashMap(cookies)) + '; expires=Fri, 1 Jan 2038 12:00:00 UTC; path=/';
 	cookies = getCookies();
 	for(var i in cookies) {
 		if(i != 'TiddlyWiki')
 			removeCookie(i);
-	}
-}
+	} 
+} 
 
 function saveSystemSetting(name)
 {
-	var title = "SystemSettings";
+	var title = 'SystemSettings';
 	var settings = store.calcAllSlices(title);
 	var key;
 	for(key in config.options) {
@@ -152,18 +151,18 @@ function saveSystemSetting(name)
 		tiddler.text = text;
 		store.saveTiddler(tiddler);
 	} else {
-		store.saveTiddler(title,title,text,"System",new Date(),["excludeLists"],config.defaultCustomFields);
+		store.saveTiddler(title,title,text,'System',new Date(),['excludeLists'],config.defaultCustomFields);
 	}
 	autoSaveChanges();
 }
 
-//# Flatten cookies to ANSI character set by substituting html character entities for non-ANSI characters
+//# Flatten cookies to ANSI character set by substituting html character entities for non-ANSI characters 
 function encodeCookie(s)
 {
 	return escape(convertUnicodeToHtmlEntities(s));
 }
 
-//# Decode any html character entities to their unicode equivalent
+//# Decode any html character entities to their unicode equivalent 
 function decodeCookie(s)
 {
 	s = unescape(s);
@@ -183,7 +182,7 @@ config.macros.option.genericCreate = function(place,type,opt,className,desc)
 	if(config.optionsDesc[opt])
 		c.setAttribute('title',config.optionsDesc[opt]);
 	place.appendChild(c);
-	if(desc != "no")
+	if(desc != 'no')
 		createTiddlyText(place,config.optionsDesc[opt] || opt);
 	c[typeInfo.valueField] = config.options[opt];
 	return c;
@@ -224,7 +223,7 @@ config.macros.option.types = {
 config.macros.option.propagateOption = function(opt,valueField,value,elementType,elem)
 {
 	config.options[opt] = value;
-	saveOptionCookie(opt);
+	saveOption(opt);
 	var nodes = document.getElementsByTagName(elementType);
 	for(var t=0; t<nodes.length; t++) {
 		var optNode = nodes[t].getAttribute('option');
@@ -238,7 +237,7 @@ config.macros.option.handler = function(place,macroName,params,wikifier,paramStr
 	params = paramString.parseParams('anon',null,true,false,false);
 	var opt = (params[1] && params[1].name == 'anon') ? params[1].value : getParam(params,'name',null);
 	var className = (params[2] && params[2].name == 'anon') ? params[2].value : getParam(params,'class',null);
-	var desc = getParam(params,'desc',"no");
+	var desc = getParam(params,'desc','no');
 	var type = opt.substr(0,3);
 	var h = config.macros.option.types[type];
 	if(h && h.create)
@@ -248,18 +247,18 @@ config.macros.option.handler = function(place,macroName,params,wikifier,paramStr
 config.macros.options.handler = function(place,macroName,params,wikifier,paramString)
 {
 	params = paramString.parseParams('anon',null,true,false,false);
-	var showUnknown = getParam(params,'showUnknown',"no");
+	var showUnknown = getParam(params,'showUnknown','no');
 	var wizard = new Wizard();
 	wizard.createWizard(place,this.wizardTitle);
 	wizard.addStep(this.step1Title,this.step1Html);
 	var markList = wizard.getElement('markList');
 	var chkUnknown = wizard.getElement('chkUnknown');
-	chkUnknown.checked = showUnknown == "yes";
+	chkUnknown.checked = showUnknown == 'yes';
 	chkUnknown.onchange = this.onChangeUnknown;
 	var listWrapper = document.createElement('div');
 	markList.parentNode.insertBefore(listWrapper,markList);
 	wizard.setValue('listWrapper',listWrapper);
-	this.refreshOptions(listWrapper,showUnknown == "yes");
+	this.refreshOptions(listWrapper,showUnknown == 'yes');
 };
 
 config.macros.options.refreshOptions = function(listWrapper,showUnknown)
@@ -280,7 +279,7 @@ config.macros.options.refreshOptions = function(listWrapper,showUnknown)
 		var type = opts[n].name.substr(0,3);
 		var h = config.macros.option.types[type];
 		if(h && h.create) {
-			h.create(opts[n].colElements['option'],type,opts[n].name,null,"no");
+			h.create(opts[n].colElements['option'],type,opts[n].name,null,'no');
 		}
 	}
 };
