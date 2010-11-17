@@ -1,16 +1,16 @@
-function makeTestNode() {
-	var ele = jQuery('<div id="testElement" class="testClass"></div>');
+(function($) {
+
+var makeTestNode = function() {
+	var ele = $('<div id="testElement" class="testClass"></div>');
 	ele.appendTo('body');
 	return ele.get(0);
-}
+};
 
-function removeTestNode() {
-	jQuery('#testElement').remove();
-}
+var removeTestNode = function() {
+	$('#testElement').remove();
+};
 
-
-
-jQuery(document).ready(function(){
+$(document).ready(function(){
 
 	module("DOM.js");
 
@@ -20,14 +20,14 @@ jQuery(document).ready(function(){
 		ok(createTiddlyElement(null,"div"), "Element creation should create the DOM element");
 
 		createTiddlyElement( makeTestNode(),"div");
-		ok(jQuery('#testElement div'), 'Setting the parent parameter should append the new DOM element to the parent');
+		ok($('#testElement div'), 'Setting the parent parameter should append the new DOM element to the parent');
 		removeTestNode();
 
 		createTiddlyElement(null,"div",'testID');
-		ok(jQuery('#testID'), 'Setting the element id parameter should set the id on the DOM element');
+		ok($('#testID'), 'Setting the element id parameter should set the id on the DOM element');
 
 		createTiddlyElement(null,"div", null, 'testClass');
-		ok(jQuery('div.testClass'), 'Setting the element class parameter should set the class on the DOM element');
+		ok($('div.testClass'), 'Setting the element class parameter should set the class on the DOM element');
 
 	});
 
@@ -49,7 +49,7 @@ jQuery(document).ready(function(){
 		var ele = makeTestNode();
 
 		addClass(ele,'testClass2');
-		ok(jQuery('#testElement').hasClass('testClass2'), "addClass() adds a css class to a given DOM element");
+		ok($('#testElement').hasClass('testClass2'), "addClass() adds a css class to a given DOM element");
 
 		removeTestNode();
 	});
@@ -61,7 +61,7 @@ jQuery(document).ready(function(){
 		var ele = makeTestNode();
 
 		removeClass(ele,'testClass');
-		ok(!jQuery('#testElement').hasClass('testClass'), "removeClass() removes a css class from a given DOM element");
+		ok(!$('#testElement').hasClass('testClass'), "removeClass() removes a css class from a given DOM element");
 
 		removeTestNode();
 	});
@@ -81,10 +81,10 @@ jQuery(document).ready(function(){
 		var ele = makeTestNode();
 
 		var target;
-		jQuery(ele).click(function(ev){
-			target = jQuery(ev.target)[0];
+		$(ele).click(function(ev){
+			target = $(ev.target)[0];
 		});
-		jQuery(ele).click();
+		$(ele).click();
 		equals(target, ele, "resolveTarget correctly identifies the target of a click event");
 
 		removeTestNode();
@@ -94,10 +94,10 @@ jQuery(document).ready(function(){
 	test('getPlainText', function(){
 		expect(1);
 
-		jQuery('body').append("<div id='text_test'>foo bar baz</div>");
-		var d = jQuery('#text_test').get(0);
+		$('body').append("<div id='text_test'>foo bar baz</div>");
+		var d = $('#text_test').get(0);
 		equals(getPlainText(d), "foo bar baz", "getPlainText() returns the plain text of an element.");
-		jQuery("#text_test").remove();
+		$("#text_test").remove();
 	});
 
 
@@ -119,19 +119,19 @@ jQuery(document).ready(function(){
 
 		var scroll = 10;
 
-		jQuery('<div id="wiiide">wide</div>').css({width: '9999px'}).appendTo('body');
-		jQuery().scrollLeft(scroll);
+		$('<div id="wiiide">wide</div>').css({width: '9999px'}).appendTo('body');
+		$().scrollLeft(scroll);
 
 		equals(typeof findScrollX(), "number", "returns a number value");
 		//equals(findScrollX(), scroll, "returns the correct horizontal scroll position of the window");
 
-		jQuery('#wiiide').remove();
+		$('#wiiide').remove();
 	});
 
 	test("findScrollY", function() {
 		expect(1);
 		var scroll = 200;
-		jQuery().scrollTop(scroll);
+		$().scrollTop(scroll);
 
 		equals(typeof findScrollY(), "number", "returns a number value");
 		// XXX: following test does not work
@@ -139,3 +139,5 @@ jQuery(document).ready(function(){
 
 	});
 }); // document ready.
+
+})(jQuery);
