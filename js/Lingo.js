@@ -367,7 +367,7 @@ merge(config.macros.sync,{
 	hasChanged: "Changed while unplugged",
 	hasNotChanged: "Unchanged while unplugged",
 	syncStatusList: {
-		none: {text: "...", display:null, className:'notChanged'},
+		none: {text: "...", display:'none', className:'notChanged'},
 		changedServer: {text: "Changed on server", display:null, className:'changedServer'},
 		changedLocally: {text: "Changed while unplugged", display:null, className:'changedLocally'},
 		changedBoth: {text: "Changed while unplugged and on server", display:null, className:'changedBoth'},
