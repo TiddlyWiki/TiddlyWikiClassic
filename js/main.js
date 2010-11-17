@@ -48,7 +48,7 @@ function main()
 	invokeParamifier(params,"onload");
 	t4 = new Date();
 	readOnly = (window.location.protocol == "file:") ? false : config.options.chkHttpReadOnly;
-	var pluginProblem = loadPlugins();
+	var pluginProblem = loadPlugins("systemConfig");
 	doc.trigger("loadPlugins");
 	t5 = new Date();
 	formatter = new Formatter(config.formatters);
@@ -120,11 +120,11 @@ function loadShadowTiddlers()
 	shadows.forEachTiddler(function(title,tiddler){config.shadowTiddlers[title] = tiddler.text;});
 }
 
-function loadPlugins()
+function loadPlugins(tag)
 {
 	if(safeMode)
 		return false;
-	var tiddlers = store.getTaggedTiddlers("systemConfig");
+	var tiddlers = store.getTaggedTiddlers(tag);
 	//# ensure the plugins are sorted into case sensitive order
 	tiddlers.sort(function(a,b) {return a.title < b.title ? -1 : (a.title == b.title ? 0 : 1);});
 	var toLoad = [];
