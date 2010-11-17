@@ -700,7 +700,7 @@ Story.prototype.switchTheme = function(theme)
 			setStylesheet(store.getRecursiveTiddlerText(config.refresherData.styleSheet,"",10),config.refreshers.styleSheet);
 		}
 		config.options.txtTheme = theme;
-		saveOptionCookie("txtTheme");
+		saveOption("txtTheme");
 	}
 };
 

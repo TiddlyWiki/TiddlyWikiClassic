@@ -268,7 +268,7 @@ config.macros.slider.onClickSlider = function(ev)
 	else
 		n.style.display = isOpen ? "none" : "block";
 	config.options[cookie] = !isOpen;
-	saveOptionCookie(cookie);
+	saveOption(cookie);
 	return false;
 };
 

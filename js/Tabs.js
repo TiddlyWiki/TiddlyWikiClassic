@@ -56,7 +56,7 @@ config.macros.tabs.switchTab = function(tabset,tab)
 		wikify(store.getTiddlerText(contentTitle),tabContent,null,store.getTiddler(contentTitle));
 		if(cookie) {
 			config.options[cookie] = tab;
-			saveOptionCookie(cookie);
+			saveOption(cookie);
 		}
 	}
 };

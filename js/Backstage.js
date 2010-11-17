@@ -66,7 +66,7 @@ var backstage = {
 		jQuery(this.showButton).hide();
 		jQuery(this.hideButton).show();
 		config.options.chkBackstage = true;
-		saveOptionCookie("chkBackstage");
+		saveOption("chkBackstage");
 		addClass(this.content,"backstageVisible");
 	},
 
@@ -85,7 +85,7 @@ var backstage = {
 			this.showButton.style.display = "block";
 			this.hideButton.style.display = "none";
 			config.options.chkBackstage = false;
-			saveOptionCookie("chkBackstage");
+			saveOption("chkBackstage");
 			removeClass(this.content, "backstageVisible");
 		}
 	},
