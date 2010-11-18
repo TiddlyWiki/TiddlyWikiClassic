@@ -20,14 +20,14 @@ function setOption(name,value)
 		config.optionHandlers[optType].set(name,value);
 }
 
-// Gets the value of an option as a string. Most code should just read from config.options.* directly 
+// Gets the value of an option as a string. Most code should just read from config.options.* directly
 function getOption(name)
 {
 	var optType = name.substr(0,3);
 	return config.optionHandlers[optType] && config.optionHandlers[optType].get ? config.optionHandlers[optType].get(name) : null;
-} 
+}
 
-//# Loads config.options from cookies and SystemSettings 
+//# Loads config.options from cookies and SystemSettings
 function loadOptions()
 {
 	if(safeMode)
@@ -77,11 +77,11 @@ function loadSystemSettings()
 			source = key.substr(pos+1);
 			name = key.substr(0,pos);
 		}
-		if (source == 'setting') { 
+		if (source == 'setting') {
 			setOption(name,settings[key]);
 		}
 		config.optionSource[name] = source;
-	} 
+	}
 }
 
 function onSystemSettingsChange()
@@ -125,8 +125,8 @@ function saveCookie(name)
 	for(var i in cookies) {
 		if(i != 'TiddlyWiki')
 			removeCookie(i);
-	} 
-} 
+	}
+}
 
 function saveSystemSetting(name)
 {
@@ -156,13 +156,13 @@ function saveSystemSetting(name)
 	autoSaveChanges();
 }
 
-//# Flatten cookies to ANSI character set by substituting html character entities for non-ANSI characters 
+//# Flatten cookies to ANSI character set by substituting html character entities for non-ANSI characters
 function encodeCookie(s)
 {
 	return escape(convertUnicodeToHtmlEntities(s));
 }
 
-//# Decode any html character entities to their unicode equivalent 
+//# Decode any html character entities to their unicode equivalent
 function decodeCookie(s)
 {
 	s = unescape(s);
