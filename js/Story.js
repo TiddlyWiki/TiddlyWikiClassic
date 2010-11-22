@@ -150,7 +150,7 @@ Story.prototype.createTiddler = function(place,before,title,template,customField
 	place.insertBefore(tiddlerElem,before);
 	var defaultText = null;
 	if(!store.tiddlerExists(title) && !store.isShadowTiddler(title))
-		defaultText = this.loadMissingTiddler(title,customFields,tiddlerElem);
+		defaultText = this.loadMissingTiddler(title,customFields);
 	this.refreshTiddler(title,template,false,customFields,defaultText);
 	return tiddlerElem;
 };
