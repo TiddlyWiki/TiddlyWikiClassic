@@ -60,7 +60,7 @@ function loadCookies()
 		cookies = cookies['TiddlyWiki'].decodeHashMap();
 	}
 	for(var i in cookies) {
-		if(config.optionSource[i] == 'cookie') {
+		if(config.optionSource[i] != 'setting') {
 			setOption(i,cookies[i]);
 		}
 	}
