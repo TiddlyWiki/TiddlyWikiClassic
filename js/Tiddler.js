@@ -61,10 +61,8 @@ Tiddler.prototype.doNotSave = function()
 // Returns true if the tiddler has been updated since the tiddler was created or downloaded
 Tiddler.prototype.isTouched = function()
 {
-	var changeCount = this.fields['changecount'];
-	if(changeCount === undefined)
-		changeCount = 0;
-	return changeCount > 0;
+	var changecount = this.fields.changecount || 0;
+	return changecount > 0;
 };
 
 // Change the text and other attributes of a tiddler
