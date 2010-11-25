@@ -149,11 +149,11 @@ function saveSystemSetting(name)
 	var tiddler = store.getTiddler(title);
 	if(tiddler) {
 		tiddler.text = text;
-		store.saveTiddler(tiddler);
+		tiddler = store.saveTiddler(tiddler);
 	} else {
-		store.saveTiddler(title,title,text,'System',new Date(),['excludeLists'],config.defaultCustomFields);
+		tiddler = store.saveTiddler(title,title,text,'System',new Date(),['excludeLists'],config.defaultCustomFields);
 	}
-	autoSaveChanges();
+	autoSaveChanges(null,[tiddler]);
 }
 
 //# Flatten cookies to ANSI character set by substituting html character entities for non-ANSI characters
