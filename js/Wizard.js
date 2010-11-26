@@ -32,6 +32,7 @@ Wizard.prototype.createWizard = function(place,title)
 	createTiddlyElement(this.formElem,"h1",null,null,title);
 	this.bodyElem = createTiddlyElement(this.formElem,"div",null,"wizardBody");
 	this.footElem = createTiddlyElement(this.formElem,"div",null,"wizardFooter");
+	return this.formElem;
 };
 
 Wizard.prototype.clear = function()
