@@ -46,7 +46,7 @@ function getCookies()
 		var p = cookieList[i].indexOf('=');
 		if(p != -1) {
 			var name = cookieList[i].substr(0,p).trim();
-			var value = cookieList[i].substr(p+1).trim()
+			var value = cookieList[i].substr(p+1).trim();
 			cookies[name] = decodeCookie(value);
 		}
 	}
@@ -131,19 +131,23 @@ function saveCookie(name)
 function saveSystemSetting(name)
 {
 	var title = 'SystemSettings';
-	var settings = store.calcAllSlices(title);
+	var slice = store.getTiddlerSlice(title,name);
+	if (slice ===  getOption(name)) {
+	    return;
+	}
+	var slices = store.calcAllSlices(title);
 	var key;
 	for(key in config.options) {
 		if(config.optionSource[key] == undefined || config.optionSource[key] == 'setting') {
-			var value = getOption(key);
-			value = value == null ? '' : value;
-			if(settings[key] !== value)
-				settings[key] = value;
+			var value = getOption(key) || '';
+			if(slices[key] !== value) {
+				slices[key] = value;
+			}
 		}
 	}
 	var text = [];
-	for(key in settings) {
-		text.push('%0: %1'.format([key,settings[key]]));
+	for(key in slices) {
+		text.push('%0: %1'.format([key,slices[key]]));
 	}
 	text = text.sort().join('\n');
 	var tiddler = store.getTiddler(title);
@@ -153,7 +157,7 @@ function saveSystemSetting(name)
 	} else {
 		tiddler = store.saveTiddler(title,title,text,'System',new Date(),['excludeLists'],config.defaultCustomFields);
 	}
-	autoSaveChanges(null,[tiddler]);
+	saveChanges(null,[tiddler]);
 }
 
 //# Flatten cookies to ANSI character set by substituting html character entities for non-ANSI characters
