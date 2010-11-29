@@ -132,7 +132,7 @@ function saveSystemSetting(name)
 {
 	var title = 'SystemSettings';
 	var slice = store.getTiddlerSlice(title,name);
-	if (slice ===  getOption(name)) {
+	if (slice === getOption(name)) {
 	    return;
 	}
 	var slices = store.calcAllSlices(title);
