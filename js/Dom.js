@@ -241,7 +241,7 @@ function setCaretPosition(e,pos)
 		e.selectionStart = pos;
 		e.selectionEnd = pos;
 		e.focus();
-	} else if (document.selection) {
+	} else if(document.selection) {
 		// IE support
 		e.focus ();
 		var sel = document.selection.createRange();

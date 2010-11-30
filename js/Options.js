@@ -77,7 +77,7 @@ function loadSystemSettings()
 			source = key.substr(pos+1);
 			name = key.substr(0,pos);
 		}
-		if (source == 'setting') {
+		if(source == 'setting') {
 			setOption(name,settings[key]);
 		}
 		config.optionSource[name] = source;
@@ -132,7 +132,7 @@ function saveSystemSetting(name)
 {
 	var title = 'SystemSettings';
 	var slice = store.getTiddlerSlice(title,name);
-	if (slice === getOption(name)) {
+	if(slice === getOption(name)) {
 	    return;
 	}
 	var slices = store.calcAllSlices(title);
