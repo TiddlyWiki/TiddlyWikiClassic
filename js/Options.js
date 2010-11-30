@@ -150,6 +150,7 @@ function saveSystemSetting(name)
 		text.push('%0: %1'.format([key,slices[key]]));
 	}
 	text = text.sort().join('\n');
+	var storeWasDirty = store.isDirty();
 	var tiddler = store.getTiddler(title);
 	if(tiddler) {
 		tiddler.text = text;
@@ -157,7 +158,12 @@ function saveSystemSetting(name)
 	} else {
 		tiddler = store.saveTiddler(title,title,text,'System',new Date(),['excludeLists'],config.defaultCustomFields);
 	}
-	saveChanges(null,[tiddler]);
+	if(storeWasDirty == false && story.areAnyDirty() == false) {
+		//# nothing has changed except the options, so we can force a save
+		saveChanges(null,[tiddler]);
+	} else {
+		autoSaveChanges(null,[tiddler]);
+	}
 }
 
 //# Flatten cookies to ANSI character set by substituting html character entities for non-ANSI characters
