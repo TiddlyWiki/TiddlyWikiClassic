@@ -1,29 +1,29 @@
 <div title="SystemSettings">
 <pre>chkAnimate_cookie:
-chkAutoSave: false
+chkAutoSave_cookie:
 chkBackstage_cookie:
-chkCaseSensitiveSearch: false
-chkConfirmDelete: true
-chkDisplayInstrumentation: false
-chkForceMinorUpdate: false
+chkCaseSensitiveSearch_cookie:
+chkConfirmDelete_cookie:
+chkDisplayInstrumentation_cookie:
+chkForceMinorUpdate_cookie:
 chkGenerateAnRssFeed: false
 chkHttpReadOnly: true
-chkIncrementalSearch: true
-chkInsertTabs: false
-chkOpenInNewWindow: true
-chkRegExpSearch: false
-chkSaveBackups: true
-chkSaveEmptyTemplate: false
+chkIncrementalSearch_cookie:
+chkInsertTabs_cookie:
+chkOpenInNewWindow_cookie:
+chkRegExpSearch_cookie:
+chkSaveBackups_cookie:
+chkSaveEmptyTemplate_cookie:
 chkSideBarTabs_cookie:
 chkSliderOptionsPanel_cookie:
-chkToggleLinks: false
+chkToggleLinks_cookie:
 chkUsePreForStorage: true
-txtBackupFolder: 
-txtEditorFocus: text
+txtBackupFolder_cookie: 
+txtEditorFocus_cookie:
 txtFileSystemCharSet: UTF-8
 txtMainTab_cookie:
-txtMaxEditRows: 30
+txtMaxEditRows_cookie:
 txtMoreTab_cookie:
 txtTheme: 
-txtUserName_cookie: YourName</pre>
+txtUserName_cookie:</pre>
 </div>
