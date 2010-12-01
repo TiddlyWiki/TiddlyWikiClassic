@@ -60,7 +60,7 @@ function loadCookies()
 		cookies = cookies['TiddlyWiki'].decodeHashMap();
 	}
 	for(var i in cookies) {
-		if(config.optionSource[i] != 'setting') {
+		if(config.optionsSource[i] != 'setting') {
 			setOption(i,cookies[i]);
 		}
 	}
@@ -80,7 +80,7 @@ function loadSystemSettings()
 		if(source == 'setting') {
 			setOption(name,settings[key]);
 		}
-		config.optionSource[name] = source;
+		config.optionsSource[name] = source;
 	}
 }
 
@@ -100,7 +100,7 @@ function saveOption(name)
 		return;
 	}
 	saveCookie(name);
-	if(config.optionSource[name] == 'setting') {
+	if(config.optionsSource[name] == 'setting') {
 		saveSystemSetting(name);
 	}
 }
@@ -138,7 +138,7 @@ function saveSystemSetting(name)
 	var slices = store.calcAllSlices(title);
 	var key;
 	for(key in config.options) {
-		if(config.optionSource[key] == undefined || config.optionSource[key] == 'setting') {
+		if(config.optionsSource[key] == undefined || config.optionsSource[key] == 'setting') {
 			var value = getOption(key) || '';
 			if(slices[key] !== value) {
 				slices[key] = value;

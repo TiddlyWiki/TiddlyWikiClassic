@@ -68,7 +68,7 @@ config.optionsDesc = {};
 //#		volatile: the option isn't persisted at all, and reverts to the default specified in SystemSettings when the document is reloaded
 //#		setting: the option is stored in the SystemSettings tiddler
 //#	The default is "setting"
-config.optionSource = {};
+config.optionsSource = {};
 
 // Default tiddler templates
 var DEFAULT_VIEW_TEMPLATE = 1;
