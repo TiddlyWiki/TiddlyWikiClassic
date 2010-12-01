@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+# Build version of TiddlyWiki with external javascript
+# Usage:
+#  bldxjs
+
+DEST=$PWD
+RECIPE=$PWD/tiddlywiki_externaljs.html.recipe
+CORERECIPE=$PWD/tiddlywiki.html.recipe
+ruby -Ku -C ../tools/cooker cook.rb $CORERECIPE -o twcore.js -d$DEST -q -j $2 $3 $4 $5
+ruby -Ku -C ../tools/cooker cook.rb $RECIPE -d$DEST -q $2 $3 $4 $5
