@@ -4,8 +4,8 @@
 
 config.optionHandlers = {
 	'txt': {
-		get: function(name) {return config.options[name].toString();},
-		set: function(name,value) {config.options[name] = value;}
+		get: function(name) {return encodeCookie(config.options[name].toString());},
+		set: function(name,value) {config.options[name] = decodeCookie(value);}
 	},
 	'chk': {
 		get: function(name) {return config.options[name] ? 'true' : 'false';},
@@ -47,7 +47,7 @@ function getCookies()
 		if(p != -1) {
 			var name = cookieList[i].substr(0,p).trim();
 			var value = cookieList[i].substr(p+1).trim();
-			cookies[name] = decodeCookie(value);
+			cookies[name] = value;
 		}
 	}
 	return cookies;
@@ -117,10 +117,10 @@ function saveCookie(name)
 	var cookies = {};
 	for(var key in config.options) {
 		var value = getOption(key);
-		value = value == null ? '' : value;
+		value = value == null ? 'false' : value;
 		cookies[key] = value;
 	}
-	document.cookie = 'TiddlyWiki=' + encodeCookie(String.encodeHashMap(cookies)) + '; expires=Fri, 1 Jan 2038 12:00:00 UTC; path=/';
+	document.cookie = 'TiddlyWiki=' + String.encodeHashMap(cookies) + '; expires=Fri, 1 Jan 2038 12:00:00 UTC; path=/';
 	cookies = getCookies();
 	for(var i in cookies) {
 		if(i != 'TiddlyWiki')
