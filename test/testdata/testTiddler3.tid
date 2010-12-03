@@ -1,4 +1,6 @@
 tags: testTag threeTag
 fieldvalue: three
+server.bag: foo
+field-thing: bar
 
 hello

@@ -4,7 +4,7 @@
 
 (function(){
 	//# text or [[tiddler title]] or [foo[bar]]
-	var re = /([^\s\[\]]+)|(?:\[([ \w]+)\[([^\]]+)\]\])|(?:\[\[([^\]]+)\]\])/mg;
+	var re = /([^\s\[\]]+)|(?:\[([ \w\.\-]+)\[([^\]]+)\]\])|(?:\[\[([^\]]+)\]\])/mg;
 
 	//# Extensible filter functions
 	config.filters = {

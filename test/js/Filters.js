@@ -106,6 +106,18 @@
 			strictEqual(tiddlers[0].title, "testTiddler3");
 		});
 
+		test("filterTiddlers: '[server.bag[foo]]' should return the tiddler with a fieldvalue 'three'", function () {
+			var tiddlers = store.filterTiddlers("[server.bag[foo]]");
+			strictEqual(tiddlers.length, 1, 'one tiddler');
+			strictEqual(tiddlers[0].title, "testTiddler3");
+		});
+
+		test("filterTiddlers: '[field-thing[bar]]' should return the tiddler with a fieldvalue 'three'", function () {
+			var tiddlers = store.filterTiddlers("[field-thing[bar]]");
+			strictEqual(tiddlers.length, 1, 'one tiddler');
+			strictEqual(tiddlers[0].title, "testTiddler3");
+		});
+
 		/*
 		 *	[tag[value]][sort[+title]]
 		 */
