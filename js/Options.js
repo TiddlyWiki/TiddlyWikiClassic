@@ -122,9 +122,10 @@ function saveCookie(name)
 	}
 	document.cookie = 'TiddlyWiki=' + String.encodeHashMap(cookies) + '; expires=Fri, 1 Jan 2038 12:00:00 UTC; path=/';
 	cookies = getCookies();
-	for(var i in cookies) {
-		if(i != 'TiddlyWiki')
-			removeCookie(i);
+	for(var c in cookies) {
+	    var optType = c.substr(0,3);
+		if(config.optionHandlers[optType])
+			removeCookie(c);
 	}
 }
 
