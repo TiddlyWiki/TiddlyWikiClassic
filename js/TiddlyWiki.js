@@ -327,6 +327,8 @@ TiddlyWiki.prototype.saveTiddler = function(title,newTitle,newBody,modifier,modi
 	var tiddler;
 	if(title instanceof Tiddler) {
 		tiddler = title;
+		newTitle = tiddler.title;
+		title = tiddler.title;
 	} else {
 		tiddler = this.fetchTiddler(title);
 		if(tiddler) {
