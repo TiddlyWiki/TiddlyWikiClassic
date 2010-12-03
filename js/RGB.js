@@ -49,7 +49,7 @@ RGB.prototype.mix = function(c,f)
 RGB.prototype.toString = function()
 {
 	return "#" + ("0" + Math.floor(this.r.clamp(0,1) * 255).toString(16)).right(2) +
-				 ("0" + Math.floor(this.g.clamp(0,1) * 255).toString(16)).right(2) +
-				 ("0" + Math.floor(this.b.clamp(0,1) * 255).toString(16)).right(2);
+				("0" + Math.floor(this.g.clamp(0,1) * 255).toString(16)).right(2) +
+				("0" + Math.floor(this.b.clamp(0,1) * 255).toString(16)).right(2);
 };
 
