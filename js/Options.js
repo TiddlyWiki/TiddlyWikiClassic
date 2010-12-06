@@ -131,9 +131,13 @@ function saveCookie(name)
 
 function saveSystemSetting(name)
 {
+	if (readOnly) {
+		return;
+	}
 	var title = 'SystemSettings';
 	var slice = store.getTiddlerSlice(title,name);
 	if(slice === getOption(name)) {
+		//# don't save if the option hasn't changed
 		return;
 	}
 	var slices = store.calcAllSlices(title);
