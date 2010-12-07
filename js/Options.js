@@ -94,7 +94,7 @@ function saveOption(name)
 	}
 	saveCookie(name);
 	if(config.optionsSource[name] == 'setting') {
-		saveSystemSetting(name);
+		saveSystemSetting(name,true);
 	}
 }
 // @Deprecated; retained for backwards compatibility
@@ -122,7 +122,7 @@ function saveCookie(name)
 	}
 }
 
-function saveSystemSetting(name)
+function saveSystemSetting(name,saveFile)
 {
 	var title = 'SystemSettings';
 	var slice = store.getTiddlerSlice(title,name);
@@ -150,12 +150,15 @@ function saveSystemSetting(name)
 	} else {
 		tiddler = store.saveTiddler(title,title,text,'System',new Date(),['excludeLists'],config.defaultCustomFields);
 	}
-	if(storeWasDirty == false && story.areAnyDirty() == false) {
-		//# nothing has changed except the options, so we can force a save
-		saveChanges(null,[tiddler]);
-	} else {
-		autoSaveChanges(null,[tiddler]);
-	}
+	if(saveFile) {
+		if(storeWasDirty == false && story.areAnyDirty() == false) {
+			//# nothing has changed except the options, so we can force a save
+			saveChanges(null,[tiddler]);
+		} else {
+			autoSaveChanges(null,[tiddler]);
+		
+		}
+    }
 }
 
 //# Flatten cookies to ANSI character set by substituting html character entities for non-ANSI characters
