@@ -69,21 +69,14 @@ function loadCookies()
 function loadSystemSettings()
 {
 	var settings = store.calcAllSlices('SystemSettings');
+	config.optionsSource = {};
 	for(var key in settings) {
-		var pos = key.indexOf('_');
-		var name = key;
-		var source = 'setting';
-		if(pos !== -1) {
-			source = key.substr(pos+1);
-			name = key.substr(0,pos);
-		}
-		if(source == 'setting') {
-			setOption(name,settings[key]);
-		}
-		config.optionsSource[name] = source;
+		setOption(key,settings[key]);
+		config.optionsSource[key] = 'setting';
 	}
 }
 
+//# called back from SystemSettings notifier
 function onSystemSettingsChange()
 {
 	if(!startingUp) {
@@ -138,12 +131,10 @@ function saveSystemSetting(name)
 	}
 	var slices = store.calcAllSlices(title);
 	var key;
-	for(key in config.options) {
-		if(config.optionsSource[key] == undefined || config.optionsSource[key] == 'setting') {
-			var value = getOption(key) || '';
-			if(slices[key] !== value) {
-				slices[key] = value;
-			}
+	for(key in config.optionsSource) {
+		var value = getOption(key) || '';
+		if(slices[key] !== value) {
+			slices[key] = value;
 		}
 	}
 	var text = [];
