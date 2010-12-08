@@ -5,7 +5,6 @@ shadow: StyleSheetColors.tiddler
 shadow: StyleSheetLayout.tiddler
 shadow: StyleSheetLocale.tiddler
 shadow: StyleSheetPrint.tiddler
-shadow: SystemSettings.tiddler
 shadow: PageTemplate.tiddler
 shadow: ViewTemplate.tiddler
 shadow: EditTemplate.tiddler
