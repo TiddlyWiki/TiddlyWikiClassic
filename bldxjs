@@ -5,7 +5,7 @@
 #  bldxjs
 
 DEST=$PWD
-RECIPE=$PWD/tiddlywiki_externaljs.html.recipe
-CORERECIPE=$PWD/tiddlywiki.html.recipe
-ruby -Ku -C ../tools/cooker cook.rb $CORERECIPE -o twcore.js -d$DEST -q -j $2 $3 $4 $5
-ruby -Ku -C ../tools/cooker cook.rb $RECIPE -d$DEST -q $2 $3 $4 $5
+RECIPE_EXT_JS=$PWD/tiddlywiki_externaljs.html.recipe
+RECIPE=$PWD/tiddlywiki.html.recipe
+ruby -Ku -C ../tools/cooker cook.rb $RECIPE -o twcore.js -d$DEST -q -j $2 $3 $4 $5
+ruby -Ku -C ../tools/cooker cook.rb $RECIPE_EXT_JS -d$DEST -q $2 $3 $4 $5
