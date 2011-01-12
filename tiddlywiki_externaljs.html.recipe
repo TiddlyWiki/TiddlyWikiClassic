@@ -1,5 +1,5 @@
 recipe: html/split.recipe
 recipe: shadows/split.recipe
 version: js/Version.js
-recipe: deprecated/split.recipe
-postscript: html/externaljs.txt
+jsext: html/externaljs.txt
+jsdeprecated: deprecated/Dom.js

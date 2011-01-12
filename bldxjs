@@ -2,10 +2,10 @@
 
 # Build version of TiddlyWiki with external javascript
 # Usage:
-#  bldxjs
+#  bldxjs [release]
 
+DEFAULT_RELEASE=2.6.3.A1
+RELEASE=${1:-$DEFAULT_RELEASE}
 DEST=$PWD
-RECIPE_EXT_JS=$PWD/tiddlywiki_externaljs.html.recipe
-RECIPE=$PWD/tiddlywiki.html.recipe
-ruby -Ku -C ../tools/cooker cook.rb $RECIPE -o twcore.js -d$DEST -q -j $2 $3 $4 $5
-ruby -Ku -C ../tools/cooker cook.rb $RECIPE_EXT_JS -d$DEST -q $2 $3 $4 $5
+RECIPE=$PWD/tiddlywiki_externaljs.html.recipe
+ruby -Ku -C ../tools/cooker cook.rb $RECIPE -d$DEST -q -o tiddlywiki_externaljs.$RELEASE.html$2 $3 $4 $5
