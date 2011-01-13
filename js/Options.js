@@ -158,7 +158,7 @@ function saveSystemSetting(name,saveFile)
 			autoSaveChanges(null,[tiddler]);
 		
 		}
-    }
+	}
 }
 
 //# Flatten cookies to ANSI character set by substituting html character entities for non-ANSI characters
