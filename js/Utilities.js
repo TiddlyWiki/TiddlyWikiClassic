@@ -34,6 +34,43 @@ function compareVersions(v1,v2)
 	return x1 > x2 ? -1 : 0;
 }
 
+function createTiddlyText(parent,text)
+{
+	return parent.appendChild(document.createTextNode(text));
+}
+
+function createTiddlyCheckbox(parent,caption,checked,onChange)
+{
+	var cb = document.createElement("input");
+	cb.setAttribute("type","checkbox");
+	cb.onclick = onChange;
+	parent.appendChild(cb);
+	cb.checked = checked;
+	cb.className = "chkOptionInput";
+	if(caption)
+		wikify(caption,parent);
+	return cb;
+}
+
+function createTiddlyElement(parent,element,id,className,text,attribs)
+{
+	var e = document.createElement(element);
+	if(className != null)
+		e.className = className;
+	if(id != null)
+		e.setAttribute("id",id);
+	if(text != null)
+		e.appendChild(document.createTextNode(text));
+	if(attribs) {
+		for(var n in attribs) {
+			e.setAttribute(n,attribs[n]);
+		}
+	}
+	if(parent != null)
+		parent.appendChild(e);
+	return e;
+}
+
 function createTiddlyButton(parent,text,tooltip,action,className,id,accessKey,attribs)
 {
 	var btn = document.createElement("a");
