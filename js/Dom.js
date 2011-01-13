@@ -343,3 +343,13 @@ function removeNode(e)
 	jQuery(e).remove();
 }
 
+function setStylesheet(s,id,doc)
+{
+	jQuery.twStylesheet(s,{id:id,doc:doc});
+}
+
+function removeStyleSheet(id)
+{
+	jQuery.twStylesheet.remove({id:id});
+}
+
