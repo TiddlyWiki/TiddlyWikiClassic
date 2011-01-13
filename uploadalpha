@@ -24,7 +24,7 @@ function setPermissions() {
 echo
 echo "uploading files"
 echo
-FILES="tiddlywiki.$RELEASE.html tiddlywiki_compressed.$RELEASE.html tiddlywiki_externaljs.$RELEASE.html twcore.$RELEASE.js"
+FILES="tiddlywiki.$RELEASE.html tiddlywiki_compressed.$RELEASE.html tiddlywiki_externaljs.$RELEASE.html twcore.$RELEASE.js jquery/jquery.js jquery/plugins/jQuery.twStylesheet.js"
 scp $FILES "$HOST:./tmp/"
 
 # transfer files to their respective folders
@@ -42,14 +42,10 @@ COMMANDS="$COMMANDS sudo mv ./tmp/tiddlywiki_externaljs.$RELEASE.html $DIR/alpha
 setPermissions "$DIR/alpha/tiddlywiki_externaljs.html"
 COMMANDS="$COMMANDS sudo mv ./tmp/twcore.$RELEASE.js $DIR/alpha/twcore.js;"
 setPermissions "$DIR/alpha/twcore.js"
+COMMANDS="$COMMANDS sudo mv ./tmp/jquery.js $DIR/alpha/jquery.js;"
+setPermissions "$DIR/alpha/twcore.js"
+COMMANDS="$COMMANDS sudo mv ./tmp/jQuery.twStylesheet.js $DIR/alpha/jQuery.twStylesheet.js;"
+setPermissions "$DIR/alpha/twcore.js"
 # execute
 $COMMANDS
 
-# cleanup
-if [ "$2" = "true" ]; then
-	echo "cleaning up (removing cooked files)"
-	echo "removing empty.$RELEASE.html"
-	rm "empty.$RELEASE.html"
-	echo "removing compressed.$RELEASE.html"
-	rm "compressed.$RELEASE.html"
-fi
