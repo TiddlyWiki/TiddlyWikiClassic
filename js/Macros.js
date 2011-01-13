@@ -2,6 +2,30 @@
 //-- Macro definitions
 //--
 
+function invokeMacro(place,macro,params,wikifier,tiddler)
+{
+	try {
+		var m = config.macros[macro];
+		if(m && m.handler) {
+			var tiddlerElem = story.findContainingTiddler(place);
+			//# Provide context for evaluated macro parameters (eg <<myMacro {{tiddler.title}}>>)
+			window.tiddler = tiddlerElem ? store.getTiddler(tiddlerElem.getAttribute("tiddler")) : null;
+			window.place = place;
+			var allowEval = true;
+			if(config.evaluateMacroParameters=="system") {
+				if(!tiddler || tiddler.tags.indexOf("systemAllowEval") == -1) {
+					allowEval = false;
+				}
+			}
+			m.handler(place,macro,m.noPreParse?null:params.readMacroParams(!allowEval),wikifier,params,tiddler);
+		} else {
+			createTiddlyError(place,config.messages.macroError.format([macro]),config.messages.macroErrorDetails.format([macro,config.messages.missingMacro]));
+		}
+	} catch(ex) {
+		createTiddlyError(place,config.messages.macroError.format([macro]),config.messages.macroErrorDetails.format([macro,ex.toString()]));
+	}
+}
+
 config.macros.today.handler = function(place,macroName,params)
 {
 	var now = new Date();
