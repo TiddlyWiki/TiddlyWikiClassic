@@ -142,15 +142,17 @@ function getTiddlyLinkInfo(title,currClasses)
 		classes.remove("tiddlyLinkNonExisting");
 		classes.remove("shadow");
 	} else {
+	    var f;
 		classes.remove("tiddlyLinkExisting");
 		classes.pushUnique("tiddlyLinkNonExisting");
 		if(store.isShadowTiddler(title)) {
-			subTitle = config.messages.shadowedTiddlerToolTip.format([title]);
+			f = config.messages.shadowedTiddlerToolTip;
 			classes.pushUnique("shadow");
 		} else {
-			subTitle = config.messages.undefinedTiddlerToolTip.format([title]);
+			f = config.messages.undefinedTiddlerToolTip;
 			classes.remove("shadow");
 		}
+		subTitle = f ? f.format([title]) : "";
 	}
 	if(typeof config.annotations[title]=="string")
 		subTitle = config.annotations[title];
@@ -166,7 +168,8 @@ function createExternalLink(place,url,label)
 	var link = document.createElement("a");
 	link.className = "externalLink";
 	link.href = url;
-	link.title = config.messages.externalLinkTooltip.format([url]);
+	var f = config.messages.externalLinkTooltip;
+	link.title = f ? f.format([url]) : url;
 	if(config.options.chkOpenInNewWindow)
 		link.target = "_blank";
 	place.appendChild(link);
