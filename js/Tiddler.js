@@ -166,13 +166,14 @@ Tiddler.prototype.getSubtitle = function()
 {
 	var modifier = this.modifier;
 	if(!modifier)
-		modifier = config.messages.subtitleUnknown;
+		modifier = config.messages.subtitleUnknown || "";
 	var modified = this.modified;
 	if(modified)
 		modified = modified.toLocaleString();
 	else
-		modified = config.messages.subtitleUnknown;
-	return config.messages.tiddlerLinkTooltip.format([this.title,modifier,modified]);
+		modified = config.messages.subtitleUnknown || "";
+	var f = config.messages.tiddlerLinkTooltip || "%0 - %1, %2";
+	return f.format([this.title,modifier,modified]);
 };
 
 Tiddler.prototype.isReadOnly = function()
