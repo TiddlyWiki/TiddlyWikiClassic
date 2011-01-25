@@ -258,7 +258,6 @@ Story.prototype.refreshTiddler = function(title,template,force,customFields,defa
 			}
 			if(customFields)
 				this.addCustomFields(tiddlerElem,customFields);
-			forceReflow();
 		}
 	}
 	return tiddlerElem;
@@ -444,7 +443,6 @@ Story.prototype.closeTiddler = function(title,animate,unused)
 			anim.startAnimating(new Slider(tiddlerElem,false,null,"all"));
 		else {
 			removeNode(tiddlerElem);
-			forceReflow();
 		}
 	}
 };
