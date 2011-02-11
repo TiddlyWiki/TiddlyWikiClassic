@@ -591,6 +591,7 @@ Story.prototype.saveTiddler = function(title,minorUpdate)
 		if(store.tiddlerExists(newTitle) && newTitle != title) {
 			if(!confirm(config.messages.overwriteWarning.format([newTitle.toString()])))
 				return null;
+				title = newTitle;
 		}
 		if(newTitle != title)
 			this.closeTiddler(newTitle,false);
