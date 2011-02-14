@@ -12,9 +12,8 @@ function Story(containerId,idPrefix)
 	this.highlightRegExp = null;
 	//# generate tiddler ID
 	this.tiddlerId = function(title) {
-		//# replace spaces in titles to give valid HTML id
-		title = title.replace("_","__");
-		title = title.replace(" ","_");
+		//# replace spaces in titles to ensure valid element IDs
+		title = title.replace("_", "__").replace(" ", "_");
 		var id = this.idPrefix + title;
 		return id==this.container ? this.idPrefix + "_" + title : id;
 	};
