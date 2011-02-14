@@ -70,8 +70,10 @@ config.macros.plugins.doRemoveTag = function(e)
 	if(rowNames.length == 0) {
 		alert(config.messages.nothingSelected);
 	} else {
-		for(var t=0; t<rowNames.length; t++)
+		for(var t=0; t<rowNames.length; t++) {
 			store.setTiddlerTag(rowNames[t],false,"systemConfig");
+		}
+		autoSaveChanges();
 	}
 };
 
@@ -89,6 +91,7 @@ config.macros.plugins.doDelete = function(e)
 				story.closeTiddler(rowNames[t],true);
 			}
 		}
+		autoSaveChanges();
 	}
 };
 
