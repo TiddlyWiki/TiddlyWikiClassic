@@ -74,9 +74,9 @@ function createTiddlyElement(parent,element,id,className,text,attribs)
 function createTiddlyButton(parent,text,tooltip,action,className,id,accessKey,attribs)
 {
 	var btn = document.createElement("a");
+	btn.setAttribute("href","javascript:;");
 	if(action) {
 		btn.onclick = action;
-		btn.setAttribute("href","javascript:;");
 	}
 	if(tooltip)
 		btn.setAttribute("title",tooltip);
