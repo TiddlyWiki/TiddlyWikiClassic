@@ -149,9 +149,6 @@ table.listView th, table.listView td, table.listView tr {padding:0px 3px 0px 3px
 
 .fieldsetFix {border:0; padding:0; margin:1px 0px;}
 
-.sparkline {line-height:1em;}
-.sparktick {outline:0;}
-
 .zoomer {font-size:1.1em; position:absolute; overflow:hidden;}
 .zoomer div {padding:1em;}
 

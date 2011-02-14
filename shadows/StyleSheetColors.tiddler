@@ -93,9 +93,6 @@ h2,h3 {border-bottom:1px solid [[ColorPalette::TertiaryLight]];}
 .footer {color:[[ColorPalette::TertiaryLight]];}
 .selected .footer {color:[[ColorPalette::TertiaryMid]];}
 
-.sparkline {background:[[ColorPalette::PrimaryPale]]; border:0;}
-.sparktick {background:[[ColorPalette::PrimaryDark]];}
-
 .error, .errorButton {color:[[ColorPalette::Foreground]]; background:[[ColorPalette::Error]];}
 .warning {color:[[ColorPalette::Foreground]]; background:[[ColorPalette::SecondaryPale]];}
 .lowlight {background:[[ColorPalette::TertiaryLight]];}
