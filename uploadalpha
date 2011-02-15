@@ -33,8 +33,8 @@ echo "transferring files"
 echo
 COMMANDS="ssh $HOST"
 # Empty
-COMMANDS="$COMMANDS sudo cp ./tmp/tiddlywiki.$RELEASE.html $DIR/alpha/tiddlywiki.html;"
-setPermissions "$DIR/alpha/tiddlywiki.html"
+COMMANDS="$COMMANDS sudo cp ./tmp/tiddlywiki.$RELEASE.html $DIR/alpha/empty.html;"
+setPermissions "$DIR/alpha/empty.html"
 # Compressed
 COMMANDS="$COMMANDS sudo mv ./tmp/tiddlywiki_compressed.$RELEASE.html $DIR/alpha/tiddlywiki_compressed.html;"
 setPermissions "$DIR/alpha/tiddlywiki_compressed.html"
@@ -43,9 +43,9 @@ setPermissions "$DIR/alpha/tiddlywiki_externaljs.html"
 COMMANDS="$COMMANDS sudo mv ./tmp/twcore.$RELEASE.js $DIR/alpha/twcore.js;"
 setPermissions "$DIR/alpha/twcore.js"
 COMMANDS="$COMMANDS sudo mv ./tmp/jquery.js $DIR/alpha/jquery.js;"
-setPermissions "$DIR/alpha/twcore.js"
+setPermissions "$DIR/alpha/jquery.js"
 COMMANDS="$COMMANDS sudo mv ./tmp/jQuery.twStylesheet.js $DIR/alpha/jQuery.twStylesheet.js;"
-setPermissions "$DIR/alpha/twcore.js"
+setPermissions "$DIR/alpha/jQuery.twStylesheet.js"
 # execute
 $COMMANDS
 
