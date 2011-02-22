@@ -70,7 +70,7 @@ FileAdaptor.prototype.getTiddlerList = function(context,userParams,callback,filt
 	if(this.store) {
 		var ret = context.complete(context,context.userParams);
 	} else {
-		ret = loadRemoteFile(context.host,FileAdaptor.loadTiddlyWikiCallback,context);
+		ret = httpReq("GET",context.host,FileAdaptor.loadTiddlyWikiCallback,context);
 		if(typeof ret != "string")
 			ret = true;
 	}
@@ -126,7 +126,7 @@ FileAdaptor.prototype.getTiddler = function(title,context,userParams,callback)
 	context.complete = FileAdaptor.getTiddlerComplete;
 	return context.adaptor.store ?
 		context.complete(context,context.userParams) :
-		loadRemoteFile(context.host,FileAdaptor.loadTiddlyWikiCallback,context);
+		httpReq("GET",context.host,FileAdaptor.loadTiddlyWikiCallback,context);
 };
 
 FileAdaptor.getTiddlerComplete = function(context,userParams)

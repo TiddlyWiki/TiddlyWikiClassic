@@ -37,7 +37,7 @@ config.macros.upgrade.onClickUpgrade = function(e)
 		return false;
 	}
 	w.setButtons([],me.statusLoadingCore);
-	var load = loadRemoteFile(me.source,me.onLoadCore,w);
+	var load = httpReq("GET",me.source,me.onLoadCore,w);
 	if(typeof load == "string") {
 		w.setButtons([],me.errorLoadingCore);
 		alert(me.errorLoadingCore);
