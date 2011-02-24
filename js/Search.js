@@ -2,14 +2,13 @@
 //-- Search macro
 //--
 
-config.macros.search.handler = function(place,macroName,params)
+config.macros.search.handler = function(place,macroName,params,wikifier,paramString,tiddler)
 {
+	params = paramString.parseParams("anon",null,false,false,false);
 	var searchTimeout = null;
 	var btn = createTiddlyButton(place,this.label,this.prompt,this.onClick,"searchButton");
 	var txt = createTiddlyElement(null,"input",null,"txtOptionInput searchField");
-	if(params[0]) {
-		txt.value = params[0];
-	}
+	txt.value = getParam(params,"anon","");
 	if(config.browser.isSafari) {
 		txt.setAttribute("type","search");
 		txt.setAttribute("results","5");
@@ -20,9 +19,10 @@ config.macros.search.handler = function(place,macroName,params)
 	txt.onkeyup = this.onKeyPress;
 	txt.onfocus = this.onFocus;
 	txt.setAttribute("size",this.sizeTextbox);
-	txt.setAttribute("accessKey",params[1] || this.accessKey);
+	txt.setAttribute("accessKey",getParam(params,"accesskey",this.accessKey));
 	txt.setAttribute("autocomplete","off");
 	txt.setAttribute("lastSearchText","");
+	txt.setAttribute("placeholder",getParam(params,"placeholder",this.placeholder));
 };
 
 // Global because there's only ever one outstanding incremental search timer

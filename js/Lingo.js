@@ -151,6 +151,7 @@ merge(config.messages,{
 merge(config.macros.search,{
 	label: "search",
 	prompt: "Search this TiddlyWiki",
+	placeholder: "",
 	accessKey: "F",
 	successMsg: "%0 tiddlers found matching %1",
 	failureMsg: "No tiddlers found matching %0"});
