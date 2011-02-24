@@ -71,12 +71,19 @@ config.paramifiers.tag = {
 };
 
 config.paramifiers.newTiddler = {
-	onstart: function(v) {
+	onstart: function(v) { 
+		var args = v.parseParams("anon", null, null)[0];
+		var title = args.title ? args.title[0] : v;
+		var customFields = args.fields ? args.fields[0] : null;
 		if(!readOnly) {
-			story.displayTiddler(null,v,DEFAULT_EDIT_TEMPLATE);
-			story.focusTiddler(v,"text");
+			story.displayTiddler(null,title,DEFAULT_EDIT_TEMPLATE,false,null,customFields);
+			story.focusTiddler(title,"text");
+			var tags = args.tag ? args.tag : [];
+			for(var i=0;i<tags.length;i++) {
+				story.setTiddlerTag(title,tags[i],+1);
+			}
 		}
-	}
+	} 
 };
 
 config.paramifiers.newJournal = {
