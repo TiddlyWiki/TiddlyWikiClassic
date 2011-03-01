@@ -38,9 +38,15 @@ config.macros.version.handler = function(place)
 	jQuery("<span/>").text(formatVersion()).appendTo(place);
 };
 
-config.macros.list.handler = function(place,macroName,params)
+config.macros.list.template = "<<view title link>>";
+config.macros.list.handler = function(place,macroName,params,wikifier,paramString)
 {
-	var type = params[0] || "all";
+	var args = paramString.parseParams("anon", null, null)[0];
+	var type = args.anon ? args.anon[0] : "all";
+	var template = args.template ? store.getTiddlerText(args.template[0]) : false;
+	if(!template) {
+		template = config.macros.list.template;
+	}
 	var list = document.createElement("ul");
 	place.appendChild(list);
 	if(this[type].prompt)
@@ -51,7 +57,15 @@ config.macros.list.handler = function(place,macroName,params)
 	for(var t = 0; t < results.length; t++) {
 		var li = document.createElement("li");
 		list.appendChild(li);
-		createTiddlyLink(li,typeof results[t] == "string" ? results[t] : results[t].title,true);
+		var tiddler = results[t];
+		if(typeof(tiddler) == 'string') { // deal with missing etc..
+				tiddler = store.getTiddler(tiddler) || new Tiddler(tiddler);
+		}
+		wikify(template, li, null, tiddler);
+	}
+	if(results.length === 0 && args.emptyMessage) {
+		$(list).addClass("emptyList");
+		$("<li />").text(args.emptyMessage[0]).appendTo(list);
 	}
 };
 
