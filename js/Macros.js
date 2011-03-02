@@ -193,13 +193,13 @@ config.macros.tiddler.transclude = function(wrapper,tiddlerName,args)
 			var placeholderRE = new RegExp("\\$" + (i + 1),"mg");
 			text = text.replace(placeholderRE,args[i]);
 		}
-		config.macros.tiddler.renderText(wrapper,text,tiddlerName,params);
+		config.macros.tiddler.renderText(wrapper,text,tiddlerName);
 	} finally {
 		stack.pop();
 	}
 };
 
-config.macros.tiddler.renderText = function(place,text,tiddlerName,params)
+config.macros.tiddler.renderText = function(place,text,tiddlerName)
 {
 	wikify(text,place,null,store.getTiddler(tiddlerName));
 };

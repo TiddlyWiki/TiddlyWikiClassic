@@ -71,7 +71,7 @@ config.paramifiers.tag = {
 };
 
 config.paramifiers.newTiddler = {
-	onstart: function(v) { 
+	onstart: function(v) {
 		var args = v.parseParams("anon", null, null)[0];
 		var title = args.title ? args.title[0] : v;
 		var customFields = args.fields ? args.fields[0] : null;
@@ -83,7 +83,7 @@ config.paramifiers.newTiddler = {
 				story.setTiddlerTag(title,tags[i],+1);
 			}
 		}
-	} 
+	}
 };
 
 config.paramifiers.newJournal = {
