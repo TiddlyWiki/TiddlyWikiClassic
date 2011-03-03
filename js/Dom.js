@@ -298,7 +298,6 @@ function removeNode(e)
 
 function setStylesheet(s,id,doc)
 {
-	jQuery.twStylesheet.remove({id:id});
 	jQuery.twStylesheet(s,{id:id,doc:doc});
 }
 
