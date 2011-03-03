@@ -24,7 +24,7 @@ function setPermissions() {
 echo
 echo "uploading files"
 echo
-FILES="tiddlywiki.$RELEASE.html tiddlywiki_compressed.$RELEASE.html tiddlywiki_externaljs.$RELEASE.html twcore.$RELEASE.js jquery/jquery.js jquery/plugins/jQuery.twStylesheet.js"
+FILES="tiddlywiki.$RELEASE.html tiddlywiki_compressed.$RELEASE.html tiddlywiki_externaljs.$RELEASE.html tiddlywiki_externaljs_tiddlyspace.$RELEASE.html twcore.$RELEASE.js jquery/jquery.js jquery/plugins/jQuery.twStylesheet.js"
 scp $FILES "$HOST:./tmp/"
 
 # transfer files to their respective folders
@@ -40,6 +40,8 @@ COMMANDS="$COMMANDS sudo mv ./tmp/tiddlywiki_compressed.$RELEASE.html $DIR/alpha
 setPermissions "$DIR/alpha/tiddlywiki_compressed.html"
 COMMANDS="$COMMANDS sudo mv ./tmp/tiddlywiki_externaljs.$RELEASE.html $DIR/alpha/tiddlywiki_externaljs.html;"
 setPermissions "$DIR/alpha/tiddlywiki_externaljs.html"
+COMMANDS="$COMMANDS sudo mv ./tmp/tiddlywiki_externaljs.$RELEASE.html $DIR/alpha/tiddlywiki_externaljs_tiddlyspace.html;"
+setPermissions "$DIR/alpha/tiddlywiki_externaljs_tiddlyspace.html"
 COMMANDS="$COMMANDS sudo mv ./tmp/twcore.$RELEASE.js $DIR/alpha/twcore.js;"
 setPermissions "$DIR/alpha/twcore.js"
 COMMANDS="$COMMANDS sudo mv ./tmp/jquery.js $DIR/alpha/jquery.js;"
