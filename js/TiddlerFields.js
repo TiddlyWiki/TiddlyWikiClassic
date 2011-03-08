@@ -127,9 +127,15 @@ TiddlyWiki.prototype.getValue = function(tiddler,fieldName)
 	if(!t)
 		return undefined;
 	fieldName = fieldName.toLowerCase();
-	var accessor = TiddlyWiki.standardFieldAccess[fieldName];
-	if(accessor) {
-		return accessor.get(t);
+	if(fieldName.indexOf(config.textPrimitives.sectionSeparator) === 0 || fieldName.indexOf(config.textPrimitives.sliceSeparator) === 0) {
+		var sliceType = fieldName.substr(0, 2);
+		var sliceName = fieldName.substring(2);
+		return store.getTiddlerText("%0%1%2".format(t.title,sliceType,sliceName));
+	} else {
+		var accessor = TiddlyWiki.standardFieldAccess[fieldName];
+		if(accessor) {
+			return accessor.get(t);
+		}
 	}
 	return t.fields[fieldName];
 };
