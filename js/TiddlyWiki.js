@@ -508,7 +508,12 @@ TiddlyWiki.prototype.reverseLookup = function(lookupField,lookupValue,lookupMatc
 		if(["links", "tags"].contains(lookupField)) {
 			values = tiddler[lookupField];
 		} else {
-			values = tiddler.fields[lookupField] ? [tiddler.fields[lookupField]] : [];
+			var accessor = TiddlyWiki.standardFieldAccess[lookupField];
+			if(accessor) {
+				values = [ accessor.get(tiddler) ];
+			} else {
+				values = tiddler.fields[lookupField] ? [tiddler.fields[lookupField]] : [];
+			}
 		}
 		for(var lookup=0; lookup<values.length; lookup++) {
 			if(values[lookup] == lookupValue)

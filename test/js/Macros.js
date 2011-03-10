@@ -59,11 +59,11 @@
 		var params = ["orphans"];
 		var paramString = "orphans";
 		config.macros.list.handler(place,"list",params,null,paramString);
-		strictEqual($("li", place).length, 4,"header plus 3 dummy tiddlers");
+		strictEqual($("li", place).length, 3,"header plus 2 dummy tiddlers");
 		var items = $("li", place);
 		strictEqual($(items[1]).text(), "testTiddler1",
 			"check alphabetical order");
-		strictEqual($(items[2]).text(), "testTiddler2",
+		strictEqual($(items[2]).text(), "testTiddler3",
 			"check alphabetical order");
 	});
 

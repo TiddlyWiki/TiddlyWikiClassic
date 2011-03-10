@@ -1,4 +1,5 @@
 jQuery(document).ready(function(){
+	var _numTiddlers;
 	var module_tiddlers = [{title: "tvalue1", tags: ["twtesthello"], fields: {xyz:"bar"}},
 		{title: "tvalue2", tags: []},
 		{title: "tvalue3", tags: ["twtesthello", "goodbye"], fields: {xyz: "bar"}},
@@ -11,8 +12,10 @@ jQuery(document).ready(function(){
 				var tid = module_tiddlers[i];
 				store.saveTiddler(tid.title, tid.title, tid.text, null, null, tid.tags, tid.fields);
 			}
+			_numTiddlers = store.getTiddlers().length;
 		},
 		teardown: function() {
+			_numTiddlers = false;
 			for(var i = 0; i < module_tiddlers.length; i++) {
 				var tid = module_tiddlers[i];
 				store.removeTiddler(tid.title);
@@ -306,5 +309,51 @@ jQuery(document).ready(function(){
 		strictEqual(tiddlers2.length, 3, 'No message');
 		strictEqual(tiddlers3.length, 1, 'No message');
 		strictEqual(tiddlers4.length, 2, 'No message');
+	});
+
+	test("reverseLookup (custom fields)", function() {
+		var lookupField = "server.bag";
+		var lookupValue = "foo";
+		var sortField = "modified";
+		var tiddlers = store.reverseLookup(lookupField,lookupValue,true,sortField);
+		var tiddlers2 = store.reverseLookup(lookupField,lookupValue,false,sortField);
+		strictEqual(tiddlers.length, 1);
+		strictEqual(tiddlers[0].title, "testTiddler3");
+		strictEqual(tiddlers2.length, _numTiddlers - 1, "returns all the tiddlers minus the one with this field match");
+	});
+
+	test("reverseLookup (tags)", function() {
+		var lookupField = "tags";
+		var lookupValue = "testTag";
+		var sortField = "title";
+		var tiddlers = store.reverseLookup(lookupField,lookupValue,true,sortField);
+		var tiddlers2 = store.reverseLookup(lookupField,lookupValue,false,sortField);
+		strictEqual(tiddlers.length, 3);
+		strictEqual(tiddlers[0].title, "testTiddler1");
+		strictEqual(tiddlers[1].title, "testTiddler2");
+		strictEqual(tiddlers[2].title, "testTiddler3");
+		strictEqual(tiddlers2.length, _numTiddlers - 3, "returns all the tiddlers minus the three tiddler with this tag");
+	});
+
+	test("reverseLookup (links)", function() {
+		var lookupField = "links";
+		var lookupValue = "testTiddler2";
+		var sortField = "title";
+		var tiddlers = store.reverseLookup(lookupField,lookupValue,true,sortField);
+		var tiddlers2 = store.reverseLookup(lookupField,lookupValue,false,sortField);
+		strictEqual(tiddlers.length, 1);
+		strictEqual(tiddlers[0].title, "testTiddler3");
+		strictEqual(tiddlers2.length, _numTiddlers - 1, "returns all the tiddlers minus the one tiddler with this link");
+	});
+
+	test("reverseLookup (attribute)", function() {
+		var lookupField = "creator";
+		var lookupValue = "martin";
+		var sortField = "title";
+		var tiddlers = store.reverseLookup(lookupField,lookupValue,true,sortField);
+		var tiddlers2 = store.reverseLookup(lookupField,lookupValue,false,sortField);
+		strictEqual(tiddlers.length, 1);
+		strictEqual(tiddlers[0].title, "testTiddler3");
+		strictEqual(tiddlers2.length, _numTiddlers - 1, "returns all the tiddlers minus the one tiddler created by martin");
 	});
 });
