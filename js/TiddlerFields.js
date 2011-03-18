@@ -126,12 +126,12 @@ TiddlyWiki.prototype.getValue = function(tiddler,fieldName)
 	var t = this.resolveTiddler(tiddler);
 	if(!t)
 		return undefined;
-	fieldName = fieldName.toLowerCase();
 	if(fieldName.indexOf(config.textPrimitives.sectionSeparator) === 0 || fieldName.indexOf(config.textPrimitives.sliceSeparator) === 0) {
 		var sliceType = fieldName.substr(0, 2);
 		var sliceName = fieldName.substring(2);
 		return store.getTiddlerText("%0%1%2".format(t.title,sliceType,sliceName));
 	} else {
+		fieldName = fieldName.toLowerCase();
 		var accessor = TiddlyWiki.standardFieldAccess[fieldName];
 		if(accessor) {
 			return accessor.get(t);
