@@ -39,7 +39,16 @@ tests_xml = {
 
 jQuery(document).ready(function(){
 
-	module("GenerateRss");
+	var _username;
+	module("GenerateRss", {
+		setup: function() {
+			_username = config.options.txtUserName;
+			config.options.txtUserName = "YourName";
+		},
+		teardown: function() {
+			config.options.txtUserName = _username;
+		}
+	});
 
 	/*
 		<rss version="2.0">
