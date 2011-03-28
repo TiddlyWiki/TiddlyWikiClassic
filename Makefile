@@ -37,5 +37,5 @@ test: tests.html
 	open tests.html
 
 tests.html:
-cook test/recipes/tests
+	cook test/recipes/tests
 # doesn't work! have no idea how to do this
