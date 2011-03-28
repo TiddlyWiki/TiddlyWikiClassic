@@ -37,4 +37,5 @@ test: tests.html
 	open tests.html
 
 tests.html:
-# have no idea how to do this
+cook test/recipes/tests
+# doesn't work! have no idea how to do this
