@@ -41,14 +41,21 @@ config.macros.version.handler = function(place)
 config.macros.list.template = "<<view title link>>";
 config.macros.list.handler = function(place,macroName,params,wikifier,paramString)
 {
+	var list = document.createElement("ul");
+	jQuery(list).attr("refresh", "macro").attr("macroName", macroName).attr("params", paramString);
+	place.appendChild(list);
+	this.refresh(list);
+};
+config.macros.list.refresh = function(list) {
+	jQuery(list).empty();
+	var paramString = list.getAttribute("params");
+	var params = paramString.readMacroParams();
 	var args = paramString.parseParams("anon", null, null)[0];
 	var type = args.anon ? args.anon[0] : "all";
 	var template = args.template ? store.getTiddlerText(args.template[0]) : false;
 	if(!template) {
 		template = config.macros.list.template;
 	}
-	var list = document.createElement("ul");
-	place.appendChild(list);
 	if(this[type].prompt)
 		createTiddlyElement(list,"li",null,"listTitle",this[type].prompt);
 	var results;
