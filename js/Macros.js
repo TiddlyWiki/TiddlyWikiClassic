@@ -71,8 +71,8 @@ config.macros.list.refresh = function(list) {
 		wikify(template, li, null, tiddler);
 	}
 	if(results.length === 0 && args.emptyMessage) {
-		$(list).addClass("emptyList");
-		$("<li />").text(args.emptyMessage[0]).appendTo(list);
+		jQuery(list).addClass("emptyList");
+		jQuery("<li />").text(args.emptyMessage[0]).appendTo(list);
 	}
 };
 
