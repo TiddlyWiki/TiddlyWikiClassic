@@ -48,6 +48,7 @@ config.macros.list.handler = function(place,macroName,params,wikifier,paramStrin
 		template = config.macros.list.template;
 	}
 	var list = document.createElement("ul");
+	jQuery(list).addClass("list " + "list-" + type).data('paramString', paramString);
 	place.appendChild(list);
 	if(this[type].prompt)
 		createTiddlyElement(list,"li",null,"listTitle",this[type].prompt);
@@ -64,8 +65,8 @@ config.macros.list.handler = function(place,macroName,params,wikifier,paramStrin
 		wikify(template, li, null, tiddler);
 	}
 	if(results.length === 0 && args.emptyMessage) {
-		$(list).addClass("emptyList");
-		$("<li />").text(args.emptyMessage[0]).appendTo(list);
+		jQuery(list).addClass("emptyList");
+		jQuery("<li />").text(args.emptyMessage[0]).appendTo(list);
 	}
 };
 
