@@ -42,13 +42,13 @@ config.macros.list.template = "<<view title link>>";
 config.macros.list.handler = function(place,macroName,params,wikifier,paramString)
 {
 	var list = document.createElement("ul");
-	jQuery(list).attr("refresh", "macro").attr("macroName", macroName).attr("params", paramString);
+	jQuery(list).attr("refresh", "macro").attr("macroName", macroName).data("params", paramString);
 	place.appendChild(list);
 	this.refresh(list);
 };
 config.macros.list.refresh = function(list) {
 	jQuery(list).empty();
-	var paramString = list.getAttribute("params");
+	var paramString = jQuery(list).data("params");
 	var params = paramString.readMacroParams();
 	var args = paramString.parseParams("anon", null, null)[0];
 	var type = args.anon ? args.anon[0] : "all";
