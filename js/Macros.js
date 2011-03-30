@@ -42,7 +42,7 @@ config.macros.list.template = "<<view title link>>";
 config.macros.list.handler = function(place,macroName,params,wikifier,paramString)
 {
 	var list = document.createElement("ul");
-	jQuery(list).attr("refresh", "macro").attr("macroName", macroName).data("params", paramString);
+	jQuery(list).attr({ refresh: "macro", macroName: macroName }).data("params", paramString);
 	place.appendChild(list);
 	this.refresh(list);
 };
