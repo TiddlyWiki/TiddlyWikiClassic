@@ -156,7 +156,6 @@ function saveSystemSetting(name,saveFile)
 			saveChanges(null,[tiddler]);
 		} else {
 			autoSaveChanges(null,[tiddler]);
-		
 		}
 	}
 }
