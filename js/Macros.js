@@ -47,9 +47,7 @@ config.macros.list.handler = function(place,macroName,params,wikifier,paramStrin
 	if(!template) {
 		template = config.macros.list.template;
 	}
-	var list = document.createElement("ul");
-	jQuery(list).addClass("list " + "list-" + type).data('paramString', paramString);
-	place.appendChild(list);
+	var list = jQuery("<ul />").addClass("list list-" + type).data("paramString",paramString).appendTo(place)[0];
 	if(this[type].prompt)
 		createTiddlyElement(list,"li",null,"listTitle",this[type].prompt);
 	var results;
