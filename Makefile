@@ -9,6 +9,8 @@ clean:
 
 
 test: tests.html
+	[ -L "sample.txt" ] && rm sample.txt
+	ln -s test/recipes/sample.txt .
 	open tests.html
 
 tests.html:
