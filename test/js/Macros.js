@@ -142,7 +142,7 @@
 	test("NEW: list filter with new template", function () {
 		var place = $("<div />")[0];
 		var params = ["filter", "[tag[testTag]][sort[-title]]"];
-		var paramString = "filter tag[testTag][sort[-title]] template:MyTemplate";
+		var paramString = "filter [tag[testTag]][sort[-title]] template:MyTemplate";
 		config.macros.list.handler(place,"list",params,null,paramString);
 		var items = $("li", place);
 		strictEqual(items.length, 3, "should match 3 tiddlers");
