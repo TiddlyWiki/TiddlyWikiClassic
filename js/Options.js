@@ -122,6 +122,23 @@ function saveCookie(name)
 	}
 }
 
+var systemSettingSave;
+function commitSystemSettings(storeWasDirty)
+{
+	if(systemSettingSave) {
+		window.clearTimeout(systemSettingSave);
+	}
+	systemSettingSave = window.setTimeout(function() {
+		var tiddler = store.getTiddler('SystemSettings')
+		if(storeWasDirty == false && story.areAnyDirty() == false) {
+			//# nothing has changed except the options, so we can force a save
+			saveChanges(null,[tiddler]);
+		} else {
+			autoSaveChanges(null,[tiddler]);
+		}
+	}, 1000);
+}
+
 function saveSystemSetting(name,saveFile)
 {
 	var title = 'SystemSettings';
@@ -151,13 +168,7 @@ function saveSystemSetting(name,saveFile)
 		tiddler = store.saveTiddler(title,title,text,'System',new Date(),['excludeLists'],config.defaultCustomFields);
 	}
 	if(saveFile) {
-		if(storeWasDirty == false && story.areAnyDirty() == false) {
-			//# nothing has changed except the options, so we can force a save
-			saveChanges(null,[tiddler]);
-		} else {
-			autoSaveChanges(null,[tiddler]);
-		
-		}
+		commitSystemSettings(storeWasDirty);
 	}
 }
 

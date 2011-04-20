@@ -10,6 +10,7 @@ jquery: LoadingSaving.js
 jquery: Macros.js
 #jquery: main.js
 jquery: Macros.js
+jquery: Options.js
 jquery: RGB.js
 jquery: Shadows.js
 jquery: Strings.js
