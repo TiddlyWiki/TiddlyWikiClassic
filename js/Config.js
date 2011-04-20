@@ -244,6 +244,7 @@ config.shadowTiddlers = {
 	TabMoreShadowed: '<<list shadowed>>',
 	AdvancedOptions: '<<options>>',
 	PluginManager: '<<plugins>>',
+	SystemSettings: '',
 	ToolbarCommands: '|~ViewToolbar|closeTiddler closeOthers +editTiddler > fields syncing permalink references jump|\n|~EditToolbar|+saveTiddler -cancelTiddler deleteTiddler|',
 	WindowTitle: '<<tiddler SiteTitle>> - <<tiddler SiteSubtitle>>'
 };
