@@ -5,7 +5,7 @@
 
 # default values
 USERNAME=${2:-$LOGNAME}
-DEFAULT_RELEASE="2.6.3.A2"
+DEFAULT_RELEASE=`cat ALPHA`
 RELEASE=${1:-$DEFAULT_RELEASE}
 HOST="$USERNAME@tiddlywiki.com"
 DIR="/var/www/www.tiddlywiki.com/htdocs"
