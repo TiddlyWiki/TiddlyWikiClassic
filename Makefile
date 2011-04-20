@@ -8,9 +8,8 @@ clean:
 	rm *.jar || true
 
 
-test: tests.html
-	[ -L "sample.txt" ] && rm sample.txt
-	ln -s test/recipes/sample.txt .
+test: clean tests.html
+	ln -sf test/recipes/sample.txt .
 	open tests.html
 
 tests.html:
