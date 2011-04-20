@@ -31,6 +31,7 @@ scp $FILES "$HOST:./tmp/"
 echo
 echo "transferring files"
 echo
+stty -echo
 COMMANDS="ssh $HOST"
 # Empty
 COMMANDS="$COMMANDS sudo cp ./tmp/tiddlywiki.$RELEASE.html $DIR/alpha/empty.html;"
@@ -50,4 +51,4 @@ COMMANDS="$COMMANDS sudo mv ./tmp/jQuery.twStylesheet.js $DIR/alpha/jQuery.twSty
 setPermissions "$DIR/alpha/jQuery.twStylesheet.js"
 # execute
 $COMMANDS
-
+stty echo
