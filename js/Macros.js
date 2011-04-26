@@ -47,11 +47,11 @@ config.macros.list.handler = function(place,macroName,params,wikifier,paramStrin
 	this.refresh(list);
 };
 config.macros.list.refresh = function(list) {
-	jQuery(list).empty();
 	var paramString = jQuery(list).data("params");
 	var params = paramString.readMacroParams();
 	var args = paramString.parseParams("anon", null, null)[0];
 	var type = args.anon ? args.anon[0] : "all";
+	jQuery(list).empty().addClass("list list-" + type);
 	var template = args.template ? store.getTiddlerText(args.template[0]) : false;
 	if(!template) {
 		template = config.macros.list.template;
