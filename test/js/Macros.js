@@ -94,6 +94,82 @@
 		strictEqual(item.length, 1,"just the empty message");
 		strictEqual(item.text(), "what")
 	});
+	
+	test("dateFormat default", function() {
+		strictEqual(config.macros.timeline.dateFormat, "DD MMM YYYY");
+	});
+
+	test("&lt;&lt;timeline&gt;&gt;", function () {
+		var place = $("<div />")[0];
+		var params = [];
+		var paramString = "";
+		var tiddler = store.getTiddler("testTiddler1");
+		config.macros.timeline.handler(place,"timeline",params, null, paramString, tiddler);
+		var lists = $("ul", place);
+		var items = $("li", place);
+		strictEqual($(lists[0]).hasClass("timeline"), true, "timeline class set");
+		strictEqual(lists.length, 2, "01/12/2010 (1&3), 01/12/1995 (2)");
+		strictEqual(items.length, 5, "headings plus three tiddlers");
+		var list1 = $("li", lists[0]);
+		var heading1 = $(list1[0]);
+		strictEqual(heading1.text(), "1 December 2010", "the most recent");
+		strictEqual(heading1.hasClass("listTitle"), true, "has listTitle class set");
+		var item1 = $("a", list1[1]);
+		strictEqual(item1.hasClass("tiddlyLink tiddlyLinkExisting"), true, "a tiddly link created");
+		strictEqual(item1.text(), "testTiddler3", "the timestamp is more recent so this appears at the top");
+		strictEqual($("a", list1[2]).text(), "testTiddler1");
+		
+		strictEqual($("li:first", lists[1]).text(), "1 December 1995", "2nd heading");
+	});
+
+	test("&lt;&lt;timeline created&gt;&gt;", function () {
+		var place = $("<div />")[0];
+		var params = ["created"];
+		var paramString = "created";
+		var tiddler = store.getTiddler("testTiddler1");
+		config.macros.timeline.handler(place,"timeline",params, null, paramString, tiddler);
+		var lists = $("ul", place);
+		var items = $("li", place);
+		strictEqual($(lists[0]).hasClass("timeline"), true, "timeline class set");
+		strictEqual(lists.length, 3, "21/10/2009, 22/07/1994 and 19/10/2009");
+		strictEqual(items.length, 6, "headings plus three tiddlers");
+		var list1 = $("li", lists[0]);
+		var heading1 = $(list1[0]);
+		strictEqual(heading1.text(), "21 October 2009", "the most recent");
+		strictEqual(heading1.hasClass("listTitle"), true, "has listTitle class set");
+		var item1 = $("a", list1[1]);
+		strictEqual(item1.hasClass("tiddlyLink tiddlyLinkExisting"), true, "a tiddly link created");
+		strictEqual(item1.text(), "testTiddler1");
+		strictEqual($("li:first", lists[1]).text(), "19 October 2009", "2nd heading");
+		strictEqual($("li:first", lists[2]).text(), "22 July 1994", "3rd heading");
+	});
+
+	test("&lt;&lt;timeline '' 1&gt;&gt;", function () {
+		var place = $("<div />")[0];
+		var params = ["", "1"];
+		var paramString = "'' 1";
+		var tiddler = store.getTiddler("testTiddler1");
+		config.macros.timeline.handler(place,"timeline",params, null, paramString, tiddler);
+		var lists = $("ul", place);
+		var items = $("li", place);
+		strictEqual($(lists[0]).hasClass("timeline"), true, "timeline class set");
+		strictEqual(lists.length, 1, "the 2nd parameter defines a cutoff limitting the results to 1");
+		strictEqual(items.length, 2, "heading plus the latest tiddler");
+		var list1 = $("li", lists[0]);
+		var heading1 = $(list1[0]);
+		strictEqual(heading1.text(), "1 December 2010", "the most recent");
+		strictEqual($("a", list1[1]).text(), "testTiddler3", "the timestamp is more recent so this appears at the top");
+	});
+
+	test("test date format &lt;&lt;timeline '' 1 '0hh:0mm' &gt;&gt;", function () {
+		var place = $("<div />")[0];
+		var params = [null, "1", "0hh:0mm"];
+		var paramString = "'' 1 '0hh:0mm'";
+		var tiddler = store.getTiddler("testTiddler1");
+		config.macros.timeline.handler(place,"timeline",params, null, paramString, tiddler);
+		strictEqual($("ul .listTitle", place).text(), "09:40", "check dateFormat parameter has propagated");
+		strictEqual($("ul .listLink", place).text(), "testTiddler3", "the timestamp is more recent so this appears at the top");
+	});
 
 	module("Macros.js - additional scenarios", {
 		setup: function() {
