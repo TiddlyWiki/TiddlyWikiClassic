@@ -201,7 +201,7 @@
 		var items = $("li", place);
 		strictEqual(items.length, 2, "prompt and one match");
 		strictEqual($(items[0]).text(), config.macros.list.missing.prompt, "prompt in place and immune from templating");
-		strictEqual($(items[1]).text(), 
+		strictEqual($(items[1]).text(),
 			"Foo is a missing tiddler hello world","check missing tiddler link created.");
 	});
 
