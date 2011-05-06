@@ -133,26 +133,50 @@ config.macros.allTags.handler = function(place,macroName,params)
 	}
 };
 
-config.macros.timeline.handler = function(place,macroName,params)
-{
-	var field = params[0] || "modified";
-	var tiddlers = store.reverseLookup("tags","excludeLists",false,field);
-	var lastDay = "";
-	var last = params[1] ? tiddlers.length-Math.min(tiddlers.length,parseInt(params[1])) : 0;
-	var dateFormat = params[2] || this.dateFormat;
-	for(var t=tiddlers.length-1; t>=last; t--) {
-		var tiddler = tiddlers[t];
-		var theDay = tiddler[field].convertToLocalYYYYMMDDHHMM().substr(0,8);
-		if(theDay != lastDay) {
-			var ul = document.createElement("ul");
-			addClass(ul,"timeline");
-			place.appendChild(ul);
-			createTiddlyElement(ul,"li",null,"listTitle",tiddler[field].formatString(dateFormat));
-			lastDay = theDay;
+var macro = config.macros.timeline;
+merge(macro, {
+	handler: function(place,macroName,params, wikifier, paramString, tiddler) {
+		var container = jQuery("<div />").attr("params", paramString).
+			attr("macroName", macroName).appendTo(place)[0];
+		macro.refresh(container);
+	},
+	refresh: function(container) {
+		jQuery(container).attr("refresh", "macro").empty();
+		var paramString = jQuery(container).attr("params");
+		var args = paramString.parseParams("anon", null, null)[0];
+		var params = args.anon || [];
+
+		var field = params[0] || "modified";
+		var dateFormat = params[2] || this.dateFormat;
+		var groupTemplate = macro.groupTemplate.format(field, dateFormat);
+		groupTemplate = args.groupTemplate ? store.getTiddlerText(args.groupTemplate[0]) || groupTemplate :
+			groupTemplate;
+
+		var itemTemplate = macro.itemTemplate;
+		itemTemplate = args.template ? store.getTiddlerText(args.template[0]) || itemTemplate :
+			itemTemplate;
+
+		var tiddlers = args.filter ? store.sortTiddlers(store.filterTiddlers(args.filter[0]), field) :
+			store.reverseLookup("tags", "excludeLists", false, field);
+		var lastGroup = "";
+		var last = params[1] ? tiddlers.length-Math.min(tiddlers.length,parseInt(params[1])) : 0;
+		for(var t=tiddlers.length-1; t>=last; t--) {
+			var tiddler = tiddlers[t];
+			var theGroup = wikifyPlainText(groupTemplate,0,tiddler);
+			if(theGroup != lastGroup) {
+				var ul = document.createElement("ul");
+				addClass(ul,"timeline");
+				container.appendChild(ul);
+				createTiddlyElement(ul,"li",null,"listTitle",theGroup);
+				lastGroup = theGroup;
+			}
+			var item = createTiddlyElement(ul,"li",null,"listLink");
+			wikify(itemTemplate,item,null,tiddler);
 		}
-		createTiddlyElement(ul,"li",null,"listLink").appendChild(createTiddlyLink(place,tiddler.title,true));
-	}
-};
+	},
+	groupTemplate: "<<view %0 date '%1'>>", 
+	itemTemplate: "<<view title link>>"
+});
 
 config.macros.tiddler.handler = function(place,macroName,params,wikifier,paramString,tiddler)
 {

@@ -225,5 +225,64 @@
 		strictEqual($(items[0]).text(), "testTiddler3 hello world", "the template has hello world in it.");
 		strictEqual($(".tiddlyLink", items[0]).text(), "testTiddler3", "filter sorts by descending title");
 	});
+
+	module("Macros.js - timeline templating", {
+		setup: function() {
+			config.shadowTiddlers["TestTemplates"] = ["!Group",
+				"Modified at <<view modified date '0hh'>>hrs on <<view modified date '0DD/0MM/YYYY'>>",
+				"!Item", "hello world <<view title text>>!"].join("\n");
+		},
+		teardown: function() {
+			delete config.shadowTiddlers["TestTemplates"];
+		}
+	});
+
+	test("&lt;&lt;timeline created groupTemplate:TestTemplates##Group template:TestTemplates##Item&gt;&gt;", function () {
+		var place = $("<div />")[0];
+		var params = ["created", "groupTemplate:TestTemplates##Group", "template:TestTemplates##Item"];
+		var paramString = "created groupTemplate:TestTemplates##Group template:TestTemplates##Item";
+		var tiddler = store.getTiddler("testTiddler1");
+		config.macros.timeline.handler(place,"timeline",params, null, paramString, tiddler);
+		var lists = $("ul", place);
+		var items = $("li", place);
+		strictEqual($(lists[0]).hasClass("timeline"), true, "timeline class set");
+		strictEqual(lists.length, 3, "21/10/2009, 22/07/1994 and 19/10/2009");
+		strictEqual(items.length, 6, "headings plus three tiddlers");
+	});
+	
+	test("NEW: test templating &lt;&lt;timeline '' 1 groupTemplate:TestTemplates##Group template:TestTemplates##Item&gt;&gt; ",
+		function () {
+		var place = $("<div />")[0];
+		var params = ["", "1", "groupTemplate:TestTemplates##Group", "template:TestTemplates##Item"];
+		var paramString = "'' 1 groupTemplate:TestTemplates##Group template:TestTemplates##Item";
+		var tiddler = store.getTiddler("testTiddler1");
+		config.macros.timeline.handler(place, "timeline", params, null, paramString, tiddler);
+		strictEqual($("ul .listTitle", place).text(), "Modified at 09hrs on 01/12/2010",
+			"check group template was applied");
+		strictEqual($("ul .listLink", place).text(), "hello world testTiddler3!", "the item template was applied");
+		strictEqual($("ul .listLink a", place).length, 0, "no link created");
+	});
+
+	test("NEW: test group templating vs timestamp &lt;&lt;timeline '' 1 0hh:0mm groupTemplate:TestTemplates##Group&gt;&gt; ",
+		function () {
+		var place = $("<div />")[0];
+		var params = ["", "1", "0hh:0mm", "groupTemplate:TestTemplates##Group"];
+		var paramString = "'' 1 0hh:0mm groupTemplate:TestTemplates##Group template:TestTemplates##Item";
+		var tiddler = store.getTiddler("testTiddler1");
+		config.macros.timeline.handler(place, "timeline", params, null, paramString, tiddler);
+		strictEqual($("ul .listTitle", place).text(), "Modified at 09hrs on 01/12/2010", "check group template was applied and timestamp ignored");
+	});
+
+	test("NEW: test filtering &lt;&lt;timeline filter:[tag[twoTag]]&gt;&gt; ",
+		function () {
+		var place = $("<div />")[0];
+		var params = ["filter:[tag[twoTag]]"];
+		var paramString = "filter:[tag[twoTag]]";
+		var tiddler = store.getTiddler("testTiddler1");
+		config.macros.timeline.handler(place,"timeline",params, null, paramString, tiddler);
+		strictEqual($("ul", place).length, 1, "1 timeline created");
+		strictEqual($("ul li", place).length, 2, "heading and tiddler");
+		strictEqual($("ul .listLink a", place).text(), "testTiddler2", "only testTiddler2 has the tag twoTag");
+	});
 });
 }(jQuery));
