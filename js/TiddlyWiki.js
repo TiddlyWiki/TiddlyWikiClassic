@@ -541,7 +541,7 @@ TiddlyWiki.prototype.getTiddlers = function(field,excludeTag)
 };
 
 // Return array of names of tiddlers that are referred to but not defined
-TiddlyWiki.prototype.getMissingLinks = function(sortField)
+TiddlyWiki.prototype.getMissingLinks = function()
 {
 	if(!this.tiddlersUpdated)
 		this.updateTiddlers();
