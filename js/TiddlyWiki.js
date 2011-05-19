@@ -350,7 +350,8 @@ TiddlyWiki.prototype.saveTiddler = function(title,newTitle,newBody,modifier,modi
 	if(title != newTitle)
 		this.notify(title,true);
 	this.notify(newTitle,true);
-	this.setDirty(true);
+	if(window.location.protocol == "file:")
+		this.setDirty(true);
 	return tiddler;
 };
 
@@ -541,7 +542,7 @@ TiddlyWiki.prototype.getTiddlers = function(field,excludeTag)
 };
 
 // Return array of names of tiddlers that are referred to but not defined
-TiddlyWiki.prototype.getMissingLinks = function(sortField)
+TiddlyWiki.prototype.getMissingLinks = function()
 {
 	if(!this.tiddlersUpdated)
 		this.updateTiddlers();

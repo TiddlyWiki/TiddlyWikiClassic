@@ -19,7 +19,7 @@ Triple licensed under the BSD, MIT and GPL licenses:
 
 	$.extend($.twFile,{
 		currentDriver: null,
-		driverList: ["activeX", "mozilla", "tiddlySaver", "javaLiveConnect"],
+		driverList: ["tiddlySaver", "activeX","javaLiveConnect", "mozilla"],
 
 		// Loads the contents of a text file from the local file system
 		// filePath is the path to the file in these formats:
@@ -78,6 +78,20 @@ Triple licensed under the BSD, MIT and GPL licenses:
 			return localPath || originalPath;
 		},
 
+		// Deferred initialization for any drivers that need it
+		// returns a Deferred object so callback that executes as soon
+		// as twFile is ready can be attached
+		initialize: function() {
+			return $.Deferred(function(dfd) {
+				for(var t in drivers) {
+					if(drivers[t].deferredInit)
+						drivers[t].deferredInit();
+				}
+				// Kludge: give the <applet> some time to load
+				setTimeout(dfd.resolve, 0);
+			});
+		},
+
 		// Private functions
 
 		// Returns a reference to the current driver
@@ -92,12 +106,9 @@ Triple licensed under the BSD, MIT and GPL licenses:
 		}
 	});
 
-	// Deferred initialisation for any drivers that need it
+	// Automatically initialize on document.ready()
 	$(function() {
-		for(var t in drivers) {
-			if(drivers[t].deferredInit)
-				drivers[t].deferredInit();
-		}
+		$.twFile.initialize();
 	});
 
 	// Private driver implementations for each browser
@@ -239,12 +250,20 @@ Triple licensed under the BSD, MIT and GPL licenses:
 	drivers.tiddlySaver = {
 		name: "tiddlySaver",
 		deferredInit: function() {
-			if(!document.applets["TiddlySaver"] && !$.browser.mozilla && !$.browser.msie && document.location.toString().substr(0,5) == "file:") {
+			if(!document.applets["TiddlySaver"] && /* !$.browser.mozilla && !$.browser.msie && */ document.location.toString().substr(0,5) == "file:") {
 				$(document.body).append("<applet style='position:absolute;left:-1px' name='TiddlySaver' code='TiddlySaver.class' archive='TiddlySaver.jar' width='1'height='1'></applet>");
 			}
 		},
 		isAvailable: function() {
-			return !!document.applets["TiddlySaver"];
+			var isReady = false;
+			try {
+				isReady = !!document.applets["TiddlySaver"] &&
+						  ($.browser.msie || document.applets["TiddlySaver"].isActive) &&
+						  ( document.applets["TiddlySaver"].isActive() );
+			} catch (ex) {
+				isReady = false;
+			}
+			return isReady;
 		},
 		loadFile: function(filePath) {
 			var r;
@@ -265,7 +284,7 @@ Triple licensed under the BSD, MIT and GPL licenses:
 			}
 			return null;
 		}
-	}
+	};
 
 	// Java LiveConnect driver
 
@@ -298,7 +317,7 @@ Triple licensed under the BSD, MIT and GPL licenses:
 			}
 			return true;
 		}
-	}
+	};
 
 	// Private utilities
 
@@ -311,3 +330,4 @@ Triple licensed under the BSD, MIT and GPL licenses:
 	}
 
 })(jQuery);
+
