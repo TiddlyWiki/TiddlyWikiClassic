@@ -31,6 +31,16 @@ function ajaxReq(args)
 //#     xhr - the underlying XMLHttpRequest object
 function httpReq(type,url,callback,params,headers,data,contentType,username,password,allowCache)
 {
+	var httpSuccess = function(xhr) {
+		try {
+			// IE error sometimes returns 1223 when it should be 204 so treat it as success, see #1450
+			return !xhr.status && location.protocol === "file:" ||
+				xhr.status >= 200 && xhr.status < 300 ||
+				xhr.status === 304 || xhr.status === 1223;
+		} catch(e) {}
+		return false;
+	};
+
 	var options = {
 		type:type,
 		url:url,
@@ -46,7 +56,7 @@ function httpReq(type,url,callback,params,headers,data,contentType,username,pass
 
 	if(callback) {
 		options.complete = function(xhr,textStatus) {
-			if(jQuery.httpSuccess(xhr))
+			if(httpSuccess(xhr))
 				callback(true,params,xhr.responseText,url,xhr);
 			else
 				callback(false,params,null,url,xhr);
@@ -62,4 +72,3 @@ function httpReq(type,url,callback,params,headers,data,contentType,username,pass
 		window.netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
 	return jQuery.ajax(options);
 }
-
