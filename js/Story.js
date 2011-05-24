@@ -13,7 +13,7 @@ function Story(containerId,idPrefix)
 	//# generate tiddler ID
 	this.tiddlerId = function(title) {
 		//# replace spaces in titles to ensure valid element IDs
-		title = title.replace("_", "__").replace(" ", "_");
+		title = title.replace(/_/g, "__").replace(/ /g, "_");
 		var id = this.idPrefix + title;
 		return id==this.container ? this.idPrefix + "_" + title : id;
 	};
