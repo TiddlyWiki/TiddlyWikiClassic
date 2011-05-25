@@ -53,22 +53,14 @@ function httpReq(type,url,callback,params,headers,data,contentType,username,pass
 			xhr.setRequestHeader("X-Requested-With", "TiddlyWiki " + formatVersion());
 		}
 	};
+
 	if(callback) {
-<<<<<<< Updated upstream
 		options.complete = function(xhr,textStatus) {
 			if(httpSuccess(xhr))
 				callback(true,params,xhr.responseText,url,xhr);
 			else
 				callback(false,params,null,url,xhr);
 		};
-=======
-		options.success = function(data,textStatus,jqXHR) {
-			callback(true,params,jqXHR.responseText,url,jqXHR);
-		}
-		options.error = function(jqXHR,textStatus,errorThrown) {
-			callback(false,params,null,url,jqXHR);
-		}
->>>>>>> Stashed changes
 	}
 	if(contentType)
 		options.contentType = contentType;
