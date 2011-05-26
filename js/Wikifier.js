@@ -21,7 +21,7 @@ function getParser(tiddler,format)
 			}
 		}
 	}
-	return formatter;
+	return config.parsers.tiddlywikiFormatter;
 }
 
 function wikify(source,output,highlightRegExp,tiddler)
@@ -72,7 +72,7 @@ function wikifyPlainText(text,limit,tiddler)
 {
 	if(limit > 0)
 		text = text.substr(0,limit);
-	var wikifier = new Wikifier(text,formatter,null,tiddler);
+	var wikifier = new Wikifier(text,config.parsers.tiddlywikiFormatter,null,tiddler);
 	return wikifier.wikifyPlain();
 }
 
@@ -80,7 +80,7 @@ function wikifyPlainText(text,limit,tiddler)
 function highlightify(source,output,highlightRegExp,tiddler)
 {
 	if(source) {
-		var wikifier = new Wikifier(source,formatter,highlightRegExp,tiddler);
+		var wikifier = new Wikifier(source,config.parsers.tiddlywikiFormatter,highlightRegExp,tiddler);
 		wikifier.outputText(output,0,source.length);
 	}
 }
