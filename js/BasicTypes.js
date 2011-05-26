@@ -1,5 +1,5 @@
 //--
-//-- Augmented methods for the JavaScript Number(), Array(), String() and Date() objects
+//-- Augmented methods for the JavaScript Number() object
 //--
 
 // Clamp a number to a range
@@ -12,6 +12,10 @@ Number.prototype.clamp = function(min,max)
 		c = max;
 	return Number(c);
 };
+
+//--
+//-- Augmented methods for the JavaScript Array() object
+//--
 
 // Add indexOf function if browser does not support it
 if(!Array.indexOf) {
