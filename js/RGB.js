@@ -49,14 +49,11 @@ RGB.prototype.mix = function(c,f)
 RGB.prototype.toString = function()
 {
 	var clamp = function(x,min,max) {
-		if(x<min)
-			return min;
-		if(x>max)
-			return max;
-		return x;
+		return x < min ? min : (x > max ? max : x);
 	};
-	return "#" + ("0" + Math.floor(clamp(this.r,0,1) * 255).toString(16)).right(2) +
-				("0" + Math.floor(clamp(this.g,0,1) * 255).toString(16)).right(2) +
-				("0" + Math.floor(clamp(this.b,0,1) * 255).toString(16)).right(2);
+	return "#" +
+			("0" + Math.floor(clamp(this.r,0,1) * 255).toString(16)).right(2) +
+			("0" + Math.floor(clamp(this.g,0,1) * 255).toString(16)).right(2) +
+			("0" + Math.floor(clamp(this.b,0,1) * 255).toString(16)).right(2);
 };
 
