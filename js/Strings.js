@@ -1,3 +1,7 @@
+//--
+//-- Augmented methods for the JavaScript String() object
+//--
+
 // Get characters from the right end of a string
 String.prototype.right = function(n)
 {

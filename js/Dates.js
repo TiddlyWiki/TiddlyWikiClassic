@@ -1,3 +1,7 @@
+//--
+//-- Augmented methods for the JavaScript Date() object
+//--
+
 // Substitute date components into a string
 Date.prototype.formatString = function(template)
 {

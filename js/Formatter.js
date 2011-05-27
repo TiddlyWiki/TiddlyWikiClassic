@@ -525,3 +525,4 @@ config.formatters = [
 
 ];
 
+config.parsers.tiddlywikiFormatter = new Formatter(config.formatters,'tiddlywiki');

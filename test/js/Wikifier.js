@@ -5,25 +5,25 @@ jQuery(document).ready(function(){
 	test("getParser()", function() {
 		expect(7);
 
-		formatter = new Formatter(config.formatters);
+		formatter = new Formatter(config.formatters,"tiddlywiki");
 
 		var actual = getParser(null,null);
 		var expected = formatter;
-		equals(actual, expected, 'it should return the default formatter if no tiddler argument is provided');
+		deepEqual(actual, expected, 'it should return the default formatter if no tiddler argument is provided');
 
 		var t = new Tiddler("t");
 		actual = getParser(t,null);
 		expected = formatter;
-		equals(actual, expected, 'it should return the default formatter if no format argument is provided and the tiddler has no "wikiformat" field and is not tagged with the value of formatTag of a member of config.parsers');
+		deepEqual(actual, expected, 'it should return the default formatter if no format argument is provided and the tiddler has no "wikiformat" field and is not tagged with the value of formatTag of a member of config.parsers');
 
 		actual = getParser(t,"nomatch");
 		expected = formatter;
-		equals(actual, expected, 'it should return the default formatter if a format argument is provided, but does not appear as a value of formatTag of a member of config.parsers; the tiddler has no "wikiformat" field and is not tagged with the value of formatTag from a member of config.parsers');
+		deepEqual(actual, expected, 'it should return the default formatter if a format argument is provided, but does not appear as a value of formatTag of a member of config.parsers; the tiddler has no "wikiformat" field and is not tagged with the value of formatTag from a member of config.parsers');
 
 		t.fields.wikiformat = "nomatch";
 		actual = getParser(t,null);
 		expected = formatter;
-		equals(actual, expected, 'it should return the default formatter if the tiddler has a "wikiformat" field that does not appear as a value of formatTag of a member of config.parsers; no format argument is provided and the tiddler is not tagged with the value of formatTag from a member of config.parsers');
+		deepEqual(actual, expected, 'it should return the default formatter if the tiddler has a "wikiformat" field that does not appear as a value of formatTag of a member of config.parsers; no format argument is provided and the tiddler is not tagged with the value of formatTag from a member of config.parsers');
 
 		t.fields.wikiformat = "format_field";
 		t.tags.push("format_tag");

@@ -263,39 +263,6 @@ function scrubNode(e)
 	}
 }
 
-function addClass(e,className)
-{
-	jQuery(e).addClass(className);
-}
-
-function removeClass(e,className)
-{
-	jQuery(e).removeClass(className);
-}
-
-function hasClass(e,className)
-{
-	return jQuery(e).hasClass(className);
-}
-
-// Remove all children of a node
-function removeChildren(e)
-{
-	jQuery(e).empty();
-}
-
-// Return the content of an element as plain text with no formatting
-function getPlainText(e)
-{
-	return jQuery(e).text();
-}
-
-// Remove a node and all it's children
-function removeNode(e)
-{
-	jQuery(e).remove();
-}
-
 function setStylesheet(s,id,doc)
 {
 	jQuery.twStylesheet(s,{id:id,doc:doc});

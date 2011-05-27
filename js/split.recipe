@@ -1,6 +1,7 @@
 version: Version.js
 js: Guide.js
 js: Config.js
+js: ConfigBrowser.js
 js: Lingo.js
 js: main.js
 js: Paramifiers.js
@@ -41,6 +42,7 @@ js: Slider.js
 js: Popup.js
 js: Wizard.js
 js: ListView.js
+js: Numbers.js
 js: BasicTypes.js
 js: Strings.js
 js: Dates.js
