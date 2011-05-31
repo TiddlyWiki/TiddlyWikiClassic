@@ -8,7 +8,7 @@ merge(config.options,{
 	txtUserName: "YourName"});
 
 merge(config.tasks,{
-	save: {text: "save", tooltip: "Save your changes to this TiddlyWiki", action: saveChanges},
+	save: {text: "save", tooltip: "Save your changes to this TiddlyWiki"},
 	sync: {text: "sync", tooltip: "Synchronise changes with other TiddlyWiki files and servers", content: '<<sync>>'},
 	importTask: {text: "import", tooltip: "Import tiddlers and plugins from other TiddlyWiki files and servers", content: '<<importTiddlers>>'},
 	tweak: {text: "tweak", tooltip: "Tweak the appearance and behaviour of TiddlyWiki", content: '<<options>>'},
