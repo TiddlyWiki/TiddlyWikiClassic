@@ -196,10 +196,6 @@ config.textPrimitives.tiddlerAnyLinkRegExp = new RegExp("("+ config.textPrimitiv
 	config.textPrimitives.brackettedLink + ")|(?:" +
 	config.textPrimitives.urlPattern + ")","mg");
 
-config.glyphs = {
-	currBrowser: 0
-};
-
 //--
 //-- Shadow tiddlers
 //--
