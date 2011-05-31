@@ -1,6 +1,8 @@
 //--
 //-- Backstage
 //--
+// Backstage tasks
+config.tasks.save.action = saveChanges;
 
 var backstage = {
 	area: null,
