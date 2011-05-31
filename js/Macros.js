@@ -33,11 +33,6 @@ config.macros.today.handler = function(place,macroName,params)
 	jQuery("<span/>").text(text).appendTo(place);
 };
 
-config.macros.version.handler = function(place)
-{
-	jQuery("<span/>").text(formatVersion()).appendTo(place);
-};
-
 config.macros.list.template = "<<view title link>>";
 config.macros.list.handler = function(place,macroName,params,wikifier,paramString)
 {
