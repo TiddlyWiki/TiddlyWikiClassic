@@ -162,7 +162,7 @@ merge(macro, {
 		var last = params[1] ? tiddlers.length-Math.min(tiddlers.length,parseInt(params[1])) : 0;
 		for(var t=tiddlers.length-1; t>=last; t--) {
 			var tiddler = tiddlers[t];
-			var theGroup = wikifyPlainText(groupTemplate,0,tiddler);
+			var theGroup = wikifyStatic(groupTemplate,null,tiddler);
 			if(typeof(ul) == "undefined" || theGroup != lastGroup) {
 				ul = document.createElement("ul");
 				addClass(ul,"timeline");
