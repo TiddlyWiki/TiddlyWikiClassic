@@ -2,3 +2,4 @@ jsdeprecated: Crypto.js
 jsdeprecated: Http.js
 jsdeprecated: Strings.js
 jsdeprecated: Tiddler.js
+jsdeprecated: Numbers.js
