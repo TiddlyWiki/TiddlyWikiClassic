@@ -367,7 +367,7 @@ function glyph(name)
 	var b = g.currBrowser;
 	if(b == null) {
 		b = 0;
-		while(!g.browsers[b]() && b < g.browsers.length-1)
+		while(b < g.browsers.length-1 && !g.browsers[b]())
 			b++;
 		g.currBrowser = b;
 	}
