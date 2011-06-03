@@ -26,6 +26,11 @@ function invokeMacro(place,macro,params,wikifier,tiddler)
 	}
 }
 
+config.macros.version.handler = function(place)
+{
+	jQuery("<span/>").text(formatVersion()).appendTo(place);
+};
+
 config.macros.today.handler = function(place,macroName,params)
 {
 	var now = new Date();
