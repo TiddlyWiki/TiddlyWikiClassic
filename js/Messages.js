@@ -36,7 +36,7 @@ function clearMessage()
 {
 	var msgArea = document.getElementById("messageArea");
 	if(msgArea) {
-		removeChildren(msgArea);
+		jQuery(msgArea).empty();
 		msgArea.style.display = "none";
 	}
 	return false;

@@ -157,7 +157,7 @@ config.macros.sync.createSyncTask = function(syncItem)
 config.macros.sync.updateSyncStatus = function(syncItem)
 {
 	var e = syncItem.colElements["status"];
-	removeChildren(e);
+	jQuery(e).empty();
 	createTiddlyText(e,syncItem.syncStatus.text);
 	syncItem.rowElement.style.display = syncItem.syncStatus.display;
 	if(syncItem.syncStatus.className)

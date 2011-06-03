@@ -29,7 +29,7 @@ function Slider(element,opening,unused,deleteMode)
 			c = function(element,properties) {jQuery(element).remove();};
 			break;
 		case "children":
-			c = function(element,properties) {removeChildren(element);};
+			c = function(element,properties) {jQuery(element).empty();};
 			break;
 		}
 	}

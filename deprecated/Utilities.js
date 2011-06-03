@@ -3,6 +3,12 @@
 //-- Use the jQuery functions directly instead
 //--
 
+// Remove all children of a node
+function removeChildren(e)
+{
+	jQuery(e).empty();
+}
+
 // Remove a node and all it's children
 function removeNode(e)
 {
