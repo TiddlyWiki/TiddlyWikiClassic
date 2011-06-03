@@ -354,12 +354,6 @@ function removeChildren(e)
 	jQuery(e).empty();
 }
 
-// Remove a node and all it's children
-function removeNode(e)
-{
-	jQuery(e).remove();
-}
-
 function merge(dst,src,preserveExisting)
 {
 	for(var i in src) {

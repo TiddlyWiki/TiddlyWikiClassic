@@ -144,7 +144,7 @@ function refreshPageTemplate(title)
 	nodes = stash.childNodes;
 	for(t=nodes.length-1; t>=0; t--)
 		display.appendChild(nodes[t]);
-	removeNode(stash);
+	jQuery(stash).remove();
 }
 
 function refreshDisplay(hint)
