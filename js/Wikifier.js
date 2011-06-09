@@ -52,18 +52,6 @@ function wikifyStatic(source,highlightRegExp,tiddler,format)
 	return html;
 }
 
-//# Wikify a named tiddler to plain text
-function wikifyPlain(title,theStore,limit)
-{
-	if(!theStore)
-		theStore = store;
-	if(theStore.tiddlerExists(title) || theStore.isShadowTiddler(title)) {
-		return wikifyPlainText(theStore.getTiddlerText(title),limit,tiddler);
-	} else {
-		return "";
-	}
-}
-
 //# Wikify a string to plain text
 //#   text - text to wikify
 //#   limit - maximum number of characters to generate

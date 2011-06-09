@@ -166,7 +166,7 @@ function refreshPageTitle()
 
 function getPageTitle()
 {
-	return wikifyPlain("WindowTitle");
+	return wikifyPlainText(store.getTiddlerText("WindowTitle",""),null,tiddler);
 }
 
 function refreshStyles(title,doc)
