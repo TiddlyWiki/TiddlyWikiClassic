@@ -43,7 +43,7 @@ config.refreshers = {
 		var force = e.getAttribute("force");
 		var args = e.getAttribute("args");
 		if(force != null || changeList == null || (changeList.indexOf && changeList.indexOf(title) != -1)) {
-			removeChildren(e);
+			jQuery(e).empty();
 			config.macros.tiddler.transclude(e,title,args);
 			return true;
 		} else
@@ -138,13 +138,13 @@ function refreshPageTemplate(title)
 	applyHtmlMacros(wrapper);
 	refreshElements(wrapper);
 	display = story.getContainer();
-	removeChildren(display);
+	jQuery(display).empty();
 	if(!display)
 		display = createTiddlyElement(wrapper,"div",story.containerId());
 	nodes = stash.childNodes;
 	for(t=nodes.length-1; t>=0; t--)
 		display.appendChild(nodes[t]);
-	removeNode(stash);
+	jQuery(stash).remove();
 }
 
 function refreshDisplay(hint)
@@ -166,7 +166,7 @@ function refreshPageTitle()
 
 function getPageTitle()
 {
-	return wikifyPlain("WindowTitle");
+	return wikifyPlainText(store.getTiddlerText("WindowTitle",""),null,tiddler);
 }
 
 function refreshStyles(title,doc)

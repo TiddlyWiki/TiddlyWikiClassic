@@ -51,8 +51,7 @@ function main()
 	var pluginProblem = loadPlugins("systemConfig");
 	doc.trigger("loadPlugins");
 	t5 = new Date();
-	// formatter global no longer required, retained only for compatibility
-	formatter = config.parsers.tiddlywikiFormatter;
+	formatter = new Formatter(config.formatters);
 	invokeParamifier(params,"onconfig");
 	story.switchTheme(config.options.txtTheme);
 	showBackstage = showBackstage !== undefined ? showBackstage : !readOnly;

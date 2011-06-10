@@ -5,7 +5,7 @@ jQuery(document).ready(function(){
 	test("getParser()", function() {
 		expect(7);
 
-		formatter = new Formatter(config.formatters,"tiddlywiki");
+		formatter = new Formatter(config.formatters);
 
 		var actual = getParser(null,null);
 		var expected = formatter;

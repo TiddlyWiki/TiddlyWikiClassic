@@ -2,7 +2,7 @@
 //-- Formatter helpers
 //--
 
-function Formatter(formatters,format)
+function Formatter(formatters)
 {
 	this.formatters = [];
 	var pattern = [];
@@ -11,8 +11,6 @@ function Formatter(formatters,format)
 		this.formatters.push(formatters[n]);
 	}
 	this.formatterRegExp = new RegExp(pattern.join("|"),"mg");
-	if(format)
-		this.format = format;
 }
 
 config.formatterHelpers = {

@@ -197,13 +197,9 @@ config.textPrimitives.tiddlerAnyLinkRegExp = new RegExp("("+ config.textPrimitiv
 	config.textPrimitives.urlPattern + ")","mg");
 
 config.glyphs = {
-	currBrowser: 0,
-	codes: {
-		downTriangle: ["\u25BE"],
-		downArrow: ["\u2193"],
-		bentArrowLeft: ["\u21A9"],
-		bentArrowRight: ["\u21AA"]
-	}
+	currBrowser: null,
+	browsers: [],
+	codes: {}
 };
 
 //--

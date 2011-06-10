@@ -1,5 +1,6 @@
 # TiddlyWiki components
 recipe: ../../tiddlywiki.html.recipe
+recipe: ../../deprecated/split.recipe
 recipe: shadows/split.recipe
 
 # jQuery

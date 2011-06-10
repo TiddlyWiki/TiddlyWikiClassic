@@ -26,16 +26,16 @@ function invokeMacro(place,macro,params,wikifier,tiddler)
 	}
 }
 
+config.macros.version.handler = function(place)
+{
+	jQuery("<span/>").text(formatVersion()).appendTo(place);
+};
+
 config.macros.today.handler = function(place,macroName,params)
 {
 	var now = new Date();
 	var text = params[0] ? now.formatString(params[0].trim()) : now.toLocaleString();
 	jQuery("<span/>").text(text).appendTo(place);
-};
-
-config.macros.version.handler = function(place)
-{
-	jQuery("<span/>").text(formatVersion()).appendTo(place);
 };
 
 config.macros.list.template = "<<view title link>>";
@@ -158,13 +158,13 @@ merge(macro, {
 
 		var tiddlers = args.filter ? store.sortTiddlers(store.filterTiddlers(args.filter[0]), field) :
 			store.reverseLookup("tags", "excludeLists", false, field);
-		var lastGroup = "";
+		var lastGroup = "", ul;
 		var last = params[1] ? tiddlers.length-Math.min(tiddlers.length,parseInt(params[1])) : 0;
 		for(var t=tiddlers.length-1; t>=last; t--) {
 			var tiddler = tiddlers[t];
 			var theGroup = wikifyPlainText(groupTemplate,0,tiddler);
-			if(theGroup != lastGroup) {
-				var ul = document.createElement("ul");
+			if(typeof(ul) == "undefined" || theGroup != lastGroup) {
+				ul = document.createElement("ul");
 				addClass(ul,"timeline");
 				container.appendChild(ul);
 				createTiddlyElement(ul,"li",null,"listTitle",theGroup);
@@ -547,4 +547,3 @@ config.macros.annotations.handler = function(place,macroName,params,wikifier,par
 	var text = a.format([title]);
 	wikify(text,createTiddlyElement(place,"div",null,"annotation"),null,tiddler);
 };
-

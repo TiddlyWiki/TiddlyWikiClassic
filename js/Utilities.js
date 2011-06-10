@@ -348,24 +348,6 @@ function hasClass(e,className)
 	return jQuery(e).hasClass(className);
 }
 
-// Remove all children of a node
-function removeChildren(e)
-{
-	jQuery(e).empty();
-}
-
-// Return the content of an element as plain text with no formatting
-function getPlainText(e)
-{
-	return jQuery(e).text();
-}
-
-// Remove a node and all it's children
-function removeNode(e)
-{
-	jQuery(e).remove();
-}
-
 function merge(dst,src,preserveExisting)
 {
 	for(var i in src) {
@@ -400,7 +382,7 @@ function glyph(name)
 	var b = g.currBrowser;
 	if(b == null) {
 		b = 0;
-		while(!g.browsers[b]() && b < g.browsers.length-1)
+		while(b < g.browsers.length-1 && !g.browsers[b]())
 			b++;
 		g.currBrowser = b;
 	}

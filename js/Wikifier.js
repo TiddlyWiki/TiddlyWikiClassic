@@ -21,7 +21,7 @@ function getParser(tiddler,format)
 			}
 		}
 	}
-	return config.parsers.tiddlywikiFormatter;
+	return formatter;
 }
 
 function wikify(source,output,highlightRegExp,tiddler)
@@ -47,21 +47,9 @@ function wikifyStatic(source,highlightRegExp,tiddler,format)
 		wikifier.isStatic = true;
 		wikifier.subWikify(e);
 		html = e.innerHTML;
-		removeNode(e);
+		jQuery(e).remove();
 	}
 	return html;
-}
-
-//# Wikify a named tiddler to plain text
-function wikifyPlain(title,theStore,limit)
-{
-	if(!theStore)
-		theStore = store;
-	if(theStore.tiddlerExists(title) || theStore.isShadowTiddler(title)) {
-		return wikifyPlainText(theStore.getTiddlerText(title),limit,tiddler);
-	} else {
-		return "";
-	}
 }
 
 //# Wikify a string to plain text
@@ -72,7 +60,7 @@ function wikifyPlainText(text,limit,tiddler)
 {
 	if(limit > 0)
 		text = text.substr(0,limit);
-	var wikifier = new Wikifier(text,config.parsers.tiddlywikiFormatter,null,tiddler);
+	var wikifier = new Wikifier(text,formatter,null,tiddler);
 	return wikifier.wikifyPlain();
 }
 
@@ -80,7 +68,7 @@ function wikifyPlainText(text,limit,tiddler)
 function highlightify(source,output,highlightRegExp,tiddler)
 {
 	if(source) {
-		var wikifier = new Wikifier(source,config.parsers.tiddlywikiFormatter,highlightRegExp,tiddler);
+		var wikifier = new Wikifier(source,formatter,highlightRegExp,tiddler);
 		wikifier.outputText(output,0,source.length);
 	}
 }
@@ -112,8 +100,8 @@ Wikifier.prototype.wikifyPlain = function()
 	var e = createTiddlyElement(document.body,"div");
 	e.style.display = "none";
 	this.subWikify(e);
-	var text = getPlainText(e);
-	removeNode(e);
+	var text = jQuery(e).text();
+	jQuery(e).remove();
 	return text;
 };
 
