@@ -119,6 +119,7 @@ config.macros.toolbar.onClickLess = function(ev)
 config.macros.toolbar.handler = function(place,macroName,params,wikifier,paramString,tiddler)
 {
 	for(var t=0; t<params.length; t++) {
+	    var btn;
 		var c = params[t];
 		switch(c) {
 		case "!":
@@ -128,11 +129,11 @@ config.macros.toolbar.handler = function(place,macroName,params,wikifier,paramSt
 			createTiddlyElement(place,"br");
 			break;
 		case "<":
-			var btn = createTiddlyButton(place,this.lessLabel,this.lessPrompt,config.macros.toolbar.onClickLess);
+			btn = createTiddlyButton(place,this.lessLabel,this.lessPrompt,config.macros.toolbar.onClickLess);
 			addClass(btn,"lessCommand");
 			break;
 		case ">":
-			var btn = createTiddlyButton(place,this.moreLabel,this.morePrompt,config.macros.toolbar.onClickMore);
+			btn = createTiddlyButton(place,this.moreLabel,this.morePrompt,config.macros.toolbar.onClickMore);
 			addClass(btn,"moreCommand");
 			var e = createTiddlyElement(place,"span",null,"moreCommand");
 			e.style.display = "none";
@@ -163,5 +164,5 @@ config.macros.toolbar.handler = function(place,macroName,params,wikifier,paramSt
 // Overrideable function to extend toolbar handler
 config.macros.toolbar.customCommand = function(place,command,wikifier,tiddler)
 {
-}
+};
 

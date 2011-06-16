@@ -185,7 +185,7 @@ Story.prototype.loadMissingTiddler = function(title,fields,callback)
 	tiddler.fields = typeof fields == "string" ? fields.decodeHashMap() : fields||{};
 	var context = {serverType:tiddler.getServerType()};
 	if(!context.serverType)
-		return;
+		return "";
 	context.host = tiddler.fields['server.host'];
 	context.workspace = tiddler.fields['server.workspace'];
 	var adaptor = new config.adaptors[context.serverType];

@@ -37,7 +37,7 @@ String.prototype.format = function(s)
 		if(match && match[1]) {
 			if(match.index > currPos)
 				r.push(this.substring(currPos,match.index));
-			r.push(substrings[parseInt(match[1])]);
+			r.push(substrings[parseInt(match[1],10)]);
 			currPos = subRegExp.lastIndex;
 		}
 	} while(match);

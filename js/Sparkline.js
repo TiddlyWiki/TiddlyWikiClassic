@@ -4,17 +4,17 @@
 
 config.macros.sparkline = {};
 
-config.shadowTiddlers.StyleSheetSparklines = "/*{{{*/\n"
-	+ ".sparkline {\n"
-	+ "\tline-height: 1em;\n"
-	+ "\tborder: 0;\n"
-	+ "\tbackground: [[ColorPalette::PrimaryPale]];\n"
-	+ "}\n\n"
-	+ ".sparktick {\n"
-	+ "\toutline: 0;\n"
-	+ "\tbackground: [[ColorPalette::PrimaryDark]];\n"
-	+ "}\n"
-	+ "/*}}}*/";
+config.shadowTiddlers.StyleSheetSparklines = "/*{{{*/\n" +
+	".sparkline {\n" +
+	"\tline-height: 1em;\n" +
+	"\tborder: 0;\n" +
+	"\tbackground: [[ColorPalette::PrimaryPale]];\n" +
+	"}\n\n" +
+	".sparktick {\n" +
+	"\toutline: 0;\n" +
+	"\tbackground: [[ColorPalette::PrimaryDark]];\n" +
+	"}\n" +
+	"/*}}}*/";
 store.addNotification("StyleSheetSparklines", refreshStyles);
 
 config.macros.sparkline.handler = function(place,macroName,params)
@@ -24,7 +24,7 @@ config.macros.sparkline.handler = function(place,macroName,params)
 	var max = 0;
 	var v;
 	for(var t=0; t<params.length; t++) {
-		v = parseInt(params[t]);
+		v = parseInt(params[t],10);
 		if(v < min)
 			min = v;
 		if(v > max)

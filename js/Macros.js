@@ -159,7 +159,7 @@ merge(macro, {
 		var tiddlers = args.filter ? store.sortTiddlers(store.filterTiddlers(args.filter[0]), field) :
 			store.reverseLookup("tags", "excludeLists", false, field);
 		var lastGroup = "", ul;
-		var last = params[1] ? tiddlers.length-Math.min(tiddlers.length,parseInt(params[1])) : 0;
+		var last = params[1] ? tiddlers.length-Math.min(tiddlers.length,parseInt(params[1],10)) : 0;
 		for(var t=tiddlers.length-1; t>=last; t--) {
 			var tiddler = tiddlers[t];
 			var theGroup = wikifyPlainText(groupTemplate,0,tiddler);
@@ -471,7 +471,7 @@ config.macros.edit.handler = function(place,macroName,params,wikifier,paramStrin
 			e.value = v = store.getValue(tiddler,field) || defVal;
 			rows = rows || 10;
 			var lines = v.match(/\n/mg);
-			var maxLines = Math.max(parseInt(config.options.txtMaxEditRows),5);
+			var maxLines = Math.max(parseInt(config.options.txtMaxEditRows,10),5);
 			if(lines != null && lines.length > rows)
 				rows = lines.length + 5;
 			rows = Math.min(rows,maxLines);
