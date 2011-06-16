@@ -415,6 +415,7 @@ config.macros.message.handler = function(place,macroName,params)
 
 
 config.macros.view.depth = 0;
+config.macros.view.values = [];
 config.macros.view.views = {
 	text: function(value,place,params,wikifier,paramString,tiddler) {
 		highlightify(value,place,highlightHack,tiddler);
@@ -425,11 +426,18 @@ config.macros.view.views = {
 	wikified: function(value,place,params,wikifier,paramString,tiddler) {
 		if(config.macros.view.depth>50)
 			return;
+		if(config.macros.view.depth>0) {
+		    if (value==config.macros.view.values[config.macros.view.depth-1]) {
+		        return;
+		    }
+		}
+		config.macros.view.values[config.macros.view.depth] = value;
 		config.macros.view.depth++;
 		if(params[2])
 			value=params[2].unescapeLineBreaks().format([value]);
 		wikify(value,place,highlightHack,tiddler);
 		config.macros.view.depth--;
+		config.macros.view.values[config.macros.view.depth] = null;
 	},
 	date: function(value,place,params,wikifier,paramString,tiddler) {
 		value = Date.convertFromYYYYMMDDHHMM(value);
