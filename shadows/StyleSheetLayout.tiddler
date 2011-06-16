@@ -51,7 +51,7 @@ a.tiddlyLinkNonExisting.shadow {font-weight:bold;}
 .header {position:relative;}
 .header a:hover {background:transparent;}
 .headerShadow {position:relative; padding:4.5em 0 1em 1em; left:-1px; top:-1px;}
-.headerForeground {position:absolute; padding:4.5em 0 1em 1em; left:0px; top:0px;}
+.headerForeground {position:absolute; padding:4.5em 0 1em 1em; left:0; top:0;}
 
 .siteTitle {font-size:3em;}
 .siteSubtitle {font-size:1.2em;}
@@ -137,7 +137,7 @@ a.tiddlyLinkNonExisting.shadow {font-weight:bold;}
 .viewer table, table.twtable {border-collapse:collapse; margin:0.8em 1.0em;}
 .viewer th, .viewer td, .viewer tr,.viewer caption,.twtable th, .twtable td, .twtable tr,.twtable caption {padding:3px;}
 table.listView {font-size:0.85em; margin:0.8em 1.0em;}
-table.listView th, table.listView td, table.listView tr {padding:0px 3px 0px 3px;}
+table.listView th, table.listView td, table.listView tr {padding:0 3px 0 3px;}
 
 .viewer pre {padding:0.5em; margin-left:0.5em; font-size:1.2em; line-height:1.4em; overflow:auto;}
 .viewer code {font-size:1.2em; line-height:1.4em;}
@@ -145,7 +145,7 @@ table.listView th, table.listView td, table.listView tr {padding:0px 3px 0px 3px
 .editor {font-size:1.1em;}
 .editor input, .editor textarea {display:block; width:100%; font:inherit;}
 .editorFooter {padding:0.25em 0; font-size:.9em;}
-.editorFooter .button {padding-top:0px; padding-bottom:0px;}
+.editorFooter .button {padding-top:0; padding-bottom:0;}
 
 .fieldsetFix {border:0; padding:0; margin:1px 0px;}
 
