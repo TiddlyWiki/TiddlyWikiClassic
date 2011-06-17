@@ -54,12 +54,12 @@ config.macros.toolbar.isCommandEnabled = function(command,tiddler)
 
 config.macros.toolbar.getCommandText = function(command,tiddler)
 {
-	return tiddler.isReadOnly() && command.readOnlyText || command.text;
+	return (tiddler.isReadOnly() && command.readOnlyText) || command.text;
 };
 
 config.macros.toolbar.getCommandTooltip = function(command,tiddler)
 {
-	return tiddler.isReadOnly() && command.readOnlyTooltip || command.tooltip;
+	return (tiddler.isReadOnly() && command.readOnlyTooltip) || command.tooltip;
 };
 
 config.macros.toolbar.onClickCommand = function(ev)
