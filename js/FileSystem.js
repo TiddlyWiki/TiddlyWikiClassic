@@ -279,7 +279,7 @@ function javaSaveFile(filePath,content)
 		var s = new java.io.PrintStream(new java.io.FileOutputStream(javaUrlToFilename(filePath)));
 		s.print(content);
 		s.close();
-	} catch(ex) {
+	} catch(ex2) {
 		return null;
 	}
 	return true;
@@ -299,7 +299,7 @@ function javaLoadFile(filePath)
 		while((line = r.readLine()) != null)
 			content.push(new String(line));
 		r.close();
-	} catch(ex) {
+	} catch(ex2) {
 		return null;
 	}
 	return content.join("\n");

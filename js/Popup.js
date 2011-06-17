@@ -46,7 +46,7 @@ Popup.show = function(valign,halign,offset)
 Popup.place = function(root,popup,valign,halign,offset)
 {
 	if(!offset)
-		var offset = {x:0,y:0};
+		offset = {x:0,y:0};
 	if(popup.stackPosition >= 0 && !valign && !halign) {
 		offset.x = offset.x + root.offsetWidth;
 	} else {
@@ -85,7 +85,7 @@ Popup.find = function(e)
 
 Popup.remove = function(pos)
 {
-	if(!pos) var pos = 0;
+	if(!pos) pos = 0;
 	if(Popup.stack.length > pos) {
 		Popup.removeFrom(pos);
 	}
