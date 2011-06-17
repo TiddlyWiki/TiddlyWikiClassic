@@ -94,7 +94,8 @@ TiddlyWiki.prototype.setValue = function(tiddler,fieldName,value)
 				// delete all fields in a namespace
 				var re = new RegExp("^"+fieldName+"\\.");
 				var dirty = false;
-				for(var n in t.fields) {
+				var n;
+				for(n in t.fields) {
 					if(n.match(re)) {
 						delete t.fields[n];
 						dirty = true;

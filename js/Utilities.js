@@ -18,10 +18,10 @@ function formatVersion(v)
 //# version without a beta number is later than a version with a beta number
 function compareVersions(v1,v2)
 {
-	var a = ["major","minor","revision"];
-	for(var i = 0; i<a.length; i++) {
-		var x1 = v1[a[i]] || 0;
-		var x2 = v2[a[i]] || 0;
+	var x1,x2,i,a = ["major","minor","revision"];
+	for(i = 0; i<a.length; i++) {
+		x1 = v1[a[i]] || 0;
+		x2 = v2[a[i]] || 0;
 		if(x1<x2)
 			return 1;
 		if(x1>x2)
@@ -54,7 +54,7 @@ function createTiddlyCheckbox(parent,caption,checked,onChange)
 
 function createTiddlyElement(parent,element,id,className,text,attribs)
 {
-	var e = document.createElement(element);
+	var n,e = document.createElement(element);
 	if(className != null)
 		e.className = className;
 	if(id != null)
@@ -62,7 +62,7 @@ function createTiddlyElement(parent,element,id,className,text,attribs)
 	if(text != null)
 		e.appendChild(document.createTextNode(text));
 	if(attribs) {
-		for(var n in attribs) {
+		for(n in attribs) {
 			e.setAttribute(n,attribs[n]);
 		}
 	}
@@ -73,7 +73,7 @@ function createTiddlyElement(parent,element,id,className,text,attribs)
 
 function createTiddlyButton(parent,text,tooltip,action,className,id,accessKey,attribs)
 {
-	var btn = document.createElement("a");
+	var i,btn = document.createElement("a");
 	btn.setAttribute("href","javascript:;");
 	if(action) {
 		btn.onclick = action;
@@ -86,7 +86,7 @@ function createTiddlyButton(parent,text,tooltip,action,className,id,accessKey,at
 	if(id)
 		btn.id = id;
 	if(attribs) {
-		for(var i in attribs) {
+		for(i in attribs) {
 			btn.setAttribute(i,attribs[i]);
 		}
 	}
@@ -281,7 +281,8 @@ function onClickError(ev)
 	var e = ev || window.event;
 	var popup = Popup.create(this);
 	var lines = this.getAttribute("errorText").split("\n");
-	for(var t=0; t<lines.length; t++)
+	var t;
+	for(t=0; t<lines.length; t++)
 		createTiddlyElement(popup,"li",null,null,lines[t]);
 	Popup.show();
 	e.cancelBubble = true;
@@ -293,7 +294,8 @@ function createTiddlyDropDown(place,onchange,options,defaultValue)
 {
 	var sel = createTiddlyElement(place,"select");
 	sel.onchange = onchange;
-	for(var t=0; t<options.length; t++) {
+	var t;
+	for(t=0; t<options.length; t++) {
 		var e = createTiddlyElement(sel,"option",null,null,options[t].caption);
 		e.value = options[t].name;
 		if(options[t].name == defaultValue)
@@ -350,7 +352,8 @@ function hasClass(e,className)
 
 function merge(dst,src,preserveExisting)
 {
-	for(var i in src) {
+	var i;
+	for(i in src) {
 		if(!preserveExisting || dst[i] === undefined)
 			dst[i] = src[i];
 	}

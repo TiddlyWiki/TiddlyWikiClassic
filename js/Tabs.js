@@ -10,7 +10,8 @@ config.macros.tabs.handler = function(place,macroName,params)
 	var tabset = createTiddlyElement(wrapper,"div",null,"tabset");
 	tabset.setAttribute("cookie",cookie);
 	var validTab = false;
-	for(var t=0; t<numTabs; t++) {
+	var t;
+	for(t=0; t<numTabs; t++) {
 		var label = params[t*3+1];
 		var prompt = params[t*3+2];
 		var content = params[t*3+3];
@@ -39,7 +40,8 @@ config.macros.tabs.switchTab = function(tabset,tab)
 	var cookie = tabset.getAttribute("cookie");
 	var theTab = null;
 	var nodes = tabset.childNodes;
-	for(var t=0; t<nodes.length; t++) {
+	var t;
+	for(t=0; t<nodes.length; t++) {
 		if(nodes[t].getAttribute && nodes[t].getAttribute("tab") == tab) {
 			theTab = nodes[t];
 			theTab.className = "tab tabSelected";

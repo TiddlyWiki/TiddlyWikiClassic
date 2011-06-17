@@ -76,7 +76,8 @@ config.commands.references.handlePopup = function(popup,title)
 {
 	var references = store.getReferringTiddlers(title);
 	var c = false;
-	for(var r=0; r<references.length; r++) {
+	var r;
+	for(r=0; r<references.length; r++) {
 		if(references[r].title != title && !references[r].isTagged("excludeLists")) {
 			createTiddlyLink(createTiddlyElement(popup,"li"),references[r].title,true);
 			c = true;
@@ -119,7 +120,8 @@ config.commands.syncing.handlePopup = function(popup,title)
 	createTiddlyElement(createTiddlyElement(popup,"li",null,"listBreak"),"div");
 	createTiddlyElement(popup,"li",null,"popupMessage",me.chooseServer);
 	var feeds = store.getTaggedTiddlers("systemServer","title");
-	for(var t=0; t<feeds.length; t++) {
+	var t;
+	for(t=0; t<feeds.length; t++) {
 		var f = feeds[t];
 		var feedServerType = store.getTiddlerSlice(f.title,"Type");
 		if(!feedServerType)

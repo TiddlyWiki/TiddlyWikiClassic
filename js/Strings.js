@@ -17,9 +17,9 @@ String.prototype.trim = function()
 // Convert a string from a CSS style property name to a JavaScript style name ("background-color" -> "backgroundColor")
 String.prototype.unDash = function()
 {
-	var s = this.split("-");
+	var t,s = this.split("-");
 	if(s.length > 1) {
-		for(var t=1; t<s.length; t++)
+		for(t=1; t<s.length; t++)
 			s[t] = s[t].substr(0,1).toUpperCase() + s[t].substr(1);
 	}
 	return s.join("");
@@ -50,8 +50,8 @@ String.prototype.format = function(s)
 String.prototype.escapeRegExp = function()
 {
 	var s = "\\^$*+?()=!|,{}[].";
-	var c = this;
-	for(var t=0; t<s.length; t++)
+	var t,c = this;
+	for(t=0; t<s.length; t++)
 		c = c.replace(new RegExp("\\" + s.substr(t,1),"g"),"\\" + s.substr(t,1));
 	return c;
 };
@@ -158,7 +158,8 @@ String.prototype.parseParams = function(defaultName,defaultValue,allowEval,noNam
 		}
 	} while(match);
 	// Summarise parameters into first element
-	for(var t=1; t<r.length; t++) {
+	var t;
+	for(t=1; t<r.length; t++) {
 		if(r[0][r[t].name])
 			r[0][r[t].name].push(r[t].value);
 		else
@@ -173,8 +174,8 @@ String.prototype.parseParams = function(defaultName,defaultValue,allowEval,noNam
 String.prototype.readMacroParams = function(notAllowEval)
 {
 	var p = this.parseParams("list",null,!notAllowEval,true);
-	var n = [];
-	for(var t=1; t<p.length; t++)
+	var t,n = [];
+	for(t=1; t<p.length; t++)
 		n.push(p[t].value);
 	return n;
 };
@@ -183,8 +184,8 @@ String.prototype.readMacroParams = function(notAllowEval)
 String.prototype.readBracketedList = function(unique)
 {
 	var p = this.parseParams("list",null,false,true);
-	var n = [];
-	for(var t=1; t<p.length; t++) {
+	var t,n = [];
+	for(t=1; t<p.length; t++) {
 		if(p[t].value)
 			n.pushUnique(p[t].value,unique);
 	}
@@ -229,8 +230,8 @@ String.encodeTiddlyLink = function(title)
 String.encodeTiddlyLinkList = function(list)
 {
 	if(list) {
-		var results = [];
-		for(var t=0; t<list.length; t++)
+		var t,results = [];
+		for(t=0; t<list.length; t++)
 			results.push(String.encodeTiddlyLink(list[t]));
 		return results.join(" ");
 	} else {
@@ -242,8 +243,8 @@ String.encodeTiddlyLinkList = function(list)
 String.prototype.decodeHashMap = function()
 {
 	var fields = this.parseParams("anon","",false);
-	var r = {};
-	for(var t=1; t<fields.length; t++)
+	var t,r = {};
+	for(t=1; t<fields.length; t++)
 		r[fields[t].name] = fields[t].value;
 	return r;
 };
@@ -251,8 +252,8 @@ String.prototype.decodeHashMap = function()
 // Static method to encode a hashmap into a name:"value"... string
 String.encodeHashMap = function(hashmap)
 {
-	var r = [];
-	for(var t in hashmap)
+	var t,r = [];
+	for(t in hashmap)
 		r.push(t + ':"' + hashmap[t] + '"');
 	return r.join(" ");
 };

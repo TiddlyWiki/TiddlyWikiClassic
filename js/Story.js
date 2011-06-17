@@ -60,7 +60,8 @@ Story.prototype.displayDefaultTiddlers = function()
 //# titles - array of tiddlers or string titles
 Story.prototype.displayTiddlers = function(srcElement,titles,template,animate,unused,customFields,toggle)
 {
-	for(var t = titles.length-1;t>=0;t--)
+	var t;
+	for(t = titles.length-1;t>=0;t--)
 		this.displayTiddler(srcElement,titles[t],template,animate,unused,customFields);
 };
 
@@ -271,7 +272,8 @@ Story.prototype.addCustomFields = function(place,customFields)
 	var fields = customFields.decodeHashMap();
 	var w = createTiddlyElement(place,"div",null,"customFields");
 	w.style.display = "none";
-	for(var t in fields) {
+	var t;
+	for(t in fields) {
 		var e = document.createElement("input");
 		e.setAttribute("type","text");
 		e.setAttribute("value",fields[t]);
@@ -378,8 +380,8 @@ Story.prototype.getTiddlerField = function(title,field)
 	var tiddlerElem = this.getTiddler(title);
 	var e = null;
 	if(tiddlerElem) {
-		var children = tiddlerElem.getElementsByTagName("*");
-		for(var t=0; t<children.length; t++) {
+		var t,children = tiddlerElem.getElementsByTagName("*");
+		for(t=0; t<children.length; t++) {
 			var c = children[t];
 			if(c.tagName.toLowerCase() == "input" || c.tagName.toLowerCase() == "textarea") {
 				if(!e)
@@ -544,8 +546,8 @@ Story.prototype.gatherSaveFields = function(e,fields)
 		if(f)
 			fields[f] = e.value.replace(/\r/mg,"");
 		if(e.hasChildNodes()) {
-			var c = e.childNodes;
-			for(var t=0; t<c.length; t++)
+			var t,c = e.childNodes;
+			for(t=0; t<c.length; t++)
 				this.gatherSaveFields(c[t],fields);
 		}
 	}
@@ -560,7 +562,8 @@ Story.prototype.hasChanges = function(title)
 		var fields = {};
 		this.gatherSaveFields(e,fields);
 		if(store.fetchTiddler(title)) {
-			for(var n in fields) {
+		    var n;
+			for(n in fields) {
 				if(store.getValue(title,n) != fields[n]) //# tiddler changed
 					return true;
 			}
@@ -613,7 +616,8 @@ Story.prototype.saveTiddler = function(title,minorUpdate)
 		} else {
 			extendedFields = merge({},config.defaultCustomFields);
 		}
-		for(var n in fields) {
+		var n;
+		for(n in fields) {
 			if(!TiddlyWiki.isStandardField(n))
 				extendedFields[n] = fields[n];
 		}
@@ -674,7 +678,8 @@ Story.prototype.switchTheme = function(theme)
 	var ei = DEFAULT_EDIT_TEMPLATE;
 	var et = config.tiddlerTemplates[ei];
 
-	for(var i=0; i<config.notifyTiddlers.length; i++) {
+	var i;
+	for(i=0; i<config.notifyTiddlers.length; i++) {
 		var name = config.notifyTiddlers[i].name;
 		switch(name) {
 		case "PageTemplate":

@@ -15,7 +15,8 @@ tiddlerToRssItem = function(tiddler,uri)
 {
 	var s = "<title" + ">" + tiddler.title.htmlEncode() + "</title" + ">\n";
 	s += "<description>" + wikifyStatic(tiddler.text,null,tiddler).htmlEncode() + "</description>\n";
-	for(var i=0; i<tiddler.tags.length; i++)
+	var i;
+	for(i=0; i<tiddler.tags.length; i++)
 		s += "<category>" + tiddler.tags[i] + "</category>\n";
 	s += "<link>" + uri + "#" + encodeURIComponent(String.encodeTiddlyLink(tiddler.title)) + "</link>\n";
 	s +="<pubDate>" + tiddler.modified.toGMTString() + "</pubDate>\n";
@@ -43,8 +44,8 @@ function generateRss()
 	s.push("<generator>TiddlyWiki " + formatVersion() + "</generator>");
 	// The body
 	var tiddlers = store.getTiddlers("modified","excludeLists");
-	var n = config.numRssItems > tiddlers.length ? 0 : tiddlers.length-config.numRssItems;
-	for(var i=tiddlers.length-1; i>=n; i--) {
+	var i,n = config.numRssItems > tiddlers.length ? 0 : tiddlers.length-config.numRssItems;
+	for(i=tiddlers.length-1; i>=n; i--) {
 		s.push("<item>\n" + tiddlerToRssItem(tiddlers[i],u) + "\n</item>");
 	}
 	// And footer

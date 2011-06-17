@@ -46,6 +46,7 @@ config.macros.list.handler = function(place,macroName,params,wikifier,paramStrin
 	place.appendChild(list);
 	this.refresh(list);
 };
+
 config.macros.list.refresh = function(list) {
 	var paramString = jQuery(list).data("params");
 	var params = paramString.readMacroParams();
@@ -61,7 +62,8 @@ config.macros.list.refresh = function(list) {
 	var results;
 	if(this[type].handler)
 		results = this[type].handler(params);
-	for(var t = 0; t < results.length; t++) {
+	var t;
+	for(t = 0; t < results.length; t++) {
 		var li = document.createElement("li");
 		list.appendChild(li);
 		var tiddler = results[t];
@@ -107,7 +109,8 @@ config.macros.list.filter.handler = function(params)
 	var results = [];
 	if(filter) {
 		var tiddlers = store.filterTiddlers(filter);
-		for(var t=0; t<tiddlers.length; t++)
+		var t;
+		for(t=0; t<tiddlers.length; t++)
 			results.push(tiddlers[t].title);
 	}
 	return results;
@@ -119,7 +122,8 @@ config.macros.allTags.handler = function(place,macroName,params)
 	var ul = createTiddlyElement(place,"ul");
 	if(tags.length == 0)
 		createTiddlyElement(ul,"li",null,"listTitle",this.noTags);
-	for(var t=0; t<tags.length; t++) {
+	var t;
+	for(t=0; t<tags.length; t++) {
 		var title = tags[t][0];
 		var info = getTiddlyLinkInfo(title);
 		var li = createTiddlyElement(ul,"li");
@@ -160,7 +164,8 @@ merge(macro, {
 			store.reverseLookup("tags", "excludeLists", false, field);
 		var lastGroup = "", ul;
 		var last = params[1] ? tiddlers.length-Math.min(tiddlers.length,parseInt(params[1],10)) : 0;
-		for(var t=tiddlers.length-1; t>=last; t--) {
+		var t;
+		for(t=tiddlers.length-1; t>=last; t--) {
 			var tiddler = tiddlers[t];
 			var theGroup = wikifyPlainText(groupTemplate,0,tiddler);
 			if(typeof(ul) == "undefined" || theGroup != lastGroup) {
@@ -220,7 +225,8 @@ config.macros.tiddler.transclude = function(wrapper,tiddlerName,args)
 		if(typeof args == "string")
 			args = args.readBracketedList();
 		var n = args ? Math.min(args.length,9) : 0;
-		for(var i=0; i<n; i++) {
+		var i;
+		for(i=0; i<n; i++) {
 			var placeholderRE = new RegExp("\\$" + (i + 1),"mg");
 			text = text.replace(placeholderRE,args[i]);
 		}
@@ -259,7 +265,8 @@ config.macros.tags.handler = function(place,macroName,params,wikifier,paramStrin
 	var sep = getParam(params,"sep"," ");
 	var lingo = config.views.wikified.tag;
 	var label = null;
-	for(var t=0; t<tiddler.tags.length; t++) {
+	var t;
+	for(t=0; t<tiddler.tags.length; t++) {
 		var tag = store.getTiddler(tiddler.tags[t]);
 		if(!tag || !tag.tags.contains("excludeLists")) {
 			if(!label)
@@ -285,7 +292,8 @@ config.macros.tagging.handler = function(place,macroName,params,wikifier,paramSt
 	var tagged = store.getTaggedTiddlers(title);
 	var prompt = tagged.length == 0 ? this.labelNotTag : this.label;
 	createTiddlyElement(ul,"li",null,"listTitle",prompt.format([title,tagged.length]));
-	for(var t=0; t<tagged.length; t++) {
+	var t;
+	for(t=0; t<tagged.length; t++) {
 		createTiddlyLink(createTiddlyElement(ul,"li"),tagged[t].title,true);
 		if(t<tagged.length-1)
 			createTiddlyText(ul,sep);
@@ -375,7 +383,8 @@ config.macros.gradient.handler = function(place,macroName,params,wikifier,paramS
 	}
 	params = paramString.parseParams("color");
 	var locolors = [], hicolors = [];
-	for(var t=2; t<params.length; t++) {
+	var t;
+	for(t=2; t<params.length; t++) {
 		var c = params[t].value;
 		if(params[t].name == "snap") {
 			hicolors[hicolors.length-1] = c;
@@ -503,7 +512,8 @@ config.macros.tagChooser.onClick = function(ev)
 	var tags = store.getTags(this.getAttribute("tags"));
 	if(tags.length == 0)
 		jQuery("<li/>").text(lingo.popupNone).appendTo(popup);
-	for(var t=0; t<tags.length; t++) {
+	var t;
+	for(t=0; t<tags.length; t++) {
 		var tag = createTiddlyButton(createTiddlyElement(popup,"li"),tags[t][0],lingo.tagTooltip.format([tags[t][0]]),config.macros.tagChooser.onTagClick);
 		tag.setAttribute("tag",tags[t][0]);
 		tag.setAttribute("tiddler",this.getAttribute("tiddler"));

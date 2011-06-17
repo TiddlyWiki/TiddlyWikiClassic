@@ -31,8 +31,8 @@ config.macros.importTiddlers.restart = function(wizard)
 {
 	var me = config.macros.importTiddlers;
 	wizard.addStep(this.step1Title,this.step1Html);
-	var s = wizard.getElement("selTypes");
-	for(var t in config.adaptors) {
+	var t,s = wizard.getElement("selTypes");
+	for(t in config.adaptors) {
 		var e = createTiddlyElement(s,"option",null,null,config.adaptors[t].serverLabel ? config.adaptors[t].serverLabel : t);
 		e.value = t;
 	}
@@ -60,8 +60,8 @@ config.macros.importTiddlers.restart = function(wizard)
 config.macros.importTiddlers.getFeeds = function()
 {
 	var feeds = {};
-	var tagged = store.getTaggedTiddlers("systemServer","title");
-	for(var t=0; t<tagged.length; t++) {
+	var t,tagged = store.getTaggedTiddlers("systemServer","title");
+	for(t=0; t<tagged.length; t++) {
 		var title = tagged[t].title;
 		var serverType = store.getTiddlerSlice(title,"Type");
 		if(!serverType)
@@ -187,16 +187,16 @@ config.macros.importTiddlers.onGetWorkspaceList = function(context,wizard)
 		return;
 	}
 	wizard.addStep(me.step2Title,me.step2Html);
-	var s = wizard.getElement("selWorkspace");
+	var t,s = wizard.getElement("selWorkspace");
 	s.onchange = me.onWorkspaceChange;
-	for(var t=0; t<context.workspaces.length; t++) {
+	for(t=0; t<context.workspaces.length; t++) {
 		var e = createTiddlyElement(s,"option",null,null,context.workspaces[t].title);
 		e.value = context.workspaces[t].title;
 	}
 	var workspaceList = wizard.getValue("feedWorkspaceList");
 	if(workspaceList) {
-		var list = workspaceList.parseParams("workspace",null,false,true);
-		for(var n=1; n<list.length; n++) {
+		var n,list = workspaceList.parseParams("workspace",null,false,true);
+		for(n=1; n<list.length; n++) {
 			if(context.workspaces.findByField("title",list[n].value) == null) {
 				e = createTiddlyElement(s,"option",null,null,list[n].value);
 				e.value = list[n].value;
@@ -256,7 +256,8 @@ config.macros.importTiddlers.onGetTiddlerList = function(context,wizard)
 	// Extract data for the listview
 	var listedTiddlers = [];
 	if(context.tiddlers) {
-		for(var n=0; n<context.tiddlers.length; n++) {
+		var n;
+		for(n=0; n<context.tiddlers.length; n++) {
 			var tiddler = context.tiddlers[n];
 			listedTiddlers.push({
 				title: tiddler.title,

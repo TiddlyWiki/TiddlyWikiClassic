@@ -75,8 +75,8 @@ Popup.place = function(root,popup,valign,halign,offset)
 
 Popup.find = function(e)
 {
-	var pos = -1;
-	for (var t=this.stack.length-1; t>=0; t--) {
+	var t,pos = -1;
+	for(t=this.stack.length-1; t>=0; t--) {
 		if(isDescendant(e,this.stack[t].popup))
 			pos = t;
 	}
@@ -93,7 +93,8 @@ Popup.remove = function(pos)
 
 Popup.removeFrom = function(from)
 {
-	for(var t=Popup.stack.length-1; t>=from; t--) {
+	var t;
+	for(t=Popup.stack.length-1; t>=from; t--) {
 		var p = Popup.stack[t];
 		removeClass(p.root,"highlight");
 		jQuery(p.popup).remove();

@@ -28,7 +28,8 @@ Tiddler.prototype.getLinks = function()
 Tiddler.prototype.getInheritedFields = function()
 {
 	var f = {};
-	for(var i in this.fields) {
+	var i;
+	for(i in this.fields) {
 		if(i=="server.host" || i=="server.workspace" || i=="wikiformat"|| i=="server.type") {
 			f[i] = this.fields[i];
 		}

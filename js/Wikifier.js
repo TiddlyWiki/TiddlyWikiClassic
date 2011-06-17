@@ -136,7 +136,8 @@ Wikifier.prototype.subWikifyUnterm = function(output)
 		this.matchText = formatterMatch[0];
 		this.nextMatch = this.formatter.formatterRegExp.lastIndex;
 		//# Figure out which formatter matched and call its handler
-		for(var t=1; t<formatterMatch.length; t++) {
+		var t;
+		for(t=1; t<formatterMatch.length; t++) {
 			if(formatterMatch[t]) {
 				this.formatter.formatters[t-1].handler(this);
 				this.formatter.formatterRegExp.lastIndex = this.nextMatch;
@@ -189,7 +190,8 @@ Wikifier.prototype.subWikifyTerm = function(output,terminatorRegExp)
 		this.matchText = formatterMatch[0];
 		this.nextMatch = this.formatter.formatterRegExp.lastIndex;
 		//# Figure out which formatter matched and call its handler
-		for(var t=1; t<formatterMatch.length; t++) {
+		var t;
+		for(t=1; t<formatterMatch.length; t++) {
 			if(formatterMatch[t]) {
 				this.formatter.formatters[t-1].handler(this);
 				this.formatter.formatterRegExp.lastIndex = this.nextMatch;

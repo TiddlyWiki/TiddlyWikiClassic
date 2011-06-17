@@ -4,9 +4,10 @@
 
 function Formatter(formatters)
 {
+	var n;
 	this.formatters = [];
 	var pattern = [];
-	for(var n=0; n<formatters.length; n++) {
+	for(n=0; n<formatters.length; n++) {
 		pattern.push("(" + formatters[n].match + ")");
 		this.formatters.push(formatters[n]);
 	}
@@ -48,7 +49,8 @@ config.formatterHelpers = {
 
 	applyCssHelper: function(e,styles)
 	{
-		for(var t=0; t< styles.length; t++) {
+		var t;
+		for(t=0; t< styles.length; t++) {
 			try {
 				e.style[styles[t].style] = styles[t].value;
 			} catch (ex) {

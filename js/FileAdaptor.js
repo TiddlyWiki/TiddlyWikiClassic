@@ -86,7 +86,8 @@ FileAdaptor.getTiddlerListComplete = function(context,userParams)
 			context.tiddlers = [];
 			context.adaptor.store.forEachTiddler(function(title,tiddler) {context.tiddlers.push(tiddler);});
 		}
-		for(var i=0; i<context.tiddlers.length; i++) {
+		var i;
+		for(i=0; i<context.tiddlers.length; i++) {
 			context.tiddlers[i].fields['server.type'] = FileAdaptor.serverType;
 			context.tiddlers[i].fields['server.host'] = AdaptorBase.minHostName(context.host);
 			context.tiddlers[i].fields['server.page.revision'] = context.tiddlers[i].modified.convertToYYYYMMDDHHMM();

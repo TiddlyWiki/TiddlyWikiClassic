@@ -17,7 +17,8 @@ function invokeParamifier(params,handler)
 {
 	if(!params || params.length == undefined || params.length <= 1)
 		return;
-	for(var i=1; i<params.length; i++) {
+	var i;
+	for(i=1; i<params.length; i++) {
 		var p = config.paramifiers[params[i].name];
 		if(p && p[handler] instanceof Function)
 			p[handler](params[i].value);
@@ -78,8 +79,8 @@ config.paramifiers.newTiddler = {
 		if(!readOnly) {
 			story.displayTiddler(null,title,DEFAULT_EDIT_TEMPLATE,false,null,customFields);
 			story.focusTiddler(title,"text");
-			var tags = args.tag ? args.tag : [];
-			for(var i=0;i<tags.length;i++) {
+			var i,tags = args.tag ? args.tag : [];
+			for(i=0;i<tags.length;i++) {
 				story.setTiddlerTag(title,tags[i],+1);
 			}
 		}
@@ -119,8 +120,8 @@ config.paramifiers.upgrade = {
 config.paramifiers.recent= {
 	onstart: function(v) {
 		var titles=[];
-		var tiddlers=store.getTiddlers("modified","excludeLists").reverse();
-		for(var i=0; i<v && i<tiddlers.length; i++)
+		var i,tiddlers=store.getTiddlers("modified","excludeLists").reverse();
+		for(i=0; i<v && i<tiddlers.length; i++)
 			titles.push(tiddlers[i].title);
 		story.displayTiddlers(null,titles);
 	}

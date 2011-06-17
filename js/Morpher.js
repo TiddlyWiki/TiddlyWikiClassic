@@ -46,7 +46,8 @@ Morpher.prototype.assignStyle = function(element,style,value)
 
 Morpher.prototype.stop = function()
 {
-	for(var t=0; t<this.properties.length; t++) {
+	var t;
+	for(t=0; t<this.properties.length; t++) {
 		var p = this.properties[t];
 		if(p.atEnd !== undefined) {
 			this.assignStyle(this.element,p.style,p.atEnd);
@@ -59,8 +60,8 @@ Morpher.prototype.stop = function()
 Morpher.prototype.tick = function()
 {
 	var currTime = Number(new Date());
-	var progress = Animator.slowInSlowOut(Math.min(1,(currTime-this.startTime)/this.duration));
-	for(var t=0; t<this.properties.length; t++) {
+	var t,progress = Animator.slowInSlowOut(Math.min(1,(currTime-this.startTime)/this.duration));
+	for(t=0; t<this.properties.length; t++) {
 		var p = this.properties[t];
 		if(p.start !== undefined && p.end !== undefined) {
 			var template = p.template || "%0";

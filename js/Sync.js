@@ -70,7 +70,8 @@ config.macros.sync.getSyncableTiddlers = function()
 
 config.macros.sync.preProcessSyncableTiddlers = function(syncList)
 {
-	for(var i=0; i<syncList.length; i++) {
+	var i;
+	for(i=0; i<syncList.length; i++) {
 		var si = syncList[i];
 		si.serverUrl = si.adaptor.generateTiddlerInfo(si.tiddler).uri;
 	}
@@ -78,7 +79,8 @@ config.macros.sync.preProcessSyncableTiddlers = function(syncList)
 
 config.macros.sync.processSyncableTiddlers = function(syncList)
 {
-	for(var i=0; i<syncList.length; i++) {
+	var i;
+	for(i=0; i<syncList.length; i++) {
 		var si = syncList[i];
 		if(si.syncStatus.display)
 			si.rowElement.style.display = si.syncStatus.display;
@@ -89,11 +91,11 @@ config.macros.sync.processSyncableTiddlers = function(syncList)
 
 config.macros.sync.createSyncTasks = function(syncList)
 {
-	var syncTasks = [];
-	for(var i=0; i<syncList.length; i++) {
+	var i,syncTasks = [];
+	for(i=0; i<syncList.length; i++) {
 		var si = syncList[i];
-		var r = null;
-		for(var j=0; j<syncTasks.length; j++) {
+		var j,r = null;
+		for(j=0; j<syncTasks.length; j++) {
 			var cst = syncTasks[j];
 			if(si.serverType == cst.serverType && si.serverHost == cst.serverHost && si.serverWorkspace == cst.serverWorkspace)
 				r = cst;
@@ -133,8 +135,8 @@ config.macros.sync.createSyncTask = function(syncItem)
 			return false;
 		}
 		syncItems = context.userParams;
-		var tiddlers = context.tiddlers;
-		for(var i=0; i<syncItems.length; i++) {
+		var i,tiddlers = context.tiddlers;
+		for(i=0; i<syncItems.length; i++) {
 			var si = syncItems[i];
 			var f = tiddlers.findByField("title",si.title);
 			if(f !== null) {
@@ -184,8 +186,8 @@ config.macros.sync.doSync = function(e)
 	};
 
 	var rowNames = ListView.getSelectedRows(currSync.listView);
-	var sl = me.syncStatusList;
-	for(var i=0; i<currSync.syncList.length; i++) {
+	var i,sl = me.syncStatusList;
+	for(i=0; i<currSync.syncList.length; i++) {
 		var si = currSync.syncList[i];
 		if(rowNames.indexOf(si.title) != -1) {
 			var errorMsg = "Error in doSync: ";
