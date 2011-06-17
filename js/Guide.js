@@ -7,4 +7,6 @@
 // * You should never need to modify this source code directly. TiddlyWiki is carefully designed to allow deep customisation
 //   without changing the core code. Please consult the development group at http://groups.google.com/group/TiddlyWikiDev
 //
-
+// JSLint directives
+/*global jQuery:false, version:false */
+/*jslint browser:true, eqeq:true, forin:true, maxerr:100, plusplus:true, sloppy:true, vars:true, white:true */
