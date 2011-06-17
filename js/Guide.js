@@ -9,4 +9,4 @@
 //
 // JSLint directives
 /*global jQuery:false, version:false */
-/*jslint bitwise:true, browser:true, eqeq:true, forin:true, maxerr:100, plusplus:true, sloppy:true, undef:true, unparam:true, vars:true, white:true */
+/*jslint bitwise:true, browser:true, confusion:true, eqeq:true, forin:true, maxerr:100, plusplus:true, regexp:true, sloppy:true, undef:true, unparam:true, vars:true, white:true */
