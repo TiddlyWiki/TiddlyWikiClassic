@@ -33,7 +33,7 @@ config.macros.importTiddlers.restart = function(wizard)
 	wizard.addStep(this.step1Title,this.step1Html);
 	var t,s = wizard.getElement("selTypes");
 	for(t in config.adaptors) {
-		var e = createTiddlyElement(s,"option",null,null,config.adaptors[t].serverLabel ? config.adaptors[t].serverLabel : t);
+		var e = createTiddlyElement(s,"option",null,null,config.adaptors[t].serverLabel || t);
 		e.value = t;
 	}
 	if(config.defaultAdaptor)

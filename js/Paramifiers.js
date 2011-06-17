@@ -79,7 +79,7 @@ config.paramifiers.newTiddler = {
 		if(!readOnly) {
 			story.displayTiddler(null,title,DEFAULT_EDIT_TEMPLATE,false,null,customFields);
 			story.focusTiddler(title,"text");
-			var i,tags = args.tag ? args.tag : [];
+			var i,tags = args.tag || [];
 			for(i=0;i<tags.length;i++) {
 				story.setTiddlerTag(title,tags[i],+1);
 			}
