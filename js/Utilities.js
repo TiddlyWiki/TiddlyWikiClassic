@@ -237,7 +237,7 @@ function onClickTag(ev)
 			store.sortTiddlers(tagged,sortby);
 		}
 		var titles = [];
-		var li,r;
+		var r;
 		for(r=0;r<tagged.length;r++) {
 			if(tagged[r].title != title)
 				titles.push(tagged[r].title);

@@ -336,7 +336,6 @@ config.macros.saveChanges.onClick = function(e)
 
 config.macros.slider.onClickSlider = function(ev)
 {
-	var e = ev || window.event;
 	var n = this.nextSibling;
 	var cookie = n.getAttribute("cookie");
 	var isOpen = n.style.display != "none";
@@ -352,7 +351,7 @@ config.macros.slider.onClickSlider = function(ev)
 config.macros.slider.createSlider = function(place,cookie,title,tooltip)
 {
 	var c = cookie || "";
-	var btn = createTiddlyButton(place,title,tooltip,this.onClickSlider);
+	createTiddlyButton(place,title,tooltip,this.onClickSlider);
 	var panel = createTiddlyElement(null,"div",null,"sliderPanel");
 	panel.setAttribute("cookie",c);
 	panel.style.display = config.options[c] ? "block" : "none";

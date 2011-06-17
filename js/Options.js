@@ -291,7 +291,7 @@ config.macros.options.refreshOptions = function(listWrapper,showUnknown)
 			opts.push(opt);
 	}
 	opts.sort(function(a,b) {return a.name.substr(3) < b.name.substr(3) ? -1 : (a.name.substr(3) == b.name.substr(3) ? 0 : +1);});
-	var listview = ListView.create(listWrapper,opts,this.listViewTemplate);
+	ListView.create(listWrapper,opts,this.listViewTemplate);
 	for(n=0; n<opts.length; n++) {
 		var type = opts[n].name.substr(0,3);
 		var h = config.macros.option.types[type];

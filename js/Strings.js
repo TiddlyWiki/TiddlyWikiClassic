@@ -134,7 +134,6 @@ String.prototype.parseParams = function(defaultName,defaultValue,allowEval,noNam
 	var skipSpace = "(?:\\s*)";
 	var token = "(?:" + dblQuote + "|" + sngQuote + "|" + dblSquare + "|" + dblBrace + "|" + unQuoted + "|" + emptyQuote + ")";
 	var re = noNames ? new RegExp(token,"mg") : new RegExp(skipSpace + token + skipSpace + "(?:(\\:)" + skipSpace + token + ")?","mg");
-	var params = [];
 	do {
 		var match = re.exec(this);
 		if(match) {

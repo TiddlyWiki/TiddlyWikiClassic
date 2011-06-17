@@ -5,8 +5,7 @@
 config.macros.search.handler = function(place,macroName,params,wikifier,paramString,tiddler)
 {
 	params = paramString.parseParams("anon",null,false,false,false);
-	var searchTimeout = null;
-	var btn = createTiddlyButton(place,this.label,this.prompt,this.onClick,"searchButton");
+	createTiddlyButton(place,this.label,this.prompt,this.onClick,"searchButton");
 	var txt = createTiddlyElement(null,"input",null,"txtOptionInput searchField");
 	txt.value = getParam(params,"anon","");
 	if(config.browser.isSafari) {

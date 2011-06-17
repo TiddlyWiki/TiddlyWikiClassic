@@ -223,7 +223,7 @@ Wikifier.prototype.outputText = function(place,startPos,endPos)
 		}
 		//# Deal with the highlight
 		var highlightEnd = Math.min(this.highlightRegExp.lastIndex,endPos);
-		var theHighlight = createTiddlyElement(place,"span",null,"highlight",this.source.substring(startPos,highlightEnd));
+		createTiddlyElement(place,"span",null,"highlight",this.source.substring(startPos,highlightEnd));
 		startPos = highlightEnd;
 		//# Nudge along to the next highlight if we're done with this one
 		if(startPos >= this.highlightRegExp.lastIndex)

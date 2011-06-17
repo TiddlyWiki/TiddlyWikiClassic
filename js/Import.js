@@ -16,7 +16,7 @@ config.macros.importTiddlers.handler = function(place,macroName,params,wikifier,
 config.macros.importTiddlers.onCancel = function(e)
 {
 	var wizard = new Wizard(this);
-	var place = wizard.clear();
+	wizard.clear();
 	config.macros.importTiddlers.restart(wizard);
 	return false;
 };
