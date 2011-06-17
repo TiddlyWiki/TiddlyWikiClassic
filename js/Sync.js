@@ -52,7 +52,7 @@ config.macros.sync.getSyncableTiddlers = function()
 		syncItem.serverType = tiddler.getServerType();
 		syncItem.serverHost = tiddler.fields['server.host'];
 		if(syncItem.serverType && syncItem.serverHost) {
-			syncItem.adaptor = new config.adaptors[syncItem.serverType];
+			syncItem.adaptor = new config.adaptors[syncItem.serverType]();
 			syncItem.serverHost = syncItem.adaptor.fullHostName(syncItem.serverHost);
 			syncItem.serverWorkspace = tiddler.fields['server.workspace'];
 			syncItem.tiddler = tiddler;

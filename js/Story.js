@@ -189,7 +189,7 @@ Story.prototype.loadMissingTiddler = function(title,fields,callback)
 		return "";
 	context.host = tiddler.fields['server.host'];
 	context.workspace = tiddler.fields['server.workspace'];
-	var adaptor = new config.adaptors[context.serverType];
+	var adaptor = new config.adaptors[context.serverType]();
 	adaptor.getTiddler(title,context,null,getTiddlerCallback);
 	return config.messages.loadingMissingTiddler.format([title,context.serverType,context.host,context.workspace]);
 };
