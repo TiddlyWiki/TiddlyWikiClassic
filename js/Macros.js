@@ -243,7 +243,7 @@ config.macros.tiddler.tiddlerStack = [];
 //# params[3] - sortby (optional)
 config.macros.tag.handler = function(place,macroName,params)
 {
-	createTagButton(place,params[0],null,params[1],params[2]);
+	var btn = createTagButton(place,params[0],null,params[1],params[2]);
 	if(params[3]) {
 		btn.setAttribute('sortby',params[3]);
 	}
