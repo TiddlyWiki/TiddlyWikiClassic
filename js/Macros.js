@@ -284,6 +284,10 @@ config.macros.tagging.handler = function(place,macroName,params,wikifier,paramSt
 	ul.setAttribute("title",this.tooltip.format([title]));
 	var tagged = store.getTaggedTiddlers(title);
 	var prompt = tagged.length == 0 ? this.labelNotTag : this.label;
+	var sortby = getParam(params,"sortBy",false);
+	if(sortby && tagged.length) {                            
+		tagged = store.sortTiddlers(tagged,sortby);          
+	}
 	createTiddlyElement(ul,"li",null,"listTitle",prompt.format([title,tagged.length]));
 	for(var t=0; t<tagged.length; t++) {
 		createTiddlyLink(createTiddlyElement(ul,"li"),tagged[t].title,true);
