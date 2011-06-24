@@ -18,6 +18,8 @@ config.formatters = [
 		var currRowType = null;
 		var rowContainer;
 		var rowCount = 0;
+		var onmouseover = function() {addClass(this,"hoverRow");};
+		var onmouseout = function() {removeClass(this,"hoverRow");};
 		w.nextMatch = w.matchStart;
 		this.lookaheadRegExp.lastIndex = w.nextMatch;
 		var lookaheadMatch = this.lookaheadRegExp.exec(w.source);
@@ -39,9 +41,9 @@ config.formatters = [
 					rowContainer.setAttribute("align",rowCount == 0?"top":"bottom");
 					w.subWikifyTerm(rowContainer,this.rowTermRegExp);
 				} else {
-					var theRow = createTiddlyElement(rowContainer,"tr",null,(rowCount&1)?"oddRow":"evenRow");
-					theRow.onmouseover = function() {addClass(this,"hoverRow");};
-					theRow.onmouseout = function() {removeClass(this,"hoverRow");};
+					var theRow = createTiddlyElement(rowContainer,"tr",null,rowCount%2?"oddRow":"evenRow");
+					theRow.onmouseover = onmouseover;
+					theRow.onmouseout = onmouseout;
 					this.rowHandler(w,theRow,prevColumns);
 					rowCount++;
 				}
