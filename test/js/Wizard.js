@@ -42,4 +42,18 @@ jQuery(document).ready(function(){
 		strictEqual($(val5).hasClass("foo"), true, "element set successfully");
 	});
 
+	test("Wizard: createWizard", function() {
+		var elem = $(place)[0];
+		var wizard = new Wizard();
+		wizard.createWizard(place, 'Import a TiddlyWiki');
+		strictEqual(wizard.formElem.nodeName, "FORM", "a form element set.");
+	});
+	
+	test("Wizard: setValue of existing property name on node", function() {
+		var w = new Wizard();
+		w.createWizard($("<div />")[0], "My Title");
+		w.setValue("nodeName", "foo");
+		var mode = w.getValue("nodeName");
+		strictEqual(mode, "foo", "reserved names should be possible to set.")
+	});
 });
