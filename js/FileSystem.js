@@ -218,9 +218,9 @@ function mozillaSaveFile(filePath,content)
 			var file = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
 			file.initWithPath(filePath);
 			if(!file.exists())
-				file.create(0,0664);
+				file.create(0,0x01B4);// 0x01B4 = 0664
 			var out = Components.classes["@mozilla.org/network/file-output-stream;1"].createInstance(Components.interfaces.nsIFileOutputStream);
-			out.init(file,0x20|0x02,00004,null);
+			out.init(file,0x22,0x04,null);
 			out.write(content,content.length);
 			out.flush();
 			out.close();
@@ -244,7 +244,7 @@ function mozillaLoadFile(filePath)
 			if(!file.exists())
 				return null;
 			var inputStream = Components.classes["@mozilla.org/network/file-input-stream;1"].createInstance(Components.interfaces.nsIFileInputStream);
-			inputStream.init(file,0x01,00004,null);
+			inputStream.init(file,0x01,0x04,null);
 			var sInputStream = Components.classes["@mozilla.org/scriptableinputstream;1"].createInstance(Components.interfaces.nsIScriptableInputStream);
 			sInputStream.init(inputStream);
 			var contents = sInputStream.read(sInputStream.available());
