@@ -138,9 +138,9 @@ TiddlyWiki.prototype.getRecursiveTiddlerText = function(title,defaultText,depth)
 	if(text == null)
 		return defaultText;
 	var textOut = [];
-	var lastPos = 0;
+	var match,lastPos = 0;
 	do {
-		var match = bracketRegExp.exec(text);
+		match = bracketRegExp.exec(text);
 		if(match) {
 			textOut.push(text.substr(lastPos,match.index-lastPos));
 			if(match[1]) {
