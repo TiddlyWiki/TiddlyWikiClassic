@@ -622,8 +622,8 @@ TiddlyWiki.prototype.sortTiddlers = function(tiddlers,field)
 	switch(field.substr(0,1)) {
 	case "-":
 		asc = -1;
-		// Note: this fall-through is intentional
-		/*jsl:fallthru*/
+		field = field.substr(1);
+		break;
 	case "+":
 		field = field.substr(1);
 		break;
