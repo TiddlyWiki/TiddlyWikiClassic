@@ -435,9 +435,9 @@ config.macros.view.views = {
 		if(config.macros.view.depth>50)
 			return;
 		if(config.macros.view.depth>0) {
-		    if (value==config.macros.view.values[config.macros.view.depth-1]) {
-		        return;
-		    }
+			if (value==config.macros.view.values[config.macros.view.depth-1]) {
+				return;
+			}
 		}
 		config.macros.view.values[config.macros.view.depth] = value;
 		config.macros.view.depth++;
