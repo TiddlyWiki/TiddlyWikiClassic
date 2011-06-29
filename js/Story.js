@@ -530,8 +530,8 @@ Story.prototype.search = function(text,useCaseSensitive,useRegExp)
 //# returns: reference to a tiddler element or null if none
 Story.prototype.findContainingTiddler = function(e)
 {
-	while(e && !hasClass(e,"tiddler")) {
-		e = hasClass(e,"popup") && Popup.stack[0] ? Popup.stack[0].root : e.parentNode;
+	while(e && !jQuery(e).hasClass("tiddler")) {
+		e = jQuery(e).hasClass("popup") && Popup.stack[0] ? Popup.stack[0].root : e.parentNode;
 	}
 	return e;
 };

@@ -93,7 +93,7 @@ config.macros.toolbar.invokeCommand = function(place,className,event)
 	var t;
 	for(t=0; t<children.length; t++) {
 		var c = children[t];
-		if(hasClass(c,className) && c.getAttribute && c.getAttribute("commandName")) {
+		if(jQuery(c).hasClass(className) && c.getAttribute && c.getAttribute("commandName")) {
 			if(c.onclick instanceof Function)
 				c.onclick.call(c,event);
 			break;

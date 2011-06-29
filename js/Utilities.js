@@ -34,11 +34,6 @@ function compareVersions(v1,v2)
 	return x1 > x2 ? -1 : 0;
 }
 
-function hasClass(e,className)
-{
-	return jQuery(e).hasClass(className);
-}
-
 function merge(dst,src,preserveExisting)
 {
 	var i;
