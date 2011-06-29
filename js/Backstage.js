@@ -42,7 +42,7 @@ var backstage = {
 			var handler = task.action ? this.onClickCommand : this.onClickTab;
 			var text = task.text + (task.action ? "" : glyph("downTriangle"));
 			var btn = createTiddlyButton(this.toolbar,text,task.tooltip,handler,"backstageTab");
-			addClass(btn,task.action ? "backstageAction" : "backstageTask");
+			jQuery(btn).addClass(task.action ? "backstageAction" : "backstageTask");
 			btn.setAttribute("task", taskName);
 			}
 		this.content = document.getElementById("contentWrapper");
@@ -69,7 +69,7 @@ var backstage = {
 		jQuery(this.hideButton).show();
 		config.options.chkBackstage = true;
 		saveOption("chkBackstage");
-		addClass(this.content,"backstageVisible");
+		jQuery(this.content).addClass("backstageVisible");
 	},
 
 	hide: function() {
@@ -125,7 +125,7 @@ var backstage = {
 		}
 		if(tabElem && tabName) {
 			backstage.preparePanel();
-			addClass(tabElem,"backstageSelTab");
+			jQuery(tabElem).addClass("backstageSelTab");
 			var task = config.tasks[tabName];
 			wikify(task.content,backstage.panelBody,null,null);
 			backstage.showPanel();

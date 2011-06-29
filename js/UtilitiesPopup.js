@@ -19,7 +19,7 @@ function onClickTag(ev)
 {
 	var e = ev || window.event;
 	var popup = Popup.create(this);
-	addClass(popup,"taggedTiddlerList");
+	jQuery(popup).addClass("taggedTiddlerList");
 	var tag = this.getAttribute("tag");
 	var title = this.getAttribute("tiddler");
 	if(popup && tag) {

@@ -250,14 +250,14 @@ Story.prototype.refreshTiddler = function(title,template,force,customFields,defa
 			tiddlerElem.innerHTML = this.getTemplateForTiddler(title,template,tiddler);
 			applyHtmlMacros(tiddlerElem,tiddler);
 			if(store.getTaggedTiddlers(title).length > 0)
-				addClass(tiddlerElem,"isTag");
+				jQuery(tiddlerElem).addClass("isTag");
 			else
 				removeClass(tiddlerElem,"isTag");
 			if(store.tiddlerExists(title)) {
 				removeClass(tiddlerElem,"shadow");
 				removeClass(tiddlerElem,"missing");
 			} else {
-				addClass(tiddlerElem, store.isShadowTiddler(title) ? "shadow" : "missing");
+				jQuery(tiddlerElem).addClass(store.isShadowTiddler(title) ? "shadow" : "missing");
 			}
 			if(customFields)
 				this.addCustomFields(tiddlerElem,customFields);
@@ -298,7 +298,7 @@ Story.prototype.refreshAllTiddlers = function(force)
 //# Default tiddler onmouseover/out event handlers
 Story.prototype.onTiddlerMouseOver = function(e)
 {
-	addClass(this, "selected");
+	jQuery(this).addClass("selected");
 };
 
 Story.prototype.onTiddlerMouseOut = function(e)

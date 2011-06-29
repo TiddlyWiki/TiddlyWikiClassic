@@ -36,7 +36,7 @@ Popup.show = function(valign,halign,offset)
 {
 	var curr = Popup.stack[Popup.stack.length-1];
 	this.place(curr.root,curr.popup,valign,halign,offset);
-	addClass(curr.root,"highlight");
+	jQuery(curr.root).addClass("highlight");
 	if(config.options.chkAnimate && anim && typeof Scroller == "function")
 		anim.startAnimating(new Scroller(curr.popup));
 	else

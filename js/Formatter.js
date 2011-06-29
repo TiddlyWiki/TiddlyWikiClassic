@@ -18,7 +18,7 @@ config.formatters = [
 		var currRowType = null;
 		var rowContainer;
 		var rowCount = 0;
-		var onmouseover = function() {addClass(this,"hoverRow");};
+		var onmouseover = function() {jQuery(this).addClass("hoverRow");};
 		var onmouseout = function() {removeClass(this,"hoverRow");};
 		w.nextMatch = w.matchStart;
 		this.lookaheadRegExp.lastIndex = w.nextMatch;
@@ -372,7 +372,7 @@ config.formatters = [
 			if(lookaheadMatch[5]) {
 				var link = lookaheadMatch[5];
 				e = config.formatterHelpers.isExternalLink(link) ? createExternalLink(w.output,link) : createTiddlyLink(w.output,link,false,null,w.isStatic,w.tiddler);
-				addClass(e,"imageLink");
+				jQuery(e).addClass("imageLink");
 			}
 			var img = createTiddlyElement(e,"img");
 			if(lookaheadMatch[1])

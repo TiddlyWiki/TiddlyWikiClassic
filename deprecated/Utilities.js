@@ -21,3 +21,8 @@ function getPlainText(e)
 	return jQuery(e).text();
 }
 
+function addClass(e,className)
+{
+	jQuery(e).addClass(className);
+}
+

@@ -170,7 +170,7 @@ merge(macro, {
 			var theGroup = wikifyPlainText(groupTemplate,0,tiddler);
 			if(typeof(ul) == "undefined" || theGroup != lastGroup) {
 				ul = document.createElement("ul");
-				addClass(ul,"timeline");
+				jQuery(ul).addClass("timeline");
 				container.appendChild(ul);
 				createTiddlyElement(ul,"li",null,"listTitle",theGroup);
 				lastGroup = theGroup;
@@ -497,7 +497,7 @@ config.macros.edit.handler = function(place,macroName,params,wikifier,paramStrin
 		}
 		if(tiddler.isReadOnly()) {
 			e.setAttribute("readOnly","readOnly");
-			addClass(e,"readOnly");
+			jQuery(e).addClass("readOnly");
 		}
 		return e;
 	}
