@@ -213,7 +213,7 @@ config.formatters = [
 		var stack = [w.output];
 		var currLevel = 0;
 		var newLevel = w.matchLength;
-		var t;
+		var t,matched;
 		do {
 			if(newLevel > currLevel) {
 				for(t=currLevel; t<newLevel; t++)
@@ -227,7 +227,7 @@ config.formatters = [
 			createTiddlyElement(stack[stack.length-1],"br");
 			this.lookaheadRegExp.lastIndex = w.nextMatch;
 			var lookaheadMatch = this.lookaheadRegExp.exec(w.source);
-			var matched = lookaheadMatch && lookaheadMatch.index == w.nextMatch;
+			matched = lookaheadMatch && lookaheadMatch.index == w.nextMatch;
 			if(matched) {
 				newLevel = lookaheadMatch[0].length;
 				w.nextMatch += lookaheadMatch[0].length;
