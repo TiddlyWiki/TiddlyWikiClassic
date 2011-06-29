@@ -88,7 +88,7 @@ var backstage = {
 			this.hideButton.style.display = "none";
 			config.options.chkBackstage = false;
 			saveOption("chkBackstage");
-			removeClass(this.content, "backstageVisible");
+			jQuery(this.content).removeClass("backstageVisible");
 		}
 	},
 
@@ -121,7 +121,7 @@ var backstage = {
 			return;
 		}
 		if(backstage.currTabElem) {
-			removeClass(this.currTabElem, "backstageSelTab");
+			jQuery(this.currTabElem).removeClass("backstageSelTab");
 		}
 		if(tabElem && tabName) {
 			backstage.preparePanel();
@@ -161,7 +161,7 @@ var backstage = {
 
 	hidePanel: function() {
 		if(backstage.currTabElem)
-			removeClass(backstage.currTabElem, "backstageSelTab");
+			jQuery(backstage.currTabElem).removeClass("backstageSelTab");
 		backstage.currTabElem = null;
 		backstage.currTabName = null;
 		if(anim && config.options.chkAnimate) {

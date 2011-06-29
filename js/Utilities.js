@@ -34,11 +34,6 @@ function compareVersions(v1,v2)
 	return x1 > x2 ? -1 : 0;
 }
 
-function removeClass(e,className)
-{
-	jQuery(e).removeClass(className);
-}
-
 function hasClass(e,className)
 {
 	return jQuery(e).hasClass(className);

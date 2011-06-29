@@ -26,3 +26,8 @@ function addClass(e,className)
 	jQuery(e).addClass(className);
 }
 
+function removeClass(e,className)
+{
+	jQuery(e).removeClass(className);
+}
+

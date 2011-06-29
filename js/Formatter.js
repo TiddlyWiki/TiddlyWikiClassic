@@ -19,7 +19,7 @@ config.formatters = [
 		var rowContainer;
 		var rowCount = 0;
 		var onmouseover = function() {jQuery(this).addClass("hoverRow");};
-		var onmouseout = function() {removeClass(this,"hoverRow");};
+		var onmouseout = function() {jQuery(this).removeClass("hoverRow");};
 		w.nextMatch = w.matchStart;
 		this.lookaheadRegExp.lastIndex = w.nextMatch;
 		var lookaheadMatch = this.lookaheadRegExp.exec(w.source);
