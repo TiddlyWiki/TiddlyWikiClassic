@@ -407,7 +407,3 @@ function createTiddlyError(place,title,text)
 	if(text) btn.setAttribute("errorText",text);
 }
 
-if(!window || !window.console) {
-	console = {tiddlywiki:true,log:function(message) {displayMessage(message);}};
-}
-

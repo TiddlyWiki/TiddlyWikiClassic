@@ -19,6 +19,10 @@ var pluginInfo,tiddler; // Used to pass information to plugins in loadPlugins()
 // Whether to use the JavaSaver applet
 var useJavaSaver = (config.browser.isSafari || config.browser.isOpera) && (document.location.toString().substr(0,4) != "http");
 
+if(!window || !window.console) {
+	console = {tiddlywiki:true,log:function(message) {displayMessage(message);}};
+}
+
 // Starting up
 function main()
 {
