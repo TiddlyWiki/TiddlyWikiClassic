@@ -17,13 +17,12 @@ function Wizard(elem)
 
 Wizard.prototype.setValue = function(name,value)
 {
-	if(this.formElem)
-		this.formElem[name] = value;
+	$(this.formElem).data(name, value);
 };
 
 Wizard.prototype.getValue = function(name)
 {
-	return this.formElem ? this.formElem[name] : null;
+	return this.formElem ? $(this.formElem).data(name) : null;
 };
 
 Wizard.prototype.createWizard = function(place,title)
