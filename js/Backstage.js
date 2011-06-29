@@ -110,12 +110,11 @@ var backstage = {
 	switchTab: function(tabName) {
 		var tabElem = null;
 		var e = this.toolbar.firstChild;
-		while(e)
-			{
+		while(e) {
 			if(e.getAttribute && e.getAttribute("task") == tabName)
 				tabElem = e;
 			e = e.nextSibling;
-			}
+		}
 		if(tabName == backstage.currTabName) {
 			backstage.hidePanel();
 			return;
