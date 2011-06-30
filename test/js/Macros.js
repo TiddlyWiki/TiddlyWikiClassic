@@ -171,6 +171,18 @@
 		strictEqual($("ul .listLink", place).text(), "testTiddler3", "the timestamp is more recent so this appears at the top");
 	});
 
+	test("tagging macro (tagging nothing)", function() {
+		var place = $("<div />")[0];
+		var paramString = "";
+		var tiddler = store.getTiddler("I tag nothing");
+		config.macros.tagging.handler(place, null, [], null, paramString, tiddler);
+
+		strictEqual($("ul", place).length, 1, "a list was created in the container");
+		strictEqual($("ul li.listTitle", place).length, 1, "a list title was created");
+		strictEqual($("ul li.listTitle", place).text(), config.macros.tagging.labelNotTag,
+			"the text says this tiddler is tagging nothing");
+	});
+
 	module("Macros.js - additional scenarios", {
 		setup: function() {
 			var text = "[[Foo is a missing tiddler]] test";
