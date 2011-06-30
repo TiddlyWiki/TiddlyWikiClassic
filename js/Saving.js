@@ -73,7 +73,9 @@ function updateOriginal(original,posDiv,localPath)
 
 function locateStoreArea(original)
 {
-	// Locate the storeArea div's
+	// Locate the storeArea divs
+	if(!original)
+		return null;
 	var posOpeningDiv = original.indexOf(startSaveArea);
 	var limitClosingDiv = original.indexOf("<"+"!--POST-STOREAREA--"+">");
 	if(limitClosingDiv == -1)
