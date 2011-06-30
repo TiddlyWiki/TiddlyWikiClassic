@@ -215,6 +215,17 @@
 			"3 tiddlers link to testTag");
 	});
 
+	test("tagging macro (sep parameter)", function() {
+		// note this test is identical to above but uses a parameter rather than the current tiddler.
+		var place = $("<div />")[0];
+		var paramString = "testTag sep:','";
+		config.macros.tagging.handler(place, null, [], null, paramString, null);
+
+		var text = $("ul", place).text();
+		strictEqual(text, config.macros.tagging.label + "testTiddler1,testTiddler2,testTiddler3",
+			"The sep parameter adds separators between each item");
+	});
+
 	module("Macros.js - additional scenarios", {
 		setup: function() {
 			var text = "[[Foo is a missing tiddler]] test";
