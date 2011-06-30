@@ -183,6 +183,22 @@
 			"the text says this tiddler is tagging nothing");
 	});
 
+	test("tagging macro (tagging something)", function() {
+		var place = $("<div />")[0];
+		var paramString = "";
+		var tiddler = new Tiddler("testTag");
+		config.macros.tagging.handler(place, null, [], null, paramString, tiddler);
+
+		strictEqual($("ul", place).length, 1, "a list was created in the container");
+		strictEqual($("ul li.listTitle", place).length, 1, "a list title was created");
+		strictEqual($("ul li.listTitle", place).text(), config.macros.tagging.label,
+			"the text says this tiddler is tagging things");
+		strictEqual($("ul li", place).length, 4,
+			"3 tiddlers are tagged with testTag and the list title makes 4 items");
+		strictEqual($("ul li a.tiddlyLink", place).length, 3,
+			"3 tiddlers link to testTag");
+	});
+
 	module("Macros.js - additional scenarios", {
 		setup: function() {
 			var text = "[[Foo is a missing tiddler]] test";
