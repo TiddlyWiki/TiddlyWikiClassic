@@ -11,19 +11,22 @@ FileAdaptor.prototype = new AdaptorBase();
 FileAdaptor.serverType = 'file';
 FileAdaptor.serverLabel = 'TiddlyWiki';
 
-FileAdaptor.loadTiddlyWikiCallback = function(status,context,responseText,url,xhr)
+FileAdaptor.loadTiddlyWikiSuccess = function(context,jqXHR)
 {
-	context.status = status;
-	if(!status) {
-		context.statusText = "Error reading file";
-	} else {
-		//# Load the content into a TiddlyWiki() object
-		context.adaptor.store = new TiddlyWiki();
-		if(!context.adaptor.store.importTiddlyWiki(responseText)) {
-			context.statusText = config.messages.invalidFileError.format([url]);
-			context.status = false;
-		}
+	context.status = true;
+	//# Load the content into a TiddlyWiki() object
+	context.adaptor.store = new TiddlyWiki();
+	if(!context.adaptor.store.importTiddlyWiki(jqXHR.responseText)) {
+		context.statusText = config.messages.invalidFileError.format([context.host]);
+		context.status = false;
 	}
+	context.complete(context,context.userParams);
+};
+
+FileAdaptor.loadTiddlyWikiError = function(context,jqXHR)
+{
+	context.status = false;
+	context.statusText = jqXHR.message;
 	context.complete(context,context.userParams);
 };
 
@@ -68,13 +71,20 @@ FileAdaptor.prototype.getTiddlerList = function(context,userParams,callback,filt
 		context.filter = filter;
 	context.complete = FileAdaptor.getTiddlerListComplete;
 	if(this.store) {
-		var ret = context.complete(context,context.userParams);
-	} else {
-		ret = httpReq("GET",context.host,FileAdaptor.loadTiddlyWikiCallback,context);
-		if(typeof ret != "string")
-			ret = true;
+		return context.complete(context,context.userParams);
 	}
-	return ret;
+	var options = {
+		type:"GET",
+		url:context.host,
+		processData:false,
+		success:function(data,textStatus,jqXHR) {
+			FileAdaptor.loadTiddlyWikiSuccess(context,jqXHR);
+		},
+		error:function(jqXHR,textStatus,errorThrown) {
+			FileAdaptor.loadTiddlyWikiError(context,jqXHR);
+		}
+	};
+	return ajaxReq(options);
 };
 
 FileAdaptor.getTiddlerListComplete = function(context,userParams)
@@ -125,9 +135,21 @@ FileAdaptor.prototype.getTiddler = function(title,context,userParams,callback)
 	context = this.setContext(context,userParams,callback);
 	context.title = title;
 	context.complete = FileAdaptor.getTiddlerComplete;
-	return context.adaptor.store ?
-		context.complete(context,context.userParams) :
-		httpReq("GET",context.host,FileAdaptor.loadTiddlyWikiCallback,context);
+	if(context.adaptor.store) {
+		return context.complete(context,context.userParams);
+	}
+	var options = {
+		type:"GET",
+		url:context.host,
+		processData:false,
+		success:function(data,textStatus,jqXHR) {
+			FileAdaptor.loadTiddlyWikiSuccess(context,jqXHR);
+		},
+		error:function(jqXHR,textStatus,errorThrown) {
+			FileAdaptor.loadTiddlyWikiError(context,jqXHR);
+		}
+	};
+	return ajaxReq(options);
 };
 
 FileAdaptor.getTiddlerComplete = function(context,userParams)

@@ -1,4 +1,5 @@
 jsdeprecated: Crypto.js
+jsdeprecated: FileAdaptor.js
 jsdeprecated: Http.js
 jsdeprecated: Strings.js
 jsdeprecated: Tiddler.js
