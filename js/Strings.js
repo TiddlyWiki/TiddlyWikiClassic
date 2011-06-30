@@ -31,9 +31,9 @@ String.prototype.format = function(s)
 	var substrings = s && s.constructor == Array ? s : arguments;
 	var subRegExp = /(?:%(\d+))/mg;
 	var currPos = 0;
-	var r = [];
+	var match,r = [];
 	do {
-		var match = subRegExp.exec(this);
+		match = subRegExp.exec(this);
 		if(match && match[1]) {
 			if(match.index > currPos)
 				r.push(this.substring(currPos,match.index));
@@ -134,8 +134,9 @@ String.prototype.parseParams = function(defaultName,defaultValue,allowEval,noNam
 	var skipSpace = "(?:\\s*)";
 	var token = "(?:" + dblQuote + "|" + sngQuote + "|" + dblSquare + "|" + dblBrace + "|" + unQuoted + "|" + emptyQuote + ")";
 	var re = noNames ? new RegExp(token,"mg") : new RegExp(skipSpace + token + skipSpace + "(?:(\\:)" + skipSpace + token + ")?","mg");
+	var match;
 	do {
-		var match = re.exec(this);
+		match = re.exec(this);
 		if(match) {
 			var n = parseToken(match,1);
 			if(noNames) {
