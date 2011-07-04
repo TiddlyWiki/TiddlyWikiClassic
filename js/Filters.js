@@ -19,8 +19,8 @@ config.filters = {
 		return results;
 	},
 	tag: function(results,match) {
-		var matched = this.getTaggedTiddlers(match[3]);
-		for(var m=0; m<matched.length; m++) {
+		var m,matched = this.getTaggedTiddlers(match[3]);
+		for(m=0; m<matched.length; m++) {
 			results.pushUnique(matched[m]);
 		}
 		return results;
@@ -32,8 +32,8 @@ config.filters = {
 		return results.slice(0,parseInt(match[3],10));
 	},
 	field: function(results,match) {
-		var matched = this.getValueTiddlers(match[2],match[3]);
-		for (var m = 0; m < matched.length; m++) {
+		var m,matched = this.getValueTiddlers(match[2],match[3]);
+		for (m = 0; m < matched.length; m++) {
 			results.pushUnique(matched[m]);
 		}
 		return results;

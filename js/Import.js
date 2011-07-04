@@ -16,7 +16,7 @@ config.macros.importTiddlers.handler = function(place,macroName,params,wikifier,
 config.macros.importTiddlers.onCancel = function(e)
 {
 	var wizard = new Wizard(this);
-	var place = wizard.clear();
+	wizard.clear();
 	config.macros.importTiddlers.restart(wizard);
 	return false;
 };
@@ -31,9 +31,9 @@ config.macros.importTiddlers.restart = function(wizard)
 {
 	var me = config.macros.importTiddlers;
 	wizard.addStep(this.step1Title,this.step1Html);
-	var s = wizard.getElement("selTypes");
-	for(var t in config.adaptors) {
-		var e = createTiddlyElement(s,"option",null,null,config.adaptors[t].serverLabel ? config.adaptors[t].serverLabel : t);
+	var t,s = wizard.getElement("selTypes");
+	for(t in config.adaptors) {
+		var e = createTiddlyElement(s,"option",null,null,config.adaptors[t].serverLabel || t);
 		e.value = t;
 	}
 	if(config.defaultAdaptor)
@@ -60,8 +60,8 @@ config.macros.importTiddlers.restart = function(wizard)
 config.macros.importTiddlers.getFeeds = function()
 {
 	var feeds = {};
-	var tagged = store.getTaggedTiddlers("systemServer","title");
-	for(var t=0; t<tagged.length; t++) {
+	var t,tagged = store.getTaggedTiddlers("systemServer","title");
+	for(t=0; t<tagged.length; t++) {
 		var title = tagged[t].title;
 		var serverType = store.getTiddlerSlice(title,"Type");
 		if(!serverType)
@@ -149,9 +149,7 @@ config.macros.importTiddlers.onOpen = function(e)
 	wizard.setValue("adaptor",adaptor);
 	wizard.setValue("serverType",serverType);
 	wizard.setValue("host",url);
-	var ret = adaptor.openHost(url,null,wizard,me.onOpenHost);
-	if(ret !== true)
-		displayMessage(ret);
+	adaptor.openHost(url,null,wizard,me.onOpenHost);
 	wizard.setButtons([{caption: me.cancelLabel, tooltip: me.cancelPrompt, onClick: me.onCancel}],me.statusOpenHost);
 	return false;
 };
@@ -162,9 +160,7 @@ config.macros.importTiddlers.onOpenHost = function(context,wizard)
 	var adaptor = wizard.getValue("adaptor");
 	if(context.status !== true)
 		displayMessage("Error in importTiddlers.onOpenHost: " + context.statusText);
-	var ret = adaptor.getWorkspaceList(context,wizard,me.onGetWorkspaceList);
-	if(ret !== true)
-		displayMessage(ret);
+	adaptor.getWorkspaceList(context,wizard,me.onGetWorkspaceList);
 	wizard.setButtons([{caption: me.cancelLabel, tooltip: me.cancelPrompt, onClick: me.onCancel}],me.statusGetWorkspaceList);
 };
 
@@ -179,24 +175,22 @@ config.macros.importTiddlers.onGetWorkspaceList = function(context,wizard)
 		workspace = context.workspaces[0].title;
 	if(workspace) {
 		//# if there is only one workspace, then open it directly
-		var ret = context.adaptor.openWorkspace(workspace,context,wizard,me.onOpenWorkspace);
-		if(ret !== true)
-			displayMessage(ret);
+		context.adaptor.openWorkspace(workspace,context,wizard,me.onOpenWorkspace);
 		wizard.setValue("workspace",workspace);
 		wizard.setButtons([{caption: me.cancelLabel, tooltip: me.cancelPrompt, onClick: me.onCancel}],me.statusOpenWorkspace);
 		return;
 	}
 	wizard.addStep(me.step2Title,me.step2Html);
-	var s = wizard.getElement("selWorkspace");
+	var t,s = wizard.getElement("selWorkspace");
 	s.onchange = me.onWorkspaceChange;
-	for(var t=0; t<context.workspaces.length; t++) {
+	for(t=0; t<context.workspaces.length; t++) {
 		var e = createTiddlyElement(s,"option",null,null,context.workspaces[t].title);
 		e.value = context.workspaces[t].title;
 	}
 	var workspaceList = wizard.getValue("feedWorkspaceList");
 	if(workspaceList) {
-		var list = workspaceList.parseParams("workspace",null,false,true);
-		for(var n=1; n<list.length; n++) {
+		var n,list = workspaceList.parseParams("workspace",null,false,true);
+		for(n=1; n<list.length; n++) {
 			if(context.workspaces.findByField("title",list[n].value) == null) {
 				e = createTiddlyElement(s,"option",null,null,list[n].value);
 				e.value = list[n].value;
@@ -227,9 +221,7 @@ config.macros.importTiddlers.onChooseWorkspace = function(e)
 	var workspace = wizard.getElement("txtWorkspace").value;
 	wizard.setValue("workspace",workspace);
 	var context = wizard.getValue("context");
-	var ret = adaptor.openWorkspace(workspace,context,wizard,me.onOpenWorkspace);
-	if(ret !== true)
-		displayMessage(ret);
+	adaptor.openWorkspace(workspace,context,wizard,me.onOpenWorkspace);
 	wizard.setButtons([{caption: me.cancelLabel, tooltip: me.cancelPrompt, onClick: me.onCancel}],me.statusOpenWorkspace);
 	return false;
 };
@@ -240,9 +232,7 @@ config.macros.importTiddlers.onOpenWorkspace = function(context,wizard)
 	if(context.status !== true)
 		displayMessage("Error in importTiddlers.onOpenWorkspace: " + context.statusText);
 	var adaptor = wizard.getValue("adaptor");
-	var ret = adaptor.getTiddlerList(context,wizard,me.onGetTiddlerList,wizard.getValue("feedTiddlerFilter"));
-	if(ret !== true)
-		displayMessage(ret);
+	adaptor.getTiddlerList(context,wizard,me.onGetTiddlerList,wizard.getValue("feedTiddlerFilter"));
 	wizard.setButtons([{caption: me.cancelLabel, tooltip: me.cancelPrompt, onClick: me.onCancel}],me.statusGetTiddlerList);
 };
 
@@ -250,13 +240,14 @@ config.macros.importTiddlers.onGetTiddlerList = function(context,wizard)
 {
 	var me = config.macros.importTiddlers;
 	if(context.status !== true) {
-		wizard.setButtons([{caption: me.cancelLabel, tooltip: me.cancelPrompt, onClick: me.onCancel}],me.errorGettingTiddlerList);
+		wizard.setButtons([{caption: me.cancelLabel, tooltip: me.cancelPrompt, onClick: me.onCancel}],context.statusText||me.errorGettingTiddlerList);
 		return;
 	}
 	// Extract data for the listview
 	var listedTiddlers = [];
 	if(context.tiddlers) {
-		for(var n=0; n<context.tiddlers.length; n++) {
+		var n;
+		for(n=0; n<context.tiddlers.length; n++) {
 			var tiddler = context.tiddlers[n];
 			listedTiddlers.push({
 				title: tiddler.title,

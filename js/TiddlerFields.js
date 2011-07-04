@@ -94,7 +94,8 @@ TiddlyWiki.prototype.setValue = function(tiddler,fieldName,value)
 				// delete all fields in a namespace
 				var re = new RegExp("^"+fieldName+"\\.");
 				var dirty = false;
-				for(var n in t.fields) {
+				var n;
+				for(n in t.fields) {
 					if(n.match(re)) {
 						delete t.fields[n];
 						dirty = true;
@@ -159,13 +160,13 @@ TiddlyWiki.prototype.forEachField = function(tiddler,callback,onlyExtendedFields
 	if(onlyExtendedFields)
 		return undefined;
 	for(n in TiddlyWiki.standardFieldAccess) {
-		if(n == "tiddler")
+		if(n != "tiddler") {
 			// even though the "title" field can also be referenced through the name "tiddler"
 			// we only visit this field once.
-			continue;
-		result = callback(t,n,TiddlyWiki.standardFieldAccess[n].get(t));
-		if(result)
-			return result;
+			result = callback(t,n,TiddlyWiki.standardFieldAccess[n].get(t));
+			if(result)
+				return result;
+		}
 	}
 	return undefined;
 };

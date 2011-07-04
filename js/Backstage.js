@@ -42,7 +42,7 @@ var backstage = {
 			var handler = task.action ? this.onClickCommand : this.onClickTab;
 			var text = task.text + (task.action ? "" : glyph("downTriangle"));
 			var btn = createTiddlyButton(this.toolbar,text,task.tooltip,handler,"backstageTab");
-			addClass(btn,task.action ? "backstageAction" : "backstageTask");
+			jQuery(btn).addClass(task.action ? "backstageAction" : "backstageTask");
 			btn.setAttribute("task", taskName);
 			}
 		this.content = document.getElementById("contentWrapper");
@@ -69,7 +69,7 @@ var backstage = {
 		jQuery(this.hideButton).show();
 		config.options.chkBackstage = true;
 		saveOption("chkBackstage");
-		addClass(this.content,"backstageVisible");
+		jQuery(this.content).addClass("backstageVisible");
 	},
 
 	hide: function() {
@@ -88,7 +88,7 @@ var backstage = {
 			this.hideButton.style.display = "none";
 			config.options.chkBackstage = false;
 			saveOption("chkBackstage");
-			removeClass(this.content, "backstageVisible");
+			jQuery(this.content).removeClass("backstageVisible");
 		}
 	},
 
@@ -110,22 +110,21 @@ var backstage = {
 	switchTab: function(tabName) {
 		var tabElem = null;
 		var e = this.toolbar.firstChild;
-		while(e)
-			{
+		while(e) {
 			if(e.getAttribute && e.getAttribute("task") == tabName)
 				tabElem = e;
 			e = e.nextSibling;
-			}
+		}
 		if(tabName == backstage.currTabName) {
 			backstage.hidePanel();
 			return;
 		}
 		if(backstage.currTabElem) {
-			removeClass(this.currTabElem, "backstageSelTab");
+			jQuery(this.currTabElem).removeClass("backstageSelTab");
 		}
 		if(tabElem && tabName) {
 			backstage.preparePanel();
-			addClass(tabElem,"backstageSelTab");
+			jQuery(tabElem).addClass("backstageSelTab");
 			var task = config.tasks[tabName];
 			wikify(task.content,backstage.panelBody,null,null);
 			backstage.showPanel();
@@ -161,7 +160,7 @@ var backstage = {
 
 	hidePanel: function() {
 		if(backstage.currTabElem)
-			removeClass(backstage.currTabElem, "backstageSelTab");
+			jQuery(backstage.currTabElem).removeClass("backstageSelTab");
 		backstage.currTabElem = null;
 		backstage.currTabName = null;
 		if(anim && config.options.chkAnimate) {

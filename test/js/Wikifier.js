@@ -155,4 +155,39 @@ jQuery(document).ready(function(){
 		equals(actual,expected,'it should not leave any elements attached to the document body after returning');
 		removeNode(d);
 	});
+
+	test('Wikifier: wikifyStatic() 3 htmlEntitiesEncoding', function() {
+		wikifier_input_strings = {
+			illegal01:"&a#x0301;",
+			e160:"&#160;",
+			e161:"&#161;",
+			e162:"&#162;",
+			e163:"&#163;",
+			e255:"&#255;",
+			e8800:"&#8800;",
+			e0x300:"&#x300;",
+			e0x0300:"&#x0300;"
+		};
+
+		wikifier_output_strings = {
+			illegal01:"&amp;a#x0301;",
+			e160:"<span>&nbsp;</span>",
+			e161:"<span>¡</span>",
+			e162:"<span>¢</span>",
+			e163:"<span>£</span>",
+			e255:"<span>ÿ</span>",
+			e8800:"<span>≠</span>",
+			e0x300:"<span>̀</span>",
+			e0x0300:"<span>̀</span>"
+		};
+
+		formatter = new Formatter(config.formatters);
+		var actual = "";
+		var expected = "";
+		for (var i in wikifier_input_strings) {
+			actual = wikifyStatic(wikifier_input_strings[i]).toLowerCase();
+			expected = wikifier_output_strings[i];
+			equals(actual,expected,'testing input strings for Formatter.htmlEntitiesEncoding'+wikifier_input_strings[i]);
+		}
+	});
 });

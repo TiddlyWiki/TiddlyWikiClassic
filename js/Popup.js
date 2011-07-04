@@ -36,7 +36,7 @@ Popup.show = function(valign,halign,offset)
 {
 	var curr = Popup.stack[Popup.stack.length-1];
 	this.place(curr.root,curr.popup,valign,halign,offset);
-	addClass(curr.root,"highlight");
+	jQuery(curr.root).addClass("highlight");
 	if(config.options.chkAnimate && anim && typeof Scroller == "function")
 		anim.startAnimating(new Scroller(curr.popup));
 	else
@@ -46,7 +46,7 @@ Popup.show = function(valign,halign,offset)
 Popup.place = function(root,popup,valign,halign,offset)
 {
 	if(!offset)
-		var offset = {x:0,y:0};
+		offset = {x:0,y:0};
 	if(popup.stackPosition >= 0 && !valign && !halign) {
 		offset.x = offset.x + root.offsetWidth;
 	} else {
@@ -75,8 +75,8 @@ Popup.place = function(root,popup,valign,halign,offset)
 
 Popup.find = function(e)
 {
-	var pos = -1;
-	for (var t=this.stack.length-1; t>=0; t--) {
+	var t,pos = -1;
+	for(t=this.stack.length-1; t>=0; t--) {
 		if(isDescendant(e,this.stack[t].popup))
 			pos = t;
 	}
@@ -85,7 +85,7 @@ Popup.find = function(e)
 
 Popup.remove = function(pos)
 {
-	if(!pos) var pos = 0;
+	if(!pos) pos = 0;
 	if(Popup.stack.length > pos) {
 		Popup.removeFrom(pos);
 	}
@@ -93,9 +93,10 @@ Popup.remove = function(pos)
 
 Popup.removeFrom = function(from)
 {
-	for(var t=Popup.stack.length-1; t>=from; t--) {
+	var t;
+	for(t=Popup.stack.length-1; t>=from; t--) {
 		var p = Popup.stack[t];
-		removeClass(p.root,"highlight");
+		jQuery(p.root).removeClass("highlight");
 		jQuery(p.popup).remove();
 	}
 	Popup.stack = Popup.stack.slice(0,from);

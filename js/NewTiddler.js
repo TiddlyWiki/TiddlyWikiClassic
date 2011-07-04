@@ -5,7 +5,8 @@
 config.macros.newTiddler.createNewTiddlerButton = function(place,title,params,label,prompt,accessKey,newFocus,isJournal)
 {
 	var tags = [];
-	for(var t=1; t<params.length; t++) {
+	var t;
+	for(t=1; t<params.length; t++) {
 		if((params[t].name == "anon" && t != 1) || (params[t].name == "tag"))
 			tags.push(params[t].value);
 	}
@@ -51,7 +52,8 @@ config.macros.newTiddler.onClickNewTiddler = function()
 	var text = this.getAttribute("newText");
 	if(typeof text == "string" && story.getTiddlerField(title,"text"))
 		story.getTiddlerField(title,"text").value = text.format([title]);
-	for(var t=0;t<tags.length;t++)
+	var t;
+	for(t=0;t<tags.length;t++)
 		story.setTiddlerTag(title,tags[t],+1);
 	story.focusTiddler(title,focus);
 	return false;

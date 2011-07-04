@@ -42,8 +42,8 @@ TW21Loader.prototype.internalizeTiddler = function(store,tiddler,title,node)
 	var modified = m ? Date.convertFromYYYYMMDDHHMMSS(m) : created;
 	var tags = node.getAttribute("tags");
 	var fields = {};
-	var attrs = node.attributes;
-	for(var i = attrs.length-1; i >= 0; i--) {
+	var i,attrs = node.attributes;
+	for(i = attrs.length-1; i >= 0; i--) {
 		var name = attrs[i].name;
 		if(attrs[i].specified && !TiddlyWiki.isStandardField(name)) {
 			fields[name] = attrs[i].value.unescapeLineBreaks();

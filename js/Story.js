@@ -60,7 +60,8 @@ Story.prototype.displayDefaultTiddlers = function()
 //# titles - array of tiddlers or string titles
 Story.prototype.displayTiddlers = function(srcElement,titles,template,animate,unused,customFields,toggle)
 {
-	for(var t = titles.length-1;t>=0;t--)
+	var t;
+	for(t = titles.length-1;t>=0;t--)
 		this.displayTiddler(srcElement,titles[t],template,animate,unused,customFields);
 };
 
@@ -185,10 +186,10 @@ Story.prototype.loadMissingTiddler = function(title,fields,callback)
 	tiddler.fields = typeof fields == "string" ? fields.decodeHashMap() : fields||{};
 	var context = {serverType:tiddler.getServerType()};
 	if(!context.serverType)
-		return;
+		return "";
 	context.host = tiddler.fields['server.host'];
 	context.workspace = tiddler.fields['server.workspace'];
-	var adaptor = new config.adaptors[context.serverType];
+	var adaptor = new config.adaptors[context.serverType]();
 	adaptor.getTiddler(title,context,null,getTiddlerCallback);
 	return config.messages.loadingMissingTiddler.format([title,context.serverType,context.host,context.workspace]);
 };
@@ -249,14 +250,14 @@ Story.prototype.refreshTiddler = function(title,template,force,customFields,defa
 			tiddlerElem.innerHTML = this.getTemplateForTiddler(title,template,tiddler);
 			applyHtmlMacros(tiddlerElem,tiddler);
 			if(store.getTaggedTiddlers(title).length > 0)
-				addClass(tiddlerElem,"isTag");
+				jQuery(tiddlerElem).addClass("isTag");
 			else
-				removeClass(tiddlerElem,"isTag");
+				jQuery(tiddlerElem).removeClass("isTag");
 			if(store.tiddlerExists(title)) {
-				removeClass(tiddlerElem,"shadow");
-				removeClass(tiddlerElem,"missing");
+				jQuery(tiddlerElem).removeClass("shadow");
+				jQuery(tiddlerElem).removeClass("missing");
 			} else {
-				addClass(tiddlerElem, store.isShadowTiddler(title) ? "shadow" : "missing");
+				jQuery(tiddlerElem).addClass(store.isShadowTiddler(title) ? "shadow" : "missing");
 			}
 			if(customFields)
 				this.addCustomFields(tiddlerElem,customFields);
@@ -271,7 +272,8 @@ Story.prototype.addCustomFields = function(place,customFields)
 	var fields = customFields.decodeHashMap();
 	var w = createTiddlyElement(place,"div",null,"customFields");
 	w.style.display = "none";
-	for(var t in fields) {
+	var t;
+	for(t in fields) {
 		var e = document.createElement("input");
 		e.setAttribute("type","text");
 		e.setAttribute("value",fields[t]);
@@ -296,12 +298,12 @@ Story.prototype.refreshAllTiddlers = function(force)
 //# Default tiddler onmouseover/out event handlers
 Story.prototype.onTiddlerMouseOver = function(e)
 {
-	addClass(this, "selected");
+	jQuery(this).addClass("selected");
 };
 
 Story.prototype.onTiddlerMouseOut = function(e)
 {
-	removeClass(this,"selected");
+	jQuery(this).removeClass("selected");
 };
 
 //# Default tiddler ondblclick event handler
@@ -378,8 +380,8 @@ Story.prototype.getTiddlerField = function(title,field)
 	var tiddlerElem = this.getTiddler(title);
 	var e = null;
 	if(tiddlerElem) {
-		var children = tiddlerElem.getElementsByTagName("*");
-		for(var t=0; t<children.length; t++) {
+		var t,children = tiddlerElem.getElementsByTagName("*");
+		for(t=0; t<children.length; t++) {
 			var c = children[t];
 			if(c.tagName.toLowerCase() == "input" || c.tagName.toLowerCase() == "textarea") {
 				if(!e)
@@ -528,8 +530,8 @@ Story.prototype.search = function(text,useCaseSensitive,useRegExp)
 //# returns: reference to a tiddler element or null if none
 Story.prototype.findContainingTiddler = function(e)
 {
-	while(e && !hasClass(e,"tiddler")) {
-		e = hasClass(e,"popup") && Popup.stack[0] ? Popup.stack[0].root : e.parentNode;
+	while(e && !jQuery(e).hasClass("tiddler")) {
+		e = jQuery(e).hasClass("popup") && Popup.stack[0] ? Popup.stack[0].root : e.parentNode;
 	}
 	return e;
 };
@@ -544,8 +546,8 @@ Story.prototype.gatherSaveFields = function(e,fields)
 		if(f)
 			fields[f] = e.value.replace(/\r/mg,"");
 		if(e.hasChildNodes()) {
-			var c = e.childNodes;
-			for(var t=0; t<c.length; t++)
+			var t,c = e.childNodes;
+			for(t=0; t<c.length; t++)
 				this.gatherSaveFields(c[t],fields);
 		}
 	}
@@ -560,7 +562,8 @@ Story.prototype.hasChanges = function(title)
 		var fields = {};
 		this.gatherSaveFields(e,fields);
 		if(store.fetchTiddler(title)) {
-			for(var n in fields) {
+		    var n;
+			for(n in fields) {
 				if(store.getValue(title,n) != fields[n]) //# tiddler changed
 					return true;
 			}
@@ -613,7 +616,8 @@ Story.prototype.saveTiddler = function(title,minorUpdate)
 		} else {
 			extendedFields = merge({},config.defaultCustomFields);
 		}
-		for(var n in fields) {
+		var n;
+		for(n in fields) {
 			if(!TiddlyWiki.isStandardField(n))
 				extendedFields[n] = fields[n];
 		}
@@ -674,7 +678,8 @@ Story.prototype.switchTheme = function(theme)
 	var ei = DEFAULT_EDIT_TEMPLATE;
 	var et = config.tiddlerTemplates[ei];
 
-	for(var i=0; i<config.notifyTiddlers.length; i++) {
+	var i;
+	for(i=0; i<config.notifyTiddlers.length; i++) {
 		var name = config.notifyTiddlers[i].name;
 		switch(name) {
 		case "PageTemplate":

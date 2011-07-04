@@ -11,7 +11,8 @@ config.macros.toolbar.createCommand = function(place,commandName,tiddler,classNa
 {
 	if(typeof commandName != "string") {
 		var c = null;
-		for(var t in config.commands) {
+		var t;
+		for(t in config.commands) {
 			if(config.commands[t] == commandName)
 				c = t;
 		}
@@ -35,9 +36,9 @@ config.macros.toolbar.createCommand = function(place,commandName,tiddler,classNa
 			var btn = createTiddlyButton(null,text,tooltip,cmd);
 			btn.setAttribute("commandName",commandName);
 			btn.setAttribute("tiddler",tiddler.title);
-			addClass(btn,"command_" + commandName);
+			jQuery(btn).addClass("command_" + commandName);
 			if(className)
-				addClass(btn,className);
+				jQuery(btn).addClass(className);
 			place.appendChild(btn);
 		}
 	}
@@ -53,12 +54,12 @@ config.macros.toolbar.isCommandEnabled = function(command,tiddler)
 
 config.macros.toolbar.getCommandText = function(command,tiddler)
 {
-	return tiddler.isReadOnly() && command.readOnlyText || command.text;
+	return (tiddler.isReadOnly() && command.readOnlyText) || command.text;
 };
 
 config.macros.toolbar.getCommandTooltip = function(command,tiddler)
 {
-	return tiddler.isReadOnly() && command.readOnlyTooltip || command.tooltip;
+	return (tiddler.isReadOnly() && command.readOnlyTooltip) || command.tooltip;
 };
 
 config.macros.toolbar.onClickCommand = function(ev)
@@ -89,9 +90,10 @@ config.macros.toolbar.onClickPopup = function(ev)
 config.macros.toolbar.invokeCommand = function(place,className,event)
 {
 	var children = place.getElementsByTagName("a");
-	for(var t=0; t<children.length; t++) {
+	var t;
+	for(t=0; t<children.length; t++) {
 		var c = children[t];
-		if(hasClass(c,className) && c.getAttribute && c.getAttribute("commandName")) {
+		if(jQuery(c).hasClass(className) && c.getAttribute && c.getAttribute("commandName")) {
 			if(c.onclick instanceof Function)
 				c.onclick.call(c,event);
 			break;
@@ -118,7 +120,9 @@ config.macros.toolbar.onClickLess = function(ev)
 
 config.macros.toolbar.handler = function(place,macroName,params,wikifier,paramString,tiddler)
 {
-	for(var t=0; t<params.length; t++) {
+	var t;
+	for(t=0; t<params.length; t++) {
+	    var btn;
 		var c = params[t];
 		switch(c) {
 		case "!":
@@ -128,12 +132,12 @@ config.macros.toolbar.handler = function(place,macroName,params,wikifier,paramSt
 			createTiddlyElement(place,"br");
 			break;
 		case "<":
-			var btn = createTiddlyButton(place,this.lessLabel,this.lessPrompt,config.macros.toolbar.onClickLess);
-			addClass(btn,"lessCommand");
+			btn = createTiddlyButton(place,this.lessLabel,this.lessPrompt,config.macros.toolbar.onClickLess);
+			jQuery(btn).addClass("lessCommand");
 			break;
 		case ">":
-			var btn = createTiddlyButton(place,this.moreLabel,this.morePrompt,config.macros.toolbar.onClickMore);
-			addClass(btn,"moreCommand");
+			btn = createTiddlyButton(place,this.moreLabel,this.morePrompt,config.macros.toolbar.onClickMore);
+			jQuery(btn).addClass("moreCommand");
 			var e = createTiddlyElement(place,"span",null,"moreCommand");
 			e.style.display = "none";
 			place = e;
@@ -163,5 +167,5 @@ config.macros.toolbar.handler = function(place,macroName,params,wikifier,paramSt
 // Overrideable function to extend toolbar handler
 config.macros.toolbar.customCommand = function(place,command,wikifier,tiddler)
 {
-}
+};
 

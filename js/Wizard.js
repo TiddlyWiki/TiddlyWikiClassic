@@ -17,13 +17,12 @@ function Wizard(elem)
 
 Wizard.prototype.setValue = function(name,value)
 {
-	if(this.formElem)
-		this.formElem[name] = value;
+	jQuery(this.formElem).data(name, value);
 };
 
 Wizard.prototype.getValue = function(name)
 {
-	return this.formElem ? this.formElem[name] : null;
+	return this.formElem ? jQuery(this.formElem).data(name) : null;
 };
 
 Wizard.prototype.createWizard = function(place,title)
@@ -43,7 +42,8 @@ Wizard.prototype.clear = function()
 Wizard.prototype.setButtons = function(buttonInfo,status)
 {
 	jQuery(this.footElem).empty();
-	for(var t=0; t<buttonInfo.length; t++) {
+	var t;
+	for(t=0; t<buttonInfo.length; t++) {
 		createTiddlyButton(this.footElem,buttonInfo[t].caption,buttonInfo[t].tooltip,buttonInfo[t].onClick);
 		insertSpacer(this.footElem);
 		}

@@ -9,10 +9,7 @@ function Slider(element,opening,unused,deleteMode)
 	if(opening)
 		element.style.height = '0px'; // Resolves a Firefox flashing bug
 	element.style.display = 'block';
-	var left = findPosX(element);
-	var width = element.scrollWidth;
 	var height = element.scrollHeight;
-	var winWidth = findWindowWidth();
 	var p = [];
 	var c = null;
 	if(opening) {

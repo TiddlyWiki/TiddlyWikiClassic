@@ -34,6 +34,7 @@ js: AdaptorBase.js
 js: FileAdaptor.js
 js: Http.js
 js: Utilities.js
+js: UtilitiesPopup.js
 js: Animator.js
 js: Morpher.js
 js: Zoomer.js

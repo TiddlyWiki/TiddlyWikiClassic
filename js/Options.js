@@ -41,8 +41,8 @@ var loadOptionsCookie = loadOptions;
 function getCookies()
 {
 	var cookieList = document.cookie.split(';');
-	var cookies = {};
-	for(var i=0; i<cookieList.length; i++) {
+	var i,cookies = {};
+	for(i=0; i<cookieList.length; i++) {
 		var p = cookieList[i].indexOf('=');
 		if(p != -1) {
 			var name = cookieList[i].substr(0,p).trim();
@@ -55,11 +55,11 @@ function getCookies()
 
 function loadCookies()
 {
-	var cookies = getCookies();
+	var i,cookies = getCookies();
 	if(cookies['TiddlyWiki']) {
 		cookies = cookies['TiddlyWiki'].decodeHashMap();
 	}
-	for(var i in cookies) {
+	for(i in cookies) {
 		if(config.optionsSource[i] != 'setting') {
 			setOption(i,cookies[i]);
 		}
@@ -68,9 +68,9 @@ function loadCookies()
 
 function loadSystemSettings()
 {
-	var settings = store.calcAllSlices('SystemSettings');
+	var key,settings = store.calcAllSlices('SystemSettings');
 	config.optionsSource = {};
-	for(var key in settings) {
+	for(key in settings) {
 		setOption(key,settings[key]);
 		config.optionsSource[key] = 'setting';
 	}
@@ -107,15 +107,16 @@ function removeCookie(name)
 
 function saveCookie(name)
 {
-	var cookies = {};
-	for(var key in config.options) {
+	var key,cookies = {};
+	for(key in config.options) {
 		var value = getOption(key);
 		value = value == null ? 'false' : value;
 		cookies[key] = value;
 	}
 	document.cookie = 'TiddlyWiki=' + String.encodeHashMap(cookies) + '; expires=Fri, 1 Jan 2038 12:00:00 UTC; path=/';
 	cookies = getCookies();
-	for(var c in cookies) {
+	var c;
+	for(c in cookies) {
 		var optType = c.substr(0,3);
 		if(config.optionHandlers[optType])
 			removeCookie(c);
@@ -129,7 +130,7 @@ function commitSystemSettings(storeWasDirty)
 		window.clearTimeout(systemSettingSave);
 	}
 	systemSettingSave = window.setTimeout(function() {
-		var tiddler = store.getTiddler('SystemSettings')
+		var tiddler = store.getTiddler('SystemSettings');
 		if(storeWasDirty == false && story.areAnyDirty() == false) {
 			//# nothing has changed except the options, so we can force a save
 			saveChanges(null,[tiddler]);
@@ -240,8 +241,8 @@ config.macros.option.propagateOption = function(opt,valueField,value,elementType
 {
 	config.options[opt] = value;
 	saveOption(opt);
-	var nodes = document.getElementsByTagName(elementType);
-	for(var t=0; t<nodes.length; t++) {
+	var t,nodes = document.getElementsByTagName(elementType);
+	for(t=0; t<nodes.length; t++) {
 		var optNode = nodes[t].getAttribute('option');
 		if(opt == optNode && nodes[t]!=elem)
 			nodes[t][valueField] = value;
@@ -279,8 +280,8 @@ config.macros.options.handler = function(place,macroName,params,wikifier,paramSt
 
 config.macros.options.refreshOptions = function(listWrapper,showUnknown)
 {
-	var opts = [];
-	for(var n in config.options) {
+	var n,opts = [];
+	for(n in config.options) {
 		var opt = {};
 		opt.option = '';
 		opt.name = n;
@@ -290,7 +291,7 @@ config.macros.options.refreshOptions = function(listWrapper,showUnknown)
 			opts.push(opt);
 	}
 	opts.sort(function(a,b) {return a.name.substr(3) < b.name.substr(3) ? -1 : (a.name.substr(3) == b.name.substr(3) ? 0 : +1);});
-	var listview = ListView.create(listWrapper,opts,this.listViewTemplate);
+	ListView.create(listWrapper,opts,this.listViewTemplate);
 	for(n=0; n<opts.length; n++) {
 		var type = opts[n].name.substr(0,3);
 		var h = config.macros.option.types[type];

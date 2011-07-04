@@ -18,6 +18,8 @@ config.formatters = [
 		var currRowType = null;
 		var rowContainer;
 		var rowCount = 0;
+		var onmouseover = function() {jQuery(this).addClass("hoverRow");};
+		var onmouseout = function() {jQuery(this).removeClass("hoverRow");};
 		w.nextMatch = w.matchStart;
 		this.lookaheadRegExp.lastIndex = w.nextMatch;
 		var lookaheadMatch = this.lookaheadRegExp.exec(w.source);
@@ -39,9 +41,9 @@ config.formatters = [
 					rowContainer.setAttribute("align",rowCount == 0?"top":"bottom");
 					w.subWikifyTerm(rowContainer,this.rowTermRegExp);
 				} else {
-					var theRow = createTiddlyElement(rowContainer,"tr",null,(rowCount&1)?"oddRow":"evenRow");
-					theRow.onmouseover = function() {addClass(this,"hoverRow");};
-					theRow.onmouseout = function() {removeClass(this,"hoverRow");};
+					var theRow = createTiddlyElement(rowContainer,"tr",null,rowCount%2?"oddRow":"evenRow");
+					theRow.onmouseover = onmouseover;
+					theRow.onmouseout = onmouseout;
 					this.rowHandler(w,theRow,prevColumns);
 					rowCount++;
 				}
@@ -211,7 +213,7 @@ config.formatters = [
 		var stack = [w.output];
 		var currLevel = 0;
 		var newLevel = w.matchLength;
-		var t;
+		var t,matched;
 		do {
 			if(newLevel > currLevel) {
 				for(t=currLevel; t<newLevel; t++)
@@ -225,7 +227,7 @@ config.formatters = [
 			createTiddlyElement(stack[stack.length-1],"br");
 			this.lookaheadRegExp.lastIndex = w.nextMatch;
 			var lookaheadMatch = this.lookaheadRegExp.exec(w.source);
-			var matched = lookaheadMatch && lookaheadMatch.index == w.nextMatch;
+			matched = lookaheadMatch && lookaheadMatch.index == w.nextMatch;
 			if(matched) {
 				newLevel = lookaheadMatch[0].length;
 				w.nextMatch += lookaheadMatch[0].length;
@@ -370,7 +372,7 @@ config.formatters = [
 			if(lookaheadMatch[5]) {
 				var link = lookaheadMatch[5];
 				e = config.formatterHelpers.isExternalLink(link) ? createExternalLink(w.output,link) : createTiddlyLink(w.output,link,false,null,w.isStatic,w.tiddler);
-				addClass(e,"imageLink");
+				jQuery(e).addClass("imageLink");
 			}
 			var img = createTiddlyElement(e,"img");
 			if(lookaheadMatch[1])

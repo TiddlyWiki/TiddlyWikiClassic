@@ -19,7 +19,8 @@ function drawGradient(place,horiz,locolors,hicolors)
 {
 	if(!hicolors)
 		hicolors = locolors;
-	for(var t=0; t<= 100; t+=2) {
+	var t;
+	for(t=0; t<= 100; t+=2) {
 		var bar = document.createElement("div");
 		place.appendChild(bar);
 		bar.style.position = "absolute";
@@ -70,7 +71,7 @@ function findRelated(e,value,name,relative)
 	name = name || "tagName";
 	relative = relative || "parentNode";
 	if(name == "className") {
-		while(e && !hasClass(e,value)) {
+		while(e && !jQuery(e).hasClass(value)) {
 			e = e[relative];
 		}
 	} else {
@@ -246,7 +247,8 @@ function scrubNode(e)
 		return;
 	var att = e.attributes;
 	if(att) {
-		for(var t=0; t<att.length; t++) {
+		var t;
+		for(t=0; t<att.length; t++) {
 			var n = att[t].name;
 			if(n !== "style" && (typeof e[n] === "function" || (typeof e[n] === "object" && e[n] != null))) {
 				try {

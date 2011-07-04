@@ -26,7 +26,8 @@ function TiddlyWiki()
 		tiddlers[tiddler.title] = tiddler;
 	};
 	this.forEachTiddler = function(callback) {
-		for(var t in tiddlers) {
+		var t;
+		for(t in tiddlers) {
 			var tiddler = tiddlers[t];
 			if(tiddler instanceof Tiddler)
 				callback.call(this,t,tiddler);
@@ -137,9 +138,9 @@ TiddlyWiki.prototype.getRecursiveTiddlerText = function(title,defaultText,depth)
 	if(text == null)
 		return defaultText;
 	var textOut = [];
-	var lastPos = 0;
+	var match,lastPos = 0;
 	do {
-		var match = bracketRegExp.exec(text);
+		match = bracketRegExp.exec(text);
 		if(match) {
 			textOut.push(text.substr(lastPos,match.index-lastPos));
 			if(match[1]) {
@@ -205,8 +206,8 @@ TiddlyWiki.prototype.getTiddlerSlice = function(title,sliceName)
 // Build an hashmap of the specified named slices of a tiddler
 TiddlyWiki.prototype.getTiddlerSlices = function(title,sliceNames)
 {
-	var r = {};
-	for(var t=0; t<sliceNames.length; t++) {
+	var t,r = {};
+	for(t=0; t<sliceNames.length; t++) {
 		var slice = this.getTiddlerSlice(title,sliceNames[t]);
 		if(slice)
 			r[sliceNames[t]] = slice;
@@ -228,7 +229,8 @@ TiddlyWiki.prototype.resumeNotifications = function()
 TiddlyWiki.prototype.notify = function(title,doBlanket)
 {
 	if(!this.notificationLevel) {
-		for(var t=0; t<this.namedNotifications.length; t++) {
+	    var t;
+		for(t=0; t<this.namedNotifications.length; t++) {
 			var n = this.namedNotifications[t];
 			if((n.name == null && doBlanket) || (n.name == title))
 				n.notify(title);
@@ -240,7 +242,8 @@ TiddlyWiki.prototype.notify = function(title,doBlanket)
 TiddlyWiki.prototype.notifyAll = function()
 {
 	if(!this.notificationLevel) {
-		for(var t=0; t<this.namedNotifications.length; t++) {
+	    var t;
+		for(t=0; t<this.namedNotifications.length; t++) {
 			var n = this.namedNotifications[t];
 			if(n.name)
 				n.notify(n.name);
@@ -251,7 +254,8 @@ TiddlyWiki.prototype.notifyAll = function()
 // Add a notification handler to a tiddler
 TiddlyWiki.prototype.addNotification = function(title,fn)
 {
-	for(var i=0; i<this.namedNotifications.length; i++) {
+	var i;
+	for(i=0; i<this.namedNotifications.length; i++) {
 		if((this.namedNotifications[i].name == title) && (this.namedNotifications[i].notify == fn))
 			return this;
 	}
@@ -392,7 +396,8 @@ TiddlyWiki.prototype.loadFromDiv = function(src,idPrefix,noUpdate)
 	var tiddlers = this.getLoader().loadTiddlers(this,storeElem.childNodes);
 	this.setDirty(false);
 	if(!noUpdate) {
-		for(var i = 0;i<tiddlers.length; i++)
+		var i;
+		for(i = 0;i<tiddlers.length; i++)
 			tiddlers[i].changed();
 	}
 	jQuery(document).trigger("loadTiddlers");
@@ -439,8 +444,8 @@ TiddlyWiki.prototype.updateTiddlers = function()
 TiddlyWiki.prototype.search = function(searchRegExp,sortField,excludeTag,match)
 {
 	var candidates = this.reverseLookup("tags",excludeTag,!!match);
-	var results = [];
-	for(var t=0; t<candidates.length; t++) {
+	var t,results = [];
+	for(t=0; t<candidates.length; t++) {
 		if((candidates[t].title.search(searchRegExp) != -1) || (candidates[t].text.search(searchRegExp) != -1))
 			results.push(candidates[t]);
 	}
@@ -457,10 +462,11 @@ TiddlyWiki.prototype.getTags = function(excludeTag)
 {
 	var results = [];
 	this.forEachTiddler(function(title,tiddler) {
-		for(var g=0; g<tiddler.tags.length; g++) {
+	    var g,c;
+		for(g=0; g<tiddler.tags.length; g++) {
 			var tag = tiddler.tags[g];
 			var n = true;
-			for(var c=0; c<results.length; c++) {
+			for(c=0; c<results.length; c++) {
 				if(results[c][0] == tag) {
 					n = false;
 					results[c][1]++;
@@ -516,7 +522,8 @@ TiddlyWiki.prototype.reverseLookup = function(lookupField,lookupValue,lookupMatc
 				values = tiddler.fields[lookupField] ? [tiddler.fields[lookupField]] : [];
 			}
 		}
-		for(var lookup=0; lookup<values.length; lookup++) {
+		var lookup;
+		for(lookup=0; lookup<values.length; lookup++) {
 			if(values[lookup] == lookupValue)
 				f = lookupMatch;
 		}
@@ -550,7 +557,8 @@ TiddlyWiki.prototype.getMissingLinks = function()
 	this.forEachTiddler(function (title,tiddler) {
 		if(tiddler.isTagged("excludeMissing") || tiddler.isTagged("systemConfig"))
 			return;
-		for(var n=0; n<tiddler.links.length;n++) {
+		var n;
+		for(n=0; n<tiddler.links.length;n++) {
 			var link = tiddler.links[n];
 			if(this.getTiddlerText(link,null) == null && !this.isShadowTiddler(link) && !config.macros[link])
 				results.pushUnique(link);
@@ -575,8 +583,8 @@ TiddlyWiki.prototype.getOrphans = function()
 // Return an array of names of all the shadow tiddlers
 TiddlyWiki.prototype.getShadowed = function()
 {
-	var results = [];
-	for(var t in config.shadowTiddlers) {
+	var t,results = [];
+	for(t in config.shadowTiddlers) {
 		if(this.isShadowTiddler(t))
 			results.push(t);
 	}
@@ -614,8 +622,8 @@ TiddlyWiki.prototype.sortTiddlers = function(tiddlers,field)
 	switch(field.substr(0,1)) {
 	case "-":
 		asc = -1;
-		// Note: this fall-through is intentional
-		/*jsl:fallthru*/
+		field = field.substr(1);
+		break;
 	case "+":
 		field = field.substr(1);
 		break;

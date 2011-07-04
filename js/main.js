@@ -19,6 +19,10 @@ var pluginInfo,tiddler; // Used to pass information to plugins in loadPlugins()
 // Whether to use the JavaSaver applet
 var useJavaSaver = (config.browser.isSafari || config.browser.isOpera) && (document.location.toString().substr(0,4) != "http");
 
+if(!window || !window.console) {
+	console = {tiddlywiki:true,log:function(message) {displayMessage(message);}};
+}
+
 // Starting up
 function main()
 {
@@ -35,7 +39,8 @@ function main()
 	story = new Story("tiddlerDisplay","tiddler");
 	addEvent(document,"click",Popup.onDocumentClick);
 	saveTest();
-	for(var s=0; s<config.notifyTiddlers.length; s++)
+	var s;
+	for(s=0; s<config.notifyTiddlers.length; s++)
 		store.addNotification(config.notifyTiddlers[s].name,config.notifyTiddlers[s].notify);
 	t1 = new Date();
 	loadShadowTiddlers();
@@ -56,7 +61,8 @@ function main()
 	story.switchTheme(config.options.txtTheme);
 	showBackstage = showBackstage !== undefined ? showBackstage : !readOnly;
 	t6 = new Date();
-	for(var m in config.macros) {
+	var m;
+	for(m in config.macros) {
 		if(config.macros[m].init)
 			config.macros[m].init();
 	}
@@ -132,7 +138,8 @@ function loadPlugins(tag)
 	var map = {};
 	var nPlugins = tiddlers.length;
 	installedPlugins = [];
-	for(var i=0; i<nPlugins; i++) {
+	var i;
+	for(i=0; i<nPlugins; i++) {
 		var p = getPluginInfo(tiddlers[i]);
 		installedPlugins[i] = p;
 		var n = p.Name || p.title;
@@ -149,7 +156,8 @@ function loadPlugins(tag)
 		var reqs = p.Requires;
 		if(reqs) {
 			reqs = reqs.readBracketedList();
-			for(var i=0; i<reqs.length; i++)
+			var i;
+			for(i=0; i<reqs.length; i++)
 				visit(map[reqs[i]]);
 		}
 		toLoad.push(p);

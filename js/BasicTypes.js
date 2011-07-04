@@ -8,7 +8,8 @@ Array.prototype.indexOf = function(item,from)
 {
 	if(!from)
 		from = 0;
-	for(var i=from; i<this.length; i++) {
+	var i;
+	for(i=from; i<this.length; i++) {
 		if(this[i] === item)
 			return i;
 	}
@@ -18,7 +19,8 @@ Array.prototype.indexOf = function(item,from)
 // Find an entry in a given field of the members of an array
 Array.prototype.findByField = function(field,value)
 {
-	for(var t=0; t<this.length; t++) {
+	var t;
+	for(t=0; t<this.length; t++) {
 		if(this[t][field] === value)
 			return t;
 	}
@@ -51,7 +53,8 @@ Array.prototype.setItem = function(value,mode)
 // Return whether one of a list of values exists in an array
 Array.prototype.containsAny = function(items)
 {
-	for(var i=0; i<items.length; i++) {
+	var i;
+	for(i=0; i<items.length; i++) {
 		if(this.indexOf(items[i]) != -1)
 			return true;
 	}
@@ -61,7 +64,8 @@ Array.prototype.containsAny = function(items)
 // Return whether all of a list of values exists in an array
 Array.prototype.containsAll = function(items)
 {
-	for(var i = 0; i<items.length; i++) {
+	var i;
+	for(i = 0; i<items.length; i++) {
 		if(this.indexOf(items[i]) == -1)
 			return false;
 	}
@@ -90,8 +94,8 @@ if(!Array.prototype.map) {
 Array.prototype.map = function(fn,thisObj)
 {
 	var scope = thisObj || window;
-	var a = [];
-	for(var i=0, j=this.length; i < j; ++i) {
+	var i,j,a = [];
+	for(i=0, j=this.length; i < j; ++i) {
 		a.push(fn.call(scope,this[i],i,this));
 	}
 	return a;

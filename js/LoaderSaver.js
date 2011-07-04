@@ -26,8 +26,8 @@ LoaderBase.prototype.loadTiddler = function(store,node,tiddlers)
 
 LoaderBase.prototype.loadTiddlers = function(store,nodes)
 {
-	var tiddlers = [];
-	for(var t = 0; t < nodes.length; t++) {
+	var t,tiddlers = [];
+	for(t = 0; t < nodes.length; t++) {
 		try {
 			this.loadTiddler(store,nodes[t],tiddlers);
 		} catch(ex) {
@@ -49,8 +49,8 @@ function SaverBase() {}
 SaverBase.prototype.externalize = function(store)
 {
 	var results = [];
-	var tiddlers = store.getTiddlers("title");
-	for(var t = 0; t < tiddlers.length; t++) {
+	var t,tiddlers = store.getTiddlers("title");
+	for(t = 0; t < tiddlers.length; t++) {
 		if(!tiddlers[t].doNotSave())
 			results.push(this.externalizeTiddler(store, tiddlers[t]));
 	}

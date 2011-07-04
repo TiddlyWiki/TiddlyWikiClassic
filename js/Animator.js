@@ -13,7 +13,8 @@ function Animator()
 // Start animation engine
 Animator.prototype.startAnimating = function() //# Variable number of arguments
 {
-	for(var t=0; t<arguments.length; t++)
+	var t;
+	for(t=0; t<arguments.length; t++)
 		this.animations.push(arguments[t]);
 	if(this.running == 0) {
 		var me = this;
