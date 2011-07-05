@@ -406,7 +406,7 @@ config.macros.message.handler = function(place,macroName,params)
 	if(params[0]) {
 		var names = params[0].split(".");
 		var lookupMessage = function(root,nameIndex) {
-				if(names[nameIndex] in root) {
+				if(root[names[nameIndex]]) {
 					if(nameIndex < names.length-1)
 						return (lookupMessage(root[names[nameIndex]],nameIndex+1));
 					else
