@@ -119,15 +119,6 @@ config.macros.sync.createSyncTask = function(syncItem)
 	st.serverWorkspace = syncItem.serverWorkspace;
 	st.syncItems = [syncItem];
 
-	var openWorkspaceCallback = function(context,syncItems) {
-		if(context.status) {
-			context.adaptor.getTiddlerList(context,syncItems,getTiddlerListCallback);
-			return true;
-		}
-		displayMessage(context.statusText);
-		return false;
-	};
-
 	var getTiddlerListCallback = function(context,sycnItems) {
 		var me = config.macros.sync;
 		if(!context.status) {
@@ -150,6 +141,16 @@ config.macros.sync.createSyncTask = function(syncItem)
 		}
 		return true;
 	};
+
+	var openWorkspaceCallback = function(context,syncItems) {
+		if(context.status) {
+			context.adaptor.getTiddlerList(context,syncItems,getTiddlerListCallback);
+			return true;
+		}
+		displayMessage(context.statusText);
+		return false;
+	};
+
 	var context = {host:st.serverHost,workspace:st.serverWorkspace};
 	syncItem.adaptor.openHost(st.serverHost);
 	syncItem.adaptor.openWorkspace(st.serverWorkspace,context,st.syncItems,openWorkspaceCallback);
