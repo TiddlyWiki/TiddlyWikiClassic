@@ -70,7 +70,6 @@ config.macros.toolbar.onClickPopup = function(ev)
 	var popup = Popup.create(this);
 	var command = config.commands[this.getAttribute("commandName")];
 	var title = this.getAttribute("tiddler");
-	var tiddler = store.fetchTiddler(title);
 	popup.setAttribute("tiddler",title);
 	command.handlePopup(popup,title);
 	Popup.show();
