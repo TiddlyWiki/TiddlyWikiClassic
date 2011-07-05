@@ -144,7 +144,7 @@ config.macros.toolbar.handler = function(place,macroName,params,wikifier,paramSt
 				c = c.substr(1);
 				break;
 			}
-			if(c in config.commands) {
+			if(config.commands[c]) {
 				this.createCommand(place,c,tiddler,className);
 			} else {
 				this.customCommand(place,c,wikifier,tiddler);
