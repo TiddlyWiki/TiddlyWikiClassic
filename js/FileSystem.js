@@ -297,7 +297,7 @@ function javaLoadFile(filePath)
 		var r = new java.io.BufferedReader(new java.io.FileReader(javaUrlToFilename(filePath)));
 		var line;
 		while((line = r.readLine()) != null)
-			content.push(new String(line));
+			content.push(String(line));
 		r.close();
 	} catch(ex2) {
 		return null;
