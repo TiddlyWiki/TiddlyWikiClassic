@@ -356,4 +356,54 @@ jQuery(document).ready(function(){
 		strictEqual(tiddlers[0].title, "testTiddler3");
 		strictEqual(tiddlers2.length, _numTiddlers - 1, "returns all the tiddlers minus the one tiddler created by martin");
 	});
+
+	var _loadFromDiv, storeArea;
+	module("TiddlyWiki.js - importTiddlyWiki", {
+		setup: function() {
+			_loadFromDiv = TiddlyWiki.prototype.loadFromDiv;
+			TiddlyWiki.prototype.loadFromDiv = function(area) {
+				storeArea = area;
+			};
+		},
+		teardown: function() {
+			TiddlyWiki.prototype.loadFromDiv = _loadFromDiv;
+			storeArea = null;
+		}
+	});
+
+	test("importTiddlyWiki empty store", function() {
+		var html = ['<html><head></head><body>', '<!--POST-SHADOWAREA-->',
+			'<div id="storeArea">', '</div>',
+			'<!--POST-STOREAREA-->', '</body></html>'].join("\n");
+		store.importTiddlyWiki(html);
+		strictEqual($(storeArea).attr("id"), "storeArea", "make sure a storeArea was found");
+	});
+
+	test("importTiddlyWiki empty store (post body start)", function() {
+		var html = ['<html><head></head><body>',
+			'<!--POST-SHADOWAREA-->',
+			'<div id="storeArea">', '</div>',
+			,'<!--POST-BODY-START-->','</body></html>'].join("\n");
+		store.importTiddlyWiki(html);
+		strictEqual($(storeArea).attr("id"), "storeArea", "make sure a storeArea was found");
+	});
+
+	test("importTiddlyWiki empty store (minified test)", function() {
+		var html = ['<html><head></head><body>',
+			'<!--POST-SHADOWAREA-->',
+			'<div id="storeArea">', '</div>',
+			,'<!--POST-BODY-START-->','</body></html>'].join(""); // join without newlines
+		store.importTiddlyWiki(html);
+		strictEqual($(storeArea).attr("id"), "storeArea", "make sure a storeArea was found");
+	});
+
+	test("importTiddlyWiki empty store (minified test)", function() {
+		var html = ['<html><head></head><body>',
+			'<!--POST-SHADOWAREA-->',
+			'<div id="storeArea"><div class="tiddler">hello</div>', '</div>',
+			,'<!--POST-BODY-START-->','</body></html>'].join(""); // join without newlines
+		store.importTiddlyWiki(html);
+		strictEqual($(storeArea).attr("id"), "storeArea", "make sure a storeArea was found");
+		strictEqual($(".tiddler", storeArea).length, 1, "there is one element with class tiddler within the element");
+	});
 });
