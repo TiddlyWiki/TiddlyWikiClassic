@@ -438,12 +438,4 @@ jQuery(document).ready(function(){
 		strictEqual($(storeArea).attr("id"), "storeArea", "make sure a storeArea was found");
 		strictEqual($(".tiddler", storeArea).length, 1, "there is one element with class tiddler within the element");
 	});
-
-	test("importTiddlyWiki empty store (storeArea that is not a DIV)", function() {
-		var html = ["<HTML><HEAD></HEAD><BODY>","<NOSCRIPT ID='storeArea'>",'<DIV class="tiddler">hello</DIV></NOSCRIPT>',
-			'</BODY></HTML>'].join("\n"); // join with newlines
-		store.importTiddlyWiki(html);
-		strictEqual($(storeArea).attr("id"), "storeArea", "make sure a storeArea was found");
-		strictEqual($(".tiddler", storeArea).length, 1, "there is one element with class tiddler within the element");
-	});
 });
