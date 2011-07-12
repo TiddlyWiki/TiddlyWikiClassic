@@ -37,12 +37,18 @@ config.macros.upgrade.onClickUpgrade = function(e)
 		return false;
 	}
 	w.setButtons([],me.statusLoadingCore);
-	var load = httpReq("GET",me.source,me.onLoadCore,w);
-	if(typeof load == "string") {
-		w.setButtons([],me.errorLoadingCore);
-		alert(me.errorLoadingCore);
-		return false;
-	}
+	var options = {
+		type:"GET",
+		url:me.source,
+		processData:false,
+		success:function(data,textStatus,jqXHR) {
+			me.onLoadCore(true,w,jqXHR.responseText,me.source,jqXHR);
+		},
+		error:function(jqXHR,textStatus,errorThrown) {
+			me.onLoadCore(false,w,null,me.source,jqXHR);
+		}
+	};
+	ajaxReq(options);
 	return false;
 };
 

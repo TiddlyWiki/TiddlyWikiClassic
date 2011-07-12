@@ -23,16 +23,7 @@ config.macros.toolbar.createCommand = function(place,commandName,tiddler,classNa
 		if(command.isEnabled ? command.isEnabled(tiddler) : this.isCommandEnabled(command,tiddler)) {
 			var text = command.getText ? command.getText(tiddler) : this.getCommandText(command,tiddler);
 			var tooltip = command.getTooltip ? command.getTooltip(tiddler) : this.getCommandTooltip(command,tiddler);
-			var cmd;
-			switch(command.type) {
-			case "popup":
-				cmd = this.onClickPopup;
-				break;
-			case "command":
-			default:
-				cmd = this.onClickCommand;
-				break;
-			}
+			var cmd = command.type == "popup" ? this.onClickPopup : this.onClickCommand;
 			var btn = createTiddlyButton(null,text,tooltip,cmd);
 			btn.setAttribute("commandName",commandName);
 			btn.setAttribute("tiddler",tiddler.title);
@@ -79,7 +70,6 @@ config.macros.toolbar.onClickPopup = function(ev)
 	var popup = Popup.create(this);
 	var command = config.commands[this.getAttribute("commandName")];
 	var title = this.getAttribute("tiddler");
-	var tiddler = store.fetchTiddler(title);
 	popup.setAttribute("tiddler",title);
 	command.handlePopup(popup,title);
 	Popup.show();
@@ -122,7 +112,7 @@ config.macros.toolbar.handler = function(place,macroName,params,wikifier,paramSt
 {
 	var t;
 	for(t=0; t<params.length; t++) {
-	    var btn;
+		var btn;
 		var c = params[t];
 		switch(c) {
 		case "!":
@@ -154,7 +144,7 @@ config.macros.toolbar.handler = function(place,macroName,params,wikifier,paramSt
 				c = c.substr(1);
 				break;
 			}
-			if(c in config.commands) {
+			if(config.commands[c]) {
 				this.createCommand(place,c,tiddler,className);
 			} else {
 				this.customCommand(place,c,wikifier,tiddler);
