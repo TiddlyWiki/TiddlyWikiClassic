@@ -5,7 +5,7 @@
 var saveUsingSafari = false;
 
 var startSaveArea = '<div id="' + 'storeArea">'; // Split up into two so that indexOf() of this source doesn't find it
-var startSaveAreaCaps = '<DIV id="' + 'storeArea">'; // Used for IE6
+var startSaveAreaRE = /<((div)|(DIV)) ((id)|(ID))=["']?storeArea['"]?>/; // Used for IE6
 var endSaveArea = '</d' + 'iv>';
 var endSaveAreaCaps = '</D' + 'IV>';
 
@@ -78,9 +78,7 @@ function locateStoreArea(original)
 	// Locate the storeArea divs
 	if(!original)
 		return null;
-	var posOpeningDiv = original.indexOf(startSaveArea);
-	if(posOpeningDiv == -1)
-		posOpeningDiv = original.indexOf(startSaveAreaCaps);
+	var posOpeningDiv = original.search(startSaveAreaRE);
 	var limitClosingDiv = original.indexOf("<"+"!--POST-STOREAREA--"+">");
 	if(limitClosingDiv == -1)
 		limitClosingDiv = original.indexOf("<"+"!--POST-BODY-START--"+">");
