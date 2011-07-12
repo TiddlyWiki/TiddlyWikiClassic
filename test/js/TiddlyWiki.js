@@ -406,4 +406,36 @@ jQuery(document).ready(function(){
 		strictEqual($(storeArea).attr("id"), "storeArea", "make sure a storeArea was found");
 		strictEqual($(".tiddler", storeArea).length, 1, "there is one element with class tiddler within the element");
 	});
+
+	test("importTiddlyWiki empty store (no comments)", function() {
+		var html = ['<html><head></head><body>','<div id="storeArea"><div class="tiddler">hello</div></div>',
+			'</body></html>'].join(""); // join without newlines
+		store.importTiddlyWiki(html);
+		strictEqual($(storeArea).attr("id"), "storeArea", "make sure a storeArea was found");
+		strictEqual($(".tiddler", storeArea).length, 1, "there is one element with class tiddler within the element");
+	});
+
+	test("importTiddlyWiki empty store (upper case tags)", function() {
+		var html = ['<HTML><HEAD></HEAD><BODY>','<DIV ID="storeArea"><DIV class="tiddler">hello</DIV></DIV>',
+			'</BODY></HTML>'].join("\n"); // join with new lines in lower case
+		store.importTiddlyWiki(html);
+		strictEqual($(storeArea).attr("id"), "storeArea", "make sure a storeArea was found");
+		strictEqual($(".tiddler", storeArea).length, 1, "there is one element with class tiddler within the element");
+	});
+
+	test("importTiddlyWiki empty store (storeArea in single quotes)", function() {
+		var html = ["<HTML><HEAD></HEAD><BODY>","<DIV ID='storeArea'>",'<DIV class="tiddler">hello</DIV></DIV>',
+			'</BODY></HTML>'].join("\n"); // join with new lines in lower case
+		store.importTiddlyWiki(html);
+		strictEqual($(storeArea).attr("id"), "storeArea", "make sure a storeArea was found");
+		strictEqual($(".tiddler", storeArea).length, 1, "there is one element with class tiddler within the element");
+	});
+
+	test("importTiddlyWiki empty store (storeArea that is not a DIV)", function() {
+		var html = ["<HTML><HEAD></HEAD><BODY>","<NOSCRIPT ID='storeArea'>",'<DIV class="tiddler">hello</DIV></NOSCRIPT>',
+			'</BODY></HTML>'].join("\n"); // join with new lines in lower case
+		store.importTiddlyWiki(html);
+		strictEqual($(storeArea).attr("id"), "storeArea", "make sure a storeArea was found");
+		strictEqual($(".tiddler", storeArea).length, 1, "there is one element with class tiddler within the element");
+	});
 });
