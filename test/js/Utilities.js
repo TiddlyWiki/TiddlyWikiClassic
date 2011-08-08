@@ -561,36 +561,5 @@ jQuery(document).ready(function() {
 
   });
 
-
-	test("addClass", function() {
-		expect(1);
-		var ele = makeTestNode();
-
-		addClass(ele,'testClass2');
-		ok($('#testElement').hasClass('testClass2'), "addClass() adds a css class to a given DOM element");
-
-		removeTestNode();
-	});
-
-
-	test("removeClass", function() {
-		expect(1);
-		var ele = makeTestNode();
-
-		removeClass(ele,'testClass');
-		ok(!$('#testElement').hasClass('testClass'), "removeClass() removes a css class from a given DOM element");
-
-		removeTestNode();
-	});
-
-
-	test("hasClass", function() {
-		expect(2);
-		var ele = makeTestNode();
-		ok(!hasClass(ele, 'nullClass'), "hasClass() returns false when looking for a class which is not present on an element");
-		ok(hasClass(ele, 'testClass'), "hasClass() returns true when looking for a class which is present on an element");
-		removeTestNode();
-	});
-
 });
 
