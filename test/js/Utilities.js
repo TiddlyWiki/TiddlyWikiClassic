@@ -232,6 +232,13 @@ jQuery(document).ready(function() {
 		same(actual,expected,message);
   });
 
+	test("Utilities: createTiddlyLink trailing whitespace", function() {
+		var place = $("<div />")[0]
+		var link = createTiddlyLink(place," testTiddler1 ");
+		strictEqual($(link).attr("tiddlylink"), "testTiddler1", "attribute has been set without leading or trailing whitespace");
+		strictEqual($(link).hasClass("tiddlyLinkExisting"), true,
+			"has matched testTiddler1 not a tiddler with leading and trailing whitespace")
+	});
 
 	test("Utilities: createTiddlyLink(place,title,includeText,className,isStatic,linkedFromTiddler,noToggle)", function() {
 
