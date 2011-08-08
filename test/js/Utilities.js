@@ -1,5 +1,11 @@
 jQuery(document).ready(function() {
 
+	function makeTestNode() {
+		return $("<div />")[0];
+	}
+
+	function removeTestNode() {}
+
 	module("Utilities");
 
 	test("Utilities: formatVersion", function() {
