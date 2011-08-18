@@ -20,7 +20,7 @@ h2,h3 {border-bottom:1px solid [[ColorPalette::TertiaryLight]];}
 .headerForeground {color:[[ColorPalette::Background]];}
 .headerForeground a {font-weight:normal; color:[[ColorPalette::PrimaryPale]];}
 
-.tabSelected{color:[[ColorPalette::PrimaryDark]];
+.tabSelected {color:[[ColorPalette::PrimaryDark]];
 	background:[[ColorPalette::TertiaryPale]];
 	border-left:1px solid [[ColorPalette::TertiaryLight]];
 	border-top:1px solid [[ColorPalette::TertiaryLight]];
