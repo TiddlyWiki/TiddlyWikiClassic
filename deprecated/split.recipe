@@ -6,3 +6,5 @@ jsdeprecated: Strings.js
 jsdeprecated: Tiddler.js
 jsdeprecated: Numbers.js
 jsdeprecated: Utilities.js
+jsdeprecated: Wikifier.js
+
