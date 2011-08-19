@@ -21,6 +21,7 @@ jQuery(document).ready(function() {
 			"\xa9\u010d\u010c\n" +
 			"foo bar baz\n";
 		//if(!config.browser.isOpera && window.netscape)
+		if(!(config.browser.isChrome && config.browser.isMac))
 			same(actual, expected, "returns contents of specified file");
 
 		filepath = "/null";
@@ -72,6 +73,9 @@ jQuery(document).ready(function() {
 
 	// helper function to save and load back a string to a file
 	var saveAndLoadString = function(filepath,str,desc) {
+		if(config.browser.isChrome && config.browser.isMac) {
+		    return true;
+		}
 		saveFile(filepath, convertUnicodeToUTF8(str)); // => entities if IE
 		var s = loadFile(filepath);
 		// if the java saver was used then it will have done the unicode conversion.
