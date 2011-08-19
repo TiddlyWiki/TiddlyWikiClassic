@@ -288,8 +288,12 @@ function javaSaveFile(filePath,content)
 function javaLoadFile(filePath)
 {
 	try {
-		if(document.applets["TiddlySaver"])
-			return String(document.applets["TiddlySaver"].loadFile(javaUrlToFilename(filePath),"UTF-8"));
+		if(document.applets["TiddlySaver"]) {
+			var ret = document.applets["TiddlySaver"].loadFile(javaUrlToFilename(filePath),"UTF-8");
+			if(!ret)
+				return null;
+			return String(ret);
+		}
 	} catch(ex) {
 	}
 	var content = [];
