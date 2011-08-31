@@ -244,7 +244,15 @@ config.macros.importTiddlers.onGetTiddlerList = function(context,wizard)
 {
 	var me = config.macros.importTiddlers;
 	if(context.status !== true) {
-		wizard.setButtons([{caption: me.cancelLabel, tooltip: me.cancelPrompt, onClick: me.onCancel}],context.statusText||me.errorGettingTiddlerList);
+		var error = context.statusText||me.errorGettingTiddlerList;
+		if(context.host.indexOf("file://") === 0) {
+			error = me.errorGettingTiddlerListFile;
+		} else {
+			error = context.xhr && context.xhr.status == 404 ? me.errorGettingTiddlerListHttp404 :
+				me.errorGettingTiddlerListHttp;
+		}
+		wizard.setButtons([{caption: me.cancelLabel, tooltip: me.cancelPrompt, onClick: me.onCancel}],"");
+		jQuery("span.status", wizard.footerEl).html(error); // so error message can be html
 		return;
 	}
 	// Extract data for the listview
