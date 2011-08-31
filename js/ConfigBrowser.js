@@ -8,6 +8,7 @@ config.browser = {
 	isBadSafari: !((new RegExp("[\u0150\u0170]","g")).test("\u0150")),
 	firefoxDate: /gecko\/(\d{8})/i.exec(config.userAgent), // config.browser.firefoxDate[1], if it exists, will be Firefox release date as "YYYYMMDD"
 	isOpera: config.userAgent.indexOf("opera") != -1,
+	isChrome: config.userAgent.indexOf('chrome') > -1,
 	isLinux: config.userAgent.indexOf("linux") != -1,
 	isUnix: config.userAgent.indexOf("x11") != -1,
 	isMac: config.userAgent.indexOf("mac") != -1,

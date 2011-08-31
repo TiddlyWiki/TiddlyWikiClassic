@@ -199,6 +199,22 @@
 			"3 tiddlers link to testTag");
 	});
 
+	//<<tagging sortBy:title>>;
+	test("tagging macro (sortby parameter)", function() {
+		var place = $("<div />")[0];
+		var paramString = "sortBy:-title"
+		var tiddler = new Tiddler("testTag");
+		config.macros.tagging.handler(place, null, [], null, paramString, tiddler);
+
+		strictEqual($("ul", place).length, 1, "a list was created in the container");
+		strictEqual($("ul li a.tiddlyLink", place).length, 3,
+			"3 tiddlers link to testTag");
+		strictEqual($($("li a", place)[0]).attr("tiddlyLink"), "testTiddler3",
+			"testing testTiddler3 is at the top of the list");
+		strictEqual($($("li a", place)[2]).attr("tiddlyLink"), "testTiddler1",
+			"testing testTiddler1 is at the bottom of the list");
+	});
+
 	test("tagging macro (tagging something title parameter passed)", function() {
 		// note this test is identical to above but uses a parameter rather than the current tiddler.
 		var place = $("<div />")[0];

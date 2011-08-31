@@ -1,5 +1,11 @@
 jQuery(document).ready(function() {
 
+	function makeTestNode() {
+		return $("<div />")[0];
+	}
+
+	function removeTestNode() {}
+
 	module("Utilities");
 
 	test("Utilities: formatVersion", function() {
@@ -226,6 +232,13 @@ jQuery(document).ready(function() {
 		same(actual,expected,message);
   });
 
+	test("Utilities: createTiddlyLink trailing whitespace", function() {
+		var place = $("<div />")[0]
+		var link = createTiddlyLink(place," testTiddler1 ");
+		strictEqual($(link).attr("tiddlylink"), "testTiddler1", "attribute has been set without leading or trailing whitespace");
+		strictEqual($(link).hasClass("tiddlyLinkExisting"), true,
+			"has matched testTiddler1 not a tiddler with leading and trailing whitespace")
+	});
 
 	test("Utilities: createTiddlyLink(place,title,includeText,className,isStatic,linkedFromTiddler,noToggle)", function() {
 
@@ -554,37 +567,6 @@ jQuery(document).ready(function() {
 	same(actual,expected,message);
 
   });
-
-
-	test("addClass", function() {
-		expect(1);
-		var ele = makeTestNode();
-
-		addClass(ele,'testClass2');
-		ok($('#testElement').hasClass('testClass2'), "addClass() adds a css class to a given DOM element");
-
-		removeTestNode();
-	});
-
-
-	test("removeClass", function() {
-		expect(1);
-		var ele = makeTestNode();
-
-		removeClass(ele,'testClass');
-		ok(!$('#testElement').hasClass('testClass'), "removeClass() removes a css class from a given DOM element");
-
-		removeTestNode();
-	});
-
-
-	test("hasClass", function() {
-		expect(2);
-		var ele = makeTestNode();
-		ok(!hasClass(ele, 'nullClass'), "hasClass() returns false when looking for a class which is not present on an element");
-		ok(hasClass(ele, 'testClass'), "hasClass() returns true when looking for a class which is present on an element");
-		removeTestNode();
-	});
 
 });
 
