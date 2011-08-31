@@ -81,6 +81,7 @@ FileAdaptor.prototype.getTiddlerList = function(context,userParams,callback,filt
 			FileAdaptor.loadTiddlyWikiSuccess(context,jqXHR);
 		},
 		error:function(jqXHR,textStatus,errorThrown) {
+			context.xhr = jqXHR;
 			FileAdaptor.loadTiddlyWikiError(context,jqXHR);
 		}
 	};
