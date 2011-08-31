@@ -289,7 +289,8 @@ config.macros.tagging.handler = function(place,macroName,params,wikifier,paramSt
 		title = tiddler.title;
 	var sep = getParam(params,"sep"," ");
 	ul.setAttribute("title",this.tooltip.format([title]));
-	var tagged = store.getTaggedTiddlers(title);
+	var sortby = getParam(params,"sortBy",false);
+	var tagged = store.getTaggedTiddlers(title,sortby);
 	var prompt = tagged.length == 0 ? this.labelNotTag : this.label;
 	createTiddlyElement(ul,"li",null,"listTitle",prompt.format([title,tagged.length]));
 	var t;
