@@ -99,15 +99,19 @@ config.macros.importTiddlers.onFeedChange = function(e)
 config.macros.importTiddlers.onBrowseChange = function(e)
 {
 	var wizard = new Wizard(this);
+	var file = this.value;
 	if(this.files && this.files[0]) {
+		file = this.files[0].fileName;
 		try {
-			netscape.security.PrivilegeManager.enablePrivilege("UniversalFileRead");
+			if(typeof(netscape) !== "undefined") {
+				netscape.security.PrivilegeManager.enablePrivilege("UniversalFileRead");
+			}
 		} catch (ex) {
 			showException(ex);
 		}
 	}
 	var fileInput = wizard.getElement("txtPath");
-	fileInput.value = config.macros.importTiddlers.getURLFromLocalPath(this.value);
+	fileInput.value = config.macros.importTiddlers.getURLFromLocalPath(file);
 	var serverType = wizard.getElement("selTypes");
 	serverType.value = "file";
 	return true;
