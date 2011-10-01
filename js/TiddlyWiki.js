@@ -322,8 +322,7 @@ TiddlyWiki.prototype.addTiddlerFields = function(title,fields)
 //# created and modified arguments are Date objects,
 //# tags argument is an array of strings
 //#
-//# fields should retain existing tiddler's extended fields and use
-//# config.defaultCustomFields as fallback
+//# fields should retain existing tiddler's extended fields
 //#
 //# NB: Does not trigger autoSaveChanges.
 TiddlyWiki.prototype.saveTiddler = function(title,newTitle,newBody,modifier,modified,tags,fields,clearChangeCount,created,creator)
@@ -343,7 +342,7 @@ TiddlyWiki.prototype.saveTiddler = function(title,newTitle,newBody,modifier,modi
 			created = created || modified;
 			tiddler = new Tiddler();
 		}
-		fields = merge({},fields);
+		fields = merge({},config.defaultCustomFields,fields);
 		tiddler.set(newTitle,newBody,modifier,modified,tags,created,fields,creator);
 	}
 	this.addTiddler(tiddler);
