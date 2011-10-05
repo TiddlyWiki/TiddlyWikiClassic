@@ -343,7 +343,7 @@ TiddlyWiki.prototype.saveTiddler = function(title,newTitle,newBody,modifier,modi
 			created = created || modified;
 			tiddler = new Tiddler();
 		}
-		fields = merge({},fields);
+		fields = merge(merge({},fields),config.defaultCustomFields,true);
 		tiddler.set(newTitle,newBody,modifier,modified,tags,created,fields,creator);
 	}
 	this.addTiddler(tiddler);

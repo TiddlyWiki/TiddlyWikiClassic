@@ -23,6 +23,35 @@ jQuery(document).ready(function(){
 		}
 	});
 
+	test("saveTiddler() fields", function() {
+
+		var store = new TiddlyWiki();
+
+		var title = "tiddler";
+		var text = "text";
+		var fields = {a:"aa", b:"bb"};
+		config.defaultCustomFields = {};
+		var tiddler = store.saveTiddler(title, title, text, null, null, null, fields);
+		tiddler.clearChangeCount();
+		actual = tiddler.fields;
+		expected = {a:"aa", b:"bb"};
+		same(actual,expected,'fields should be unchanged when defaultCustomFields empty');
+
+		config.defaultCustomFields = {dcf1:"d1", dcf2:"d2"};
+		tiddler = store.saveTiddler(title, title, text, null, null, null, fields);
+		tiddler.clearChangeCount();
+		actual = tiddler.fields;
+		expected = {a:"aa", b:"bb", dcf1:"d1", dcf2:"d2"};
+		same(actual,expected,'fields should be merged with defaultCustomFields');
+
+		config.defaultCustomFields = {a:"xx", b:"yy", dcf1:"d1", dcf2:"d2"};
+		tiddler = store.saveTiddler(title, title, text, null, null, null, fields);
+		tiddler.clearChangeCount();
+		actual = tiddler.fields;
+		expected = {a:"aa", b:"bb", dcf1:"d1", dcf2:"d2"};
+		same(actual,expected,'defaultCustomFields should not overwrite fields');
+	});
+
 	test("Slices: calcAllSlices()", function() {
 
 		var store = new TiddlyWiki();
