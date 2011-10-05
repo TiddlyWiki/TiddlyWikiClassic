@@ -2,9 +2,12 @@
 //-- TiddlyWiki instance contains TiddlerS
 //--
 
-function TiddlyWiki()
+function TiddlyWiki(params)
 {
 	var tiddlers = {}; // Hashmap by name of tiddlers
+	if(params && params.config) {
+		this.config = config;
+	}
 	this.tiddlersUpdated = false;
 	this.namedNotifications = []; // Array of {name:,notify:} of notification functions
 	this.notificationLevel = 0;

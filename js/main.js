@@ -34,7 +34,7 @@ function main()
 	params = getParameters();
 	if(params)
 		params = params.parseParams("open",null,false);
-	store = new TiddlyWiki();
+	store = new TiddlyWiki({config:config});
 	invokeParamifier(params,"oninit");
 	story = new Story("tiddlerDisplay","tiddler");
 	addEvent(document,"click",Popup.onDocumentClick);
