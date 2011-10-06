@@ -325,8 +325,7 @@ TiddlyWiki.prototype.addTiddlerFields = function(title,fields)
 //# created and modified arguments are Date objects,
 //# tags argument is an array of strings
 //#
-//# fields should retain existing tiddler's extended fields and use
-//# config.defaultCustomFields as fallback
+//# fields should retain existing tiddler's extended fields
 //#
 //# NB: Does not trigger autoSaveChanges.
 TiddlyWiki.prototype.saveTiddler = function(title,newTitle,newBody,modifier,modified,tags,fields,clearChangeCount,created,creator)
