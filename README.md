@@ -21,7 +21,9 @@ TiddlyWiki code and issues used to be stored at http://svn.tiddlywiki.org and ht
 Installation
 ------------
 
-Install the [git](http://git-scm.com/download) version control system.
+Install the [git](http://git-scm.com/download) version control system, if you do not already have it.
+
+Install the [ruby](http://www.ruby-lang.org/en/downloads/) programming language, if you do not already have it. Ruby is required for some of the TiddlyWiki tools (cook and ginsu).
 
 TiddlyWiki has 4 important parallel repositories:
 
