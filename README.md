@@ -9,9 +9,7 @@ Description
 
 This is the master repository for the core of TiddlyWiki. It is for the development and maintenance of TiddlyWiki.
 
-If you simply wish to use TiddlyWiki, it is easiest to download it from:
-
-    http://tiddlywiki.com/
+If you simply wish to use TiddlyWiki, it is easiest to download it from: http://tiddlywiki.com/
 
 This site also gives details about TiddlyWiki.
 
