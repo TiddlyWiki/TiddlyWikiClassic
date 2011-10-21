@@ -21,4 +21,9 @@ DEST=$PWD
 RECIPE=$1 && shift
 OUTPUT=$1 && shift
 
-ruby -Ku -C $COOKER_TRUNK cook.rb $RECIPE -d$DEST "$@"
+if [ -z "$OUTPUT" ]
+then
+	ruby -Ku -C $COOKER_TRUNK cook.rb $RECIPE -d $DEST "$@"
+else
+	ruby -Ku -C $COOKER_TRUNK cook.rb $RECIPE -o $OUTPUT -d $DEST "$@"
+fi
