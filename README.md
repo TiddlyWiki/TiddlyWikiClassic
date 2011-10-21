@@ -52,6 +52,8 @@ There is a `Makefile` for managing testing. To build and execute the TiddlyWiki 
 
     make test
 
+To set the version number of the alpha build output files edit the file `ALPHA`. This should normally be set to the same version as in the TiddlyWiki Version.js file.
+
 To build an alpha version of TiddlyWiki incorporating any changes you have made, run the `bldalpha` script by typing:
 
     ./bldalpha
