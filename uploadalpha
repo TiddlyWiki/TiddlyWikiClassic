@@ -11,6 +11,7 @@ HOST="$USERNAME@tiddlywiki.com"
 DIR="/var/www/www.tiddlywiki.com/htdocs"
 OWNER="www-data:www-data"
 PERM="664"
+TW_DIR="cooked"
 
 # setPermissions()
 # Usage:
@@ -24,7 +25,8 @@ function setPermissions() {
 echo
 echo "uploading files"
 echo
-FILES="tiddlywiki.$RELEASE.html tiddlywiki_compressed.$RELEASE.html tiddlywiki_externaljs.$RELEASE.html tiddlywiki_externaljs_tiddlyspace.$RELEASE.html twcore.$RELEASE.js jquery/jquery.js jquery/plugins/jQuery.twStylesheet.js"
+cd 
+FILES="$TW_DIR/tiddlywiki.$RELEASE.html $TW_DIR/tiddlywiki_compressed.$RELEASE.html $TW_DIR/tiddlywiki_externaljs.$RELEASE.html $TW_DIR/tiddlywiki_externaljs_tiddlyspace.$RELEASE.html $TW_DIR/twcore.$RELEASE.js jquery/jquery.js jquery/plugins/jQuery.twStylesheet.js"
 scp $FILES "$HOST:./tmp/"
 
 # transfer files to their respective folders

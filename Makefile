@@ -6,17 +6,18 @@
 #
 
 clean:
-	rm *.html || true
-	rm *.jar || true
-	rm *.js || true
-
+	rm cooked/*.html || true
+	rm cooked/*.jar || true
+	rm cooked/*.js || true
+	rmdir cooked || true
 
 test: clean tests.html
 	ln -sf test/recipes/sample.txt .
-	open tests.html
+	open cooked/tests.html
 
 tests.html:
-	cook $(PWD)/test/recipes/tests.html.recipe tests.html
+	mkdir -p cooked
+	cook $(PWD)/test/recipes/tests.html.recipe cooked/tests.html
 
 alpha:
 	./bldalpha

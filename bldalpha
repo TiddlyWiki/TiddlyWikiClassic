@@ -7,12 +7,15 @@
 # See 'cook' in this directory for a sample.
 
 DEFAULT_RELEASE=`cat ALPHA`
+OUTPUT_DIR='cooked'
+mkdir -p $OUTPUT_DIR
 RELEASE=${1:-$DEFAULT_RELEASE}
 RECIPE=$PWD/tiddlywiki.html.recipe
 RECIPE_EXT_JS=$PWD/tiddlywiki_externaljs.html.recipe
 RECIPE_EXT_JS_TS=$PWD/tiddlywiki_externaljs_tiddlyspace_alpha.html.recipe
-cook $RECIPE tiddlywiki.$RELEASE.html
-cook $RECIPE tiddlywiki_compressed.$RELEASE.html -cr -Cr -Dr
-cook $RECIPE twcore.$RELEASE.js -j
-cook $RECIPE_EXT_JS tiddlywiki_externaljs.$RELEASE.html
-cook $RECIPE_EXT_JS_TS tiddlywiki_externaljs_tiddlyspace.$RELEASE.html
+cook $RECIPE $OUTPUT_DIR/tiddlywiki.$RELEASE.html
+cp java/TiddlySaver.jar $OUTPUT_DIR
+cook $RECIPE $OUTPUT_DIR/tiddlywiki_compressed.$RELEASE.html -cr -Cr -Dr
+cook $RECIPE $OUTPUT_DIR/twcore.$RELEASE.js -j
+cook $RECIPE_EXT_JS $OUTPUT_DIR/tiddlywiki_externaljs.$RELEASE.html
+cook $RECIPE_EXT_JS_TS $OUTPUT_DIR/tiddlywiki_externaljs_tiddlyspace.$RELEASE.html
