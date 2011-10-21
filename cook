@@ -17,13 +17,5 @@ if [ -z "$TW_TRUNKDIR" ]
 then
     export TW_TRUNKDIR=$DEFAULT_TRUNK
 fi
-DEST=$PWD
 RECIPE=$1 && shift
-OUTPUT=$1 && shift
-
-if [ -z "$OUTPUT" ]
-then
-	ruby -Ku -C $COOKER_TRUNK cook.rb $RECIPE -d $DEST "$@"
-else
-	ruby -Ku -C $COOKER_TRUNK cook.rb $RECIPE -o $OUTPUT -d $DEST "$@"
-fi
+ruby -Ku -C $COOKER_TRUNK cook.rb $RECIPE "$@"

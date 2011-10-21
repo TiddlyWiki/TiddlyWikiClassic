@@ -17,7 +17,7 @@ test: clean tests.html
 
 tests.html:
 	mkdir -p cooked
-	cook $(PWD)/test/recipes/tests.html.recipe cooked/tests.html
+	cook $(PWD)/test/recipes/tests.html.recipe -d $(PWD)/cooked -o tests.html
 
 alpha:
 	./bldalpha
