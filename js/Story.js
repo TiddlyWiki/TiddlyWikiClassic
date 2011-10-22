@@ -46,7 +46,7 @@ Story.prototype.forEachTiddler = function(fn)
 	while(e) {
 		var n = e.nextSibling;
 		var title = e.getAttribute("tiddler");
-		fn.call(this,title,e);
+		if (title) fn.call(this,title,e);
 		e = n;
 	}
 };
