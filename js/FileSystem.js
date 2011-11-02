@@ -9,12 +9,6 @@
 //# http://trac.tiddlywiki.org/ticket/99
 //#
 //#
-//# UTF-8 encoding rules:
-//# 0x0000 - 0x007F:  0xxxxxxx
-//# 0x0080 - 0x07FF:  110xxxxx 10xxxxxx
-//# 0x0800 - 0xFFFF:  1110xxxx 10xxxxxx 10xxxxxx
-// see also FileSystemUtils.js
-
 
 function copyFile(dest,source)
 {
