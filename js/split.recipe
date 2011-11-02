@@ -30,6 +30,7 @@ js: Options.js
 js: Saving.js
 js: SavingRSS.js
 js: FileSystem.js
+js: FileSystemUtils.js
 js: AdaptorBase.js
 js: FileAdaptor.js
 js: Http.js
