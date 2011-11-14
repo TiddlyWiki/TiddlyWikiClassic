@@ -2,4 +2,4 @@ template: tiddlywiki.template.html
 copyright: copyright.txt
 style: style.txt
 noscript: noscript.txt
-postscript: tiddlysaver.txt
+jsext: tiddlysaver.txt
