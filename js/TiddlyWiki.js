@@ -356,8 +356,7 @@ TiddlyWiki.prototype.saveTiddler = function(title,newTitle,newBody,modifier,modi
 	if(title != newTitle)
 		this.notify(title,true);
 	this.notify(newTitle,true);
-	if(window.location.protocol == "file:")
-		this.setDirty(true);
+	this.setDirty(true);
 	return tiddler;
 };
 

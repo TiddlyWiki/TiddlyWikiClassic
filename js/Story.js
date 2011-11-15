@@ -174,7 +174,10 @@ Story.prototype.loadMissingTiddler = function(title,fields,callback)
 				t.created = new Date();
 			if(!t.modified)
 				t.modified = t.created;
+			var dirty = store.isDirty();
 			context.tiddler = store.saveTiddler(t.title,t.title,t.text,t.modifier,t.modified,t.tags,t.fields,true,t.created,t.creator);
+			if(window.location.protocol != "file:")
+				store.setDirty(dirty);
 			autoSaveChanges();
 		} else {
 			story.refreshTiddler(context.title,null,true);
