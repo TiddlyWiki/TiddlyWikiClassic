@@ -1,5 +1,6 @@
-<div title="StyleSheetLocale">
-<pre>/***
+title: StyleSheetLocale
+
+/***
 StyleSheet for use when a translation requires any css style changes.
 This StyleSheet can be used directly by languages such as Chinese, Japanese and Korean which need larger font sizes.
 ***/
@@ -10,5 +11,4 @@ body {font-size:0.8em;}
 #sidebarOptions .sliderPanel {font-size:0.95em;}
 .subtitle {font-size:0.8em;}
 .viewer table.listView {font-size:0.95em;}
-/*}}}*/</pre>
-</div>
+/*}}}*/

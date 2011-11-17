@@ -1,5 +1,6 @@
-<div title="ColorPalette">
-<pre>Background: #fff
+title: ColorPalette
+
+Background: #fff
 Foreground: #000
 PrimaryPale: #8cf
 PrimaryLight: #18f
@@ -14,5 +15,3 @@ TertiaryLight: #ccc
 TertiaryMid: #999
 TertiaryDark: #666
 Error: #f88
-</pre>
-</div>

@@ -1,5 +1,6 @@
-<div title="StyleSheetColors">
-<pre>/*{{{*/
+title: StyleSheetColors
+
+/*{{{*/
 body {background:[[ColorPalette::Background]]; color:[[ColorPalette::Foreground]];}
 
 a {color:[[ColorPalette::PrimaryMid]];}
@@ -132,5 +133,4 @@ h2,h3 {border-bottom:1px solid [[ColorPalette::TertiaryLight]];}
 .backstagePanelFooter .button {border:none; color:[[ColorPalette::Background]];}
 .backstagePanelFooter .button:hover {color:[[ColorPalette::Foreground]];}
 #backstageCloak {background:[[ColorPalette::Foreground]]; opacity:0.6; filter:alpha(opacity=60);}
-/*}}}*/</pre>
-</div>
+/*}}}*/

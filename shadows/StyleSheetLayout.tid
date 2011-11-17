@@ -1,5 +1,6 @@
-<div title="StyleSheetLayout">
-<pre>/*{{{*/
+title: StyleSheetLayout
+
+/*{{{*/
 * html .tiddler {height:1%;}
 
 body {font-size:.75em; font-family:arial,helvetica; margin:0; padding:0;}
@@ -168,5 +169,3 @@ table.listView th, table.listView td, table.listView tr {padding:0 3px 0 3px;}
 .whenBackstage {display:none;}
 .backstageVisible .whenBackstage {display:block;}
 /*}}}*/
-</pre>
-</div>

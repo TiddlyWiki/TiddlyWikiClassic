@@ -1,5 +1,6 @@
-<div title="ViewTemplate">
-<pre><!--{{{-->
+title: ViewTemplate
+
+<!--{{{-->
 <div class='toolbar' macro='toolbar [[ToolbarCommands::ViewToolbar]]'></div>
 <div class='title' macro='view title'></div>
 <div class='subtitle'><span macro='view modifier link'></span>, <span macro='view modified date'></span> (<span macro='message views.wikified.createdPrompt'></span> <span macro='view created date'></span>)</div>
@@ -7,5 +8,4 @@
 <div class='tagged' macro='tags'></div>
 <div class='viewer' macro='view text wikified'></div>
 <div class='tagClear'></div>
-<!--}}}--></pre>
-</div>
+<!--}}}-->

@@ -1,5 +1,6 @@
-<div title="PageTemplate">
-<pre><!--{{{-->
+title: PageTemplate
+
+<!--{{{-->
 <div class='header' macro='gradient vert [[ColorPalette::PrimaryLight]] [[ColorPalette::PrimaryMid]]'>
 <div class='headerShadow'>
 <span class='siteTitle' refresh='content' tiddler='SiteTitle'></span>&nbsp;
@@ -19,5 +20,4 @@
 <div id='messageArea'></div>
 <div id='tiddlerDisplay'></div>
 </div>
-<!--}}}--></pre>
-</div>
+<!--}}}-->
