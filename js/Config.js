@@ -89,7 +89,7 @@ config.views = {
 };
 
 // Backstage tasks
-config.backstageTasks = ["save","sync","importTask","tweak","upgrade","plugins"];
+config.backstageTasks = ["save","importTask","tweak","upgrade","plugins"];
 
 // Extensions
 config.extensions = {};
@@ -135,7 +135,6 @@ config.macros = {
 		source: "http://tiddlywiki-releases.tiddlyspace.com/upgrade",
 		backupExtension: "pre.core.upgrade"
 	},
-	sync: {},
 	annotations: {}
 };
 
@@ -150,7 +149,6 @@ config.commands = {
 	permalink: {},
 	references: {type: "popup"},
 	jump: {type: "popup"},
-	syncing: {type: "popup"},
 	fields: {type: "popup"}
 };
 
