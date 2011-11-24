@@ -4,7 +4,7 @@
 |Version|1.0.0|
 |~CoreVersion|2.6.6|
 |Type|plugin|
-|Description|formatted dates plus popup menu with 'journal' link, changes and (optional) reminders|
+|Description|Synchronise changes with other TiddlyWiki files and servers|
 !!!!!Code
 ***/
 //{{{
