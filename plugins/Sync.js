@@ -1,6 +1,6 @@
 /***
 |Name|SyncPlugin|
-|Source|https://github.com/TiddlyWiki/tiddlywiki/blob/master/plugins/Sync.js
+|Source|https://github.com/TiddlyWiki/tiddlywiki/blob/master/plugins/Sync.js|
 |Version|1.0.0|
 |~CoreVersion|2.6.6|
 |Type|plugin|
