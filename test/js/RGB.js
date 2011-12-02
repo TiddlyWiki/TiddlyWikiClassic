@@ -14,12 +14,10 @@ jQuery(document).ready(function(){
 		ok(actual==expected,'#ff0000 is the same as #f00');
 
 		actual = new RGB("#123").toString();
-		console.log("actual",actual);
 		expected = "#112233";
 		ok(actual==expected,'#112233 is the same as #123');
 
 		actual = new RGB("#abc").toString();
-		console.log("actual",actual);
 		expected = "#aabbcc";
 		ok(actual==expected,'#aabbcc is the same as #abc');
 
