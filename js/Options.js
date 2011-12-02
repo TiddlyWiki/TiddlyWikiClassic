@@ -131,12 +131,7 @@ function commitSystemSettings(storeWasDirty)
 	}
 	systemSettingSave = window.setTimeout(function() {
 		var tiddler = store.getTiddler('SystemSettings');
-		if(storeWasDirty == false && story.areAnyDirty() == false) {
-			//# nothing has changed except the options, so we can force a save
-			saveChanges(null,[tiddler]);
-		} else {
-			autoSaveChanges(null,[tiddler]);
-		}
+		autoSaveChanges(null,[tiddler]);
 	}, 1000);
 }
 
