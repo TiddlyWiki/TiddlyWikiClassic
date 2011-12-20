@@ -12,7 +12,7 @@ clean:
 	rmdir cooked || true
 
 test: clean tests.html
-	ln -sf test/recipes/sample.txt .
+	ln -sf $(PWD)/test/recipes/sample.txt cooked/sample.txt
 	open cooked/tests.html
 
 tests.html:

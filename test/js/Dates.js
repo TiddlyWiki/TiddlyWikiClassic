@@ -405,7 +405,7 @@ jQuery(document).ready(function(){
 		expected = "3 03 PM pm PM pm";
 		same(actual,expected,'Date formatting 12-hour (PM)');
 		actual = Date.convertFromYYYYMMDDHHMM("200812312348").toString();
-		expected = new Date(2008,11,31,23,48,0,0).toString();
+		expected = new Date(Date.UTC(2008,11,31,23,48,0,0)).toString();
 		same(actual,expected,'Date convertFromYYYYMMDDHHMM');
 	});
 
