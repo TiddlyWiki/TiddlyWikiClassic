@@ -39,6 +39,7 @@ public class TiddlySaver extends java.applet.Applet {
         }
 	  });
   }
+
   public int saveFile(final String filename, final String charset, final String data) {
     return ((Integer)AccessController.doPrivileged(new PrivilegedAction() {
       public Object run() {		
@@ -68,4 +69,34 @@ public class TiddlySaver extends java.applet.Applet {
       }
     })).intValue();
   }
+
+  public boolean exists(final String filename) {
+      try {
+          Boolean b = (Boolean) AccessController.doPrivileged(new PrivilegedAction() {
+              public Object run() {
+                  File f = new File(filename);
+                  return Boolean.valueOf(f.exists());
+              }
+          });
+          return b.booleanValue();
+      } catch(Exception e) {
+          e.printStackTrace();
+          return false;
+      }
+  }
+
+  public double modificationTime(final String filename) {
+      try {
+          return ((Double) AccessController.doPrivileged(new PrivilegedAction() {
+              public Object run() {
+                  File f = new File(filename);
+                  return new Double(f.lastModified());
+              }
+          })).doubleValue();
+      } catch(Exception e) {
+          e.printStackTrace();
+          return 0.0;
+      }
+  }
+
 }
