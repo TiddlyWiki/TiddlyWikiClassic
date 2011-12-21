@@ -1,7 +1,7 @@
 /*global story, jQuery, document, module, test, same strictEqual store */
 (function ($) {
        
-        var dummyDate = new Date(),
+        var dummyDate = new Date()
         dummyDate.setUTCHours(9)
         dummyDate.setUTCMinutes(40)
         var local9h = dummyDate.formatString("0hh")
