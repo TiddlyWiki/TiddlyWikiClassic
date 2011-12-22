@@ -59,6 +59,16 @@
         <available file="${sign.keystore.file}" type="file" property="store.keystore.exists" />
     </target>
 
+
+    <!--
+    
+if you do use such a self-signed key, here is how you get it out:
+
+keytool -export -alias NameOfSigningKey -keystore YourKeyStore.x -storepass ...... -file YourCertFille.cert
+keytool -import -alias NameOfSigningKey -file YourCertFIle.cert
+
+
+    -->
     <target name="generate-keystore" depends="check-keystore" unless="store.keystore.exists">
         <echo>Keystore ${store.keystore.file} does not exist, creating self-signed certificate</echo>
         <genkey

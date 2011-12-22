@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.security.PrivilegedActionException;
@@ -14,52 +16,62 @@ import java.security.PrivilegedExceptionAction;
 
 /**
  * 
- * TiddlySaver Applet
- * 
- * Debugging this is a real joy, especially getting at the text of exceptions
- * that are written/logged/whatever. So we don't do anything with exceptions but
- * pass them to the Javascript.  We are more flexible there.
- * 
- * This means all errors are communicated as exceptions, otherwise 
- * the javascript code has to handle exceptions and check for error return
- * values.
+ * TiddlySaver Applet.
  *
- * The one exception is saveFile.  It also returns 1 on success, so
- * old code will still work.
- * 
+ * If there is a method to communicate a meaningful java exception to javascript
+ * I have not found it yet.
+ *
+ * If we want to retain compatiblity to the old javascript code we are constrained
+ * by the old interface.  Old javascript code had to handle exceptions.
+ *
+ * It's ugly as hell but this is the current approach:
+ *
+ * * Signal an error by throwing an exception
+ * * JavaScript may query the text / stacktrace of the last exception.
+ * * As long as the browsers are not multithreading the javascript this should work
+ *
+ *
  */
 public class TiddlySaver extends java.applet.Applet {
+
+    private String lastErrorMsg;
+    private String lastErrorStackTrace;
 
     /**
      * Load a file and return the content.
      *
      * @param filename
      * @param charset
-     * @return
+     * @return always 1, on error an exception is thrown.  Old code expects it this way
      */
-    public String loadFile(final String filename, final String charset) throws PrivilegedActionException, IOException {
+    public String loadFile(final String filename, final String charset) {
         StringBuilder sb = new StringBuilder();
-        FileInputStream in = privInputStream(filename);
         try {
-            InputStreamReader reader =
-                    isNullOrEmpty(charset) ?
-                        new InputStreamReader(in) :
-                        new InputStreamReader(in, charset);
+            FileInputStream in = privInputStream(filename);
             try {
-                final char[] buff = new char[4096];
-                for(;;) {
-                    int len = reader.read(buff);
-                    if(len < 0)
-                        break;
-                    sb.append(buff, 0, len);
+                InputStreamReader reader =
+                        isNullOrEmpty(charset)
+                        ? new InputStreamReader(in)
+                        : new InputStreamReader(in, charset);
+                try {
+                    final char[] buff = new char[4096];
+                    for (;;) {
+                        int len = reader.read(buff);
+                        if (len < 0) {
+                            break;
+                        }
+                        sb.append(buff, 0, len);
+                    }
+                } finally {
+                    reader.close();
                 }
-                return sb.toString();
             } finally {
-                reader.close();
+                in.close();
             }
-        } finally {
-            in.close();
+        } catch (Exception e) {
+            logAndRethrow("loadFile", e);
         }
+        return sb.toString();
     }
 
 
@@ -74,19 +86,23 @@ public class TiddlySaver extends java.applet.Applet {
      * @param data
      * @return
      */
-    public int saveFile(final String filename, final String charset, final String data) throws PrivilegedActionException, IOException {
-        OutputStream out = privOutputStream(filename);
+    public int saveFile(final String filename, final String charset, final String data) {
         try {
-            OutputStreamWriter writer = isNullOrEmpty(charset) ?
-                new OutputStreamWriter(out) :
-                new OutputStreamWriter(out, charset);
+            OutputStream out = privOutputStream(filename);
             try {
-                writer.write(data);
+                OutputStreamWriter writer = isNullOrEmpty(charset) ?
+                    new OutputStreamWriter(out) :
+                    new OutputStreamWriter(out, charset);
+                try {
+                    writer.write(data);
+                } finally {
+                    writer.close();
+                }
             } finally {
-                writer.close();
+                out.close();
             }
-        } finally {
-            out.close();
+        } catch (Exception e) {
+            logAndRethrow("saveFile", e);
         }
         return 1;
     }
@@ -100,7 +116,13 @@ public class TiddlySaver extends java.applet.Applet {
      * @return
      */
     public boolean exists(final String filename) {
-        return privExists(filename);
+        boolean b = false;
+        try {
+            b = privExists(filename);
+        } catch(Exception e) {
+            logAndRethrow("exists", e);
+        }
+        return b;
     }
 
     /**
@@ -110,10 +132,15 @@ public class TiddlySaver extends java.applet.Applet {
      * @param filename
      * @return
      */
-    public long modificationTime(final String filename) throws IOException {
-        long millis = privModificationTime(filename);
-        if(millis == 0L) {
-            throw new IOException("Unable to get file modification time: " + filename);
+    public long modificationTime(final String filename) {
+        long millis = 0L;
+        try {
+            millis = privModificationTime(filename);
+            if(millis == 0L) {
+                throw new IOException("Unable to get file modification time: " + filename);
+            }
+        } catch(Exception e) {
+            logAndRethrow("modificationTime", e);
         }
         return millis;
     }
@@ -125,10 +152,15 @@ public class TiddlySaver extends java.applet.Applet {
      * @param dirname
      * @return
      */
-    public String[] listFiles(final String dirname) throws IOException {
-        String[] filenames = privList(dirname);
-        if(filenames == null) {
-            throw new IOException("Not a directory:" + dirname);
+    public String[] listFiles(final String dirname) {
+        String[] filenames = null;
+        try {
+            filenames = privList(dirname);
+            if(filenames == null) {
+                throw new IOException("Not a directory:" + dirname);
+            }
+        } catch (Exception e) {
+            logAndRethrow("listFiles", e);
         }
         return filenames;
     }
@@ -163,7 +195,7 @@ public class TiddlySaver extends java.applet.Applet {
         });
     }
 
-    public static boolean privExists(final String filename) {
+    private static boolean privExists(final String filename) {
         return AccessController.doPrivileged(new PrivilegedAction<Boolean>() {
             public Boolean run() {
                 File f = new File(filename);
@@ -172,7 +204,7 @@ public class TiddlySaver extends java.applet.Applet {
         });
     }
 
-    public static long privModificationTime (final String filename) {
+    private static long privModificationTime (final String filename) {
         return AccessController.doPrivileged(new PrivilegedAction<Long>() {
             public Long run() {
                 File f = new File(filename);
@@ -190,4 +222,39 @@ public class TiddlySaver extends java.applet.Applet {
         });
     }
 
+    /**
+     * Provide access to the last error message.
+     *
+     */
+    public String getLastErrorMsg() {
+        return lastErrorMsg;
+    }
+
+
+    /**
+     * Get access to last stack trace
+     * 
+     * @return
+     */
+    public String getLastErrorStackTrace() {
+        return lastErrorStackTrace;
+    }
+    
+    @SuppressWarnings("empty-statement")
+    private void logAndRethrow(String msg, Exception e) {
+        Throwable rootCause;
+        for(rootCause = e ; rootCause.getCause() != null; rootCause = rootCause.getCause()) ;
+        lastErrorMsg = rootCause.toString();
+
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw, true);
+        rootCause.printStackTrace(pw);
+        lastErrorStackTrace = sw.toString();
+
+        if(e instanceof RuntimeException) {
+            throw (RuntimeException) e;
+        } else {
+            throw new RuntimeException(e);
+        }
+    }
 }
