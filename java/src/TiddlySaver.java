@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.net.URL;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.security.PrivilegedActionException;
@@ -33,6 +34,14 @@ import java.security.PrivilegedExceptionAction;
  *
  */
 public class TiddlySaver extends java.applet.Applet {
+
+    /**
+     * Resolve filenames relative to directory where the applet resides.
+     *
+     * Otherwise current directory of plugin process is used, which may be
+     * anywhere.
+     */
+    private static final boolean filenamesRelativeToAppletDir = false;
 
     private String lastErrorMsg;
     private String lastErrorStackTrace;
@@ -170,18 +179,18 @@ public class TiddlySaver extends java.applet.Applet {
         return s == null || "".equals(s.trim());
     }
 
-    private static FileInputStream privInputStream(final String filename) throws PrivilegedActionException {
+    private FileInputStream privInputStream(final String filename) throws PrivilegedActionException {
         return AccessController.doPrivileged(new PrivilegedExceptionAction<FileInputStream>() {
             public FileInputStream run() throws Exception {
-                return new FileInputStream(filename);
+                return new FileInputStream(resolveFilename(filename));
             }
         });
     }
 
-    private static FileOutputStream privOutputStream(final String filename) throws PrivilegedActionException {
+    private FileOutputStream privOutputStream(final String filename) throws PrivilegedActionException {
         return AccessController.doPrivileged(new PrivilegedExceptionAction<FileOutputStream>() {
             public FileOutputStream run() throws Exception {
-                File f = new File(filename);
+                File f = resolveFilename(filename);
                 File dir = f.getParentFile();
                 if(dir != null) {
                     if(! dir.exists()) {
@@ -195,28 +204,28 @@ public class TiddlySaver extends java.applet.Applet {
         });
     }
 
-    private static boolean privExists(final String filename) {
+    private boolean privExists(final String filename) {
         return AccessController.doPrivileged(new PrivilegedAction<Boolean>() {
             public Boolean run() {
-                File f = new File(filename);
+                File f = resolveFilename(filename);
                 return f.exists();
             }
         });
     }
 
-    private static long privModificationTime (final String filename) {
+    private long privModificationTime (final String filename) {
         return AccessController.doPrivileged(new PrivilegedAction<Long>() {
             public Long run() {
-                File f = new File(filename);
+                File f = resolveFilename(filename);
                 return f.lastModified();
             }
         });
     }
 
-    private static String[] privList(final String dirname) {
+    private String[] privList(final String dirname) {
         return AccessController.doPrivileged(new PrivilegedAction<String[]>() {
             public String[] run() {
-                File f = new File(dirname);
+                File f = resolveFilename(dirname);
                 return f.list();
             }
         });
@@ -256,5 +265,30 @@ public class TiddlySaver extends java.applet.Applet {
         } else {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     *
+     * Resolve relative file names relative to the applet directory.
+     *
+     * While I am not sure this is correct behaviour, at least it is consistent.
+     * (Before, relative filenames were resolved relative to the current directory
+     * of the plugin process.  I.e. from wherever the browser was initially started.
+     *
+     * @param filename
+     * @return
+     */
+    public File resolveFilename(String filename) {
+        File f = new File(filename);
+        if(! filenamesRelativeToAppletDir)
+            return f;
+
+        if(f.isAbsolute()) {
+            return f;
+        }
+
+        URL dirUrl = getCodeBase();
+        // dirUrl.getPath() has a trailing slash!
+        return new File(dirUrl.getPath() + filename);
     }
 }

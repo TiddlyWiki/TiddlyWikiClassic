@@ -169,13 +169,23 @@ function javaUrlToFilename(url)
 	return i > 0 ? url.substring(i-1) : url;
 }
 
+/*
+ *
+ * in between when the applet has been started
+ * and the user has given permission to run the applet
+ * we get an applet object, but it doesn't have the methods
+ * we expect yet.
+ *
+ */
 var LOG_TIDDLYSAVER = true;
 function logTiddlySaverException(msg, ex) {
 	var applet = document.applets['TiddlySaver'];
 	console.log(msg + ": " + ex);
-	if (LOG_TIDDLYSAVER && applet) {
-		console.log(msg + ": " + applet.getLastErrorMsg());
-		console.log(msg + ": " + applet.getLastErrorStackTrace());
+    if (LOG_TIDDLYSAVER && applet) {
+        try {
+            console.log(msg + ": " + applet.getLastErrorMsg());
+            console.log(msg + ": " + applet.getLastErrorStackTrace());
+        } catch (ex) {}
 	}
 }
 
@@ -205,6 +215,7 @@ function javaLoadFile(filePath)
 	try {
 		if (applet && filePath) {
 			var ret = applet.loadFile(javaUrlToFilename(filePath),"UTF-8");
+			console.log("xxx: " + applet.resolveFilename(filePath));
 			if(!ret)
 				return null;
 			return String(ret);
