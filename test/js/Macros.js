@@ -1,5 +1,12 @@
 /*global story, jQuery, document, module, test, same strictEqual store */
 (function ($) {
+       
+        var dummyDate = new Date()
+        dummyDate.setUTCHours(9)
+        dummyDate.setUTCMinutes(40)
+        var local9h = dummyDate.formatString("0hh")
+            , local9h40 = dummyDate.formatString("0hh:0mm")
+
 	$(document).ready(function () {
 		module("Macros.js", {});
 	/*
@@ -167,7 +174,7 @@
 		var paramString = "'' 1 '0hh:0mm'";
 		var tiddler = store.getTiddler("testTiddler1");
 		config.macros.timeline.handler(place,"timeline",params, null, paramString, tiddler);
-		strictEqual($("ul .listTitle", place).text(), "09:40", "check dateFormat parameter has propagated");
+		strictEqual($("ul .listTitle", place).text(), local9h40, "check dateFormat parameter has propagated");
 		strictEqual($("ul .listLink", place).text(), "testTiddler3", "the timestamp is more recent so this appears at the top");
 	});
 
@@ -328,7 +335,7 @@
 		var paramString = "'' 1 groupTemplate:TestTemplates##Group template:TestTemplates##Item";
 		var tiddler = store.getTiddler("testTiddler1");
 		config.macros.timeline.handler(place, "timeline", params, null, paramString, tiddler);
-		strictEqual($("ul .listTitle", place).text(), "Modified at 09hrs on 01/12/2010",
+		strictEqual($("ul .listTitle", place).text(), "Modified at " + local9h + "hrs on 01/12/2010",
 			"check group template was applied");
 		strictEqual($("ul .listLink", place).text(), "hello world testTiddler3!", "the item template was applied");
 		strictEqual($("ul .listLink a", place).length, 0, "no link created");
@@ -341,7 +348,7 @@
 		var paramString = "'' 1 0hh:0mm groupTemplate:TestTemplates##Group template:TestTemplates##Item";
 		var tiddler = store.getTiddler("testTiddler1");
 		config.macros.timeline.handler(place, "timeline", params, null, paramString, tiddler);
-		strictEqual($("ul .listTitle", place).text(), "Modified at 09hrs on 01/12/2010", "check group template was applied and timestamp ignored");
+		strictEqual($("ul .listTitle", place).text(), "Modified at " + local9h + "hrs on 01/12/2010", "check group template was applied and timestamp ignored");
 	});
 
 	test("NEW: test filtering &lt;&lt;timeline filter:[tag[twoTag]]&gt;&gt; ",
