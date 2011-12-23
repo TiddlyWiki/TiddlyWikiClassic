@@ -215,7 +215,6 @@ function javaLoadFile(filePath)
 	try {
 		if (applet && filePath) {
 			var ret = applet.loadFile(javaUrlToFilename(filePath),"UTF-8");
-			console.log("xxx: " + applet.resolveFilename(filePath));
 			if(!ret)
 				return null;
 			return String(ret);
