@@ -5,6 +5,8 @@ for verifying see verify.readme file
 
 1 - HISTORY
 
+2011 12 23 - BidiX : Build and Sign TiddlySaver.jar using ant (build.xml)
+					 jar verified
 2010 03 06 - BidiX : Signing TiddlySaver.jar with a new Signing Certificate
 					The files were updated with the new process used for signing (sorry my Macbook was configured in French)
 					New signed TiddlySaver.jar was tested with Safari 4.0.4 on MacOS 10.6.2
@@ -13,7 +15,7 @@ for verifying see verify.readme file
 2008 03 27 - BidiX : Signing TiddlySaver.jar
 2008 03 26 - BidiX : obtaining UnaMesa Signing Certificate
 2008 03 17 - BidiX : Issuing a certificate request to Thawte with a BidiX CSR
-2003 03 12 - BidiX : Create UnaMesa.keystore with BidiX alias and Private key
+2008 03 12 - BidiX : Create UnaMesa.keystore with BidiX alias and Private key
 
 
 2 - UNAMESA.KEYSTORE CREATION
