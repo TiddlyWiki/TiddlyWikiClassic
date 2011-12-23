@@ -181,12 +181,35 @@ var LOG_TIDDLYSAVER = true;
 function logTiddlySaverException(msg, ex) {
 	var applet = document.applets['TiddlySaver'];
 	console.log(msg + ": " + ex);
-    if (LOG_TIDDLYSAVER && applet) {
-        try {
-            console.log(msg + ": " + applet.getLastErrorMsg());
-            console.log(msg + ": " + applet.getLastErrorStackTrace());
-        } catch (ex) {}
+	if (LOG_TIDDLYSAVER && applet) {
+		try {
+			console.log(msg + ": " + applet.getLastErrorMsg());
+			console.log(msg + ": " + applet.getLastErrorStackTrace());
+		} catch (ex) {}
 	}
+}
+
+function javaDebugInformation () {
+	var applet = document.applets['TiddlySaver'];
+	var what = [
+		["Java Version", applet.getJavaVersion],
+		["Last Exception", applet.getLastErrorMessage],
+		["Last Exception Stack Trace", applet.getLastErrorStackTrace],
+		["System Properties", applet.getSystemProperties] ];
+
+	function formatItem (description, method) {
+		console.log("description:", description);
+		console.log("method:", method);
+		try {
+			 result = String(method.call(applet));
+		} catch (ex) {
+			 result = String(ex)
+		}
+		return description + ": " + result
+	}
+
+	return jQuery.map(what, function (item) { return formatItem.apply(this, item) })
+			.join('\n\n')
 }
 
 function javaSaveFile(filePath,content)

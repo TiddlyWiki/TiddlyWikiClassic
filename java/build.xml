@@ -1,5 +1,6 @@
 <project name="TiddlySaver" default="sign">
 
+    <property file="build.properties.OVERRIDE" />
     <property file="build.properties" />
     <property file="build.properties.default" />
 

@@ -35,16 +35,9 @@ import java.security.PrivilegedExceptionAction;
  */
 public class TiddlySaver extends java.applet.Applet {
 
-    /**
-     * Resolve filenames relative to directory where the applet resides.
-     *
-     * Otherwise current directory of plugin process is used, which may be
-     * anywhere.
-     */
-    private static final boolean filenamesRelativeToAppletDir = false;
-
     private String lastErrorMsg;
     private String lastErrorStackTrace;
+    private boolean filenamesRelativeToAppletDir = false;
 
     /**
      * Load a file and return the content.
@@ -175,6 +168,39 @@ public class TiddlySaver extends java.applet.Applet {
     }
 
 
+    /**
+     *
+     * Get the Java version out to Javascript.
+     *
+     * @return
+     */
+    public String getJavaVersion () {
+        return AccessController.doPrivileged(new PrivilegedAction<String>() {
+            public String run() {
+                return System.getProperty("java.version");
+            }
+        });
+    }
+
+    /**
+     *
+     * Get Java System properties out to javascript
+     *
+     * @return
+     */
+    public String getSystemProperties () {
+        return AccessController.doPrivileged(new PrivilegedAction<String>() {
+            public String run() {
+                StringWriter sw = new StringWriter();
+                PrintWriter pw = new PrintWriter(sw, false);
+                System.getProperties().list(pw);
+                pw.flush();
+                return sw.toString();
+            }
+        });
+    }
+
+
     public static boolean isNullOrEmpty(String s) {
         return s == null || "".equals(s.trim());
     }
@@ -256,8 +282,9 @@ public class TiddlySaver extends java.applet.Applet {
         lastErrorMsg = rootCause.toString();
 
         StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw, true);
+        PrintWriter pw = new PrintWriter(sw, false);
         rootCause.printStackTrace(pw);
+        pw.flush();
         lastErrorStackTrace = sw.toString();
 
         if(e instanceof RuntimeException) {
@@ -291,4 +318,26 @@ public class TiddlySaver extends java.applet.Applet {
         // dirUrl.getPath() has a trailing slash!
         return new File(dirUrl.getPath() + filename);
     }
+
+
+    /**
+     * Does the applet try to resolve relative paths?
+     * 
+     * @return
+     */
+    public boolean isFilenamesRelativeToAppletDir() {
+        return filenamesRelativeToAppletDir;
+    }
+
+    /**
+     * Resolve filenames relative to directory where the applet resides.
+     *
+     * Otherwise current directory of plugin process is used, which may be
+     * anywhere.
+     */
+    public void setFilenamesRelativeToAppletDir(boolean filenamesRelativeToAppletDir) {
+        this.filenamesRelativeToAppletDir = filenamesRelativeToAppletDir;
+    }
+
+
 }
