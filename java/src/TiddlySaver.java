@@ -35,6 +35,9 @@ import java.security.PrivilegedExceptionAction;
  */
 public class TiddlySaver extends java.applet.Applet {
 
+    private static final boolean restrictToSameDirectory = true;
+    private static final boolean allowSystemProperties = false;
+
     private String lastErrorMsg;
     private String lastErrorStackTrace;
     private boolean filenamesRelativeToAppletDir = false;
@@ -189,6 +192,9 @@ public class TiddlySaver extends java.applet.Applet {
      * @return
      */
     public String getSystemProperties () {
+        if(! allowSystemProperties) {
+            return "";
+        }
         return AccessController.doPrivileged(new PrivilegedAction<String>() {
             public String run() {
                 StringWriter sw = new StringWriter();
@@ -306,6 +312,41 @@ public class TiddlySaver extends java.applet.Applet {
      * @return
      */
     public File resolveFilename(String filename) {
+        try {
+            File f = resolveRelativeFile(filename);
+            if(restrictToSameDirectory) {
+                URL dirUrl = getCodeBase();
+
+                File canonicalFile = privCanonicalFile(f);
+                File canonicalDir = privCanonicalFile(new File(dirUrl.getPath()));
+
+                String canonicalURL = canonicalFile.toURL().toString();
+                String canonicalDirURL = canonicalDir.toURL().toString();
+
+                if(! canonicalURL.startsWith(canonicalDirURL)) {
+                    throw new RuntimeException("File: " + canonicalURL + " is not in directory " + canonicalDirURL);
+                }
+            }
+
+            return f;
+        } catch(Exception e) {
+            if(e instanceof RuntimeException) {
+                throw (RuntimeException) e;
+            } else {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    private File privCanonicalFile(final File f) throws PrivilegedActionException {
+        return AccessController.doPrivileged(new PrivilegedExceptionAction<File> () {
+            public File run() throws Exception {
+                return f.getCanonicalFile();
+            }
+        });
+    }
+
+    private File resolveRelativeFile(String filename) {
         File f = new File(filename);
         if(! filenamesRelativeToAppletDir)
             return f;
