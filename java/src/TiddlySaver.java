@@ -311,7 +311,7 @@ public class TiddlySaver extends java.applet.Applet {
      * @param filename
      * @return
      */
-    public File resolveFilename(String filename) {
+    public final File resolveFilename(String filename) {
         try {
             File f = resolveRelativeFile(filename);
             if(restrictToSameDirectory) {
