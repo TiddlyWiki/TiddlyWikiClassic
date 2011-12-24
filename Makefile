@@ -13,7 +13,7 @@ clean:
 
 test: clean tests.html
 	ln -sf $(PWD)/test/recipes/sample.txt sample.txt
-	ln -sf $(PWD)/test/recipes/sample.txt cooked/sample.txt
+	cp $(PWD)/test/recipes/sample.txt cooked/sample.txt
 	ln -sf $(PWD)/java/TiddlySaver.jar cooked/TiddlySaver.jar
 	open cooked/tests.html
 
