@@ -198,8 +198,6 @@ function javaDebugInformation () {
 		["System Properties", applet.getSystemProperties] ];
 
 	function formatItem (description, method) {
-		console.log("description:", description);
-		console.log("method:", method);
 		try {
 			 result = String(method.call(applet));
 		} catch (ex) {

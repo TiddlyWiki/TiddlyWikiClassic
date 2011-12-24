@@ -95,7 +95,8 @@ keytool -import -alias NameOfSigningKey -file YourCertFIle.cert
             storetype="${sign.keystore.type}"
             storepass="${sign.keystore.pass}"
             alias="${sign.key.alias}"
-            keypass="${sign.key.pass}" />
+            keypass="${sign.key.pass}" 
+            force="true" />
     </target>
 
 
