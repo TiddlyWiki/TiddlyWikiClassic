@@ -15,23 +15,6 @@
 
     <target name="help">
         <echo>
-* Create a file build.properties with the following contents:
-
-    sign.keystore.file: NameOfYourKeyStore.x
-    sign.keystore.pass: PasswordForTheKeyStore
-    sign.key.alias: NameOfTheSigningKey
-    sign.key.pass: PasswordOfTheSigningKey
-
-* If you don't have a key you can use a self-signed certificate.
-  Just append the following to the build.properties:
-
-    dname.CN: Your Name
-    dname.OU: Organizational Unit
-    dname.O: Organization
-    dname.C: Country
-
-* Now you are ready to compile/sign/whatever
-
     ant clean
     ant sign
         </echo>
