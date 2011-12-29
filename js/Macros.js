@@ -151,7 +151,7 @@ merge(macro, {
 		var params = args.anon || [];
 
 		var field = params[0] || "modified";
-		var prefix = field[0];
+		var prefix = field.charAt(0);
 		var no_prefix_field = prefix === "-" || prefix === "+" ? field.substr(1, field.length) : field;
 		var dateFormat = params[2] || this.dateFormat;
 		var groupTemplate = macro.groupTemplate.format(no_prefix_field, dateFormat);
