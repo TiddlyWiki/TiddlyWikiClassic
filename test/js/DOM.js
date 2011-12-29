@@ -44,6 +44,18 @@ $(document).ready(function(){
 			equals(typeof findWindowHeight(), "number", "returns a number value");
 			equals($(window).height(), findWindowHeight(), "return the current height of the display window");
 	});
+	
+	test("findDocHeight", function() {
+			expect(2);
+			equals(typeof findDocHeight(), "number", "returns a number value");
+			var maxHeight = Math.max(
+			        $(document).height(),
+			        $(window).height(),
+			        /* For opera: */
+			        document.documentElement.clientHeight
+			    );
+			equals(maxHeight, findDocHeight(), "return the current height of the document");
+	});
 
 	test("findWindowWidth", function() {
 			expect(1);
