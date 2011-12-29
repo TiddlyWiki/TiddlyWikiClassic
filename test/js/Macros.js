@@ -144,6 +144,27 @@
 		strictEqual($("li:first", lists[2]).text(), "22 July 1994", "3rd heading");
 	});
 
+	test("&lt;&lt;timeline -created&gt;&gt; (prefix)", function () {
+		var place = $("<div />")[0];
+		var params = ["-created"];
+		var paramString = "-created";
+		var tiddler = store.getTiddler("testTiddler1");
+		config.macros.timeline.handler(place,"timeline",params, null, paramString, tiddler);
+		var lists = $("ul", place);
+		var items = $("li", place);
+		strictEqual($(lists[0]).hasClass("timeline"), true, "timeline class set");
+		strictEqual(lists.length, 3, "21/10/2009, 22/07/1994 and 19/10/2009");
+		strictEqual(items.length, 6, "headings plus three tiddlers");
+		var list1 = $("li", lists[0]);
+		var heading1 = $(list1[0]);
+		strictEqual(heading1.text(), "22 July 1994", "the oldest");
+		strictEqual(heading1.hasClass("listTitle"), true, "has listTitle class set");
+		var item1 = $("a", list1[1]);
+		strictEqual(item1.hasClass("tiddlyLink tiddlyLinkExisting"), true, "a tiddly link created");
+		strictEqual(item1.text(), "testTiddler2");
+		strictEqual($("li:first", lists[1]).text(), "19 October 2009", "2nd heading");
+	});
+
 	test("&lt;&lt;timeline '' 1&gt;&gt;", function () {
 		var place = $("<div />")[0];
 		var params = ["", "1"];
