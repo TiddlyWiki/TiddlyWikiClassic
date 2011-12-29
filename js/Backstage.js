@@ -140,7 +140,7 @@ var backstage = {
 	},
 
 	preparePanel: function() {
-		backstage.cloak.style.height = findWindowHeight() + "px";
+		backstage.cloak.style.height = findDocHeight() + "px";
 		backstage.cloak.style.display = "block";
 		jQuery(backstage.panelBody).empty();
 		return backstage.panelBody;
