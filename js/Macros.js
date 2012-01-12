@@ -151,8 +151,10 @@ merge(macro, {
 		var params = args.anon || [];
 
 		var field = params[0] || "modified";
+		var prefix = field.charAt(0);
+		var no_prefix_field = prefix === "-" || prefix === "+" ? field.substr(1, field.length) : field;
 		var dateFormat = params[2] || this.dateFormat;
-		var groupTemplate = macro.groupTemplate.format(field, dateFormat);
+		var groupTemplate = macro.groupTemplate.format(no_prefix_field, dateFormat);
 		groupTemplate = args.groupTemplate ? store.getTiddlerText(args.groupTemplate[0]) || groupTemplate :
 			groupTemplate;
 
