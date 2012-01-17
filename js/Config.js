@@ -135,6 +135,7 @@ config.macros = {
 		source: "http://tiddlywiki-releases.tiddlyspace.com/upgrade",
 		backupExtension: "pre.core.upgrade"
 	},
+	sync: {},
 	annotations: {}
 };
 
@@ -149,6 +150,7 @@ config.commands = {
 	permalink: {},
 	references: {type: "popup"},
 	jump: {type: "popup"},
+	syncing: {type: "popup"},
 	fields: {type: "popup"}
 };
 
