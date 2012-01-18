@@ -1,0 +1,86 @@
+<project name="TiddlySaver" default="sign">
+
+    <property file="build.properties.OVERRIDE" />
+    <property file="build.properties" />
+    <property file="build.properties.default" />
+
+    <property name="jvm.target" value="1.5" />
+    <property name="src.dir" value="src" />
+    <property name="build.dir" value="build" />
+    <property name="class.dir" value="build/classes" />
+    <property name="jar.file" value="${build.dir}/TiddlySaver.jar" />
+    <property name="jar.signed" value="TiddlySaver.jar" />
+    <property name="main.class" value="TiddlySaver" />
+
+
+    <target name="help">
+        <echo>
+    ant clean
+    ant sign
+        </echo>
+    </target>
+    <target name="clean">
+        <delete dir="${class.dir}"/>
+        <delete dir="${build.dir}"/>
+    </target>
+
+    <target name="compile">
+        <mkdir dir="${class.dir}"/>
+        <javac srcdir="${src.dir}" destdir="${class.dir}" target="${jvm.target}" source="${jvm.target}"/>
+    </target>
+
+    <target name="jar" depends="compile">
+        <mkdir dir="${build.dir}" />
+        <jar destfile="${jar.file}" basedir="${class.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="${main.class}"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="check-keystore">
+        <echo>Checking for existence of ${store.keystore.file} ...</echo>
+        <available file="${sign.keystore.file}" type="file" property="store.keystore.exists" />
+    </target>
+
+
+    <!--
+    
+if you do use such a self-signed key, here is how you get it out:
+
+keytool -export -alias NameOfSigningKey -keystore YourKeyStore.x -storepass ...... -file YourCertFille.cert
+keytool -import -alias NameOfSigningKey -file YourCertFIle.cert
+
+
+    -->
+    <target name="generate-keystore" depends="check-keystore" unless="store.keystore.exists">
+        <echo>Keystore ${store.keystore.file} does not exist, creating self-signed certificate</echo>
+        <genkey
+            keystore="${sign.keystore.file}"
+            storetype="${sign.keystore.type}"
+            storepass="${sign.keystore.pass}"
+            alias="${sign.key.alias}"
+            validity="${sign.keystore.validity}"
+            keypass="${sign.key.pass}">
+            <dname>
+                <param name="CN" value="${dname.CN}" />
+                <param name="OU" value="${dname.OU}" />
+                <param name="O" value="${dname.O}" />
+                <param name="C" value="${dname.C}" />
+            </dname>
+        </genkey>
+    </target>
+
+    <target name="sign" depends="help,jar,generate-keystore">
+        <signjar jar="${jar.file}"
+            signedjar="${jar.signed}"
+            keystore="${sign.keystore.file}"
+            storetype="${sign.keystore.type}"
+            storepass="${sign.keystore.pass}"
+            alias="${sign.key.alias}"
+            keypass="${sign.key.pass}" 
+            force="true" />
+    </target>
+
+
+</project>
