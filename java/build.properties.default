@@ -1,0 +1,18 @@
+#
+# DON'T CHANGE THIS FILE
+#
+# put the keys value pairs you need into build.properties
+#
+#
+sign.keystore.file: keystore.x
+sign.keystore.pass: ASDF1234
+sign.keystore.type: JKS
+sign.key.alias: ALIAS
+sign.key.pass: ASDF1234
+
+# the following are only used for the generation of the self-signed key pair
+sign.keystore.validity: 3560
+dname.CN: Common Name
+dname.OU: Organizational Unit
+dname.O: Organization
+dname.C: Country
