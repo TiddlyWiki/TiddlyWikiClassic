@@ -652,6 +652,8 @@ Story.prototype.switchTheme = function(theme)
 		return;
 
 	var isAvailable = function(title) {
+		if (!title)
+			return false;
 		var s = title ? title.indexOf(config.textPrimitives.sectionSeparator) : -1;
 		if(s!=-1)
 			title = title.substr(0,s);
