@@ -60,6 +60,15 @@ TiddlyWiki.prototype.isShadowTiddler = function(title)
 	return config.shadowTiddlers[title] === undefined ? false : true;
 };
 
+TiddlyWiki.prototype.isAvailable = function(title) {
+	if (!title)
+		return false;
+	var s = title ? title.indexOf(config.textPrimitives.sectionSeparator) : -1;
+	if(s!=-1)
+		title = title.substr(0,s);
+	return this.tiddlerExists(title) || this.isShadowTiddler(title);
+};
+
 TiddlyWiki.prototype.createTiddler = function(title)
 {
 	var tiddler = this.fetchTiddler(title);

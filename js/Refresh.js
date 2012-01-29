@@ -123,16 +123,10 @@ function refreshPageTemplate(title)
 	}
 	var wrapper = document.getElementById("contentWrapper");
 
-	var isAvailable = function(title) {
-		var s = title ? title.indexOf(config.textPrimitives.sectionSeparator) : -1;
-		if(s!=-1)
-			title = title.substr(0,s);
-		return store.tiddlerExists(title) || store.isShadowTiddler(title);
-	};
 	//# protect against non-existent pageTemplate
-	if(!title || !isAvailable(title))
+	if(!title || !store.isAvailable(title))
 		title = config.refresherData.pageTemplate;
-	if(!isAvailable(title))
+	if(!store.isAvailable(title))
 		title = config.refresherData.defaultPageTemplate; //# this one is always avaialable
 	wrapper.innerHTML = store.getRecursiveTiddlerText(title,null,10);
 	applyHtmlMacros(wrapper);

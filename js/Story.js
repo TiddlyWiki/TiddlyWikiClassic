@@ -651,15 +651,6 @@ Story.prototype.switchTheme = function(theme)
 	if(safeMode)
 		return;
 
-	var isAvailable = function(title) {
-		if (!title)
-			return false;
-		var s = title ? title.indexOf(config.textPrimitives.sectionSeparator) : -1;
-		if(s!=-1)
-			title = title.substr(0,s);
-		return store.tiddlerExists(title) || store.isShadowTiddler(title);
-	};
-
 	var getSlice = function(theme,slice) {
 		var r;
 		if(readOnly)
@@ -667,7 +658,7 @@ Story.prototype.switchTheme = function(theme)
 		r = r || store.getTiddlerSlice(theme,slice);
 		if(r && r.indexOf(config.textPrimitives.sectionSeparator)==0)
 			r = theme + r;
-		return isAvailable(r) ? r : slice;
+		return store.isAvailable(r) ? r : slice;
 	};
 
 	var replaceNotification = function(i,name,theme,slice) {
