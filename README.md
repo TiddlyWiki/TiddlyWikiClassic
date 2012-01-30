@@ -70,6 +70,6 @@ Pull requests for feature requests/bug fixes are being accepted for this project
 License
 -------
 
-TiddlyWiki is Copyright 2011 UneMesa Assocation
+TiddlyWiki is Copyright 2011 UnaMesa Assocation
 
 It is licensed under a BSD License.
