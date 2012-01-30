@@ -45,7 +45,7 @@ config.filters = {
 //# Returns an array of Tiddler() objects that match the filter expression
 TiddlyWiki.prototype.filterTiddlers = function(filter)
 {
-	//# text or [[tiddler title]] or [foo[bar]]
+	//# text or [foo[bar]] or [[tiddler title]]
 	var re = /([^\s\[\]]+)|(?:\[([ \w\.\-]+)\[([^\]]+)\]\])|(?:\[\[([^\]]+)\]\])/mg;
 
 	var results = [];
