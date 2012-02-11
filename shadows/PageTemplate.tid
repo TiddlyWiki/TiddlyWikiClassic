@@ -1,7 +1,7 @@
 title: PageTemplate
 
 <!--{{{-->
-<div class='header' macro='gradient vert [[ColorPalette::PrimaryLight]] [[ColorPalette::PrimaryMid]]'>
+<div class='header' role='banner' macro='gradient vert [[ColorPalette::PrimaryLight]] [[ColorPalette::PrimaryMid]]'>
 <div class='headerShadow'>
 <span class='siteTitle' refresh='content' tiddler='SiteTitle'></span>&nbsp;
 <span class='siteSubtitle' refresh='content' tiddler='SiteSubtitle'></span>
@@ -11,12 +11,12 @@ title: PageTemplate
 <span class='siteSubtitle' refresh='content' tiddler='SiteSubtitle'></span>
 </div>
 </div>
-<div id='mainMenu' refresh='content' tiddler='MainMenu'></div>
+<div id='mainMenu' role='navigation' refresh='content' tiddler='MainMenu'></div>
 <div id='sidebar'>
-<div id='sidebarOptions' refresh='content' tiddler='SideBarOptions'></div>
-<div id='sidebarTabs' refresh='content' force='true' tiddler='SideBarTabs'></div>
+<div id='sidebarOptions' role='navigation' refresh='content' tiddler='SideBarOptions'></div>
+<div id='sidebarTabs' role='complementary' refresh='content' force='true' tiddler='SideBarTabs'></div>
 </div>
-<div id='displayArea'>
+<div id='displayArea' role='main'>
 <div id='messageArea'></div>
 <div id='tiddlerDisplay'></div>
 </div>
