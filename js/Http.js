@@ -51,7 +51,6 @@ function httpReq(type,url,callback,params,headers,data,contentType,username,pass
 			var i;
 			for(i in headers)
 				xhr.setRequestHeader(i,headers[i]);
-			xhr.setRequestHeader("X-Requested-With", "TiddlyWiki " + formatVersion());
 		}
 	};
 
