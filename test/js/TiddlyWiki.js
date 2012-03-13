@@ -30,6 +30,7 @@ jQuery(document).ready(function(){
 		var title = "tiddler";
 		var text = "text";
 		var fields = {a:"aa", b:"bb"};
+
 		config.defaultCustomFields = {};
 		var tiddler = store.saveTiddler(title, title, text, null, null, null, fields);
 		tiddler.clearChangeCount();
@@ -50,6 +51,36 @@ jQuery(document).ready(function(){
 		actual = tiddler.fields;
 		expected = {a:"aa", b:"bb", dcf1:"d1", dcf2:"d2"};
 		same(actual,expected,'defaultCustomFields should not overwrite fields');
+
+		config.defaultCustomFields = {};
+		tiddler = new Tiddler(title);
+		tiddler.text = text;
+		tiddler.fields = fields;
+		var t = store.saveTiddler(tiddler);
+		t.clearChangeCount();
+		actual = t.fields;
+		expected = {a:"aa", b:"bb"};
+		same(actual,expected,'tiddler fields should be unchanged when defaultCustomFields empty');
+
+		config.defaultCustomFields = {dcf1:"d1", dcf2:"d2"};
+		tiddler = new Tiddler(title);
+		tiddler.text = text;
+		tiddler.fields = fields;
+		t = store.saveTiddler(tiddler);
+		t.clearChangeCount();
+		actual = t.fields;
+		expected = {a:"aa", b:"bb", dcf1:"d1", dcf2:"d2"};
+		same(actual,expected,'tiddler fields should be merged with defaultCustomFields');
+
+		config.defaultCustomFields = {a:"xx", b:"yy", dcf1:"d1", dcf2:"d2"};
+		tiddler = new Tiddler(title);
+		tiddler.text = text;
+		tiddler.fields = fields;
+		t = store.saveTiddler(tiddler);
+		t.clearChangeCount();
+		actual = t.fields;
+		expected = {a:"aa", b:"bb", dcf1:"d1", dcf2:"d2"};
+		same(actual,expected,'tiddler defaultCustomFields should not overwrite fields');
 	});
 
 	test("Slices: calcAllSlices()", function() {

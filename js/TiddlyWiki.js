@@ -342,6 +342,7 @@ TiddlyWiki.prototype.saveTiddler = function(title,newTitle,newBody,modifier,modi
 	var tiddler;
 	if(title instanceof Tiddler) {
 		tiddler = title;
+		tiddler.fields = merge(merge({},tiddler.fields),config.defaultCustomFields,true);
 		title = tiddler.title;
 		newTitle = title;
 	} else {
