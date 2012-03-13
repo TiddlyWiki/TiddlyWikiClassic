@@ -3,3 +3,4 @@ UnaMesa.keystore
 *~
 *.x
 x.*
+/build.properties
