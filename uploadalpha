@@ -25,7 +25,7 @@ function setPermissions() {
 echo
 echo "uploading files"
 echo
-cd 
+#cd 
 FILES="$TW_DIR/tiddlywiki.$RELEASE.html $TW_DIR/tiddlywiki_compressed.$RELEASE.html $TW_DIR/tiddlywiki_externaljs.$RELEASE.html $TW_DIR/tiddlywiki_externaljs_tiddlyspace.$RELEASE.html $TW_DIR/twcore.$RELEASE.js jquery/jquery.js jquery/plugins/jQuery.twStylesheet.js"
 scp $FILES "$HOST:./tmp/"
 
