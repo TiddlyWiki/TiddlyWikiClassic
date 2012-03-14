@@ -1,10 +1,11 @@
-
 	Readme file for signing TiddlySaver applet
 
 for verifying see verify.readme file
 
 1 - HISTORY
 
+2012 03 13 - BidiX : Build and Sign TiddlySaver.jar using the new UnaMesa Certicate. 
+			Signature was verified
 2011 12 23 - BidiX : Build and Sign TiddlySaver.jar using ant (build.xml)
 					 jar verified
 2010 03 06 - BidiX : Signing TiddlySaver.jar with a new Signing Certificate
