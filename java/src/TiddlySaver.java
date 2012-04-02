@@ -316,6 +316,9 @@ public class TiddlySaver extends java.applet.Applet {
             File f = resolveRelativeFile(filename);
             if(restrictToSameDirectory) {
                 URL dirUrl = getCodeBase();
+                if(! "file".equals(dirUrl.getProtocol())) {
+                    throw new RuntimeException("TiddlySaver did not come from file:///, refusing");
+                }
 
                 File canonicalFile = privCanonicalFile(f);
                 File canonicalDir = privCanonicalFile(new File(dirUrl.getPath()));
