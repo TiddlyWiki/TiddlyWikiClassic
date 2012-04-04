@@ -1,41 +1,111 @@
-
+2012-04-04
 Above the verifying command and the expected return: 
 
 
 > jarsigner -verify -verbose -certs -keystore TiddlySaverVerify.keystore TiddlySaver.jar
-         284 Thu Mar 27 07:59:12 CET 2008 META-INF/MANIFEST.MF
-         395 Sat Mar 06 15:16:04 CET 2010 META-INF/BIDIX.SF
-        2798 Sat Mar 06 15:16:04 CET 2010 META-INF/BIDIX.RSA
-           0 Thu Dec 07 14:48:00 CET 2006 META-INF/
-smk     1271 Thu Dec 07 14:48:00 CET 2006 TiddlySaver$1.class
 
-      X.509, CN=UnaMesa, OU=TiddlyWiki, O=UnaMesa, L=Palo Alto, ST=California, C=US (bidix)
-      [certificate is valid from 04/03/10 01:00 to 04/03/12 00:59]
-      X.509, CN=Thawte Code Signing CA, O=Thawte Consulting (Pty) Ltd., C=ZA
-      [certificate is valid from 06/08/03 02:00 to 06/08/13 01:59]
+         777 Wed Apr 04 21:39:12 CEST 2012 META-INF/MANIFEST.MF
+         827 Wed Apr 04 21:39:12 CEST 2012 META-INF/UNAMESA_.SF
+        3808 Wed Apr 04 21:39:12 CEST 2012 META-INF/UNAMESA_.RSA
+           0 Wed Apr 04 21:39:14 CEST 2012 META-INF/
+smk      657 Wed Apr 04 21:39:14 CEST 2012 TiddlySaver$1.class
+
+      X.509, CN=UnaMesa Association, OU=TiddlyWiki, O=UnaMesa Association, L=Palo Alto, ST=California, C=US (mykey)
+      [certificate is valid from 07/02/12 01:00 to 04/03/14 00:59]
+      X.509, CN=Thawte Code Signing CA - G2, O="Thawte, Inc.", C=US
+      [certificate is valid from 08/02/10 01:00 to 08/02/20 00:59]
       [KeyUsage extension does not support code signing]
-      X.509, EMAILADDRESS=premium-server@thawte.com, CN=Thawte Premium Server CA, OU=Certification Services Division, O=Thawte Consulting cc, L=Cape Town, ST=Western Cape, C=ZA
-      [certificate is valid from 01/08/96 02:00 to 01/01/21 00:59]
-
-smk     1184 Thu Dec 07 14:48:00 CET 2006 TiddlySaver$2.class
-
-      X.509, CN=UnaMesa, OU=TiddlyWiki, O=UnaMesa, L=Palo Alto, ST=California, C=US (bidix)
-      [certificate is valid from 04/03/10 01:00 to 04/03/12 00:59]
-      X.509, CN=Thawte Code Signing CA, O=Thawte Consulting (Pty) Ltd., C=ZA
-      [certificate is valid from 06/08/03 02:00 to 06/08/13 01:59]
+      X.509, CN=thawte Primary Root CA, OU="(c) 2006 thawte, Inc. - For authorized use only", OU=Certification Services Division, O="thawte, Inc.", C=US
+      [certificate is valid from 17/11/06 01:00 to 31/12/20 00:59]
       [KeyUsage extension does not support code signing]
-      X.509, EMAILADDRESS=premium-server@thawte.com, CN=Thawte Premium Server CA, OU=Certification Services Division, O=Thawte Consulting cc, L=Cape Town, ST=Western Cape, C=ZA
-      [certificate is valid from 01/08/96 02:00 to 01/01/21 00:59]
 
-smk      775 Thu Dec 07 14:48:00 CET 2006 TiddlySaver.class
+smk      858 Wed Apr 04 21:39:14 CEST 2012 TiddlySaver$2.class
 
-      X.509, CN=UnaMesa, OU=TiddlyWiki, O=UnaMesa, L=Palo Alto, ST=California, C=US (bidix)
-      [certificate is valid from 04/03/10 01:00 to 04/03/12 00:59]
-      X.509, CN=Thawte Code Signing CA, O=Thawte Consulting (Pty) Ltd., C=ZA
-      [certificate is valid from 06/08/03 02:00 to 06/08/13 01:59]
+      X.509, CN=UnaMesa Association, OU=TiddlyWiki, O=UnaMesa Association, L=Palo Alto, ST=California, C=US (mykey)
+      [certificate is valid from 07/02/12 01:00 to 04/03/14 00:59]
+      X.509, CN=Thawte Code Signing CA - G2, O="Thawte, Inc.", C=US
+      [certificate is valid from 08/02/10 01:00 to 08/02/20 00:59]
       [KeyUsage extension does not support code signing]
-      X.509, EMAILADDRESS=premium-server@thawte.com, CN=Thawte Premium Server CA, OU=Certification Services Division, O=Thawte Consulting cc, L=Cape Town, ST=Western Cape, C=ZA
-      [certificate is valid from 01/08/96 02:00 to 01/01/21 00:59]
+      X.509, CN=thawte Primary Root CA, OU="(c) 2006 thawte, Inc. - For authorized use only", OU=Certification Services Division, O="thawte, Inc.", C=US
+      [certificate is valid from 17/11/06 01:00 to 31/12/20 00:59]
+      [KeyUsage extension does not support code signing]
+
+smk      905 Wed Apr 04 21:39:14 CEST 2012 TiddlySaver$3.class
+
+      X.509, CN=UnaMesa Association, OU=TiddlyWiki, O=UnaMesa Association, L=Palo Alto, ST=California, C=US (mykey)
+      [certificate is valid from 07/02/12 01:00 to 04/03/14 00:59]
+      X.509, CN=Thawte Code Signing CA - G2, O="Thawte, Inc.", C=US
+      [certificate is valid from 08/02/10 01:00 to 08/02/20 00:59]
+      [KeyUsage extension does not support code signing]
+      X.509, CN=thawte Primary Root CA, OU="(c) 2006 thawte, Inc. - For authorized use only", OU=Certification Services Division, O="thawte, Inc.", C=US
+      [certificate is valid from 17/11/06 01:00 to 31/12/20 00:59]
+      [KeyUsage extension does not support code signing]
+
+smk     1314 Wed Apr 04 21:39:14 CEST 2012 TiddlySaver$4.class
+
+      X.509, CN=UnaMesa Association, OU=TiddlyWiki, O=UnaMesa Association, L=Palo Alto, ST=California, C=US (mykey)
+      [certificate is valid from 07/02/12 01:00 to 04/03/14 00:59]
+      X.509, CN=Thawte Code Signing CA - G2, O="Thawte, Inc.", C=US
+      [certificate is valid from 08/02/10 01:00 to 08/02/20 00:59]
+      [KeyUsage extension does not support code signing]
+      X.509, CN=thawte Primary Root CA, OU="(c) 2006 thawte, Inc. - For authorized use only", OU=Certification Services Division, O="thawte, Inc.", C=US
+      [certificate is valid from 17/11/06 01:00 to 31/12/20 00:59]
+      [KeyUsage extension does not support code signing]
+
+smk      841 Wed Apr 04 21:39:14 CEST 2012 TiddlySaver$5.class
+
+      X.509, CN=UnaMesa Association, OU=TiddlyWiki, O=UnaMesa Association, L=Palo Alto, ST=California, C=US (mykey)
+      [certificate is valid from 07/02/12 01:00 to 04/03/14 00:59]
+      X.509, CN=Thawte Code Signing CA - G2, O="Thawte, Inc.", C=US
+      [certificate is valid from 08/02/10 01:00 to 08/02/20 00:59]
+      [KeyUsage extension does not support code signing]
+      X.509, CN=thawte Primary Root CA, OU="(c) 2006 thawte, Inc. - For authorized use only", OU=Certification Services Division, O="thawte, Inc.", C=US
+      [certificate is valid from 17/11/06 01:00 to 31/12/20 00:59]
+      [KeyUsage extension does not support code signing]
+
+smk      845 Wed Apr 04 21:39:14 CEST 2012 TiddlySaver$6.class
+
+      X.509, CN=UnaMesa Association, OU=TiddlyWiki, O=UnaMesa Association, L=Palo Alto, ST=California, C=US (mykey)
+      [certificate is valid from 07/02/12 01:00 to 04/03/14 00:59]
+      X.509, CN=Thawte Code Signing CA - G2, O="Thawte, Inc.", C=US
+      [certificate is valid from 08/02/10 01:00 to 08/02/20 00:59]
+      [KeyUsage extension does not support code signing]
+      X.509, CN=thawte Primary Root CA, OU="(c) 2006 thawte, Inc. - For authorized use only", OU=Certification Services Division, O="thawte, Inc.", C=US
+      [certificate is valid from 17/11/06 01:00 to 31/12/20 00:59]
+      [KeyUsage extension does not support code signing]
+
+smk      777 Wed Apr 04 21:39:14 CEST 2012 TiddlySaver$7.class
+
+      X.509, CN=UnaMesa Association, OU=TiddlyWiki, O=UnaMesa Association, L=Palo Alto, ST=California, C=US (mykey)
+      [certificate is valid from 07/02/12 01:00 to 04/03/14 00:59]
+      X.509, CN=Thawte Code Signing CA - G2, O="Thawte, Inc.", C=US
+      [certificate is valid from 08/02/10 01:00 to 08/02/20 00:59]
+      [KeyUsage extension does not support code signing]
+      X.509, CN=thawte Primary Root CA, OU="(c) 2006 thawte, Inc. - For authorized use only", OU=Certification Services Division, O="thawte, Inc.", C=US
+      [certificate is valid from 17/11/06 01:00 to 31/12/20 00:59]
+      [KeyUsage extension does not support code signing]
+
+smk      767 Wed Apr 04 21:39:14 CEST 2012 TiddlySaver$8.class
+
+      X.509, CN=UnaMesa Association, OU=TiddlyWiki, O=UnaMesa Association, L=Palo Alto, ST=California, C=US (mykey)
+      [certificate is valid from 07/02/12 01:00 to 04/03/14 00:59]
+      X.509, CN=Thawte Code Signing CA - G2, O="Thawte, Inc.", C=US
+      [certificate is valid from 08/02/10 01:00 to 08/02/20 00:59]
+      [KeyUsage extension does not support code signing]
+      X.509, CN=thawte Primary Root CA, OU="(c) 2006 thawte, Inc. - For authorized use only", OU=Certification Services Division, O="thawte, Inc.", C=US
+      [certificate is valid from 17/11/06 01:00 to 31/12/20 00:59]
+      [KeyUsage extension does not support code signing]
+
+smk     4998 Wed Apr 04 21:39:14 CEST 2012 TiddlySaver.class
+
+      X.509, CN=UnaMesa Association, OU=TiddlyWiki, O=UnaMesa Association, L=Palo Alto, ST=California, C=US (mykey)
+      [certificate is valid from 07/02/12 01:00 to 04/03/14 00:59]
+      X.509, CN=Thawte Code Signing CA - G2, O="Thawte, Inc.", C=US
+      [certificate is valid from 08/02/10 01:00 to 08/02/20 00:59]
+      [KeyUsage extension does not support code signing]
+      X.509, CN=thawte Primary Root CA, OU="(c) 2006 thawte, Inc. - For authorized use only", OU=Certification Services Division, O="thawte, Inc.", C=US
+      [certificate is valid from 17/11/06 01:00 to 31/12/20 00:59]
+      [KeyUsage extension does not support code signing]
 
 
   s = signature was verified 
