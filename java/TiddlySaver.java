@@ -8,7 +8,19 @@ import java.io.FileWriter;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 
+import netscape.javascript.*;
+
 public class TiddlySaver extends java.applet.Applet {
+  // This method is automatically called when the applet is started.
+  // Sets a flag in JavaScript land to:
+  //   A. Provide a safe way to check availability of the tiddlysaver applet.
+  //   B. Identify the applet version (to help avoid cache confusion).
+  public void init()
+  {
+      JSObject window = JSObject.getWindow(this);
+      window.eval("$.twFile.tiddlySaverVersion = 1");
+  }
+
   public String loadFile(final String filename, final String charset) {
 	return (String)AccessController.doPrivileged(new PrivilegedAction() {
 	    public Object run() {		

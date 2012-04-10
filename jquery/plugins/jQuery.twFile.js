@@ -19,7 +19,7 @@ Triple licensed under the BSD, MIT and GPL licenses:
 
 	$.extend($.twFile,{
 		currentDriver: null,
-		driverList: ["tiddlySaver", "activeX","javaLiveConnect", "mozilla"],
+		driverList: ["tiddlySaver", "activeX", "mozilla", "javaLiveConnect"],
 
 		// Loads the contents of a text file from the local file system
 		// filePath is the path to the file in these formats:
@@ -28,27 +28,21 @@ Triple licensed under the BSD, MIT and GPL licenses:
 		//    /path/path/path/filename - Mac/Unix local file
 		// returns the text of the file, or null if the operation cannot be performed or false if there was an error
 		load: function(filePath) {
-			var d = this.getDriver();
-			return d ? d.loadFile(filePath) : null;
+			return this.invokeDriver('loadFile', filePath, null);
 		},
 		// Saves a string to a text file on the local file system
 		// filePath is the path to the file in the format described above
 		// content is the string to save
 		// returns true if the file was saved successfully, or null if the operation cannot be performed or false if there was an error
 		save: function(filePath,content) {
-			var d = this.getDriver();
-			return d ? d.saveFile(filePath,content) : null;
+			return this.invokeDriver('saveFile', filePath, content);
 		},
 		// Copies a file on the local file system
 		// dest is the path to the destination file in the format described above
 		// source is the path to the source file in the format described above
 		// returns true if the file was copied successfully, or null if the operation cannot be performed or false if there was an error
 		copy: function(dest,source) {
-			var d = this.getDriver();
-			if(d && d.copyFile)
-				return d.copyFile(dest,source);
-			else
-				return null;
+			return this.invokeDriver('copyFile', dest, source);
 		},
 		// Converts a local file path from the format returned by document.location into the format expected by this plugin
 		// url is the original URL of the file
@@ -87,22 +81,42 @@ Triple licensed under the BSD, MIT and GPL licenses:
 					if(drivers[t].deferredInit)
 						drivers[t].deferredInit();
 				}
-				// Kludge: give the <applet> some time to load
-				setTimeout(dfd.resolve, 0);
+
+				// Keep checking until a driver is ready.
+				// (The <applet> may need time to load.)
+				function check() {
+					if ($.twFile.availableDrivers().length > 0) {
+						dfd.resolve();
+					} else {
+						setTimeout(check, 100);
+					}
+				};
+				check();
 			});
 		},
 
 		// Private functions
 
-		// Returns a reference to the current driver
-		getDriver: function() {
-			if(this.currentDriver === null) {
-				for(var t=0; t<this.driverList.length; t++) {
-					if(this.currentDriver === null && drivers[this.driverList[t]].isAvailable && drivers[this.driverList[t]].isAvailable())
-						this.currentDriver = drivers[this.driverList[t]];
+		availableDrivers: function() {
+			return $.grep(this.driverList, function(driverName, i) {
+				return drivers[driverName].isAvailable();
+			});
+		},
+
+		invokeDriver: function(methodName, arg1, arg2) {
+			$.twFile.lastDriver = null;
+			var result = null;
+			$.each(this.availableDrivers(), function(i, driverName) {
+				var d = drivers[driverName];
+				if (d.isAvailable() && d[methodName]) {
+					result = d[methodName](arg1, arg2);
+					if (result) {
+						$.twFile.lastDriver = d;
+						return false; // Sucess; break out of each loop
+					}
 				}
-			}
-			return this.currentDriver;
+			});
+			return result;
 		}
 	});
 
@@ -250,36 +264,32 @@ Triple licensed under the BSD, MIT and GPL licenses:
 	drivers.tiddlySaver = {
 		name: "tiddlySaver",
 		deferredInit: function() {
-			if(!document.applets["TiddlySaver"] && /* !$.browser.mozilla && !$.browser.msie && */ document.location.toString().substr(0,5) == "file:") {
-				$(document.body).append("<applet style='position:absolute;left:-1px' name='TiddlySaver' code='TiddlySaver.class' archive='TiddlySaver.jar' width='1'height='1'></applet>");
+			this.deferredInit = undefined;
+			if(!this.tiddlySaverVersion && !$.browser.mozilla && /* !$.browser.msie && */ document.location.toString().substr(0,5) == "file:") {
+				$(document.body).append(
+						'<object id=tiddlysaver type="application/x-java-applet"' +
+						'		style="position:absolute;left:-1px" width="1" height="1">' +
+						'	<param name="archive" value="TiddlySaver.jar">' +
+						'	<param name="code" value="TiddlySaver.class">' +
+						'	<param name="mayscript" value="true">' +
+						'</object>');
 			}
 		},
 		isAvailable: function() {
-			var isReady = false;
-			try {
-				isReady = !!document.applets["TiddlySaver"] &&
-						  ($.browser.msie || document.applets["TiddlySaver"].isActive) &&
-						  ( document.applets["TiddlySaver"].isActive() );
-			} catch (ex) {
-				isReady = false;
-			}
-			return isReady;
+			return !!$.twFile.tiddlySaverVersion;
 		},
 		loadFile: function(filePath) {
 			var r;
 			try {
-				if(document.applets["TiddlySaver"]) {
-					r = document.applets["TiddlySaver"].loadFile(javaUrlToFilename(filePath),"UTF-8");
-					return (r === undefined || r === null) ? null : String(r);
-				}
+				r = $("#tiddlysaver")[0].loadFile(javaUrlToFilename(filePath),"UTF-8");
+				return (r === undefined || r === null) ? null : String(r);
 			} catch(ex) {
 			}
 			return null;
 		},
 		saveFile: function(filePath,content) {
 			try {
-				if(document.applets["TiddlySaver"])
-					return document.applets["TiddlySaver"].saveFile(javaUrlToFilename(filePath),"UTF-8",content);
+					return $("#tiddlysaver")[0].saveFile(javaUrlToFilename(filePath),"UTF-8",content);
 			} catch(ex) {
 			}
 			return null;
@@ -291,7 +301,7 @@ Triple licensed under the BSD, MIT and GPL licenses:
 	drivers.javaLiveConnect = {
 		name: "javaLiveConnect",
 		isAvailable: function() {
-			return !!window.java && !!window.java.io && !!window.java.io.FileReader;
+			return !$.browser.msie && !!window.java && !!window.java.io && !!window.java.io.FileReader;
 		},
 		loadFile: function(filePath) {
 			var r;
