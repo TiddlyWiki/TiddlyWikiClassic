@@ -8,7 +8,9 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.security.PrivilegedActionException;
@@ -35,12 +37,15 @@ import java.security.PrivilegedExceptionAction;
  */
 public class TiddlySaver extends java.applet.Applet {
 
+    private static final boolean debug = false;
+
     private static final boolean restrictToSameDirectory = true;
     private static final boolean allowSystemProperties = false;
 
     private String lastErrorMsg;
     private String lastErrorStackTrace;
-    private boolean filenamesRelativeToAppletDir = false;
+    private StringBuilder debugMsg = new StringBuilder();
+
 
     /**
      * Load a file and return the content.
@@ -312,20 +317,32 @@ public class TiddlySaver extends java.applet.Applet {
      * @return
      */
     public final File resolveFilename(String filename) {
+        debugMsg.setLength(0);
+        debug("Filename:", filename);
+        filename = utf8DecodeHack(filename);
+        debug("UTF8DecodeHack:", filename);
+
         try {
-            File f = resolveRelativeFile(filename);
+            File f = new File(filename);
             if(restrictToSameDirectory) {
                 URL dirUrl = getCodeBase();
+                debug("Codebase:", dirUrl);
                 if(! "file".equals(dirUrl.getProtocol())) {
                     throw new RuntimeException("TiddlySaver did not come from file:///, refusing");
                 }
 
                 File canonicalFile = privCanonicalFile(f);
-                File canonicalDir = privCanonicalFile(new File(dirUrl.getPath()));
+                String dirPath = URLDecoder.decode(dirUrl.getPath());
+                debug("dirpath:", dirPath);
+                dirPath = utf8DecodeHack(dirPath);
+                debug("dirpath decodeHack:", dirPath);
 
-                String canonicalURL = canonicalFile.toURL().toString();
-                String canonicalDirURL = canonicalDir.toURL().toString();
+                File canonicalDir = privCanonicalFile(new File(dirPath));
+                String canonicalURL = canonicalFile.toURI().toString();
+                String canonicalDirURL = canonicalDir.toURI().toString();
 
+                debug("canonicalURL:", canonicalURL);
+                debug("canonicalDirURL", canonicalDirURL);
                 if(! canonicalURL.startsWith(canonicalDirURL)) {
                     throw new RuntimeException("File: " + canonicalURL + " is not in directory " + canonicalDirURL);
                 }
@@ -349,39 +366,47 @@ public class TiddlySaver extends java.applet.Applet {
         });
     }
 
-    private File resolveRelativeFile(String filename) {
-        File f = new File(filename);
-        if(! filenamesRelativeToAppletDir)
-            return f;
-
-        if(f.isAbsolute()) {
-            return f;
+    private void debug(Object... args) {
+        for(int i = 0, size = args.length; i < size; i++) {
+            debugMsg.append(args[i].toString());
+            if (i < size - 1) {
+                debugMsg.append(" ");
+            } else {
+                debugMsg.append("\n");
+            }
         }
-
-        URL dirUrl = getCodeBase();
-        // dirUrl.getPath() has a trailing slash!
-        return new File(dirUrl.getPath() + filename);
     }
 
+    public String getDebugMsg() {
+        return debugMsg.toString();
+    }
 
     /**
-     * Does the applet try to resolve relative paths?
-     * 
+     * Try to UTF-8 decode a string.
+     *
+     * Ideally, we'd never get a string that contains UTF-8 characters.
+     * This is not an ideal world.
+     *
+     * This may or may not work for systems that do not use UTF-8 for filenames.
+     * Also on systems where we get filenames that are not f*cked up,
+     * this will fail for filenames that look like UTF-8 encodings.
+     *
+     * @param s
      * @return
      */
-    public boolean isFilenamesRelativeToAppletDir() {
-        return filenamesRelativeToAppletDir;
+    private static String utf8DecodeHack(String s) {
+        try {
+            byte[] b = s.getBytes("ISO-8859-1");
+            String s2 = new String(b, "UTF-8");
+            if (s2.indexOf("\uFFFD") != -1) {
+                return s;
+            } else {
+                return s2;
+            }
+        } catch (UnsupportedEncodingException use) {
+            System.out.println("Exception " + use);
+            return s;
+        }
     }
-
-    /**
-     * Resolve filenames relative to directory where the applet resides.
-     *
-     * Otherwise current directory of plugin process is used, which may be
-     * anywhere.
-     */
-    public void setFilenamesRelativeToAppletDir(boolean filenamesRelativeToAppletDir) {
-        this.filenamesRelativeToAppletDir = filenamesRelativeToAppletDir;
-    }
-
 
 }
