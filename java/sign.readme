@@ -4,7 +4,8 @@
 for verifying see verify.readme file
 
 1 - HISTORY
-
+2012 10 14 - BidiX : Build and Sign TiddlySaver.jar using ant (build.xml)
+					 Verify signed jar -> see verify.readme
 2011 12 23 - BidiX : Build and Sign TiddlySaver.jar using ant (build.xml)
 					 jar verified
 2010 03 06 - BidiX : Signing TiddlySaver.jar with a new Signing Certificate
