@@ -16,8 +16,14 @@ var installedPlugins = []; // Information filled in when plugins are executed
 var startingUp = false; // Whether we're in the process of starting up
 var pluginInfo,tiddler; // Used to pass information to plugins in loadPlugins()
 
+// Whether this file can be saved back to the same location
+window.allowSave = function()
+{
+	return (document.location.protocol == "file:");
+}
+
 // Whether to use the JavaSaver applet
-var useJavaSaver = (config.browser.isSafari || config.browser.isOpera) && (document.location.toString().substr(0,4) != "http");
+var useJavaSaver = window.allowSave() && (config.browser.isSafari || config.browser.isOpera);
 
 if(!window || !window.console) {
 	console = {tiddlywiki:true,log:function(message) {displayMessage(message);}};
@@ -52,7 +58,7 @@ function main()
 	t3 = new Date();
 	invokeParamifier(params,"onload");
 	t4 = new Date();
-	readOnly = (window.location.protocol == "file:") ? false : config.options.chkHttpReadOnly;
+	readOnly = window.allowSave() ? false : config.options.chkHttpReadOnly;
 	var pluginProblem = loadPlugins("systemConfig");
 	doc.trigger("loadPlugins");
 	t5 = new Date();

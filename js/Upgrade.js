@@ -14,7 +14,7 @@ config.macros.upgrade.onClickUpgrade = function(e)
 {
 	var me = config.macros.upgrade;
 	var w = new Wizard(this);
-	if(window.location.protocol != "file:") {
+	if(!window.allowSave()) {
 		alert(me.errorCantUpgrade);
 		return false;
 	}

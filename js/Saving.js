@@ -111,7 +111,7 @@ function saveChanges(onlyIfDirty,tiddlers)
 	//# Get the URL of the document
 	var originalPath = document.location.toString();
 	//# Check we were loaded from a file URL
-	if(originalPath.substr(0,5) != "file:") {
+	if(!window.allowSave()) {
 		alert(msg.notFileUrlError);
 		if(store.tiddlerExists(msg.saveInstructions))
 			story.displayTiddler(null,msg.saveInstructions);
