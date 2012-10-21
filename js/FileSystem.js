@@ -10,12 +10,15 @@
 //#
 //#
 
-function copyFile(dest,source)
+// Copy a file in filesystem [Preemption]
+window.copyFile = window.copyFile || function(dest,source)
 {
 	return config.browser.isIE ? ieCopyFile(dest,source) : false;
 }
 
-function saveFile(fileUrl,content)
+
+// Save a file in filesystem [Preemption]
+window.saveFile = window.saveFile || function(fileUrl,content)
 {
 	var r = mozillaSaveFile(fileUrl,content);
 	if(!r)
@@ -25,7 +28,8 @@ function saveFile(fileUrl,content)
 	return r;
 }
 
-function loadFile(fileUrl)
+// Load a file from filesystem [Preemption]
+window.loadFile = window.loadFile || function(fileUrl)
 {
 	var r = mozillaLoadFile(fileUrl);
 	if((r == null) || (r == false))

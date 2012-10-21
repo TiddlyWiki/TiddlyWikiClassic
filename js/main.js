@@ -16,14 +16,17 @@ var installedPlugins = []; // Information filled in when plugins are executed
 var startingUp = false; // Whether we're in the process of starting up
 var pluginInfo,tiddler; // Used to pass information to plugins in loadPlugins()
 
-// Whether this file can be saved back to the same location
-window.allowSave = function()
+// Whether this file can be saved back to the same location [Preemption]
+window.allowSave = window.allowSave || function(l)
 {
 	return (document.location.protocol == "file:");
 }
 
 // Whether to use the JavaSaver applet
 var useJavaSaver = window.allowSave() && (config.browser.isSafari || config.browser.isOpera);
+
+// Allow preemption code a chance to tweak config and useJavaSaver [Preemption]
+if (window.tweakConfig) window.tweakConfig();
 
 if(!window || !window.console) {
 	console = {tiddlywiki:true,log:function(message) {displayMessage(message);}};

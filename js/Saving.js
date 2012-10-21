@@ -110,7 +110,7 @@ function saveChanges(onlyIfDirty,tiddlers)
 	var msg = config.messages;
 	//# Get the URL of the document
 	var originalPath = document.location.toString();
-	//# Check we were loaded from a file URL
+	//# Check we can save this file
 	if(!window.allowSave()) {
 		alert(msg.notFileUrlError);
 		if(store.tiddlerExists(msg.saveInstructions))
@@ -194,7 +194,8 @@ function saveEmpty(localPath,original,posDiv)
 		alert(config.messages.emptyFailed);
 }
 
-function getLocalPath(origPath)
+// Translate URL to local path [Preemption]
+window.getLocalPath = window.getLocalPath || function(origPath)
 {
 	var originalPath = convertUriToUTF8(origPath,config.options.txtFileSystemCharSet);
 	// Remove any location or query part of the URL
