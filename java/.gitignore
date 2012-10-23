@@ -1,0 +1,6 @@
+build.properties.OVERRIDE
+UnaMesa.keystore
+/build/
+*~
+*.x
+x.*
