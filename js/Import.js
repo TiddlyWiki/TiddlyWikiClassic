@@ -107,7 +107,7 @@ config.macros.importTiddlers.onBrowseChange = function(e)
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalFileRead");
 			}
 		} catch (ex) {
-			showException(ex);
+			//# showException(ex); // SUPPRESS MESSAGE DISPLAY
 		}
 	}
 	var fileInput = wizard.getElement("txtPath");
