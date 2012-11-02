@@ -100,14 +100,17 @@ config.macros.importTiddlers.onBrowseChange = function(e)
 {
 	var wizard = new Wizard(this);
 	var file = this.value;
+	file = file.replace(/^C:\\fakepath\\/i,''); // remove fakepath (chrome/opera/safari)
 	if(this.files && this.files[0]) {
-		file = this.files[0].fileName;
 		try {
-			if(typeof(netscape) !== "undefined") {
-				netscape.security.PrivilegeManager.enablePrivilege("UniversalFileRead");
-			}
+			netscape.security.PrivilegeManager.enablePrivilege("UniversalFileRead");
+			file = this.files[0].fileName; // REQUIRES PRIVILEGES.. NULL otherwise
 		} catch (ex) {
-			//# showException(ex); // SUPPRESS MESSAGE DISPLAY
+			// non-priv fallback: combine filename with path to current document
+			var path=getLocalPath(document.location.href);
+			var slashpos=path.lastIndexOf('/'); if (slashpos==-1) slashpos=path.lastIndexOf('\\'); 
+			if (slashpos!=-1) path=path.substr(0,slashpos+1); // remove filename, leave trailing 	slash
+			file=path+file;
 		}
 	}
 	var fileInput = wizard.getElement("txtPath");

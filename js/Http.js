@@ -5,13 +5,32 @@
 //# Perform an http request using the jQuery ajax function
 function ajaxReq(args)
 {
-	try {
-		if(window.Components && window.netscape && window.netscape.security && document.location.protocol.indexOf("http") == -1)
-			window.netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
-	} catch (ex) {
-		//# showException(ex); // SUPPRESS MESSAGE DISPLAY
+	if (args.url.startsWith("file")) { // LOCAL FILE
+		try {
+			// get FireFox privileges (FF14 and earlier)
+			if(window.Components && window.netscape && window.netscape.security)
+				window.netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
+		} catch (ex) {
+			// FF15+ fallback: no privs for ajax-based LOCAL file access
+			return localAjax(args);
+		}
 	}
 	return jQuery.ajax(args);
+}
+
+//# perform direct local I/O... and FAKE a minimal XHR response object
+//# requires TiddlyFox for privileged loadFile() function in FireFox15 or later
+function localAjax(args)
+{
+	var data=loadFile(getLocalPath(args.url));
+	if (data) {
+		var jqXHR = { responseText:data };
+		args.success(data,"success",jqXHR);
+	} else {
+		var jqXHR = { message:"Cannot read local file" };
+		args.error(jqXHR,"error",0);
+	}
+	return true;
 }
 
 //# Perform an http request
