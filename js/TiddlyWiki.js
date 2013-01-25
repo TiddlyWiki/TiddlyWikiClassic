@@ -170,7 +170,7 @@ TiddlyWiki.prototype.getRecursiveTiddlerText = function(title,defaultText,depth)
 };
 
 //TiddlyWiki.prototype.slicesRE = /(?:^([\'\/]{0,2})~?([\.\w]+)\:\1[\t\x20]*([^\n]+)[\t\x20]*$)|(?:^\|([\'\/]{0,2})~?([\.\w]+)\:?\4\|[\t\x20]*([^\n]+)[\t\x20]*\|$)/gm;
-TiddlyWiki.prototype.slicesRE = /(?:^([\'\/]{0,2})~?([\.\w]+)\:\1[\t\x20]*([^\n]+)[\t\x20]*$)|(?:^\|([\'\/]{0,2})~?([^\|\n\f\r\t]+)\:?\4\t*\|[\t\x20]*([^\|\n]+)[\t\x20]*\|$)/gm;
+TiddlyWiki.prototype.slicesRE = /(?:^([\'\/]{0,2})~?([\.\w]+)\:\1[\t\x20]*([^\n]+)[\t\x20]*$)|(?:^\|([\'\/]{0,2})~?([^\|\n\f\r\t]*[^\|\n\f\r\t\:\x20])\:?\4\t*\|[\t\x20]*([^\n]+)[\t\x20]*\|$)/gm;
 // @internal
 TiddlyWiki.prototype.calcAllSlices = function(title)
 {
