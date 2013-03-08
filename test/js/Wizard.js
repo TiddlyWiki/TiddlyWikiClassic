@@ -22,9 +22,9 @@ jQuery(document).ready(function(){
 
 	test("Wizard: setValue / getValue (formEl)", function() {
 		var w = new Wizard();
-		w.createWizard($("<div />")[0], "My Title");
+		w.createWizard(jQuery("<div />")[0], "My Title");
 		var val1 = w.getValue("test1");
-		var elem = $("<div />").addClass("foo")[0];
+		var elem = jQuery("<div />").addClass("foo")[0];
 		w.setValue("test1", "foo");
 		w.setValue("test2", ["a list", "of items"]);
 		w.setValue("test3", { name: "data", val: "foo" });
@@ -39,11 +39,11 @@ jQuery(document).ready(function(){
 		strictEqual(val3.length, 2, "array set successfully (1/2)");
 		strictEqual(val3[0], "a list", "array set successfully (2/2)");
 		strictEqual(val4.name, "data", "object set successfully");
-		strictEqual($(val5).hasClass("foo"), true, "element set successfully");
+		strictEqual(jQuery(val5).hasClass("foo"), true, "element set successfully");
 	});
 
 	test("Wizard: createWizard", function() {
-		var elem = $(place)[0];
+		var elem = jQuery(place)[0];
 		var wizard = new Wizard();
 		wizard.createWizard(place, 'Import a TiddlyWiki');
 		strictEqual(wizard.formElem.nodeName, "FORM", "a form element set.");
@@ -51,7 +51,7 @@ jQuery(document).ready(function(){
 	
 	test("Wizard: setValue of existing property name on node", function() {
 		var w = new Wizard();
-		w.createWizard($("<div />")[0], "My Title");
+		w.createWizard(jQuery("<div />")[0], "My Title");
 		w.setValue("nodeName", "foo");
 		var mode = w.getValue("nodeName");
 		strictEqual(mode, "foo", "reserved names should be possible to set.")
