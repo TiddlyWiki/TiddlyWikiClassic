@@ -1,4 +1,4 @@
-shadow: DefaultTiddlers.tiddler
-shadow: MainMenu.tiddler
-shadow: SideBarOptions.tiddler
-shadow: SideBarTabs.tiddler
+shadow: DefaultTiddlers.tid
+shadow: MainMenu.tid
+shadow: SideBarOptions.tid
+shadow: SideBarTabs.tid

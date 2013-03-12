@@ -436,7 +436,7 @@ jQuery(document).ready(function(){
 			'<div id="storeArea">', '</div>',
 			'<!--POST-STOREAREA-->', '</body></html>'].join("\n");
 		store.importTiddlyWiki(html);
-		strictEqual($(storeArea).attr("id"), "storeArea", "make sure a storeArea was found");
+		strictEqual(jQuery(storeArea).attr("id"), "storeArea", "make sure a storeArea was found");
 	});
 
 	test("importTiddlyWiki empty store (post body start)", function() {
@@ -445,7 +445,7 @@ jQuery(document).ready(function(){
 			'<div id="storeArea">', '</div>',
 			,'<!--POST-BODY-START-->','</body></html>'].join("\n");
 		store.importTiddlyWiki(html);
-		strictEqual($(storeArea).attr("id"), "storeArea", "make sure a storeArea was found");
+		strictEqual(jQuery(storeArea).attr("id"), "storeArea", "make sure a storeArea was found");
 	});
 
 	test("importTiddlyWiki empty store (minified test)", function() {
@@ -454,7 +454,7 @@ jQuery(document).ready(function(){
 			'<div id="storeArea">', '</div>',
 			,'<!--POST-BODY-START-->','</body></html>'].join(""); // join without newlines
 		store.importTiddlyWiki(html);
-		strictEqual($(storeArea).attr("id"), "storeArea", "make sure a storeArea was found");
+		strictEqual(jQuery(storeArea).attr("id"), "storeArea", "make sure a storeArea was found");
 	});
 
 	test("importTiddlyWiki empty store (minified test)", function() {
@@ -463,39 +463,39 @@ jQuery(document).ready(function(){
 			'<div id="storeArea"><div class="tiddler">hello</div>', '</div>',
 			,'<!--POST-BODY-START-->','</body></html>'].join(""); // join without newlines
 		store.importTiddlyWiki(html);
-		strictEqual($(storeArea).attr("id"), "storeArea", "make sure a storeArea was found");
-		strictEqual($(".tiddler", storeArea).length, 1, "there is one element with class tiddler within the element");
+		strictEqual(jQuery(storeArea).attr("id"), "storeArea", "make sure a storeArea was found");
+		strictEqual(jQuery(".tiddler", storeArea).length, 1, "there is one element with class tiddler within the element");
 	});
 
 	test("importTiddlyWiki empty store (no comments)", function() {
 		var html = ['<html><head></head><body>','<div id="storeArea"><div class="tiddler">hello</div></div>',
 			'</body></html>'].join(""); // join without newlines
 		store.importTiddlyWiki(html);
-		strictEqual($(storeArea).attr("id"), "storeArea", "make sure a storeArea was found");
-		strictEqual($(".tiddler", storeArea).length, 1, "there is one element with class tiddler within the element");
+		strictEqual(jQuery(storeArea).attr("id"), "storeArea", "make sure a storeArea was found");
+		strictEqual(jQuery(".tiddler", storeArea).length, 1, "there is one element with class tiddler within the element");
 	});
 
 	test("importTiddlyWiki empty store (upper case tags)", function() {
 		var html = ['<HTML><HEAD></HEAD><BODY>','<DIV ID="storeArea"><DIV class="tiddler">hello</DIV></DIV>',
 			'</BODY></HTML>'].join("\n"); // join with newlines
 		store.importTiddlyWiki(html);
-		strictEqual($(storeArea).attr("id"), "storeArea", "make sure a storeArea was found");
-		strictEqual($(".tiddler", storeArea).length, 1, "there is one element with class tiddler within the element");
+		strictEqual(jQuery(storeArea).attr("id"), "storeArea", "make sure a storeArea was found");
+		strictEqual(jQuery(".tiddler", storeArea).length, 1, "there is one element with class tiddler within the element");
 	});
 
 	test("importTiddlyWiki empty store (storeArea in single quotes)", function() {
 		var html = ["<HTML><HEAD></HEAD><BODY>","<DIV ID='storeArea'>",'<DIV class="tiddler">hello</DIV></DIV>',
 			'</BODY></HTML>'].join("\n"); // join with newlines
 		store.importTiddlyWiki(html);
-		strictEqual($(storeArea).attr("id"), "storeArea", "make sure a storeArea was found");
-		strictEqual($(".tiddler", storeArea).length, 1, "there is one element with class tiddler within the element");
+		strictEqual(jQuery(storeArea).attr("id"), "storeArea", "make sure a storeArea was found");
+		strictEqual(jQuery(".tiddler", storeArea).length, 1, "there is one element with class tiddler within the element");
 	});
 
 	test("importTiddlyWiki empty store (storeArea with no quotes)", function() {
 		var html = ["<HTML><HEAD></HEAD><BODY>","<DIV id=storeArea>",'<DIV class="tiddler">hello</DIV></DIV>',
 			'</BODY></HTML>'].join("\n"); // join with newlines
 		store.importTiddlyWiki(html);
-		strictEqual($(storeArea).attr("id"), "storeArea", "make sure a storeArea was found");
-		strictEqual($(".tiddler", storeArea).length, 1, "there is one element with class tiddler within the element");
+		strictEqual(jQuery(storeArea).attr("id"), "storeArea", "make sure a storeArea was found");
+		strictEqual(jQuery(".tiddler", storeArea).length, 1, "there is one element with class tiddler within the element");
 	});
 });

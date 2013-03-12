@@ -1,7 +1,7 @@
 jQuery(document).ready(function() {
 
 	function makeTestNode() {
-		return $("<div />")[0];
+		return jQuery("<div />")[0];
 	}
 
 	function removeTestNode() {}
@@ -138,14 +138,14 @@ jQuery(document).ready(function() {
 		ok(createTiddlyElement(null,"div"), "Element creation should create the DOM element");
 
 		createTiddlyElement( makeTestNode(),"div");
-		ok($('#testElement div'), 'Setting the parent parameter should append the new DOM element to the parent');
+		ok(jQuery('#testElement div'), 'Setting the parent parameter should append the new DOM element to the parent');
 		removeTestNode();
 
 		createTiddlyElement(null,"div",'testID');
-		ok($('#testID'), 'Setting the element id parameter should set the id on the DOM element');
+		ok(jQuery('#testID'), 'Setting the element id parameter should set the id on the DOM element');
 
 		createTiddlyElement(null,"div", null, 'testClass');
-		ok($('div.testClass'), 'Setting the element class parameter should set the class on the DOM element');
+		ok(jQuery('div.testClass'), 'Setting the element class parameter should set the class on the DOM element');
 
 	});
 
@@ -233,10 +233,10 @@ jQuery(document).ready(function() {
   });
 
 	test("Utilities: createTiddlyLink trailing whitespace", function() {
-		var place = $("<div />")[0]
+		var place = jQuery("<div />")[0]
 		var link = createTiddlyLink(place," testTiddler1 ");
-		strictEqual($(link).attr("tiddlylink"), "testTiddler1", "attribute has been set without leading or trailing whitespace");
-		strictEqual($(link).hasClass("tiddlyLinkExisting"), true,
+		strictEqual(jQuery(link).attr("tiddlylink"), "testTiddler1", "attribute has been set without leading or trailing whitespace");
+		strictEqual(jQuery(link).hasClass("tiddlyLinkExisting"), true,
 			"has matched testTiddler1 not a tiddler with leading and trailing whitespace")
 	});
 
