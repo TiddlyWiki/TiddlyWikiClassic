@@ -97,7 +97,24 @@ function autoSaveChanges(onlyIfDirty,tiddlers)
 
 function loadOriginal(localPath)
 {
-	return loadFile(localPath);
+	var content=loadFile(localPath);
+	if (!content) content=recreateOriginal(localPath);
+	return content;
+}
+
+function recreateOriginal(localPath)
+{
+	// construct doctype
+	var t=document.doctype;
+	var content = "<!DOCTYPE "+t.name;
+	if      (t.publicId)		content+=' PUBLIC "'+t.publicId+'"';
+	else if (t.systemId)		content+=' SYSTEM "'+t.systemId+'"';
+	content+=">\n";
+	// append document content
+	content+=document.documentElement.outerHTML;
+	// clear 'savetest' marker
+	content=content.replace(/<div id="saveTest">savetest<\/div>/,'<div id="saveTest"></div>');
+	return content;
 }
 
 // Save this tiddlywiki with the pending changes

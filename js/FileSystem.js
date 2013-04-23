@@ -25,6 +25,8 @@ window.saveFile = window.saveFile || function(fileUrl,content)
 		r = ieSaveFile(fileUrl,content);
 	if(!r)
 		r = javaSaveFile(fileUrl,content);
+	if(!r)
+		r = HTML5DownloadSaveFile(fileUrl,content);
 	return r;
 }
 
@@ -261,3 +263,26 @@ function javaLoadFile(filePath)
 	return content.join("\n");
 }
 
+
+// Returns null if it can't do it, false if there's an error, true if it saved OK
+function HTML5DownloadSaveFile(filePath,content)
+{
+	if(document.createElement("a").download !== undefined) {
+		try {
+			var slashpos=filePath.lastIndexOf("/");
+			if (slashpos==-1) slashpos=filePath.lastIndexOf("\\"); 
+			var filename=filePath.substr(slashpos+1);
+			var link = document.createElement("a");
+			link.setAttribute("target","_blank");
+			link.setAttribute("href","data:text/html," + encodeURIComponent(content));
+			link.setAttribute("download",filename);
+			link.click();
+			return true;
+		} catch(ex) {
+			//# alert("Exception while attempting to save\n\n" + ex);
+			return false;
+		}
+
+	}
+	return null;
+}
