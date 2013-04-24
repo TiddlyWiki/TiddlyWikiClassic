@@ -32,9 +32,14 @@ if(!window || !window.console) {
 	console = {tiddlywiki:true,log:function(message) {displayMessage(message);}};
 }
 
+
 // Starting up
 function main()
 {
+
+	// save document image as soon as it is loaded
+	window.originalContent=document.documentElement.outerHTML;
+
 	var t10,t9,t8,t7,t6,t5,t4,t3,t2,t1,t0 = new Date();
 	startingUp = true;
 	var doc = jQuery(document);

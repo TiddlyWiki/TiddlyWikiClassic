@@ -111,9 +111,10 @@ function recreateOriginal(localPath)
 	else if (t.systemId)		content+=' SYSTEM "'+t.systemId+'"';
 	content+=">\n";
 	// append document content
-	content+=document.documentElement.outerHTML;
+//	content+=document.documentElement.outerHTML;
+	content+=window.originalContent;
 	// clear 'savetest' marker
-	content=content.replace(/<div id="saveTest">savetest<\/div>/,'<div id="saveTest"></div>');
+//	content=content.replace(/<div id="saveTest">savetest<\/div>/,'<div id="saveTest"></div>');
 	return content;
 }
 
