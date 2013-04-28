@@ -27,6 +27,8 @@ window.saveFile = window.saveFile || function(fileUrl,content)
 		r = javaSaveFile(fileUrl,content);
 	if(!r)
 		r = HTML5DownloadSaveFile(fileUrl,content);
+	if(!r)
+		r = manualSaveFile(fileUrl,content);
 	return r;
 }
 
@@ -285,4 +287,14 @@ function HTML5DownloadSaveFile(filePath,content)
 
 	}
 	return null;
+}
+
+// Returns null if it can't do it, false if there's an error, true if it saved OK
+function manualSaveFile(filePath,content)
+{
+	// QUICK FALLBACK for showing a link to data: URI
+	displayMessage(
+		"Manual save: right click HERE, then 'Save link as...'",
+		"data:text/html," + encodeURIComponent(content));
+	return true;
 }
