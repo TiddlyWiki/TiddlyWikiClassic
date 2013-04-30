@@ -64,7 +64,7 @@ config.formatterHelpers = {
 		var lookaheadMatch = this.lookaheadRegExp.exec(w.source);
 		if(lookaheadMatch && lookaheadMatch.index == w.matchStart) {
 			var text = lookaheadMatch[1];
-			if(config.browser.isIE)
+			if(config.browser.isIE && (config.browser.ieVersion[1] < 10))
 				text = text.replace(/\n/g,"\r");
 			createTiddlyElement(w.output,this.element,null,null,text);
 			w.nextMatch = lookaheadMatch.index + lookaheadMatch[0].length;
