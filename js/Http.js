@@ -6,7 +6,7 @@
 //# fallback to privileged file I/O or HTML5 FileReader
 function ajaxReq(args)
 {
-	if (args.url.startsWith("file"))  // LOCAL FILE
+	if (args.file || args.url.startsWith("file"))  // LOCAL FILE
 		return localAjax(args);
 	return jQuery.ajax(args);
 }
@@ -14,36 +14,27 @@ function ajaxReq(args)
 //# perform local I/O and FAKE a minimal XHR response object
 function localAjax(args)
 {
-	try { // HTML5 FileReader (Chrome, FF20+, Safari, etc.)
+	var success=function(data)
+		{ args.success(data,"success",{ responseText:data }); }
+	var failure=function(who)
+		{ args.error({ message:who+": cannot read local file" },"error",0); }
+
+	if (args.file) try { // HTML5 FileReader (Chrome, FF20+, Safari, etc.)
 		var reader=new FileReader();
-		if (reader && (args.file != null)) {
-			reader.onload=function(e){
-				var data=e.target.result;
-				var jqXHR = { responseText:data };
-				args.success(data,"success",jqXHR);
-			}
-			reader.onerror=function(e){
-				var jqXHR = { message:"FileReader: cannot read local file" };
-				args.error(jqXHR,"error",0);
-			}
-			reader.readAsText(args.file);
-			return true;
-		}
+		reader.onload=function(e)  { success(e.target.result); }
+		reader.onerror=function(e) { failure("FileReader"); }
+		reader.readAsText(args.file);
+		return true;
 	} catch (ex) { ; }
 
 	try { // local file I/O (IE, FF14 and earlier, FF15+ with TiddlyFox)
 		var data=loadFile(getLocalPath(args.url));
-		if (data) {
-			var jqXHR = { responseText:data };
-			args.success(data,"success",jqXHR);
-		} else {
-			var jqXHR = { message:"loadFile: Cannot read local file" };
-			args.error(jqXHR,"error",0);
-		}
+		if (data) success(data);
+		else failure("loadFile");
 		return true;
 	} catch (ex) { ; }
 
-	try { // FF14 and earlier: get privileges for local jQuery I/O
+	try { // Fallback for FF14 and earlier: get privileges for local jQuery Ajax I/O
 		window.netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
 		return jQuery.ajax(args);
 	} catch (ex) { ; }
