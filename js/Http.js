@@ -3,33 +3,51 @@
 //--
 
 //# Perform an http request using the jQuery ajax function
+//# fallback to privileged file I/O or HTML5 FileReader
 function ajaxReq(args)
 {
-	if (args.url.startsWith("file")) { // LOCAL FILE
-		try {
-			// get FireFox privileges (FF14 and earlier)
-			if(window.Components && window.netscape && window.netscape.security)
-				window.netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
-		} catch (ex) {
-			// FF15+ fallback: no privs for ajax-based LOCAL file access
-			return localAjax(args);
-		}
-	}
+	if (args.url.startsWith("file"))  // LOCAL FILE
+		return localAjax(args);
 	return jQuery.ajax(args);
 }
 
-//# perform direct local I/O... and FAKE a minimal XHR response object
-//# requires TiddlyFox for privileged loadFile() function in FireFox15 or later
+//# perform local I/O and FAKE a minimal XHR response object
 function localAjax(args)
 {
-	var data=loadFile(getLocalPath(args.url));
-	if (data) {
-		var jqXHR = { responseText:data };
-		args.success(data,"success",jqXHR);
-	} else {
-		var jqXHR = { message:"Cannot read local file" };
-		args.error(jqXHR,"error",0);
-	}
+	try { // HTML5 FileReader (Chrome, FF20+, Safari, etc.)
+		var reader=new FileReader();
+		if (reader && (args.file != null)) {
+			reader.onload=function(e){
+				var data=e.target.result;
+				var jqXHR = { responseText:data };
+				args.success(data,"success",jqXHR);
+			}
+			reader.onerror=function(e){
+				var jqXHR = { message:"FileReader: cannot read local file" };
+				args.error(jqXHR,"error",0);
+			}
+			reader.readAsText(args.file);
+			return true;
+		}
+	} catch (ex) { ; }
+
+	try { // local file I/O (IE, FF14 and earlier, FF15+ with TiddlyFox)
+		var data=loadFile(getLocalPath(args.url));
+		if (data) {
+			var jqXHR = { responseText:data };
+			args.success(data,"success",jqXHR);
+		} else {
+			var jqXHR = { message:"loadFile: Cannot read local file" };
+			args.error(jqXHR,"error",0);
+		}
+		return true;
+	} catch (ex) { ; }
+
+	try { // FF14 and earlier: get privileges for local jQuery I/O
+		window.netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
+		return jQuery.ajax(args);
+	} catch (ex) { ; }
+
 	return true;
 }
 

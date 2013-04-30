@@ -76,6 +76,7 @@ FileAdaptor.prototype.getTiddlerList = function(context,userParams,callback,filt
 	var options = {
 		type:"GET",
 		url:context.host,
+		file:context.file, // for HTML5 FileReader
 		processData:false,
 		success:function(data,textStatus,jqXHR) {
 			FileAdaptor.loadTiddlyWikiSuccess(context,jqXHR);
