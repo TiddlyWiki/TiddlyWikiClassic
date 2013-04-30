@@ -98,10 +98,11 @@ function autoSaveChanges(onlyIfDirty,tiddlers)
 function loadOriginal(localPath)
 {
 	var content=loadFile(localPath);
-	if (!content) content=window.originalHTML||recreateOriginal();
+//	TBD(TW280): if (!content) content=window.originalHTML||recreateOriginal();
 	return content;
 }
 
+// TBD(TW280): reconstruct original HTML file content from current document memory
 function recreateOriginal()
 {
 	// construct doctype

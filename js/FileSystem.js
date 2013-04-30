@@ -25,10 +25,11 @@ window.saveFile = window.saveFile || function(fileUrl,content)
 		r = ieSaveFile(fileUrl,content);
 	if(!r)
 		r = javaSaveFile(fileUrl,content);
-	if(!r)
-		r = HTML5DownloadSaveFile(fileUrl,content);
-	if(!r)
-		r = manualSaveFile(fileUrl,content);
+// TBD(TW280): new file save fallback handlers
+//	if(!r)
+//		r = HTML5DownloadSaveFile(fileUrl,content);
+//	if(!r)
+//		r = manualSaveFile(fileUrl,content);
 	return r;
 }
 
