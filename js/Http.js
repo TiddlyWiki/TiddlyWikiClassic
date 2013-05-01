@@ -20,7 +20,6 @@ function localAjax(args)
 		{ args.error({ message:who+": cannot read local file" },"error",0); }
 
 	if (args.file) try { // HTML5 FileReader (Chrome, FF20+, Safari, etc.)
-alert(args.file.name);
 		var reader=new FileReader();
 		reader.onload=function(e)  { success(e.target.result); }
 		reader.onerror=function(e) { failure("FileReader"); }
@@ -28,17 +27,11 @@ alert(args.file.name);
 		return true;
 	} catch (ex) { ; }
 
-	try { // local file I/O (IE, FF14 and earlier, FF15+ with TiddlyFox)
-alert(args.url);
+	try { // local file I/O (IE, FF with TiddlyFox, Chrome/Safari with TiddlySaver, etc.)
 		var data=loadFile(getLocalPath(args.url));
 		if (data) success(data);
 		else failure("loadFile");
 		return true;
-	} catch (ex) { ; }
-
-	try { // Fallback for FF14 and earlier: get privileges for local jQuery Ajax I/O
-		window.netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
-		return jQuery.ajax(args);
 	} catch (ex) { ; }
 
 	return true;
