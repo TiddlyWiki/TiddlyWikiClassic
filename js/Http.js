@@ -20,6 +20,7 @@ function localAjax(args)
 		{ args.error({ message:who+": cannot read local file" },"error",0); }
 
 	if (args.file) try { // HTML5 FileReader (Chrome, FF20+, Safari, etc.)
+alert(args.file.name);
 		var reader=new FileReader();
 		reader.onload=function(e)  { success(e.target.result); }
 		reader.onerror=function(e) { failure("FileReader"); }
@@ -28,6 +29,7 @@ function localAjax(args)
 	} catch (ex) { ; }
 
 	try { // local file I/O (IE, FF14 and earlier, FF15+ with TiddlyFox)
+alert(args.url);
 		var data=loadFile(getLocalPath(args.url));
 		if (data) success(data);
 		else failure("loadFile");
