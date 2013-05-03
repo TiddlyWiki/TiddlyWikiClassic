@@ -35,6 +35,9 @@ if(!window || !window.console) {
 // Starting up
 function main()
 {
+//#	// TBD(TW280): save loaded document HTML before making changes
+//#	window.originalHTML=recreateOriginal();
+
 	var t10,t9,t8,t7,t6,t5,t4,t3,t2,t1,t0 = new Date();
 	startingUp = true;
 	var doc = jQuery(document);

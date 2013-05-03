@@ -97,8 +97,34 @@ function autoSaveChanges(onlyIfDirty,tiddlers)
 
 function loadOriginal(localPath)
 {
-	return loadFile(localPath);
+	var content=loadFile(localPath);
+//#	TBD(TW280): if (!content) content=window.originalHTML||recreateOriginal();
+	return content;
 }
+
+//# TBD(TW280): reconstruct original HTML file content from current document memory
+//#function recreateOriginal()
+//#{
+//#	// construct doctype
+//#	// TBD: add optional URL... (q: how to get the value?)
+//#	var t=document.doctype;
+//#	var content = "<!DOCTYPE "+t.name;
+//#	if      (t.publicId)		content+=' PUBLIC "'+t.publicId+'"';
+//#	else if (t.systemId)		content+=' SYSTEM "'+t.systemId+'"';
+//#	content+=">\n";
+//#
+//#	// append current document content
+//#	content+=document.documentElement.outerHTML;
+//#
+//#	// clear 'savetest' marker
+//#	content=content.replace(/<div id="saveTest">savetest<\/div>/,'<div id="saveTest"></div>');
+//#
+//#	// TBD: fixup id="copyright" content (encode HTML entities, e.g. &copy;)
+//#	// TBD: fixup <noscript> block (decode HTML entities)
+//#	// TBD: remove added <applet> block
+//#
+//#	return content;
+//#}
 
 // Save this tiddlywiki with the pending changes
 function saveChanges(onlyIfDirty,tiddlers)

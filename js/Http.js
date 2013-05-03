@@ -3,33 +3,37 @@
 //--
 
 //# Perform an http request using the jQuery ajax function
+//# fallback to privileged file I/O or HTML5 FileReader
 function ajaxReq(args)
 {
-	if (args.url.startsWith("file")) { // LOCAL FILE
-		try {
-			// get FireFox privileges (FF14 and earlier)
-			if(window.Components && window.netscape && window.netscape.security)
-				window.netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
-		} catch (ex) {
-			// FF15+ fallback: no privs for ajax-based LOCAL file access
-			return localAjax(args);
-		}
-	}
+	if (args.file || args.url.startsWith("file"))  // LOCAL FILE
+		return localAjax(args);
 	return jQuery.ajax(args);
 }
 
-//# perform direct local I/O... and FAKE a minimal XHR response object
-//# requires TiddlyFox for privileged loadFile() function in FireFox15 or later
+//# perform local I/O and FAKE a minimal XHR response object
 function localAjax(args)
 {
-	var data=loadFile(getLocalPath(args.url));
-	if (data) {
-		var jqXHR = { responseText:data };
-		args.success(data,"success",jqXHR);
-	} else {
-		var jqXHR = { message:"Cannot read local file" };
-		args.error(jqXHR,"error",0);
-	}
+	var success=function(data)
+		{ args.success(data,"success",{ responseText:data }); }
+	var failure=function(who)
+		{ args.error({ message:who+": cannot read local file" },"error",0); }
+
+	if (args.file) try { // HTML5 FileReader (Chrome, FF20+, Safari, etc.)
+		var reader=new FileReader();
+		reader.onload=function(e)  { success(e.target.result); }
+		reader.onerror=function(e) { failure("FileReader"); }
+		reader.readAsText(args.file);
+		return true;
+	} catch (ex) { ; }
+
+	try { // local file I/O (IE, FF with TiddlyFox, Chrome/Safari with TiddlySaver, etc.)
+		var data=loadFile(getLocalPath(args.url));
+		if (data) success(data);
+		else failure("loadFile");
+		return true;
+	} catch (ex) { ; }
+
 	return true;
 }
 
