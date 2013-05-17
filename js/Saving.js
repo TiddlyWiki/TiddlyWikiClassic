@@ -98,6 +98,7 @@ function autoSaveChanges(onlyIfDirty,tiddlers)
 function loadOriginal(localPath)
 {
 	var content=loadFile(localPath);
+var content=null; // experiment: FORCE use of recreateOriginal
 	if (!content) content=window.originalHTML||recreateOriginal();
 	return content;
 }
@@ -117,19 +118,22 @@ function recreateOriginal()
 	// append current document content
 	content+=document.documentElement.outerHTML;
 
-	// clear 'savetest' marker
-	// content=content.replace(/<div id="saveTest">savetest<\/div>/,'<div id="saveTest"></div>');
-	// newline before head tag
+	//# clear 'savetest' marker
+	content=content.replace(/<div id="saveTest">savetest<\/div>/,'<div id="saveTest"></div>');
+	//# add newline before head tag
 	content=content.replace(/><head>/,'>\n<head>');
-	// newlines before/after end of body/html tags
+	//# fixup newlines before/after end of body/html tags
 	content=content.replace(/\n\n<\/body><\/html>$/,'</body>\n</html>\n');
-	// meta terminators
+	//# add meta tag terminators
 	content=content.replace(/(<[m]eta [^\>]*[^\/])>/g,'$1 />');
-	// remove added <applet> block
+	//# remove added <applet> block following </script>
 	content=content.replace(/script><applet [^\>]*><\/applet>/g,'script>');
-
-	// TBD: fixup id="copyright" content (encode HTML entities, e.g. &copy;)
-	// TBD: fixup <noscript> block (decode HTML entities)
+	//# decode LT/GT entities in noscript
+	content=content.replace(/<noscript>[^\<]*<\/noscript>/,
+		function(m){return m.replace(/&lt;/g,'<').replace(/&gt;/g,'>');});
+	//# encode copyright symbols (UTF-8 to HTML entity)
+	content=content.replace(/<div id="copyright">[^\<]*<\/div>/,
+		function(m){return m.replace(/\xA9/g,'&copy;');});
 
 	return content;
 }
