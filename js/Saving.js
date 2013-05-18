@@ -98,7 +98,6 @@ function autoSaveChanges(onlyIfDirty,tiddlers)
 function loadOriginal(localPath)
 {
 	var content=loadFile(localPath);
-var content=null; // experiment: FORCE use of recreateOriginal
 	if (!content) content=window.originalHTML||recreateOriginal();
 	return content;
 }
@@ -111,23 +110,22 @@ function recreateOriginal()
 	var content = "<!DOCTYPE "+t.name;
 	if      (t.publicId)		content+=' PUBLIC "'+t.publicId+'"';
 	else if (t.systemId)		content+=' SYSTEM "'+t.systemId+'"';
-	// add URL... (TBD: how to get the value? for now... hard code it)
 	content+=' "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"';
-	content+=">\n";
+	content+='>\n';
 
 	// append current document content
 	content+=document.documentElement.outerHTML;
 
 	//# clear 'savetest' marker
 	content=content.replace(/<div id="saveTest">savetest<\/div>/,'<div id="saveTest"></div>');
-	//# add newline before head tag
-	content=content.replace(/><head>/,'>\n<head>');
-	//# fixup newlines before/after end of body/html tags
-	content=content.replace(/\n\n<\/body><\/html>$/,'</body>\n</html>\n');
-	//# add meta tag terminators
-	content=content.replace(/(<[m]eta [^\>]*[^\/])>/g,'$1 />');
-	//# remove added <applet> block following </script>
+	//# clear <applet> following </script>
 	content=content.replace(/script><applet [^\>]*><\/applet>/g,'script>');
+	//# newline before head tag
+	content=content.replace(/><head>/,'>\n<head>');
+	//# newlines before/after end of body/html tags
+	content=content.replace(/\n\n<\/body><\/html>$/,'</body>\n</html>\n');
+	//# meta tag terminators
+	content=content.replace(/(<(meta) [^\>]*[^\/])>/g,'$1 />');
 	//# decode LT/GT entities in noscript
 	content=content.replace(/<noscript>[^\<]*<\/noscript>/,
 		function(m){return m.replace(/&lt;/g,'<').replace(/&gt;/g,'>');});
