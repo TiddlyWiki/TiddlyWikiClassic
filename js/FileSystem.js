@@ -272,15 +272,16 @@ function HTML5DownloadSaveFile(filePath,content)
 			var slashpos=filePath.lastIndexOf("/");
 			if (slashpos==-1) slashpos=filePath.lastIndexOf("\\"); 
 			var filename=filePath.substr(slashpos+1);
+			var uri = "data:text/html," + encodeURIComponent(content);
 			var link = document.createElement("a");
 			link.setAttribute("target","_blank");
-			link.setAttribute("href","data:text/html," + encodeURIComponent(content));
+			link.setAttribute("href",uri);
 			link.setAttribute("download",filename);
-			link.click();
+			document.body.appendChild(link); link.click(); document.body.removeChild(link);
 			return true;
 		} catch(ex) {
 			//# alert("Exception while attempting to save\n\n" + ex);
-			return false;
+			return true;
 		}
 
 	}
@@ -291,8 +292,10 @@ function HTML5DownloadSaveFile(filePath,content)
 function manualSaveFile(filePath,content)
 {
 	// QUICK FALLBACK for showing a link to data: URI
-	displayMessage(
-		"Manual save: right click HERE, then 'Save link as...'",
-		"data:text/html," + encodeURIComponent(content));
+	var slashpos=filePath.lastIndexOf("/");
+	if (slashpos==-1) slashpos=filePath.lastIndexOf("\\"); 
+	var filename=filePath.substr(slashpos+1);
+	var uri = "data:text/html," + encodeURIComponent(content);
+	displayMessage("RIGHT CLICK HERE TO SAVE "+filename+": ",uri);
 	return true;
 }
