@@ -19,7 +19,9 @@ var pluginInfo,tiddler; // Used to pass information to plugins in loadPlugins()
 // Whether this file can be saved back to the same location [Preemption]
 window.allowSave = window.allowSave || function(l)
 {
-	return (document.location.protocol == "file:");
+	//# allow save from ANYWHERE (TW280+ uses fallback HTML5 download from data:// URI)
+	//#	return (document.location.protocol == "file:");
+	return true;
 }
 
 // Whether to use the JavaSaver applet
