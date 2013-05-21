@@ -19,7 +19,9 @@ var pluginInfo,tiddler; // Used to pass information to plugins in loadPlugins()
 // Whether this file can be saved back to the same location [Preemption]
 window.allowSave = window.allowSave || function(l)
 {
-	return (document.location.protocol == "file:");
+	//# allow save from ANYWHERE (TW280+ uses fallback HTML5 download from data:// URI)
+	//#	return (document.location.protocol == "file:");
+	return true;
 }
 
 // Whether to use the JavaSaver applet
@@ -35,8 +37,8 @@ if(!window || !window.console) {
 // Starting up
 function main()
 {
-//#	// TBD(TW280): save loaded document HTML before making changes
-//#	window.originalHTML=recreateOriginal();
+//#	save loaded document HTML before making changes
+	window.originalHTML=recreateOriginal();
 
 	var t10,t9,t8,t7,t6,t5,t4,t3,t2,t1,t0 = new Date();
 	startingUp = true;

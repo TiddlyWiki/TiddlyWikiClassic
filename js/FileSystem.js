@@ -25,11 +25,10 @@ window.saveFile = window.saveFile || function(fileUrl,content)
 		r = ieSaveFile(fileUrl,content);
 	if(!r)
 		r = javaSaveFile(fileUrl,content);
-//# TBD(TW280): new file save fallback handlers
-//#	if(!r)
-//#		r = HTML5DownloadSaveFile(fileUrl,content);
-//#	if(!r)
-//#		r = manualSaveFile(fileUrl,content);
+	if(!r)
+		r = HTML5DownloadSaveFile(fileUrl,content);
+	if(!r)
+		r = manualSaveFile(fileUrl,content);
 	return r;
 }
 
@@ -266,35 +265,37 @@ function javaLoadFile(filePath)
 	return content.join("\n");
 }
 
-//#// Returns null if it can't do it, false if there's an error, true if it saved OK
-//#function HTML5DownloadSaveFile(filePath,content)
-//#{
-//#	if(document.createElement("a").download !== undefined) {
-//#		try {
-//#			var slashpos=filePath.lastIndexOf("/");
-//#			if (slashpos==-1) slashpos=filePath.lastIndexOf("\\"); 
-//#			var filename=filePath.substr(slashpos+1);
-//#			var link = document.createElement("a");
-//#			link.setAttribute("target","_blank");
-//#			link.setAttribute("href","data:text/html," + encodeURIComponent(content));
-//#			link.setAttribute("download",filename);
-//#			link.click();
-//#			return true;
-//#		} catch(ex) {
-//#			//# alert("Exception while attempting to save\n\n" + ex);
-//#			return false;
-//#		}
-//#
-//#	}
-//#	return null;
-//#}
-//#
-//#// Returns null if it can't do it, false if there's an error, true if it saved OK
-//#function manualSaveFile(filePath,content)
-//#{
-//#	// QUICK FALLBACK for showing a link to data: URI
-//#	displayMessage(
-//#		"Manual save: right click HERE, then 'Save link as...'",
-//#		"data:text/html," + encodeURIComponent(content));
-//#	return true;
-//#}
+function HTML5DownloadSaveFile(filePath,content)
+{
+	if(document.createElement("a").download !== undefined) {
+		try {
+			var slashpos=filePath.lastIndexOf("/");
+			if (slashpos==-1) slashpos=filePath.lastIndexOf("\\"); 
+			var filename=filePath.substr(slashpos+1);
+			var uri = "data:text/html," + encodeURIComponent(content);
+			var link = document.createElement("a");
+			link.setAttribute("target","_blank");
+			link.setAttribute("href",uri);
+			link.setAttribute("download",filename);
+			document.body.appendChild(link); link.click(); document.body.removeChild(link);
+			return true;
+		} catch(ex) {
+			//# alert("Exception while attempting to save\n\n" + ex);
+			return true;
+		}
+
+	}
+	return null;
+}
+
+// Returns null if it can't do it, false if there's an error, true if it saved OK
+function manualSaveFile(filePath,content)
+{
+	// QUICK FALLBACK for showing a link to data: URI
+	var slashpos=filePath.lastIndexOf("/");
+	if (slashpos==-1) slashpos=filePath.lastIndexOf("\\"); 
+	var filename=filePath.substr(slashpos+1);
+	var uri = "data:text/html," + encodeURIComponent(content);
+	displayMessage("RIGHT CLICK HERE TO SAVE "+filename+": ",uri);
+	return true;
+}
