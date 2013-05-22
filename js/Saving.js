@@ -168,14 +168,16 @@ function saveChanges(onlyIfDirty,tiddlers)
 		alert(msg.invalidFileError.format([localPath]));
 		return;
 	}
+	var co=config.options; //# abbreviation
+	config.saveByDownload=false;
 	saveMain(localPath,original,posDiv);
-	if(config.options.chkSaveBackups)
+	if(co.chkSaveBackups && !config.saveByDownload)
 		saveBackup(localPath,original);
-	if(config.options.chkSaveEmptyTemplate)
+	if(co.chkSaveEmptyTemplate && !config.saveByDownload)
 		saveEmpty(localPath,original,posDiv);
-	if(config.options.chkGenerateAnRssFeed && saveRss instanceof Function)
+	if(co.chkGenerateAnRssFeed && saveRss instanceof Function && !config.saveByDownload)
 		saveRss(localPath);
-	if(config.options.chkDisplayInstrumentation)
+	if(co.chkDisplayInstrumentation)
 		displayMessage("saveChanges " + (new Date()-t0) + " ms");
 }
 
@@ -190,7 +192,8 @@ function saveMain(localPath,original,posDiv)
 		showException(ex);
 	}
 	if(save) {
-		displayMessage(config.messages.mainSaved,"file://" + localPath);
+		if (!config.saveByDownload) //# set by HTML5DownloadSaveFile() or manualSaveFile()
+			displayMessage(config.messages.mainSaved,"file://" + localPath);
 		store.setDirty(false);
 	} else {
 		alert(config.messages.mainFailed);
