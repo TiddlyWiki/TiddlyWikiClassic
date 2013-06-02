@@ -278,7 +278,6 @@ function HTML5DownloadSaveFile(filePath,content)
 		link.setAttribute("href",uri);
 		link.setAttribute("download",filename);
 		document.body.appendChild(link); link.click(); document.body.removeChild(link);
-		displayMessage(config.messages.mainDownload,uri);
 		return true;
 	}
 	return null;
