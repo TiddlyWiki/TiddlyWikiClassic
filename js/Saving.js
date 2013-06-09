@@ -107,9 +107,15 @@ function recreateOriginal()
 {
 	// construct doctype
 	var t=document.doctype;
-	var content = "<!DOCTYPE "+t.name;
-	if      (t.publicId)		content+=' PUBLIC "'+t.publicId+'"';
-	else if (t.systemId)		content+=' SYSTEM "'+t.systemId+'"';
+	var content;
+	if (t) {
+		content = "<!DOCTYPE "+t.name;
+		if      (t.publicId)		content+=' PUBLIC "'+t.publicId+'"';
+		else if (t.systemId)		content+=' SYSTEM "'+t.systemId+'"';
+	} else {
+		// IE 6 and 7 provide no result on document.doctype, so fake it
+		content = "<!DOCTYPE html ";
+	}
 	content+=' "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"';
 	content+='>\n';
 
