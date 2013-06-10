@@ -106,10 +106,15 @@ function loadOriginal(localPath)
 function recreateOriginal()
 {
 	// construct doctype
+	var content = "<!DOCTYPE ";
 	var t=document.doctype;
-	var content = "<!DOCTYPE "+t.name;
-	if      (t.publicId)		content+=' PUBLIC "'+t.publicId+'"';
-	else if (t.systemId)		content+=' SYSTEM "'+t.systemId+'"';
+	if (!t) 
+		content+="html"
+	else {
+		content+=t.name;
+		if      (t.publicId)		content+=' PUBLIC "'+t.publicId+'"';
+		else if (t.systemId)		content+=' SYSTEM "'+t.systemId+'"';
+	}
 	content+=' "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"';
 	content+='>\n';
 
@@ -170,16 +175,20 @@ function saveChanges(onlyIfDirty,tiddlers)
 	}
 	var co=config.options; //# abbreviation
 	config.saveByDownload=false;
+	config.saveByManualDownload=false;
 	saveMain(localPath,original,posDiv);
-	if(co.chkSaveBackups && !config.saveByDownload)
-		saveBackup(localPath,original);
-	if(co.chkSaveEmptyTemplate && !config.saveByDownload)
-		saveEmpty(localPath,original,posDiv);
-	if(co.chkGenerateAnRssFeed && saveRss instanceof Function && !config.saveByDownload)
-		saveRss(localPath);
+	if (!config.saveByDownload && !config.saveByManualDownload) {
+		if(co.chkSaveBackups)
+			saveBackup(localPath,original);
+		if(co.chkSaveEmptyTemplate)
+			saveEmpty(localPath,original,posDiv);
+		if(co.chkGenerateAnRssFeed && saveRss instanceof Function)
+			saveRss(localPath);
+	}
 	if(co.chkDisplayInstrumentation)
 		displayMessage("saveChanges " + (new Date()-t0) + " ms");
 }
+
 
 function saveMain(localPath,original,posDiv)
 {
@@ -192,14 +201,16 @@ function saveMain(localPath,original,posDiv)
 		showException(ex);
 	}
 	if(save) {
-		if (config.saveByDownload) { //# set by HTML5DownloadSaveFile() or manualSaveFile()
-			var link = "data:text/html," + encodeURIComponent(revised);
-			var msg  = config.messages.mainDownload;
-		} else {
-			var link = "file://" + localPath;
-			var msg  = config.messages.mainSaved;
+		if (!config.saveByManualDownload) {
+			if (config.saveByDownload) { //# set by HTML5DownloadSaveFile()
+				var link = getDataURI(revised);
+				var msg  = config.messages.mainDownload;
+			} else {
+				var link = "file://" + localPath;
+				var msg  = config.messages.mainSaved;
+			}
+			displayMessage(msg,link);
 		}
-		displayMessage(msg,link);
 		store.setDirty(false);
 	} else {
 		alert(config.messages.mainFailed);
