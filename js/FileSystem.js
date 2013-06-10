@@ -272,7 +272,7 @@ function HTML5DownloadSaveFile(filePath,content)
 		var slashpos=filePath.lastIndexOf("/");
 		if (slashpos==-1) slashpos=filePath.lastIndexOf("\\"); 
 		var filename=filePath.substr(slashpos+1);
-		var uri = "data:text/html," + encodeURIComponent(content);
+		var uri = getDataURI(content);
 		var link = document.createElement("a");
 		link.setAttribute("target","_blank");
 		link.setAttribute("href",uri);
@@ -287,11 +287,41 @@ function HTML5DownloadSaveFile(filePath,content)
 function manualSaveFile(filePath,content)
 {
 	// FALLBACK for showing a link to data: URI
-	config.saveByDownload=true;
+	config.saveByManualDownload=true;
 	var slashpos=filePath.lastIndexOf("/");
 	if (slashpos==-1) slashpos=filePath.lastIndexOf("\\"); 
 	var filename=filePath.substr(slashpos+1);
-	var uri = "data:text/html," + encodeURIComponent(content);
+	var uri = getDataURI(content);
 	displayMessage(config.messages.mainDownloadManual,uri);
 	return true;
+}
+
+// construct data URI (using base64 encoding to preserve multi-byte encodings)
+function getDataURI(data) {
+	if (config.browser.isIE)
+		return "data:text/html,"+encodeURIComponent(data);
+	else
+		return "data:text/html;base64,"+encodeBase64(data);
+}
+
+function encodeBase64(data) {
+	if (!data) return "";
+	var keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+	var out = "";
+	var chr1,chr2,chr3="";
+	var enc1,enc2,enc3,enc4="";
+	for (var count=0,i=0; i<data.length; ) {
+		chr1=data.charCodeAt(i++);
+		chr2=data.charCodeAt(i++);
+		chr3=data.charCodeAt(i++);
+		enc1=chr1 >> 2;
+		enc2=((chr1 & 3) << 4) | (chr2 >> 4);
+		enc3=((chr2 & 15) << 2) | (chr3 >> 6);
+		enc4=chr3 & 63;
+		if (isNaN(chr2)) enc3=enc4=64;
+		else if (isNaN(chr3)) enc4=64;
+		out+=keyStr.charAt(enc1)+keyStr.charAt(enc2)+keyStr.charAt(enc3)+keyStr.charAt(enc4);
+		chr1=chr2=chr3=enc1=enc2=enc3=enc4="";
+	}
+	return out;
 }
