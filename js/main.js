@@ -24,8 +24,14 @@ window.allowSave = window.allowSave || function(l)
 	return true;
 }
 
+// Whether this file is being viewed locally
+window.isLocal = function()
+{
+	return (document.location.protocol == "file:");
+}
+
 // Whether to use the JavaSaver applet
-var useJavaSaver = window.allowSave() && (config.browser.isSafari || config.browser.isOpera);
+var useJavaSaver = window.isLocal() && (config.browser.isSafari || config.browser.isOpera);
 
 // Allow preemption code a chance to tweak config and useJavaSaver [Preemption]
 if (window.tweakConfig) window.tweakConfig();
@@ -66,7 +72,7 @@ function main()
 	t3 = new Date();
 	invokeParamifier(params,"onload");
 	t4 = new Date();
-	readOnly = window.allowSave() ? false : config.options.chkHttpReadOnly;
+	readOnly = window.isLocal() ? false : config.options.chkHttpReadOnly;
 	var pluginProblem = loadPlugins("systemConfig");
 	doc.trigger("loadPlugins");
 	t5 = new Date();
