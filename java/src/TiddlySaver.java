@@ -332,7 +332,9 @@ public class TiddlySaver extends java.applet.Applet {
                 }
 
                 File canonicalFile = privCanonicalFile(f);
-                String dirPath = URLDecoder.decode(dirUrl.getPath());
+                // decode with no encoding is deprecated; following earlier code's hack
+                // because of its warnings, but surely using "UTF-8" would be OK these days?
+                String dirPath = URLDecoder.decode(dirUrl.getPath(), "ISO-8859-1");
                 debug("dirpath:", dirPath);
                 dirPath = utf8DecodeHack(dirPath);
                 debug("dirpath decodeHack:", dirPath);
