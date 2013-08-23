@@ -352,6 +352,7 @@ public class TiddlySaver extends java.applet.Applet {
 
             return f;
         } catch(Exception e) {
+            debug("resolveFilename:", e);
             if(e instanceof RuntimeException) {
                 throw (RuntimeException) e;
             } else {
