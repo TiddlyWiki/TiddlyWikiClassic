@@ -37,8 +37,6 @@ import java.security.PrivilegedExceptionAction;
  */
 public class TiddlySaver extends java.applet.Applet {
 
-    private static final boolean debug = false;
-
     private static final boolean restrictToSameDirectory = true;
     private static final boolean allowSystemProperties = false;
 
