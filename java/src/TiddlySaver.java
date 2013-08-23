@@ -325,21 +325,21 @@ public class TiddlySaver extends java.applet.Applet {
         try {
             File f = new File(filename);
             if(restrictToSameDirectory) {
-                URL dirURL = getDocumentBase();
-                debug("DirURL:", docURL);
-                if(! "file".equals(dirUrl.getProtocol())) {
+                URL docURL = getDocumentBase();
+                debug("docURL:", docURL);
+                if(! "file".equals(docURL.getProtocol())) {
                     throw new RuntimeException("TiddlySaver did not come from file:///, refusing");
                 }
 
                 File canonicalFile = privCanonicalFile(f);
                 // decode with no encoding is deprecated; following earlier code's hack
                 // because of its warnings, but surely using "UTF-8" would be OK these days?
-                String dirPath = URLDecoder.decode(dirUrl.getPath(), "ISO-8859-1");
-                debug("dirpath:", dirPath);
-                dirPath = utf8DecodeHack(dirPath);
-                debug("dirpath decodeHack:", dirPath);
+                String docPath = URLDecoder.decode(docURL.getPath(), "ISO-8859-1");
+                debug("docPath:", docPath);
+                docPath = utf8DecodeHack(docPath);
+                debug("docPath decodeHack:", docPath);
 
-                File canonicalDir = privCanonicalFile(new File(dirPath));
+                File canonicalDir = privCanonicalFile(new File(docPath));
                 String canonicalURL = canonicalFile.toURI().toString();
                 String canonicalDirURL = canonicalDir.toURI().toString();
                 // don't want to use getParentFile() because of permission problems
