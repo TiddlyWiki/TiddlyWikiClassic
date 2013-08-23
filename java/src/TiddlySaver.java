@@ -325,8 +325,8 @@ public class TiddlySaver extends java.applet.Applet {
         try {
             File f = new File(filename);
             if(restrictToSameDirectory) {
-                URL dirUrl = getCodeBase();
-                debug("Codebase:", dirUrl);
+                URL dirURL = getDocumentBase();
+                debug("DirURL:", docURL);
                 if(! "file".equals(dirUrl.getProtocol())) {
                     throw new RuntimeException("TiddlySaver did not come from file:///, refusing");
                 }
@@ -340,6 +340,8 @@ public class TiddlySaver extends java.applet.Applet {
                 File canonicalDir = privCanonicalFile(new File(dirPath));
                 String canonicalURL = canonicalFile.toURI().toString();
                 String canonicalDirURL = canonicalDir.toURI().toString();
+                // don't want to use getParentFile() because of permission problems
+                canonicalDirURL = canonicalDirURL.substring(0, canonicalDirURL.lastIndexOf('/')+1);
 
                 debug("canonicalURL:", canonicalURL);
                 debug("canonicalDirURL", canonicalDirURL);
