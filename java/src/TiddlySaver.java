@@ -348,11 +348,14 @@ public class TiddlySaver extends java.applet.Applet {
                 if(! canonicalURL.startsWith(canonicalDirURL)) {
                     throw new RuntimeException("File: " + canonicalURL + " is not in directory " + canonicalDirURL);
                 }
-            }
+                // clearing last error here as we must be in new call with no error yet
+                lastErrorMsg = null;
+           }
 
             return f;
         } catch(Exception e) {
-            debug("resolveFilename:", e);
+            // need to report this in case this public method called directly; usually permission
+            lastErrorMsg = e.toString();
             if(e instanceof RuntimeException) {
                 throw (RuntimeException) e;
             } else {
