@@ -18,9 +18,8 @@ import java.security.PrivilegedExceptionAction;
 
 
 /**
- * 
- * TiddlySaver Applet.
- *
+ * TiddlySaver Applet. <br/>
+ * <br/>
  * If there is a method to communicate a meaningful java exception to javascript
  * I have not found it yet.
  *
@@ -28,18 +27,18 @@ import java.security.PrivilegedExceptionAction;
  * by the old interface.  Old javascript code had to handle exceptions.
  *
  * It's ugly as hell but this is the current approach:
- *
- * * Signal an error by throwing an exception
- * * JavaScript may query the text / stacktrace of the last exception.
+ * <br/>
+ * * Signal an error by throwing an exception <br/>
+ * * JavaScript may query the text / stacktrace of the last exception. <br/>
  * * As long as the browsers are not multithreading the javascript this should work
  *
  *
  */
 public class TiddlySaver extends java.applet.Applet {
 
-    private static final boolean debug = false;
-
+    /** forces {@link #resolveFilename} to fail if {@code true} */
     private static final boolean restrictToSameDirectory = true;
+    /** allows (@link #getSystemProperties} to return Java system properties if {@code true} */
     private static final boolean allowSystemProperties = false;
 
     private String lastErrorMsg;
@@ -53,6 +52,7 @@ public class TiddlySaver extends java.applet.Applet {
      * @param filename
      * @param charset
      * @return always 1, on error an exception is thrown.  Old code expects it this way
+     * @throws RuntimeException if unable to retrieve content
      */
     public String loadFile(final String filename, final String charset) {
         StringBuilder sb = new StringBuilder();
@@ -88,13 +88,11 @@ public class TiddlySaver extends java.applet.Applet {
     /**
      * Store the file.
      *
-     * For backwards compatibility, this always returns 1.
-     * If an error occurs, an exception is thrown however!
-     *
      * @param filename
      * @param charset
      * @param data
-     * @return
+     * @return always 1, on error an exception is thrown.  Old code expects it this way
+     * @throws RuntimeException if unable to save {@code data}
      */
     public int saveFile(final String filename, final String charset, final String data) {
         try {
@@ -119,11 +117,11 @@ public class TiddlySaver extends java.applet.Applet {
 
 
     /**
-     *
      * Check for file existence.
      *
      * @param filename
-     * @return
+     * @return true of file exists, false otherwise
+     * @throws RuntimeException if unable to retrieve information
      */
     public boolean exists(final String filename) {
         boolean b = false;
@@ -136,11 +134,11 @@ public class TiddlySaver extends java.applet.Applet {
     }
 
     /**
-     *
-     * Get a files modification time in milliseconds since the epoch.
+     * Get a file's modification time in milliseconds since the epoch.
      *
      * @param filename
-     * @return
+     * @return modification time in milliseconds
+     * @throws IOException if unable to retrieve information
      */
     public long modificationTime(final String filename) {
         long millis = 0L;
@@ -156,11 +154,12 @@ public class TiddlySaver extends java.applet.Applet {
     }
 
     /**
-     *
      * Get the files in a directory.
      *
      * @param dirname
-     * @return
+     * @return files in {@code dirname}
+     * @throws IOException if  {@code dirname} is not a directory
+     * @throws RuntimeException if unable to retrieve information
      */
     public String[] listFiles(final String dirname) {
         String[] filenames = null;
@@ -177,10 +176,9 @@ public class TiddlySaver extends java.applet.Applet {
 
 
     /**
-     *
      * Get the Java version out to Javascript.
      *
-     * @return
+     * @return JVM version
      */
     public String getJavaVersion () {
         return AccessController.doPrivileged(new PrivilegedAction<String>() {
@@ -191,10 +189,9 @@ public class TiddlySaver extends java.applet.Applet {
     }
 
     /**
-     *
      * Get Java System properties out to javascript
      *
-     * @return
+     * @return system properties if internal {@link #allowSystemProperties} flag allows, otherwise empty string
      */
     public String getSystemProperties () {
         if(! allowSystemProperties) {
@@ -212,7 +209,7 @@ public class TiddlySaver extends java.applet.Applet {
     }
 
 
-    public static boolean isNullOrEmpty(String s) {
+    private static boolean isNullOrEmpty(String s) {
         return s == null || "".equals(s.trim());
     }
 
@@ -269,23 +266,23 @@ public class TiddlySaver extends java.applet.Applet {
     }
 
     /**
-     * Provide access to the last error message.
+     * Provide access to the last exception's error message.
      *
+     * @return last exception's error message or null
      */
     public String getLastErrorMsg() {
         return lastErrorMsg;
     }
 
-
     /**
-     * Get access to last stack trace
-     * 
-     * @return
+     * Provide access to last stack trace
+     *
+     * @return stack trace built by internal {@link #logAndRethrow logAndRethrow} method
      */
     public String getLastErrorStackTrace() {
         return lastErrorStackTrace;
     }
-    
+
     @SuppressWarnings("empty-statement")
     private void logAndRethrow(String msg, Exception e) {
         Throwable rootCause;
@@ -305,16 +302,13 @@ public class TiddlySaver extends java.applet.Applet {
         }
     }
 
+
     /**
-     *
-     * Resolve relative file names relative to the applet directory.
-     *
-     * While I am not sure this is correct behaviour, at least it is consistent.
-     * (Before, relative filenames were resolved relative to the current directory
-     * of the plugin process.  I.e. from wherever the browser was initially started.
+     * Resolve a relative file name, relative to the document directory.
      *
      * @param filename
-     * @return
+     * @return canonical path of {@code filename}
+     * @throws RuntimeException if {@code filename} is invalid or access denied
      */
     public final File resolveFilename(String filename) {
         debugMsg.setLength(0);
@@ -325,31 +319,39 @@ public class TiddlySaver extends java.applet.Applet {
         try {
             File f = new File(filename);
             if(restrictToSameDirectory) {
-                URL dirUrl = getCodeBase();
-                debug("Codebase:", dirUrl);
-                if(! "file".equals(dirUrl.getProtocol())) {
+                URL docURL = getDocumentBase();
+                debug("docURL:", docURL);
+                if(! "file".equals(docURL.getProtocol())) {
                     throw new RuntimeException("TiddlySaver did not come from file:///, refusing");
                 }
 
                 File canonicalFile = privCanonicalFile(f);
-                String dirPath = URLDecoder.decode(dirUrl.getPath());
-                debug("dirpath:", dirPath);
-                dirPath = utf8DecodeHack(dirPath);
-                debug("dirpath decodeHack:", dirPath);
+                // decode with no encoding is deprecated; following earlier code's hack
+                // because of its warnings, but surely using "UTF-8" would be OK these days?
+                String docPath = URLDecoder.decode(docURL.getPath(), "ISO-8859-1");
+                debug("docPath:", docPath);
+                docPath = utf8DecodeHack(docPath);
+                debug("docPath decodeHack:", docPath);
 
-                File canonicalDir = privCanonicalFile(new File(dirPath));
+                File canonicalDir = privCanonicalFile(new File(docPath));
                 String canonicalURL = canonicalFile.toURI().toString();
                 String canonicalDirURL = canonicalDir.toURI().toString();
+                // don't want to use getParentFile() because of permission problems
+                canonicalDirURL = canonicalDirURL.substring(0, canonicalDirURL.lastIndexOf('/')+1);
 
                 debug("canonicalURL:", canonicalURL);
                 debug("canonicalDirURL", canonicalDirURL);
                 if(! canonicalURL.startsWith(canonicalDirURL)) {
                     throw new RuntimeException("File: " + canonicalURL + " is not in directory " + canonicalDirURL);
                 }
-            }
+                // clearing last error here as we must be in new call with no error yet
+                lastErrorMsg = null;
+           }
 
             return f;
         } catch(Exception e) {
+            // need to report this in case this public method called directly; usually permission
+            lastErrorMsg = e.toString();
             if(e instanceof RuntimeException) {
                 throw (RuntimeException) e;
             } else {
@@ -377,6 +379,11 @@ public class TiddlySaver extends java.applet.Applet {
         }
     }
 
+    /**
+     * Provide access to the debug information collected by previous call.
+     *
+     * @return debug information built before an exception thrown
+     */
     public String getDebugMsg() {
         return debugMsg.toString();
     }
@@ -388,11 +395,10 @@ public class TiddlySaver extends java.applet.Applet {
      * This is not an ideal world.
      *
      * This may or may not work for systems that do not use UTF-8 for filenames.
-     * Also on systems where we get filenames that are not f*cked up,
-     * this will fail for filenames that look like UTF-8 encodings.
+     * Will also fail for filenames that look like UTF-8 encodings on some systems.
      *
-     * @param s
-     * @return
+     * @param s string to convert
+     * @return UTF-8 string if {@code s} contains bytes that look like UTF-8, {@code s} otherwise
      */
     private static String utf8DecodeHack(String s) {
         try {
