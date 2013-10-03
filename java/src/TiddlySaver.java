@@ -210,7 +210,7 @@ public class TiddlySaver extends java.applet.Applet {
     }
 
 
-    public static boolean isNullOrEmpty(String s) {
+    private static boolean isNullOrEmpty(String s) {
         return s == null || "".equals(s.trim());
     }
 
