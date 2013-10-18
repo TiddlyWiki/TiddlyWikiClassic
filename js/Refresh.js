@@ -28,7 +28,6 @@ config.refreshers = {
 
 	tiddler: function(e,changeList)
 		{
-		if (startingUp) return true;
 		var title = e.getAttribute("tiddler");
 		var template = e.getAttribute("template");
 		if(changeList && (changeList.indexOf && changeList.indexOf(title) != -1) && !story.isDirty(title))
