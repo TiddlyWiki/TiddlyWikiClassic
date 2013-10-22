@@ -37,9 +37,7 @@ import java.security.PrivilegedExceptionAction;
  */
 public class TiddlySaver extends java.applet.Applet {
 
-    private static final boolean debug = false;
-
-    private static final boolean restrictToSameDirectory = true;
+    private static final boolean restrictToSameDirectory = false;
     private static final boolean allowSystemProperties = false;
 
     private String lastErrorMsg;
@@ -212,7 +210,7 @@ public class TiddlySaver extends java.applet.Applet {
     }
 
 
-    public static boolean isNullOrEmpty(String s) {
+    private static boolean isNullOrEmpty(String s) {
         return s == null || "".equals(s.trim());
     }
 
