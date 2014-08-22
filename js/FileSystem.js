@@ -201,7 +201,7 @@ function javaDebugInformation () {
 	var applet = document.applets['TiddlySaver'];
 	var what = [
 		["Java Version", applet.getJavaVersion],
-		["Last Exception", applet.getLastErrorMessage],
+		["Last Exception", applet.getLastErrorMsg],
 		["Last Exception Stack Trace", applet.getLastErrorStackTrace],
 		["System Properties", applet.getSystemProperties] ];
 
