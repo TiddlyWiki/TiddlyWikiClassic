@@ -210,7 +210,7 @@ config.macros.tiddler.handler = function(place,macroName,params,wikifier,paramSt
 		refresh: "content", tiddler: tiddlerName
 	});
 	if(args!==undefined)
-		wrapper.setAttribute("args","[["+args.join("]] [[")+"]]");
+		wrapper.macroArgs=args; // #154
 	this.transclude(wrapper,tiddlerName,args);
 };
 
@@ -232,6 +232,12 @@ config.macros.tiddler.transclude = function(wrapper,tiddlerName,args)
 			var placeholderRE = new RegExp("\\$" + (i + 1),"mg");
 			text = text.replace(placeholderRE,args[i]);
 		}
+		// #162 start
+		if (n && config.options.chkRemoveExtraMarkers) for(i=n; i<9; i++) {
+			var placeholderRE = new RegExp("\\$" + (i + 1),"mg");
+			text = text.replace(placeholderRE,"");
+		}
+		// #162 end
 		config.macros.tiddler.renderText(wrapper,text,tiddlerName);
 	} finally {
 		stack.pop();
