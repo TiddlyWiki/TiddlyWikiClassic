@@ -237,7 +237,7 @@ Story.prototype.refreshTiddler = function(title,template,force,customFields,defa
 					var tags = [];
 					tiddler.set(title,store.getTiddlerText(title),config.views.wikified.shadowModifier,version.date,tags,version.date);
 				} else {
-					var text = template=="EditTemplate" ?
+					var text = template==config.tiddlerTemplates[DEFAULT_EDIT_TEMPLATE] ? // #166
 								config.views.editor.defaultText.format([title]) :
 								config.views.wikified.defaultText.format([title]);
 					text = defaultText || text;
