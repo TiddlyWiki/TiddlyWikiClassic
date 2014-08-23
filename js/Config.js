@@ -53,6 +53,7 @@ config.options = {
 	chkInsertTabs: false,
 	chkUsePreForStorage: true, // Whether to use <pre> format for storage
 	chkDisplayInstrumentation: false,
+	chkRemoveExtraMarkers: false, // #162
 	txtBackupFolder: "",
 	txtEditorFocus: "text",
 	txtMainTab: "tabTimeline",
@@ -174,7 +175,7 @@ if(!((new RegExp("[\u0150\u0170]","g")).test("\u0150"))) {
 }
 config.textPrimitives.sliceSeparator = "::";
 config.textPrimitives.sectionSeparator = "##";
-config.textPrimitives.urlPattern = "(?:file|http|https|mailto|ftp|irc|news|data):[^\\s'\"]+(?:/|\\b)";
+config.textPrimitives.urlPattern = "(?:file|http|https|mailto|ftp|irc|news|data):[^\\s'\"]+(?:/|\\b|\\[|\\])"; // #132
 config.textPrimitives.unWikiLink = "~";
 config.textPrimitives.wikiLink = "(?:(?:" + config.textPrimitives.upperLetter + "+" +
 	config.textPrimitives.lowerLetter + "+" +
@@ -221,7 +222,7 @@ config.shadowTiddlers = {
 	AdvancedOptions: '<<options>>',
 	PluginManager: '<<plugins>>',
 	SystemSettings: '',
-	ToolbarCommands: '|~ViewToolbar|closeTiddler closeOthers +editTiddler > fields syncing permalink references jump|\n|~EditToolbar|+saveTiddler -cancelTiddler deleteTiddler|',
+	ToolbarCommands: '|~ViewToolbar|closeTiddler closeOthers +editTiddler > fields permalink references jump|\n|~EditToolbar|+saveTiddler -cancelTiddler deleteTiddler|', // #160
 	WindowTitle: '<<tiddler SiteTitle>> - <<tiddler SiteSubtitle>>'
 };
 
