@@ -49,11 +49,7 @@ String.prototype.format = function(s)
 // Escape any special RegExp characters with that character preceded by a backslash
 String.prototype.escapeRegExp = function()
 {
-	var s = "\\^$*+?()=!|,{}[].";
-	var t,c = this;
-	for(t=0; t<s.length; t++)
-		c = c.replace(new RegExp("\\" + s.substr(t,1),"g"),"\\" + s.substr(t,1));
-	return c;
+    return this.replace(/[\-\/\\\^\$\*\+\?\.\(\)\|\[\]\{\}]/g, '\\$&'); // #157
 };
 
 // Convert "\" to "\s", newlines to "\n" (and remove carriage returns)
