@@ -73,6 +73,7 @@ FileAdaptor.prototype.getTiddlerList = function(context,userParams,callback,filt
 	if(this.store) {
 		return context.complete(context,context.userParams);
 	}
+	jQuery.support.cors = true;
 	var options = {
 		type:"GET",
 		url:context.host,
