@@ -169,7 +169,7 @@ merge(macro, {
 		var t;
 		for(t=tiddlers.length-1; t>=last; t--) {
 			var tiddler = tiddlers[t];
-			var theGroup = wikifyPlainText(groupTemplate,0,tiddler);
+			var theGroup = wikifyStatic(groupTemplate,null,tiddler);
 			if(typeof(ul) == "undefined" || theGroup != lastGroup) {
 				ul = document.createElement("ul");
 				jQuery(ul).addClass("timeline");
