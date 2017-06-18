@@ -20,10 +20,9 @@ function confirmExit()
 // Give the user a chance to save changes before exitting
 function checkUnsavedChanges()
 {
-	if(store && store.isDirty && store.isDirty() && window.hadConfirmExit === false) {
+	if(store && store.isDirty && store.isDirty() && window.hadConfirmExit === false)
 		if(confirm(config.messages.unsavedChangesWarning))
 			saveChanges();
-	}
 }
 
 function updateLanguageAttribute(s)
@@ -97,9 +96,7 @@ function autoSaveChanges(onlyIfDirty,tiddlers)
 
 function loadOriginal(localPath)
 {
-	var content=loadFile(localPath);
-	if (!content) content=window.originalHTML||recreateOriginal();
-	return content;
+	return loadFile(localPath) || window.originalHTML || recreateOriginal();
 }
 
 //# reconstruct original HTML file content from current document memory
@@ -212,9 +209,8 @@ function saveMain(localPath,original,posDiv)
 			displayMessage(msg,link);
 		}
 		store.setDirty(false);
-	} else {
+	} else
 		alert(config.messages.mainFailed);
-	}
 }
 
 function saveBackup(localPath,original)
@@ -302,4 +298,3 @@ function getBackupPath(localPath,title,extension)
 	backupPath += (new Date()).convertToYYYYMMDDHHMMSSMMM() + "." + (extension || "html");
 	return backupPath;
 }
-
