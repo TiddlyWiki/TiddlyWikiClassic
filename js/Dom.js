@@ -35,9 +35,8 @@ function addEvent(obj,type,fn)
 		obj["e"+type+fn] = fn;
 		obj[type+fn] = function(){obj["e"+type+fn](window.event);};
 		obj.attachEvent("on"+type,obj[type+fn]);
-	} else {
+	} else
 		obj.addEventListener(type,fn,false);
-	}
 }
 
 //# Remove an event handler
@@ -47,9 +46,8 @@ function removeEvent(obj,type,fn)
 	if(obj.detachEvent) {
 		obj.detachEvent("on"+type,obj[type+fn]);
 		obj[type+fn] = null;
-	} else {
+	} else
 		obj.removeEventListener(type,fn,false);
-	}
 }
 
 // Find the closest relative with a given property value (property defaults to tagName, relative defaults to parentNode)
@@ -58,13 +56,11 @@ function findRelated(e,value,name,relative)
 	name = name || "tagName";
 	relative = relative || "parentNode";
 	if(name == "className") {
-		while(e && !jQuery(e).hasClass(value)) {
+		while(e && !jQuery(e).hasClass(value))
 			e = e[relative];
-		}
 	} else {
-		while(e && e[name] != value) {
+		while(e && e[name] != value)
 			e = e[relative];
-		}
 	}
 	return e;
 }
@@ -84,9 +80,8 @@ function ensureVisible(e)
 			return posTop - (winHeight - e.offsetHeight);
 		else
 			return posTop;
-	} else {
+	} else
 		return winTop;
-	}
 }
 
 // Get the current width of the display window
@@ -271,4 +266,3 @@ function removeStyleSheet(id)
 {
 	jQuery.twStylesheet.remove({id:id});
 }
-
