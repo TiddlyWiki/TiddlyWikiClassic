@@ -12,11 +12,10 @@ function invokeMacro(place,macro,params,wikifier,tiddler)
 			window.tiddler = tiddlerElem ? store.getTiddler(tiddlerElem.getAttribute("tiddler")) : null;
 			window.place = place;
 			var allowEval = true;
-			if(config.evaluateMacroParameters=="system") {
-				if(!tiddler || tiddler.tags.indexOf("systemAllowEval") == -1) {
+			if(config.evaluateMacroParameters=="system")
+				if(!tiddler || tiddler.tags.indexOf("systemAllowEval") == -1)
 					allowEval = false;
-				}
-			}
+			
 			m.handler(place,macro,m.noPreParse?null:params.readMacroParams(!allowEval),wikifier,params,tiddler);
 		} else {
 			createTiddlyError(place,config.messages.macroError.format([macro]),config.messages.macroErrorDetails.format([macro,config.messages.missingMacro]));
@@ -54,9 +53,9 @@ config.macros.list.refresh = function(list) {
 	var type = args.anon ? args.anon[0] : "all";
 	jQuery(list).empty().addClass("list list-" + type);
 	var template = args.template ? store.getTiddlerText(args.template[0]) : false;
-	if(!template) {
+	if(!template)
 		template = config.macros.list.template;
-	}
+	
 	if(this[type].prompt)
 		createTiddlyElement(list,"li",null,"listTitle",this[type].prompt);
 	var results;
@@ -67,9 +66,9 @@ config.macros.list.refresh = function(list) {
 		var li = document.createElement("li");
 		list.appendChild(li);
 		var tiddler = results[t];
-		if(typeof(tiddler) == 'string') { // deal with missing etc..
-				tiddler = store.getTiddler(tiddler) || new Tiddler(tiddler);
-		}
+		if(typeof(tiddler) == 'string') // deal with missing etc..
+			tiddler = store.getTiddler(tiddler) || new Tiddler(tiddler);
+		
 		wikify(template, li, null, tiddler);
 	}
 	if(results.length === 0 && args.emptyMessage) {
@@ -131,9 +130,8 @@ config.macros.allTags.handler = function(place,macroName,params)
 		btn.setAttribute("tag",title);
 		btn.setAttribute("refresh","link");
 		btn.setAttribute("tiddlyLink",title);
-		if(params[1]) {
+		if(params[1])
 			btn.setAttribute("sortby",params[1]);
-		}
 	}
 };
 
@@ -193,13 +191,12 @@ config.macros.tiddler.handler = function(place,macroName,params,wikifier,paramSt
 		// included tiddler and "system" evaluation required, so check tiddler tagged appropriately
 		var title = stack[stack.length-1];
 		var pos = title.indexOf(config.textPrimitives.sectionSeparator);
-		if(pos != -1) {
+		if(pos != -1)
 			title = title.substr(0,pos); // get the base tiddler title
-		}
+		
 		var t = store.getTiddler(title);
-		if(!t || t.tags.indexOf("systemAllowEval") == -1) {
+		if(!t || t.tags.indexOf("systemAllowEval") == -1)
 			allowEval = false;
-		}
 	}
 	params = paramString.parseParams("name",null,allowEval,false,true);
 	var names = params[0]["name"];
@@ -258,9 +255,8 @@ config.macros.tiddler.tiddlerStack = [];
 config.macros.tag.handler = function(place,macroName,params)
 {
 	var btn = createTagButton(place,params[0],null,params[1],params[2]);
-	if(params[3]) {
+	if(params[3])
 		btn.setAttribute('sortby',params[3]);
-	}
 };
 
 config.macros.tags.handler = function(place,macroName,params,wikifier,paramString,tiddler)
@@ -443,15 +439,13 @@ config.macros.view.views = {
 	wikified: function(value,place,params,wikifier,paramString,tiddler) {
 		if(config.macros.view.depth>50)
 			return;
-		if(config.macros.view.depth>0) {
-			if (value==config.macros.view.values[config.macros.view.depth-1]) {
+		if(config.macros.view.depth>0)
+			if (value==config.macros.view.values[config.macros.view.depth-1])
 				return;
-			}
-		}
 		config.macros.view.values[config.macros.view.depth] = value;
 		config.macros.view.depth++;
 		if(params[2])
-			value=params[2].unescapeLineBreaks().format([value]);
+			value = params[2].unescapeLineBreaks().format([value]);
 		wikify(value,place,highlightHack,tiddler);
 		config.macros.view.depth--;
 		config.macros.view.values[config.macros.view.depth] = null;
