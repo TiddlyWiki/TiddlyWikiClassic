@@ -169,7 +169,7 @@ String.prototype.parseParams = function(defaultName,defaultValue,allowEval,noNam
 // an *evaluated* parameter: e.g. {{config.options.txtUserName}} results in the current user's name.
 String.prototype.readMacroParams = function(notAllowEval)
 {
-	var p = this.parseParams("list",null,!notAllowEval,true);
+	var p = this.parseParams("list",null,!notAllowEval);
 	var t,n = [];
 	for(t=1; t<p.length; t++)
 		n.push(p[t].value);
