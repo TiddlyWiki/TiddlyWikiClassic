@@ -43,12 +43,12 @@ config.filters = {
 // Filter a list of tiddlers
 //#   filter - filter expression (eg "tidlertitle [[multi word tiddler title]] [tag[systemConfig]]")
 //# Returns an array of Tiddler() objects that match the filter expression
-TiddlyWiki.prototype.filterTiddlers = function(filter)
+TiddlyWiki.prototype.filterTiddlers = function(filter,results)
 {
 	//# text or [foo[bar]] or [[tiddler title]]
 	var re = /([^\s\[\]]+)|(?:\[([ \w\.\-]+)\[([^\]]+)\]\])|(?:\[\[([^\]]+)\]\])/mg;
 
-	var results = [];
+	results = results || [];
 	if(filter) {
 		var match = re.exec(filter);
 		while(match) {
