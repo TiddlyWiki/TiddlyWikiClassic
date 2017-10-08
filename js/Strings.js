@@ -94,9 +94,9 @@ String.prototype.parseParams = function(defaultName,defaultValue,allowEval,noNam
 	var parseToken = function(match,p) {
 		var n;
 		if(match[p]) // Double quoted
-			n = match[p];
+			n = match[p].replace(/\\"/g,'"');
 		else if(match[p+1]) // Single quoted
-			n = match[p+1];
+			n = match[p+1].replace(/\\'/g,"'");
 		else if(match[p+2]) // Double-square-bracket quoted
 			n = match[p+2];
 		else if(match[p+3]) // Double-brace quoted
