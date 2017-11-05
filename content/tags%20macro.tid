@@ -1,0 +1,15 @@
+created: 20110211143900000
+creator: colmbritton
+modified: 20110211144600000
+modifier: colmbritton
+tags: macro
+title: tags macro
+type: text/x-tiddlywiki
+
+To generate a list of [[tags]] applied to the current [[tiddler]]:
+{{{
+<<tags [tiddler]>>
+}}}
+
+Note this will not display any tags that are themselves tagged excludeLists.
+For instance if there is a tiddler called "foo" tagged excludeLists and the tags macro is run on a tiddler with the tag foo, this tag will not be displayed.

@@ -1,0 +1,11 @@
+created: 20110211110600000
+creator: psd
+modified: 20130426084100000
+modifier: jermolene
+tags: browsers issues
+title: FireFox
+type: text/x-tiddlywiki
+
+To use TiddlyWiki with recent versions of Mozilla Firefox you'll need to install the TiddlyFox extension. It enables TiddlyWiki documents loaded from a {{{file:///}}} URI to save changes to themselves.
+
+<<tiddler TiddlyFox>>

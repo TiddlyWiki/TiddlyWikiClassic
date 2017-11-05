@@ -1,0 +1,11 @@
+created: 20110211110700000
+creator: psd
+modified: 20111103164300000
+modifier: jermolene
+tags: features translations
+title: translations
+type: text/x-tiddlywiki
+
+~TiddlyWiki is available in 17 other languages languages.
+
+Translations are packaged as plugins which are stored at https://github.com/TiddlyWiki/translations

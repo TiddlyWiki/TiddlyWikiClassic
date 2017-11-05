@@ -1,0 +1,12 @@
+created: 20110211110600000
+creator: psd
+modified: 20110211131000000
+modifier: blaine
+tags: commands
+title: JumpCommand
+type: text/x-tiddlywiki
+
+Offers a popup menu to jump directly to any of the currently open tiddlers. It is used with the ToolbarMacro like this:
+{{{
+<<toolbar jump>>
+}}}

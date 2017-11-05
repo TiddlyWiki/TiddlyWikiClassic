@@ -1,0 +1,22 @@
+created: 20110211110600000
+creator: psd
+modified: 20111020135100000
+modifier: jermolene
+tags: includeNew
+title: Configuration
+type: text/x-tiddlywiki
+
+PageTemplate
+|>|>|SiteTitle - SiteSubtitle|
+|MainMenu|DefaultTiddlers<br><br><br><br>ViewTemplate<br><br>EditTemplate|SideBarOptions|
+|~|~|OptionsPanel|
+|~|~|AdvancedOptions|
+|~|~|<<tiddler Configuration.SideBarTabs>>|
+
+''StyleSheet:'' StyleSheetColors - StyleSheetLayout - StyleSheetPrint
+
+InterfaceOptions
+
+SiteUrl
+
+Extensive StartupParameters to control the startup beahviour of ~TiddlyWiki through specially crafted ~URLs

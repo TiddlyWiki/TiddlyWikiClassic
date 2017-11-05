@@ -1,0 +1,18 @@
+created: 20110211163600000
+creator: jermolene
+modified: 20110211163600000
+modifier: jermolene
+tags: shadow
+title: SiteSubtitle shadow tiddlers
+type: text/x-tiddlywiki
+
+In the SiteSubtitle tiddler you can define the subtitle of your ~TiddlyWiki (seen under the main title)
+In ~TiddlySpace by default it is set as
+{{{
+a TiddlySpace
+}}}
+
+You can set it to anything you want, such as:
+{{{
+documentation on the shadow tiddlers
+}}}

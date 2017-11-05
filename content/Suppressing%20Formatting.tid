@@ -1,0 +1,23 @@
+created: 20110216112200000
+creator: psd
+modified: 20110216112200000
+modifier: psd
+tags: formatting
+title: Suppressing Formatting
+type: text/x-tiddlywiki
+
+Wiki markup rules can be suppressed for any given section of text by enclosing it in 3 ''double'' quotes:
+{{{
+"""//WikiWord//"""
+}}}
+Displays as:
+"""//WikiWord//"""
+
+WikiWords can also be suppressed by prefixing the WikiWord with ''~'':
+{{{
+~WikiWord
+}}}
+Displays as:
+~WikiWord
+!!Also See
+[[Code formatting]]

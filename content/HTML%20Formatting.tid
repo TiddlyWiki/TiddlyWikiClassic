@@ -1,0 +1,21 @@
+created: 20110211142900000
+creator: matt
+modified: 20110215151800000
+modifier: psd
+tags: formatting
+title: HTML Formatting
+type: text/x-tiddlywiki
+
+Raw HTML text can be included in a tiddler:
+{{{
+<html>
+This is some <strong>HTML</strong> formatting
+</html>
+}}}
+<html>
+This is some <strong>HTML</strong> formatting
+</html>
+!Notes
+* only static HTML elements that are valid within a {{{<div>}}} work correctly
+* {{{document.write}}} cannot be used to generate dynamic content
+* External {{{<script>}}} elements cannot be used within {{{<html>}}} blocks

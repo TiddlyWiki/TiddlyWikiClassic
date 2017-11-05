@@ -1,0 +1,9 @@
+created: 20110211110600000
+creator: psd
+modified: 20110211131000000
+modifier: blaine
+title: ContentsSlider
+type: text/x-tiddlywiki
+
+@@margin-left:.5em;<<slider chkContents SideBarTabs "contents »" "show
+lists of tiddlers contained in this document">>@@

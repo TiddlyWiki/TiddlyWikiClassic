@@ -1,0 +1,9 @@
+created: 20110211110600000
+creator: psd
+modified: 20110211131000000
+modifier: blaine
+tags: features
+title: IncrementalSearch
+type: text/x-tiddlywiki
+
+When you type more than three characters in the search box at the upper right, any matching tiddlers are automatically displayed with the text highlighted. There's a couple of minor issues: the highlights don't get removed when you clear the search, and occasionally, on some browsers, keystrokes get missed if you type quickly so you may need to click the 'search' button to manually trigger the search.

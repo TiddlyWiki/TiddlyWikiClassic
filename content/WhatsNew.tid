@@ -1,0 +1,29 @@
+created: 20120916031100000
+creator: ericshulman
+modified: 20130623221000000
+modifier: ericshulman
+tags: gettingstarted welcome
+title: WhatsNew
+type: text/x-tiddlywiki
+
+The changes between ~TiddlyWiki v2.8.0 and v2.8.1 correct several issues introduced with the new ~HTML5 "download" saving:
+*{{block{
+https://github.com/TiddlyWiki/tiddlywiki/pull/135
+''Critical fix to get ~TiddlyWiki 2.8.0 working on IE 6 and 7 (and 8)''
+>IE8 and earlier do not define 'doctype' value, causing a "failure to load" problem during startup.  ''recreateOriginal() now checks for a valid doctype value to avoid the error.''
+}}}
+*{{block{
+https://github.com/TiddlyWiki/tiddlywiki/issues/136
+''International characters corrupted by ~TW280 'download saving' in Firefox''
+>Firefox does some additional processing of "~URL-encoded" content that results in incorrect saving of international characters.  ''Content for download is now "base64-encoded" to prevent unwanted extra processing by Firefox.''
+}}}
+*{{block{
+https://github.com/TiddlyWiki/tiddlywiki/issues/137
+''Fallback manual download saving in ~TW280 displays two messages''
+>Manual download saving displays a message ("RIGHT CLICK HERE to download...") as intended.  However, an extra message related to //automatic// ~HTML5-based download saving is then displayed immediately following the first message.  ''The extra message is no longer displayed.''
+}}}
+*{{block{
+https://github.com/TiddlyWiki/tiddlywiki/issues/139
+''tiddlywiki.com gives a Java warning''
+>A change to the window.allowSave() test function in ~TW280 resulted in incorrect calculation of the 'readOnly' and 'useJavaSaver' flags at startup, resulting in an errant Java warning message when the document is viewed online.  ''A new test function, window.isLocal(), is now used to correctly calulate the startup flags.''
+}}}

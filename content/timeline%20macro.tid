@@ -1,0 +1,33 @@
+created: 20110211143900000
+creator: colmbritton
+modified: 20111216164800000
+modifier: jermolene
+tags: macro
+title: timeline macro
+type: text/x-tiddlywiki
+
+To create a chronological list of recent edits:
+{{{
+<<timeline field maxlength dateformat template:title groupTemplate:title filter:filter>>
+}}}
+All the parameters are optional:
+* ''field'' determines which field to use as the basis for the list. It is usually {{{modified}}} or {{{created}}}
+* ''maxlength'' is an integer that limits the maximum number of tiddlers to include in the list
+* ''dateformat'' is a [[date format string|Date Formats]] that determines the format of the dates
+* ''template'' names the tiddler to use as the template for list entries
+** The default template is {{{<<view title link>>}}} to cause the display of the tiddler title as a link to the tiddler
+* ''groupTemplate'' names the tiddler to use as the template for grouping entries in the list
+** The default groupTemplate is {{{<<view %0 date '%1'>>}}}, where {{{%0}}} is the name of the field being displayed and {{{%1}}} is the ''dateformat'' selected in the third argument
+* ''filter'' is a tiddler filter that is used to filter the tiddlers that appear in the list
+
+For example:
+{{{
+<<timeline created 5>>>
+}}}
+displays as:
+<<timeline created 5>>
+{{{
+<<timeline modified 5>>
+}}}
+displays as:
+<<timeline modified 5>>
