@@ -1,0 +1,18 @@
+created: 20110211110600000
+creator: psd
+modified: 20110211131000000
+modifier: blaine
+tags: formatting
+title: PlainText
+type: text/x-tiddlywiki
+
+Sometimes text can inadvertently match TiddlyWiki formatting instructions - particularly program code, or text pasted from elsewhere. In these situations you can either use MonospacedText or you can accomplish the same thing without the monospaced effect like this:
+{{{
+This is AnotherLink, this is a copyright symbol &copy; and this site is called <<tiddler SiteTitle>>
+<nowiki>This is AnotherLink, this is a copyright symbol &copy; and this site is called <<tiddler SiteTitle>></nowiki>
+"""This is AnotherLink, this is a copyright symbol &copy; and this site is called <<tiddler SiteTitle>>"""
+}}}
+Which displays as:
+This is AnotherLink, this is a copyright symbol &copy; and this site is called <<tiddler SiteTitle>>
+<nowiki>This is AnotherLink, this is a copyright symbol &copy; and this site is called <<tiddler SiteTitle>></nowiki>
+"""This is AnotherLink, this is a copyright symbol &copy; and this site is called <<tiddler SiteTitle>>"""

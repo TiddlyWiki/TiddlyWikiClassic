@@ -1,0 +1,11 @@
+created: 20110211110700000
+creator: psd
+modified: 20110211131000000
+modifier: blaine
+tags: features options
+title: SaveEmptyTemplate
+type: text/x-tiddlywiki
+
+This causes a blank, template TiddlyWiki to be saved alongside your file when you SaveChanges. It's intended to help people who are distributing TiddlyWikiAdaptations, and isn't needed when you're an end-user of TiddlyWiki.
+
+The template TiddlyWiki is called 'empty.html'.

@@ -1,0 +1,11 @@
+created: 20110211110600000
+creator: psd
+modified: 20110221142800000
+modifier: colmbritton
+tags: examples
+title: ExampleSystemConfig
+type: text/x-tiddlywiki
+
+config.animFast = 0.12; // Speed for animations (lower == slower)
+config.animSlow = 0.01; // Speed for Easter Egg animations
+config.views.wikified.toolbarEdit.text = "Edit away, it won't get saved";

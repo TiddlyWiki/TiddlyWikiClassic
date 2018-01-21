@@ -1,0 +1,23 @@
+created: 20110211143900000
+creator: colmbritton
+modified: 20110211144600000
+modifier: colmbritton
+tags: macro
+title: newTiddler macro
+type: text/x-tiddlywiki
+
+Using the following you get a new tiddler button:
+{{{
+<<newTiddler>>
+}}}
+Displays as:
+
+<<newTiddler>>
+
+Certain attributes can also be attached, such as a label, default text, tags and fields:
+{{{
+<<newTiddler label:WikiWord text:"text" tag:tag tag:tag accessKey:key focus:field>>
+}}}
+Displays as:
+
+<<newTiddler label:WikiWord text:"text" tag:tag tag:tag accessKey:key focus:field>>

@@ -1,0 +1,11 @@
+created: 20110211110600000
+creator: psd
+modified: 20110211131000000
+modifier: blaine
+tags: features
+title: ReferencesButton
+type: text/x-tiddlywiki
+
+Since the FirstVersion of TiddlyWiki, the ReferencesButton has been implemented as a canned search for the name of the current tiddler. That approach was a bit disruptive because of the way that a search operation wipes the current reading state of the document.
+
+The new implementation offers a popup menu of the names of all the referring tiddlers. It can be consulted without disturbing any tiddlers that are currently open.

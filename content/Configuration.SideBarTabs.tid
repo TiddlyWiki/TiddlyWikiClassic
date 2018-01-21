@@ -1,0 +1,10 @@
+created: 20110211110600000
+creator: psd
+modified: 20110211131000000
+modifier: blaine
+title: Configuration.SideBarTabs
+type: text/x-tiddlywiki
+
+SideBarTabs
+|[[Timeline|TabTimeline]]|[[All|TabAll]]|[[Tags|TabTags]]|>|>|[[More|TabMore]] |
+|>|>||[[Missing|TabMoreMissing]]|[[Orphans|TabMoreOrphans]]|[[Shadowed|TabMoreShadowed]]|

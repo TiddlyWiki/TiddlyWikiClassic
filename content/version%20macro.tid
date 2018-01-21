@@ -1,0 +1,14 @@
+created: 20110211143900000
+creator: colmbritton
+modified: 20110211144600000
+modifier: colmbritton
+tags: macro
+title: version macro
+type: text/x-tiddlywiki
+
+This is a simple macro that outputs the version of TiddlyWiki that is being used.
+{{{
+<<version>>
+}}}
+Displays as:
+<<version>>

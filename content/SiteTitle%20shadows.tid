@@ -1,0 +1,13 @@
+created: 20110211161300000
+creator: matt
+modified: 20110215151200000
+modifier: matt
+tags: shadow
+title: SiteTitle shadows
+type: text/x-tiddlywiki
+
+In the SiteTitle tiddler you can define the title of your TiddlyWiki.  When you first create a TiddlyWiki it defaults to 
+{{{
+TiddlyWiki
+}}}
+However you can edit it to display anything that you choose.

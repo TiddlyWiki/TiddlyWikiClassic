@@ -1,0 +1,11 @@
+created: 20110211110700000
+creator: psd
+modified: 20110211131000000
+modifier: blaine
+tags: formatting
+title: TiddlerComments
+type: text/x-tiddlywiki
+
+To hide text within a tiddler so that it is not displayed you can wrap it in {{{/%}}} and {{{%/}}}. It can be a useful trick for hiding drafts or annotating complex markup. Edit this tiddler to see an example.
+/%This text is not displayed
+until you try to edit %/

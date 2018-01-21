@@ -1,0 +1,12 @@
+created: 20110211110600000
+creator: psd
+modified: 20110211131000000
+modifier: blaine
+tags: commands
+title: EditTiddlerCommand
+type: text/x-tiddlywiki
+
+Switches the current tiddler to the current edit view. It is used with the ToolbarMacro like this:
+{{{
+<<toolbar editTiddler>>
+}}}

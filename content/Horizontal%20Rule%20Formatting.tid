@@ -1,0 +1,28 @@
+created: 20110211142800000
+creator: matt
+modified: 20110215151800000
+modifier: psd
+tags: formatting
+title: Horizontal Rule Formatting
+type: text/x-tiddlywiki
+
+Four dashes on a line by themselves are used to introduce a horizontal rule:
+{{{
+Before the rule
+----
+After the rule
+}}}
+Displays as:
+
+Before the rule
+----
+After the rule
+
+The HTML tag {{{<hr>}}} can be used as an alternative syntax:
+
+{{{
+Before the rule<hr>After the rule
+}}}
+Displays as:
+
+Before the rule<hr>After the rule

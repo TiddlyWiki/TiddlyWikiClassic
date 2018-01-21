@@ -1,0 +1,9 @@
+created: 20110211110600000
+creator: psd
+modified: 20111020135100000
+modifier: jermolene
+tags: features options
+title: RegExpSearch
+type: text/x-tiddlywiki
+
+RegExpSearch is an [[advanced option|AdvancedOptions]] uses [[JavaScript|http://en.wikipedia.org/wiki/JavaScript]]'s [[RegExp syntax|http://www.programmershelp.co.uk/docs/javascript/regexp.html#1193188]] to allow flexible searches.
