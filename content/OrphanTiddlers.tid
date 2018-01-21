@@ -1,0 +1,9 @@
+created: 20110211110600000
+creator: psd
+modified: 20110211131000000
+modifier: blaine
+tags: features
+title: OrphanTiddlers
+type: text/x-tiddlywiki
+
+The 'Orphans' option on the MoreTab shows you the names of tiddlers that aren't linked to from any other tiddlers - in other words, tiddlers that there is no way for readers to find other than searching for them.

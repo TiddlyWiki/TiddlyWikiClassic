@@ -1,0 +1,17 @@
+created: 20110211143900000
+creator: colmbritton
+modified: 20110215155700000
+modifier: psd
+tags: macro
+title: view macro
+type: text/x-tiddlywiki
+
+The view macro is a powerful macro that allows you to access fields on a given tiddler and format them.
+
+The first parameter is the field to access (note tags does not work).
+The second parameter defines a [[view type|view macro types]] which defines how the value of that field should be rendered.
+
+{{{
+<<view title link>>
+}}}
+renders the link of the current tiddler i.e. <<view title link>>

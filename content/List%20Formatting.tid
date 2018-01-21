@@ -1,0 +1,45 @@
+created: 20110211143200000
+creator: matt
+modified: 20110215151900000
+modifier: psd
+tags: formatting
+title: List Formatting
+type: text/x-tiddlywiki
+
+!Ordered Lists
+Lists can be ordered with numbers and letters:
+{{{
+#List item one
+##List item two
+###List item three
+}}}
+Displays as:
+#List item one
+##List item two
+###List item three
+!Unordered Lists
+Lists can be unordered:
+{{{
+*Unordered List Level 1
+**Unordered List Level 2
+***Unordered List Level 3
+}}}
+Displays as:
+*Unordered List Level 1
+**Unordered List Level 2
+***Unordered List Level 3
+!Definition Lists
+Definition lists can also be created:
+{{{
+;Title 1
+:Definition of title 1
+;Title 2
+:Definition of title 2
+}}}
+Displays as:
+;Title 1
+:Definition of title 1
+;Title 2
+:Definition of title 2
+
+See also [[Tagging Macro]]

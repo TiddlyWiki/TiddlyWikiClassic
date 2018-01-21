@@ -1,0 +1,14 @@
+created: 20120307160200000
+creator: jermolene
+modified: 20120307160200000
+modifier: jermolene
+title: luakit
+type: text/x-tiddlywiki
+
+[[luakit|http://luakit.org/]] is a powerful customizable web browser for Linux. In their own words:
+<<<
+Luakit is a highly configurable, micro-browser framework based on the WebKit web content engine and the GTK+ toolkit. It is very fast, extensible by Lua and licensed under the GNU GPLv3 license.
+
+It is primarily targeted at power users, developers and any people with too much time on their hands who want to have fine-grained control over their web browsers behaviour and interface.
+<<<
+'perlguy' has written up his customizations to get TiddlyWiki working: https://github.com/perlguy/luakit-tiddlywiki

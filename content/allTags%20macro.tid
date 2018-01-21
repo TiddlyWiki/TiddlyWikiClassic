@@ -1,0 +1,16 @@
+created: 20110211143900000
+creator: colmbritton
+modified: 20110211144600000
+modifier: colmbritton
+tags: macro
+title: allTags macro
+type: text/x-tiddlywiki
+
+At it's most basic this macro lists all the tags used in you tiddlywiki as dropdown lists of all the tiddlers which have that tag
+For example
+{{{
+<<allTags>>
+}}}
+
+Displays as:
+<<allTags>>

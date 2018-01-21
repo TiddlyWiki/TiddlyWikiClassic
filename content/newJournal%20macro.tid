@@ -1,0 +1,15 @@
+created: 20110211143900000
+creator: colmbritton
+modified: 20110211144600000
+modifier: colmbritton
+tags: macro
+title: newJournal macro
+type: text/x-tiddlywiki
+
+To create a new tiddler from the current date and time:
+{{{
+<<newJournal>>
+}}}
+Displays as:
+
+<<newJournal>>

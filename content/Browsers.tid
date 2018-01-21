@@ -1,0 +1,22 @@
+created: 20110211110600000
+creator: psd
+modified: 20130426084600000
+modifier: jermolene
+tags: features
+title: Browsers
+type: text/x-tiddlywiki
+
+Here is a table of web browsers that work with ~TiddlyWiki:
+
+|!Browser |!Version |!Allows changes to be saved locally?|
+|InternetExplorer |6.0+ |Yes |
+|FireFox |1.0+ |Yes, with the TiddlyFox extension |
+|[[Safari]] |1.0+ |Yes, using TiddlySaver plugin|
+|[[Opera]] |? |Yes, using TiddlySaver plugin|
+|[[Chrome]] |All |Yes, using TiddlySaver plugin|
+
+See also the [[TiddlyWiki apps available for smartphones|MobileDevices]].
+
+
+
+Please [[let us know|http://groups.google.com/group/TiddlyWiki]] of any additions or corrections.

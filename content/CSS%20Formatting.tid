@@ -1,0 +1,32 @@
+created: 20110211142600000
+creator: matt
+modified: 20111103182200000
+modifier: jermolene
+tags: formatting
+title: CSS Formatting
+type: text/x-tiddlywiki
+
+!!Inline Styles
+Apply CSS properties inline:
+{{{
+@@color:#4bbbbb;Some random text@@
+}}}
+Displays as:
+@@color:#4bbbbb;Some random text@@
+!!CSS classes
+CSS classes can be applied to text blocks or runs. This form creates an HTML {{{<span>}}}:
+{{{
+{{customClassName{Some random text}}}
+}}}
+Displays as:
+{{customClassName{Some random text}}}
+This form generates an HTML {{{<div>}}}:
+{{{
+ {{customClassName{
+ Some random text
+ }}}
+}}}
+Displays as:
+{{customClassName{
+Some random text
+}}}

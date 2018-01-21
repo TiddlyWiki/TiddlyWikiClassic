@@ -1,0 +1,11 @@
+created: 20110211110700000
+creator: psd
+modified: 20110211131000000
+modifier: blaine
+tags: issues troubleshooting
+title: SaveUnpredictabilities
+type: text/x-tiddlywiki
+
+Several people have reported problems with reusing TiddlyWiki when they have used the File/Save command of their browser to save it. The issue is that some browsers (notably FireFox) don't save the text of the HTML file exactly as it appears on the server, but rather save a snapshot of the current state of the page. In the case of a highly dynamic page like TiddlyWiki, this leads to all sorts of peculiarness...
+
+TiddlyWiki now displays a warning if it thinks that it has been saved wrongly.

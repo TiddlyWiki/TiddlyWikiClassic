@@ -1,0 +1,11 @@
+created: 20110211110600000
+creator: psd
+modified: 20110211131000000
+modifier: blaine
+tags: examples
+title: ExampleStyleSheet
+type: text/x-tiddlywiki
+
+#displayArea {background-color: #ffccff; }
+#mainMenu {border: 1px solid #ffff88; }
+#commandPanel {background-color: #008800; }

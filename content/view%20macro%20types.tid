@@ -1,0 +1,54 @@
+created: 20110215160300000
+creator: psd
+modified: 20111214155700000
+modifier: jermolene
+title: view macro types
+type: text/x-tiddlywiki
+
+!Text
+Renders the field exactly how it is stored.
+For example
+{{{
+<<view modified text>>
+<<view title text>>
+}}}
+gives:
+* <<view modified text>>
+* <<view title text>>
+
+!Link
+Renders the value of the field as a link
+{{{
+<<view title link>>
+}}}
+gives
+* <<view title link>>
+
+!Date
+Applicable to the modified and created fields. Note a further parameter - a date format can be used.
+{{{
+<<view created date>>
+<<view modified date "YYYY">>
+}}}
+gives: 
+* <<view created date>>
+* <<view modified date "YYYY">>
+See [[Date Formats]] for possible date format strings.
+
+!Wikified
+Treats the string as wikitext.
+e.g.
+{{{
+<<view customfield wikified>>
+}}}
+
+An optional third parameter can be used to transform the text before it is wikified. For example:
+
+{{{
+<<view customfield wikified "//$1//"
+}}}
+
+The result of this example would be to make the field display in italics.
+
+!TiddlySpace specific
+See [[TiddlySpace View Types]]

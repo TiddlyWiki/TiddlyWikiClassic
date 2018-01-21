@@ -1,0 +1,12 @@
+created: 20110211110600000
+creator: psd
+modified: 20110211131000000
+modifier: blaine
+tags: commands
+title: CloseTiddlerCommand
+type: text/x-tiddlywiki
+
+Closes the current tiddler, regardless of whether it is being editted. It is used with the ToolbarMacro like this:
+{{{
+<<toolbar closeTiddler>>
+}}}

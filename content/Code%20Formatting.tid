@@ -1,0 +1,18 @@
+created: 20110211142600000
+creator: matt
+modified: 20110216114800000
+modifier: colmbritton
+tags: formatting
+title: Code Formatting
+type: text/x-tiddlywiki
+
+Text such as computer code that should be displayed without wiki processing and preserving line breaks:
+&#123;&#123;&#123;
+Some plain text including WikiLinks
+&#125;&#125;&#125;
+Displays as:
+{{{
+Some plain text including WikiLinks
+}}}
+!See Also
+[[Suppressing Formatting]]

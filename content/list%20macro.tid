@@ -1,0 +1,50 @@
+created: 20110211143900000
+creator: colmbritton
+modified: 20111214164400000
+modifier: jermolene
+tags: macro
+title: list macro
+type: text/x-tiddlywiki
+
+The {{{<<list>>}}} macro creates a list of tiddlers of a given type. It takes the following parameters:
+
+{{{
+<<list {type} [template:<templateTiddlerName>] [emptyMessage:"<message for when the list is empty>"]>>
+}}}
+
+The template tiddlers allows you to customise the text that is displayed about each tiddler. If it is not provided, then the default of "{{{<<view title link>>}}}" is used, which just includes the title of the tiddler as a link. You could add the author to each entry in the list by setting the template to a tiddler with the text "{{{<<view title link>> by <<view modified link>>}}}".
+
+The empty message parameter allows you to specify text to be displayed if the list of tiddlers is empty.
+
+The following types are supported:
+
+!all
+To list all tiddlers
+{{{
+<<list all>>
+}}}
+!filter
+List tiddlers that match a certain [[filter|filters syntax]]. The following example lists all plugins.
+{{{
+<<list filter [tag[systemConfig]]>>
+}}}
+!Missing
+To list tiddlers that have links to them but are not defined:
+{{{
+<<list missing>>
+}}}
+!Orphans
+To list tiddlers that are not linked to from any other tiddlers:
+{{{
+<<list orphans>>
+}}}
+!Shadowed
+To list tiddlers shadowed with default contents:
+{{{
+<<list shadowed>>
+}}}
+!Touched
+Show tiddlers that have been modified locally:
+{{{
+<<list touched>>
+}}}

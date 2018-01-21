@@ -1,0 +1,20 @@
+created: 20110211143900000
+creator: matt
+modified: 20110215151200000
+modifier: matt
+tags: shadow
+title: StyleSheet shadows
+type: text/x-tiddlywiki
+
+The StyleSheet tiddler allows you to customise the look and feel of your TiddlyWiki using CSS
+You can put simple one line tweaks in, like:
+{{{
+.mainMenu { color: red; }
+}}}
+
+Or you can put in full ~StyleSheets, like that seen in TiddlySpace in the StyleSheetTiddlySpace
+{{{
+/*{{{*/
+[[StyleSheetTiddlySpace]]
+/*}}}*/
+}}}

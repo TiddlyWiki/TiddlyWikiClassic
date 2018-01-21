@@ -1,0 +1,17 @@
+created: 20130426084400000
+creator: jermolene
+modified: 20130426084400000
+modifier: jermolene
+title: TiddlyFox
+type: text/x-tiddlywiki
+
+TiddlyFox is an extension for Mozilla Firefox that enables TiddlyWiki documents loaded from a {{{file:///}}} URI to save changes to themselves.
+
+The latest version of TiddlyFox can be installed from:
+
+https://github.com/TiddlyWiki/TiddlyFox/raw/master/tiddlyfox.xpi
+
+You can also install TiddlyFox from Mozilla's official addon library, but note that this version typically lags behind the latest release.
+
+https://addons.mozilla.org/en-US/firefox/addon/tiddlyfox/
+
