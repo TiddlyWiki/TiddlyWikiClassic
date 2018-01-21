@@ -1,0 +1,9 @@
+created: 20110211110700000
+creator: psd
+modified: 20110211131000000
+modifier: blaine
+tags: concepts features
+title: SelfContained
+type: text/x-tiddlywiki
+
+One of the neatest features of TiddlyWiki is that it is entirely self-contained in a single HTML file - even including graphics like the GradientMacro. The file contains the actual hypertext document, and the ~JavaScript, ~CascadingStyleSheets and HTML necessary to both view and edit it. This means that it is trivial to host a TiddlyWiki on a website, or to distribute one by email. And anyone with a reasonably recent web browser will be able to read and edit it.

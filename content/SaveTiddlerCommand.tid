@@ -1,0 +1,12 @@
+created: 20110211110700000
+creator: psd
+modified: 20110211131000000
+modifier: blaine
+tags: commands
+title: SaveTiddlerCommand
+type: text/x-tiddlywiki
+
+Saves any pending edits to the current tiddler, and switches it to the default view. It is used with the ToolbarMacro like this:
+{{{
+<<toolbar saveTiddler>>
+}}}

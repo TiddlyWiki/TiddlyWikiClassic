@@ -1,0 +1,11 @@
+created: 20110211110600000
+creator: psd
+modified: 20111020135100000
+modifier: jermolene
+tags: features
+title: PermaView
+type: text/x-tiddlywiki
+
+PermaView is a button in the right-hand sidebar that sets the browser address bar to a URL embodying all the currently open tiddlers in the order that they are currently shown. To use it, arrange the open tiddlers that you want, click the permaview button, copy the URL from the browser address bar, and then paste it into an email, web page or whatever.
+
+On some browsers, PermaView can be unreliable if any of the tiddler titles include characters that have special meanings in URLs (like "+" and "\") or are outside the basic ANSI character set.

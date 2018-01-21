@@ -1,0 +1,14 @@
+created: 20110211110600000
+creator: psd
+modified: 20110221140700000
+modifier: psd
+tags: commands
+title: PermalinkCommand
+type: text/x-tiddlywiki
+
+Changes the browser address bar to a permalink to the current tiddler. It is used with the ToolbarMacro like this:
+{{{
+<<toolbar permalink>>
+}}}
+
+On some browsers, the PermalinkCommand can be unreliable if the tiddler title includes characters that have special meanings in ~URLs (like "+" and "\") or are outside the basic ANSI character set.

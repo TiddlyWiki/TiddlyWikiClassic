@@ -1,0 +1,17 @@
+created: 20110211110600000
+creator: psd
+modified: 20110211131000000
+modifier: blaine
+tags: features
+title: NestedTemplates
+type: text/x-tiddlywiki
+
+A PageTemplate, ViewTemplate or EditTemplate can include the text of another tiddler by including it in double square brackets. For example:
+
+{{{
+<div>
+[[MyHeader]]
+</div>
+}}}
+
+You can also use TiddlerSlicing format to include a smaller chunk of the text of a tiddler.

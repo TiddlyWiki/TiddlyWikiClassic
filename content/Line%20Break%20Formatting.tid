@@ -1,0 +1,14 @@
+created: 20110211143100000
+creator: matt
+modified: 20110215151900000
+modifier: psd
+tags: formatting
+title: Line Break Formatting
+type: text/x-tiddlywiki
+
+Line breaks can be forced explicitly:
+{{{
+Some text with a<br>line break in the middle
+}}}
+Displays as:
+Some text with a<br>line break in the middle

@@ -1,0 +1,11 @@
+created: 20110211110700000
+creator: psd
+modified: 20110211131000000
+modifier: blaine
+tags: browsers issues
+title: VistaIssues
+type: text/x-tiddlywiki
+
+TiddlyWiki works fine under Internet Explorer on Windows Vista, although you may run into the blocking problem described in ServicePack2Problems.
+
+Under Vista, TiddlyWiki will not save changes correctly if you are viewing the TiddlyWiki file in Vista's file preview pane.

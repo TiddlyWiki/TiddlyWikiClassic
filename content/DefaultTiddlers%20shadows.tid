@@ -1,0 +1,24 @@
+created: 20110211143600000
+creator: matt
+modified: 20120127133100000
+modifier: jon
+tags: shadow
+title: DefaultTiddlers shadows
+type: text/x-tiddlywiki
+
+This tiddler contains a list of tiddlers that are opened automatically when you load the tiddlywiki.
+The default is:
+{{{
+[[GettingStarted]]
+}}}
+
+An example could be:
+{{{
+[[HelloThere]]
+[[Reference]]
+[[Features]]
+}}}
+Note you can also put filters into your DefaultTiddlers tiddler. For instance to open all tiddlers tagged with blog on startup:
+{{{
+[tag[blog]]
+}}}

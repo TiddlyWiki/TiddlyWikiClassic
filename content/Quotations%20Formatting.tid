@@ -1,0 +1,30 @@
+created: 20110211143200000
+creator: matt
+modified: 20110215151700000
+modifier: psd
+tags: formatting
+title: Quotations Formatting
+type: text/x-tiddlywiki
+
+!Block Quotations
+Blocks of text can be displayed as quotations:
+{{{
+<<<
+Steve Jobs: "computers are like a bicycle for our minds"
+<<<
+}}}
+Displays as:
+<<<
+Steve Jobs: "computers are like a bicycle for our minds"
+<<<
+!Nested Quotations 
+Quotes can be displayed on multi-levels:
+{{{
+> blockquote, level 1
+>> blockquote, level 2
+>>> blockquote, level 3
+}}}
+Displays as:
+> blockquote, level 1
+>> blockquote, level 2
+>>> blockquote, level 3

@@ -1,0 +1,12 @@
+created: 20110211110600000
+creator: psd
+modified: 20110211131000000
+modifier: blaine
+tags: commands
+title: CancelTiddlerCommand
+type: text/x-tiddlywiki
+
+Abandons any pending edits to the current tiddler, and switches it the default view. It is used with the ToolbarMacro like this:
+{{{
+<<toolbar cancelTiddler>>
+}}}

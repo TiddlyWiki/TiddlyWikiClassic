@@ -1,0 +1,9 @@
+created: 20111103163700000
+creator: jermolene
+modified: 20111103163800000
+modifier: jermolene
+tags: excludeSearch
+title: SideBarOptions
+type: text/x-tiddlywiki
+
+<<search>><<closeAll>><<permaview>><<newTiddler>><<newJournal "DD MMM YYYY" "journal">><<saveChanges>><<slider chkSliderOptionsPanel OptionsPanel "options »" "Change TiddlyWiki advanced options">>

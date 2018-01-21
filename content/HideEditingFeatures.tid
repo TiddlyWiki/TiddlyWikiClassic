@@ -1,0 +1,17 @@
+created: 20110211110600000
+creator: psd
+modified: 20111020135100000
+modifier: jermolene
+tags: features options
+title: HideEditingFeatures
+type: text/x-tiddlywiki
+
+This is an [[advanced option|AdvancedOptions]] that lets you choose whether editting features are shown when a TiddlyWiki file is viewed over {{{http:}}} (as opposed to {{{file:}}}).
+
+To publish a TiddlyWiki with the editting features hidden you'll need to create a tiddler tagged with 'systemConfig' and include in it the line:
+
+{{{
+config.options.chkHttpReadOnly = true;
+}}}
+
+End users can then override the setting using the AdvancedOptions panel.

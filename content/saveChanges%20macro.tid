@@ -1,0 +1,24 @@
+created: 20110211143900000
+creator: colmbritton
+modified: 20110211144600000
+modifier: colmbritton
+tags: macro
+title: saveChanges macro
+type: text/x-tiddlywiki
+
+Using the following creates a save changes button
+{{{
+<<saveChanges>>
+}}}
+
+Displays as:
+
+<<saveChanges>>
+
+The button label can also be changed and a tooltip added:
+{{{
+<<saveChanges [label] [tip]>>
+}}}
+Displays as:
+
+<<saveChanges [label] [tip]>>

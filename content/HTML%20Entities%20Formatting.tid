@@ -1,0 +1,19 @@
+created: 20110211142800000
+creator: matt
+modified: 20110215151500000
+modifier: psd
+tags: formatting
+title: HTML Entities Formatting
+type: text/x-tiddlywiki
+
+HTML entities can be used to easily type special characters:
+{{{
+Here is a quote symbol: &quot;
+And a pound sign: &pound;
+}}}
+Displays as:
+Here is a quote symbol: &quot;
+And a pound sign: &pound;
+!Notes
+For a full list of available HTML references see:
+http://www.w3schools.com/tags/ref_entities.asp
