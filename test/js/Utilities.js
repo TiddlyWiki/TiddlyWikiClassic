@@ -218,8 +218,7 @@ jQuery(document).ready(function() {
 			same(btn.i, attribs.i, message);
 	  }
 
-  // No tests in jsspec
-	// 'it should set the anchor accessKey attribute to the provided accessKey parameter': function() {}
+	// to do: add: 'it should set the anchor accessKey attribute to the provided accessKey parameter': function() {}
 
 	setUp('it should return the anchor element');
 		actual = btn.nodeName;
