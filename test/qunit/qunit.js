@@ -358,7 +358,9 @@ var config = {
 	config.filters = GETParams;
 	
 	// Figure out if we're running the tests from a server or not
-	QUnit.isLocal = !!(location.protocol === 'file:');
+	//QUnit.isLocal = !!(location.protocol === 'file:');
+	// removing isLocal since when set to window (extend(window, QUnit);), it overwrites TiddlyWiki's window.isLocal
+	// function which breaks startup (main()) and breaks a lot of tests
 })();
 
 // Expose the API as global variables, unless an 'exports'
