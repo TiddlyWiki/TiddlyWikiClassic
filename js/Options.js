@@ -56,8 +56,10 @@ function getCookies()
 function loadCookies()
 {
 	var i,cookies = getCookies();
-	if(cookies['TiddlyWikiOptions']) // TW290 and later //#159
-		cookies = cookies['TiddlyWikiOptions'].replace(/%22/g,'"').decodeHashMap(); // #159
+	if(cookies['TiddlyWikiClassicOptions']) // TW291 and later //#159
+		cookies = cookies['TiddlyWikiClassicOptions'].replace(/%22/g,'"').replace(/%25/g,'%').decodeHashMap(); // #159
+	else if(cookies['TiddlyWikiOptions']) // TW290 beta //#159
+		cookies = cookies['TiddlyWikiOptions'].replace(/%25/g,'%').decodeHashMap(); // #159
 	else if(cookies['TiddlyWiki']) // TW281 and earlier
 		cookies = cookies['TiddlyWiki'].decodeHashMap();
 	for(i in cookies) {
@@ -114,9 +116,9 @@ function saveCookie(name)
 		value = value == null ? 'false' : value;
 		cookies[key] = value;
 	}
-	// TW290 and later (#159)
-	document.cookie = 'TiddlyWikiOptions='
-		+ String.encodeHashMap(cookies).replace(/"/g,'%22')
+	// TW291 and later (#159)
+	document.cookie = 'TiddlyWikiClassicOptions='
+		+ String.encodeHashMap(cookies).replace(/%/g,'%25').replace(/"/g,'%22')
 		+ '; expires=Fri, 1 Jan 2038 12:00:00 UTC; path=/';
 	cookies = getCookies();
 	var c;
