@@ -177,11 +177,32 @@ jQuery(document).ready(function(){
 		same(actual,expected,'should not ignore the escaping character for non-WikiWords in slice values');
 
 		title = "tiddler";
+		text = "| foo	 | 		bar	 |";
+		store.saveTiddler(title, title, text);
+		actual = store.calcAllSlices(title);
+		expected = { "foo":"bar" };
+		same(actual,expected,"should ignore spaces around slices' labels (table notation), tab symbols after them and spaces/tabs around slice value");
+
+		title = "tiddler";
 		text = "|foo bar|baz|";
 		store.saveTiddler(title, title, text);
 		actual = store.calcAllSlices(title);
-		expected = {};
-		same(actual,expected,'should ignore slices whose label contains spaces');
+		expected = { "foo bar":"baz" };
+		same(actual,expected,'should not ignore slices (table notation) whose label contains spaces');
+
+		title = "tiddler";
+		text = "foo bar:baz";
+		store.saveTiddler(title, title, text);
+		actual = store.calcAllSlices(title);
+		expected = {  };
+		same(actual,expected,'should ignore slices (colon notation) whose label contains spaces');
+
+		title = "tiddler";
+		text = "|foo ц%𓀶|baz|";
+		store.saveTiddler(title, title, text);
+		actual = store.calcAllSlices(title);
+		expected = { "foo ц%𓀶":"baz" };
+		same(actual,expected,'should not ignore slices (table notation) whose label contains non-latin and special characters');
 
 		title = "tiddler";
 		text = "|foo|bar baz|";
@@ -251,7 +272,7 @@ jQuery(document).ready(function(){
 		store.saveTiddler(title, title, text);
 		actual = store.calcAllSlices(title);
 		expected = { "foo": "bar|baz" };
-//		same(actual,expected,'should allow pipes in slice values (table notation)');
+		same(actual,expected,'should allow pipes in slice values (table notation)');
 
 		title = "tiddler";
 		text = "foo: lorem [[bar|baz]] ipsum";
