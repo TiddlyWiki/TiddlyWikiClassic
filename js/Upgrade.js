@@ -2,11 +2,15 @@
 //-- Upgrade macro
 //--
 
+config.macros.upgrade.getSourceURL = function() {
+	return config.macros.upgrade.source;
+};
+
 config.macros.upgrade.handler = function(place)
 {
 	var w = new Wizard();
 	w.createWizard(place,this.wizardTitle);
-	w.addStep(this.step1Title,this.step1Html.format([this.source,this.source]));
+	w.addStep(this.step1Title,this.step1Html.format([this.getSourceURL(),this.getSourceURL()]));
 	w.setButtons([{caption: this.upgradeLabel, tooltip: this.upgradePrompt, onClick: this.onClickUpgrade}]);
 };
 
@@ -37,15 +41,16 @@ config.macros.upgrade.onClickUpgrade = function(e)
 		return false;
 	}
 	w.setButtons([],me.statusLoadingCore);
+	var sourceURL = me.getSourceURL();
 	var options = {
 		type:"GET",
-		url:me.source,
+		url:sourceURL,
 		processData:false,
 		success:function(data,textStatus,jqXHR) {
-			me.onLoadCore(true,w,jqXHR.responseText,me.source,jqXHR);
+			me.onLoadCore(true,w,jqXHR.responseText,sourceURL,jqXHR);
 		},
 		error:function(jqXHR,textStatus,errorThrown) {
-			me.onLoadCore(false,w,null,me.source,jqXHR);
+			me.onLoadCore(false,w,null,sourceURL,jqXHR);
 		}
 	};
 	ajaxReq(options);
