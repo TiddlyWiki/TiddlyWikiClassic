@@ -3,7 +3,7 @@
 //--
 
 config.macros.upgrade.getSourceURL = function() {
-	return config.macros.upgrade.source;
+	return config.options.txtUpgradeCoreURI || config.macros.upgrade.source;
 };
 
 config.macros.upgrade.handler = function(place)
