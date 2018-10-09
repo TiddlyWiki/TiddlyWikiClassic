@@ -133,7 +133,7 @@ config.macros = {
 	refreshDisplay: {},
 	importTiddlers: {},
 	upgrade: {
-		source: "http://classic.tiddlywiki.com/upgrade/",
+		source: "https://classic.tiddlywiki.com/upgrade/",
 		backupExtension: "pre.core.upgrade"
 	},
 	sync: {},
