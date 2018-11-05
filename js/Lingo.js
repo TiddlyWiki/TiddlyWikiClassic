@@ -36,8 +36,8 @@ merge(config.optionsDesc,{
 	txtBackupFolder: "Name of folder to use for backups",
 	txtMaxEditRows: "Maximum number of rows in edit boxes",
 	txtTheme: "Name of the theme to use",
-	txtFileSystemCharSet: "Default character set for saving changes (Firefox/Mozilla only)"}),
-	txtUpgradeCoreURI: "Custom URI to download TiddlyWiki core from (when upgrading)";
+	txtFileSystemCharSet: "Default character set for saving changes (Firefox/Mozilla only)",
+	txtUpgradeCoreURI: "Custom URI to download TiddlyWiki core from (when upgrading)"});
 
 merge(config.messages,{
 	customConfigError: "Problems were encountered loading plugins. See PluginManager for details",
