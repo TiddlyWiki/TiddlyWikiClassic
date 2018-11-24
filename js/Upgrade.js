@@ -2,7 +2,8 @@
 //-- Upgrade macro
 //--
 
-config.macros.upgrade.getSourceURL = function() {
+config.macros.upgrade.getSourceURL = function()
+{
 	return config.options.txtUpgradeCoreURI || config.macros.upgrade.source;
 };
 
