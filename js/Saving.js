@@ -95,11 +95,10 @@ function autoSaveChanges(onlyIfDirty,tiddlers)
 		saveChanges(onlyIfDirty,tiddlers);
 }
 
+// get the full HTML of the original file
 function loadOriginal(localPath)
 {
-	var content=loadFile(localPath);
-	if (!content) content=window.originalHTML||recreateOriginal();
-	return content;
+	return loadFile(localPath) || window.originalHTML || recreateOriginal();
 }
 
 //# reconstruct original HTML file content from current document memory
@@ -107,35 +106,35 @@ function recreateOriginal()
 {
 	// construct doctype
 	var content = "<!DOCTYPE ";
-	var t=document.doctype;
+	var t = document.doctype;
 	if (!t) 
-		content+="html"
+		content += "html"
 	else {
-		content+=t.name;
+		content += t.name;
 		if      (t.publicId)		content+=' PUBLIC "'+t.publicId+'"';
 		else if (t.systemId)		content+=' SYSTEM "'+t.systemId+'"';
 	}
-	content+=' "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"';
-	content+='>\n';
+	content += ' "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"';
+	content += '>\n';
 
 	// append current document content
-	content+=document.documentElement.outerHTML;
+	content += document.documentElement.outerHTML;
 
 	//# clear 'savetest' marker
-	content=content.replace(/<div id="saveTest">savetest<\/div>/,'<div id="saveTest"></div>');
+	content = content.replace(/<div id="saveTest">savetest<\/div>/,'<div id="saveTest"></div>');
 	//# clear <applet> following </script>
-	content=content.replace(/script><applet [^\>]*><\/applet>/g,'script>');
+	content = content.replace(/script><applet [^\>]*><\/applet>/g,'script>');
 	//# newline before head tag
-	content=content.replace(/><head>/,'>\n<head>');
+	content = content.replace(/><head>/,'>\n<head>');
 	//# newlines before/after end of body/html tags
-	content=content.replace(/\n\n<\/body><\/html>$/,'</'+'body>\n</'+'html>\n'); // #170
+	content = content.replace(/\n\n<\/body><\/html>$/,'</'+'body>\n</'+'html>\n'); // #170
 	//# meta tag terminators
-	content=content.replace(/(<(meta) [^\>]*[^\/])>/g,'$1 />');
+	content = content.replace(/(<(meta) [^\>]*[^\/])>/g,'$1 />');
 	//# decode LT/GT entities in noscript
-	content=content.replace(/<noscript>[^\<]*<\/noscript>/,
-		function(m){return m.replace(/&lt;/g,'<').replace(/&gt;/g,'>');});
+	content = content.replace(/<noscript>[^\<]*<\/noscript>/,
+		function(m){ return m.replace(/&lt;/g,'<').replace(/&gt;/g,'>'); });
 	//# encode copyright symbols (UTF-8 to HTML entity)
-	content=content.replace(/<div id="copyright">[^\<]*<\/div>/,
+	content = content.replace(/<div id="copyright">[^\<]*<\/div>/,
 		function(m){return m.replace(/\xA9/g,'&copy;');});
 
 	return content;
@@ -173,9 +172,9 @@ function saveChanges(onlyIfDirty,tiddlers)
 		alert(msg.invalidFileError.format([localPath]));
 		return;
 	}
-	var co=config.options; //# abbreviation
-	config.saveByDownload=false;
-	config.saveByManualDownload=false;
+	var co = config.options; //# abbreviation
+	config.saveByDownload = false;
+	config.saveByManualDownload = false;
 	saveMain(localPath,original,posDiv);
 	if (!config.saveByDownload && !config.saveByManualDownload) {
 		if(co.chkSaveBackups)
@@ -302,4 +301,3 @@ function getBackupPath(localPath,title,extension)
 	backupPath += (new Date()).convertToYYYYMMDDHHMMSSMMM() + "." + (extension || "html");
 	return backupPath;
 }
-
