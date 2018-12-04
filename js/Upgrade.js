@@ -75,9 +75,11 @@ config.macros.upgrade.onLoadCore = function(status,params,responseText,url,xhr)
 		return;
 	}
 	var onStartUpgrade = function(e) {
+		
 		w.setButtons([],me.statusSavingCore);
 		var localPath = getLocalPath(document.location.toString());
 		saveFile(localPath,responseText);
+		
 		w.setButtons([],me.statusReloadingCore);
 		var backupPath = w.getValue("backupPath");
 		var newLoc = document.location.toString() + "?time=" + new Date().convertToYYYYMMDDHHMM() + "#upgrade:[[" + encodeURI(backupPath) + "]]";
@@ -121,4 +123,3 @@ function upgradeFrom(path)
 	alert(config.messages.upgradeDone.format([formatVersion()]));
 	window.location = window.location.toString().substr(0,window.location.toString().lastIndexOf("?"));
 }
-
