@@ -218,13 +218,9 @@ function saveMain(localPath,original,posDiv)
 
 function saveBackup(localPath,original)
 {
-	//# Save the backup
 	var backupPath = getBackupPath(localPath);
-	var backup = copyFile(backupPath,localPath);
-	//# Browser does not support copy, so use save instead
-	if(!backup)
-		backup = saveFile(backupPath,original);
-	if(backup)
+	var backupSuccess = copyFile(backupPath,localPath) || saveFile(backupPath,original);
+	if(backupSuccess)
 		displayMessage(config.messages.backupSaved,"file://" + backupPath);
 	else
 		alert(config.messages.backupFailed);
