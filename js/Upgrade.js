@@ -27,20 +27,21 @@ config.macros.upgrade.onClickUpgrade = function(e)
 		alert(me.errorNotSaved);
 		return false;
 	}
+	
+	w.setButtons([],me.statusPreparingBackup);
 	var localPath = getLocalPath(document.location.toString());
 	var backupPath = getBackupPath(localPath,me.backupExtension);
-	w.setValue("backupPath",backupPath);
-	w.setButtons([],me.statusPreparingBackup);
 	var original = loadOriginal(localPath);
+	
 	w.setButtons([],me.statusSavingBackup);
-	var backup = copyFile(backupPath,localPath);
-	if(!backup)
-		backup = saveFile(backupPath,original);
-	if(!backup) {
+	var backupSuccess = copyFile(backupPath,localPath) || saveFile(backupPath,original);
+	if(!backupSuccess) {
 		w.setButtons([],me.errorSavingBackup);
 		alert(me.errorSavingBackup);
 		return false;
 	}
+	w.setValue("backupPath",backupPath);
+	
 	w.setButtons([],me.statusLoadingCore);
 	var sourceURL = me.getSourceURL();
 	var options = {
