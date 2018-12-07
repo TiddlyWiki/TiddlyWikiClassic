@@ -82,7 +82,7 @@ config.macros.upgrade.onLoadCore = function(status,params,responseText,url,xhr)
 		
 		w.setButtons([],me.statusReloadingCore);
 		var backupPath = w.getValue("backupPath");
-		var newLoc = document.location.toString() + "?time=" + new Date().convertToYYYYMMDDHHMM() + "#upgrade:[[" + encodeURI(backupPath) + "]]";
+		var newLoc = addUpgradePartsToURI(document.location.toString(), backupPath);
 		window.setTimeout(function () {window.location = newLoc;},10);
 	};
 	var step2 = [me.step2Html_downgrade,me.step2Html_restore,me.step2Html_upgrade][compareVersions(version,newVer) + 1];
@@ -106,6 +106,60 @@ config.macros.upgrade.extractVersion = function(upgradeFile)
 	return m ? {title: m[1], major: m[2], minor: m[3], revision: m[4], beta: m[6], date: new Date(m[7])} : null;
 };
 
+// a helper, splits uri into parts, passes the map of parts to modify and glues parts back
+function changeUri(uri, modify)
+{
+	var uriPartsRE = /^(?:([\w:]+)\/\/)?([^\/\?#]+)?([^\?#]+)?(?:\?([^#]*))?(?:#(.*))?$/;
+	var match = uriPartsRE.exec(uri) || [null,'','','','',''];
+	var parts = {
+		scheme:	match[1],
+		host:	match[2],
+		path:	match[3],
+		query:	match[4],
+		hash:	match[5]
+	};
+	modify(parts);
+	var newScheme = parts.scheme === undefined ? '' : (parts.scheme + '//'),
+	    newHost   = parts.host || '',
+	    newPath   = parts.path || '',
+	    newQuery  = parts.query  === undefined ? '' : ('?' + parts.query),
+	    newHash   = parts.hash   === undefined ? '' : ('#' + parts.hash);
+	return newScheme + newHost + newPath + newQuery + newHash;
+}
+
+function addUpgradePartsToURI(uri, backupPath)
+{
+	return changeUri(uri, function(uriParts)
+	{
+		var newParamifier = 'upgrade:[['+ encodeURI(backupPath) +']]';
+		uriParts.hash = (uriParts.hash ? uriParts.hash + '%20' : '') + newParamifier;
+		
+		var newQuery = "time=" + new Date().convertToYYYYMMDDHHMM();
+		uriParts.query = (uriParts.query ? uriParts.query + '&' : '') + newQuery;
+	});
+}
+
+function stripUpgradePartsFromURI(uri)
+{
+	return changeUri(uri, function(uriParts)
+	{
+		var queryParts = uriParts.query.split('&'),
+		    hashParts = uriParts.hash.split('%20'); // splits paramifiers with a space in argument
+		
+		for(var i = 0; i < queryParts.length; i++)
+			if(queryParts[i].indexOf('time=') == 0)
+				queryParts.splice(i--,1);
+		
+		// relies on the upgrade paramifier being added to the end of hash
+		for(i = 0; i < hashParts.length; i++)
+			if(hashParts[i].indexOf('upgrade:') == 0)
+				hashParts = hashParts.slice(0,i);
+		
+		uriParts.query = queryParts.join('&');
+		uriParts.hash = hashParts.join('%20');
+	})
+}
+
 function upgradeFrom(path)
 {
 	var importStore = new TiddlyWiki();
@@ -121,5 +175,5 @@ function upgradeFrom(path)
 	refreshDisplay();
 	saveChanges(); //# To create appropriate Markup* sections
 	alert(config.messages.upgradeDone.format([formatVersion()]));
-	window.location = window.location.toString().substr(0,window.location.toString().lastIndexOf("?"));
+	window.location = stripUpgradePartsFromURI(window.location.toString());
 }
