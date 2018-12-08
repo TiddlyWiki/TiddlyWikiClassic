@@ -177,3 +177,4 @@ function upgradeFrom(path)
 	alert(config.messages.upgradeDone.format([formatVersion()]));
 	window.location = stripUpgradePartsFromURI(window.location.toString());
 }
+

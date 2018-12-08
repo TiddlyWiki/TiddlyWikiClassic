@@ -297,3 +297,4 @@ function getBackupPath(localPath,title,extension)
 	backupPath += (new Date()).convertToYYYYMMDDHHMMSSMMM() + "." + (extension || "html");
 	return backupPath;
 }
+
