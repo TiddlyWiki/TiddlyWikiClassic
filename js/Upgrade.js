@@ -122,7 +122,7 @@ function changeUri(uri, modify)
 	var newScheme = parts.scheme === undefined ? '' : (parts.scheme + '//'),
 	    newHost   = parts.host || '',
 	    newPath   = parts.path || '',
-	    newQuery  = parts.query  === undefined ? '' : ('?' + parts.query),
+	    newQuery  = parts.query ? ('?' + parts.query) : '',
 	    newHash   = parts.hash   === undefined ? '' : ('#' + parts.hash);
 	return newScheme + newHost + newPath + newQuery + newHash;
 }
@@ -156,7 +156,7 @@ function stripUpgradePartsFromURI(uri)
 				hashParts = hashParts.slice(0,i);
 		
 		uriParts.query = queryParts.join('&');
-		uriParts.hash = hashParts.join('%20');
+		uriParts.hash = hashParts.join('%20') || undefined;
 	})
 }
 
