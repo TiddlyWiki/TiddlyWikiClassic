@@ -16,7 +16,6 @@ window.copyFile = window.copyFile || function(dest,source)
 	return config.browser.isIE ? ieCopyFile(dest,source) : false;
 }
 
-
 // Save a file in filesystem [Preemption]
 window.saveFile = window.saveFile || function(fileUrl,content)
 {
@@ -44,6 +43,7 @@ window.loadFile = window.loadFile || function(fileUrl)
 	return r;
 }
 
+
 function ieCreatePath(path)
 {
 	try {
@@ -68,7 +68,7 @@ function ieCreatePath(path)
 	}
 
 	//# Walk back down the path, creating folders
-	for(i=scan.length-1;i>=0;i--) {
+	for(i = scan.length-1; i >= 0; i--) {
 		if(!fso.FolderExists(scan[i])) {
 			fso.CreateFolder(scan[i]);
 		}
@@ -101,7 +101,7 @@ function ieLoadFile(filePath)
 		var content = file.ReadAll();
 		file.Close();
 	} catch(ex) {
-		//# alert("Exception while attempting to load\n\n" + ex.toString());
+		//# if(config.browser.isIE) alert("Exception while attempting to load\n\n" + ex.toString());
 		return null;
 	}
 	return content;
@@ -122,52 +122,52 @@ function ieCopyFile(dest,source)
 // Returns null if it can't do it, false if there's an error, true if it saved OK
 function mozillaSaveFile(filePath,content)
 {
-	if(window.Components) {
-		content = mozConvertUnicodeToUTF8(content);
-		try {
-			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-			var file = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-			file.initWithPath(filePath);
-			if(!file.exists())
-				file.create(0,0x01B4);// 0x01B4 = 0664
-			var out = Components.classes["@mozilla.org/network/file-output-stream;1"].createInstance(Components.interfaces.nsIFileOutputStream);
-			out.init(file,0x22,0x04,null);
-			out.write(content,content.length);
-			out.flush();
-			out.close();
-			return true;
-		} catch(ex) {
-			//# alert("Exception while attempting to save\n\n" + ex);
-			return false;
-		}
+	if(!window.Components)
+		return null;
+	
+	content = mozConvertUnicodeToUTF8(content);
+	try {
+		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+		var file = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+		file.initWithPath(filePath);
+		if(!file.exists())
+			file.create(0,0x01B4);// 0x01B4 = 0664
+		var out = Components.classes["@mozilla.org/network/file-output-stream;1"].createInstance(Components.interfaces.nsIFileOutputStream);
+		out.init(file,0x22,0x04,null);
+		out.write(content,content.length);
+		out.flush();
+		out.close();
+		return true;
+	} catch(ex) {
+		//# alert("Exception while attempting to save\n\n" + ex);
+		return false;
 	}
-	return null;
 }
 
 // Returns null if it can't do it, false if there's an error, or a string of the content if successful
 function mozillaLoadFile(filePath)
 {
-	if(window.Components) {
-		try {
-			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-			var file = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-			file.initWithPath(filePath);
-			if(!file.exists())
-				return null;
-			var inputStream = Components.classes["@mozilla.org/network/file-input-stream;1"].createInstance(Components.interfaces.nsIFileInputStream);
-			inputStream.init(file,0x01,0x04,null);
-			var sInputStream = Components.classes["@mozilla.org/scriptableinputstream;1"].createInstance(Components.interfaces.nsIScriptableInputStream);
-			sInputStream.init(inputStream);
-			var contents = sInputStream.read(sInputStream.available());
-			sInputStream.close();
-			inputStream.close();
-			return mozConvertUTF8ToUnicode(contents);
-		} catch(ex) {
-			//# alert("Exception while attempting to load\n\n" + ex);
-			return false;
-		}
+	if(!window.Components)
+		return null;
+	
+	try {
+		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+		var file = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+		file.initWithPath(filePath);
+		if(!file.exists())
+			return null;
+		var inputStream = Components.classes["@mozilla.org/network/file-input-stream;1"].createInstance(Components.interfaces.nsIFileInputStream);
+		inputStream.init(file,0x01,0x04,null);
+		var sInputStream = Components.classes["@mozilla.org/scriptableinputstream;1"].createInstance(Components.interfaces.nsIScriptableInputStream);
+		sInputStream.init(inputStream);
+		var contents = sInputStream.read(sInputStream.available());
+		sInputStream.close();
+		inputStream.close();
+		return mozConvertUTF8ToUnicode(contents);
+	} catch(ex) {
+		//# alert("Exception while attempting to load\n\n" + ex);
+		return false;
 	}
-	return null;
 }
 
 function javaUrlToFilename(url)

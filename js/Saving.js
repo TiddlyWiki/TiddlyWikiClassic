@@ -193,12 +193,12 @@ function saveMain(localPath,original,posDiv)
 {
 	var save;
 	try {
-		//# Save new file
 		var revised = updateOriginal(original,posDiv,localPath);
 		save = saveFile(localPath,revised);
 	} catch (ex) {
 		showException(ex);
 	}
+	//# Report status to user
 	if(save) {
 		if (!config.saveByManualDownload) {
 			if (config.saveByDownload) { //# set by HTML5DownloadSaveFile()
