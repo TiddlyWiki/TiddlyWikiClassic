@@ -239,8 +239,8 @@ config.macros.importTiddlers.onOpenWorkspace = function(context,wizard)
 	if(context.status !== true)
 		displayMessage("Error in importTiddlers.onOpenWorkspace: " + context.statusText);
 	var adaptor = wizard.getValue("adaptor");
-	var browse=wizard.getElement("txtBrowse");
-	if (browse.files) context.file=browse.files[0]; // for HTML5 FileReader
+	var browse = wizard.getElement("txtBrowse");
+	if (browse.files) context.file = browse.files[0]; // for HTML5 FileReader
 	adaptor.getTiddlerList(context,wizard,me.onGetTiddlerList,wizard.getValue("feedTiddlerFilter"));
 	wizard.setButtons([{caption: me.cancelLabel, tooltip: me.cancelPrompt, onClick: me.onCancel}],me.statusGetTiddlerList);
 };
