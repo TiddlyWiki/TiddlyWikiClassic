@@ -20,6 +20,7 @@ window.copyFile = window.copyFile || function(dest,source)
 // Save a file in filesystem [Preemption]
 window.saveFile = window.saveFile || function(fileUrl,content)
 {
+	content = convertUnicodeToFileFormat(content);
 	var r = mozillaSaveFile(fileUrl,content);
 	if(!r)
 		r = ieSaveFile(fileUrl,content);
@@ -82,11 +83,11 @@ function ieSaveFile(filePath,content)
 	try {
 		var fso = new ActiveXObject("Scripting.FileSystemObject");
 	} catch(ex) {
-		//# alert("Exception while attempting to save\n\n" + ex.toString());
+		//# if(config.browser.isIE) alert("Exception while attempting to save\n\n" + ex.toString());
 		return null;
 	}
 	var file = fso.OpenTextFile(filePath,2,-1,0);
-	file.Write(content);
+	file.Write(convertUnicodeToHtmlEntities(content));
 	file.Close();
 	return true;
 }
@@ -122,6 +123,7 @@ function ieCopyFile(dest,source)
 function mozillaSaveFile(filePath,content)
 {
 	if(window.Components) {
+		content = mozConvertUnicodeToUTF8(content);
 		try {
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 			var file = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
@@ -159,7 +161,7 @@ function mozillaLoadFile(filePath)
 			var contents = sInputStream.read(sInputStream.available());
 			sInputStream.close();
 			inputStream.close();
-			return contents;
+			return mozConvertUTF8ToUnicode(contents);
 		} catch(ex) {
 			//# alert("Exception while attempting to load\n\n" + ex);
 			return false;

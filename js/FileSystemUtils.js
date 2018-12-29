@@ -53,9 +53,11 @@ function mozConvertUTF8ToUnicode(u)
 
 //# convert unicode string to a format suitable for saving to file
 //# this should be UTF8, unless the browser does not support saving non-ASCII characters
+// currently, browser-specific convertion is only needed in browser-specific savers
+// so this converted doesn't do anything
 function convertUnicodeToFileFormat(s)
 {
-	return config.browser.isOpera || !window.netscape ? (config.browser.isIE ? convertUnicodeToHtmlEntities(s) : s) : mozConvertUnicodeToUTF8(s);
+	return s;
 }
 
 function convertUnicodeToHtmlEntities(s)
@@ -64,10 +66,10 @@ function convertUnicodeToHtmlEntities(s)
 	return s.replace(re,function($0) {return "&#" + $0.charCodeAt(0).toString() + ";";});
 }
 
+// deprecated helper for backward-compability with plugins and more
 function convertUnicodeToUTF8(s)
 {
-// return convertUnicodeToFileFormat to allow plugin migration
-	return convertUnicodeToFileFormat(s);
+	return s;
 }
 
 function manualConvertUnicodeToUTF8(s)

@@ -5,7 +5,7 @@
 function saveRss(localPath)
 {
 	var rssPath = localPath.substr(0,localPath.lastIndexOf(".")) + ".xml";
-	if(saveFile(rssPath,convertUnicodeToFileFormat(generateRss())))
+	if(saveFile(rssPath,generateRss()))
 		displayMessage(config.messages.rssSaved,"file://" + rssPath);
 	else
 		alert(config.messages.rssFailed);
