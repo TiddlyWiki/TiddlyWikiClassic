@@ -19,12 +19,11 @@ window.copyFile = window.copyFile || function(dest,source)
 // Save a file in filesystem [Preemption]
 window.saveFile = window.saveFile || function(fileUrl,content)
 {
-	content = convertUnicodeToFileFormat(content);
 	var r = mozillaSaveFile(fileUrl,content);
 	if(!r)
 		r = ieSaveFile(fileUrl,content);
 	if(!r)
-		r = javaSaveFile(fileUrl,content);
+		r = javaSaveFile(fileUrl,convertUnicodeToFileFormat(content));
 	if(!r)
 		r = HTML5DownloadSaveFile(fileUrl,content);
 	if(!r)
@@ -306,7 +305,9 @@ function getDataURI(data)
 	if (config.browser.isIE)
 		return "data:text/html,"+encodeURIComponent(data);
 	else
-		return "data:text/html;base64,"+encodeBase64(data);
+		// manualConvertUnicodeToUTF8 was moved here from convertUnicodeToFileFormat
+		// in 2.9.1 it was used only for FireFox but happened to fix download saving non-ASCII in Chrome & Safari as well
+		return "data:text/html;base64,"+encodeBase64(manualConvertUnicodeToUTF8(data));
 }
 
 function encodeBase64(data)
