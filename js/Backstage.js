@@ -24,19 +24,20 @@ var backstage = {
 		this.toolbar = jQuery("#backstageToolbar").empty()[0];
 		this.button = jQuery("#backstageButton").empty()[0];
 		this.button.style.display = "block";
-		var t = cmb.open.text + " " + glyph("bentArrowLeft");
-		this.showButton = createTiddlyButton(this.button,t,cmb.open.tooltip,
-						function(e) {backstage.show(); return false;},null,"backstageShow");
-		t = glyph("bentArrowRight") + " " + cmb.close.text;
-		this.hideButton = createTiddlyButton(this.button,t,cmb.close.tooltip,
-						function(e) {backstage.hide(); return false;},null,"backstageHide");
+		var text = cmb.open.text + " " + glyph("bentArrowLeft");
+		this.showButton = createTiddlyButton(this.button,text,cmb.open.tooltip,
+			function(e) { backstage.show(); return false; },null,"backstageShow");
+		text = glyph("bentArrowRight") + " " + cmb.close.text;
+		this.hideButton = createTiddlyButton(this.button,text,cmb.close.tooltip,
+			function(e) { backstage.hide(); return false; },null,"backstageHide");
 		this.cloak = document.getElementById("backstageCloak");
 		this.panel = document.getElementById("backstagePanel");
 		this.panelFooter = createTiddlyElement(this.panel,"div",null,"backstagePanelFooter");
 		this.panelBody = createTiddlyElement(this.panel,"div",null,"backstagePanelBody");
-		this.cloak.onmousedown = function(e) {backstage.switchTab(null);};
+		this.cloak.onmousedown = function(e) { backstage.switchTab(null); };
 		createTiddlyText(this.toolbar,cmb.prompt);
-		for(t = 0; t < config.backstageTasks.length; t++) {
+		for(var t = 0; t < config.backstageTasks.length; t++)
+		{
 			var taskName = config.backstageTasks[t];
 			var task = config.tasks[taskName];
 			var handler = task.action ? this.onClickCommand : this.onClickTab;
