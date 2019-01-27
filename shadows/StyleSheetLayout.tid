@@ -69,8 +69,9 @@ a.tiddlyLinkNonExisting.shadow {font-weight:bold;}
 #sidebarTabs .tabContents {width:15em; overflow:hidden;}
 
 .wizard {padding:0.1em 1em 0 2em;}
-.wizard h1 {font-size:2em; font-weight:bold; background:none; padding:0; margin:0.4em 0 0.2em;}
-.wizard h2 {font-size:1.2em; font-weight:bold; background:none; padding:0; margin:0.4em 0 0.2em;}
+.wizard__title { font-size:2em; }
+.wizard__subtitle { font-size:1.2em; }
+.wizard__title, .wizard__subtitle { font-weight:bold; background:none; padding:0; margin:0.4em 0 0.2em; }
 .wizardStep {padding:1em 1em 1em 1em;}
 .wizard .button {margin:0.5em 0 0; font-size:1.2em;}
 .wizardFooter {padding:0.8em 0.4em 0.8em 0;}
