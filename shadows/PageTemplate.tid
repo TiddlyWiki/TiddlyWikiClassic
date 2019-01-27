@@ -17,7 +17,7 @@ title: PageTemplate
 <div id='sidebarTabs' role='complementary' refresh='content' force='true' tiddler='SideBarTabs'></div>
 </div>
 <div id='displayArea' role='main'>
-<div id='messageArea'></div>
+<div id='messageArea' class='messageArea'></div>
 <div id='tiddlerDisplay'></div>
 </div>
 <!--}}}-->
