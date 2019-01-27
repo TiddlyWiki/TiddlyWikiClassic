@@ -62,7 +62,7 @@ merge(config.messages,{
 	rssFailed: "Failed to save RSS feed file",
 	emptySaved: "Empty template saved",
 	emptyFailed: "Failed to save empty template file",
-	mainSaved: "Main TiddlyWiki file saved",
+	mainSaved: "TiddlyWiki saved",
 	mainDownload: "Downloading/saving main TiddlyWiki file",
 	mainDownloadManual: "RIGHT CLICK HERE to download/save main TiddlyWiki file",
 	mainFailed: "Failed to save main TiddlyWiki file. Your changes have not been saved",
