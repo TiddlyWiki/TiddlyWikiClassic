@@ -5,7 +5,8 @@
 // Strings in "double quotes" should be translated; strings in 'single quotes' should be left alone
 
 merge(config.options,{
-	txtUserName: "YourName"});
+	txtUserName: "YourName"
+});
 
 merge(config.tasks,{
 	save: {text: "save", tooltip: "Save your changes to this TiddlyWiki"},
@@ -37,7 +38,8 @@ merge(config.optionsDesc,{
 	txtMaxEditRows: "Maximum number of rows in edit boxes",
 	txtTheme: "Name of the theme to use",
 	txtFileSystemCharSet: "Default character set for saving changes (Firefox/Mozilla only)",
-	txtUpgradeCoreURI: "Custom URI to download TiddlyWiki core from (when upgrading)"});
+	txtUpgradeCoreURI: "Custom URI to download TiddlyWiki core from (when upgrading)"
+});
 
 merge(config.messages,{
 	customConfigError: "Problems were encountered loading plugins. See PluginManager for details",
@@ -81,11 +83,13 @@ merge(config.messages,{
 	fieldCannotBeChanged: "Field '%0' cannot be changed",
 	loadingMissingTiddler: "Attempting to retrieve the tiddler '%0' from the '%1' server at:\n\n'%2' in the workspace '%3'",
 	upgradeDone: "The upgrade to version %0 is now complete\n\nClick 'OK' to reload the newly upgraded TiddlyWiki",
-	invalidCookie: "Invalid cookie '%0'"});
+	invalidCookie: "Invalid cookie '%0'"
+});
 
 merge(config.messages.messageClose,{
 	text: "close",
-	tooltip: "close this message area"});
+	tooltip: "close this message area"
+});
 
 config.messages.backstage = {
 	open: {text: "backstage", tooltip: "Open the backstage area to perform authoring and editing tasks"},
@@ -113,8 +117,7 @@ config.messages.dates.daySuffixes = ["st","nd","rd","th","th","th","th","th","th
 config.messages.dates.am = "am";
 config.messages.dates.pm = "pm";
 
-merge(config.messages.tiddlerPopup,{
-	});
+merge(config.messages.tiddlerPopup,{});
 
 merge(config.views.wikified.tag,{
 	labelNoTags: "no tags",
@@ -123,33 +126,38 @@ merge(config.views.wikified.tag,{
 	tooltip: "Show tiddlers tagged with '%0'",
 	openAllText: "Open all",
 	openAllTooltip: "Open all of these tiddlers",
-	popupNone: "No other tiddlers tagged with '%0'"});
+	popupNone: "No other tiddlers tagged with '%0'"
+});
 
 merge(config.views.wikified,{
 	defaultText: "The tiddler '%0' doesn't yet exist. Double-click to create it",
 	defaultModifier: "(missing)",
 	shadowModifier: "(built-in shadow tiddler)",
 	dateFormat: "DD MMM YYYY",
-	createdPrompt: "created"});
+	createdPrompt: "created"
+});
 
 merge(config.views.editor,{
 	tagPrompt: "Type tags separated with spaces, [[use double square brackets]] if necessary, or add existing",
-	defaultText: "Type the text for '%0'"});
+	defaultText: "Type the text for '%0'"
+});
 
 merge(config.views.editor.tagChooser,{
 	text: "tags",
 	tooltip: "Choose existing tags to add to this tiddler",
 	popupNone: "There are no tags defined",
-	tagTooltip: "Add the tag '%0'"});
+	tagTooltip: "Add the tag '%0'"
+});
 
 merge(config.messages,{
 	sizeTemplates:
-		[
+	[
 		{unit: 1024*1024*1024, template: "%0\u00a0GB"},
 		{unit: 1024*1024, template: "%0\u00a0MB"},
 		{unit: 1024, template: "%0\u00a0KB"},
 		{unit: 1, template: "%0\u00a0B"}
-		]});
+	]
+});
 
 merge(config.macros.search,{
 	label: "search",
@@ -157,19 +165,23 @@ merge(config.macros.search,{
 	placeholder: "",
 	accessKey: "F",
 	successMsg: "%0 tiddlers found matching %1",
-	failureMsg: "No tiddlers found matching %0"});
+	failureMsg: "No tiddlers found matching %0"
+});
 
 merge(config.macros.tagging,{
 	label: "tagging: ",
 	labelNotTag: "not tagging",
-	tooltip: "List of tiddlers tagged with '%0'"});
+	tooltip: "List of tiddlers tagged with '%0'"
+});
 
 merge(config.macros.timeline,{
-	dateFormat: "DD MMM YYYY"});
+	dateFormat: "DD MMM YYYY"
+});
 
 merge(config.macros.allTags,{
 	tooltip: "Show tiddlers tagged with '%0'",
-	noTags: "There are no tagged tiddlers"});
+	noTags: "There are no tagged tiddlers"
+});
 
 config.macros.list.all.prompt = "All tiddlers in alphabetical order";
 config.macros.list.missing.prompt = "Tiddlers that have links to them but are not defined";
@@ -179,27 +191,32 @@ config.macros.list.touched.prompt = "Tiddlers that have been modified locally";
 
 merge(config.macros.closeAll,{
 	label: "close all",
-	prompt: "Close all displayed tiddlers (except any that are being edited)"});
+	prompt: "Close all displayed tiddlers (except any that are being edited)"
+});
 
 merge(config.macros.permaview,{
 	label: "permaview",
-	prompt: "Link to an URL that retrieves all the currently displayed tiddlers"});
+	prompt: "Link to an URL that retrieves all the currently displayed tiddlers"
+});
 
 merge(config.macros.saveChanges,{
 	label: "save changes",
 	prompt: "Save all tiddlers to create a new TiddlyWiki",
-	accessKey: "S"});
+	accessKey: "S"
+});
 
 merge(config.macros.newTiddler,{
 	label: "new tiddler",
 	prompt: "Create a new tiddler",
 	title: "New Tiddler",
-	accessKey: "N"});
+	accessKey: "N"
+});
 
 merge(config.macros.newJournal,{
 	label: "new journal",
 	prompt: "Create a new tiddler from the current date and time",
-	accessKey: "J"});
+	accessKey: "J"
+});
 
 merge(config.macros.options,{
 	wizardTitle: "Tweak advanced options",
@@ -211,11 +228,12 @@ merge(config.macros.options,{
 			{name: 'Option', field: 'option', title: "Option", type: 'String'},
 			{name: 'Description', field: 'description', title: "Description", type: 'WikiText'},
 			{name: 'Name', field: 'name', title: "Name", type: 'String'}
-			],
+		],
 		rowClasses: [
 			{className: 'lowlight', field: 'lowlight'}
-			]}
-	});
+		]
+	}
+});
 
 merge(config.macros.plugins,{
 	wizardTitle: "Manage plugins",
@@ -241,11 +259,12 @@ merge(config.macros.plugins,{
 			{name: 'Startup Time', field: 'startupTime', title: "Startup Time", type: 'String'},
 			{name: 'Error', field: 'error', title: "Status", type: 'Boolean', trueText: "Error", falseText: "OK"},
 			{name: 'Log', field: 'log', title: "Log", type: 'StringList'}
-			],
+		],
 		rowClasses: [
 			{className: 'error', field: 'error'},
 			{className: 'warning', field: 'warning'}
-			]},
+		]
+	},
 	listViewTemplateReadOnly: {
 		columns: [
 			{name: 'Tiddler', field: 'tiddler', title: "Tiddler", type: 'Tiddler'},
@@ -256,12 +275,13 @@ merge(config.macros.plugins,{
 			{name: 'Startup Time', field: 'startupTime', title: "Startup Time", type: 'String'},
 			{name: 'Error', field: 'error', title: "Status", type: 'Boolean', trueText: "Error", falseText: "OK"},
 			{name: 'Log', field: 'log', title: "Log", type: 'StringList'}
-			],
+		],
 		rowClasses: [
 			{className: 'error', field: 'error'},
 			{className: 'warning', field: 'warning'}
-			]}
-	});
+		]
+	}
+});
 
 merge(config.macros.toolbar,{
 	moreLabel: "more",
@@ -269,12 +289,12 @@ merge(config.macros.toolbar,{
 	lessLabel: "less",
 	lessPrompt: "Hide additional commands",
 	separator: "|"
-	});
+});
 
 merge(config.macros.refreshDisplay,{
 	label: "refresh",
 	prompt: "Redraw the entire TiddlyWiki display"
-	});
+});
 
 merge(config.macros.importTiddlers,{
 	readOnlyWarning: "You cannot import into a read-only TiddlyWiki file. Try opening it from a file:// URL",
@@ -317,10 +337,10 @@ merge(config.macros.importTiddlers,{
 			{name: 'Tiddler', field: 'tiddler', title: "Tiddler", type: 'Tiddler'},
 			{name: 'Size', field: 'size', tiddlerLink: 'size', title: "Size", type: 'Size'},
 			{name: 'Tags', field: 'tags', title: "Tags", type: 'Tags'}
-			],
-		rowClasses: [
-			]}
-	});
+		],
+		rowClasses: []
+	}
+});
 
 merge(config.macros.upgrade,{
 	wizardTitle: "Upgrade TiddlyWiki core code",
@@ -348,53 +368,61 @@ merge(config.macros.upgrade,{
 	cancelPrompt: "Cancel the upgrade process",
 	step3Title: "Upgrade cancelled",
 	step3Html: "You have cancelled the upgrade process"
-	});
+});
 
-merge(config.macros.annotations,{
-	});
+merge(config.macros.annotations,{});
 
 merge(config.commands.closeTiddler,{
 	text: "close",
-	tooltip: "Close this tiddler"});
+	tooltip: "Close this tiddler"
+});
 
 merge(config.commands.closeOthers,{
 	text: "close others",
-	tooltip: "Close all other tiddlers"});
+	tooltip: "Close all other tiddlers"
+});
 
 merge(config.commands.editTiddler,{
 	text: "edit",
 	tooltip: "Edit this tiddler",
 	readOnlyText: "view",
-	readOnlyTooltip: "View the source of this tiddler"});
+	readOnlyTooltip: "View the source of this tiddler"
+});
 
 merge(config.commands.saveTiddler,{
 	text: "done",
-	tooltip: "Save changes to this tiddler"});
+	tooltip: "Save changes to this tiddler"
+});
 
 merge(config.commands.cancelTiddler,{
 	text: "cancel",
 	tooltip: "Undo changes to this tiddler",
 	warning: "Are you sure you want to abandon your changes to '%0'?",
 	readOnlyText: "done",
-	readOnlyTooltip: "View this tiddler normally"});
+	readOnlyTooltip: "View this tiddler normally"
+});
 
 merge(config.commands.deleteTiddler,{
 	text: "delete",
 	tooltip: "Delete this tiddler",
-	warning: "Are you sure you want to delete '%0'?"});
+	warning: "Are you sure you want to delete '%0'?"
+});
 
 merge(config.commands.permalink,{
 	text: "permalink",
-	tooltip: "Permalink for this tiddler"});
+	tooltip: "Permalink for this tiddler"
+});
 
 merge(config.commands.references,{
 	text: "references",
 	tooltip: "Show tiddlers that link to this one",
-	popupNone: "No references"});
+	popupNone: "No references"
+});
 
 merge(config.commands.jump,{
 	text: "jump",
-	tooltip: "Jump to another open tiddler"});
+	tooltip: "Jump to another open tiddler"
+});
 
 merge(config.commands.fields,{
 	text: "fields",
@@ -404,11 +432,11 @@ merge(config.commands.fields,{
 		columns: [
 			{name: 'Field', field: 'field', title: "Field", type: 'String'},
 			{name: 'Value', field: 'value', title: "Value", type: 'String'}
-			],
-		rowClasses: [
-			],
-		buttons: [
-			]}});
+		],
+		rowClasses: [],
+		buttons: []
+	}
+});
 
 merge(config.shadowTiddlers,{
 	DefaultTiddlers: "[[GettingStarted]]",
@@ -419,7 +447,7 @@ merge(config.shadowTiddlers,{
 	SideBarOptions: '<<search>><<closeAll>><<permaview>><<newTiddler>><<newJournal "DD MMM YYYY" "journal">><<saveChanges>><<slider chkSliderOptionsPanel OptionsPanel "options \u00bb" "Change TiddlyWiki advanced options">>',
 	SideBarTabs: '<<tabs txtMainTab "Timeline" "Timeline" TabTimeline "All" "All tiddlers" TabAll "Tags" "All tags" TabTags "More" "More lists" TabMore>>',
 	TabMore: '<<tabs txtMoreTab "Missing" "Missing tiddlers" TabMoreMissing "Orphans" "Orphaned tiddlers" TabMoreOrphans "Shadowed" "Shadowed tiddlers" TabMoreShadowed>>'
-	});
+});
 
 merge(config.annotations,{
 	AdvancedOptions: "This shadow tiddler provides access to several advanced options",
@@ -456,4 +484,4 @@ merge(config.annotations,{
 	TabTimeline: "This shadow tiddler contains the contents of the 'Timeline' tab in the right-hand sidebar",
 	ToolbarCommands: "This shadow tiddler determines which commands are shown in tiddler toolbars",
 	ViewTemplate: "The HTML template in this shadow tiddler determines how tiddlers look"
-	});
+});
