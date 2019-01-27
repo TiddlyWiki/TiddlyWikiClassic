@@ -8,12 +8,13 @@ function getMessageDiv()
 	if(!msgArea)
 		return null;
 	if(!msgArea.hasChildNodes())
-		createTiddlyButton(createTiddlyElement(msgArea,"div",null,"messageToolbar"),
+		createTiddlyButton(createTiddlyElement(msgArea,"div",null,"messageArea__toolbar messageToolbar"),
 			config.messages.messageClose.text,
 			config.messages.messageClose.tooltip,
-			clearMessage);
+			clearMessage,
+			"button messageToolbar__button");
 	msgArea.style.display = "block";
-	return createTiddlyElement(msgArea,"div");
+	return createTiddlyElement(msgArea,"div",null,"messageArea__text");
 }
 
 function displayMessage(text,linkText)
