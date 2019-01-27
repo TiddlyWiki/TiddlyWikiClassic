@@ -27,8 +27,8 @@ Wizard.prototype.getValue = function(name)
 
 Wizard.prototype.createWizard = function(place,title)
 {
-	this.formElem = createTiddlyElement(place,"form",null,"wizard");
-	createTiddlyElement(this.formElem,"h1",null,null,title);
+	this.formElem = createTiddlyElement(place,'form',null,'wizard');
+	createTiddlyElement(this.formElem,'h1',null,'wizard__title',title);
 	this.bodyElem = createTiddlyElement(this.formElem,"div",null,"wizardBody");
 	this.footElem = createTiddlyElement(this.formElem,"div",null,"wizardFooter");
 	return this.formElem;
@@ -55,8 +55,8 @@ Wizard.prototype.setButtons = function(buttonInfo,status)
 Wizard.prototype.addStep = function(stepTitle,html)
 {
 	jQuery(this.bodyElem).empty();
-	var w = createTiddlyElement(this.bodyElem,"div");
-	createTiddlyElement(w,"h2",null,null,stepTitle);
+	var w = createTiddlyElement(this.bodyElem,'div');
+	createTiddlyElement(w,'h2',null,'wizard__subtitle',stepTitle);
 	var step = createTiddlyElement(w,"div",null,"wizardStep");
 	step.innerHTML = html;
 	applyHtmlMacros(step,tiddler);
