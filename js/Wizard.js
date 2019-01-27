@@ -42,11 +42,10 @@ Wizard.prototype.clear = function()
 Wizard.prototype.setButtons = function(buttonInfo,status)
 {
 	jQuery(this.footElem).empty();
-	var t;
-	for(t=0; t<buttonInfo.length; t++) {
+	for(var t = 0; t < buttonInfo.length; t++) {
 		createTiddlyButton(this.footElem,buttonInfo[t].caption,buttonInfo[t].tooltip,buttonInfo[t].onClick);
 		insertSpacer(this.footElem);
-		}
+	}
 	if(typeof status == "string") {
 		createTiddlyElement(this.footElem,"span",null,"status",status);
 	}
