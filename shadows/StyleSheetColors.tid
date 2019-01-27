@@ -61,7 +61,9 @@ h2,h3 {border-bottom:1px solid [[ColorPalette::TertiaryLight]];}
 .wizard .gotFromServer {background:#80ffff;}
 
 .messageArea {border:1px solid [[ColorPalette::SecondaryMid]]; background:[[ColorPalette::SecondaryLight]]; color:[[ColorPalette::Foreground]];}
-.messageToolbar__button {color:[[ColorPalette::PrimaryMid]]; background:[[ColorPalette::SecondaryPale]]; border:none;}
+.messageToolbar__button { color:[[ColorPalette::PrimaryMid]]; border:none; }
+.messageToolbar__icon { fill:[[ColorPalette::TertiaryDark]]; }
+.messageToolbar__icon:hover { fill:[[ColorPalette::Foreground]]; }
 
 .popupTiddler {background:[[ColorPalette::TertiaryPale]]; border:2px solid [[ColorPalette::TertiaryMid]];}
 
