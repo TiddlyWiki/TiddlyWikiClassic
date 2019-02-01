@@ -35,9 +35,9 @@ window.saveFile = window.saveFile || function(fileUrl,content)
 window.loadFile = window.loadFile || function(fileUrl)
 {
 	var r = mozillaLoadFile(fileUrl);
-	if((r == null) || (r == false))
+	if((r === null) || (r === false))
 		r = ieLoadFile(fileUrl);
-	if((r == null) || (r == false))
+	if((r === null) || (r === false))
 		r = javaLoadFile(fileUrl);
 	return r;
 }
