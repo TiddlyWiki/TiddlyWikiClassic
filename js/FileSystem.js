@@ -23,7 +23,7 @@ window.saveFile = window.saveFile || function(fileUrl,content)
 	if(!r)
 		r = ieSaveFile(fileUrl,content);
 	if(!r)
-		r = javaSaveFile(fileUrl,convertUnicodeToFileFormat(content));
+		r = javaSaveFile(fileUrl,content);
 	if(!r)
 		r = HTML5DownloadSaveFile(fileUrl,content);
 	if(!r)
