@@ -49,7 +49,7 @@ function updateMarkupBlock(s,blockName,tiddlerName)
 	return s.replaceChunk(
 			"<!--%0-START-->".format([blockName]),
 			"<!--%0-END-->".format([blockName]),
-			"\n" + convertUnicodeToFileFormat(store.getRecursiveTiddlerText(tiddlerName,"")) + "\n");
+			"\n" + store.getRecursiveTiddlerText(tiddlerName,"") + "\n");
 }
 
 function updateOriginal(original,posDiv,localPath)
@@ -61,9 +61,9 @@ function updateOriginal(original,posDiv,localPath)
 		return null;
 	}
 	var revised = original.substr(0,posDiv[0] + startSaveArea.length) + "\n" +
-				convertUnicodeToFileFormat(store.allTiddlersAsHtml()) + "\n" +
+				store.allTiddlersAsHtml() + "\n" +
 				original.substr(posDiv[1]);
-	var newSiteTitle = convertUnicodeToFileFormat(getPageTitle()).htmlEncode();
+	var newSiteTitle = getPageTitle().htmlEncode();
 	revised = revised.replaceChunk("<title"+">","</title"+">"," " + newSiteTitle + " ");
 	revised = updateLanguageAttribute(revised);
 	revised = updateMarkupBlock(revised,"PRE-HEAD","MarkupPreHead");
@@ -193,12 +193,12 @@ function saveMain(localPath,original,posDiv)
 {
 	var save;
 	try {
-		//# Save new file
 		var revised = updateOriginal(original,posDiv,localPath);
 		save = saveFile(localPath,revised);
 	} catch (ex) {
 		showException(ex);
 	}
+	//# Report status to user
 	if(save) {
 		if (!config.saveByManualDownload) {
 			if (config.saveByDownload) { //# set by HTML5DownloadSaveFile()

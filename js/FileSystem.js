@@ -16,7 +16,6 @@ window.copyFile = window.copyFile || function(dest,source)
 	return config.browser.isIE ? ieCopyFile(dest,source) : false;
 }
 
-
 // Save a file in filesystem [Preemption]
 window.saveFile = window.saveFile || function(fileUrl,content)
 {
@@ -36,12 +35,13 @@ window.saveFile = window.saveFile || function(fileUrl,content)
 window.loadFile = window.loadFile || function(fileUrl)
 {
 	var r = mozillaLoadFile(fileUrl);
-	if((r == null) || (r == false))
+	if((r === null) || (r === false))
 		r = ieLoadFile(fileUrl);
-	if((r == null) || (r == false))
+	if((r === null) || (r === false))
 		r = javaLoadFile(fileUrl);
 	return r;
 }
+
 
 function ieCreatePath(path)
 {
@@ -67,7 +67,7 @@ function ieCreatePath(path)
 	}
 
 	//# Walk back down the path, creating folders
-	for(i=scan.length-1;i>=0;i--) {
+	for(i = scan.length-1; i >= 0; i--) {
 		if(!fso.FolderExists(scan[i])) {
 			fso.CreateFolder(scan[i]);
 		}
@@ -82,11 +82,11 @@ function ieSaveFile(filePath,content)
 	try {
 		var fso = new ActiveXObject("Scripting.FileSystemObject");
 	} catch(ex) {
-		//# alert("Exception while attempting to save\n\n" + ex.toString());
+		//# if(config.browser.isIE) alert("Exception while attempting to save\n\n" + ex.toString());
 		return null;
 	}
 	var file = fso.OpenTextFile(filePath,2,-1,0);
-	file.Write(content);
+	file.Write(convertUnicodeToHtmlEntities(content));
 	file.Close();
 	return true;
 }
@@ -100,7 +100,7 @@ function ieLoadFile(filePath)
 		var content = file.ReadAll();
 		file.Close();
 	} catch(ex) {
-		//# alert("Exception while attempting to load\n\n" + ex.toString());
+		//# if(config.browser.isIE) alert("Exception while attempting to load\n\n" + ex.toString());
 		return null;
 	}
 	return content;
@@ -121,51 +121,52 @@ function ieCopyFile(dest,source)
 // Returns null if it can't do it, false if there's an error, true if it saved OK
 function mozillaSaveFile(filePath,content)
 {
-	if(window.Components) {
-		try {
-			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-			var file = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-			file.initWithPath(filePath);
-			if(!file.exists())
-				file.create(0,0x01B4);// 0x01B4 = 0664
-			var out = Components.classes["@mozilla.org/network/file-output-stream;1"].createInstance(Components.interfaces.nsIFileOutputStream);
-			out.init(file,0x22,0x04,null);
-			out.write(content,content.length);
-			out.flush();
-			out.close();
-			return true;
-		} catch(ex) {
-			//# alert("Exception while attempting to save\n\n" + ex);
-			return false;
-		}
+	if(!window.Components)
+		return null;
+	
+	content = mozConvertUnicodeToUTF8(content);
+	try {
+		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+		var file = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+		file.initWithPath(filePath);
+		if(!file.exists())
+			file.create(0,0x01B4);// 0x01B4 = 0664
+		var out = Components.classes["@mozilla.org/network/file-output-stream;1"].createInstance(Components.interfaces.nsIFileOutputStream);
+		out.init(file,0x22,0x04,null);
+		out.write(content,content.length);
+		out.flush();
+		out.close();
+		return true;
+	} catch(ex) {
+		//# alert("Exception while attempting to save\n\n" + ex);
+		return false;
 	}
-	return null;
 }
 
 // Returns null if it can't do it, false if there's an error, or a string of the content if successful
 function mozillaLoadFile(filePath)
 {
-	if(window.Components) {
-		try {
-			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-			var file = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-			file.initWithPath(filePath);
-			if(!file.exists())
-				return null;
-			var inputStream = Components.classes["@mozilla.org/network/file-input-stream;1"].createInstance(Components.interfaces.nsIFileInputStream);
-			inputStream.init(file,0x01,0x04,null);
-			var sInputStream = Components.classes["@mozilla.org/scriptableinputstream;1"].createInstance(Components.interfaces.nsIScriptableInputStream);
-			sInputStream.init(inputStream);
-			var contents = sInputStream.read(sInputStream.available());
-			sInputStream.close();
-			inputStream.close();
-			return contents;
-		} catch(ex) {
-			//# alert("Exception while attempting to load\n\n" + ex);
-			return false;
-		}
+	if(!window.Components)
+		return null;
+	
+	try {
+		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+		var file = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+		file.initWithPath(filePath);
+		if(!file.exists())
+			return null;
+		var inputStream = Components.classes["@mozilla.org/network/file-input-stream;1"].createInstance(Components.interfaces.nsIFileInputStream);
+		inputStream.init(file,0x01,0x04,null);
+		var sInputStream = Components.classes["@mozilla.org/scriptableinputstream;1"].createInstance(Components.interfaces.nsIScriptableInputStream);
+		sInputStream.init(inputStream);
+		var contents = sInputStream.read(sInputStream.available());
+		sInputStream.close();
+		inputStream.close();
+		return mozConvertUTF8ToUnicode(contents);
+	} catch(ex) {
+		//# alert("Exception while attempting to load\n\n" + ex);
+		return false;
 	}
-	return null;
 }
 
 function javaUrlToFilename(url)
@@ -186,7 +187,8 @@ function javaUrlToFilename(url)
  *
  */
 var LOG_TIDDLYSAVER = true;
-function logTiddlySaverException(msg, ex) {
+function logTiddlySaverException(msg, ex)
+{
 	var applet = document.applets['TiddlySaver'];
 	console.log(msg + ": " + ex);
 	if (LOG_TIDDLYSAVER && applet) {
@@ -197,7 +199,8 @@ function logTiddlySaverException(msg, ex) {
 	}
 }
 
-function javaDebugInformation () {
+function javaDebugInformation ()
+{
 	var applet = document.applets['TiddlySaver'];
 	var what = [
 		["Java Version", applet.getJavaVersion],
@@ -267,61 +270,67 @@ function javaLoadFile(filePath)
 
 function HTML5DownloadSaveFile(filePath,content)
 {
-	if(document.createElement("a").download !== undefined) {
-		config.saveByDownload=true;
-		var slashpos=filePath.lastIndexOf("/");
-		if (slashpos==-1) slashpos=filePath.lastIndexOf("\\"); 
-		var filename=filePath.substr(slashpos+1);
-		var uri = getDataURI(content);
-		var link = document.createElement("a");
-		link.setAttribute("target","_blank");
-		link.setAttribute("href",uri);
-		link.setAttribute("download",filename);
-		document.body.appendChild(link); link.click(); document.body.removeChild(link);
-		return true;
-	}
-	return null;
+	var link = document.createElement("a");
+	if(link.download === undefined)
+		return null;
+	
+	config.saveByDownload = true;
+	var slashpos = filePath.lastIndexOf("/");
+	if (slashpos==-1) slashpos = filePath.lastIndexOf("\\");
+	var filename = filePath.substr(slashpos+1);
+	var uri = getDataURI(content);
+	link.setAttribute("target","_blank");
+	link.setAttribute("href",uri);
+	link.setAttribute("download",filename);
+	document.body.appendChild(link); link.click(); document.body.removeChild(link);
+	return true;
 }
 
 // Returns null if it can't do it, false if there's an error, true if it saved OK
 function manualSaveFile(filePath,content)
 {
 	// FALLBACK for showing a link to data: URI
-	config.saveByManualDownload=true;
-	var slashpos=filePath.lastIndexOf("/");
-	if (slashpos==-1) slashpos=filePath.lastIndexOf("\\"); 
-	var filename=filePath.substr(slashpos+1);
+	config.saveByManualDownload = true;
+	var slashpos = filePath.lastIndexOf("/");
+	if (slashpos==-1) slashpos = filePath.lastIndexOf("\\");
+	var filename = filePath.substr(slashpos+1);
 	var uri = getDataURI(content);
 	displayMessage(config.messages.mainDownloadManual,uri);
 	return true;
 }
 
 // construct data URI (using base64 encoding to preserve multi-byte encodings)
-function getDataURI(data) {
+function getDataURI(data)
+{
 	if (config.browser.isIE)
 		return "data:text/html,"+encodeURIComponent(data);
 	else
-		return "data:text/html;base64,"+encodeBase64(data);
+		// manualConvertUnicodeToUTF8 was moved here from convertUnicodeToFileFormat
+		// in 2.9.1 it was used only for FireFox but happened to fix download saving non-ASCII in Chrome & Safari as well
+		return "data:text/html;base64,"+encodeBase64(manualConvertUnicodeToUTF8(data));
 }
 
-function encodeBase64(data) {
+function encodeBase64(data)
+{
 	if (!data) return "";
 	var keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
 	var out = "";
-	var chr1,chr2,chr3="";
-	var enc1,enc2,enc3,enc4="";
-	for (var count=0,i=0; i<data.length; ) {
-		chr1=data.charCodeAt(i++);
-		chr2=data.charCodeAt(i++);
-		chr3=data.charCodeAt(i++);
-		enc1=chr1 >> 2;
-		enc2=((chr1 & 3) << 4) | (chr2 >> 4);
-		enc3=((chr2 & 15) << 2) | (chr3 >> 6);
-		enc4=chr3 & 63;
-		if (isNaN(chr2)) enc3=enc4=64;
-		else if (isNaN(chr3)) enc4=64;
-		out+=keyStr.charAt(enc1)+keyStr.charAt(enc2)+keyStr.charAt(enc3)+keyStr.charAt(enc4);
-		chr1=chr2=chr3=enc1=enc2=enc3=enc4="";
+	var chr1,chr2,chr3 = "";
+	var enc1,enc2,enc3,enc4 = "";
+	for (var count = 0, i = 0; i < data.length; )
+	{
+		chr1 = data.charCodeAt(i++);
+		chr2 = data.charCodeAt(i++);
+		chr3 = data.charCodeAt(i++);
+		enc1 = chr1 >> 2;
+		enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+		enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+		enc4 = chr3 & 63;
+		if (isNaN(chr2)) enc3 = enc4 = 64;
+		else if (isNaN(chr3)) enc4 = 64;
+		out += keyStr.charAt(enc1) + keyStr.charAt(enc2) + keyStr.charAt(enc3) + keyStr.charAt(enc4);
+		chr1 = chr2 = chr3 = enc1 = enc2 = enc3 = enc4 = "";
 	}
 	return out;
 }
+

@@ -14,21 +14,23 @@ function ajaxReq(args)
 //# perform local I/O and FAKE a minimal XHR response object
 function localAjax(args)
 {
-	var success=function(data)
-		{ args.success(data,"success",{ responseText:data }); }
-	var failure=function(who)
-		{ args.error({ message:who+": cannot read local file" },"error",0); }
+	var success = function(data) {
+		args.success(data,"success",{ responseText:data });
+	};
+	var failure = function(who) {
+		args.error({ message:who+": cannot read local file" },"error",0);
+	};
 
 	if (args.file) try { // HTML5 FileReader (Chrome, FF20+, Safari, etc.)
-		var reader=new FileReader();
-		reader.onload=function(e)  { success(e.target.result); }
-		reader.onerror=function(e) { failure("FileReader"); }
+		var reader = new FileReader();
+		reader.onload = function(e)  { success(e.target.result); }
+		reader.onerror = function(e) { failure("FileReader"); }
 		reader.readAsText(args.file);
 		return true;
 	} catch (ex) { ; }
 
 	try { // local file I/O (IE, FF with TiddlyFox, Chrome/Safari with TiddlySaver, etc.)
-		var data=loadFile(getLocalPath(args.url));
+		var data = loadFile(getLocalPath(args.url));
 		if (data) success(data);
 		else failure("loadFile");
 		return true;
@@ -69,11 +71,11 @@ function httpReq(type,url,callback,params,headers,data,contentType,username,pass
 	};
 
 	var options = {
-		type:type,
-		url:url,
-		processData:false,
-		data:data,
-		cache:!!allowCache,
+		type: type,
+		url: url,
+		processData: false,
+		data: data,
+		cache: !!allowCache,
 		beforeSend: function(xhr) {
 			var i;
 			for(i in headers)
