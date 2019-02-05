@@ -39,8 +39,8 @@ h2,h3 {border-bottom:1px solid [[ColorPalette::TertiaryLight]];}
 #sidebarOptions .sliderPanel a:active {color:[[ColorPalette::PrimaryMid]]; background:[[ColorPalette::Background]];}
 
 .wizard { background:[[ColorPalette::PrimaryPale]]; }
-.wizard h1 {color:[[ColorPalette::PrimaryDark]]; border:none;}
-.wizard h2 {color:[[ColorPalette::Foreground]]; border:none;}
+.wizard__title    { color:[[ColorPalette::PrimaryDark]]; border:none; }
+.wizard__subtitle { color:[[ColorPalette::Foreground]]; border:none; }
 .wizardStep { background:[[ColorPalette::Background]]; color:[[ColorPalette::Foreground]]; }
 .wizardStep.wizardStepDone {background:[[ColorPalette::TertiaryLight]];}
 .wizardFooter {background:[[ColorPalette::PrimaryPale]];}
