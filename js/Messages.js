@@ -18,6 +18,7 @@ function getMessageDiv()
 			'	<rect width="1" height="13.1" x="4.5" y="-1.6" transform="rotate(-45 5 5)"/>'+
 			'	<rect width="1" height="13.1" x="4.5" y="-1.6" transform="rotate(+45 5 5)"/>'+
 			'</svg>';
+			btn.classList.add('messageToolbar__button_withIcon');
 		}
 	}
 	msgArea.style.display = "block";
