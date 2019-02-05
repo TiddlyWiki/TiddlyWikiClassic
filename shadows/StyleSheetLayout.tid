@@ -78,9 +78,10 @@ a.tiddlyLinkNonExisting.shadow {font-weight:bold;}
 .wizardFooter .button { margin:0.5em 0 0; font-size:1.2em; padding:0.2em 0.5em; }
 
 .messageArea { position:fixed; top:2em; right:0; margin:0.5em; padding:0.7em 1em; z-index:2000; }
-.messageArea a { text-decoration:underline; }
 .messageToolbar { text-align:right; padding:0.2em 0; }
+.messageToolbar__button { text-decoration:underline; }
 .messageToolbar__icon { height: 1em; }
+.messageArea__text a { text-decoration:underline; }
 
 .tiddlerPopupButton {padding:0.2em;}
 .popupTiddler {position: absolute; z-index:300; padding:1em; margin:0;}
