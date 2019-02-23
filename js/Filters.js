@@ -5,7 +5,7 @@
 //# Extensible filter functions
 config.filters = {
 	tiddler: function(results,match) {
-		var title = match[1]||match[4];
+		var title = match[1] || match[4];
 		var tiddler = this.fetchTiddler(title);
 		if(tiddler) {
 			results.pushUnique(tiddler);
@@ -20,7 +20,7 @@ config.filters = {
 	},
 	tag: function(results,match) {
 		var m,matched = this.getTaggedTiddlers(match[3]);
-		for(m=0; m<matched.length; m++) {
+		for(m = 0; m < matched.length; m++) {
 			results.pushUnique(matched[m]);
 		}
 		return results;
@@ -52,10 +52,11 @@ TiddlyWiki.prototype.filterTiddlers = function(filter,results)
 	if(filter) {
 		var match = re.exec(filter);
 		while(match) {
-			var handler = (match[1]||match[4])?'tiddler':config.filters[match[2]]?match[2]:'field';
+			var handler = (match[1] || match[4]) ? 'tiddler' : config.filters[match[2]] ? match[2] : 'field';
 			results = config.filters[handler].call(this,results,match);
 			match = re.exec(filter);
 		}
 	}
 	return results;
 };
+
