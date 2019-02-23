@@ -1,6 +1,7 @@
 /*global story, jQuery, document, module, test, same strictEqual store */
 (function ($) {
     jQuery(document).ready(function () {
+		
         module("Filters.js");
 
 		/*
@@ -156,3 +157,4 @@
 
 	});
 }(jQuery));
+

@@ -3,6 +3,7 @@ jQuery(document).ready(function(){
 	module("Crypto");
 
 	test("SHA-1 functions", function() {
+
 		var actual = jQuery.encoding.digests.hexSha1Str("").toLowerCase();
 		var expected = "da39a3ee5e6b4b0d3255bfef95601890afd80709";
 		same(actual,expected,'SHA-1 hash of empty string should be correct');
@@ -23,5 +24,5 @@ jQuery(document).ready(function(){
 		expected = "50ABF5706A150990A08B2C5EA40FA0E585554732";
 		same(actual,expected,'SHA-1 hash of test vector 4 should be correct');
 	});
-
 });
+

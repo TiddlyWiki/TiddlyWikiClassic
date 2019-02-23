@@ -34,8 +34,6 @@ jQuery(document).ready(function(){
 		//120 + (0 - 120) *0.5 and 0 + (255-0) * 0.5
 		expected = new RGB("rgb(60,127,0)").toString();
 		ok(actual==expected,'RGB mix function proportion 0.5');
-
 	});
-
-
 });
+

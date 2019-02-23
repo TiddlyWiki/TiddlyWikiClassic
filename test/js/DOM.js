@@ -40,28 +40,28 @@ $(document).ready(function(){
 
 
 	test("findWindowHeight", function() {
-			expect(2);
-			equals(typeof findWindowHeight(), "number", "returns a number value");
-			equals($(window).height(), findWindowHeight(), "return the current height of the display window");
+		expect(2);
+		equals(typeof findWindowHeight(), "number", "returns a number value");
+		equals($(window).height(), findWindowHeight(), "return the current height of the display window");
 	});
 	
 	test("findDocHeight", function() {
-			expect(2);
-			equals(typeof findDocHeight(), "number", "returns a number value");
-			var maxHeight = Math.max(
-			        $(document).height(),
-			        $(window).height(),
-			        /* For opera: */
-			        document.documentElement.clientHeight
-			    );
-			equals(maxHeight, findDocHeight(), "return the current height of the document");
+		expect(2);
+		equals(typeof findDocHeight(), "number", "returns a number value");
+		var maxHeight = Math.max(
+				$(document).height(),
+				$(window).height(),
+				/* For opera: */
+				document.documentElement.clientHeight
+			);
+		equals(maxHeight, findDocHeight(), "return the current height of the document");
 	});
 
 	test("findWindowWidth", function() {
-			expect(1);
-			equals(typeof findWindowWidth(), "number", "returns a number value");
-			// XXX: following test does not work
-			// equals($(window).width(), findWindowWidth(), "return the current width of the display window");
+		expect(1);
+		equals(typeof findWindowWidth(), "number", "returns a number value");
+		// XXX: following test does not work
+		// equals($(window).width(), findWindowWidth(), "return the current width of the display window");
 	});
 
 
@@ -86,8 +86,8 @@ $(document).ready(function(){
 		equals(typeof findScrollY(), "number", "returns a number value");
 		// XXX: following test does not work
 		// equals(findScrollY(), scroll, "returns the correct vertical scroll position of the window");
-
 	});
 }); // document ready.
 
 })(jQuery);
+
