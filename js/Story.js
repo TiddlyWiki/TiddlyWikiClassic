@@ -15,7 +15,7 @@ function Story(containerId,idPrefix)
 		//# replace spaces in titles to ensure valid element IDs
 		title = title.replace(/_/g, "__").replace(/ /g, "_");
 		var id = this.idPrefix + title;
-		return id==this.container ? this.idPrefix + "_" + title : id;
+		return id == this.container ? this.idPrefix + "_" + title : id;
 	};
 	this.containerId = function() {
 		return this.container;
@@ -62,8 +62,7 @@ Story.prototype.displayDefaultTiddlers = function()
 //# titles - array of tiddlers or string titles
 Story.prototype.displayTiddlers = function(srcElement,titles,template,animate,unused,customFields,toggle)
 {
-	var t;
-	for(t = titles.length-1;t>=0;t--)
+	for(var t = titles.length-1; t >= 0; t--)
 		this.displayTiddler(srcElement,titles[t],template,animate,unused,customFields);
 };
 
@@ -170,10 +169,8 @@ Story.prototype.loadMissingTiddler = function(title,fields,callback)
 	{
 		if(context.status) {
 			var t = context.tiddler;
-			if(!t.created)
-				t.created = new Date();
-			if(!t.modified)
-				t.modified = t.created;
+			t.created  = t.created  || new Date();
+			t.modified = t.modified || t.created;
 			var dirty = store.isDirty();
 			context.tiddler = store.saveTiddler(t.title,t.title,t.text,t.modifier,t.modified,t.tags,t.fields,true,t.created,t.creator);
 			if(!window.allowSave())
@@ -237,7 +234,7 @@ Story.prototype.refreshTiddler = function(title,template,force,customFields,defa
 					var tags = [];
 					tiddler.set(title,store.getTiddlerText(title),config.views.wikified.shadowModifier,version.date,tags,version.date);
 				} else {
-					var text = template==config.tiddlerTemplates[DEFAULT_EDIT_TEMPLATE] ? // #166
+					var text = template == config.tiddlerTemplates[DEFAULT_EDIT_TEMPLATE] ? // #166
 								config.views.editor.defaultText.format([title]) :
 								config.views.wikified.defaultText.format([title]);
 					text = defaultText || text;
@@ -277,8 +274,7 @@ Story.prototype.addCustomFields = function(place,customFields)
 	var fields = customFields.decodeHashMap();
 	var w = createTiddlyElement(place,"div",null,"customFields");
 	w.style.display = "none";
-	var t;
-	for(t in fields) {
+	for(var t in fields) {
 		var e = document.createElement("input");
 		e.setAttribute("type","text");
 		e.setAttribute("value",fields[t]);
@@ -385,8 +381,8 @@ Story.prototype.getTiddlerField = function(title,field)
 	var tiddlerElem = this.getTiddler(title);
 	var e = null;
 	if(tiddlerElem) {
-		var t,children = tiddlerElem.getElementsByTagName("*");
-		for(t=0; t<children.length; t++) {
+		var t, children = tiddlerElem.getElementsByTagName("*");
+		for(t = 0; t < children.length; t++) {
 			var c = children[t];
 			if(c.tagName.toLowerCase() == "input" || c.tagName.toLowerCase() == "textarea") {
 				if(!e)
@@ -448,9 +444,9 @@ Story.prototype.closeTiddler = function(title,animate,unused)
 	if(tiddlerElem) {
 		clearMessage();
 		this.scrubTiddler(tiddlerElem);
-		if(config.options.chkAnimate && animate && anim && typeof Slider == "function")
+		if(config.options.chkAnimate && animate && anim && typeof Slider == "function") {
 			anim.startAnimating(new Slider(tiddlerElem,false,null,"all"));
-		else {
+		} else {
 			jQuery(tiddlerElem).remove();
 		}
 	}
@@ -552,7 +548,7 @@ Story.prototype.gatherSaveFields = function(e,fields)
 			fields[f] = e.value.replace(/\r/mg,"");
 		if(e.hasChildNodes()) {
 			var t,c = e.childNodes;
-			for(t=0; t<c.length; t++)
+			for(t = 0; t < c.length; t++)
 				this.gatherSaveFields(c[t],fields);
 		}
 	}
@@ -567,8 +563,7 @@ Story.prototype.hasChanges = function(title)
 		var fields = {};
 		this.gatherSaveFields(e,fields);
 		if(store.fetchTiddler(title)) {
-		    var n;
-			for(n in fields) {
+			for(var n in fields) {
 				if(store.getValue(title,n) != fields[n]) //# tiddler changed
 					return true;
 			}
@@ -621,8 +616,7 @@ Story.prototype.saveTiddler = function(title,minorUpdate)
 		} else {
 			extendedFields = merge({},config.defaultCustomFields);
 		}
-		var n;
-		for(n in fields) {
+		for(var n in fields) {
 			if(!TiddlyWiki.isStandardField(n))
 				extendedFields[n] = fields[n];
 		}
@@ -656,14 +650,14 @@ Story.prototype.switchTheme = function(theme)
 		if(readOnly)
 			r = store.getTiddlerSlice(theme,slice+"ReadOnly") || store.getTiddlerSlice(theme,"Web"+slice);
 		r = r || store.getTiddlerSlice(theme,slice);
-		if(r && r.indexOf(config.textPrimitives.sectionSeparator)==0)
+		if(r && r.indexOf(config.textPrimitives.sectionSeparator) == 0)
 			r = theme + r;
 		return store.isAvailable(r) ? r : slice;
 	};
 
 	var replaceNotification = function(i,name,theme,slice) {
 		var newName = getSlice(theme,slice);
-		if(name!=newName && store.namedNotifications[i].name==name) {
+		if(name != newName && store.namedNotifications[i].name == name) {
 			store.namedNotifications[i].name = newName;
 			return newName;
 		}
@@ -676,8 +670,7 @@ Story.prototype.switchTheme = function(theme)
 	var ei = DEFAULT_EDIT_TEMPLATE;
 	var et = config.tiddlerTemplates[ei];
 
-	var i;
-	for(i=0; i<config.notifyTiddlers.length; i++) {
+	for(var i = 0; i < config.notifyTiddlers.length; i++) {
 		var name = config.notifyTiddlers[i].name;
 		switch(name) {
 		case "PageTemplate":
