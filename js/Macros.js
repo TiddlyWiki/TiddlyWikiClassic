@@ -412,24 +412,23 @@ config.macros.gradient.handler = function(place,macroName,params,wikifier,paramS
 
 config.macros.message.handler = function(place,macroName,params)
 {
-	if(params[0]) {
-		var names = params[0].split(".");
-		var lookupMessage = function(root,nameIndex) {
-			if(root[names[nameIndex]]) {
-				if(nameIndex < names.length-1)
-					return (lookupMessage(root[names[nameIndex]],nameIndex+1));
-				else
-					return root[names[nameIndex]];
-			} else
-				return null;
-		};
-		var m = lookupMessage(config,0);
-		if(m == null)
-			m = lookupMessage(window,0);
-		createTiddlyText(place,m.toString().format(params.splice(1)));
-	}
-};
+	if(!params[0]) return;
 
+	var names = params[0].split(".");
+	var lookupMessage = function(root,nameIndex) {
+		if(root[names[nameIndex]]) {
+			if(nameIndex < names.length-1)
+				return (lookupMessage(root[names[nameIndex]],nameIndex+1));
+			else
+				return root[names[nameIndex]];
+		} else
+			return null;
+	};
+	var m = lookupMessage(config,0);
+	if(m == null)
+		m = lookupMessage(window,0);
+	createTiddlyText(place,m.toString().format(params.splice(1)));
+};
 
 config.macros.view.depth = 0;
 config.macros.view.values = [];
@@ -464,14 +463,14 @@ config.macros.view.views = {
 
 config.macros.view.handler = function(place,macroName,params,wikifier,paramString,tiddler)
 {
-	if((tiddler instanceof Tiddler) && params[0]) {
-		var value = store.getValue(tiddler,params[0]);
-		if(!value) return;
-		var type = params[1] || config.macros.view.defaultView;
-		var handler = config.macros.view.views[type];
-		if(handler)
-			handler(value,place,params,wikifier,paramString,tiddler);
-	}
+	if(!(tiddler instanceof Tiddler) || !params[0]) return;
+	var value = store.getValue(tiddler,params[0]);
+	if(!value) return;
+
+	var type = params[1] || config.macros.view.defaultView;
+	var handler = config.macros.view.views[type];
+	if(handler)
+		handler(value,place,params,wikifier,paramString,tiddler);
 };
 
 config.macros.edit.handler = function(place,macroName,params,wikifier,paramString,tiddler)
@@ -479,36 +478,36 @@ config.macros.edit.handler = function(place,macroName,params,wikifier,paramStrin
 	var field = params[0];
 	var rows = params[1] || 0;
 	var defVal = params[2] || '';
-	if((tiddler instanceof Tiddler) && field) {
-		story.setDirty(tiddler.title,true);
-		var e,v;
-		if(field != "text" && !rows) {
-			e = createTiddlyElement(null,"input",null,null,null,{
-				type: "text", edit: field, size: "40", autocomplete: "off"
-			});
-			e.value = store.getValue(tiddler,field) || defVal;
-			place.appendChild(e);
-		} else {
-			var wrapper1 = createTiddlyElement(null,"fieldset",null,"fieldsetFix");
-			var wrapper2 = createTiddlyElement(wrapper1,"div");
-			e = createTiddlyElement(wrapper2,"textarea");
-			e.value = v = store.getValue(tiddler,field) || defVal;
-			rows = rows || 10;
-			var lines = v.match(/\n/mg);
-			var maxLines = Math.max(parseInt(config.options.txtMaxEditRows,10),5);
-			if(lines != null && lines.length > rows)
-				rows = lines.length + 5;
-			rows = Math.min(rows,maxLines);
-			e.setAttribute("rows",rows);
-			e.setAttribute("edit",field);
-			place.appendChild(wrapper1);
-		}
-		if(tiddler.isReadOnly()) {
-			e.setAttribute("readOnly","readOnly");
-			jQuery(e).addClass("readOnly");
-		}
-		return e;
+	if(!(tiddler instanceof Tiddler) || !field) return;
+
+	story.setDirty(tiddler.title,true);
+	var e,v;
+	if(field != "text" && !rows) {
+		e = createTiddlyElement(null,"input",null,null,null,{
+			type: "text", edit: field, size: "40", autocomplete: "off"
+		});
+		e.value = store.getValue(tiddler,field) || defVal;
+		place.appendChild(e);
+	} else {
+		var wrapper1 = createTiddlyElement(null,"fieldset",null,"fieldsetFix");
+		var wrapper2 = createTiddlyElement(wrapper1,"div");
+		e = createTiddlyElement(wrapper2,"textarea");
+		e.value = v = store.getValue(tiddler,field) || defVal;
+		rows = rows || 10;
+		var lines = v.match(/\n/mg);
+		var maxLines = Math.max(parseInt(config.options.txtMaxEditRows,10),5);
+		if(lines != null && lines.length > rows)
+			rows = lines.length + 5;
+		rows = Math.min(rows,maxLines);
+		e.setAttribute("rows",rows);
+		e.setAttribute("edit",field);
+		place.appendChild(wrapper1);
 	}
+	if(tiddler.isReadOnly()) {
+		e.setAttribute("readOnly","readOnly");
+		jQuery(e).addClass("readOnly");
+	}
+	return e;
 };
 
 config.macros.tagChooser.onClick = function(ev)
