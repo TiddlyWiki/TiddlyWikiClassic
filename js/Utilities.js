@@ -36,8 +36,7 @@ function compareVersions(v1,v2)
 
 function merge(dst,src,preserveExisting)
 {
-	var i;
-	for(i in src) {
+	for(var i in src) {
 		if(!preserveExisting || dst[i] === undefined)
 			dst[i] = src[i];
 	}
@@ -111,46 +110,28 @@ function createTiddlyCheckbox(parent,caption,checked,onChange)
 
 function createTiddlyElement(parent,element,id,className,text,attribs)
 {
-	var n,e = document.createElement(element);
-	if(className != null)
-		e.className = className;
-	if(id != null)
-		e.setAttribute("id",id);
-	if(text != null)
-		e.appendChild(document.createTextNode(text));
+	var n, e = document.createElement(element);
+	if(className != null) e.className = className;
+	if(       id != null) e.setAttribute('id',id);
+	if(     text != null) createTiddlyText(e,text);
 	if(attribs) {
 		for(n in attribs) {
 			e.setAttribute(n,attribs[n]);
 		}
 	}
-	if(parent != null)
-		parent.appendChild(e);
+	if(parent != null) parent.appendChild(e);
 	return e;
 }
 
-function createTiddlyButton(parent,text,tooltip,action,className,id,accessKey,attribs)
+function createTiddlyButton(parent,text,tooltip,action,className,id,accessKey,customAttributes)
 {
-	var i,btn = document.createElement("a");
-	btn.setAttribute("href","javascript:;");
-	if(action) {
-		btn.onclick = action;
-	}
-	if(tooltip)
-		btn.setAttribute("title",tooltip);
-	if(text)
-		btn.appendChild(document.createTextNode(text));
-	btn.className = className || "button";
-	if(id)
-		btn.id = id;
-	if(attribs) {
-		for(i in attribs) {
-			btn.setAttribute(i,attribs[i]);
-		}
-	}
-	if(parent)
-		parent.appendChild(btn);
-	if(accessKey)
-		btn.setAttribute("accessKey",accessKey);
+	var attributes = { href: 'javascript:;' };
+	if(tooltip)   attributes.title = tooltip;
+	if(accessKey) attributes.accessKey = accessKey;
+	merge(attributes, customAttributes || {});
+
+	var btn = createTiddlyElement(parent, 'a', id || null, className || 'button', text, attributes);
+	if(action) btn.onclick = action;
 	return btn;
 }
 
@@ -160,16 +141,13 @@ function createTiddlyButton(parent,text,tooltip,action,className,id,accessKey,at
 //#   label - link text (optional)
 function createExternalLink(place,url,label)
 {
-	var link = document.createElement("a");
-	link.className = "externalLink";
-	link.href = url;
-	var f = config.messages.externalLinkTooltip;
-	link.title = f ? f.format([url]) : url;
+	var tooltip = config.messages.externalLinkTooltip;
+	var link = createTiddlyElement(place, 'a', null, 'externalLink', label, {
+		href: url,
+		title: tooltip ? tooltip.format([url]) : url
+	});
 	if(config.options.chkOpenInNewWindow)
 		link.target = "_blank";
-	place.appendChild(link);
-	if(label)
-		createTiddlyText(link, label);
 	return link;
 }
 
@@ -273,8 +251,8 @@ function createTiddlyDropDown(place,onchange,options,defaultValue)
 {
 	var sel = createTiddlyElement(place,"select");
 	sel.onchange = onchange;
-	var t;
-	for(t=0; t<options.length; t++) {
+
+	for(var t = 0; t < options.length; t++) {
 		var e = createTiddlyElement(sel,"option",null,null,options[t].caption);
 		e.value = options[t].name;
 		if(options[t].name == defaultValue)
