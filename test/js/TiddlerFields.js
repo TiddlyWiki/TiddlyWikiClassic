@@ -21,3 +21,4 @@ jQuery(document).ready(function(){
 		strictEqual(val8, "two");
 	});
 });
+

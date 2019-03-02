@@ -115,3 +115,4 @@ jQuery(document).ready(function(){
 		ok(actual, 'channel copyright should be "TiddlyWiki YYYY YourName"');
 	});
 });
+

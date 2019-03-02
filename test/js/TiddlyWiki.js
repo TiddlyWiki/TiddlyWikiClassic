@@ -520,3 +520,4 @@ jQuery(document).ready(function(){
 		strictEqual(jQuery(".tiddler", storeArea).length, 1, "there is one element with class tiddler within the element");
 	});
 });
+

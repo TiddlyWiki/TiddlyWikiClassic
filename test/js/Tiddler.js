@@ -88,3 +88,4 @@ jQuery(document).ready(function(){
 		same(tiddler.modified,new Date(2010,06,23,13,14,15),'Assigning value to tiddler modified date should override old modified date 5');
 	});
 });
+

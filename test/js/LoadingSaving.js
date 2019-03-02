@@ -1,6 +1,6 @@
 jQuery(document).ready(function() {
-	module("LoadingSaving");
 
+	module("LoadingSaving");
 
 	test("load", function() {
 		var actual, expected, filepath;
@@ -97,3 +97,4 @@ jQuery(document).ready(function() {
 		return unescape(path.substring(startpos, endpos));
 	};
 });
+
