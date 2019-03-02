@@ -16,6 +16,7 @@ h2,h3 {border-bottom:1px solid [[ColorPalette::TertiaryLight]];}
 .button:active {color:[[ColorPalette::Background]]; background:[[ColorPalette::SecondaryMid]]; border:1px solid [[ColorPalette::SecondaryDark]];}
 
 .header {background:[[ColorPalette::PrimaryMid]];}
+.header a:hover {background:transparent;}
 .headerShadow {color:[[ColorPalette::Foreground]];}
 .headerShadow a {font-weight:normal; color:[[ColorPalette::Foreground]];}
 .headerForeground {color:[[ColorPalette::Background]];}

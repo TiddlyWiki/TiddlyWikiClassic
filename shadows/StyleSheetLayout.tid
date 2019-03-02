@@ -52,7 +52,6 @@ a.tiddlyLinkNonExisting.shadow {font-weight:bold;}
 
 
 .header {position:relative;}
-.header a:hover {background:transparent;}
 .headerShadow {position:relative; padding:4.5em 0 1em 1em; left:-1px; top:-1px;}
 .headerForeground {position:absolute; padding:4.5em 0 1em 1em; left:0; top:0;}
 
