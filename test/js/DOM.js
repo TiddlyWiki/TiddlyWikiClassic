@@ -1,9 +1,9 @@
 (function($) {
 
 var makeTestNode = function() {
-	var ele = $('<div id="testElement" class="testClass"></div>');
-	ele.appendTo('body');
-	return ele.get(0);
+	var element = $('<div id="testElement" class="testClass"></div>');
+	element.appendTo('body');
+	return element.get(0);
 };
 
 var removeTestNode = function() {
@@ -15,49 +15,59 @@ $(document).ready(function(){
 	module("DOM.js");
 
 	test("resolveTarget", function() {
-		expect(1);
-		var ele = makeTestNode();
 
+		expect(1);
+		var element = makeTestNode();
 		var target;
-		$(ele).click(function(ev){
-			target = $(ev.target)[0];
+		$(element).click(function(ev){
+			target = $(resolveTarget(ev))[0];
 		});
-		$(ele).click();
-		equals(target, ele, "resolveTarget correctly identifies the target of a click event");
+
+		$(element).click();
+
+		equals(target, element, "resolveTarget correctly identifies the target of a click event");
 
 		removeTestNode();
 	});
 
 
 	test('getPlainText', function(){
-		expect(1);
 
-		$('body').append("<div id='text_test'>foo bar baz</div>");
-		var d = $('#text_test').get(0);
-		equals(getPlainText(d), "foo bar baz", "getPlainText() returns the plain text of an element.");
+		expect(1);
+		var initialText = "foo bar baz";
+		$('body').append("<div id='text_test'>"+initialText+"</div>");
+		var element = $('#text_test').get(0);
+
+		var text = getPlainText(element);
+
+		equals(text, initialText, "getPlainText() returns the plain text of an element.");
+
 		$("#text_test").remove();
 	});
 
 
 	test("findWindowHeight", function() {
+
 		expect(2);
 		equals(typeof findWindowHeight(), "number", "returns a number value");
 		equals($(window).height(), findWindowHeight(), "return the current height of the display window");
 	});
 	
 	test("findDocHeight", function() {
+
 		expect(2);
 		equals(typeof findDocHeight(), "number", "returns a number value");
 		var maxHeight = Math.max(
-				$(document).height(),
-				$(window).height(),
-				/* For opera: */
-				document.documentElement.clientHeight
-			);
+			$(document).height(),
+			$(window).height(),
+			/* For opera: */
+			document.documentElement.clientHeight
+		);
 		equals(maxHeight, findDocHeight(), "return the current height of the document");
 	});
 
 	test("findWindowWidth", function() {
+
 		expect(1);
 		equals(typeof findWindowWidth(), "number", "returns a number value");
 		// XXX: following test does not work
@@ -67,8 +77,8 @@ $(document).ready(function(){
 
 	test("findScrollX", function() {
 
+		expect(1);
 		var scroll = 10;
-
 		$('<div id="wiiide">wide</div>').css({width: '9999px'}).appendTo('body');
 		$().scrollLeft(scroll);
 
@@ -79,6 +89,7 @@ $(document).ready(function(){
 	});
 
 	test("findScrollY", function() {
+
 		expect(1);
 		var scroll = 200;
 		$().scrollTop(scroll);
