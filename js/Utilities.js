@@ -19,17 +19,18 @@ function formatVersion(v)
 function compareVersions(v1,v2)
 {
 	var x1,x2,i,a = ["major","minor","revision"];
-	for(i = 0; i<a.length; i++) {
+	for(i = 0; i < a.length; i++)
+	{
 		x1 = v1[a[i]] || 0;
 		x2 = v2[a[i]] || 0;
-		if(x1<x2)
+		if(x1 < x2)
 			return 1;
-		if(x1>x2)
+		if(x1 > x2)
 			return -1;
 	}
 	x1 = v1.beta || 9999;
 	x2 = v2.beta || 9999;
-	if(x1<x2)
+	if(x1 < x2)
 		return 1;
 	return x1 > x2 ? -1 : 0;
 }
@@ -46,12 +47,9 @@ function merge(dst,src,preserveExisting)
 // Resolve the target object of an event
 function resolveTarget(e)
 {
-	var obj;
-	if(e.target)
-		obj = e.target;
-	else if(e.srcElement)
-		obj = e.srcElement;
-	if(obj.nodeType == 3) // defeat Safari bug
+	var obj = e.target || e.srcElement;
+	// defeat Safari bug
+	if(obj.nodeType == 3)
 		obj = obj.parentNode;
 	return obj;
 }
@@ -232,7 +230,8 @@ function createTiddlyLink(place,title,includeText,className,isStatic,linkedFromT
 	btn.setAttribute("tiddlyLink",title);
 	if(noToggle)
 		btn.setAttribute("noToggle","true");
-	if(linkedFromTiddler) {
+	if(linkedFromTiddler)
+	{
 		var fields = linkedFromTiddler.getInheritedFields();
 		if(fields)
 			btn.setAttribute("tiddlyFields",fields);
@@ -252,7 +251,8 @@ function createTiddlyDropDown(place,onchange,options,defaultValue)
 	var sel = createTiddlyElement(place,"select");
 	sel.onchange = onchange;
 
-	for(var t = 0; t < options.length; t++) {
+	for(var t = 0; t < options.length; t++)
+	{
 		var e = createTiddlyElement(sel,"option",null,null,options[t].caption);
 		e.value = options[t].name;
 		if(options[t].name == defaultValue)
