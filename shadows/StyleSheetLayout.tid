@@ -1,9 +1,9 @@
 title: StyleSheetLayout
 
 /*{{{*/
-* html .tiddler {height:1%;}
-
 body {font-size:.75em; font-family:arial,helvetica; margin:0; padding:0;}
+
+* html .tiddler {height:1%;}
 
 h1,h2,h3,h4,h5,h6 {font-weight:bold; text-decoration:none;}
 h1,h2,h3 {padding-bottom:1px; margin-top:1.2em;margin-bottom:0.3em;}
@@ -15,8 +15,6 @@ h4 {font-size:1em;}
 h5 {font-size:.9em;}
 
 hr {height:1px;}
-
-a {text-decoration:none;}
 
 dt {font-weight:bold;}
 
@@ -32,11 +30,14 @@ ol ol ol ol ol ol ol {list-style-type:decimal;}
 
 #contentWrapper .chkOptionInput {border:0;}
 
-.externalLink {text-decoration:underline;}
-
 .indent {margin-left:3em;}
 .outdent {margin-left:3em; text-indent:-3em;}
 code.escaped {white-space:nowrap;}
+
+
+a {text-decoration:none;}
+
+.externalLink {text-decoration:underline;}
 
 .tiddlyLinkExisting {font-weight:bold;}
 .tiddlyLinkNonExisting {font-style:italic;}
@@ -45,9 +46,10 @@ code.escaped {white-space:nowrap;}
 a.tiddlyLinkNonExisting.shadow {font-weight:bold;}
 
 #mainMenu .tiddlyLinkExisting,
-	#mainMenu .tiddlyLinkNonExisting,
-	#sidebarTabs .tiddlyLinkNonExisting {font-weight:normal; font-style:normal;}
+#mainMenu .tiddlyLinkNonExisting,
+#sidebarTabs .tiddlyLinkNonExisting {font-weight:normal; font-style:normal;}
 #sidebarTabs .tiddlyLinkExisting {font-weight:bold; font-style:normal;}
+
 
 .header {position:relative;}
 .header a:hover {background:transparent;}
