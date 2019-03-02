@@ -2,12 +2,12 @@
 //-- DOM utilities - many derived from www.quirksmode.org
 //--
 
-function drawGradient(place,horiz,locolors,hicolors)
+function drawGradient(place,horiz,loColors,hiColors)
 {
-	if(!hicolors)
-		hicolors = locolors;
-	var t;
-	for(t=0; t<= 100; t+=2) {
+	if(!hiColors) hiColors = loColors;
+
+	for(var t = 0; t <= 100; t += 2)
+	{
 		var bar = document.createElement("div");
 		place.appendChild(bar);
 		bar.style.position = "absolute";
@@ -16,11 +16,11 @@ function drawGradient(place,horiz,locolors,hicolors)
 		bar.style.width = horiz ? (101-t) + "%" : "100%";
 		bar.style.height = horiz ? "100%" : (101-t) + "%";
 		bar.style.zIndex = -1;
-		var p = t/100*(locolors.length-1);
-		var hc = hicolors[Math.floor(p)];
+		var p = t/100*(loColors.length-1);
+		var hc = hiColors[Math.floor(p)];
 		if(typeof hc == "string")
 			hc = new RGB(hc);
-		var lc = locolors[Math.ceil(p)];
+		var lc = loColors[Math.ceil(p)];
 		if(typeof lc == "string")
 			lc = new RGB(lc);
 		bar.style.backgroundColor = hc.mix(lc,p-Math.floor(p)).toString();
@@ -188,11 +188,14 @@ function replaceSelection(e,text)
 // Set the caret position in a text area
 function setCaretPosition(e,pos)
 {
-	if(e.selectionStart || e.selectionStart == '0') {
+	if(e.selectionStart || e.selectionStart == '0')
+	{
 		e.selectionStart = pos;
 		e.selectionEnd = pos;
 		e.focus();
-	} else if(document.selection) {
+	}
+	else if(document.selection)
+	{
 		// IE support
 		e.focus ();
 		var sel = document.selection.createRange();
@@ -244,8 +247,7 @@ function scrubNode(e)
 		return;
 	var att = e.attributes;
 	if(att) {
-		var t;
-		for(t=0; t<att.length; t++) {
+		for(var t = 0; t < att.length; t++) {
 			var n = att[t].name;
 			if(n !== "style" && (typeof e[n] === "function" || (typeof e[n] === "object" && e[n] != null))) {
 				try {
