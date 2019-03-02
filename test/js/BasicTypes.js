@@ -242,3 +242,4 @@ jQuery(document).ready(function() {
 		same(actual, expected, "passes element value and index to the callback");
 	});
 });
+

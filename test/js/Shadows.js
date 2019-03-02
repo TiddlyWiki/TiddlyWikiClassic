@@ -14,8 +14,6 @@ jQuery(document).ready(function(){
 
 		actual = config.shadowTiddlers["SystemSettings"];
 		strictEqual(typeof(actual) !== 'undefined',true,'SystemSettings shadow tiddler should exist');
-
 	});
-
-
 });
+

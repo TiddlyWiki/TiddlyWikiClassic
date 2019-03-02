@@ -44,8 +44,6 @@ jQuery(document).ready(function(){
 		actual = saver.externalizeTiddler(store,tiddler);
 		expected = "<div title=\"test\">\n<pre>text</pre>\n</div>";
 		ok(actual==expected,'Saving tiddler with text');
-
 	});
-
-
 });
+

@@ -132,3 +132,4 @@ jQuery(document).ready(function(){
 		ok(actual==expected,'String should correctly encodeTiddlyLink with spaces');
 	});
 });
+

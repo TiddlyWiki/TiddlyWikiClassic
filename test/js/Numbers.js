@@ -24,5 +24,5 @@ jQuery(document).ready(function() {
 		expected = 80;
 		same(actual, expected, "returns maximum if number is greater than maximum");
 	});
-
 });
+
