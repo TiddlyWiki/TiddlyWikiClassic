@@ -29,8 +29,7 @@ function TiddlyWiki(params)
 		tiddlers[tiddler.title] = tiddler;
 	};
 	this.forEachTiddler = function(callback) {
-		var t;
-		for(t in tiddlers) {
+		for(var t in tiddlers) {
 			var tiddler = tiddlers[t];
 			if(tiddler instanceof Tiddler)
 				callback.call(this,t,tiddler);
@@ -102,8 +101,8 @@ TiddlyWiki.prototype.getShadowTiddlerText = function(title)
 //# the respective separator characters ({{{::}}} or {{{##}}}).
 TiddlyWiki.prototype.getTiddlerText = function(title,defaultText)
 {
-	if(!title)
-		return defaultText;
+	if(!title) return defaultText;
+
 	var pos = title.indexOf(config.textPrimitives.sectionSeparator);
 	var section = null;
 	if(pos != -1) {
@@ -112,7 +111,8 @@ TiddlyWiki.prototype.getTiddlerText = function(title,defaultText)
 	}
 	pos = title.indexOf(config.textPrimitives.sliceSeparator);
 	if(pos != -1) {
-		var slice = this.getTiddlerSlice(title.substr(0,pos),title.substr(pos + config.textPrimitives.sliceSeparator.length));
+		var sliceNameStart = pos + config.textPrimitives.sliceSeparator.length;
+		var slice = this.getTiddlerSlice(title.substr(0,pos), title.substr(sliceNameStart));
 		if(slice)
 			return slice;
 	}
@@ -124,42 +124,39 @@ TiddlyWiki.prototype.getTiddlerText = function(title,defaultText)
 	if(text) {
 		if(!section)
 			return text;
-		var re = new RegExp("(^!{1,6}[ \t]*" + section.escapeRegExp() + "[ \t]*\n)","mg");
-		re.lastIndex = 0;
-		var match = re.exec(text);
+		var headerRE = new RegExp("(^!{1,6}[ \t]*" + section.escapeRegExp() + "[ \t]*\n)","mg");
+		headerRE.lastIndex = 0;
+		var match = headerRE.exec(text);
 		if(match) {
-			var t = text.substr(match.index+match[1].length);
-			var re2 = /^!/mg;
-			re2.lastIndex = 0;
-			match = re2.exec(t); //# search for the next heading
+			var t = text.substr(match.index + match[1].length);
+			var nextHeaderRE = /^!/mg;
+			nextHeaderRE.lastIndex = 0;
+			match = nextHeaderRE.exec(t);
 			if(match)
-				t = t.substr(0,match.index-1);//# don't include final \n
+				t = t.substr(0, match.index - 1); // don't include final \n
 			return t;
 		}
 		return defaultText;
 	}
-	if(defaultText != undefined)
-		return defaultText;
-	return null;
+	return defaultText != undefined ? defaultText : null;
 };
 
 TiddlyWiki.prototype.getRecursiveTiddlerText = function(title,defaultText,depth)
 {
-	var bracketRegExp = new RegExp("(?:\\[\\[([^\\]]+)\\]\\])","mg");
 	var text = this.getTiddlerText(title,null);
-	if(text == null)
-		return defaultText;
-	var textOut = [];
-	var match,lastPos = 0;
+	if(text == null) return defaultText;
+
+	var bracketRegExp = new RegExp("(?:\\[\\[([^\\]]+)\\]\\])","mg");
+	var textOut = [], match, lastPos = 0;
 	do {
 		match = bracketRegExp.exec(text);
 		if(match) {
-			textOut.push(text.substr(lastPos,match.index-lastPos));
+			textOut.push(text.substr(lastPos, match.index - lastPos));
 			if(match[1]) {
 				if(depth <= 0)
 					textOut.push(match[1]);
 				else
-					textOut.push(this.getRecursiveTiddlerText(match[1],"",depth-1));
+					textOut.push(this.getRecursiveTiddlerText(match[1], "", depth - 1));
 			}
 			lastPos = match.index + match[0].length;
 		} else {
@@ -218,8 +215,8 @@ TiddlyWiki.prototype.getTiddlerSlice = function(title,sliceName)
 // Build an hashmap of the specified named slices of a tiddler
 TiddlyWiki.prototype.getTiddlerSlices = function(title,sliceNames)
 {
-	var t,r = {};
-	for(t=0; t<sliceNames.length; t++) {
+	var t, r = {};
+	for(t = 0; t < sliceNames.length; t++) {
 		var slice = this.getTiddlerSlice(title,sliceNames[t]);
 		if(slice)
 			r[sliceNames[t]] = slice;
@@ -241,8 +238,7 @@ TiddlyWiki.prototype.resumeNotifications = function()
 TiddlyWiki.prototype.notify = function(title,doBlanket)
 {
 	if(!this.notificationLevel) {
-	    var t;
-		for(t=0; t<this.namedNotifications.length; t++) {
+		for(var t = 0; t < this.namedNotifications.length; t++) {
 			var n = this.namedNotifications[t];
 			if((n.name == null && doBlanket) || (n.name == title))
 				n.notify(title);
@@ -254,8 +250,7 @@ TiddlyWiki.prototype.notify = function(title,doBlanket)
 TiddlyWiki.prototype.notifyAll = function()
 {
 	if(!this.notificationLevel) {
-	    var t;
-		for(t=0; t<this.namedNotifications.length; t++) {
+		for(var t = 0; t < this.namedNotifications.length; t++) {
 			var n = this.namedNotifications[t];
 			if(n.name)
 				n.notify(n.name);
@@ -266,8 +261,7 @@ TiddlyWiki.prototype.notifyAll = function()
 // Add a notification handler to a tiddler
 TiddlyWiki.prototype.addNotification = function(title,fn)
 {
-	var i;
-	for(i=0; i<this.namedNotifications.length; i++) {
+	for(var i = 0; i < this.namedNotifications.length; i++) {
 		if((this.namedNotifications[i].name == title) && (this.namedNotifications[i].notify == fn))
 			return this;
 	}
@@ -407,8 +401,7 @@ TiddlyWiki.prototype.loadFromDiv = function(src,idPrefix,noUpdate)
 	var tiddlers = this.getLoader().loadTiddlers(this,storeElem.childNodes);
 	this.setDirty(false);
 	if(!noUpdate) {
-		var i;
-		for(i = 0;i<tiddlers.length; i++)
+		for(var i = 0; i < tiddlers.length; i++)
 			tiddlers[i].changed();
 	}
 	jQuery(document).trigger("loadTiddlers");
@@ -455,14 +448,13 @@ TiddlyWiki.prototype.updateTiddlers = function()
 TiddlyWiki.prototype.search = function(searchRegExp,sortField,excludeTag,match)
 {
 	var candidates = this.reverseLookup("tags",excludeTag,!!match);
-	var t,results = [];
-	for(t=0; t<candidates.length; t++) {
+	var t, results = [];
+	for(t = 0; t < candidates.length; t++) {
 		if((candidates[t].title.search(searchRegExp) != -1) || (candidates[t].text.search(searchRegExp) != -1))
 			results.push(candidates[t]);
 	}
-	if(!sortField)
-		sortField = "title";
-	results.sort(function(a,b) {return a[sortField] < b[sortField] ? -1 : (a[sortField] == b[sortField] ? 0 : +1);});
+	if(!sortField) sortField = "title";
+	results.sort(function(a,b) { return a[sortField] < b[sortField] ? -1 : (a[sortField] == b[sortField] ? 0 : +1); });
 	return results;
 };
 
@@ -473,26 +465,25 @@ TiddlyWiki.prototype.getTags = function(excludeTag)
 {
 	var results = [];
 	this.forEachTiddler(function(title,tiddler) {
-	    var g,c;
-		for(g=0; g<tiddler.tags.length; g++) {
-			var tag = tiddler.tags[g];
-			var n = true;
-			for(c=0; c<results.length; c++) {
-				if(results[c][0] == tag) {
-					n = false;
-					results[c][1]++;
+	    var i, j;
+		for(i = 0; i < tiddler.tags.length; i++) {
+			var tag = tiddler.tags[i];
+			var isTagToAdd = true;
+			for(j = 0; j < results.length; j++) {
+				if(results[j][0] == tag) {
+					isTagToAdd = false;
+					results[j][1]++;
 				}
 			}
-			if(n && excludeTag) {
+			if(isTagToAdd && excludeTag) {
 				var t = this.fetchTiddler(tag);
 				if(t && t.isTagged(excludeTag))
-					n = false;
+					isTagToAdd = false;
 			}
-			if(n)
-				results.push([tag,1]);
+			if(isTagToAdd) results.push([tag,1]);
 		}
 	});
-	results.sort(function(a,b) {return a[0].toLowerCase() < b[0].toLowerCase() ? -1 : (a[0].toLowerCase() == b[0].toLowerCase() ? 0 : +1);});
+	results.sort(function(a,b) { return a[0].toLowerCase() < b[0].toLowerCase() ? -1 : (a[0].toLowerCase() == b[0].toLowerCase() ? 0 : +1); });
 	return results;
 };
 
@@ -527,19 +518,14 @@ TiddlyWiki.prototype.reverseLookup = function(lookupField,lookupValue,lookupMatc
 			values = tiddler[lookupField];
 		} else {
 			var accessor = TiddlyWiki.standardFieldAccess[lookupField];
-			if(accessor) {
-				values = [ accessor.get(tiddler) ];
-			} else {
-				values = tiddler.fields[lookupField] ? [tiddler.fields[lookupField]] : [];
-			}
+			values = accessor ? [ accessor.get(tiddler) ] :
+				( tiddler.fields[lookupField] ? [tiddler.fields[lookupField]] : [] );
 		}
-		var lookup;
-		for(lookup=0; lookup<values.length; lookup++) {
+		for(var lookup = 0; lookup < values.length; lookup++) {
 			if(values[lookup] == lookupValue)
 				f = lookupMatch;
 		}
-		if(f)
-			results.push(tiddler);
+		if(f) results.push(tiddler);
 	});
 	if(!sortField)
 		sortField = "title";
@@ -555,21 +541,21 @@ TiddlyWiki.prototype.getTiddlers = function(field,excludeTag)
 			results.push(tiddler);
 	});
 	if(field)
-		results.sort(function(a,b) {return a[field] < b[field] ? -1 : (a[field] == b[field] ? 0 : +1);});
+		results.sort(function(a,b) { return a[field] < b[field] ? -1 : (a[field] == b[field] ? 0 : +1); });
 	return results;
 };
 
 // Return array of names of tiddlers that are referred to but not defined
 TiddlyWiki.prototype.getMissingLinks = function()
 {
-	if(!this.tiddlersUpdated)
-		this.updateTiddlers();
+	if(!this.tiddlersUpdated) this.updateTiddlers();
+
 	var results = [];
 	this.forEachTiddler(function (title,tiddler) {
 		if(tiddler.isTagged("excludeMissing") || tiddler.isTagged("systemConfig"))
 			return;
-		var n;
-		for(n=0; n<tiddler.links.length;n++) {
+
+		for(var n = 0; n < tiddler.links.length; n++) {
 			var link = tiddler.links[n];
 			if(this.getTiddlerText(link,null) == null && !this.isShadowTiddler(link) && !config.macros[link])
 				results.pushUnique(link);
@@ -594,7 +580,7 @@ TiddlyWiki.prototype.getOrphans = function()
 // Return an array of names of all the shadow tiddlers
 TiddlyWiki.prototype.getShadowed = function()
 {
-	var t,results = [];
+	var t, results = [];
 	for(t in config.shadowTiddlers) {
 		if(this.isShadowTiddler(t))
 			results.push(t);
@@ -610,7 +596,7 @@ TiddlyWiki.prototype.getTouched = function()
 	this.forEachTiddler(function(title,tiddler) {
 		if(tiddler.isTouched())
 			results.push(tiddler);
-		});
+	});
 	results.sort();
 	return results;
 };
@@ -640,13 +626,13 @@ TiddlyWiki.prototype.sortTiddlers = function(tiddlers,field)
 		break;
 	}
 	if(TiddlyWiki.standardFieldAccess[field]) {
-		if(field=="title") {
-			tiddlers.sort(function(a,b) {return a[field].toLowerCase() < b[field].toLowerCase() ? -asc : (a[field].toLowerCase() == b[field].toLowerCase() ? 0 : asc);});
+		if(field == "title") {
+			tiddlers.sort(function(a,b) { return a[field].toLowerCase() < b[field].toLowerCase() ? -asc : (a[field].toLowerCase() == b[field].toLowerCase() ? 0 : asc); });
 		} else {
-			tiddlers.sort(function(a,b) {return a[field] < b[field] ? -asc : (a[field] == b[field] ? 0 : asc);});
+			tiddlers.sort(function(a,b) { return a[field] < b[field] ? -asc : (a[field] == b[field] ? 0 : asc); });
 		}
 	} else {
-		tiddlers.sort(function(a,b) {return a.fields[field] < b.fields[field] ? -asc : (a.fields[field] == b.fields[field] ? 0 : +asc);});
+		tiddlers.sort(function(a,b) { return a.fields[field] < b.fields[field] ? -asc : (a.fields[field] == b.fields[field] ? 0 : +asc); });
 	}
 	return tiddlers;
 };
