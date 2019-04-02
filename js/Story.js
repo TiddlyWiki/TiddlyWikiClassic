@@ -333,13 +333,13 @@ Story.prototype.onTiddlerKeyPress = function(ev)
 	switch(e.keyCode) {
 	case 9: // Tab
 		var ed = story.getTiddlerField(title,"text");
-		if(target.tagName.toLowerCase() == "input" && ed.value==config.views.editor.defaultText.format([title])) {
+		if(target.tagName.toLowerCase() == "input" && ed.value == config.views.editor.defaultText.format([title])) {
 			// moving from input field and editor still contains default text, so select it
 			ed.focus();
 			ed.select();
 			consume = true;
 		}
-		if(config.options.chkInsertTabs && target.tagName.toLowerCase() == "textarea") {
+		if(config.options.chkInsertTabs && !e.ctrlKey && target.tagName.toLowerCase() == "textarea") {
 			replaceSelection(target,String.fromCharCode(9));
 			consume = true;
 		}
@@ -369,7 +369,7 @@ Story.prototype.onTiddlerKeyPress = function(ev)
 	if(consume) {
 		if(e.stopPropagation) e.stopPropagation(); // Stop Propagation
 		e.returnValue = true; // Cancel The Event in IE
-		if(e.preventDefault ) e.preventDefault(); // Cancel The Event in Moz
+		if(e.preventDefault) e.preventDefault(); // Cancel The Event in Moz
 	}
 	return !consume;
 };
