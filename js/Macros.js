@@ -517,7 +517,7 @@ config.macros.tagChooser.onClick = function(ev)
 	var popup = Popup.create(this);
 	var tags = store.getTags(this.getAttribute("tags"));
 	if(tags.length == 0)
-		jQuery("<li/>").text(lingo.popupNone).appendTo(popup);
+		jQuery("<li/>").addClass('disabled').text(lingo.popupNone).appendTo(popup);
 
 	for(var t = 0; t < tags.length; t++) {
 		var tag = createTiddlyButton(createTiddlyElement(popup,"li"),tags[t][0],lingo.tagTooltip.format([tags[t][0]]),config.macros.tagChooser.onTagClick);
