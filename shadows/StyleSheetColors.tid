@@ -74,7 +74,7 @@ h2,h3 {border-bottom:1px solid [[ColorPalette::TertiaryLight]];}
 
 .popupTiddler {background:[[ColorPalette::TertiaryPale]]; border:2px solid [[ColorPalette::TertiaryMid]];}
 
-.popup {background:[[ColorPalette::TertiaryPale]]; color:[[ColorPalette::TertiaryDark]]; border-left:1px solid [[ColorPalette::TertiaryMid]]; border-top:1px solid [[ColorPalette::TertiaryMid]]; border-right:2px solid [[ColorPalette::TertiaryDark]]; border-bottom:2px solid [[ColorPalette::TertiaryDark]];}
+.popup { background:[[ColorPalette::TertiaryPale]]; color:[[ColorPalette::TertiaryDark]]; box-shadow: 1px 2px 5px [[ColorPalette::TertiaryMid]]; }
 .popup hr {color:[[ColorPalette::PrimaryDark]]; background:[[ColorPalette::PrimaryDark]]; border-bottom:1px;}
 .popup li.disabled {color:[[ColorPalette::TertiaryMid]];}
 .popup li a, .popup li a:visited {color:[[ColorPalette::Foreground]]; border: none;}
