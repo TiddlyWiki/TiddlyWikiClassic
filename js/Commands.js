@@ -66,9 +66,9 @@ config.commands.deleteTiddler.handler = function(event,src,title)
 
 config.commands.permalink.handler = function(event,src,title)
 {
-	var t = encodeURIComponent(String.encodeTiddlyLink(title));
-	if(window.location.hash != t)
-		window.location.hash = t;
+	var hash = story.getPermaViewHash([title]);
+	if(window.location.hash != hash)
+		window.location.hash = hash;
 	return false;
 };
 
