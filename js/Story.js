@@ -625,17 +625,23 @@ Story.prototype.saveTiddler = function(title,minorUpdate)
 	return newTitle;
 };
 
-Story.prototype.permaView = function()
+Story.prototype.getPermaViewHash = function(titles)
 {
 	var links = [];
+	for(var i = 0; i < titles.length; i++)
+		links.push(String.encodeTiddlyLink(titles[i]));
+	return '#' + encodeURIComponent(links.join(' '));
+};
+
+Story.prototype.permaView = function()
+{
+	var titles = [];
 	this.forEachTiddler(function(title,element) {
-		links.push(String.encodeTiddlyLink(title));
+		titles.push(title);
 	});
-	var t = encodeURIComponent(links.join(" "));
-	if(t == "")
-		t = "#";
-	if(window.location.hash != t)
-		window.location.hash = t;
+	var hash = this.getPermaViewHash(titles);
+	if(window.location.hash != hash)
+		window.location.hash = hash;
 };
 
 Story.prototype.switchTheme = function(theme)
