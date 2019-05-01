@@ -211,6 +211,11 @@ function onClickTiddlerLink(ev)
 	return false;
 }
 
+function getTiddlerLinkHref(title)
+{
+	return window.location.toString().replace(/#.*$/,'') + story.getPermaViewHash([title]);
+}
+
 //# Create a link to a particular tiddler
 //#   place - element where the link should be created
 //#   title - title of target tiddler
@@ -223,7 +228,11 @@ function createTiddlyLink(place,title,includeText,className,isStatic,linkedFromT
 	var title = jQuery.trim(title);
 	var text = includeText ? title : null;
 	var i = getTiddlyLinkInfo(title,className);
-	var btn = isStatic ? createExternalLink(place,store.getTiddlerText("SiteUrl",null) + "#" + title) : createTiddlyButton(place,text,i.subTitle,onClickTiddlerLink,i.classes);
+	var btn = isStatic ?
+		createExternalLink(place, store.getTiddlerText("SiteUrl",null) + story.getPermaViewHash([title])) :
+		createTiddlyButton(place, text, i.subTitle, onClickTiddlerLink, i.classes, '', '', {
+			href: getTiddlerLinkHref(title)
+		});
 	if(isStatic)
 		btn.className += ' ' + className;
 	btn.setAttribute("refresh","link");
