@@ -129,7 +129,7 @@ a.tiddlyLinkNonExisting.shadow {font-weight:bold;}
 .footer {font-size:.9em;}
 .footer li {display:inline;}
 
-.annotation {padding:0.5em; margin:0.5em;}
+.annotation { padding: 0.5em 0.8em; margin: 0.5em 1px; }
 
 * html .viewer pre {width:99%; padding:0 0 1em 0;}
 .viewer {line-height:1.4em; padding-top:0.5em;}
