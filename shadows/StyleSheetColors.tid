@@ -113,7 +113,7 @@ h2,h3 {border-bottom:1px solid [[ColorPalette::TertiaryLight]];}
 
 .imageLink, #displayArea .imageLink {background:transparent;}
 
-.annotation {background:[[ColorPalette::SecondaryLight]]; color:[[ColorPalette::Foreground]]; border:2px solid [[ColorPalette::SecondaryMid]];}
+.annotation { background:[[ColorPalette::SecondaryLight]]; color:[[ColorPalette::Foreground]]; }
 
 .viewer .listTitle {list-style-type:none; margin-left:-2em;}
 .viewer .button {border:1px solid [[ColorPalette::SecondaryMid]];}
