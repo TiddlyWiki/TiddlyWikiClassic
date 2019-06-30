@@ -278,7 +278,7 @@ window.getLocalPath = window.getLocalPath || function(origPath)
 	return localPath;
 }
 
-function getBackupPath(localPath,title,extension)
+function getBackupPath(localPath, filenameSuffix, extension)
 {
 	var slash = "\\";
 	var dirPathPos = localPath.lastIndexOf("\\");
@@ -286,14 +286,12 @@ function getBackupPath(localPath,title,extension)
 		dirPathPos = localPath.lastIndexOf("/");
 		slash = "/";
 	}
-	var backupFolder = config.options.txtBackupFolder;
-	if(!backupFolder || backupFolder == "")
-		backupFolder = ".";
-	var backupPath = localPath.substr(0,dirPathPos) + slash + backupFolder + localPath.substr(dirPathPos);
-	backupPath = backupPath.substr(0,backupPath.lastIndexOf(".")) + ".";
-	//# replace illegal filename characters(// \/:*?"<>|) and space with underscore
-	if(title)
-		backupPath += title.replace(/[\\\/\*\?\":<> ]/g,"_") + ".";
+	var backupFolder = config.options.txtBackupFolder || ".";
+	var backupPath = localPath.substr(0, dirPathPos) + slash + backupFolder + localPath.substr(dirPathPos);
+	backupPath = backupPath.substr(0, backupPath.lastIndexOf(".")) + ".";
+	var illegalFilenameCharacterOrSpaceRE = /[\\\/\*\?\":<> ]/g;
+	if(filenameSuffix)
+		backupPath += filenameSuffix.replace(illegalFilenameCharacterOrSpaceRE, "_") + ".";
 	backupPath += (new Date()).convertToYYYYMMDDHHMMSSMMM() + "." + (extension || "html");
 	return backupPath;
 }
