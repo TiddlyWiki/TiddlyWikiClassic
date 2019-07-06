@@ -474,7 +474,7 @@ merge(config.annotations,{
 	StyleSheetLayout: "This shadow tiddler contains CSS definitions related to the layout of page elements. ''DO NOT EDIT THIS TIDDLER'', instead make your changes in the StyleSheet shadow tiddler",
 	StyleSheetLocale: "This shadow tiddler contains CSS definitions related to the translation locale",
 	StyleSheetPrint: "This shadow tiddler contains CSS definitions for printing",
-	SystemSettings: "This tiddler is used to store configuration options for this TiddlyWiki document",
+	SystemSettings: "Options may be stored here using the slice notation (like {{{chkAutoSave: true}}} or {{{|txtUserName|The great inventor|}}})",
 	TabAll: "This shadow tiddler contains the contents of the 'All' tab in the right-hand sidebar",
 	TabMore: "This shadow tiddler contains the contents of the 'More' tab in the right-hand sidebar",
 	TabMoreMissing: "This shadow tiddler contains the contents of the 'Missing' tab in the right-hand sidebar",
