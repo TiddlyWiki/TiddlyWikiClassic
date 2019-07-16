@@ -11,23 +11,23 @@
 //#
 
 // Copy a file in filesystem [Preemption]
-window.copyFile = window.copyFile || function(dest,source)
+window.copyFile = window.copyFile || function(dest, source)
 {
-	return config.browser.isIE ? ieCopyFile(dest,source) : false;
+	return config.browser.isIE ? ieCopyFile(dest, source) : false;
 }
 
 // Save a file in filesystem [Preemption]
-window.saveFile = window.saveFile || function(fileUrl,content)
+window.saveFile = window.saveFile || function(fileUrl, content)
 {
-	var r = mozillaSaveFile(fileUrl,content);
+	var r = mozillaSaveFile(fileUrl, content);
 	if(!r)
-		r = ieSaveFile(fileUrl,content);
+		r = ieSaveFile(fileUrl, content);
 	if(!r)
-		r = javaSaveFile(fileUrl,content);
+		r = javaSaveFile(fileUrl, content);
 	if(!r)
-		r = HTML5DownloadSaveFile(fileUrl,content);
+		r = HTML5DownloadSaveFile(fileUrl, content);
 	if(!r)
-		r = manualSaveFile(fileUrl,content);
+		r = manualSaveFile(fileUrl, content);
 	return r;
 }
 
@@ -51,14 +51,14 @@ function ieCreatePath(path)
 		return null;
 	}
 
-	//# Remove the filename, if present. Use trailing slash (i.e. "foo\bar\") if no filename.
+	// Remove the filename, if present. Use trailing slash (i.e. "foo\bar\") if no filename.
 	var pos = path.lastIndexOf("\\");
-	if(pos==-1)
+	if(pos == -1)
 		pos = path.lastIndexOf("/");
-	if(pos!=-1)
-		path = path.substring(0,pos+1);
+	if(pos != -1)
+		path = path.substring(0, pos + 1);
 
-	//# Walk up the path until we find a folder that exists
+	// Walk up the path until we find a folder that exists
 	var scan = [path];
 	var parent = fso.GetParentFolderName(path);
 	while(parent && !fso.FolderExists(parent)) {
@@ -66,7 +66,7 @@ function ieCreatePath(path)
 		parent = fso.GetParentFolderName(parent);
 	}
 
-	//# Walk back down the path, creating folders
+	// Walk back down the path, creating folders
 	for(i = scan.length-1; i >= 0; i--) {
 		if(!fso.FolderExists(scan[i])) {
 			fso.CreateFolder(scan[i]);
@@ -76,7 +76,7 @@ function ieCreatePath(path)
 }
 
 // Returns null if it can't do it, false if there's an error, true if it saved OK
-function ieSaveFile(filePath,content)
+function ieSaveFile(filePath, content)
 {
 	ieCreatePath(filePath);
 	try {
@@ -85,7 +85,7 @@ function ieSaveFile(filePath,content)
 		//# if(config.browser.isIE) alert("Exception while attempting to save\n\n" + ex.toString());
 		return null;
 	}
-	var file = fso.OpenTextFile(filePath,2,-1,0);
+	var file = fso.OpenTextFile(filePath, 2, -1, 0);
 	file.Write(convertUnicodeToHtmlEntities(content));
 	file.Close();
 	return true;
@@ -96,7 +96,7 @@ function ieLoadFile(filePath)
 {
 	try {
 		var fso = new ActiveXObject("Scripting.FileSystemObject");
-		var file = fso.OpenTextFile(filePath,1);
+		var file = fso.OpenTextFile(filePath, 1);
 		var content = file.ReadAll();
 		file.Close();
 	} catch(ex) {
@@ -106,7 +106,7 @@ function ieLoadFile(filePath)
 	return content;
 }
 
-function ieCopyFile(dest,source)
+function ieCopyFile(dest, source)
 {
 	ieCreatePath(dest);
 	try {
@@ -119,7 +119,7 @@ function ieCopyFile(dest,source)
 }
 
 // Returns null if it can't do it, false if there's an error, true if it saved OK
-function mozillaSaveFile(filePath,content)
+function mozillaSaveFile(filePath, content)
 {
 	if(!window.Components)
 		return null;
@@ -130,10 +130,10 @@ function mozillaSaveFile(filePath,content)
 		var file = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
 		file.initWithPath(filePath);
 		if(!file.exists())
-			file.create(0,0x01B4);// 0x01B4 = 0664
+			file.create(0, 0x01B4);// 0x01B4 = 0664
 		var out = Components.classes["@mozilla.org/network/file-output-stream;1"].createInstance(Components.interfaces.nsIFileOutputStream);
-		out.init(file,0x22,0x04,null);
-		out.write(content,content.length);
+		out.init(file, 0x22, 0x04, null);
+		out.write(content, content.length);
 		out.flush();
 		out.close();
 		return true;
@@ -156,7 +156,7 @@ function mozillaLoadFile(filePath)
 		if(!file.exists())
 			return null;
 		var inputStream = Components.classes["@mozilla.org/network/file-input-stream;1"].createInstance(Components.interfaces.nsIFileInputStream);
-		inputStream.init(file,0x01,0x04,null);
+		inputStream.init(file, 0x01, 0x04, null);
 		var sInputStream = Components.classes["@mozilla.org/scriptableinputstream;1"].createInstance(Components.interfaces.nsIScriptableInputStream);
 		sInputStream.init(inputStream);
 		var contents = sInputStream.read(sInputStream.available());
@@ -175,7 +175,7 @@ function javaUrlToFilename(url)
 	if(url.indexOf(f) == 0)
 		return url.substring(f.length);
 	var i = url.indexOf(":");
-	return i > 0 ? url.substring(i-1) : url;
+	return i > 0 ? url.substring(i - 1) : url;
 }
 
 /*
@@ -221,7 +221,7 @@ function javaDebugInformation ()
 			.join('\n\n')
 }
 
-function javaSaveFile(filePath,content)
+function javaSaveFile(filePath, content)
 {
 	var applet = document.applets['TiddlySaver'];
 	try {
@@ -246,10 +246,8 @@ function javaLoadFile(filePath)
 	var applet = document.applets['TiddlySaver'];
 	try {
 		if (applet && filePath) {
-			var ret = applet.loadFile(javaUrlToFilename(filePath),"UTF-8");
-			if(!ret)
-				return null;
-			return String(ret);
+			var value = applet.loadFile(javaUrlToFilename(filePath), "UTF-8");
+			return !value ? null : String(value);
 		}
 	} catch(ex) {
 		logTiddlySaverException("javaLoadFile", ex);
@@ -268,7 +266,7 @@ function javaLoadFile(filePath)
 	return content.join("\n");
 }
 
-function HTML5DownloadSaveFile(filePath,content)
+function HTML5DownloadSaveFile(filePath, content)
 {
 	var link = document.createElement("a");
 	if(link.download === undefined)
@@ -276,26 +274,26 @@ function HTML5DownloadSaveFile(filePath,content)
 	
 	config.saveByDownload = true;
 	var slashpos = filePath.lastIndexOf("/");
-	if (slashpos==-1) slashpos = filePath.lastIndexOf("\\");
-	var filename = filePath.substr(slashpos+1);
+	if (slashpos == -1) slashpos = filePath.lastIndexOf("\\");
+	var filename = filePath.substr(slashpos + 1);
 	var uri = getDataURI(content);
-	link.setAttribute("target","_blank");
-	link.setAttribute("href",uri);
-	link.setAttribute("download",filename);
+	link.setAttribute("target", "_blank");
+	link.setAttribute("href", uri);
+	link.setAttribute("download", filename);
 	document.body.appendChild(link); link.click(); document.body.removeChild(link);
 	return true;
 }
 
 // Returns null if it can't do it, false if there's an error, true if it saved OK
-function manualSaveFile(filePath,content)
+function manualSaveFile(filePath, content)
 {
 	// FALLBACK for showing a link to data: URI
 	config.saveByManualDownload = true;
 	var slashpos = filePath.lastIndexOf("/");
-	if (slashpos==-1) slashpos = filePath.lastIndexOf("\\");
-	var filename = filePath.substr(slashpos+1);
+	if (slashpos == -1) slashpos = filePath.lastIndexOf("\\");
+	var filename = filePath.substr(slashpos + 1);
 	var uri = getDataURI(content);
-	displayMessage(config.messages.mainDownloadManual,uri);
+	displayMessage(config.messages.mainDownloadManual, uri);
 	return true;
 }
 
@@ -303,11 +301,11 @@ function manualSaveFile(filePath,content)
 function getDataURI(data)
 {
 	if (config.browser.isIE)
-		return "data:text/html,"+encodeURIComponent(data);
+		return "data:text/html," + encodeURIComponent(data);
 	else
 		// manualConvertUnicodeToUTF8 was moved here from convertUnicodeToFileFormat
 		// in 2.9.1 it was used only for FireFox but happened to fix download saving non-ASCII in Chrome & Safari as well
-		return "data:text/html;base64,"+encodeBase64(manualConvertUnicodeToUTF8(data));
+		return "data:text/html;base64," + encodeBase64(manualConvertUnicodeToUTF8(data));
 }
 
 function encodeBase64(data)
