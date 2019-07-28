@@ -149,17 +149,15 @@ function saveChanges(onlyIfDirty, tiddlers)
 	clearMessage();
 	var t0 = new Date();
 	var msg = config.messages;
-	//# Get the URL of the document
-	var originalPath = document.location.toString();
-	//# Check we can save this file
 	if(!window.allowSave()) {
 		alert(msg.notFileUrlError);
 		if(store.tiddlerExists(msg.saveInstructions))
 			story.displayTiddler(null, msg.saveInstructions);
 		return;
 	}
+	// Load the original file
+	var originalPath = document.location.toString();
 	var localPath = getLocalPath(originalPath);
-	//# Load the original file
 	var original = loadOriginal(localPath);
 	if(original == null) {
 		alert(msg.cantSaveError);
@@ -167,13 +165,13 @@ function saveChanges(onlyIfDirty, tiddlers)
 			story.displayTiddler(null, msg.saveInstructions);
 		return;
 	}
-	//# Locate the storeArea div's
+	// Locate the storeArea div's
 	var posDiv = locateStoreArea(original);
 	if(!posDiv) {
 		alert(msg.invalidFileError.format([localPath]));
 		return;
 	}
-	var co = config.options; //# abbreviation
+	var co = config.options; // abbreviation
 	config.saveByDownload = false;
 	config.saveByManualDownload = false;
 	saveMain(localPath, original, posDiv);
