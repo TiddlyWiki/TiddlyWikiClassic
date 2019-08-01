@@ -9,10 +9,8 @@ jQuery(document).ready(function() {
 		expected = null;
 		same(actual, expected, "returns null if no argument is specified");
 
-		filepath = getDocumentPath() + "/sample.txt";
-		var s = loadFile(filepath);
-		// if the java saver was used then it will have done the unicode conversion.
-		actual = window.netscape ? convertUTF8ToUnicode(s) : s;
+		filepath = getDocumentPath() + "sample.txt";
+		actual = loadFile(filepath);
 		expected = "lorem ipsum\n" +
 			"dolor sit amet\n" +
 			"\n" +
@@ -26,16 +24,16 @@ jQuery(document).ready(function() {
 
 		filepath = "/null";
 		actual = loadFile(filepath);
-		ok(actual==null || actual=="undefined", "returns null if the specified file does not exist");
+		ok(actual == null || actual == "undefined", "returns null if the specified file does not exist");
 
 		filepath = "sample.txt";
 		actual = loadFile(filepath);
-		ok(actual==null || actual=="undefined", "returns null if specified file path is not absolute");
+		ok(actual == null || actual == "undefined", "returns null if specified file path is not absolute");
 	});
 
 	test("save", function() {
 		var actual, expression, expected, str;
-		var filepath = getDocumentPath() + "/savetest.txt";
+		var filepath = getDocumentPath() + "savetest.txt";
 
 		/* disabled as browser-level exceptions cannot be trapped
 		expression = function() { saveFile(); };
@@ -67,8 +65,6 @@ jQuery(document).ready(function() {
 
 		var str2 = "\xa9\u010d\u010c";
 		saveAndLoadString(filepath, str2, "Y writes given UTF-8 text content to specified file");
-
-		//saveFile(filepath, ""); // teardown: blank file contents (deletion impossible)
 	});
 
 	// helper function to save and load back a string to a file
@@ -76,13 +72,13 @@ jQuery(document).ready(function() {
 		if(config.browser.isChrome && config.browser.isMac) {
 		    return true;
 		}
-		saveFile(filepath, convertUnicodeToUTF8(str)); // => entities if IE
-		var s = loadFile(filepath);
-		// if the java saver was used then it will have done the unicode conversion.
-		var actual = window.netscape ? convertUTF8ToUnicode(s) : s;
+		saveFile(filepath, str); // => entities if IE
+		var actual = loadFile(filepath);
 		//var expected = config.browser.isOpera || !window.netscape ? convertUnicodeToHtmlEntities(str) : str;
 		var expected = config.browser.isIE ? convertUnicodeToHtmlEntities(str) : str;
 		same(actual, expected, desc);
+
+		//saveFile(filepath, ""); // teardown: blank file contents (deletion impossible)
 	}
 
 	// helper function to retrieve current document's file path
@@ -92,9 +88,9 @@ jQuery(document).ready(function() {
 		var endpos = path.lastIndexOf("/");
 		if(path.charAt(2) == ":") {
 			startpos = 1;
-			path = path.replace(new RegExp("/","g"),"\\")
+			path = path.replace(new RegExp("/", "g"), "\\")
 		}
-		return unescape(path.substring(startpos, endpos));
+		return unescape(path.substring(startpos, endpos + 1));
 	};
 });
 
