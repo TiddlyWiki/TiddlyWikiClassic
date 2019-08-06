@@ -2,8 +2,8 @@
 //-- HTTP request code
 //--
 
-//# Perform an http request using the jQuery ajax function
-//# fallback to privileged file I/O or HTML5 FileReader
+// Perform an http request using the jQuery ajax function
+// fallback to privileged file I/O or HTML5 FileReader
 function ajaxReq(args)
 {
 	if (args.file || args.url.startsWith("file"))  // LOCAL FILE
@@ -11,14 +11,14 @@ function ajaxReq(args)
 	return jQuery.ajax(args);
 }
 
-//# perform local I/O and FAKE a minimal XHR response object
+// perform local I/O and FAKE a minimal XHR response object
 function localAjax(args)
 {
 	var success = function(data) {
-		args.success(data,"success",{ responseText:data });
+		args.success(data, "success", { responseText:data });
 	};
 	var failure = function(who) {
-		args.error({ message:who+": cannot read local file" },"error",0);
+		args.error({ message: who + ": cannot read local file" }, "error", 0);
 	};
 
 	if (args.file) try { // HTML5 FileReader (Chrome, FF20+, Safari, etc.)
@@ -39,26 +39,26 @@ function localAjax(args)
 	return true;
 }
 
-//# Perform an http request
-//#   type - GET/POST/PUT/DELETE
-//#   url - the source url
-//#   data - optional data for POST and PUT
-//#   contentType - optionalContent type for the data (defaults to application/x-www-form-urlencoded)
-//#   username - optional username for basic authentication
-//#   password - optional password for basic authentication
-//#   callback - function to call when there is a response
-//#   params - parameter object that gets passed to the callback for storing it's state
-//#   headers - optional hashmap of additional headers
-//#   allowCache - unless true, adds a "nocache=" parameter to the URL
-//# Return value is the underlying XMLHttpRequest object, or a string if there was an error
-//# Callback function is called like this:
-//#   callback(status,params,responseText,url,xhr)
-//#     status - true if OK, false if error
-//#     params - the parameter object provided to loadRemoteFile()
-//#     responseText - the text of the file
-//#     url - requested URL
-//#     xhr - the underlying XMLHttpRequest object
-function httpReq(type,url,callback,params,headers,data,contentType,username,password,allowCache)
+// Perform an http request
+//   type - GET/POST/PUT/DELETE
+//   url - the source url
+//   data - optional data for POST and PUT
+//   contentType - optionalContent type for the data (defaults to application/x-www-form-urlencoded)
+//   username - optional username for basic authentication
+//   password - optional password for basic authentication
+//   callback - function to call when there is a response
+//   params - parameter object that gets passed to the callback for storing it's state
+//   headers - optional hashmap of additional headers
+//   allowCache - unless true, adds a "nocache=" parameter to the URL
+// Return value is the underlying XMLHttpRequest object, or a string if there was an error
+// Callback function is called like this:
+//   callback(status, params, responseText, url, xhr)
+//     status - true if OK, false if error
+//     params - the parameter object provided to loadRemoteFile()
+//     responseText - the text of the file
+//     url - requested URL
+//     xhr - the underlying XMLHttpRequest object
+function httpReq(type, url, callback, params, headers, data, contentType, username, password, allowCache)
 {
 	var httpSuccess = function(xhr) {
 		try {
@@ -77,18 +77,17 @@ function httpReq(type,url,callback,params,headers,data,contentType,username,pass
 		data: data,
 		cache: !!allowCache,
 		beforeSend: function(xhr) {
-			var i;
-			for(i in headers)
-				xhr.setRequestHeader(i,headers[i]);
+			for(var i in headers)
+				xhr.setRequestHeader(i, headers[i]);
 		}
 	};
 
 	if(callback) {
-		options.complete = function(xhr,textStatus) {
+		options.complete = function(xhr, textStatus) {
 			if(httpSuccess(xhr))
-				callback(true,params,xhr.responseText,url,xhr);
+				callback(true, params, xhr.responseText, url, xhr);
 			else
-				callback(false,params,null,url,xhr);
+				callback(false, params, null, url, xhr);
 		};
 	}
 	if(contentType)
