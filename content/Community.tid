@@ -6,7 +6,7 @@ tags: community help
 title: Community
 type: text/x-tiddlywiki
 
-[>img[tiddlywiki.org logo|http://trac.tiddlywiki.org/chrome/site/tworg_logo_med.jpg][http://www.tiddlywiki.org]]~TiddlyWiki today is the result of the efforts of dozens of people around the world generously contributing their time and skill, and offering considerable help and support. 
+[>img[tiddlywiki.org logo|//trac.tiddlywiki.org/chrome/site/tworg_logo_med.jpg][http://www.tiddlywiki.org]]~TiddlyWiki today is the result of the efforts of dozens of people around the world generously contributing their time and skill, and offering considerable help and support.
 
 The community has several hubs for different activities:
 * The DiscussionForums on Google Groups
@@ -14,6 +14,6 @@ The community has several hubs for different activities:
 * TiddlyWiki code at http://github.com/TiddlyWiki/tiddlywiki
 * TiddlyWiki issue tracker at https://github.com/TiddlyWiki/tiddlywiki/issues
 * The community wiki at http://tiddlywiki.org/
-* TiddlyWiki development resources at http://tiddlywiki.com/dev/
+* TiddlyWiki development resources at https://classic.tiddlywiki.com/dev/
 
 The community welcomes [[contributions|Contribute]].
