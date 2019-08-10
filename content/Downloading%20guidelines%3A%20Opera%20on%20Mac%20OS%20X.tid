@@ -17,7 +17,7 @@ Open the zip file, and then check in the resulting folder that you have automati
 *empty.html (this is your ~TiddlyWiki file)
 *~TiddlySaver.jar (this is a java applet, which will make sure everything works in your chosen browser. Note a copy of this file ''must'' be kept in the same folder as any ~TiddlyWiki file you are using) 
 [img[images/step2macopera.jpg]]
-You can download the TiddlySaver file on it's own from [[here|http://www.tiddlywiki.com/TiddlySaver.jar]] if you need it.
+You can download the TiddlySaver file on it's own from [[here|./TiddlySaver.jar]] if you need it.
 
 Open the empty.html file to get started.
 !Step 3 - Trust applet

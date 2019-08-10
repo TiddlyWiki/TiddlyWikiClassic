@@ -11,7 +11,7 @@ type: text/x-tiddlywiki
 |''Description:''|Download TiddlyWiki according to browser type|
 |''Version:''|0.0.9|
 |''Date:''|Jul 18, 2012|
-|''Source:''|http://www.tiddlywiki.com/#DownloadTiddlyWikiPlugin|
+|''Source:''|https://classic.tiddlywiki.com/#DownloadTiddlyWikiPlugin|
 |''License:''|[[BSD open source license]]|
 |''~CoreVersion:''|2.4.1|
 ***/

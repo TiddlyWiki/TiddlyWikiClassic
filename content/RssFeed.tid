@@ -6,4 +6,4 @@ tags: features
 title: RssFeed
 type: text/x-tiddlywiki
 
-TiddlyWiki's RSS feed is available [[here|http://www.tiddlywiki.com/index.xml]]. You can generate an RSS feed for your own TiddlyWiki using the GenerateAnRssFeed option.
+TiddlyWiki's RSS feed is available [[here|./index.xml]]. You can generate an RSS feed for your own TiddlyWiki using the GenerateAnRssFeed option.

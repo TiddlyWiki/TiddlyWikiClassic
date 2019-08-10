@@ -8,35 +8,35 @@ type: text/x-tiddlywiki
 
 !Simple Images
 {{{
-[img[http://wikitext.tiddlyspace.com/fractalveg.jpg]]
+[img[https://classic.tiddlywiki.com/images/fractalveg.jpg]]
 }}}
 Displays as:
-[img[http://wikitext.tiddlyspace.com/fractalveg.jpg]]
+[img[https://classic.tiddlywiki.com/images/fractalveg.jpg]]
 !Tooltips for Images
 {{{
-[img[tooltip|http://wikitext.tiddlyspace.com/fractalveg.jpg]]
+[img[tooltip|images/fractalveg.jpg]]
 }}}
-Displays as:
-[img[tooltip|http://wikitext.tiddlyspace.com/fractalveg.jpg]]
+Shows a toolitp if one hovers mouse over the image:
+[img[tooltip|images/fractalveg.jpg]]
 !Image Links
 {{{
-[img[http://wikitext.tiddlyspace.com/fractalveg.jpg][http://www.flickr.com/photos/jermy/10134618/]]
+[img[images/fractalveg.jpg][http://www.flickr.com/photos/jermy/10134618/]]
 }}}
-Displays as:
-[img[http://wikitext.tiddlyspace.com/fractalveg.jpg][http://www.flickr.com/photos/jermy/10134618/]]
+Makes the image clickable (works as a link; check out the tooltip as well):
+[img[images/fractalveg.jpg][http://www.flickr.com/photos/jermy/10134618/]]
 !Floating Images with Text
 {{{
-[<img[http://wikitext.tiddlyspace.com/fractalveg.jpg]]
+[<img[images/fractalveg.jpg]]
 }}}
-[<img[http://wikitext.tiddlyspace.com/fractalveg.jpg]]Displays as.
+[<img[images/fractalveg.jpg]] Floats to the left like here
+@@clear:both;display:block; @@
+To start a new line with "cleared" float like this, put the code below in the beginning of it:
 {{{
 @@clear:both;display:block; @@
 }}}
-Will then clear the float.
-@@clear:both;display:block;Like this@@
+[>img[images/fractalveg.jpg]]Likewise, you can make image float to the right:
 {{{
-[>img[http://wikitext.tiddlyspace.com/fractalveg.jpg]]
+[>img[images/fractalveg.jpg]]
 }}}
-[>img[http://wikitext.tiddlyspace.com/fractalveg.jpg]]Displays as.@@clear:both;display:block; @@
 !See Also
 [[Image Macro]]
