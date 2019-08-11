@@ -123,7 +123,7 @@ h2,h3 {border-bottom:1px solid [[ColorPalette::TertiaryLight]];}
 .viewer th, .viewer thead td, .twtable th, .twtable thead td {background:[[ColorPalette::SecondaryMid]]; border:1px solid [[ColorPalette::TertiaryDark]]; color:[[ColorPalette::Background]];}
 .viewer td, .viewer tr, .twtable td, .twtable tr {border:1px solid [[ColorPalette::TertiaryDark]];}
 
-.viewer pre {border:1px solid [[ColorPalette::SecondaryLight]]; background:[[ColorPalette::SecondaryPale]];}
+.viewer pre {background:[[ColorPalette::SecondaryPale]];}
 .viewer code {color:[[ColorPalette::SecondaryDark]];}
 .viewer hr {border:0; border-top:dashed 1px [[ColorPalette::TertiaryDark]]; color:[[ColorPalette::TertiaryDark]];}
 
