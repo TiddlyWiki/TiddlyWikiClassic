@@ -131,7 +131,6 @@ a.tiddlyLinkNonExisting.shadow {font-weight:bold;}
 
 .annotation { padding: 0.5em 0.8em; margin: 0.5em 1px; }
 
-* html .viewer pre {width:99%; padding:0 0 1em 0;}
 .viewer {line-height:1.4em; padding-top:0.5em;}
 .viewer .button {margin:0 0.25em; padding:0 0.25em;}
 .viewer blockquote {line-height:1.5em; padding-left:0.8em;margin-left:2.5em;}
@@ -142,8 +141,10 @@ a.tiddlyLinkNonExisting.shadow {font-weight:bold;}
 table.listView {font-size:0.85em; margin:0.8em 1.0em;}
 table.listView th, table.listView td, table.listView tr {padding:0 3px 0 3px;}
 
-.viewer pre {padding:0.5em; margin-left:0.5em; font-size:1.2em; line-height:1.4em; overflow:auto;}
-.viewer code {font-size:1.2em; line-height:1.4em;}
+* html .viewer pre {width:99%; padding:0 0 1em 0;}
+.viewer pre {padding:0.5em; overflow:auto;}
+pre, code { font-family: monospace, monospace; font-size: 1em; }
+.viewer pre, .viewer code { line-height:1.4em; }
 
 .editor {font-size:1.1em;}
 .editor input, .editor textarea {display:block; width:100%; box-sizing: border-box; font:inherit;}
