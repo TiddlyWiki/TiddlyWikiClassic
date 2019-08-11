@@ -144,9 +144,9 @@ table.listView th, table.listView td, table.listView tr {padding:0 3px 0 3px;}
 * html .viewer pre {width:99%; padding:0 0 1em 0;}
 .viewer pre {padding:0.5em; overflow:auto;}
 pre, code { font-family: monospace, monospace; font-size: 1em; }
-.viewer pre, .viewer code { line-height:1.4em; }
+.viewer pre, .viewer code { line-height: 1.4em; }
 
-.editor {font-size:1.1em;}
+.editor {font-size:1.1em; line-height:1.4em;}
 .editor input, .editor textarea {display:block; width:100%; box-sizing: border-box; font:inherit;}
 .editorFooter {padding:0.25em 0; font-size:.9em;}
 .editorFooter .button {padding-top:0; padding-bottom:0;}
