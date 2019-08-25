@@ -1,6 +1,6 @@
 created: 20110211110600000
 creator: psd
-modified: 20130118141000000
+modified: 20190825185300000
 modifier: mkerrigan
 title: Contribute
 type: text/x-tiddlywiki
@@ -9,4 +9,4 @@ type: text/x-tiddlywiki
 * Testing and [[reporting bugs|https://github.com/TiddlyWiki/TiddlyWiki/issues]] against the core code. Clear, easily reproducible bug reports are incredibly useful and help improve the quality of ~TiddlyWiki
 * [[Contributing code|https://github.com/TiddlyWiki/TiddlyWiki]]
 * Making [[translations|Translations]]
-* [[Documentation]]
+* Improving [[Documentation]]
