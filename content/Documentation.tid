@@ -1,0 +1,19 @@
+created: 20190825185300000
+creator: mkerrigan
+modified: 20190901202800000
+modifier: mkerrigan
+tags: community help
+title: Documentation
+type: text/x-tiddlywiki
+
+Documentation for ~TiddlyWiki Classic is maintained [[here|https://classic.tiddlywiki.com]]. Content tiddlers are stored [[in the core Github repository|https://github.com/TiddlyWiki/TiddlyWiki/tree/master/content]] as separate files and are merged into a single TW (this site) with the [[build tools|https://github.com/TiddlyWiki/tiddlywiki.com]].
+
+!Contributing
+Documentation always needs updates and improvements and contributions are welcome. You can contribute by opening a pull request on Github. Feel free to propose changes; to learn more about best practices and specific needs, please ask at the [[community forum|DiscussionForums]].
+
+!History and other documentation
+Previously documentation was maintained in a ~MediaWiki instance hosted by Osmosoft at tiddlywiki.org. [[In 2011|https://groups.google.com/forum/?fromgroups#!topic/tiddlywiki/wAW1pQABu8k]], the content was migrated to a ~TiddlySpace known as the Community Documentation. A separate ~DeveloperDocumention was also hosted on TiddlySpace. [[In 2016|https://groups.google.com/forum/#!topic/tiddlyspace/gDqcOXvpiZc]] with ~TiddlySpace discontinued, the Community Documentation and ~DeveloperDocumention are no longer actively maintained.
+
+There's also a number of other [[tutorials and guides|TutorialsAndGuides]] created by other ~TiddlyWiki users.
+
+Many seemingly gone docs and other resources in ~TiddlyWikis are in fact available via [[Web Archive|http://web.archive.org/]], for instance [[Community Documentation|http://web.archive.org/web/20161211153445/http://tiddlywiki.tiddlyspace.com/]] and [[Developer Documentation|http://web.archive.org/web/20160810230802/http://tiddlywikidev.tiddlyspace.com/]].
