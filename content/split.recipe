@@ -67,6 +67,8 @@ tiddler: DeveloperDocumentation.tid
 
 tiddler: DiscussionForums.tid
 
+tiddler: Documentation.tid
+
 tiddler: Download.tid
 
 tiddler: DownloadTiddlyWikiPlugin.tid
@@ -363,6 +365,8 @@ tiddler: ToggleLinks.tid
 
 tiddler: ToolbarButtons.tid
 
+tiddler: Translations.tid
+
 tiddler: TutorialsAndGuides.tid
 
 tiddler: UnaMesa.tid
@@ -436,8 +440,6 @@ tiddler: tiddlerToTransclude.tid
 tiddler: timeline%20macro.tid
 
 tiddler: today%20macro.tid
-
-tiddler: translations.tid
 
 tiddler: version%20macro.tid
 
