@@ -1,7 +1,7 @@
 created: 20110211110700000
 creator: psd
-modified: 20120320103400000
-modifier: jermolene
+modified: 20190907000600000
+modifier: mkerrigan
 tags: concepts
 title: TiddlyWiki
 type: text/x-tiddlywiki
@@ -10,4 +10,4 @@ type: text/x-tiddlywiki
 
 Unlike most wikis, TiddlyWiki isn't about group collaboration; it is a wiki in the sense of elevating linking be a part of the punctuation of writing. You can easily publish a TiddlyWiki you have created by placing the single file on a web server (for instance the homepage hosting provided by many ISPs). If you need full  group collaboration features, there are several HostedOptions to choose from.
 
-~TiddlyWiki was originally created by JeremyRuston and is now a thriving [[open source|OpenSourceLicense]] project with a busy [[Community]] of independent developers. [[Osmosoft]], part of [[BT|http://btplc.com]], is the leading contributor to the project.
+~TiddlyWiki was originally created by JeremyRuston and is now a thriving [[open source|OpenSourceLicense]] project with a busy [[Community]] of independent developers.
