@@ -1,0 +1,49 @@
+created: 20191015001900000
+creator: mkerrigan
+modified: 20191015001900000
+modifier: mkerrigan
+tags: gettingstarted
+title: Setting up saving
+type: text/x-tiddlywiki
+
+As of [INSERT VERSION], ~TiddlyWiki has a fallback saver. If no saver method is configured, pressing [[SaveChanges]] will display a download dialog. The browser may  prompt for the location to save the file. Select the existing version of the file to replace it. This method works on most major browsers, but does not provide an ideal user experience as it requires manual intervention for each save. 
+!Browser Plugins
+Using [[Firefox]] in conjunction with a browser plugin provides stable automatic saving. 
+* [[Timini|https://ibnishak.github.io/Timimi/#Installing Timimi]]
+> Extension by Riz for Firefox using native messaging ~APIs allowing it to save standalone ~TiddlyWiki files. It has the advantage of enabling automatic saving from any folder. Note: the platform specific installers are not required if Timini is only being used with ~TiddlyWiki Classic.
+* [[savetiddlers|https://github.com/buggyj/savetiddlers]]
+> Extension by buggyj for Firefox/Chrome and some Chromium-based browsers such as Opera. Requires the ~TiddlyWiki file be placed in the subfolder within the Downloads folder.
+* [[file-backups|https://github.com/pmario/file-backups]]
+> Extension by pmario for Firefox and should work in any browser that supports web-extensions. Requires the ~TiddlyWiki file be placed in the Downloads folder. The [[internal backup mechanism|SaveBackups]] must be off.
+!Standalone applications
+Desktop applications provide automatic saving and are not browser dependent. The disadvantage is they don't offer tabs for browsing and require your ~TiddlyWiki file to be a inside a specific folder.
+* [[TiddlyDesktop|https://github.com/Jermolene/TiddlyDesktop]]
+> Application by Jeremy Ruston for macOS, Windows, and Linux. Based on [[NW.js|https://nwjs.io/]].
+* [[nwTWcSaver|https://github.com/nwOkido/nwTWcSaver]]
+> Minimalistic approach by nwOkido using bare NW.js and a saver plugin.
+!Serverside applications
+These methods for automatic saving are somewhat advanced, but allow for placing ~TiddlyWiki on a server (local or remote) and generally work on any browser.
+* [[MainTiddlyServer|https://yakovl.github.io/MainTiddlyServer/]] 
+> PHP server by yakov suitable for both local and remote usage.
+* [[tiddly-node-saver|https://github.com/fallwest/tiddly-node-saver]] 
+> node.js server for local usage [insert advantages]
+* [[TiddlyWeb|http://tiddlyweb.com/]] 
+> Python based server, which may be overkill for some.
+!Mobile
+All of these solutions should work in most desktop ~OSs like Windows, Mac or other Unix family OS (Linux, Ubuntu, etc). While some may work on mobile devices, applications written for the respective platform provide a more stable solution. 
+
+Android
+* Tiddloid
+> [[released on GitHub|https://github.com/donmor/Tiddloid/releases]]
+* Quinoid [[released on GitHub|https://github.com/Marxsal/Quinoid01/releases]]
+> a less mature open source app
+* [[AndTidWiki|https://play.google.com/store/apps/details?id=de.mgsimon.android.andtidwiki]]
+> a closed source app (the first to support TW on Android)
+* MainTiddlyServer 
+> Along with [[Server for PHP|https://play.google.com/store/apps/details?id=com.esminis.server.php&hl=en]]. ([[may not work|https://bitbucket.org/esminis/server]] in Android 10)
+iOS
+* [[Quine|https://appadvice.com/app/quine/1228682923]]
+> Paid app by Chris Hunt allowing users to open, edit, and save ~TiddlyWiki files. Works with local storage, Dropbox, and iCloud. Requires iOS 12+.
+!Hosted Options
+Also, you can store your TW(s) on a server:
+[services/hostings] [need explansion]
