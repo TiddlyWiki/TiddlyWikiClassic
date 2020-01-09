@@ -22,19 +22,19 @@ Desktop applications provide automatic saving and are not browser dependent. The
 * [[nwTWcSaver|https://github.com/nwOkido/nwTWcSaver]]
 > Minimalistic approach by nwOkido using bare NW.js and a saver plugin.
 !Serverside applications
-These methods for automatic saving are somewhat advanced, but allow for placing ~TiddlyWiki on a server (local or remote) and generally work on any browser.
+These methods for automatic saving are somewhat advanced, but allow for placing ~TiddlyWiki on a server (local or remote) and generally work with any browser.
 * [[MainTiddlyServer|https://yakovl.github.io/MainTiddlyServer/]]
 > PHP server by Yakov Litvin suitable for both local and remote usage.
 * [[tiddly-node-saver|https://github.com/fallwest/tiddly-node-saver]]
-> node.js server for local usage with enhanced load/save file capabilities
+> node.js server by James Westfall for local usage with enhanced load/save file capabilities
 * [[TiddlyWeb|http://tiddlyweb.com/]]
-> Python server with advanced model with multiple users, access control etc.
+> Python server by ~UnaMesa, Osmosoft and Peermore Ltd. with advanced model with multiple users, access control etc.
 !Mobile
-All of solutions above should work in most desktop ~OSs like Windows, Mac or other Unix family OS (Linux, Ubuntu, etc). While some may work on mobile devices, applications written for the respective platform provide are usually simpler to setup and have better performance.
+All of solutions above should work in most desktop ~OSs like Windows, Mac or other Unix family OS (Linux, Ubuntu, etc). While some may work on mobile devices, applications written for the respective platform are usually simpler to setup and have better performance.
 
 Android
-* Tiddloid
-> [[released on GitHub|https://github.com/donmor/Tiddloid/releases]]
+* Tiddloid [[released on GitHub|https://github.com/donmor/Tiddloid/releases]]
+> presumably the best open source solution for the moment
 * Quinoid [[released on GitHub|https://github.com/Marxsal/Quinoid01/releases]]
 > a less mature open source app
 * [[AndTidWiki|https://play.google.com/store/apps/details?id=de.mgsimon.android.andtidwiki]]
