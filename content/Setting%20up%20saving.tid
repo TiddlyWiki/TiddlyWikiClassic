@@ -6,9 +6,9 @@ tags: gettingstarted
 title: Setting up saving
 type: text/x-tiddlywiki
 
-Since version 2.8.1, ~TiddlyWiki has a fallback saver. If no saver method is configured, pressing [[SaveChanges]] will display a download dialog. The browser may prompt for the location to save the file. Select the existing version of the file to replace it. This method works on most major browsers, but does not provide an ideal user experience as it requires manual intervention for each save.
+Since version 2.8.1, ~TiddlyWiki has a fallback saver. If no saver method is configured, pressing [[SaveChanges]] will display a download dialog. The browser may prompt for the location to save the file. Select the existing version of the file to replace it. This method works on most major browsers, but does not provide an ideal user experience as it requires manual intervention for each save. Below are various tools that remove this routine from saving.
 !Browser Plugins
-Using Firefox in conjunction with a browser plugin provides stable automatic saving.
+Plugins are simple to install and provide smooth user experience, but they are also platform- and browser-specific to some extent.
 * [[Timimi|https://ibnishak.github.io/Timimi/#Installing Timimi]]
 > Extension by Riz for Firefox that saves standalone ~TiddlyWiki files. It has the advantage of enabling automatic saving from any folder (requires to also install a platform-specific app, uses native messaging ~APIs).
 * [[savetiddlers|https://github.com/buggyj/savetiddlers]]
