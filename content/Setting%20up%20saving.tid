@@ -1,0 +1,50 @@
+created: 20191013001900000
+creator: Yakov Litvin
+modified: 20191015001900000
+modifier: mkerrigan
+tags: gettingstarted
+title: Setting up saving
+type: text/x-tiddlywiki
+
+Since version 2.8.1, ~TiddlyWiki has a fallback saver. If no saver method is configured, pressing [[SaveChanges]] will display a download dialog. The browser may prompt for the location to save the file. Select the existing version of the file to replace it. This method works on most major browsers, but does not provide an ideal user experience as it requires manual intervention for each save. Below are various tools that remove this routine from saving.
+!Browser Plugins
+Plugins are simple to install and provide smooth user experience, but they are also platform- and browser-specific to some extent.
+* [[Timimi|https://ibnishak.github.io/Timimi/#Installing Timimi]]
+> Extension by Riz for Firefox that saves standalone ~TiddlyWiki files. It has the advantage of enabling automatic saving from any folder (requires to also install a platform-specific app, uses native messaging ~APIs).
+* [[savetiddlers|https://github.com/buggyj/savetiddlers]]
+> Extension by buggyj for Firefox/Chrome and some Chromium-based browsers such as Opera. Requires the ~TiddlyWiki file to be in a subfolder within the Downloads folder.
+* [[file-backups|https://github.com/pmario/file-backups]]
+> Extension by pmario for Firefox and should work in any browser that supports web-extensions. Requires the ~TiddlyWiki file to be in the Downloads folder. The [[internal backup mechanism|SaveBackups]] must be off.
+!Standalone applications
+Desktop applications provide automatic saving and are not browser dependent. The disadvantage is they don't offer tabs for browsing and require your ~TiddlyWiki file to be a inside a specific folder.
+* [[TiddlyDesktop|https://github.com/Jermolene/TiddlyDesktop]]
+> Application by Jeremy Ruston for macOS, Windows, and Linux. Based on [[NW.js|https://nwjs.io/]].
+* [[nwTWcSaver|https://github.com/nwOkido/nwTWcSaver]]
+> Minimalistic approach by nwOkido using bare NW.js and a saver plugin.
+!Serverside applications
+These methods for automatic saving are somewhat advanced, but allow for placing ~TiddlyWiki on a server (local or remote) and generally work with any browser.
+* [[MainTiddlyServer|https://yakovl.github.io/MainTiddlyServer/]]
+> PHP server by Yakov Litvin suitable for both local and remote usage.
+* [[tiddly-node-saver|https://github.com/fallwest/tiddly-node-saver]]
+> node.js server by James Westfall for local usage with enhanced load/save file capabilities
+* [[TiddlyWeb|http://tiddlyweb.com/]]
+> Python server by ~UnaMesa, Osmosoft and Peermore Ltd. with advanced model with multiple users, access control etc.
+!Mobile
+All of solutions above should work in most desktop ~OSs like Windows, Mac or other Unix family OS (Linux, Ubuntu, etc). While some may work on mobile devices, applications written for the respective platform are usually simpler to setup and have better performance.
+
+Android
+* Tiddloid [[released on GitHub|https://github.com/donmor/Tiddloid/releases]]
+> presumably the best open source solution for the moment
+* Quinoid [[released on GitHub|https://github.com/Marxsal/Quinoid01/releases]]
+> a less mature open source app
+* [[AndTidWiki|https://play.google.com/store/apps/details?id=de.mgsimon.android.andtidwiki]]
+> a closed source app (the first to support TW on Android)
+* [[MainTiddlyServer|https://yakovl.github.io/MainTiddlyServer/]]
+> Along with [[Server for PHP|https://play.google.com/store/apps/details?id=com.esminis.server.php&hl=en]]. ([[may not work|https://bitbucket.org/esminis/server]] in Android 10)
+iOS
+* [[Quine|https://appadvice.com/app/quine/1228682923]]
+> Paid app by Chris Hunt allowing users to open, edit, and save ~TiddlyWiki files. Works with local storage, Dropbox, and iCloud. Requires iOS 12+.
+!Hosted Options
+Also, you can store your TW(s) on a server:
+* [[TiddlySpot|http://tiddlyspot.com/]], a free hosting for ~TiddlyWiki
+* (this list should be expanded, if you are familiar with Github, you can suggest edits [[here|https://github.com/TiddlyWiki/TiddlyWiki/blob/master/content/Setting%2520up%2520saving.tid]])
