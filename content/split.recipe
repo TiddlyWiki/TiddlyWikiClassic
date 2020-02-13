@@ -111,7 +111,7 @@ tiddler: Examples.tid
 
 tiddler: Feedback.tid
 
-tiddler: FireFox.tid
+tiddler: Firefox.tid
 
 tiddler: FlickrBadge.tid
 
@@ -152,6 +152,8 @@ tiddler: HtmlEntities.tid
 tiddler: Image%20Formatting.tid
 
 tiddler: Importing%20Tiddlers.tid
+
+tiddler: Improving%20Documentation.tid
 
 tiddler: IncrementalSearch.tid
 
