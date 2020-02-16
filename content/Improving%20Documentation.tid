@@ -1,0 +1,21 @@
+created: 20200213003900000
+creator: mkerrigan
+modified: 20200213003900000
+modifier: mkerrigan
+tags: 
+title: Improving Documentation
+type: text/x-tiddlywiki
+
+Anyone can submit improvements to the documentation. Instead of editing within a ~TiddlyWiki file, each tiddler is stored as an plain text .tid file {{{contents}}} folder within the {{{TiddlyWiki}}} [[GitHub branch|https://github.com/TiddlyWiki/TiddlyWiki]]. 
+# Create an account on https://github.com if you don't already have one.
+# Sign the [[Contributor License Agreement|https://tiddlywiki.com/#Contributor%20License%20Agreement]] as described in [[Signing the Contributor License Agreement|https://tiddlywiki.com/#Signing%20the%20Contributor%20License%20Agreement]].
+# Locate the tiddler you want to improve, either by clicking from the edit banner or directly within the [[content|https://github.com/TiddlyWiki/TiddlyWiki/tree/master/content]] folder.
+# Click the pencil edit icon to make changes to the file. ~GitHub will prompt you to write the file into your personal fork of the repository. Later you will need to create a pull request in the {{{TiddlyWiki}}} [[GitHub branch|https://github.com/TiddlyWiki/TiddlyWiki]] to merge your changes.
+## A "fork" is your personal copy of the repository including the changes you are proposing.
+## Ensure to adjust the modified field with a date time stamp in {{{YYYYMMDDHHMM}}} format and the modifier field with your username.
+# Below the edit box for the tiddler text you should see a box labeled ''Propose file change''.
+# Enter a brief title to explain the change (eg, "Clarify attribute syntax instability").
+# If necessary, enter a longer description too.
+# Click the green button labeled ''Propose file change''.
+# On the following screen, click the green button labeled ''Create pull request''.
+One of the core developers will review your pull request and merge it so it will be incorporated into main repository.
