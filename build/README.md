@@ -4,7 +4,8 @@ An older fully functional toolchain may be found at https://github.com/TiddlyWik
 
 Prerequisites
 -------------
-Before building TW, one should install the latest version of `nodejs` from http://www.nodejs.org.
+Before building TW, one should install `nodejs` from http://www.nodejs.org (latest LTS version
+is expected to be enough).
 
 Also, after first cloning of the repository (and may be after some updates),
 one should run `npm install` (or `npm i` as a shortcut) to install dependencies.
@@ -12,8 +13,8 @@ one should run `npm install` (or `npm i` as a shortcut) to install dependencies.
 Building TiddlyWIki
 -------------------
 
-Before building, one may want to adjust `build/build_settings.js` (version number, destination
-folder etc).
+Before building, one may want to adjust `build/build_settings.js` (destination folder etc)
+and package.json (version number).
 
 Building is done in command line by simply running `npm run build-core`.
 
