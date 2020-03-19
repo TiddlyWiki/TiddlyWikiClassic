@@ -1,0 +1,17 @@
+{
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TiddlyWiki/TiddlyWiki.git"
+  },
+  "scripts": {
+    "build-core": "node build/build_core.js",
+    "build-site": "npm run warn-not-implemented",
+    "test":       "npm run warn-not-implemented",
+    "build":      "npm run warn-not-implemented",
+    "warn-not-implemented": "echo 'not implemented yet'"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "tiddlywiki": "^5.1.21"
+  }
+}
