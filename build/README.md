@@ -1,5 +1,5 @@
-This folder contains tools to build TiddlyWiki Classic; it is meant to also hold tools to build
-TWC's main site http://classic.tiddlywiki.com/ , to run autotests etc but this is not implemented yet.
+This folder contains tools to build TiddlyWiki Classic and TWC's main site http://classic.tiddlywiki.com/;
+it is meant to also hold tools to run autotests etc but this is not implemented yet.
 An older fully functional toolchain may be found at https://github.com/TiddlyWiki/tiddlywiki.com .
 
 Prerequisites
