@@ -6,7 +6,7 @@
   },
   "scripts": {
     "build-core": "node build/build_core.js",
-    "build-site": "npm run warn-not-implemented",
+    "build-site": "node build/build_site.js",
     "test":       "npm run warn-not-implemented",
     "build":      "npm run warn-not-implemented",
     "warn-not-implemented": "echo 'not implemented yet'"

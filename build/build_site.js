@@ -1,4 +1,4 @@
-// this builds empty TW using tiddlywikinosaver.html.recipe and build_settings.js
+// this builds index.html (TW site contents) using index.html.recipe and build_settings.js
 
 const joinPath = require('path').join;
 const fs = require('fs');
@@ -21,16 +21,9 @@ console.log(`BUILD: clearing target folder: "${destinationRelativePath}"`);
 clearFolder(destinationPath);
 console.log();
 
-console.log(`BUILD: assembling EMPTY.HTML (v${releaseVersion})`);
-const recipePath = joinPath(__dirname, '../tiddlywikinosaver.html.recipe');
-let output = cookTwIntoFolder(recipePath, destinationPath, 'empty.html');
+console.log(`BUILD: assembling INDEX.HTML (v${releaseVersion})`);
+const recipePath = joinPath(__dirname, 'index.html.recipe');
+let output = cookTwIntoFolder(recipePath, destinationPath, 'index.html');
 console.log(output);
-
-console.log('BUILD: removing empty lines from storeArea of EMPTY.HTML');
-const resultPath = joinPath(destinationPath, 'empty.html');
-const result = fs.readFileSync(resultPath).toString();
-const fixedResult = fixupEmptyLinesInStoreArea(result);
-fs.writeFileSync(resultPath, fixedResult);
-console.log();
 
 console.log('BUILD: done');
