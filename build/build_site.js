@@ -1,8 +1,6 @@
 // this builds index.html (TW site contents) using index.html.recipe and build_settings.js
 
 const joinPath = require('path').join;
-const fs = require('fs');
-const exec = require('child_process').execSync;
 const {
 	releaseVersion,
 	destinationRelativePath

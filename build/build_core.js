@@ -2,7 +2,6 @@
 
 const joinPath = require('path').join;
 const fs = require('fs');
-const exec = require('child_process').execSync;
 const {
 	releaseVersion,
 	destinationRelativePath
