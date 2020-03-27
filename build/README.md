@@ -19,9 +19,10 @@ Building is done in command line by simply running `npm run build-core`.
 
 Note that currently this doesn't include any auto-tests so be careful with the resulting core.
 
-Building index.html for classic.tiddlywiki.com
-----------------------------------------------
-With the same notes, building is done via `npm run build-site`.
+Building index.html and generating RSS for classic.tiddlywiki.com
+-----------------------------------------------------------------
+With the same notes, building is done via `npm run build-site`. This also generates the RSS file
+(index.xml).
 
 Testing core via test.html
 --------------------------

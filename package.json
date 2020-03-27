@@ -13,6 +13,7 @@
   },
   "dependencies": {},
   "devDependencies": {
+    "phantomjs": "^2.1.7",
     "tiddlywiki": "^5.1.21"
   }
 }

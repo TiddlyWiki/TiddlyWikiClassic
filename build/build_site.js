@@ -1,6 +1,8 @@
 // this builds index.html (TW site contents) using index.html.recipe and build_settings.js
+// and generates RSS (index.xml) via TW's internal generateRss()
 
 const joinPath = require('path').join;
+const exec = require('child_process').execSync;
 const {
 	releaseVersion,
 	destinationRelativePath
@@ -23,5 +25,11 @@ console.log(`BUILD: assembling INDEX.HTML (v${releaseVersion})`);
 const recipePath = joinPath(__dirname, 'index.html.recipe');
 let output = cookTwIntoFolder(recipePath, destinationPath, 'index.html');
 console.log(output);
+
+console.log(`BUILD: generating INDEX.XML (RSS feed)`);
+process.env['TIDDLYWIKI_DESTINATION_PATH'] = destinationPath;
+// filenames (index.html and index.xml) are hardcoded inside generate_rss.js
+output = exec('phantomjs '+ joinPath(__dirname, 'generate_rss.js'));
+console.log(output.toString());
 
 console.log('BUILD: done');
