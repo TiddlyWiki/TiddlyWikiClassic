@@ -7,9 +7,9 @@
   "scripts": {
     "build-core": "node build/build_core.js",
     "build-site": "node build/build_site.js",
-    "test":       "npm run warn-not-implemented",
-    "build":      "npm run warn-not-implemented",
-    "warn-not-implemented": "echo 'not implemented yet'"
+    "build-test": "node build/build_test.js",
+    "test":       "echo 'not implemented yet, see build-test'",
+    "build":      "echo 'not implemented yet'"
   },
   "dependencies": {},
   "devDependencies": {

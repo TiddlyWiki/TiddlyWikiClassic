@@ -12,7 +12,6 @@ one should run `npm install` (or `npm i` as a shortcut) to install dependencies.
 
 Building TiddlyWIki
 -------------------
-
 Before building, one may want to adjust `build/build_settings.js` (destination folder etc)
 and package.json (version number).
 
@@ -22,5 +21,11 @@ Note that currently this doesn't include any auto-tests so be careful with the r
 
 Building index.html for classic.tiddlywiki.com
 ----------------------------------------------
-
 With the same notes, building is done via `npm run build-site`.
+
+Testing core via test.html
+--------------------------
+Currently, autotests are implemented in an old fashioned way: a new page (test.html) that is TW
+core with incorporated autotests is built via `npm run build-test`, than it should be opened
+in a browser and inspected visually. Note that load/save tests currently fail which is to be fixed
+in the future.
