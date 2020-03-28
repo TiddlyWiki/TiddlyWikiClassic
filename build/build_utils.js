@@ -8,7 +8,7 @@ const {
 module.exports = {
 	makeSureFolderExists: function (path) {
 		if(!fs.existsSync(path))
-			fs.mkdirSync(path);
+			fs.mkdirSync(path, {recursive: true});
 	},
 	clearFolder: function (path) {
 		const files = fs.readdirSync(path);
