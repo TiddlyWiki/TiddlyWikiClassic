@@ -1,12 +1,12 @@
 created: 20110211143600000
 creator: matt
-modified: 20110215151000000
-modifier: matt
+modified: 20200330130800000
+modifier: retostauss
 tags: shadow
 title: ColorPalette shadows
 type: text/x-tiddlywiki
 
-This tiddler determines the colour scheme used within the TiddlyWiki.  When a new space is created the random color palette macro determines the default, however these can be overwritten directly in the ColorPalette tiddler.
+This tiddler determines the colour scheme used within the TiddlyWiki.
 
 {{{
 Background: #e0e3f5
