@@ -6,6 +6,7 @@
   },
   "scripts": {
     "build-core": "node build/build_core.js",
+    "build-external-core": "node build/build_external_core.js",
     "build-site": "node build/build_site.js",
     "build-test": "node build/build_test.js",
     "test":       "echo 'not implemented yet, see build-test'",

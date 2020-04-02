@@ -1,5 +1,7 @@
-This folder contains tools to build TiddlyWiki Classic and TWC's main site http://classic.tiddlywiki.com/;
-it is meant to also hold tools to run autotests etc but this is not implemented yet.
+This folder contains tools to build TiddlyWiki Classic, run autotests and build TWC's main site
+http://classic.tiddlywiki.com/;
+it is meant to also hold docs about publishing updates to the site and means to automate this
+process but these are not implemented yet.
 An older fully functional toolchain may be found at https://github.com/TiddlyWiki/tiddlywiki.com .
 
 Prerequisites
@@ -10,14 +12,20 @@ is expected to be enough).
 Also, after first cloning of the repository (and may be after some updates),
 one should run `npm install` (or `npm i` as a shortcut) to install dependencies.
 
-Building TiddlyWIki
--------------------
-Before building, one may want to adjust `build/build_settings.js` (destination folder etc)
+Finally, before building, one may want to adjust `build/build_settings.js` (destination folder etc)
 and package.json (version number).
 
+Building TiddlyWIki
+-------------------
 Building is done in command line by simply running `npm run build-core`.
 
-Note that currently this doesn't include any auto-tests so be careful with the resulting core.
+Before using the resulting core, one may want to test it (see below).
+
+Building TiddlyWIki with externalized JavaScript
+------------------------------------------------
+Similarly, one can use `npm run build-external-core` to get a TiddlyWiki "storage" html
+with JavaScript in separate files (twcore.js, jquery.js and jQuery.twStylesheet.js).
+Those may be cached by browser and result in smaller load times.
 
 Testing core via test.html
 --------------------------
@@ -28,5 +36,5 @@ in the future.
 
 Building index.html and generating RSS for classic.tiddlywiki.com
 -----------------------------------------------------------------
-With the same notes, building is done via `npm run build-site`. This also generates the RSS file
-(index.xml).
+`npm run build-site` builds index.html and also generates the RSS file (index.xml)
+with content for the main site.
