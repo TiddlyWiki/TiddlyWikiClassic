@@ -38,3 +38,7 @@ Building index.html and generating RSS for classic.tiddlywiki.com
 -----------------------------------------------------------------
 `npm run build-site` builds index.html and also generates the RSS file (index.xml)
 with content for the main site.
+
+Note: this command should be tested on a Unix-family OS, as it is unclear if the phantom.js script
+(generate_rss_and_static.js) works properly there (calculated `twUrl` may make `page.open` fail
+unlike on Windows).
