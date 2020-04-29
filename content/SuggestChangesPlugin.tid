@@ -31,7 +31,6 @@ var getContributeAnnotation = function(title) {
 };
 
 store.forEachTiddler(function(title, tiddler) {
-	//# guidelines: will be added later, don't mention them until then
 	var contributeAnnotation = getContributeAnnotation(title);
 	config.annotations[title] = config.annotations[title] ?
 		config.annotations[title] + "\n\n" + contributeAnnotation :
