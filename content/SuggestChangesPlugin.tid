@@ -1,0 +1,51 @@
+created: 202002211843
+creator: Yakov Litvin
+modified: 202004291710
+modifier: Yakov Litvin
+tags: systemConfig
+title: SuggestChangesPlugin
+type: text/x-tiddlywiki
+
+/***
+|Description	|Makes contributing to docs of TiddlyWiki Classic easier: changes label of the "view" toolbar command to "suggest changes" and once a user clicks it, shows an annotation in the tiddler that guides them how to contribute|
+|Author		|Yakov Litvin|
+|Version	|1.0.0|
+|License	|MIT|
+|Overwrites	|{{{config.macros.annotations.handler}}}|
+***/
+//{{{
+var repoBaseUrl = "https://github.com/TiddlyWiki/TiddlyWiki";
+var repoContentUrl = repoBaseUrl + "/tree/master/content";
+var getRepoContentTiddlerUrl = function(title) { 
+	return repoBaseUrl + "/blob/master/content/" +
+		encodeURIComponent( encodeURIComponent(title) ) + ".tid";
+};
+var getContributeAnnotation = function(title) {
+	return "Willing to contribute? If you are familiar with ~GitHub, " +
+	  "you can open this tiddler [[there|"+ getRepoContentTiddlerUrl(title) +"]], "+
+	  "edit it and create a pull request (see also \"Contributing\" in [[Documentation]]). "+
+	  "If this link to the tiddler source is broken, please find it "+
+	  "in [[the list|"+ repoContentUrl +"]]. "+
+	  "If you are not familiar with ~GitHub but want to contribute, please "+
+	  "take a look at the [[instructions|Improving documentation via GitHub]].";
+};
+
+store.forEachTiddler(function(title, tiddler) {
+	//# guidelines: will be added later, don't mention them until then
+	var contributeAnnotation = getContributeAnnotation(title);
+	config.annotations[title] = config.annotations[title] ?
+		config.annotations[title] + "\n\n" + contributeAnnotation :
+		contributeAnnotation;
+});
+
+// replace .format with .replace to avoid removing %2520 etc from annotation
+config.macros.annotations.handler = function(place, macroName, params, wikifier, paramString, tiddler) {
+	var title = tiddler ? tiddler.title : null;
+	var annotation = title ? config.annotations[title] : null;
+	if(!annotation) return;
+	var text = annotation.replace('%0', title);
+	wikify(text, createTiddlyElement(place, "div", null, "annotation"), null, tiddler);
+};
+
+config.commands.editTiddler.readOnlyText = "suggest changes";
+//}}}
