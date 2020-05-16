@@ -1,6 +1,6 @@
 jQuery(document).ready(function(){
 
-	module("Utilitis.js");
+	module("Utilities.js");
 
 	test("Version", function() {
 
