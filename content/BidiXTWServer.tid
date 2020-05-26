@@ -1,11 +1,13 @@
 created: 20110211110600000
 creator: psd
-modified: 20110211131000000
-modifier: blaine
+modified: 20200526142400000
+modifier: mkerrigan
 tags: systemServer
 title: BidiXTWServer
 type: text/x-tiddlywiki
 
-|''URL:''|http://tiddlywiki.bidix.info/|
-|''Description:''|Repository for BidiX's TiddlyWiki Extensions|
-|''Author:''|BidiX|
+|''URL:''|[[http://tiddlywiki.bidix.info/|https://web.archive.org/web/20130801155706/http://tiddlywiki.bidix.info/]]|
+|''Description:''|Repository for ~BidiX's TiddlyWiki Extensions|
+|''Author:''|~BidiX|
+
+Community member ~BidiX created an adaptation of the ~TiddlyWiki user interface as an [[iPhone web app|https://web.archive.org/web/20130117085629/https://www.apple.com/webapps/productivity/itwatiddlywikiforiphone.html]]. It can be downloaded [[here|https://web.archive.org/web/20130129032529if_/http://itw.bidix.info/]].
