@@ -153,6 +153,8 @@ tiddler: Image%20Formatting.tid
 
 tiddler: Importing%20Tiddlers.tid
 
+tiddler: Improving%20documentation%20via%20GitHub.tid
+
 tiddler: IncrementalSearch.tid
 
 tiddler: InstallingPlugins.tid
@@ -323,6 +325,8 @@ tiddler: StyleSheet%20shadows.tid
 
 tiddler: Suppressing%20Formatting.tid
 
+tiddler: SuggestChangesPlugin.tid
+
 tiddler: TabAll%20shadows.tid
 
 tiddler: TabMoreMissing%20shadows.tid
@@ -404,8 +408,6 @@ tiddler: closeAll%20macro.tid
 tiddler: example.tid
 
 tiddler: favicon.ico.tid
-
-tiddler: iPhone.tid
 
 tiddler: list%20macro.tid
 

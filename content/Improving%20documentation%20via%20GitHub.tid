@@ -1,0 +1,29 @@
+created: 20200213003900000
+creator: mkerrigan
+modified: 202004292047
+modifier: Yakov Litvin
+tags: 
+title: Improving documentation via GitHub
+type: text/x-tiddlywiki
+
+Anyone can suggest improvements to the documentation. Since it is [[built|https://github.com/TiddlyWiki/TiddlyWiki/blob/master/build/README.md]] from separate .tid content [[files|https://github.com/TiddlyWiki/TiddlyWiki/tree/master/content]] stored in the {{{TiddlyWiki}}} [[GitHub repository|https://github.com/TiddlyWiki/TiddlyWiki]], proposing changes is done via ~GitHub too. Here's how:
+# Create an account on [[GitHub|https://github.com]] if you don't already have one. /%#
+	to adapt:
+# Sign the [[Contributor License Agreement|https://tiddlywiki.com/#Contributor%20License%20Agreement]] as described in [[Signing the Contributor License Agreement|https://tiddlywiki.com/#Signing%20the%20Contributor%20License%20Agreement]].
+%/
+# For the tiddler you want to improve, locate its .tid file either by clicking from the "suggest changes" button or directly within the [[content|https://github.com/TiddlyWiki/TiddlyWiki/tree/master/content]] folder.
+# Click the pencil edit icon to make changes to the file. ~GitHub will prompt you to write the file into your personal fork of the repository.
+** A "fork" is your personal copy of the repository that you can edit freely. Later you can propose to merge your changes into the main repository via a pull request (see below).
+** Ensure to adjust the modified field with a date time stamp in {{{YYYYMMDDHHMM}}} format and the modifier field with your username.
+# Below the edit box for the tiddler text you should see a box labeled ''Propose file change''.
+# Enter a brief title to explain the change, prefixed with "docs:" (eg, "docs: add examples of the slider macro usage").
+# If necessary, enter a longer description too.
+# Click the green button labeled ''Propose file change''.
+# On the following screen, click the green button labeled ''Create pull request''.
+One of the core developers will review your pull request and merge it so it will be incorporated into main repository.
+/%# describe also:
+* aspects of edit beyond the first one, branch names and updating master in the fork
+* split.recipe and how to propose renaming, deleting or adding a tiddler
+* review the process in practice and add if there's any missing bits (like commenting the pull request itself
+  and the process of reviewing/improving a PR)
+%/
