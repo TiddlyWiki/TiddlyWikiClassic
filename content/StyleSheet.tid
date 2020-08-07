@@ -46,9 +46,7 @@ body {
 	background-color: [[ColorPalette::QuaternaryMid]];
 }
 .downloadButton:hover {
-	color: [[ColorPalette::QuaternaryMid]];
-	background-color: [[ColorPalette::Background]];
-	box-shadow: 0 0 0 1px [[ColorPalette::QuaternaryMid]];
+	background-color: [[ColorPalette::QuaternaryDark]];
 }
 .downloadButton:active {
 	transform: scale(.95);
