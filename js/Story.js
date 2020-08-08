@@ -10,19 +10,18 @@ function Story(containerId, idPrefix)
 	this.container = containerId;
 	this.idPrefix = idPrefix;
 	this.highlightRegExp = null;
-	// generate tiddler ID
+	//# should be getTiddlerId and getContainerId, respectively
 	this.tiddlerId = function(title) {
-		// replace spaces in titles to ensure valid element IDs
-		title = title.replace(/_/g, "__").replace(/ /g, "_");
-		var id = this.idPrefix + title;
-		return id == this.container ? this.idPrefix + "_" + title : id;
+		var validId = title.replace(/_/g, "__").replace(/ /g, "_");
+		var id = this.idPrefix + validId;
+		return id == this.container ? this.idPrefix + "_" + validId : id;
 	};
 	this.containerId = function() {
 		return this.container;
 	};
 }
 
-// retrieve tiddler element
+//# get tiddler element
 Story.prototype.getTiddler = function(title)
 {
 	return document.getElementById(this.tiddlerId(title));
@@ -33,53 +32,40 @@ Story.prototype.getContainer = function()
 	return document.getElementById(this.containerId());
 };
 
-// Iterate through all the tiddlers currently opened in a story
-//  fn - callback function to be called for each tiddler. Arguments are:
-//       tiddlerTitle - title of the tiddler
-//       element - reference to tiddler display element
-Story.prototype.forEachTiddler = function(fn)
+//# For each tiddler currently opened in a story, call
+//#  handleTiddler - function with arguments:
+//#       tiddlerTitle - title of the tiddler
+//#       element - reference to tiddler display element
+Story.prototype.forEachTiddler = function(handleTiddler)
 {
 	var place = this.getContainer();
 	if(!place)
 		return;
-	var e = place.firstChild;
-	while(e) {
-		var next = e.nextSibling;
-		var title = e.getAttribute("tiddler");
+	var el = place.firstChild;
+	while(el) {
+		var next = el.nextSibling;
+		var title = el.getAttribute("tiddler");
 		if(title) {
-			fn.call(this, title, e);
+			handleTiddler.call(this, title, el);
 		}
-		e = next;
+		el = next;
 	}
 };
 
-Story.prototype.displayDefaultTiddlers = function()
-{
-	this.displayTiddlers(null, store.filterTiddlers(store.getTiddlerText("DefaultTiddlers")));
-};
-
-// Display several tiddlers given their titles in an array. Parameters same as displayTiddler(), except:
-//  titles - array of tiddlers or string titles
-Story.prototype.displayTiddlers = function(srcElement, titles, template, animate, unused, customFields, toggle)
-{
-	for(var t = titles.length - 1; t >= 0; t--)
-		this.displayTiddler(srcElement, titles[t], template, animate, unused, customFields);
-};
-
-// Display a given tiddler with a given template. If the tiddler is already displayed but with a different
-// template, it is switched to the specified template. If the tiddler does not exist, and if server hosting
-// custom fields were provided, then an attempt is made to retrieve the tiddler from the server
-//  srcElement - reference to element from which this one is being opened -or-
-//               special positions "top", "bottom"
-//  tiddler - tiddler or title of tiddler to display
-//  template - the name of the tiddler containing the template -or-
-//             one of the constants DEFAULT_VIEW_TEMPLATE and DEFAULT_EDIT_TEMPLATE -or-
-//             null or undefined to indicate the current template if there is one, DEFAULT_VIEW_TEMPLATE if not
-//  animate - whether to perform animations
-//  customFields - an optional list of name:"value" pairs to be assigned as tiddler fields (for edit templates)
-//  toggle - if true, causes the tiddler to be closed if it is already opened
-//  animationSrc - optional. If provided, this will specify the element which is to act as the start of the animation -or-
-//                 the source of the animation will be the srcElement.
+//# Display a given tiddler with a given template. If the tiddler is already displayed but with a different
+//# template, it is switched to the specified template. If the tiddler does not exist, and if server hosting
+//# custom fields were provided, then an attempt is made to retrieve the tiddler from the server
+//#  srcElement - reference to element from which this one is being opened -or-
+//#               special positions "top", "bottom"
+//#  tiddler - tiddler or title of tiddler to display
+//#  template - the name of the tiddler containing the template -or-
+//#             one of the constants DEFAULT_VIEW_TEMPLATE and DEFAULT_EDIT_TEMPLATE -or-
+//#             null or undefined to indicate the current template if there is one, DEFAULT_VIEW_TEMPLATE if not
+//#  animate - whether to perform animations
+//#  customFields - an optional list of name:"value" pairs to be assigned as tiddler fields (for edit templates)
+//#  toggle - if true, causes the tiddler to be closed if it is already opened
+//#  animationSrc - optional. If provided, this will specify the element which is to act as the start of the animation -or-
+//#                 the source of the animation will be the srcElement.
 Story.prototype.displayTiddler = function(srcElement, tiddler, template, animate, unused, customFields, toggle, animationSrc)
 {
 	var title = (tiddler instanceof Tiddler) ? tiddler.title : tiddler;
@@ -108,10 +94,21 @@ Story.prototype.displayTiddler = function(srcElement, tiddler, template, animate
 	return tiddlerElem;
 };
 
-// Figure out the appropriate position for a newly opened tiddler
-//  srcElement - reference to the element containing the link to the tiddler -or-
-//               special positions "top", "bottom"
-//  returns - reference to the tiddler that the new one should appear before (null for the bottom of the story)
+Story.prototype.displayTiddlers = function(srcElement, titles, template, animate, unused, customFields, toggle)
+{
+	for(var t = titles.length - 1; t >= 0; t--)
+		this.displayTiddler(srcElement, titles[t], template, animate, unused, customFields);
+};
+
+Story.prototype.displayDefaultTiddlers = function()
+{
+	this.displayTiddlers(null, store.filterTiddlers(store.getTiddlerText("DefaultTiddlers")));
+};
+
+//# Figure out the appropriate position for a newly opened tiddler
+//#  srcElement - reference to the element containing the link to the tiddler -or-
+//#               special positions "top", "bottom"
+//#  returns - reference to the tiddler that the new one should appear before (null for the bottom of the story)
 Story.prototype.positionTiddler = function(srcElement)
 {
 	var place = this.getContainer();
@@ -138,13 +135,13 @@ Story.prototype.positionTiddler = function(srcElement)
 	return before;
 };
 
-// Create a tiddler frame at the appropriate place in a story column.
-// If the tiddler doesn't exist, trigger an attempt to load it as a missing tiddler.
-//  place - reference to parent element
-//  before - null, or reference to element before which to insert new tiddler
-//  title - title of new tiddler
-//  template - the name of the tiddler containing the template or one of the constants DEFAULT_VIEW_TEMPLATE and DEFAULT_EDIT_TEMPLATE
-//  customFields - an optional list of name:"value" pairs to be assigned as tiddler fields
+//# Create a tiddler frame at the appropriate place in a story column.
+//# If the tiddler doesn't exist, trigger an attempt to load it as a missing tiddler.
+//#  place - reference to parent element
+//#  before - null, or reference to element before which to insert new tiddler
+//#  title - title of new tiddler
+//#  template - the name of the tiddler containing the template or one of the constants DEFAULT_VIEW_TEMPLATE and DEFAULT_EDIT_TEMPLATE
+//#  customFields - an optional list of name:"value" pairs to be assigned as tiddler fields
 Story.prototype.createTiddler = function(place, before, title, template, customFields)
 {
 	var tiddlerElem = createTiddlyElement(null, "div", this.tiddlerId(title), "tiddler");
@@ -159,10 +156,10 @@ Story.prototype.createTiddler = function(place, before, title, template, customF
 	return tiddlerElem;
 };
 
-// Attempts to load a missing tiddler from the server specified in the custom fields
-//  title - title of the missing tiddler
-//  fields - string of name:"value" pairs or hashmap
-//  callback - optional function invoked with context argument upon completion; context provides context.tiddler if successful
+//# Attempts to load a missing tiddler from the server specified in the custom fields
+//#  title - title of the missing tiddler
+//#  fields - string of name:"value" pairs or hashmap
+//#  callback - optional function invoked with context argument upon completion; context provides context.tiddler if successful
 Story.prototype.loadMissingTiddler = function(title, fields, callback)
 {
 	var getTiddlerCallback = function(context)
@@ -197,7 +194,7 @@ Story.prototype.loadMissingTiddler = function(title, fields, callback)
 	return config.messages.loadingMissingTiddler.format([title, context.serverType, context.host, context.workspace]);
 };
 
-// Overridable for choosing the name of the template to apply for a tiddler
+//# Overridable for choosing the name of the template to apply for a tiddler
 Story.prototype.chooseTemplateForTiddler = function(title, template)
 {
 	if(!template)
@@ -207,18 +204,18 @@ Story.prototype.chooseTemplateForTiddler = function(title, template)
 	return template;
 };
 
-// Overridable for extracting the text of a template from a tiddler
+//# Overridable for extracting the text of a template from a tiddler
 Story.prototype.getTemplateForTiddler = function(title, template, tiddler)
 {
 	return store.getRecursiveTiddlerText(template, null, 10);
 };
 
-// Apply a template to an existing tiddler if it is not already displayed using that template
-//  title - title of tiddler to update
-//  template - the name of the tiddler containing the template or one of the constants DEFAULT_VIEW_TEMPLATE and DEFAULT_EDIT_TEMPLATE
-//  force - if true, forces the refresh even if the template hasn't changed
-//  customFields - an optional list of name/value pairs to be assigned as tiddler fields (for edit templates)
-//  defaultText - an optional string to replace the default text for non-existent tiddlers
+//# Apply a template to an existing tiddler if it is not already displayed using that template
+//#  title - title of tiddler to update
+//#  template - the name of the tiddler containing the template or one of the constants DEFAULT_VIEW_TEMPLATE and DEFAULT_EDIT_TEMPLATE
+//#  force - if true, forces the refresh even if the template hasn't changed
+//#  customFields - an optional list of name/value pairs to be assigned as tiddler fields (for edit templates)
+//#  defaultText - an optional string to replace the default text for non-existent tiddlers
 Story.prototype.refreshTiddler = function(title, template, force, customFields, defaultText)
 {
 	var tiddlerElem = this.getTiddler(title);
@@ -269,7 +266,7 @@ Story.prototype.refreshTiddler = function(title, template, force, customFields, 
 	return tiddlerElem;
 };
 
-// Add hidden input elements for the custom fields of a tiddler
+//# Add hidden input elements for the custom fields of a tiddler
 Story.prototype.addCustomFields = function(place, customFields)
 {
 	var fields = customFields.decodeHashMap();
@@ -294,7 +291,6 @@ Story.prototype.refreshAllTiddlers = function(force)
 	})
 };
 
-// Default tiddler onmouseover/out event handlers
 Story.prototype.onTiddlerMouseOver = function()
 {
 	jQuery(this).addClass("selected");
@@ -305,7 +301,6 @@ Story.prototype.onTiddlerMouseOut = function()
 	jQuery(this).removeClass("selected");
 };
 
-// Default tiddler ondblclick event handler
 Story.prototype.onTiddlerDblClick = function(ev)
 {
 	var e = ev || window.event;
@@ -372,8 +367,8 @@ Story.prototype.onTiddlerKeyPress = function(ev)
 	return !consume;
 };
 
-// Returns the specified field (input or textarea element) in a tiddler, otherwise the first edit field it finds
-// or null if it found no edit field at all
+//# Returns the specified field (input or textarea element) in a tiddler, otherwise the first edit field it finds
+//# or null if it found no edit field at all
 Story.prototype.getTiddlerField = function(title, field)
 {
 	var tiddlerElem = this.getTiddler(title);
@@ -392,7 +387,7 @@ Story.prototype.getTiddlerField = function(title, field)
 	return e;
 };
 
-// Focus a specified tiddler. Attempts to focus the specified field, otherwise the first edit field it finds
+//# Focus a specified tiddler. Attempts to focus the specified field, otherwise the first edit field it finds
 Story.prototype.focusTiddler = function(title, field)
 {
 	var e = this.getTiddlerField(title, field);
@@ -402,7 +397,7 @@ Story.prototype.focusTiddler = function(title, field)
 	}
 };
 
-// Ensures that a specified tiddler does not have the focus
+//# Ensures that a specified tiddler does not have the focus
 Story.prototype.blurTiddler = function(title)
 {
 	var tiddlerElem = this.getTiddler(title);
@@ -412,12 +407,12 @@ Story.prototype.blurTiddler = function(title)
 	}
 };
 
-// Adds a specified value to the edit controls (if any) of a particular
-// array-formatted field of a particular tiddler (eg "tags")
-//  title - name of tiddler
-//  tag - value of field, without any [[brackets]]
-//  mode - +1 to add the tag, -1 to remove it, 0 to toggle it
-//  field - name of field (eg "tags")
+//# Adds a specified value to the edit controls (if any) of a particular
+//# array-formatted field of a particular tiddler (eg "tags")
+//#  title - name of tiddler
+//#  tag - value of field, without any [[brackets]]
+//#  mode - +1 to add the tag, -1 to remove it, 0 to toggle it
+//#  field - name of field (eg "tags")
 Story.prototype.setTiddlerField = function(title, tag, mode, field)
 {
 	var editor = this.getTiddlerField(title, field);
@@ -426,39 +421,37 @@ Story.prototype.setTiddlerField = function(title, tag, mode, field)
 	editor.value = String.encodeTiddlyLinkList(tags);
 };
 
-// The same as setTiddlerField but preset to the "tags" field
 Story.prototype.setTiddlerTag = function(title, tag, mode)
 {
 	this.setTiddlerField(title, tag, mode, "tags");
 };
 
-//  title - name of tiddler to close
-//  animate - whether to perform animations
-Story.prototype.closeTiddler = function(title, animate, unused)
+Story.prototype.closeTiddler = function(title, shouldAnimate, unused)
 {
 	var tiddlerElem = this.getTiddler(title);
 	if(!tiddlerElem) return;
 
 	clearMessage();
 	this.scrubTiddler(tiddlerElem);
-	if(config.options.chkAnimate && animate && anim && typeof Slider == "function") {
+	if(config.options.chkAnimate && shouldAnimate && anim && typeof Slider == "function") {
 		anim.startAnimating(new Slider(tiddlerElem, false, null, "all"));
 	} else {
 		jQuery(tiddlerElem).remove();
 	}
 };
 
-// Scrub IDs from a tiddler. This is so that the 'ghost' of a tiddler while it is being closed
-// does not interfere with things
-//  tiddlerElem - reference to the tiddler element
-Story.prototype.scrubTiddler = function(tiddlerElem)
+//# Scrub IDs from a tiddler. This is so that the 'ghost' of a tiddler while it is being closed
+//# does not interfere with things
+Story.prototype.scrubTiddler = function(tiddlerElement)
 {
-	tiddlerElem.id = null;
+	tiddlerElement.id = null;
 };
 
-// Set the 'dirty' flag of a tiddler
-//  title - title of tiddler to change
-//  dirty - new boolean status of flag
+// 'dirty' flag attribute is used on tiddlers to mark those having unsaved changes
+
+//# Set the 'dirty' flag of a tiddler
+//#  title - title of tiddler to change
+//#  dirty - new boolean status of flag
 Story.prototype.setDirty = function(title, dirty)
 {
 	var tiddlerElem = this.getTiddler(title);
@@ -466,7 +459,6 @@ Story.prototype.setDirty = function(title, dirty)
 		tiddlerElem.setAttribute("dirty", dirty ? "true" : "false");
 };
 
-// Is a particular tiddler dirty (with unsaved changes)?
 Story.prototype.isDirty = function(title)
 {
 	var tiddlerElem = this.getTiddler(title);
@@ -475,7 +467,6 @@ Story.prototype.isDirty = function(title)
 	return null;
 };
 
-// Determine whether any open tiddler are dirty
 Story.prototype.areAnyDirty = function()
 {
 	var r = false;
@@ -496,17 +487,17 @@ Story.prototype.closeAllTiddlers = function(exclude)
 	window.scrollTo(0, ensureVisible(this.container));
 };
 
-// Check if there are any tiddlers in the story
+//# Check if there are any tiddlers in the story
 Story.prototype.isEmpty = function()
 {
 	var place = this.getContainer();
 	return place && place.firstChild == null;
 };
 
-// Perform a search and display the result
-//  text - text to search for
-//  useCaseSensitive - true for case sensitive matching
-//  useRegExp - true to interpret text as a RegExp
+//# Perform a search and display the result
+//#  text - text to search for
+//#  useCaseSensitive - true for case sensitive matching
+//#  useRegExp - true to interpret text as a RegExp
 Story.prototype.search = function(text, useCaseSensitive, useRegExp)
 {
 	this.closeAllTiddlers();
@@ -521,9 +512,9 @@ Story.prototype.search = function(text, useCaseSensitive, useRegExp)
 		displayMessage(config.macros.search.failureMsg.format([q + text + q]));
 };
 
-// Determine if the specified element is within a tiddler in this story
-//  e - reference to an element
-// returns: reference to a tiddler element or null if none
+//# Determine if the specified element is within a tiddler in this story
+//#  e - reference to an element
+//# returns: reference to a tiddler element or null if none
 Story.prototype.findContainingTiddler = function(e)
 {
 	while(e && !jQuery(e).hasClass("tiddler")) {
@@ -532,9 +523,9 @@ Story.prototype.findContainingTiddler = function(e)
 	return e;
 };
 
-// Gather any saveable fields from a tiddler element
-//  e - reference to an element to scan recursively
-//  fields - object to contain gathered field values
+//# Gather any saveable fields from a tiddler element
+//#  e - reference to an element to scan recursively
+//#  fields - object to contain gathered field values
 Story.prototype.gatherSaveFields = function(e, fields)
 {
 	if(e && e.getAttribute) {
@@ -549,8 +540,8 @@ Story.prototype.gatherSaveFields = function(e, fields)
 	}
 };
 
-// Determine whether a tiddler has any edit fields with changed values
-//  title - name of tiddler
+//# Determine whether a tiddler has any edit fields with changed values
+//#  title - name of tiddler
 Story.prototype.hasChanges = function(title)
 {
 	var tiddlerElement = this.getTiddler(title);
@@ -560,23 +551,23 @@ Story.prototype.hasChanges = function(title)
 	this.gatherSaveFields(tiddlerElement, fields);
 	if(store.fetchTiddler(title)) {
 		for(var fieldName in fields) {
-			if(store.getValue(title, fieldName) != fields[fieldName]) // tiddler changed
+			if(store.getValue(title, fieldName) != fields[fieldName])
 				return true;
 		}
-	} else {
-		if(store.isShadowTiddler(title) && store.getShadowTiddlerText(title) == fields.text) { // not checking for title or tags
-			return false;
-		} else { // changed shadow or new tiddler
-			return true;
-		}
+		return false;
 	}
-	return false;
+	if(store.isShadowTiddler(title)) {
+		// not checking for title or tags
+		return store.getShadowTiddlerText(title) != fields.text;
+	}
+	// new tiddler
+	return true;
 };
 
-// Save any open edit fields of a tiddler and updates the display as necessary
-//  title - name of tiddler
-//  minorUpdate - true if the modified date shouldn't be updated
-// returns: title of saved tiddler, or null if not saved
+//# Save any open edit fields of a tiddler and updates the display as necessary
+//#  title - name of tiddler
+//#  minorUpdate - true if the modified date shouldn't be updated
+//# returns: title of saved tiddler, or null if not saved
 Story.prototype.saveTiddler = function(title, minorUpdate)
 {
 	var tiddlerElem = this.getTiddler(title);
@@ -674,18 +665,18 @@ Story.prototype.switchTheme = function(theme)
 	for(var i = 0; i < config.notifyTiddlers.length; i++) {
 		var name = config.notifyTiddlers[i].name;
 		switch(name) {
-		case "PageTemplate":
-			config.refresherData.pageTemplate = replaceNotification(i, config.refresherData.pageTemplate, theme, name);
-			break;
-		case "StyleSheet":
-			removeStyleSheet(config.refresherData.styleSheet);
-			config.refresherData.styleSheet = replaceNotification(i, config.refresherData.styleSheet, theme, name);
-			break;
-		case "ColorPalette":
-			config.refresherData.colorPalette = replaceNotification(i, config.refresherData.colorPalette, theme, name);
-			break;
-		default:
-			break;
+			case "PageTemplate":
+				config.refresherData.pageTemplate = replaceNotification(i, config.refresherData.pageTemplate, theme, name);
+				break;
+			case "StyleSheet":
+				removeStyleSheet(config.refresherData.styleSheet);
+				config.refresherData.styleSheet = replaceNotification(i, config.refresherData.styleSheet, theme, name);
+				break;
+			case "ColorPalette":
+				config.refresherData.colorPalette = replaceNotification(i, config.refresherData.colorPalette, theme, name);
+				break;
+			default:
+				break;
 		}
 	}
 	config.tiddlerTemplates[vi] = getSlice(theme, "ViewTemplate");
