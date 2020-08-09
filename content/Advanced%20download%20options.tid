@@ -1,18 +1,17 @@
 created: 20110211110600000
 creator: psd
-modified: 20200526115600000
+modified: 20200809132200000
 modifier: mkerrigan
 tags: help
 title: Advanced download options
 type: text/x-tiddlywiki
 
-When you click on the [[download|Download]] button it will download a zip file containing an empty ~TiddlyWiki file and a copy of the TiddlySaver file. This is version <<version>> of ~TiddlyWiki.
+When you click on the [[download|Download]] button it will download an empty ~TiddlyWiki file. This is version <<version>> of ~TiddlyWiki.
 
 Advanced users may find these download options helpful (right click the link and select "Save as" to download):
-* [[An empty TiddlyWiki file|./empty.html]]
-* [[A zip file containing an empty TiddlyWiki file plus a TiddlySaver file|./empty.zip]]
-* [[A copy of this website (TiddlyWiki.com) minus images|#]]
-* [[The TiddlySaver.jar file on its own|./TiddlySaver.jar]]
+* [[A copy of this website|#]] (~TiddlyWiki.com) minus images.
+* [[A zip archive|./empty.zip]] containing an empty ~TiddlyWiki file plus a TiddlySaver file.
+* [[The TiddlySaver.jar file|./TiddlySaver.jar]] on its own.
 Finally, these links may be useful:
 * [[Setting up saving]]
-* Archive of older versions of TiddlyWiki in the [[archive|./archive/]]
+* Older ~TiddlyWiki versions in the [[archive|./archive/]]
