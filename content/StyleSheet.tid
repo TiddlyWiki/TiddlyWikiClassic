@@ -1,7 +1,7 @@
 created: 20110211110700000
 creator: psd
-modified: 20111103182500000
-modifier: jermolene
+modified: 20200724182500000
+modifier: Yakov Litvin
 title: StyleSheet
 type: text/x-tiddlywiki
 
@@ -34,30 +34,26 @@ body {
 	font-size: 1.1em;
 }
 
-#contentWrapper .chunkyButton {
-	width: auto;
-}
-
-#contentWrapper span.chunkyButton {
+.downloadButton {
+	display: inline-block;
+	padding: 0.5em 1em;
+	border-radius: .5em;
 	border: none;
-}
-
-#contentWrapper span.chunkyButton a.button, #contentWrapper span.chunkyButton a:active.button {
-	font-weight: bold;
+	text-align: center;
 	font-size: 1.3em;
+	font-weight: bold;
 	color: [[ColorPalette::Background]];
 	background-color: [[ColorPalette::QuaternaryMid]];
-	text-align: center;
-	padding: 0.5em 1em;
-	border-radius: 1ex;
-	border-style: none !important;
 }
-
-#contentWrapper span.chunkyButton a.button:hover {
+.downloadButton:hover {
 	background-color: [[ColorPalette::QuaternaryDark]];
-	color: [[ColorPalette::Background]];
-	border-style: none !important;
+}
+.downloadButton:active {
+	transform: scale(.95);
+}
+.downloadButton:focus {
+	outline: none;
+	box-shadow: 0 0 0 1px [[ColorPalette::QuaternaryDark]];
 }
 
 /*}}}*/
-
