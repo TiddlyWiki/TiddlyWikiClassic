@@ -1,7 +1,7 @@
 created: 20120820113400000
 creator: jermolene
-modified: 20130313091500000
-modifier: ericshulman
+modified: 20201102203500000
+modifier: Yakov Litvin
 title: MainMenu
 type: text/x-tiddlywiki
 
@@ -12,6 +12,7 @@ GettingStarted
 [[Examples]]
 
 [[Reference]]
+[[Dev docs|DeveloperDocumentation]]
 [[Help and Support]]
 [[Community]]
 [[RSS|RssFeed]]
