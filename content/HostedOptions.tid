@@ -1,7 +1,7 @@
 created: 20110211150800000
 creator: jermolene
-modified: 20121001123400000
-modifier: jermolene
+modified: 20201103105800000
+modifier: Yakov Litvin
 title: HostedOptions
 type: text/x-tiddlywiki
 
@@ -14,9 +14,9 @@ There are several ways that you can have your TiddlyWiki data hosted online, mak
 Many people use [[DropBox|http://dropbox.com]] to synchronise their TiddlyWiki documents to make them available on multiple computers. The ~DropBox iPhone/iPad application also permits read only access to TiddlyWiki documents. See [[A Personal Knowledgebase Solution: Tiddlywiki and Dropbox|http://www.broowaha.com/articles/7671/a-personal-knowledgebase-solution-tiddlywiki-and-dropbox]]
 
 !~TiddlyWeb & ~TiddlySpace
-[<img[TiddlySpace|//tiddlyspace.com/bags/frontpage_public/tiddlers/shinyspace.png][http://tiddlyspace.com]] [[TiddlySpace|http://tiddlyspace.com]] is a full hosted service for TiddlyWiki that allows multiple people to edit the same wiki at the same time. It is particularly focussed on sharing tiddlers.
+[[TiddlyWeb|http://tiddlyweb.com]] is a flexible architecture for putting tiddlers on the web. On top of it ~TiddlySpace was created in 2010 by the Osmosoft team at BT, and generously operated for the community by them and their successors until December 9th 2016.
 
-~TiddlySpace is built on top of [[TiddlyWeb|http://tiddlyweb.com]], a flexible architecture for putting tiddlers on the web.
+[<img[TiddlySpace|./images/shinyspace.png][http://tiddlyspace.com]] [[TiddlySpace|http://tiddlyspace.com]] was a full hosted service for TiddlyWiki that allowed multiple people to edit the same wiki at the same time. It was particularly focused on sharing tiddlers.
 
 !TiddlyWiki Server for node.js (TWS)
 [[TWS|https://github.com/PoulStaugaard/TWS]] by Poul Staugaard is a simple node.js based serverside for TiddlyWiki.
