@@ -1,11 +1,11 @@
 created: 20110211125900000
 creator: blaine
-modified: 20200330131900000
-modifier: retostauss
+modified: 20201102203500000
+modifier: Yakov Litvin
 tags: community help
 title: DeveloperDocumentation
 type: text/x-tiddlywiki
 
-TiddlyWiki developer documentation was built up at http://tiddlywikidev.tiddlyspace.com/, which is no longer available. You may have a look at the Internet Archive for [[a snapshot of 2016|https://web.archive.org/web/20160810230802/http://tiddlywikidev.tiddlyspace.com/]].
+TiddlyWiki developer documentation was built up at tiddlywikidev [[TiddlySpace|HostedOptions]] and now is backed up [[here|./dev/docs_from_TiddlyWikiDev.tiddlyspace.com.html]].
 
 Michael Mahemoff has written a very helpful outline of the architecture of ~TiddlyWiki: [[Part 1|http://softwareas.com/tiddlywiki-internals-1-of-3-architectural-concepts]], [[Part 2|http://softwareas.com/tiddlywiki-internals-2-of-3-list-of-javascript-files]] and [[Part 3|http://softwareas.com/tiddlywiki-internals-3-of-3-key-javascript-classes-and-files]].
