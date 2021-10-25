@@ -21,7 +21,7 @@ clearFolder(destinationPath);
 console.log();
 
 console.log(`BUILD: assembling EMPTY.HTML (v${releaseVersion})`);
-const recipePath = joinPath(__dirname, '../tiddlywikinosaver.html.recipe');
+const recipePath = joinPath(__dirname, '../recipes/tiddlywikinosaver.html.recipe');
 let output = cookTwIntoFolder(recipePath, destinationPath, 'empty.html');
 console.log(output);
 

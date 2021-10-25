@@ -34,12 +34,12 @@ clearFolder(destinationPath);
 console.log();
 
 console.log(`BUILD: assembling TIDDLYWIKI_EXTERNALJS.HTML`);
-let recipePath = joinPath(__dirname, '../tiddlywiki_externaljs.html.recipe');
+let recipePath = joinPath(__dirname, '../recipes/tiddlywiki_externaljs.html.recipe');
 let output = cookTwIntoFolder(recipePath, destinationPath, 'tiddlywiki_externaljs.html');
 console.log(output);
 
 console.log(`BUILD: assembling TWCORE.JS (v${releaseVersion})`);
-recipePath = joinPath(__dirname, '../tiddlywikinosaver.html.recipe');
+recipePath = joinPath(__dirname, '../recipes/tiddlywikinosaver.html.recipe');
 output = cookTwIntoFolder(recipePath, destinationPath, 'twcore.js', 'tiddlywiki2.externaljs.template.html');
 console.log(output);
 
