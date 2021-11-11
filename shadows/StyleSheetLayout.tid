@@ -1,7 +1,7 @@
 title: StyleSheetLayout
 
 /*{{{*/
-body {font-size:.75em; font-family:arial,helvetica; margin:0; padding:0;}
+body { font-size:.75em; font-family:arial,helvetica,sans-serif; margin:0; padding:0; }
 
 * html .tiddler {height:1%;}
 
