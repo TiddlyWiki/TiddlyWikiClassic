@@ -1,0 +1,11 @@
+{
+    "env": {
+        "browser": true
+    },
+    "rules": {
+        "block-spacing": "error",
+        "comma-spacing": "error",
+        "object-curly-spacing": ["error", "always"],
+        "no-trailing-spaces": "error"
+    }
+}

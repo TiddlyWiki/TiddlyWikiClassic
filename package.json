@@ -9,11 +9,14 @@
     "build-external-core": "node build/build_external_core.js",
     "build-site": "node build/build_site.js",
     "build-test": "node build/build_test.js",
+    "lint":       "eslint --cache --ext .js ./js",
+    "lint:fix":   "eslint --cache --ext .js ./js --fix",
     "test":       "echo 'not implemented yet, see build-test'",
     "build":      "echo 'not implemented yet'"
   },
   "dependencies": {},
   "devDependencies": {
+    "eslint": "^8.2.0",
     "phantomjs": "^2.1.7",
     "tiddlywiki": "^5.1.21"
   }

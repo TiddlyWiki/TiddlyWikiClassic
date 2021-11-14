@@ -123,7 +123,7 @@ function mozillaSaveFile(filePath, content)
 {
 	if(!window.Components)
 		return null;
-	
+
 	content = mozConvertUnicodeToUTF8(content);
 	try {
 		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
@@ -148,7 +148,7 @@ function mozillaLoadFile(filePath)
 {
 	if(!window.Components)
 		return null;
-	
+
 	try {
 		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 		var file = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
@@ -225,7 +225,7 @@ function javaSaveFile(filePath, content)
 {
 	var applet = document.applets['TiddlySaver'];
 	try {
-		if (applet && filePath) 
+		if (applet && filePath)
 			return applet.saveFile(javaUrlToFilename(filePath), "UTF-8", content);
 	} catch(ex) {
 		logTiddlySaverException("javaSaveFile", ex);
@@ -271,7 +271,7 @@ function HTML5DownloadSaveFile(filePath, content)
 	var link = document.createElement("a");
 	if(link.download === undefined)
 		return null;
-	
+
 	config.saveByDownload = true;
 	var slashpos = filePath.lastIndexOf("/");
 	if (slashpos == -1) slashpos = filePath.lastIndexOf("\\");
@@ -313,8 +313,8 @@ function encodeBase64(data)
 	if (!data) return "";
 	var keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
 	var out = "";
-	var chr1,chr2,chr3 = "";
-	var enc1,enc2,enc3,enc4 = "";
+	var chr1, chr2, chr3 = "";
+	var enc1, enc2, enc3, enc4 = "";
 	for (var count = 0, i = 0; i < data.length; )
 	{
 		chr1 = data.charCodeAt(i++);
