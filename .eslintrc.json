@@ -7,5 +7,13 @@
         "comma-spacing": "error",
         "object-curly-spacing": ["error", "always"],
         "no-trailing-spaces": "error"
-    }
+    },
+    "overrides": [
+        {
+            "files": ["build/*.js"],
+            "env": {
+                "es6": true
+            }
+        }
+    ]
 }
