@@ -4,15 +4,15 @@
 
 var Popup = {
 	stack: [] // Array of objects with members root: and popup:
-	};
+};
 
-Popup.create = function(root,elem,className)
+Popup.create = function(root, elem, className)
 {
-	var stackPosition = this.find(root,"popup");
-	Popup.remove(stackPosition+1);
-	var popup = createTiddlyElement(document.body,elem || "ol","popup",className || "popup");
+	var stackPosition = this.find(root, "popup");
+	Popup.remove(stackPosition + 1);
+	var popup = createTiddlyElement(document.body, elem || "ol", "popup", className || "popup");
 	popup.stackPosition = stackPosition;
-	Popup.stack.push({root: root, popup: popup});
+	Popup.stack.push({ root: root, popup: popup });
 	return popup;
 };
 
@@ -30,23 +30,23 @@ Popup.onDocumentClick = function(ev)
 //#   defaults to "bottom" for regular popups, "top" for nested popups
 //# halign : "left" or "right" (optional)
 //#   defaults to "left" for regular popups, "right" for nested popups
-//# offset : {x: number, y: number} (optional)
-//#   defaults to {x:0,y:0}
-Popup.show = function(valign,halign,offset)
+//# offset : { x: number, y: number } (optional)
+//#   defaults to { x: 0, y: 0 }
+Popup.show = function(valign, halign, offset)
 {
-	var curr = Popup.stack[Popup.stack.length-1];
-	this.place(curr.root,curr.popup,valign,halign,offset);
+	var curr = Popup.stack[Popup.stack.length - 1];
+	this.place(curr.root, curr.popup, valign, halign, offset);
 	jQuery(curr.root).addClass("highlight");
 	if(config.options.chkAnimate && anim && typeof Scroller == "function")
 		anim.startAnimating(new Scroller(curr.popup));
 	else
-		window.scrollTo(0,ensureVisible(curr.popup));
+		window.scrollTo(0, ensureVisible(curr.popup));
 };
 
-Popup.place = function(root,popup,valign,halign,offset)
+Popup.place = function(root, popup, valign, halign, offset)
 {
 	if(!offset)
-		offset = {x:0,y:0};
+		offset = { x: 0, y: 0 };
 	if(popup.stackPosition >= 0 && !valign && !halign) {
 		offset.x = offset.x + root.offsetWidth;
 	} else {
@@ -58,8 +58,8 @@ Popup.place = function(root,popup,valign,halign,offset)
 	var popupLeft = rootLeft + offset.x;
 	var popupTop = rootTop + offset.y;
 	var winWidth = findWindowWidth();
-	if(popup.offsetWidth > winWidth*0.75)
-		popup.style.width = winWidth*0.75 + "px";
+	if(popup.offsetWidth > winWidth * 0.75)
+		popup.style.width = winWidth * 0.75 + "px";
 	var popupWidth = popup.offsetWidth;
 	var scrollWidth = winWidth - document.body.offsetWidth;
 	if(popupLeft + popupWidth > winWidth - scrollWidth - 1) {
@@ -75,10 +75,10 @@ Popup.place = function(root,popup,valign,halign,offset)
 
 Popup.find = function(e)
 {
-	var t,pos = -1;
-	for(t=this.stack.length-1; t>=0; t--) {
-		if(isDescendant(e,this.stack[t].popup))
-			pos = t;
+	var i, pos = -1;
+	for(i = this.stack.length - 1; i >= 0; i--) {
+		if(isDescendant(e, this.stack[i].popup))
+			pos = i;
 	}
 	return pos;
 };
@@ -93,12 +93,11 @@ Popup.remove = function(pos)
 
 Popup.removeFrom = function(from)
 {
-	var t;
-	for(t=Popup.stack.length-1; t>=from; t--) {
-		var p = Popup.stack[t];
+	for(var i = Popup.stack.length - 1; i >= from; i--) {
+		var p = Popup.stack[i];
 		jQuery(p.root).removeClass("highlight");
 		jQuery(p.popup).remove();
 	}
-	Popup.stack = Popup.stack.slice(0,from);
+	Popup.stack = Popup.stack.slice(0, from);
 };
 
