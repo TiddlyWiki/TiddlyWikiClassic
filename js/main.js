@@ -37,7 +37,7 @@ var useJavaSaver = window.isLocal() && (config.browser.isSafari || config.browse
 if (window.tweakConfig) window.tweakConfig();
 
 if(!window || !window.console) {
-	console = {tiddlywiki:true,log:function(message) {displayMessage(message);}};
+	console = { tiddlywiki: true, log: function(message) { displayMessage(message); } };
 }
 
 // Starting up
@@ -58,8 +58,8 @@ function main()
 	story = new Story("tiddlerDisplay", "tiddler");
 	addEvent(document, "click", Popup.onDocumentClick);
 	saveTest();
-	for(var s = 0; s < config.notifyTiddlers.length; s++)
-		store.addNotification(config.notifyTiddlers[s].name, config.notifyTiddlers[s].notify);
+	for(var i = 0; i < config.notifyTiddlers.length; i++)
+		store.addNotification(config.notifyTiddlers[i].name, config.notifyTiddlers[i].notify);
 	t1 = new Date();
 	loadShadowTiddlers();
 	doc.trigger("loadShadows");
@@ -97,13 +97,13 @@ function main()
 		backstage.init();
 	t10 = new Date();
 	if(config.options.chkDisplayInstrumentation) {
-		displayMessage("LoadShadows " + (t2-t1) + " ms");
-		displayMessage("LoadFromDiv " + (t3-t2) + " ms");
-		displayMessage("LoadPlugins " + (t5-t4) + " ms");
-		displayMessage("Macro init " + (t7-t6) + " ms");
-		displayMessage("Notify " + (t8-t7) + " ms");
-		displayMessage("Restart " + (t9-t8) + " ms");
-		displayMessage("Total: " + (t10-t0) + " ms");
+		displayMessage("LoadShadows " + (t2 - t1) + " ms");
+		displayMessage("LoadFromDiv " + (t3 - t2) + " ms");
+		displayMessage("LoadPlugins " + (t5 - t4) + " ms");
+		displayMessage("Macro init " + (t7 - t6) + " ms");
+		displayMessage("Notify " + (t8 - t7) + " ms");
+		displayMessage("Restart " + (t9 - t8) + " ms");
+		displayMessage("Total: " + (t10 - t0) + " ms");
 	}
 	startingUp = false;
 	doc.trigger("startup");
