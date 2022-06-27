@@ -7,6 +7,19 @@ config.macros.upgrade.getSourceURL = function()
 	return config.options.txtUpgradeCoreURI || config.macros.upgrade.source;
 };
 
+//# onSuccess: function(coreAsText, textStatus, jqXHR)
+//# onError:   function(jqXHR, textStatus, errorThrown)
+config.macros.upgrade.loadLatestCore = function(onSuccess, onError)
+{
+	ajaxReq({
+		type: "GET",
+		url: this.getSourceURL(),
+		processData: false,
+		success: onSuccess,
+		error: onError
+	});
+}
+
 config.macros.upgrade.handler = function(place)
 {
 	var w = new Wizard();
@@ -47,19 +60,11 @@ config.macros.upgrade.onClickUpgrade = function(e)
 	w.setValue("backupPath", backupPath);
 
 	w.setButtons([], me.statusLoadingCore);
-	var sourceURL = me.getSourceURL();
-	var options = {
-		type:"GET",
-		url:sourceURL,
-		processData:false,
-		success:function(data, textStatus, jqXHR) {
-			me.onLoadCore(true, w, jqXHR.responseText, sourceURL, jqXHR);
-		},
-		error:function(jqXHR, textStatus, errorThrown) {
-			me.onLoadCore(false, w, null, sourceURL, jqXHR);
-		}
-	};
-	ajaxReq(options);
+	me.loadLatestCore(function(data, textStatus, jqXHR) {
+		me.onLoadCore(true, w, jqXHR.responseText, sourceURL, jqXHR);
+	}, function(jqXHR, textStatus, errorThrown) {
+		me.onLoadCore(false, w, null, sourceURL, jqXHR);
+	});
 	return false;
 };
 
