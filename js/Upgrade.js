@@ -106,7 +106,7 @@ config.macros.upgrade.onCancel = function(e)
 
 config.macros.upgrade.extractVersion = function(upgradeFile)
 {
-	var re = /^var version = \{\s*title: "([^"]+)", major: (\d+), minor: (\d+), revision: (\d+)(, beta: (\d+)){0,1}, date: new Date\("([^"]+)"\)/mg;
+	var re = /version = \{\s*title: "([^"]+)", major: (\d+), minor: (\d+), revision: (\d+)(, beta: (\d+)){0,1}, date: new Date\("([^"]+)"\)/mg;
 	var m = re.exec(upgradeFile);
 	return !m ? null : {
 		title: m[1], major: m[2], minor: m[3], revision: m[4], beta: m[6], date: new Date(m[7])
