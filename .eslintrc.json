@@ -3,6 +3,7 @@
         "browser": true
     },
     "rules": {
+        "indent": ["error", "tab"],
         "block-spacing": "error",
         "comma-spacing": "error",
         "object-curly-spacing": ["error", "always"],
