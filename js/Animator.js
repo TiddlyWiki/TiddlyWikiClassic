@@ -13,12 +13,11 @@ function Animator()
 // Start animation engine
 Animator.prototype.startAnimating = function() //# Variable number of arguments
 {
-	var t;
-	for(t=0; t<arguments.length; t++)
-		this.animations.push(arguments[t]);
+	for(var i = 0; i < arguments.length; i++)
+		this.animations.push(arguments[i]);
 	if(this.running == 0) {
 		var me = this;
-		this.timerID = window.setInterval(function() {me.doAnimate(me);},10);
+		this.timerID = window.setInterval(function() { me.doAnimate(me) }, 10);
 	}
 	this.running += arguments.length;
 };
@@ -26,13 +25,12 @@ Animator.prototype.startAnimating = function() //# Variable number of arguments
 // Perform an animation engine tick, calling each of the known animation modules
 Animator.prototype.doAnimate = function(me)
 {
-	var a = 0;
-	while(a < me.animations.length) {
-		var animation = me.animations[a];
-		if(animation.tick()) {
-			a++;
+	var i = 0;
+	while(i < me.animations.length) {
+		if(me.animations[i].tick()) {
+			i++;
 		} else {
-			me.animations.splice(a,1);
+			me.animations.splice(i, 1);
 			if(--me.running == 0)
 				window.clearInterval(me.timerID);
 		}
@@ -41,6 +39,6 @@ Animator.prototype.doAnimate = function(me)
 
 Animator.slowInSlowOut = function(progress)
 {
-	return(1-((Math.cos(progress * Math.PI)+1)/2));
+	return 1 - ((Math.cos(progress * Math.PI) + 1) / 2);
 };
 

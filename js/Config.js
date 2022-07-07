@@ -37,29 +37,29 @@ config.messages = {
 
 // Options that can be set in the options panel and/or cookies
 config.options = {
-	chkRegExpSearch: false,
-	chkCaseSensitiveSearch: false,
-	chkIncrementalSearch: true,
 	chkAnimate: true,
-	chkSaveBackups: true,
 	chkAutoSave: false,
-	chkGenerateAnRssFeed: false,
-	chkSaveEmptyTemplate: false,
-	chkOpenInNewWindow: true,
-	chkToggleLinks: false,
-	chkHttpReadOnly: true,
-	chkForceMinorUpdate: false,
+	chkCaseSensitiveSearch: false,
 	chkConfirmDelete: true,
-	chkInsertTabs: false,
-	chkUsePreForStorage: true, // Whether to use <pre> format for storage
 	chkDisplayInstrumentation: false,
+	chkForceMinorUpdate: false,
+	chkGenerateAnRssFeed: false,
+	chkHttpReadOnly: true,
+	chkIncrementalSearch: true,
+	chkInsertTabs: false,
+	chkOpenInNewWindow: true,
+	chkRegExpSearch: false,
 	chkRemoveExtraMarkers: false, // #162
+	chkSaveBackups: true,
+	chkSaveEmptyTemplate: false,
+	chkToggleLinks: false,
+	chkUsePreForStorage: true, // Whether to use <pre> format for storage
 	txtBackupFolder: "",
 	txtEditorFocus: "text",
-	txtMainTab: "tabTimeline",
-	txtMoreTab: "moreTabAll",
-	txtMaxEditRows: "30",
 	txtFileSystemCharSet: "UTF-8",
+	txtMainTab: "tabTimeline",
+	txtMaxEditRows: "30",
+	txtMoreTab: "moreTabAll",
 	txtTheme: ""
 	};
 config.optionsDesc = {};
@@ -90,7 +90,7 @@ config.views = {
 };
 
 // Backstage tasks
-config.backstageTasks = ["save","importTask","tweak","upgrade","plugins"];
+config.backstageTasks = ["save", "importTask", "tweak", "upgrade", "plugins"];
 
 // Extensions
 config.extensions = {};
@@ -99,7 +99,7 @@ config.extensions = {};
 config.macros = {
 	today: {},
 	version: {},
-	search: {sizeTextbox: 15},
+	search: { sizeTextbox: 15 },
 	tiddler: {},
 	tag: {},
 	tags: {},
@@ -125,7 +125,7 @@ config.macros = {
 	tabs: {},
 	gradient: {},
 	message: {},
-	view: {defaultView: "text"},
+	view: { defaultView: "text" },
 	edit: {},
 	tagChooser: {},
 	toolbar: {},
@@ -145,14 +145,14 @@ config.commands = {
 	closeTiddler: {},
 	closeOthers: {},
 	editTiddler: {},
-	saveTiddler: {hideReadOnly: true},
+	saveTiddler: { hideReadOnly: true },
 	cancelTiddler: {},
-	deleteTiddler: {hideReadOnly: true},
+	deleteTiddler: { hideReadOnly: true },
 	permalink: {},
-	references: {type: "popup"},
-	jump: {type: "popup"},
-	syncing: {type: "popup"},
-	fields: {type: "popup"}
+	references: { type: "popup" },
+	jump: { type: "popup" },
+	syncing: { type: "popup" },
+	fields: { type: "popup" }
 };
 
 // Control of macro parameter evaluation
@@ -175,7 +175,8 @@ if(!((new RegExp("[\u0150\u0170]","g")).test("\u0150"))) {
 }
 config.textPrimitives.sliceSeparator = "::";
 config.textPrimitives.sectionSeparator = "##";
-config.textPrimitives.urlPattern = "(?:file|http|https|mailto|ftp|irc|news|data):[^\\s'\"]+(?:/|\\b|\\[|\\])"; // #132
+config.textPrimitives.urlPattern =
+	"(?:file|http|https|mailto|ftp|irc|news|data):[^\\s'\"]+(?:/|\\b|\\[|\\])"; // #132
 config.textPrimitives.unWikiLink = "~";
 config.textPrimitives.wikiLink = "(?:(?:" + config.textPrimitives.upperLetter + "+" +
 	config.textPrimitives.lowerLetter + "+" +
@@ -185,17 +186,19 @@ config.textPrimitives.wikiLink = "(?:(?:" + config.textPrimitives.upperLetter + 
 	config.textPrimitives.lowerLetter + "+))";
 
 config.textPrimitives.cssLookahead = "(?:(" + config.textPrimitives.anyLetter + "+)\\(([^\\)\\|\\n]+)(?:\\):))|(?:(" + config.textPrimitives.anyLetter + "+):([^;\\|\\n]+);)";
-config.textPrimitives.cssLookaheadRegExp = new RegExp(config.textPrimitives.cssLookahead,"mg");
+config.textPrimitives.cssLookaheadRegExp = new RegExp(config.textPrimitives.cssLookahead, "mg");
 
 config.textPrimitives.brackettedLink = "\\[\\[([^\\]]+)\\]\\]";
 config.textPrimitives.titledBrackettedLink = "\\[\\[([^\\[\\]\\|]+)\\|([^\\[\\]\\|]+)\\]\\]";
-config.textPrimitives.tiddlerForcedLinkRegExp = new RegExp("(?:" + config.textPrimitives.titledBrackettedLink + ")|(?:" +
+config.textPrimitives.tiddlerForcedLinkRegExp =
+	new RegExp("(?:" + config.textPrimitives.titledBrackettedLink + ")|(?:" +
 	config.textPrimitives.brackettedLink + ")|(?:" +
-	config.textPrimitives.urlPattern + ")","mg");
-config.textPrimitives.tiddlerAnyLinkRegExp = new RegExp("("+ config.textPrimitives.wikiLink + ")|(?:" +
+	config.textPrimitives.urlPattern + ")", "mg");
+config.textPrimitives.tiddlerAnyLinkRegExp =
+	new RegExp("("+ config.textPrimitives.wikiLink + ")|(?:" +
 	config.textPrimitives.titledBrackettedLink + ")|(?:" +
 	config.textPrimitives.brackettedLink + ")|(?:" +
-	config.textPrimitives.urlPattern + ")","mg");
+	config.textPrimitives.urlPattern + ")", "mg");
 
 config.glyphs = {
 	currBrowser: null,
@@ -222,7 +225,8 @@ config.shadowTiddlers = {
 	AdvancedOptions: '<<options>>',
 	PluginManager: '<<plugins>>',
 	SystemSettings: '',
-	ToolbarCommands: '|~ViewToolbar|closeTiddler closeOthers +editTiddler > fields permalink references jump|\n|~EditToolbar|+saveTiddler -cancelTiddler deleteTiddler|', // #160
+	ToolbarCommands: '|~ViewToolbar|closeTiddler closeOthers +editTiddler > fields permalink references jump|\n'+
+		'|~EditToolbar|+saveTiddler -cancelTiddler deleteTiddler|', // #160
 	WindowTitle: '<<tiddler SiteTitle>> - <<tiddler SiteSubtitle>>'
 };
 

@@ -7,12 +7,29 @@ config.macros.upgrade.getSourceURL = function()
 	return config.options.txtUpgradeCoreURI || config.macros.upgrade.source;
 };
 
+//# onSuccess: function(coreAsText, textStatus, jqXHR)
+//# onError:   function(jqXHR, textStatus, errorThrown)
+config.macros.upgrade.loadLatestCore = function(onSuccess, onError)
+{
+	ajaxReq({
+		type: "GET",
+		url: this.getSourceURL(),
+		processData: false,
+		success: onSuccess,
+		error: onError
+	});
+}
+
 config.macros.upgrade.handler = function(place)
 {
 	var w = new Wizard();
 	w.createWizard(place, this.wizardTitle);
 	w.addStep(this.step1Title, this.step1Html.format([this.getSourceURL(), this.getSourceURL()]));
-	w.setButtons([{ caption: this.upgradeLabel, tooltip: this.upgradePrompt, onClick: this.onClickUpgrade }]);
+	w.setButtons([{
+		caption: this.upgradeLabel,
+		tooltip: this.upgradePrompt,
+		onClick: this.onClickUpgrade
+	}]);
 };
 
 config.macros.upgrade.onClickUpgrade = function(e)
@@ -43,19 +60,11 @@ config.macros.upgrade.onClickUpgrade = function(e)
 	w.setValue("backupPath", backupPath);
 
 	w.setButtons([], me.statusLoadingCore);
-	var sourceURL = me.getSourceURL();
-	var options = {
-		type:"GET",
-		url:sourceURL,
-		processData:false,
-		success:function(data, textStatus, jqXHR) {
-			me.onLoadCore(true, w, jqXHR.responseText, sourceURL, jqXHR);
-		},
-		error:function(jqXHR, textStatus, errorThrown) {
-			me.onLoadCore(false, w, null, sourceURL, jqXHR);
-		}
-	};
-	ajaxReq(options);
+	me.loadLatestCore(function(data, textStatus, jqXHR) {
+		me.onLoadCore(true, w, jqXHR.responseText, sourceURL, jqXHR);
+	}, function(jqXHR, textStatus, errorThrown) {
+		me.onLoadCore(false, w, null, sourceURL, jqXHR);
+	});
 	return false;
 };
 
@@ -87,7 +96,8 @@ config.macros.upgrade.onLoadCore = function(status, params, responseText, url, x
 	};
 	var step2 = [me.step2Html_downgrade, me.step2Html_restore, me.step2Html_upgrade][compareVersions(version, newVer) + 1];
 	w.addStep(me.step2Title, step2.format([formatVersion(newVer), formatVersion(version)]));
-	w.setButtons([{ caption: me.startLabel, tooltip: me.startPrompt, onClick: onStartUpgrade }, { caption: me.cancelLabel, tooltip: me.cancelPrompt, onClick: me.onCancel }]);
+	w.setButtons([{ caption: me.startLabel, tooltip: me.startPrompt, onClick: onStartUpgrade },
+		{ caption: me.cancelLabel, tooltip: me.cancelPrompt, onClick: me.onCancel }]);
 };
 
 config.macros.upgrade.onCancel = function(e)
@@ -101,9 +111,11 @@ config.macros.upgrade.onCancel = function(e)
 
 config.macros.upgrade.extractVersion = function(upgradeFile)
 {
-	var re = /^var version = \{\s*title: "([^"]+)", major: (\d+), minor: (\d+), revision: (\d+)(, beta: (\d+)){0,1}, date: new Date\("([^"]+)"\)/mg;
+	var re = /version = \{\s*title: "([^"]+)", major: (\d+), minor: (\d+), revision: (\d+)(, beta: (\d+)){0,1}, date: new Date\("([^"]+)"\)/mg;
 	var m = re.exec(upgradeFile);
-	return m ? { title: m[1], major: m[2], minor: m[3], revision: m[4], beta: m[6], date: new Date(m[7]) } : null;
+	return !m ? null : {
+		title: m[1], major: m[2], minor: m[3], revision: m[4], beta: m[6], date: new Date(m[7])
+	}
 };
 
 // a helper, splits uri into parts, passes the map of parts to modify and glues parts back
@@ -131,7 +143,7 @@ function addUpgradePartsToURI(uri, backupPath)
 {
 	return changeUri(uri, function(uriParts)
 	{
-		var newParamifier = 'upgrade:[['+ encodeURI(backupPath) +']]';
+		var newParamifier = 'upgrade:[[' + encodeURI(backupPath) + ']]';
 		uriParts.hash = (uriParts.hash ? uriParts.hash + '%20' : '') + newParamifier;
 
 		var newQuery = "time=" + new Date().convertToYYYYMMDDHHMM();

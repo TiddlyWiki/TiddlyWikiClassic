@@ -26,12 +26,12 @@ function manualConvertUTF8ToUnicode(utf)
 		} else if(b1 < 0xE0) {
 			b2 = utf.charCodeAt(src++);
 			c = String.fromCharCode(((b1 & 0x1F) << 6) | (b2 & 0x3F));
-			uni = uni.substring(0,dst++).concat(c,utf.substr(src));
+			uni = uni.substring(0, dst++).concat(c, utf.substr(src));
 		} else {
 			b2 = utf.charCodeAt(src++);
 			b3 = utf.charCodeAt(src++);
 			c = String.fromCharCode(((b1 & 0xF) << 12) | ((b2 & 0x3F) << 6) | (b3 & 0x3F));
-			uni = uni.substring(0,dst++).concat(c,utf.substr(src));
+			uni = uni.substring(0, dst++).concat(c, utf.substr(src));
 		}
 	}
 	return uni;
@@ -41,14 +41,15 @@ function mozConvertUTF8ToUnicode(u)
 {
 	try {
 		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		var converter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"].createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
+		var converter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
+			.createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
 		converter.charset = "UTF-8";
 	} catch(ex) {
 		return manualConvertUTF8ToUnicode(u);
 	} // fallback
 	var s = converter.ConvertToUnicode(u);
 	var fin = converter.Finish();
-	return fin.length > 0 ? s+fin : s;
+	return fin.length > 0 ? s + fin : s;
 }
 
 //# convert unicode string to a format suitable for saving to file
@@ -62,7 +63,8 @@ function mozConvertUnicodeToUTF8(s)
 {
 	try {
 		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		var converter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"].createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
+		var converter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
+			.createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
 		converter.charset = "UTF-8";
 	} catch(ex) {
 		return manualConvertUnicodeToUTF8(s);
@@ -75,10 +77,10 @@ function mozConvertUnicodeToUTF8(s)
 function convertUnicodeToHtmlEntities(s)
 {
 	var re = /[^\u0000-\u007F]/g;
-	return s.replace(re,function($0) {return "&#" + $0.charCodeAt(0).toString() + ";";});
+	return s.replace(re, function($0) { return "&#" + $0.charCodeAt(0).toString() + ";"; });
 }
 
-function convertUriToUTF8(uri,charSet)
+function convertUriToUTF8(uri, charSet)
 {
 	if(window.netscape == undefined || charSet == undefined || charSet == "")
 		return uri;
@@ -88,7 +90,7 @@ function convertUriToUTF8(uri,charSet)
 	} catch(ex) {
 		return uri;
 	}
-	return converter.convertURISpecToUTF8(uri,charSet);
+	return converter.convertURISpecToUTF8(uri, charSet);
 }
 
 // deprecated helper for backward-compatibility with elder extensions

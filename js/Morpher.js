@@ -17,7 +17,7 @@
 //#       atEnd - final value (taking priority over the end value) (eg, for switching style.display)
 //#       template - template for formatString() for setting the property (eg "%0em", or "#%0")
 //#       callback - function to call when the animation has completed as callback(element,properties);
-function Morpher(element,duration,properties,callback)
+function Morpher(element, duration, properties, callback)
 {
 	this.element = element;
 	this.duration = duration;
@@ -29,14 +29,14 @@ function Morpher(element,duration,properties,callback)
 	return this;
 }
 
-Morpher.prototype.assignStyle = function(element,style,value)
+Morpher.prototype.assignStyle = function(element, style, value)
 {
 	switch(style) {
 	case "-tw-vertScroll":
-		window.scrollTo(findScrollX(),value);
+		window.scrollTo(findScrollX(), value);
 		break;
 	case "-tw-horizScroll":
-		window.scrollTo(value,findScrollY());
+		window.scrollTo(value, findScrollY());
 		break;
 	default:
 		element.style[style] = value;
@@ -46,30 +46,29 @@ Morpher.prototype.assignStyle = function(element,style,value)
 
 Morpher.prototype.stop = function()
 {
-	var t;
-	for(t=0; t<this.properties.length; t++) {
-		var p = this.properties[t];
+	for(var i = 0; i < this.properties.length; i++) {
+		var p = this.properties[i];
 		if(p.atEnd !== undefined) {
-			this.assignStyle(this.element,p.style,p.atEnd);
+			this.assignStyle(this.element, p.style, p.atEnd);
 		}
 	}
 	if(this.callback)
-		this.callback(this.element,this.properties);
+		this.callback(this.element, this.properties);
 };
 
 Morpher.prototype.tick = function()
 {
 	var currTime = Number(new Date());
-	var t,progress = Animator.slowInSlowOut(Math.min(1,(currTime-this.startTime)/this.duration));
-	for(t=0; t<this.properties.length; t++) {
-		var p = this.properties[t];
+	var i, progress = Animator.slowInSlowOut(Math.min(1, (currTime - this.startTime) / this.duration));
+	for(i = 0; i < this.properties.length; i++) {
+		var p = this.properties[i];
 		if(p.start !== undefined && p.end !== undefined) {
 			var template = p.template || "%0";
 			switch(p.format) {
 			case undefined:
 			case "style":
-				var v = p.start + (p.end-p.start) * progress;
-				this.assignStyle(this.element,p.style,template.format([v]));
+				var value = p.start + (p.end - p.start) * progress;
+				this.assignStyle(this.element, p.style, template.format([value]));
 				break;
 			case "color":
 				break;

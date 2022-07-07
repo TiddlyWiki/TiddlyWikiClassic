@@ -13,41 +13,40 @@
    - adapt core upgrade engine to external core
 */
 
-const joinPath = require('path').join;
-const fs = require('fs');
+const joinPath = require('path').join
+const fs = require('fs')
 const {
 	releaseVersion,
 	destinationRelativePath
-} = require('./build_settings.js');
+} = require('./build_settings.js')
 const {
 	makeSureFolderExists,
 	clearFolder,
 	cookTwIntoFolder,
-	fixupEmptyLinesInStoreArea
-} = require('./build_utils.js');
+} = require('./build_utils.js')
 
-const destinationPath = joinPath(__dirname, destinationRelativePath);
-makeSureFolderExists(destinationPath);
+const destinationPath = joinPath(__dirname, destinationRelativePath)
+makeSureFolderExists(destinationPath)
 
-console.log(`BUILD: clearing target folder: "${destinationRelativePath}"`);
-clearFolder(destinationPath);
-console.log();
+console.log(`BUILD: clearing target folder: "${destinationRelativePath}"`)
+clearFolder(destinationPath)
+console.log()
 
-console.log(`BUILD: assembling TIDDLYWIKI_EXTERNALJS.HTML`);
-let recipePath = joinPath(__dirname, '../recipes/tiddlywiki_externaljs.html.recipe');
-let output = cookTwIntoFolder(recipePath, destinationPath, 'tiddlywiki_externaljs.html');
-console.log(output);
+console.log(`BUILD: assembling TIDDLYWIKI_EXTERNALJS.HTML`)
+let recipePath = joinPath(__dirname, '../recipes/tiddlywiki_externaljs.html.recipe')
+let output = cookTwIntoFolder(recipePath, destinationPath, 'tiddlywiki_externaljs.html')
+console.log(output)
 
-console.log(`BUILD: assembling TWCORE.JS (v${releaseVersion})`);
-recipePath = joinPath(__dirname, '../recipes/tiddlywikinosaver.html.recipe');
-output = cookTwIntoFolder(recipePath, destinationPath, 'twcore.js', 'tiddlywiki2.externaljs.template.html');
-console.log(output);
+console.log(`BUILD: assembling TWCORE.JS (v${releaseVersion})`)
+recipePath = joinPath(__dirname, '../recipes/tiddlywikinosaver.html.recipe')
+output = cookTwIntoFolder(recipePath, destinationPath, 'twcore.js', 'tiddlywiki2.externaljs.template.html')
+console.log(output)
 
-console.log(`BUILD: copying JQUERY.JS`);
-fs.copyFileSync(joinPath(__dirname, '../jquery/jquery.js'), joinPath(destinationPath, 'jquery.js'));
-console.log(`BUILD: copying JQUERY.TWSTYLESHEET.JS`);
+console.log(`BUILD: copying JQUERY.JS`)
+fs.copyFileSync(joinPath(__dirname, '../jquery/jquery.js'), joinPath(destinationPath, 'jquery.js'))
+console.log(`BUILD: copying JQUERY.TWSTYLESHEET.JS`)
 fs.copyFileSync(joinPath(__dirname, '../jquery/plugins/jQuery.twStylesheet.js'),
-	joinPath(destinationPath, 'jQuery.twStylesheet.js'));
-console.log('');
+	joinPath(destinationPath, 'jQuery.twStylesheet.js'))
+console.log('')
 
-console.log('BUILD: done');
+console.log('BUILD: done')
