@@ -3,9 +3,24 @@
         "browser": true
     },
     "rules": {
+        "indent": ["error", "tab"],
         "block-spacing": "error",
         "comma-spacing": "error",
         "object-curly-spacing": ["error", "always"],
         "no-trailing-spaces": "error"
-    }
+    },
+    "overrides": [
+        {
+            "files": ["js/Version.js"],
+            "rules": {
+                "object-curly-spacing": ["error", "never"]
+            }
+        },
+        {
+            "files": ["build/*.js"],
+            "env": {
+                "es6": true
+            }
+        }
+    ]
 }

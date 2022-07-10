@@ -18,7 +18,7 @@ tiddlerToRssItem = function(tiddler, uri)
 	for(var i = 0; i < tiddler.tags.length; i++)
 		s += "<category>" + tiddler.tags[i] + "</category>\n";
 	s += "<link>" + uri + "#" + encodeURIComponent(String.encodeTiddlyLink(tiddler.title)) + "</link>\n";
-	s +="<pubDate>" + tiddler.modified.toGMTString() + "</pubDate>\n";
+	s += "<pubDate>" + tiddler.modified.toGMTString() + "</pubDate>\n";
 	return s;
 };
 
