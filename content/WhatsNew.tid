@@ -1,29 +1,46 @@
 created: 20120916031100000
 creator: ericshulman
-modified: 20130623221000000
-modifier: ericshulman
+modified: 20220710221000000
+modifier: Yakov Litvin
 tags: gettingstarted welcome
 title: WhatsNew
 type: text/x-tiddlywiki
 
-The changes between ~TiddlyWiki v2.8.0 and v2.8.1 correct several issues introduced with the new ~HTML5 "download" saving:
-*{{block{
-https://github.com/TiddlyWiki/tiddlywiki/pull/135
-''Critical fix to get ~TiddlyWiki 2.8.0 working on IE 6 and 7 (and 8)''
->IE8 and earlier do not define 'doctype' value, causing a "failure to load" problem during startup.  ''recreateOriginal() now checks for a valid doctype value to avoid the error.''
-}}}
-*{{block{
-https://github.com/TiddlyWiki/tiddlywiki/issues/136
-''International characters corrupted by ~TW280 'download saving' in Firefox''
->Firefox does some additional processing of "~URL-encoded" content that results in incorrect saving of international characters.  ''Content for download is now "base64-encoded" to prevent unwanted extra processing by Firefox.''
-}}}
-*{{block{
-https://github.com/TiddlyWiki/tiddlywiki/issues/137
-''Fallback manual download saving in ~TW280 displays two messages''
->Manual download saving displays a message ("RIGHT CLICK HERE to download...") as intended.  However, an extra message related to //automatic// ~HTML5-based download saving is then displayed immediately following the first message.  ''The extra message is no longer displayed.''
-}}}
-*{{block{
-https://github.com/TiddlyWiki/tiddlywiki/issues/139
-''tiddlywiki.com gives a Java warning''
->A change to the window.allowSave() test function in ~TW280 resulted in incorrect calculation of the 'readOnly' and 'useJavaSaver' flags at startup, resulting in an errant Java warning message when the document is viewed online.  ''A new test function, window.isLocal(), is now used to correctly calulate the startup flags.''
-}}}
+The [[release 2.9.3|https://github.com/TiddlyWiki/TiddlyWiki/releases/edit/v2.9.3]] starts the process of modernizing ~TiddlyWiki appearence and its infrastructure. Here's the summary of changes:
+
+Behavior improvements:
+* add href to prettyLinks to enable open in new tab and context menu
+* fix ctrl+tab inserting tab instead switching browser tabs when {{{chkInsertTabs}}} is enabled
+
+Appearence modernizing, more helpful messages:
+* increase line height in editor (improve readability)
+* code blocks: remove border, margin-left, fix code font size
+* annotations: remove borders, adjust paddings, margins
+* messageArea: remove border, add shadow; fix close message icon positioning for IE
+* tagged/tagging blocks on tiddler hover: hide borders
+* popups: improve paddings, remove border, add shadow
+* fix paddings in tags chooser when there are no tags to display
+* add sans-serif fallback to the main font
+* update "saved snapshot" error message with a more helpful link
+* make annotation of SystemSettings more helpful
+
+Fixes:
+* more flexible version detection and make sure (fix) any previous TW will detect version of the new core
+* revert of {{{messageArea}}} class and {{{.messageArea}}} selectors in CSS to restore backward compability
+
+Infrastructure:
+* introduce SuggestChangesPlugin, adapt docs for easier contributing to docs
+* added CD for quick and easy updating the site (also started, but not finished not finished: CI/CD for quicker releasing new versions)
+* introduce new build tools (run with npm), move them and docs into the main repository
+* introduce commit prefixes ({{{docs:}}}, {{{codestyle:}}}, {{{refactor:}}}, {{{fix:}}}, {{{infra:}}}, {{{feature:}}}), usage of the {{{dev}}} branch
+* update recipes and their folder structure, hide old unused ones
+* fix tests: typo in test/js/Version.js; fix encoding conversion, paths in Windows in loading/saving
+* introduce linter and first codestyle rules
+
+Docs got multiple improvements (special thanks to Mark Kerrigan for multiple inputs and also congratulations to Reto Stauss for his first commits). There's much more to do, but with the new infrastructure, the process has much less friction.
+
+There's also many codestyle and refactoring updates and more upcoming.
+
+Overall, this release creates a more solid ground for future improvements.
+
+The full changelog is available [[on github|https://github.com/TiddlyWiki/TiddlyWiki/pull/274#issuecomment-1166461319]].
