@@ -30,7 +30,11 @@ console.log(output)
 console.log(`BUILD: generating INDEX.XML (RSS feed) and static bits of INDEX.HTML`)
 process.env['TIDDLYWIKI_DESTINATION_PATH'] = destinationPath
 // filenames (index.html and index.xml) are hardcoded inside generate_rss.js
-output = exec('phantomjs '+ joinPath(__dirname, 'generate_rss_and_static.js'))
+try {
+	output = exec('phantomjs ' + joinPath(__dirname, 'generate_rss_and_static.js'))
+} catch (error) {
+	console.error('BUILD: generating RSS failed:', error)
+}
 console.log(output.toString())
 
 console.log('BUILD: done')
