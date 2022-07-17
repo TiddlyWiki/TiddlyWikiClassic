@@ -67,7 +67,7 @@ function ieCreatePath(path)
 	}
 
 	// Walk back down the path, creating folders
-	for(i = scan.length-1; i >= 0; i--) {
+	for(var i = scan.length - 1; i >= 0; i--) {
 		if(!fso.FolderExists(scan[i])) {
 			fso.CreateFolder(scan[i]);
 		}
@@ -121,17 +121,18 @@ function ieCopyFile(dest, source)
 // Returns null if it can't do it, false if there's an error, true if it saved OK
 function mozillaSaveFile(filePath, content)
 {
-	if(!window.Components)
-		return null;
+	if(!window.Components) return null;
 
 	content = mozConvertUnicodeToUTF8(content);
 	try {
 		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		var file = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+		var file = Components.classes["@mozilla.org/file/local;1"]
+			.createInstance(Components.interfaces.nsILocalFile);
 		file.initWithPath(filePath);
 		if(!file.exists())
 			file.create(0, 0x01B4);// 0x01B4 = 0664
-		var out = Components.classes["@mozilla.org/network/file-output-stream;1"].createInstance(Components.interfaces.nsIFileOutputStream);
+		var out = Components.classes["@mozilla.org/network/file-output-stream;1"]
+			.createInstance(Components.interfaces.nsIFileOutputStream);
 		out.init(file, 0x22, 0x04, null);
 		out.write(content, content.length);
 		out.flush();
@@ -146,8 +147,7 @@ function mozillaSaveFile(filePath, content)
 // Returns null if it can't do it, false if there's an error, or a string of the content if successful
 function mozillaLoadFile(filePath)
 {
-	if(!window.Components)
-		return null;
+	if(!window.Components) return null;
 
 	try {
 		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
@@ -155,9 +155,11 @@ function mozillaLoadFile(filePath)
 		file.initWithPath(filePath);
 		if(!file.exists())
 			return null;
-		var inputStream = Components.classes["@mozilla.org/network/file-input-stream;1"].createInstance(Components.interfaces.nsIFileInputStream);
+		var inputStream = Components.classes["@mozilla.org/network/file-input-stream;1"]
+			.createInstance(Components.interfaces.nsIFileInputStream);
 		inputStream.init(file, 0x01, 0x04, null);
-		var sInputStream = Components.classes["@mozilla.org/scriptableinputstream;1"].createInstance(Components.interfaces.nsIScriptableInputStream);
+		var sInputStream = Components.classes["@mozilla.org/scriptableinputstream;1"]
+			.createInstance(Components.interfaces.nsIScriptableInputStream);
 		sInputStream.init(inputStream);
 		var contents = sInputStream.read(sInputStream.available());
 		sInputStream.close();
@@ -179,12 +181,10 @@ function javaUrlToFilename(url)
 }
 
 /*
- *
  * in between when the applet has been started
  * and the user has given permission to run the applet
  * we get an applet object, but it doesn't have the methods
  * we expect yet.
- *
  */
 var LOG_TIDDLYSAVER = true;
 function logTiddlySaverException(msg, ex)
@@ -199,7 +199,7 @@ function logTiddlySaverException(msg, ex)
 	}
 }
 
-function javaDebugInformation ()
+function javaDebugInformation()
 {
 	var applet = document.applets['TiddlySaver'];
 	var what = [
@@ -218,19 +218,20 @@ function javaDebugInformation ()
 	}
 
 	return jQuery.map(what, function (item) { return formatItem.apply(this, item) })
-			.join('\n\n')
+		.join('\n\n')
 }
 
 function javaSaveFile(filePath, content)
 {
+	if(!filePath) return null;
 	var applet = document.applets['TiddlySaver'];
-	try {
-		if (applet && filePath)
+	if(applet) {
+		try {
 			return applet.saveFile(javaUrlToFilename(filePath), "UTF-8", content);
-	} catch(ex) {
-		logTiddlySaverException("javaSaveFile", ex);
+		} catch(ex) {
+			logTiddlySaverException("javaSaveFile", ex);
+		}
 	}
-	// is this next block working anywhere ? -- grmble
 	try {
 		var s = new java.io.PrintStream(new java.io.FileOutputStream(javaUrlToFilename(filePath)));
 		s.print(content);
@@ -243,16 +244,16 @@ function javaSaveFile(filePath, content)
 
 function javaLoadFile(filePath)
 {
+	if(!filePath) return null;
 	var applet = document.applets['TiddlySaver'];
-	try {
-		if (applet && filePath) {
+	if(applet) {
+		try {
 			var value = applet.loadFile(javaUrlToFilename(filePath), "UTF-8");
 			return !value ? null : String(value);
+		} catch(ex) {
+			logTiddlySaverException("javaLoadFile", ex);
 		}
-	} catch(ex) {
-		logTiddlySaverException("javaLoadFile", ex);
 	}
-	// is this next block working anywhere ? -- grmble
 	var content = [];
 	try {
 		var r = new java.io.BufferedReader(new java.io.FileReader(javaUrlToFilename(filePath)));
@@ -280,7 +281,9 @@ function HTML5DownloadSaveFile(filePath, content)
 	link.setAttribute("target", "_blank");
 	link.setAttribute("href", uri);
 	link.setAttribute("download", filename);
-	document.body.appendChild(link); link.click(); document.body.removeChild(link);
+	document.body.appendChild(link);
+	link.click();
+	document.body.removeChild(link);
 	return true;
 }
 
@@ -315,7 +318,7 @@ function encodeBase64(data)
 	var out = "";
 	var chr1, chr2, chr3 = "";
 	var enc1, enc2, enc3, enc4 = "";
-	for (var count = 0, i = 0; i < data.length; )
+	for (var i = 0; i < data.length; )
 	{
 		chr1 = data.charCodeAt(i++);
 		chr2 = data.charCodeAt(i++);
