@@ -7,6 +7,10 @@
         "block-spacing": "error",
         "comma-spacing": "error",
         "object-curly-spacing": ["error", "always"],
+        "key-spacing": ["error", {
+            "mode": "minimum",
+            "afterColon": true
+        }],
         "no-trailing-spaces": "error"
     },
     "overrides": [

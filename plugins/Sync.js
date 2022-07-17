@@ -49,13 +49,13 @@ merge(config.macros.sync, {
 	hasChanged: "Changed while unplugged",
 	hasNotChanged: "Unchanged while unplugged",
 	syncStatusList: {
-		none: { text: "...", display:'none', className:'notChanged' },
-		changedServer: { text: "Changed on server", display:null, className:'changedServer' },
-		changedLocally: { text: "Changed while unplugged", display:null, className:'changedLocally' },
-		changedBoth: { text: "Changed while unplugged and on server", display:null, className:'changedBoth' },
-		notFound: { text: "Not found on server", display:null, className:'notFound' },
-		putToServer: { text: "Saved update on server", display:null, className:'putToServer' },
-		gotFromServer: { text: "Retrieved update from server", display:null, className:'gotFromServer' }
+		none: { text: "...", display: 'none', className: 'notChanged' },
+		changedServer: { text: "Changed on server", display: null, className: 'changedServer' },
+		changedLocally: { text: "Changed while unplugged", display: null, className: 'changedLocally' },
+		changedBoth: { text: "Changed while unplugged and on server", display: null, className: 'changedBoth' },
+		notFound: { text: "Not found on server", display: null, className: 'notFound' },
+		putToServer: { text: "Saved update on server", display: null, className: 'putToServer' },
+		gotFromServer: { text: "Retrieved update from server", display: null, className: 'gotFromServer' }
 	}
 });
 
@@ -277,7 +277,7 @@ config.macros.sync.createSyncTask = function(syncItem)
 		return false;
 	};
 
-	var context = { host:st.serverHost, workspace:st.serverWorkspace };
+	var context = { host: st.serverHost, workspace: st.serverWorkspace };
 	syncItem.adaptor.openHost(st.serverHost);
 	syncItem.adaptor.openWorkspace(st.serverWorkspace, context, st.syncItems, openWorkspaceCallback);
 	return st;
