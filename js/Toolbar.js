@@ -7,8 +7,9 @@
 //#  command - reference to config.commands[] member -or- name of member
 //#  tiddler - reference to tiddler that toolbar applies to
 //#  className - the class to give the button
-config.macros.toolbar.createCommand = function(place,commandName,tiddler,className)
+config.macros.toolbar.createCommand = function(place, commandName, tiddler, className)
 {
+	if(!(tiddler instanceof Tiddler)) return;
 	if(typeof commandName != "string") {
 		var c = null;
 		for(var name in config.commands) {
@@ -17,21 +18,21 @@ config.macros.toolbar.createCommand = function(place,commandName,tiddler,classNa
 		}
 		commandName = c;
 	}
-	if((tiddler instanceof Tiddler) && (typeof commandName == "string")) {
-		var command = config.commands[commandName];
-		if(command.isEnabled ? command.isEnabled(tiddler) : this.isCommandEnabled(command,tiddler)) {
-			var text = command.getText ? command.getText(tiddler) : this.getCommandText(command,tiddler);
-			var tooltip = command.getTooltip ? command.getTooltip(tiddler) : this.getCommandTooltip(command,tiddler);
-			var cmd = command.type == "popup" ? this.onClickPopup : this.onClickCommand;
-			var btn = createTiddlyButton(place, text, tooltip, cmd, null, null, null, {
-				commandName: commandName,
-				tiddler: tiddler.title
-			});
-			jQuery(btn).addClass("command_" + commandName);
-			if(className)
-				jQuery(btn).addClass(className);
-		}
-	}
+	if(typeof commandName != "string") return;
+	var command = config.commands[commandName];
+	if(command.isEnabled ? !command.isEnabled(tiddler) : !this.isCommandEnabled(command, tiddler))
+		return;
+
+	var text = command.getText ? command.getText(tiddler) : this.getCommandText(command, tiddler);
+	var tooltip = command.getTooltip ? command.getTooltip(tiddler) : this.getCommandTooltip(command, tiddler);
+	var cmd = command.type == "popup" ? this.onClickPopup : this.onClickCommand;
+	var btn = createTiddlyButton(place, text, tooltip, cmd, null, null, null, {
+		commandName: commandName,
+		tiddler: tiddler.title
+	});
+	jQuery(btn).addClass("command_" + commandName);
+	if(className)
+		jQuery(btn).addClass(className);
 };
 
 config.macros.toolbar.isCommandEnabled = function(command, tiddler)
