@@ -10,7 +10,7 @@ config.formatters = [
 		rowTermRegExp: /(\|(?:[fhck]?)$\n?)/mg,
 		cellRegExp: /(?:\|([^\n\|]*)\|)|(\|[fhck]?$\n?)/mg,
 		cellTermRegExp: /((?:\x20*)\|)/mg,
-		rowTypes: { "c":"caption", "h":"thead", "":"tbody", "f":"tfoot" },
+		rowTypes: { "c": "caption", "h": "thead", "": "tbody", "f": "tfoot" },
 		handler: function(w)
 		{
 			var table = createTiddlyElement(w.output, "table", null, "twtable");
@@ -106,7 +106,7 @@ config.formatters = [
 						cell = createTiddlyElement(e, "td");
 					}
 					prevCell = cell;
-					prevColumns[col] = { rowSpanCount:1, element:cell };
+					prevColumns[col] = { rowSpanCount: 1, element: cell };
 					if(colSpanCount > 1) {
 						cell.setAttribute("colspan", colSpanCount);
 						cell.setAttribute("colSpan", colSpanCount); // Needed for IE

@@ -15,7 +15,7 @@ function ajaxReq(args)
 function localAjax(args)
 {
 	var success = function(data) {
-		args.success(data, "success", { responseText:data });
+		args.success(data, "success", { responseText: data });
 	};
 	var failure = function(who) {
 		args.error({ message: who + ": cannot read local file" }, "error", 0);

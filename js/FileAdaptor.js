@@ -44,7 +44,7 @@ FileAdaptor.loadTiddlyWikiError = function(context, jqXHR)
 FileAdaptor.prototype.getWorkspaceList = function(context, userParams, callback)
 {
 	context = this.setContext(context, userParams, callback);
-	context.workspaces = [{title:"(default)"}];
+	context.workspaces = [{ title: "(default)" }];
 	context.status = true;
 	if(callback)
 		window.setTimeout(function() { callback(context, userParams); }, 10);
