@@ -13,41 +13,47 @@ TiddlyWiki.checkFieldName = function(name)
 		throw config.messages.invalidFieldName.format([name]);
 };
 
-function StringFieldAccess(n,readOnly)
+function StringFieldAccess(fName, readOnly)
 {
 	this.set = readOnly ?
-			function(t,v) {if(v != t[n]) throw config.messages.fieldCannotBeChanged.format([n]);} :
-			function(t,v) {if(v != t[n]) {t[n] = v; return true;}};
-	this.get = function(t) {return t[n];};
+		function(tiddler, newValue) {
+			if(newValue != tiddler[fName]) throw config.messages.fieldCannotBeChanged.format([fName]);
+		} :
+		function(tiddler, newValue) {
+			if(newValue == tiddler[fName]) return;
+			tiddler[fName] = newValue;
+			return true;
+		};
+	this.get = function(tiddler) { return tiddler[fName] };
 }
 
-function DateFieldAccess(n)
+function DateFieldAccess(fName)
 {
-	this.set = function(t,v) {
-		var d = v instanceof Date ? v : Date.convertFromYYYYMMDDHHMM(v);
-		if(d != t[n]) {
-			t[n] = d; return true;
-		}
+	this.set = function(tiddler, newValue) {
+		var d = newValue instanceof Date ? newValue : Date.convertFromYYYYMMDDHHMM(newValue);
+		if(d == tiddler[fName]) return;
+		tiddler[fName] = d;
+		return true;
 	};
-	this.get = function(t) {return t[n].convertToYYYYMMDDHHMM();};
+	this.get = function(tiddler) { return tiddler[fName].convertToYYYYMMDDHHMM() };
 }
 
-function LinksFieldAccess(n)
+function LinksFieldAccess(fName)
 {
-	this.set = function(t,v) {
-		var s = (typeof v == "string") ? v.readBracketedList() : v;
-		if(s.toString() != t[n].toString()) {
-			t[n] = s; return true;
-		}
+	this.set = function(tiddler, newValue) {
+		var items = (typeof newValue == "string") ? newValue.readBracketedList() : newValue;
+		if(items.toString() == tiddler[fName].toString()) return;
+		tiddler[fName] = items;
+		return true;
 	};
-	this.get = function(t) {return String.encodeTiddlyLinkList(t[n]);};
+	this.get = function(tiddler) { return String.encodeTiddlyLinkList(tiddler[fName]) };
 }
 
 TiddlyWiki.standardFieldAccess = {
 	// The set functions return true when setting the data has changed the value.
-	"title":    new StringFieldAccess("title",true),
+	"title":    new StringFieldAccess("title", true),
 	// Handle the "tiddler" field name as the title
-	"tiddler":  new StringFieldAccess("title",true),
+	"tiddler":  new StringFieldAccess("title", true),
 	"text":     new StringFieldAccess("text"),
 	"modifier": new StringFieldAccess("modifier"),
 	"modified": new DateFieldAccess("modified"),
@@ -66,22 +72,20 @@ TiddlyWiki.isStandardField = function(name)
 // Setting a namespace to undefined removes all fields of that namespace.
 // The fieldName is case-insensitive.
 // All values will be converted to a string value.
-TiddlyWiki.prototype.setValue = function(tiddler,fieldName,value)
+TiddlyWiki.prototype.setValue = function(tiddlerOrTitle, fieldName, value)
 {
 	TiddlyWiki.checkFieldName(fieldName);
-	var t = this.resolveTiddler(tiddler);
-	if(!t)
-		return;
+	var t = this.resolveTiddler(tiddlerOrTitle);
+	if(!t) return;
+
 	fieldName = fieldName.toLowerCase();
 	var isRemove = (value === undefined) || (value === null);
 	var accessor = TiddlyWiki.standardFieldAccess[fieldName];
 	if(accessor) {
-		if(isRemove)
-			// don't remove StandardFields
-			return;
-		var h = TiddlyWiki.standardFieldAccess[fieldName];
-		if(!h.set(t,value))
-			return;
+		// don't remove StandardFields
+		if(isRemove) return;
+		var accessor = TiddlyWiki.standardFieldAccess[fieldName];
+		if(!accessor.set(t, value)) return;
 	} else {
 		var oldValue = t.fields[fieldName];
 		if(isRemove) {
@@ -92,29 +96,27 @@ TiddlyWiki.prototype.setValue = function(tiddler,fieldName,value)
 				// no concrete value is defined for the fieldName
 				// so we guess this is a namespace path.
 				// delete all fields in a namespace
-				var re = new RegExp("^"+fieldName+"\\.");
+				var re = new RegExp("^" + fieldName + "\\.");
 				var dirty = false;
-				var n;
-				for(n in t.fields) {
+				for(var n in t.fields) {
 					if(n.match(re)) {
 						delete t.fields[n];
 						dirty = true;
 					}
 				}
-				if(!dirty)
-					return;
+				if(!dirty) return;
 			}
 		} else {
 			// the "normal" set case. value is defined (not null/undefined)
-			// For convenience provide a nicer conversion Date->String
+			// For convenience convert Date -> String
 			value = value instanceof Date ? value.convertToYYYYMMDDHHMMSSMMM() : String(value);
-			if(oldValue == value)
-				return;
+			if(oldValue == value) return;
 			t.fields[fieldName] = value;
 		}
 	}
+
 	// When we are here the tiddler/store really was changed.
-	this.notify(t.title,true);
+	this.notify(t.title, true);
 	if(!fieldName.match(/^temp\./))
 		this.setDirty(true);
 };
@@ -122,21 +124,21 @@ TiddlyWiki.prototype.setValue = function(tiddler,fieldName,value)
 // Returns the value of the given field of the tiddler.
 // The fieldName is case-insensitive.
 // Will only return String values (or undefined).
-TiddlyWiki.prototype.getValue = function(tiddler,fieldName)
+TiddlyWiki.prototype.getValue = function(tiddlerOrTitle, fieldName)
 {
-	var t = this.resolveTiddler(tiddler);
-	if(!t)
-		return undefined;
-	if(fieldName.indexOf(config.textPrimitives.sectionSeparator) === 0 || fieldName.indexOf(config.textPrimitives.sliceSeparator) === 0) {
-		var sliceType = fieldName.substr(0, 2);
-		var sliceName = fieldName.substring(2);
-		return store.getTiddlerText("%0%1%2".format(t.title,sliceType,sliceName));
+	var t = this.resolveTiddler(tiddlerOrTitle);
+	if(!t) return undefined;
+
+	if(fieldName.indexOf(config.textPrimitives.sectionSeparator) === 0 ||
+	   fieldName.indexOf(config.textPrimitives.sliceSeparator) === 0
+	) {
+		var separator = fieldName.substr(0, 2);
+		var partName = fieldName.substring(2);
+		return store.getTiddlerText(t.title + separator + partName);
 	} else {
 		fieldName = fieldName.toLowerCase();
 		var accessor = TiddlyWiki.standardFieldAccess[fieldName];
-		if(accessor) {
-			return accessor.get(t);
-		}
+		if(accessor) return accessor.get(t);
 	}
 	return t.fields[fieldName];
 };
@@ -145,28 +147,26 @@ TiddlyWiki.prototype.getValue = function(tiddler,fieldName)
 // When callback function returns a non-false value the iteration stops
 // and that value is returned.
 // The order of the fields is not defined.
-// @param callback a function(tiddler,fieldName,value).
-TiddlyWiki.prototype.forEachField = function(tiddler,callback,onlyExtendedFields)
+// @param callback a function(tiddler, fieldName, value).
+TiddlyWiki.prototype.forEachField = function(tiddlerOrTitle, callback, onlyExtendedFields)
 {
-	var t = this.resolveTiddler(tiddler);
-	if(!t)
-		return undefined;
-	var n,result;
-	for(n in t.fields) {
-		result = callback(t,n,t.fields[n]);
-		if(result)
-			return result;
-		}
-	if(onlyExtendedFields)
-		return undefined;
-	for(n in TiddlyWiki.standardFieldAccess) {
-		if(n != "tiddler") {
-			// even though the "title" field can also be referenced through the name "tiddler"
-			// we only visit this field once.
-			result = callback(t,n,TiddlyWiki.standardFieldAccess[n].get(t));
-			if(result)
-				return result;
-		}
+	var t = this.resolveTiddler(tiddlerOrTitle);
+	if(!t) return undefined;
+
+	var name, result;
+	for(name in t.fields) {
+		result = callback(t, name, t.fields[name]);
+		if(result) return result;
+	}
+
+	if(onlyExtendedFields) return undefined;
+	for(name in TiddlyWiki.standardFieldAccess) {
+		// even though the "title" field can also be referenced through the name "tiddler"
+		// we only visit this field once.
+		if(name == "tiddler") continue;
+
+		result = callback(t, name, TiddlyWiki.standardFieldAccess[name].get(t));
+		if(result) return result;
 	}
 	return undefined;
 };
