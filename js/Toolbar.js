@@ -11,10 +11,9 @@ config.macros.toolbar.createCommand = function(place,commandName,tiddler,classNa
 {
 	if(typeof commandName != "string") {
 		var c = null;
-		var t;
-		for(t in config.commands) {
-			if(config.commands[t] == commandName)
-				c = t;
+		for(var name in config.commands) {
+			if(config.commands[name] == commandName)
+				c = name;
 		}
 		commandName = c;
 	}
@@ -24,31 +23,32 @@ config.macros.toolbar.createCommand = function(place,commandName,tiddler,classNa
 			var text = command.getText ? command.getText(tiddler) : this.getCommandText(command,tiddler);
 			var tooltip = command.getTooltip ? command.getTooltip(tiddler) : this.getCommandTooltip(command,tiddler);
 			var cmd = command.type == "popup" ? this.onClickPopup : this.onClickCommand;
-			var btn = createTiddlyButton(null,text,tooltip,cmd);
-			btn.setAttribute("commandName",commandName);
-			btn.setAttribute("tiddler",tiddler.title);
+			var btn = createTiddlyButton(place, text, tooltip, cmd, null, null, null, {
+				commandName: commandName,
+				tiddler: tiddler.title
+			});
 			jQuery(btn).addClass("command_" + commandName);
 			if(className)
 				jQuery(btn).addClass(className);
-			place.appendChild(btn);
 		}
 	}
 };
 
-config.macros.toolbar.isCommandEnabled = function(command,tiddler)
+config.macros.toolbar.isCommandEnabled = function(command, tiddler)
 {
 	var title = tiddler.title;
-	var ro = tiddler.isReadOnly();
 	var shadow = store.isShadowTiddler(title) && !store.tiddlerExists(title);
-	return (!ro || (ro && !command.hideReadOnly)) && !(shadow && command.hideShadow);
+	if(shadow && command.hideShadow) return false;
+	var ro = tiddler.isReadOnly();
+	return !ro || (ro && !command.hideReadOnly);
 };
 
-config.macros.toolbar.getCommandText = function(command,tiddler)
+config.macros.toolbar.getCommandText = function(command, tiddler)
 {
 	return (tiddler.isReadOnly() && command.readOnlyText) || command.text;
 };
 
-config.macros.toolbar.getCommandTooltip = function(command,tiddler)
+config.macros.toolbar.getCommandTooltip = function(command, tiddler)
 {
 	return (tiddler.isReadOnly() && command.readOnlyTooltip) || command.tooltip;
 };
@@ -59,7 +59,7 @@ config.macros.toolbar.onClickCommand = function(ev)
 	e.cancelBubble = true;
 	if(e.stopPropagation) e.stopPropagation();
 	var command = config.commands[this.getAttribute("commandName")];
-	return command.handler(e,this,this.getAttribute("tiddler"));
+	return command.handler(e, this, this.getAttribute("tiddler"));
 };
 
 config.macros.toolbar.onClickPopup = function(ev)
@@ -68,24 +68,23 @@ config.macros.toolbar.onClickPopup = function(ev)
 	e.cancelBubble = true;
 	if(e.stopPropagation) e.stopPropagation();
 	var popup = Popup.create(this);
-	var command = config.commands[this.getAttribute("commandName")];
 	var title = this.getAttribute("tiddler");
-	popup.setAttribute("tiddler",title);
-	command.handlePopup(popup,title);
+	popup.setAttribute("tiddler", title);
+	var command = config.commands[this.getAttribute("commandName")];
+	command.handlePopup(popup, title);
 	Popup.show();
 	return false;
 };
 
 // Invoke the first command encountered from a given place that is tagged with a specified class
-config.macros.toolbar.invokeCommand = function(place,className,event)
+config.macros.toolbar.invokeCommand = function(place, className, event)
 {
 	var children = place.getElementsByTagName("a");
-	var t;
-	for(t=0; t<children.length; t++) {
-		var c = children[t];
+	for(var i = 0; i < children.length; i++) {
+		var c = children[i];
 		if(jQuery(c).hasClass(className) && c.getAttribute && c.getAttribute("commandName")) {
 			if(c.onclick instanceof Function)
-				c.onclick.call(c,event);
+				c.onclick.call(c, event);
 			break;
 		}
 	}
@@ -108,33 +107,32 @@ config.macros.toolbar.onClickLess = function(ev)
 	return false;
 };
 
-config.macros.toolbar.handler = function(place,macroName,params,wikifier,paramString,tiddler)
+config.macros.toolbar.handler = function(place, macroName, params, wikifier, paramString, tiddler)
 {
-	var t;
-	for(t=0; t<params.length; t++) {
+	for(var i = 0; i < params.length; i++) {
 		var btn;
-		var c = params[t];
+		var c = params[i];
 		switch(c) {
 		case "!":
-			createTiddlyText(place,this.separator);
+			createTiddlyText(place, this.separator);
 			break;
 		case "*":
-			createTiddlyElement(place,"br");
+			createTiddlyElement(place, "br");
 			break;
 		case "<":
-			btn = createTiddlyButton(place,this.lessLabel,this.lessPrompt,config.macros.toolbar.onClickLess);
+			btn = createTiddlyButton(place, this.lessLabel, this.lessPrompt, config.macros.toolbar.onClickLess);
 			jQuery(btn).addClass("lessCommand");
 			break;
 		case ">":
-			btn = createTiddlyButton(place,this.moreLabel,this.morePrompt,config.macros.toolbar.onClickMore);
+			btn = createTiddlyButton(place, this.moreLabel, this.morePrompt, config.macros.toolbar.onClickMore);
 			jQuery(btn).addClass("moreCommand");
-			var e = createTiddlyElement(place,"span",null,"moreCommand");
-			e.style.display = "none";
-			place = e;
+			//# hidden container for more commands, put next commands there
+			place = createTiddlyElement(place, "span", null, "moreCommand");
+			place.style.display = "none";
 			break;
 		default:
 			var className = "";
-			switch(c.substr(0,1)) {
+			switch(c.substr(0, 1)) {
 			case "+":
 				className = "defaultCommand";
 				c = c.substr(1);
@@ -145,9 +143,9 @@ config.macros.toolbar.handler = function(place,macroName,params,wikifier,paramSt
 				break;
 			}
 			if(config.commands[c]) {
-				this.createCommand(place,c,tiddler,className);
+				this.createCommand(place, c, tiddler, className);
 			} else {
-				this.customCommand(place,c,wikifier,tiddler);
+				this.customCommand(place, c, wikifier, tiddler);
 			}
 			break;
 		}
