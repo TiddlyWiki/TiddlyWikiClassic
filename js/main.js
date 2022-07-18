@@ -44,7 +44,7 @@ if(!window || !window.console) {
 function main()
 {
 //#	save loaded document HTML before making changes
-	window.originalHTML=recreateOriginal();
+	window.originalHTML = recreateOriginal();
 
 	var t10, t9, t8, t7, t6, t5, t4, t3, t2, t1, t0 = new Date();
 	startingUp = true;
@@ -79,9 +79,9 @@ function main()
 	story.switchTheme(config.options.txtTheme);
 	showBackstage = showBackstage !== undefined ? showBackstage : !readOnly;
 	t6 = new Date();
-	for(var m in config.macros) {
-		if(config.macros[m].init)
-			config.macros[m].init();
+	for(var name in config.macros) {
+		if(config.macros[name].init)
+			config.macros[name].init();
 	}
 	t7 = new Date();
 	store.notifyAll();
