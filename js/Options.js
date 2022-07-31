@@ -4,34 +4,34 @@
 
 config.optionHandlers = {
 	'txt': {
-		get: function(name) {return encodeCookie(config.options[name].toString());},
-		set: function(name,value) {config.options[name] = decodeCookie(value);}
+		get: function(name) { return encodeCookie(config.options[name].toString()) },
+		set: function(name, value) { config.options[name] = decodeCookie(value) }
 	},
 	'chk': {
-		get: function(name) {return config.options[name] ? 'true' : 'false';},
-		set: function(name,value) {config.options[name] = value == 'true';}
+		get: function(name) { return config.options[name] ? 'true' : 'false' },
+		set: function(name, value) { config.options[name] = value == 'true' }
 	}
 };
 
-function setOption(name,value)
+function setOption(name, value)
 {
-	var optType = name.substr(0,3);
+	var optType = name.substr(0, 3);
 	if(config.optionHandlers[optType] && config.optionHandlers[optType].set)
-		config.optionHandlers[optType].set(name,value);
+		config.optionHandlers[optType].set(name, value);
 }
 
 // Gets the value of an option as a string. Most code should just read from config.options.* directly
 function getOption(name)
 {
-	var optType = name.substr(0,3);
-	return config.optionHandlers[optType] && config.optionHandlers[optType].get ? config.optionHandlers[optType].get(name) : null;
+	var optType = name.substring(0, 3);
+	return config.optionHandlers[optType] && config.optionHandlers[optType].get ?
+		config.optionHandlers[optType].get(name) : null;
 }
 
 //# Loads config.options from cookies and SystemSettings
 function loadOptions()
 {
-	if(safeMode)
-		return;
+	if(safeMode) return;
 	loadCookies();
 	loadSystemSettings();
 }
@@ -41,12 +41,12 @@ var loadOptionsCookie = loadOptions;
 function getCookies()
 {
 	var cookieList = document.cookie.split(';');
-	var i,cookies = {};
-	for(i=0; i<cookieList.length; i++) {
+	var i, cookies = {};
+	for(i = 0; i < cookieList.length; i++) {
 		var p = cookieList[i].indexOf('=');
 		if(p != -1) {
-			var name = cookieList[i].substr(0,p).trim();
-			var value = cookieList[i].substr(p+1).trim();
+			var name = cookieList[i].substring(0, p).trim();
+			var value = cookieList[i].substring(p + 1).trim();
 			cookies[name] = value;
 		}
 	}
@@ -55,16 +55,18 @@ function getCookies()
 
 function loadCookies()
 {
-	var i,cookies = getCookies();
+	var i, cookies = getCookies();
 	if(cookies['TiddlyWikiClassicOptions']) // TW291 and later //#159
-		cookies = cookies['TiddlyWikiClassicOptions'].replace(/%22/g,'"').replace(/%25/g,'%').decodeHashMap(); // #159
+		cookies = cookies['TiddlyWikiClassicOptions'].replace(/%22/g, '"').replace(/%25/g, '%').decodeHashMap(); // #159
+	//# backward compatibility bits
 	else if(cookies['TiddlyWikiOptions']) // TW290 beta //#159
-		cookies = cookies['TiddlyWikiOptions'].replace(/%25/g,'%').decodeHashMap(); // #159
+		cookies = cookies['TiddlyWikiOptions'].replace(/%25/g, '%').decodeHashMap(); // #159
 	else if(cookies['TiddlyWiki']) // TW281 and earlier
 		cookies = cookies['TiddlyWiki'].decodeHashMap();
+
 	for(i in cookies) {
 		if(config.optionsSource[i] != 'setting') {
-			setOption(i,cookies[i]);
+			setOption(i, cookies[i]);
 		}
 	}
 }
@@ -74,7 +76,7 @@ function loadSystemSettings()
 	var key,settings = store.calcAllSlices('SystemSettings');
 	config.optionsSource = {};
 	for(key in settings) {
-		setOption(key,settings[key]);
+		setOption(key, settings[key]);
 		config.optionsSource[key] = 'setting';
 	}
 }
@@ -89,8 +91,7 @@ function onSystemSettingsChange()
 
 function saveOption(name)
 {
-	if(safeMode)
-		return;
+	if(safeMode) return;
 	if(name.match(/[()\s]/g, '_')) {
 		alert(config.messages.invalidCookie.format([name]));
 		return;
@@ -110,7 +111,7 @@ function removeCookie(name)
 
 function saveCookie(name)
 {
-	var key,cookies = {};
+	var key, cookies = {};
 	for(key in config.options) {
 		var value = getOption(key);
 		value = value == null ? 'false' : value;
@@ -118,7 +119,7 @@ function saveCookie(name)
 	}
 	// TW291 and later (#159)
 	document.cookie = 'TiddlyWikiClassicOptions='
-		+ String.encodeHashMap(cookies).replace(/%/g,'%25').replace(/"/g,'%22')
+		+ String.encodeHashMap(cookies).replace(/%/g, '%25').replace(/"/g, '%22')
 		+ '; expires=Fri, 1 Jan 2038 12:00:00 UTC; path=/';
 	cookies = getCookies();
 	var c;
@@ -141,10 +142,10 @@ function commitSystemSettings(storeWasDirty)
 	}, 1000);
 }
 
-function saveSystemSetting(name,saveFile)
+function saveSystemSetting(name, saveFile)
 {
 	var title = 'SystemSettings';
-	var slice = store.getTiddlerSlice(title,name);
+	var slice = store.getTiddlerSlice(title, name);
 	if(readOnly || slice === getOption(name)) {
 		return; //# don't save if read-only or the option hasn't changed
 	}
@@ -158,7 +159,7 @@ function saveSystemSetting(name,saveFile)
 	}
 	var text = [];
 	for(key in slices) {
-		text.push('%0: %1'.format([key,slices[key]]));
+		text.push('%0: %1'.format([key, slices[key]]));
 	}
 	text = text.sort().join('\n');
 	var storeWasDirty = store.isDirty();
@@ -167,7 +168,7 @@ function saveSystemSetting(name,saveFile)
 		tiddler.text = text;
 		tiddler = store.saveTiddler(tiddler);
 	} else {
-		tiddler = store.saveTiddler(title,title,text,'System',new Date(),['excludeLists'],config.defaultCustomFields);
+		tiddler = store.saveTiddler(title, title, text, 'System', new Date(), ['excludeLists'], config.defaultCustomFields);
 	}
 	if(saveFile) {
 		commitSystemSettings(storeWasDirty);
@@ -210,10 +211,10 @@ config.macros.option.genericOnChange = function(e)
 {
 	var opt = this.getAttribute('option');
 	if(opt) {
-		var optType = opt.substr(0,3);
+		var optType = opt.substring(0, 3);
 		var handler = config.macros.option.types[optType];
 		if(handler.elementType && handler.valueField)
-			config.macros.option.propagateOption(opt,handler.valueField,this[handler.valueField],handler.elementType,this);
+			config.macros.option.propagateOption(opt, handler.valueField, this[handler.valueField], handler.elementType, this);
 	}
 	return true;
 };
@@ -238,7 +239,7 @@ config.macros.option.types = {
 	}
 };
 
-config.macros.option.propagateOption = function(opt,valueField,value,elementType,elem)
+config.macros.option.propagateOption = function(opt, valueField, value, elementType, elem)
 {
 	config.options[opt] = value;
 	saveOption(opt);
@@ -262,26 +263,26 @@ config.macros.option.handler = function(place,macroName,params,wikifier,paramStr
 		h.create(place,type,opt,className,desc);
 };
 
-config.macros.options.handler = function(place,macroName,params,wikifier,paramString)
+config.macros.options.handler = function(place, macroName, params, wikifier, paramString)
 {
-	params = paramString.parseParams('anon',null,true,false,false);
-	var showUnknown = getParam(params,'showUnknown','no');
+	params = paramString.parseParams('anon', null, true, false, false);
+	var showUnknown = getParam(params, 'showUnknown', 'no');
 	var wizard = new Wizard();
-	wizard.createWizard(place,this.wizardTitle);
-	wizard.addStep(this.step1Title,this.step1Html);
+	wizard.createWizard(place, this.wizardTitle);
+	wizard.addStep(this.step1Title, this.step1Html);
 	var markList = wizard.getElement('markList');
 	var chkUnknown = wizard.getElement('chkUnknown');
 	chkUnknown.checked = showUnknown == 'yes';
 	chkUnknown.onchange = this.onChangeUnknown;
 	var listWrapper = document.createElement('div');
-	markList.parentNode.insertBefore(listWrapper,markList);
-	wizard.setValue('listWrapper',listWrapper);
-	this.refreshOptions(listWrapper,showUnknown == 'yes');
+	markList.parentNode.insertBefore(listWrapper, markList);
+	wizard.setValue('listWrapper', listWrapper);
+	this.refreshOptions(listWrapper, showUnknown == 'yes');
 };
 
-config.macros.options.refreshOptions = function(listWrapper,showUnknown)
+config.macros.options.refreshOptions = function(listWrapper, showUnknown)
 {
-	var n,opts = [];
+	var n, opts = [];
 	for(n in config.options) {
 		var opt = {};
 		opt.option = '';
@@ -292,9 +293,9 @@ config.macros.options.refreshOptions = function(listWrapper,showUnknown)
 			opts.push(opt);
 	}
 	opts.sort(function(a,b) {return a.name.substr(3) < b.name.substr(3) ? -1 : (a.name.substr(3) == b.name.substr(3) ? 0 : +1);});
-	ListView.create(listWrapper,opts,this.listViewTemplate);
-	for(n=0; n<opts.length; n++) {
-		var type = opts[n].name.substr(0,3);
+	ListView.create(listWrapper, opts, this.listViewTemplate);
+	for(n = 0; n < opts.length; n++) {
+		var type = opts[n].name.substring(0, 3);
 		var h = config.macros.option.types[type];
 		if(h && h.create) {
 			h.create(opts[n].colElements['option'],type,opts[n].name,null,'no');
