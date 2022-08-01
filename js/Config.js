@@ -15,20 +15,17 @@ var config = {
 // Hashmap of alternative parsers for the wikifier
 config.parsers = {};
 
-// Adaptors
 config.adaptors = {};
 config.defaultAdaptor = null;
 
 // Backstage tasks
 config.tasks = {};
 
-// Annotations
 config.annotations = {};
 
 // Custom fields to be automatically added to new tiddlers
 config.defaultCustomFields = {};
 
-// Messages
 config.messages = {
 	messageClose: {},
 	dates: {},
@@ -61,7 +58,7 @@ config.options = {
 	txtMaxEditRows: "30",
 	txtMoreTab: "moreTabAll",
 	txtTheme: ""
-	};
+};
 config.optionsDesc = {};
 
 //# config.optionSource["chkAnimate"] can be:
@@ -92,7 +89,6 @@ config.views = {
 // Backstage tasks
 config.backstageTasks = ["save", "importTask", "tweak", "upgrade", "plugins"];
 
-// Extensions
 config.extensions = {};
 
 // Macros; each has a 'handler' member that is inserted later
@@ -165,7 +161,7 @@ config.textPrimitives = {
 	anyLetter:   "[A-Za-z0-9_\\-\u00c0-\u00de\u00df-\u00ff\u0150\u0170\u0151\u0171]",
 	anyLetterStrict: "[A-Za-z0-9\u00c0-\u00de\u00df-\u00ff\u0150\u0170\u0151\u0171]"
 };
-if(!((new RegExp("[\u0150\u0170]","g")).test("\u0150"))) {
+if(!((new RegExp("[\u0150\u0170]", "g")).test("\u0150"))) {
 	config.textPrimitives = {
 		upperLetter: "[A-Z\u00c0-\u00de]",
 		lowerLetter: "[a-z0-9_\\-\u00df-\u00ff]",
@@ -195,7 +191,7 @@ config.textPrimitives.tiddlerForcedLinkRegExp =
 	config.textPrimitives.brackettedLink + ")|(?:" +
 	config.textPrimitives.urlPattern + ")", "mg");
 config.textPrimitives.tiddlerAnyLinkRegExp =
-	new RegExp("("+ config.textPrimitives.wikiLink + ")|(?:" +
+	new RegExp("(" + config.textPrimitives.wikiLink + ")|(?:" +
 	config.textPrimitives.titledBrackettedLink + ")|(?:" +
 	config.textPrimitives.brackettedLink + ")|(?:" +
 	config.textPrimitives.urlPattern + ")", "mg");
@@ -225,7 +221,7 @@ config.shadowTiddlers = {
 	AdvancedOptions: '<<options>>',
 	PluginManager: '<<plugins>>',
 	SystemSettings: '',
-	ToolbarCommands: '|~ViewToolbar|closeTiddler closeOthers +editTiddler > fields permalink references jump|\n'+
+	ToolbarCommands: '|~ViewToolbar|closeTiddler closeOthers +editTiddler > fields permalink references jump|\n' +
 		'|~EditToolbar|+saveTiddler -cancelTiddler deleteTiddler|', // #160
 	WindowTitle: '<<tiddler SiteTitle>> - <<tiddler SiteSubtitle>>'
 };
