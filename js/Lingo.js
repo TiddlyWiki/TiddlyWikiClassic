@@ -110,10 +110,12 @@ config.messages.dates.days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thurs
 config.messages.dates.shortMonths = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 config.messages.dates.shortDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 // suffixes for dates, eg "1st","2nd","3rd"..."30th","31st"
-config.messages.dates.daySuffixes = ["st", "nd", "rd", "th", "th", "th", "th", "th", "th", "th",
-		"th", "th", "th", "th", "th", "th", "th", "th", "th", "th",
-		"st", "nd", "rd", "th", "th", "th", "th", "th", "th", "th",
-		"st"];
+config.messages.dates.daySuffixes = [
+	"st", "nd", "rd", "th", "th", "th", "th", "th", "th", "th",
+	"th", "th", "th", "th", "th", "th", "th", "th", "th", "th",
+	"st", "nd", "rd", "th", "th", "th", "th", "th", "th", "th",
+	"st"
+];
 config.messages.dates.am = "am";
 config.messages.dates.pm = "pm";
 
@@ -151,8 +153,8 @@ merge(config.views.editor.tagChooser, {
 
 merge(config.messages, {
 	sizeTemplates: [
-		{ unit: 1024*1024*1024, template: "%0\u00a0GB" },
-		{ unit: 1024*1024, template: "%0\u00a0MB" },
+		{ unit: 1024 * 1024 * 1024, template: "%0\u00a0GB" },
+		{ unit: 1024 * 1024, template: "%0\u00a0MB" },
 		{ unit: 1024, template: "%0\u00a0KB" },
 		{ unit: 1, template: "%0\u00a0B" }
 	]
