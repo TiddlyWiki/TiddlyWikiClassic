@@ -34,14 +34,11 @@ config.macros.plugins.refresh = function(listWrapper, paramString)
 		p = getPluginInfo(tiddler);
 		p.executed = false;
 		p.log.splice(0, 0, this.skippedText);
-		plugins.push(p);
-	}
-	for(i = 0; i < plugins.length; i++) {
-		p = plugins[i];
 		p.size = p.tiddler.text ? p.tiddler.text.length : 0;
 		p.forced = p.tiddler.isTagged("systemConfigForce");
 		p.disabled = p.tiddler.isTagged("systemConfigDisable");
-		p.Selected = selectedRows.indexOf(plugins[i].title) != -1;
+		p.Selected = selectedRows.indexOf(p.title) != -1;
+		plugins.push(p);
 	}
 
 	if(plugins.length == 0) {
