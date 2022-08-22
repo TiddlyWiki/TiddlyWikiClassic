@@ -13,49 +13,52 @@ var ListView = {};
 ListView.create = function(place, listObject, listTemplate, callback, className)
 {
 	var table = createTiddlyElement(place, "table", null, className || "listView twtable");
+
 	var thead = createTiddlyElement(table, "thead");
-	var t,r = createTiddlyElement(thead,"tr");
-	for(t=0; t<listTemplate.columns.length; t++) {
-		var columnTemplate = listTemplate.columns[t];
-		var c = createTiddlyElement(r,"th");
+	var i, row = createTiddlyElement(thead, "tr");
+	for(i = 0; i < listTemplate.columns.length; i++) {
+		var columnTemplate = listTemplate.columns[i];
+		var cell = createTiddlyElement(row, "th");
 		var colType = ListView.columnTypes[columnTemplate.type];
 		if(colType && colType.createHeader) {
-			colType.createHeader(c,columnTemplate,t);
+			colType.createHeader(cell, columnTemplate, i);
 			if(columnTemplate.className)
-				jQuery(c).addClass(columnTemplate.className);
+				jQuery(cell).addClass(columnTemplate.className);
 		}
 	}
+
 	var rc, tbody = createTiddlyElement(table, "tbody");
-	for(rc=0; rc<listObject.length; rc++) {
+	for(rc = 0; rc < listObject.length; rc++) {
 		var rowObject = listObject[rc];
-		r = createTiddlyElement(tbody,"tr");
-		for(c=0; c<listTemplate.rowClasses.length; c++) {
-			if(rowObject[listTemplate.rowClasses[c].field])
-				jQuery(r).addClass(listTemplate.rowClasses[c].className);
+		row = createTiddlyElement(tbody, "tr");
+		for(i = 0; i < listTemplate.rowClasses.length; i++) {
+			if(rowObject[listTemplate.rowClasses[i].field])
+				jQuery(row).addClass(listTemplate.rowClasses[i].className);
 		}
-		rowObject.rowElement = r;
+		rowObject.rowElement = row;
 		rowObject.colElements = {};
-		var cc;
-		for(cc=0; cc<listTemplate.columns.length; cc++) {
-			c = createTiddlyElement(r,"td");
-			columnTemplate = listTemplate.columns[cc];
+		for(i = 0; i < listTemplate.columns.length; i++) {
+			cell = createTiddlyElement(row, "td");
+			columnTemplate = listTemplate.columns[i];
 			var field = columnTemplate.field;
 			colType = ListView.columnTypes[columnTemplate.type];
 			if(colType && colType.createItem) {
-				colType.createItem(c,rowObject,field,columnTemplate,cc,rc);
+				colType.createItem(cell, rowObject, field, columnTemplate, i, rc);
 				if(columnTemplate.className)
-					jQuery(c).addClass(columnTemplate.className);
+					jQuery(cell).addClass(columnTemplate.className);
 			}
-			rowObject.colElements[field] = c;
+			rowObject.colElements[field] = cell;
 		}
 	}
+
 	if(callback && listTemplate.actions)
 		createTiddlyDropDown(place, ListView.getCommandHandler(callback), listTemplate.actions);
+
 	if(callback && listTemplate.buttons) {
-		for(t=0; t<listTemplate.buttons.length; t++) {
-			var a = listTemplate.buttons[t];
-			if(a && a.name != "")
-				createTiddlyButton(place,a.caption,null,ListView.getCommandHandler(callback,a.name,a.allowEmptySelection));
+		for(i = 0; i < listTemplate.buttons.length; i++) {
+			var b = listTemplate.buttons[i];
+			if(b && b.name != "")
+				createTiddlyButton(place, b.caption, null, ListView.getCommandHandler(callback, b.name, b.allowEmptySelection));
 		}
 	}
 	return table;
@@ -64,12 +67,8 @@ ListView.create = function(place, listObject, listTemplate, callback, className)
 ListView.getCommandHandler = function(callback, name, allowEmptySelection)
 {
 	return function(e) {
-		var view = findRelated(this,"TABLE",null,"previousSibling");
-		var tiddlers = [];
-		ListView.forEachSelector(view,function(e,rowName) {
-					if(e.checked)
-						tiddlers.push(rowName);
-					});
+		var view = findRelated(this, "TABLE", null, "previousSibling");
+		var tiddlers = ListView.getSelectedRows(view);
 		if(tiddlers.length == 0 && !allowEmptySelection) {
 			alert(config.messages.nothingSelected);
 		} else {
@@ -96,13 +95,10 @@ ListView.forEachSelector = function(view, callback)
 	var i, hadOne = false;
 	for(i = 0; i < checkboxes.length; i++) {
 		var cb = checkboxes[i];
-		if(cb.getAttribute("type") == "checkbox") {
-			var rn = cb.getAttribute("rowName");
-			if(rn) {
-				callback(cb,rn);
-				hadOne = true;
-			}
-		}
+		var rowName = cb.getAttribute("rowName");
+		if(cb.getAttribute("type") != "checkbox" || !rowName) continue;
+		callback(cb, rowName);
+		hadOne = true;
 	}
 	return hadOne;
 };
@@ -116,6 +112,7 @@ ListView.getSelectedRows = function(view)
 	return rowNames;
 };
 
+// describes filling cells of a column of each type, a map of typeName => { createHeader, createItem }
 ListView.columnTypes = {};
 
 ListView.columnTypes.String = {
@@ -155,14 +152,12 @@ ListView.columnTypes.Size = {
 	createHeader: ListView.columnTypes.String.createHeader,
 	createItem: function(place, listObject, field, columnTemplate, col, row)
 	{
-		var msg = config.messages.sizeTemplates;
 		var v = listObject[field];
-		if(v != undefined) {
-			var t = 0;
-			while(t<msg.length-1 && v<msg[t].unit)
-				t++;
-			createTiddlyText(place,msg[t].template.format([Math.round(v/msg[t].unit)]));
-		}
+		if(v == undefined) return;
+		var i = 0, msg = config.messages.sizeTemplates;
+		while(i < msg.length - 1 && v < msg[i].unit)
+			i++;
+		createTiddlyText(place, msg[i].template.format([Math.round(v / msg[i].unit)]));
 	}
 };
 
