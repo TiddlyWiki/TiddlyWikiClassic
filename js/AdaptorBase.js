@@ -16,13 +16,12 @@ AdaptorBase.prototype.close = function()
 
 AdaptorBase.prototype.fullHostName = function(host)
 {
-	if(!host)
-		return '';
+	if(!host) return '';
 	host = host.trim();
 	if(!host.match(/:\/\//))
 		host = 'http://' + host;
-	if(host.substr(host.length-1) == '/')
-		host = host.substr(0,host.length-1);
+	if(host.substr(host.length - 1) == '/')
+		host = host.substr(0, host.length - 1);
 	return host;
 };
 
@@ -56,13 +55,13 @@ AdaptorBase.prototype.setContext = function(context, userParams, callback)
 //   context.status - true if OK, string if error
 //   context.adaptor - reference to this adaptor object
 //   userParams - parameters as originally passed into the openHost function
-AdaptorBase.prototype.openHost = function(host,context,userParams,callback)
+AdaptorBase.prototype.openHost = function(host, context, userParams, callback)
 {
 	this.host = host;
 	context = this.setContext(context, userParams, callback);
 	context.status = true;
 	if(callback)
-		window.setTimeout(function() { context.callback(context, userParams); }, 10);
+		window.setTimeout(function() { context.callback(context, userParams) }, 10);
 	return true;
 };
 
@@ -84,7 +83,7 @@ AdaptorBase.prototype.openWorkspace = function(workspace, context, userParams, c
 	context = this.setContext(context, userParams, callback);
 	context.status = true;
 	if(callback)
-		window.setTimeout(function() { callback(context, userParams); }, 10);
+		window.setTimeout(function() { callback(context, userParams) }, 10);
 	return true;
 };
 
