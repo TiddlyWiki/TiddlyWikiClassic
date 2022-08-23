@@ -39,8 +39,7 @@ Story.prototype.getContainer = function()
 Story.prototype.forEachTiddler = function(handleTiddler)
 {
 	var place = this.getContainer();
-	if(!place)
-		return;
+	if(!place) return;
 	var el = place.firstChild;
 	while(el) {
 		var next = el.nextSibling;
@@ -82,11 +81,13 @@ Story.prototype.displayTiddler = function(srcElement, tiddler, template, animate
 		var before = this.positionTiddler(srcElement);
 		tiddlerElem = this.createTiddler(place, before, title, template, customFields);
 	}
+
 	if(animationSrc && typeof animationSrc !== "string") {
 		srcElement = animationSrc;
 	}
 	if(srcElement && typeof srcElement !== "string") {
-		if(config.options.chkAnimate && (animate == undefined || animate == true) && anim && typeof Zoomer == "function" && typeof Scroller == "function")
+		if(config.options.chkAnimate && (animate == undefined || animate == true) && anim &&
+		   typeof Zoomer == "function" && typeof Scroller == "function")
 			anim.startAnimating(new Zoomer(title, srcElement, tiddlerElem), new Scroller(tiddlerElem));
 		else
 			window.scrollTo(0, ensureVisible(tiddlerElem));
@@ -96,8 +97,8 @@ Story.prototype.displayTiddler = function(srcElement, tiddler, template, animate
 
 Story.prototype.displayTiddlers = function(srcElement, titles, template, animate, unused, customFields, toggle)
 {
-	for(var t = titles.length - 1; t >= 0; t--)
-		this.displayTiddler(srcElement, titles[t], template, animate, unused, customFields);
+	for(var i = titles.length - 1; i >= 0; i--)
+		this.displayTiddler(srcElement, titles[i], template, animate, unused, customFields);
 };
 
 Story.prototype.displayDefaultTiddlers = function()
@@ -178,13 +179,11 @@ Story.prototype.loadMissingTiddler = function(title, fields, callback)
 			story.refreshTiddler(context.title, null, true);
 		}
 		context.adaptor.close();
-		if(callback) {
-			callback(context);
-		}
+		if(callback) callback(context);
 	};
 	var tiddler = new Tiddler(title);
-	tiddler.fields = typeof fields == "string" ? fields.decodeHashMap() : fields||{};
-	var context = {serverType:tiddler.getServerType()};
+	tiddler.fields = typeof fields == "string" ? fields.decodeHashMap() : fields || {};
+	var context = { serverType: tiddler.getServerType() };
 	if(!context.serverType)
 		return "";
 	context.host = tiddler.fields['server.host'];
@@ -225,44 +224,47 @@ Story.prototype.refreshTiddler = function(title, template, force, customFields, 
 		return tiddlerElem;
 	template = this.chooseTemplateForTiddler(title, template);
 	var currTemplate = tiddlerElem.getAttribute("template");
-	if((template != currTemplate) || force) {
-		var tiddler = store.getTiddler(title);
-		if(!tiddler) {
-			tiddler = new Tiddler();
-			if(store.isShadowTiddler(title)) {
-				var tags = [];
-				tiddler.set(title, store.getTiddlerText(title), config.views.wikified.shadowModifier, version.date, tags, version.date);
-			} else {
-				var text = template == config.tiddlerTemplates[DEFAULT_EDIT_TEMPLATE] ? // #166
-							config.views.editor.defaultText.format([title]) :
-							config.views.wikified.defaultText.format([title]);
-				text = defaultText || text;
-				var fields = customFields ? customFields.decodeHashMap() : null;
-				tiddler.set(title, text, config.views.wikified.defaultModifier, version.date, [], version.date, fields);
-			}
-		}
-		tiddlerElem.setAttribute("tags", tiddler.tags.join(" "));
-		tiddlerElem.setAttribute("tiddler", title);
-		tiddlerElem.setAttribute("template", template);
-		tiddlerElem.onmouseover = this.onTiddlerMouseOver;
-		tiddlerElem.onmouseout = this.onTiddlerMouseOut;
-		tiddlerElem.ondblclick = this.onTiddlerDblClick;
-		tiddlerElem[window.event ? "onkeydown" : "onkeypress"] = this.onTiddlerKeyPress;
-		tiddlerElem.innerHTML = this.getTemplateForTiddler(title, template, tiddler);
-		applyHtmlMacros(tiddlerElem, tiddler);
-		if(store.getTaggedTiddlers(title).length > 0)
-			jQuery(tiddlerElem).addClass("isTag");
-		else
-			jQuery(tiddlerElem).removeClass("isTag");
-		if(store.tiddlerExists(title)) {
-			jQuery(tiddlerElem).removeClass("shadow");
-			jQuery(tiddlerElem).removeClass("missing");
+	if((template == currTemplate) && !force)
+		return tiddlerElem;
+
+	var tiddler = store.getTiddler(title);
+	if(!tiddler) {
+		tiddler = new Tiddler();
+		if(store.isShadowTiddler(title)) {
+			var tags = [];
+			tiddler.set(title, store.getTiddlerText(title), config.views.wikified.shadowModifier, version.date, tags, version.date);
 		} else {
-			jQuery(tiddlerElem).addClass(store.isShadowTiddler(title) ? "shadow" : "missing");
+			var text = template == config.tiddlerTemplates[DEFAULT_EDIT_TEMPLATE] // #166
+				? config.views.editor.defaultText.format([title])
+				: config.views.wikified.defaultText.format([title]);
+			text = defaultText || text;
+			var fields = customFields ? customFields.decodeHashMap() : null;
+			tiddler.set(title, text, config.views.wikified.defaultModifier, version.date, [], version.date, fields);
 		}
-		if(customFields)
-			this.addCustomFields(tiddlerElem, customFields);
 	}
+
+	tiddlerElem.setAttribute("tags", tiddler.tags.join(" "));
+	tiddlerElem.setAttribute("tiddler", title);
+	tiddlerElem.setAttribute("template", template);
+	tiddlerElem.onmouseover = this.onTiddlerMouseOver;
+	tiddlerElem.onmouseout = this.onTiddlerMouseOut;
+	tiddlerElem.ondblclick = this.onTiddlerDblClick;
+	tiddlerElem[window.event ? "onkeydown" : "onkeypress"] = this.onTiddlerKeyPress;
+	tiddlerElem.innerHTML = this.getTemplateForTiddler(title, template, tiddler);
+	applyHtmlMacros(tiddlerElem, tiddler);
+	if(store.getTaggedTiddlers(title).length > 0)
+		jQuery(tiddlerElem).addClass("isTag");
+	else
+		jQuery(tiddlerElem).removeClass("isTag");
+	if(store.tiddlerExists(title)) {
+		jQuery(tiddlerElem).removeClass("shadow");
+		jQuery(tiddlerElem).removeClass("missing");
+	} else {
+		jQuery(tiddlerElem).addClass(store.isShadowTiddler(title) ? "shadow" : "missing");
+	}
+	if(customFields)
+		this.addCustomFields(tiddlerElem, customFields);
+
 	return tiddlerElem;
 };
 
@@ -305,15 +307,14 @@ Story.prototype.onTiddlerDblClick = function(ev)
 {
 	var e = ev || window.event;
 	var target = resolveTarget(e);
-	if(target && target.nodeName.toLowerCase() != "input" && target.nodeName.toLowerCase() != "textarea") {
-		if(document.selection && document.selection.empty)
-			document.selection.empty();
-		config.macros.toolbar.invokeCommand(this, "defaultCommand", e);
-		e.cancelBubble = true;
-		if(e.stopPropagation) e.stopPropagation();
-		return true;
-	}
-	return false;
+	if(!target || target.nodeName.toLowerCase() == "input" || target.nodeName.toLowerCase() == "textarea")
+		return false;
+	if(document.selection && document.selection.empty)
+		document.selection.empty();
+	config.macros.toolbar.invokeCommand(this, "defaultCommand", e);
+	e.cancelBubble = true;
+	if(e.stopPropagation) e.stopPropagation();
+	return true;
 };
 
 Story.prototype.onTiddlerKeyPress = function(ev)
@@ -462,9 +463,8 @@ Story.prototype.setDirty = function(title, dirty)
 Story.prototype.isDirty = function(title)
 {
 	var tiddlerElem = this.getTiddler(title);
-	if(tiddlerElem)
-		return tiddlerElem.getAttribute("dirty") == "true";
-	return null;
+	if(!tiddlerElem) return null;
+	return tiddlerElem.getAttribute("dirty") == "true";
 };
 
 Story.prototype.areAnyDirty = function()
@@ -512,31 +512,29 @@ Story.prototype.search = function(text, useCaseSensitive, useRegExp)
 		displayMessage(config.macros.search.failureMsg.format([q + text + q]));
 };
 
-//# Determine if the specified element is within a tiddler in this story
-//#  e - reference to an element
+//# Determine if the specified element (el) is within a tiddler element
 //# returns: reference to a tiddler element or null if none
-Story.prototype.findContainingTiddler = function(e)
+Story.prototype.findContainingTiddler = function(el)
 {
-	while(e && !jQuery(e).hasClass("tiddler")) {
-		e = jQuery(e).hasClass("popup") && Popup.stack[0] ? Popup.stack[0].root : e.parentNode;
+	while(el && !jQuery(el).hasClass("tiddler")) {
+		el = jQuery(el).hasClass("popup") && Popup.stack[0] ? Popup.stack[0].root
+			: el.parentNode;
 	}
-	return e;
+	return el;
 };
 
 //# Gather any saveable fields from a tiddler element
-//#  e - reference to an element to scan recursively
+//#  el - reference to an element to scan recursively
 //#  fields - object to contain gathered field values
-Story.prototype.gatherSaveFields = function(e, fields)
+Story.prototype.gatherSaveFields = function(el, fields)
 {
-	if(e && e.getAttribute) {
-		var fieldName = e.getAttribute("edit");
-		if(fieldName)
-			fields[fieldName] = e.value.replace(/\r/mg, "");
-		if(e.hasChildNodes()) {
-			var i, c = e.childNodes;
-			for(i = 0; i < c.length; i++)
-				this.gatherSaveFields(c[i], fields);
-		}
+	if(!el || !el.getAttribute) return;
+	var fieldName = el.getAttribute("edit");
+	if(fieldName)
+		fields[fieldName] = el.value.replace(/\r/mg, "");
+	if(el.hasChildNodes()) {
+		for(var i = 0; i < el.childNodes.length; i++)
+			this.gatherSaveFields(el.childNodes[i], fields);
 	}
 };
 
