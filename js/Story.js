@@ -163,7 +163,15 @@ Story.prototype.createTiddler = function(place, before, title, template, customF
 //#  callback - optional function invoked with context argument upon completion; context provides context.tiddler if successful
 Story.prototype.loadMissingTiddler = function(title, fields, callback)
 {
-	var getTiddlerCallback = function(context)
+	var tiddler = new Tiddler(title);
+	tiddler.fields = typeof fields == "string" ? fields.decodeHashMap() : fields || {};
+	var context = { serverType: tiddler.getServerType() };
+	if(!context.serverType) return "";
+	context.host = tiddler.fields['server.host'];
+	context.workspace = tiddler.fields['server.workspace'];
+	var adaptor = new config.adaptors[context.serverType]();
+
+	var onLoadTiddlerResponse = function(context)
 	{
 		if(context.status) {
 			var t = context.tiddler;
@@ -181,15 +189,7 @@ Story.prototype.loadMissingTiddler = function(title, fields, callback)
 		context.adaptor.close();
 		if(callback) callback(context);
 	};
-	var tiddler = new Tiddler(title);
-	tiddler.fields = typeof fields == "string" ? fields.decodeHashMap() : fields || {};
-	var context = { serverType: tiddler.getServerType() };
-	if(!context.serverType)
-		return "";
-	context.host = tiddler.fields['server.host'];
-	context.workspace = tiddler.fields['server.workspace'];
-	var adaptor = new config.adaptors[context.serverType]();
-	adaptor.getTiddler(title, context, null, getTiddlerCallback);
+	adaptor.getTiddler(title, context, null, onLoadTiddlerResponse);
 	return config.messages.loadingMissingTiddler.format([title, context.serverType, context.host, context.workspace]);
 };
 
@@ -375,17 +375,8 @@ Story.prototype.getTiddlerField = function(title, field)
 	var tiddlerElem = this.getTiddler(title);
 	if(!tiddlerElem) return null;
 
-	var i, e = null, children = tiddlerElem.getElementsByTagName("*");
-	for(i = 0; i < children.length; i++) {
-		var c = children[i];
-		if(c.tagName.toLowerCase() == "input" || c.tagName.toLowerCase() == "textarea") {
-			if(!e)
-				e = c;
-			if(c.getAttribute("edit") == field)
-				e = c;
-		}
-	}
-	return e;
+	var $editors = jQuery(tiddlerElem).find('input, textarea');
+	return $editors.filter('[edit="' + field + '"]')[0] || $editors[0] || null;
 };
 
 //# Focus a specified tiddler. Attempts to focus the specified field, otherwise the first edit field it finds
@@ -631,8 +622,7 @@ Story.prototype.permaView = function()
 
 Story.prototype.switchTheme = function(theme)
 {
-	if(safeMode)
-		return;
+	if(safeMode) return;
 
 	var getSlice = function(theme, slice) {
 		var r;
