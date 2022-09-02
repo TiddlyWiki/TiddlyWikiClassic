@@ -73,7 +73,7 @@ function loadCookies()
 
 function loadSystemSettings()
 {
-	var key,settings = store.calcAllSlices('SystemSettings');
+	var key, settings = store.calcAllSlices('SystemSettings');
 	config.optionsSource = {};
 	for(key in settings) {
 		setOption(key, settings[key]);
@@ -96,9 +96,10 @@ function saveOption(name)
 		alert(config.messages.invalidCookie.format([name]));
 		return;
 	}
+
 	saveCookie(name);
 	if(config.optionsSource[name] == 'setting') {
-		saveSystemSetting(name,true);
+		saveSystemSetting(name, true);
 	}
 }
 // @Deprecated; retained for backwards compatibility
@@ -117,14 +118,14 @@ function saveCookie(name)
 		value = value == null ? 'false' : value;
 		cookies[key] = value;
 	}
-	// TW291 and later (#159)
 	document.cookie = 'TiddlyWikiClassicOptions='
 		+ String.encodeHashMap(cookies).replace(/%/g, '%25').replace(/"/g, '%22')
 		+ '; expires=Fri, 1 Jan 2038 12:00:00 UTC; path=/';
+
+	// clean up cookies saved in an earlier format, before TW291 (#159)
 	cookies = getCookies();
-	var c;
-	for(c in cookies) {
-		var optType = c.substr(0,3);
+	for(var c in cookies) {
+		var optType = c.substring(0, 3);
 		if(config.optionHandlers[optType])
 			removeCookie(c);
 	}
@@ -138,7 +139,7 @@ function commitSystemSettings(storeWasDirty)
 	}
 	systemSettingSave = window.setTimeout(function() {
 		var tiddler = store.getTiddler('SystemSettings');
-		autoSaveChanges(null,[tiddler]);
+		autoSaveChanges(null, [tiddler]);
 	}, 1000);
 }
 
@@ -146,22 +147,23 @@ function saveSystemSetting(name, saveFile)
 {
 	var title = 'SystemSettings';
 	var slice = store.getTiddlerSlice(title, name);
-	if(readOnly || slice === getOption(name)) {
-		return; //# don't save if read-only or the option hasn't changed
-	}
+	var isUnchanged = slice === getOption(name);
+	if(readOnly || isUnchanged) return;
+
 	var slices = store.calcAllSlices(title);
-	var key;
-	for(key in config.optionsSource) {
+	for(var key in config.optionsSource) {
 		var value = getOption(key) || '';
 		if(slices[key] !== value) {
 			slices[key] = value;
 		}
 	}
+
 	var text = [];
 	for(key in slices) {
 		text.push('%0: %1'.format([key, slices[key]]));
 	}
 	text = text.sort().join('\n');
+
 	var storeWasDirty = store.isDirty();
 	var tiddler = store.getTiddler(title);
 	if(tiddler) {
@@ -186,7 +188,7 @@ function decodeCookie(s)
 {
 	s = unescape(s);
 	var re = /&#[0-9]{1,5};/g;
-	return s.replace(re,function($0) {return String.fromCharCode(eval($0.replace(/[&#;]/g,'')));});
+	return s.replace(re, function($0) { return String.fromCharCode(eval($0.replace(/[&#;]/g, ''))) });
 }
 
 config.macros.option.genericCreate = function(place,type,opt,className,desc)
@@ -243,24 +245,24 @@ config.macros.option.propagateOption = function(opt, valueField, value, elementT
 {
 	config.options[opt] = value;
 	saveOption(opt);
-	var t,nodes = document.getElementsByTagName(elementType);
-	for(t=0; t<nodes.length; t++) {
-		var optNode = nodes[t].getAttribute('option');
-		if(opt == optNode && nodes[t]!=elem)
-			nodes[t][valueField] = value;
+	var i, nodes = document.getElementsByTagName(elementType);
+	for(i = 0; i < nodes.length; i++) {
+		var optNode = nodes[i].getAttribute('option');
+		if(opt == optNode && nodes[i] != elem)
+			nodes[i][valueField] = value;
 	}
 };
 
-config.macros.option.handler = function(place,macroName,params,wikifier,paramString)
+config.macros.option.handler = function(place, macroName, params, wikifier, paramString)
 {
-	params = paramString.parseParams('anon',null,true,false,false);
-	var opt = (params[1] && params[1].name == 'anon') ? params[1].value : getParam(params,'name',null);
-	var className = (params[2] && params[2].name == 'anon') ? params[2].value : getParam(params,'class',null);
-	var desc = getParam(params,'desc','no');
-	var type = opt.substr(0,3);
+	params = paramString.parseParams('anon', null, true, false, false);
+	var opt = (params[1] && params[1].name == 'anon') ? params[1].value : getParam(params, 'name', null);
+	var className = (params[2] && params[2].name == 'anon') ? params[2].value : getParam(params, 'class', null);
+	var desc = getParam(params, 'desc', 'no');
+	var type = opt.substring(0, 3);
 	var h = config.macros.option.types[type];
 	if(h && h.create)
-		h.create(place,type,opt,className,desc);
+		h.create(place, type, opt, className, desc);
 };
 
 config.macros.options.handler = function(place, macroName, params, wikifier, paramString)
@@ -292,13 +294,18 @@ config.macros.options.refreshOptions = function(listWrapper, showUnknown)
 		if(!opt.lowlight || showUnknown)
 			opts.push(opt);
 	}
-	opts.sort(function(a,b) {return a.name.substr(3) < b.name.substr(3) ? -1 : (a.name.substr(3) == b.name.substr(3) ? 0 : +1);});
+	opts.sort(function(a, b) {
+		var nameA = a.name.substring(3);
+		var nameB = b.name.substring(3);
+		return nameA < nameB ? -1 : (nameA == nameB ? 0 : +1);
+	});
+
 	ListView.create(listWrapper, opts, this.listViewTemplate);
-	for(n = 0; n < opts.length; n++) {
-		var type = opts[n].name.substring(0, 3);
+	for(var i = 0; i < opts.length; i++) {
+		var type = opts[i].name.substring(0, 3);
 		var h = config.macros.option.types[type];
 		if(h && h.create) {
-			h.create(opts[n].colElements['option'],type,opts[n].name,null,'no');
+			h.create(opts[i].colElements['option'], type, opts[i].name, null, 'no');
 		}
 	}
 };
@@ -308,7 +315,7 @@ config.macros.options.onChangeUnknown = function(e)
 	var wizard = new Wizard(this);
 	var listWrapper = wizard.getValue('listWrapper');
 	jQuery(listWrapper).empty();
-	config.macros.options.refreshOptions(listWrapper,this.checked);
+	config.macros.options.refreshOptions(listWrapper, this.checked);
 	return false;
 };
 
