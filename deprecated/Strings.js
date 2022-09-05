@@ -12,18 +12,24 @@ String.prototype.toJSONString = function()
 		'\n': '\\n',
 		'\r': '\\r',
 		'\t': '\\t',
-		'"' : '\\"',
+		'"':  '\\"',
 		'\\': '\\\\'
-		};
-	var replaceFn = function(a,b) {
+	};
+	var replaceFn = function(a, b) {
 		var c = m[b];
 		if(c)
 			return c;
 		c = b.charCodeAt();
 		return '\\u00' + Math.floor(c / 16).toString(16) + (c % 16).toString(16);
-		};
+	};
 	if(/["\\\x00-\x1f]/.test(this))
-		return '"' + this.replace(/([\x00-\x1f\\"])/g,replaceFn) + '"';
+		return '"' + this.replace(/([\x00-\x1f\\"])/g, replaceFn) + '"';
 	return '"' + this + '"';
+};
+
+// @Deprecated: no direct replacement, since not used in core code
+String.prototype.right = function(n)
+{
+	return n < this.length ? this.slice(this.length - n) : this;
 };
 

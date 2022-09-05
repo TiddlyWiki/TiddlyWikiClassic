@@ -4,12 +4,6 @@
 
 // todo: create functions substituting String augmenting methods, use in the core; deprecate all String augmenting methods
 
-// Get characters from the right end of a string
-String.prototype.right = function(n)
-{
-	return n < this.length ? this.slice(this.length - n) : this;
-};
-
 // Trim whitespace from both ends of a string
 String.prototype.trim = function()
 {
