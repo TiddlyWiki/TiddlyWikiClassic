@@ -158,10 +158,7 @@ String.prototype.parseParams = function(defaultName, defaultValue, allowEval, no
 String.prototype.readMacroParams = function(notAllowEval)
 {
 	var p = this.parseParams("list", null, !notAllowEval, true);
-	var i, n = [];
-	for(i = 1; i < p.length; i++)
-		n.push(p[i].value);
-	return n;
+	return p.slice(1).map(function(param) { return param.value })
 };
 
 // Process a string list of unique tiddler names into an array. Tiddler names that have spaces in them must be [[bracketed]]

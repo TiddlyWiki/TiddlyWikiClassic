@@ -7,47 +7,47 @@ jQuery(document).ready(function(){
 
 		var actual = "abcdef".right(3);
 		var expected = "def";
-		ok(actual==expected,'String right');
+		ok(actual == expected, 'String right');
 
 		actual = " abcdef ".trim();
 		expected = "abcdef";
-		ok(actual==expected,'String trim');
+		ok(actual == expected, 'String trim');
 
 		actual = " abc def ".trim();
 		expected = "abc def";
-		ok(actual==expected,'String trim');
+		ok(actual == expected, 'String trim');
 
 		actual = "background-color".unDash();
 		expected = "backgroundColor";
-		ok(actual==expected,'String undash');
+		ok(actual == expected, 'String undash');
 
 		actual = "hello %0, is your favourite colour red?".format([]);
 		expected = "hello , is your favourite colour red?";
-		ok(actual==expected,'String format with an empty substring array should return input string');
+		ok(actual == expected, 'String format with an empty substring array should return input string');
 
 		actual = "hello %0, is your favourite colour red?".format(["Jon"]);
 		expected = "hello Jon, is your favourite colour red?";
-		ok(actual==expected,'String format with a substrings array of correct size (1) should add substrings in the right places');
+		ok(actual == expected, 'String format with a substrings array of correct size (1) should add substrings in the right places');
 
-		actual = "hello Jon, is your favourite colour red?".format(["Jon","rhubarb","rhubarb"]);
+		actual = "hello Jon, is your favourite colour red?".format(["Jon", "rhubarb", "rhubarb"]);
 		expected = "hello Jon, is your favourite colour red?";
-		ok(actual==expected,'String format with a substrings array of more than enough substrings (1 needed) should add substrings in the right places');
+		ok(actual == expected, 'String format with a substrings array of more than enough substrings (1 needed) should add substrings in the right places');
 
 		actual = "hello Jon, is your favourite colour red?".format([]);
 		expected = "hello Jon, is your favourite colour red?";
-		ok(actual==expected,'String format with an empty substring array and no %1-type specifiers should return input string');
+		ok(actual == expected, 'String format with an empty substring array and no %1-type specifiers should return input string');
 
 		actual = "hello Jon, is your favourite colour red?".format(["rhubarb"]);
 		expected = "hello Jon, is your favourite colour red?";
-		ok(actual==expected,'String format with a substrings array of non-zero size (1) and no %1-type specifiers should return input string');
+		ok(actual == expected, 'String format with a substrings array of non-zero size (1) and no %1-type specifiers should return input string');
 
 		actual = String.encodeTiddlyLinkList();
 		expected = "";
-		ok(actual==expected,'String.encodeTiddlyLinkList with null parameter should return null string');
+		ok(actual == expected, 'String.encodeTiddlyLinkList with null parameter should return null string');
 
 		actual = String.encodeTiddlyLinkList([]);
 		expected = "";
-		ok(actual==expected,'String.encodeTiddlyLinkList with empty array as parameter should return null string');
+		ok(actual == expected, 'String.encodeTiddlyLinkList with empty array as parameter should return null string');
 
 		var linksArray = ["tag", "TagName", "tag with spaces"];
 		actual = String.encodeTiddlyLinkList(linksArray);
@@ -56,30 +56,30 @@ jQuery(document).ready(function(){
 
 		actual = "abcdefghijklmnopqrstuvwxyz".startsWith("abc");
 		expected = true;
-		ok(actual==expected,'String "abcdefghijklmnopqrstuvwxyz" startsWith "abc"');
+		ok(actual == expected, 'String "abcdefghijklmnopqrstuvwxyz" startsWith "abc"');
 
 		actual = "abcdefghijklmnopqrstuvwxyz".startsWith("def");
 		expected = false;
-		ok(actual==expected,'String "abcdefghijklmnopqrstuvwxyz" does not startsWith "def"');
+		ok(actual == expected, 'String "abcdefghijklmnopqrstuvwxyz" does not startsWith "def"');
 
 		actual = "abcdefghijklmnopqrstuvwxyz".startsWith("");
 		expected = true;
-		ok(actual==expected,'String "abcdefghijklmnopqrstuvwxyz" startsWith ""');
+		ok(actual == expected, 'String "abcdefghijklmnopqrstuvwxyz" startsWith ""');
 	});
 
 	test("Strings: html encoding/decoding", function() {
 		var actual = '&<>"'.htmlEncode();
 		var expected = '&amp;&lt;&gt;&quot;';
-		ok(actual==expected,'String should correctly htmlEncode &<>"');
+		ok(actual == expected, 'String should correctly htmlEncode &<>"');
 
 		actual = '&amp;&lt;&gt;&quot;'.htmlDecode();
 		expected = '&<>"';
-		ok(actual==expected,'String should correctly htmlDecode &amp;&lt;&gt;&quot;');
+		ok(actual == expected, 'String should correctly htmlDecode &amp;&lt;&gt;&quot;');
 
 		var s = '&&&""<">>&>&"';
 		actual = s.htmlEncode().htmlDecode();
 		expected = s;
-		ok(actual==expected,'htmlEncode followed by htmlDecode of complex string should leave string unchanged');
+		ok(actual == expected, 'htmlEncode followed by htmlDecode of complex string should leave string unchanged');
 	});
 
 	test("readMacroParams", function() {
@@ -130,11 +130,11 @@ jQuery(document).ready(function(){
 	test("Strings: encodeTiddlyLink", function() {
 		var actual = String.encodeTiddlyLink("title");
 		var expected = "title";
-		ok(actual==expected,'String should correctly encodeTiddlyLink with no spaces');
+		ok(actual == expected, 'String should correctly encodeTiddlyLink with no spaces');
 
 		actual = String.encodeTiddlyLink("the title");
 		expected = "[[the title]]";
-		ok(actual==expected,'String should correctly encodeTiddlyLink with spaces');
+		ok(actual == expected, 'String should correctly encodeTiddlyLink with spaces');
 	});
 });
 
