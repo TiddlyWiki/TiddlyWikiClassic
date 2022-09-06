@@ -25,16 +25,14 @@ String.prototype.format = function(s)
 	var substrings = s && s.constructor == Array ? s : arguments;
 	var subRegExp = /(?:%(\d+))/mg;
 	var currPos = 0;
-	var match,r = [];
-	do {
-		match = subRegExp.exec(this);
-		if(match && match[1]) {
-			if(match.index > currPos)
-				r.push(this.substring(currPos,match.index));
-			r.push(substrings[parseInt(match[1],10)]);
-			currPos = subRegExp.lastIndex;
-		}
-	} while(match);
+	var match, r = [];
+	while(match = subRegExp.exec(this)) {
+		if(!match[1]) continue;
+		if(match.index > currPos)
+			r.push(this.substring(currPos, match.index));
+		r.push(substrings[parseInt(match[1], 10)]);
+		currPos = subRegExp.lastIndex;
+	}
 	if(currPos < this.length)
 		r.push(this.substring(currPos, this.length));
 	return r.join("");
@@ -125,28 +123,25 @@ String.prototype.parseParams = function(defaultName, defaultValue, allowEval, no
 	var token = "(?:" + dblQuote + "|" + sngQuote + "|" + dblSquare + "|" + dblBrace + "|" + unQuoted + "|" + emptyQuote + ")";
 	var re = noNames ? new RegExp(token, "mg") : new RegExp(skipSpace + token + skipSpace + "(?:(\\:)" + skipSpace + token + ")?", "mg");
 	var match;
-	do {
-		match = re.exec(this);
-		if(match) {
-			var n = parseToken(match, 1);
-			if(noNames) {
-				r.push({ name: "", value: n });
-			} else {
-				var v = parseToken(match, 8);
-				if(v == null && defaultName) {
-					v = n;
-					n = defaultName;
-				} else if(v == null && defaultValue) {
-					v = defaultValue;
-				}
-				r.push({ name: n, value: v });
-				if(cascadeDefaults) {
-					defaultName = n;
-					defaultValue = v;
-				}
+	while(match = re.exec(this)) {
+		var n = parseToken(match, 1);
+		if(noNames) {
+			r.push({ name: "", value: n });
+		} else {
+			var v = parseToken(match, 8);
+			if(v == null && defaultName) {
+				v = n;
+				n = defaultName;
+			} else if(v == null && defaultValue) {
+				v = defaultValue;
+			}
+			r.push({ name: n, value: v });
+			if(cascadeDefaults) {
+				defaultName = n;
+				defaultValue = v;
 			}
 		}
-	} while(match);
+	}
 	// Summarise parameters into first element
 	for(var i = 1; i < r.length; i++) {
 		if(r[0][r[i].name])
@@ -249,7 +244,7 @@ String.zeroPad = function(n, width)
 {
 	var s = n.toString();
 	if(s.length >= width) return s;
-	return "000000000000000000000000000".substring(0, width-s.length) + s;
+	return "000000000000000000000000000".substring(0, width - s.length) + s;
 };
 
 String.prototype.startsWith = function(prefix)
