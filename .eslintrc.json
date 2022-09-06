@@ -21,7 +21,7 @@
             }
         },
         {
-            "files": ["build/*.js"],
+            "files": ["build/*.js", "test/js/*.js"],
             "env": {
                 "es6": true
             }

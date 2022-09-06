@@ -49,6 +49,11 @@ jQuery(document).ready(function(){
 		expected = "";
 		ok(actual==expected,'String.encodeTiddlyLinkList with empty array as parameter should return null string');
 
+		var linksArray = ["tag", "TagName", "tag with spaces"];
+		actual = String.encodeTiddlyLinkList(linksArray);
+		expected = "tag TagName [[tag with spaces]]";
+		ok(actual == expected, `String.encodeTiddlyLinkList should turn [${linksArray}] array into "${expected}" string`);
+
 		actual = "abcdefghijklmnopqrstuvwxyz".startsWith("abc");
 		expected = true;
 		ok(actual==expected,'String "abcdefghijklmnopqrstuvwxyz" startsWith "abc"');

@@ -214,10 +214,7 @@ String.encodeTiddlyLink = function(title)
 String.encodeTiddlyLinkList = function(list)
 {
 	if(!list) return "";
-	var i,results = [];
-	for(i=0; i<list.length; i++)
-		results.push(String.encodeTiddlyLink(list[i]));
-	return results.join(" ");
+	return list.map(function(item) { return String.encodeTiddlyLink(item) }).join(" ");
 };
 
 // Convert a string as a sequence of name:"value" pairs into a hashmap
