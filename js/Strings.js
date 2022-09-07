@@ -75,33 +75,32 @@ String.prototype.htmlDecode = function()
 String.prototype.parseParams = function(defaultName, defaultValue, allowEval, noNames, cascadeDefaults)
 {
 	var parseToken = function(match, p) {
-		var n;
-		if(match[p]) // Double quoted
-			n = match[p].replace(/\\"/g, '"');
-		else if(match[p + 1]) // Single quoted
-			n = match[p + 1].replace(/\\'/g, "'");
-		else if(match[p + 2]) // Double-square-bracket quoted
-			n = match[p + 2];
-		else if(match[p + 3]) // Double-brace quoted
-			try {
-				n = match[p + 3];
-				if(allowEval && config.evaluateMacroParameters != "none") {
+		// Double quoted
+		if(match[p])     return match[p].replace(/\\"/g, '"');
+		// Single quoted
+		if(match[p + 1]) return match[p + 1].replace(/\\'/g, "'");
+		// Double-square-bracket quoted
+		if(match[p + 2]) return match[p + 2];
+		// Double-brace quoted
+		if(match[p + 3]) {
+			var value = match[p + 3];
+			if(allowEval && config.evaluateMacroParameters != "none") {
+				try {
 					if(config.evaluateMacroParameters == "restricted") {
-						if(window.restrictedEval) {
-							n = window.restrictedEval(n);
-						}
+						if(window.restrictedEval) value = window.restrictedEval(value);
 					} else {
-						n = window.eval(n);
+						value = window.eval(value);
 					}
+				} catch(ex) {
+					throw "Unable to evaluate {{" + match[p + 3] + "}}: " + exceptionText(ex);
 				}
-			} catch(ex) {
-				throw "Unable to evaluate {{" + match[p + 3] + "}}: " + exceptionText(ex);
 			}
-		else if(match[p + 4]) // Unquoted
-			n = match[p + 4];
-		else if(match[p + 5]) // empty quote
-			n = "";
-		return n;
+			return value;
+		}
+		// Unquoted
+		if(match[p + 4]) return match[p + 4];
+		// Empty quote
+		if(match[p + 5]) return "";
 	};
 	var r = [{}];
 	var dblQuote = "(?:\"((?:(?:\\\\\")|[^\"])+)\")";
