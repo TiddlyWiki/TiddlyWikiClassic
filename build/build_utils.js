@@ -23,8 +23,8 @@ module.exports = {
 		const tw5OptionsPath = joinPath(__dirname, './tw5CookOptions')
 		const resultPath = joinPath(destinationPath, resultFileName)
 		const tw5Template = customTw5Template || 'tiddlywiki2.template.html'
-		let output = exec(`${tw5Command} ${tw5OptionsPath} --verbose --load ${recipePath}` +
-			` --rendertiddler $:/core/templates/${tw5Template} ${resultPath} text/plain`)
+		let output = exec(`${tw5Command} "${tw5OptionsPath}" --verbose --load "${recipePath}"` +
+			` --rendertiddler $:/core/templates/${tw5Template} "${resultPath}" text/plain`)
 		return output.toString()
 	},
 	fixupEmptyLinesInStoreArea: function (htmlAsString) {
