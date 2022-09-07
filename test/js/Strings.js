@@ -5,10 +5,6 @@ jQuery(document).ready(function(){
 	test("String functions", function() {
 		expect(4);
 
-		var actual = "abcdef".right(3);
-		var expected = "def";
-		ok(actual == expected, 'String right');
-
 		actual = " abcdef ".trim();
 		expected = "abcdef";
 		ok(actual == expected, 'String trim');
