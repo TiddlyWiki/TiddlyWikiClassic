@@ -17,10 +17,6 @@ jQuery(document).ready(function(){
 		expected = "abc def";
 		ok(actual == expected, 'String trim');
 
-		actual = "background-color".unDash();
-		expected = "backgroundColor";
-		ok(actual == expected, 'String undash');
-
 		actual = "hello %0, is your favourite colour red?".format([]);
 		expected = "hello , is your favourite colour red?";
 		ok(actual == expected, 'String format with an empty substring array should return input string');

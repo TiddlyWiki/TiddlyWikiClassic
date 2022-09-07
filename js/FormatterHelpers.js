@@ -22,16 +22,26 @@ config.formatterHelpers = {
 
 	inlineCssHelper: function(w)
 	{
+		// Convert CSS property name to a JavaScript style name ("background-color" -> "backgroundColor")
+		var unDash = function(name) {
+			return name
+				.split("-")
+				.map(function(word, i) {
+					return i == 0 ? word :
+						word.charAt(0).toUpperCase() + word.slice(1);
+				})
+				.join("");
+		}
 		var styles = [];
 		config.textPrimitives.cssLookaheadRegExp.lastIndex = w.nextMatch;
 		var lookaheadMatch = config.textPrimitives.cssLookaheadRegExp.exec(w.source);
 		while(lookaheadMatch && lookaheadMatch.index == w.nextMatch) {
 			var s, v;
 			if(lookaheadMatch[1]) {
-				s = lookaheadMatch[1].unDash();
+				s = unDash(lookaheadMatch[1]);
 				v = lookaheadMatch[2];
 			} else {
-				s = lookaheadMatch[3].unDash();
+				s = unDash(lookaheadMatch[3]);
 				v = lookaheadMatch[4];
 			}
 			if(s == "bgcolor")

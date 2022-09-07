@@ -33,3 +33,13 @@ String.prototype.right = function(n)
 	return n < this.length ? this.slice(this.length - n) : this;
 };
 
+// @Deprecated: no direct replacement, since not used in core code (see unDash in inlineCssHelper)
+// Convert a string from a CSS style property name to a JavaScript style name ("background-color" -> "backgroundColor")
+String.prototype.unDash = function()
+{
+	var i, words = this.split("-");
+	for(i = 1; i < words.length; i++)
+		words[i] = words[i].substring(0, 1).toUpperCase() + words[i].substring(1);
+	return words.join("");
+};
+

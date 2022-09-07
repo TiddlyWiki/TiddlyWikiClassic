@@ -10,15 +10,6 @@ String.prototype.trim = function()
 	return this.replace(/^\s*|\s*$/g, "");
 };
 
-// Convert a string from a CSS style property name to a JavaScript style name ("background-color" -> "backgroundColor")
-String.prototype.unDash = function()
-{
-	var i, words = this.split("-");
-	for(i = 1; i < words.length; i++)
-		words[i] = words[i].substring(0, 1).toUpperCase() + words[i].substring(1);
-	return words.join("");
-};
-
 // Substitute substrings from an array into a format string that includes '%1'-type specifiers
 String.prototype.format = function(s)
 {
