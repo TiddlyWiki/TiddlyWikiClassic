@@ -74,6 +74,17 @@ String.prototype.htmlDecode = function()
 //   result[1..n] = one object for each parameter, with 'name' and 'value' members
 String.prototype.parseParams = function(defaultName, defaultValue, allowEval, noNames, cascadeDefaults)
 {
+	var dblQuote = "(?:\"((?:(?:\\\\\")|[^\"])+)\")";
+	var sngQuote = "(?:'((?:(?:\\\\\')|[^'])+)')";
+	var dblSquare = "(?:\\[\\[((?:\\s|\\S)*?)\\]\\])";
+	var dblBrace = "(?:\\{\\{((?:\\s|\\S)*?)\\}\\})";
+	var unQuoted = noNames ? "([^\"'\\s]\\S*)" : "([^\"':\\s][^\\s:]*)";
+	var emptyQuote = "((?:\"\")|(?:''))";
+	var skipSpace = "(?:\\s*)";
+	var token = "(?:" + dblQuote + "|" + sngQuote + "|" + dblSquare + "|" + dblBrace + "|" + unQuoted + "|" + emptyQuote + ")";
+	var re = noNames ? new RegExp(token, "mg") :
+		new RegExp(skipSpace + token + skipSpace + "(?:(\\:)" + skipSpace + token + ")?", "mg");
+
 	var parseToken = function(match, p) {
 		// Double quoted
 		if(match[p])     return match[p].replace(/\\"/g, '"');
@@ -102,44 +113,46 @@ String.prototype.parseParams = function(defaultName, defaultValue, allowEval, no
 		// Empty quote
 		if(match[p + 5]) return "";
 	};
-	var r = [{}];
-	var dblQuote = "(?:\"((?:(?:\\\\\")|[^\"])+)\")";
-	var sngQuote = "(?:'((?:(?:\\\\\')|[^'])+)')";
-	var dblSquare = "(?:\\[\\[((?:\\s|\\S)*?)\\]\\])";
-	var dblBrace = "(?:\\{\\{((?:\\s|\\S)*?)\\}\\})";
-	var unQuoted = noNames ? "([^\"'\\s]\\S*)" : "([^\"':\\s][^\\s:]*)";
-	var emptyQuote = "((?:\"\")|(?:''))";
-	var skipSpace = "(?:\\s*)";
-	var token = "(?:" + dblQuote + "|" + sngQuote + "|" + dblSquare + "|" + dblBrace + "|" + unQuoted + "|" + emptyQuote + ")";
-	var re = noNames ? new RegExp(token, "mg") : new RegExp(skipSpace + token + skipSpace + "(?:(\\:)" + skipSpace + token + ")?", "mg");
-	var match;
+
+	var summary = {};
+	var results = [summary], match;
 	while(match = re.exec(this)) {
-		var n = parseToken(match, 1);
+		// matched bit is like  firstToken  or  firstToken:tokenAfterColon  (like "param":{{evaluated expression}})
+		var firstToken = parseToken(match, 1);
 		if(noNames) {
-			r.push({ name: "", value: n });
-		} else {
-			var v = parseToken(match, 8);
-			if(v == null && defaultName) {
-				v = n;
-				n = defaultName;
-			} else if(v == null && defaultValue) {
-				v = defaultValue;
+			results.push({ name: "", value: firstToken });
+			continue;
+		}
+
+		var tokenAfterColon = parseToken(match, 8);
+		var newItem = {
+			name: firstToken,
+			value: tokenAfterColon
+		};
+		if(newItem.value == null) {
+			if(defaultName) {
+				newItem.value = firstToken;
+				newItem.name = defaultName;
 			}
-			r.push({ name: n, value: v });
-			if(cascadeDefaults) {
-				defaultName = n;
-				defaultValue = v;
-			}
+			else if(defaultValue) newItem.value = defaultValue;
+		}
+
+		results.push(newItem);
+		if(cascadeDefaults) {
+			defaultName = newItem.name;
+			defaultValue = newItem.value;
 		}
 	}
-	// Summarise parameters into first element
-	for(var i = 1; i < r.length; i++) {
-		if(r[0][r[i].name])
-			r[0][r[i].name].push(r[i].value);
+
+	for(var i = 1; i < results.length; i++) {
+		var name = results[i].name;
+		var value = results[i].value;
+		if(!summary[name])
+			summary[name] = [value];
 		else
-			r[0][r[i].name] = [r[i].value];
+			summary[name].push(value);
 	}
-	return r;
+	return results;
 };
 
 // Process a string list of macro parameters into an array. Parameters can be quoted with "", '',
