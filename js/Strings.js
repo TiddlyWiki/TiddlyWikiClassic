@@ -193,14 +193,6 @@ String.prototype.replaceChunk = function(start,end,sub)
 	return r ? this.substring(0,r[0]) + sub + this.substring(r[1]) : this;
 };
 
-// Returns a chunk of a string between start and end markers, or undefined
-String.prototype.getChunk = function(start,end)
-{
-	var r = tw.textUtils.getChunkRange(this, start, end);
-	if(r)
-		return this.substring(r[0],r[1]);
-};
-
 
 // Static method to bracket a string with double square brackets if it contains a space
 String.encodeTiddlyLink = function(title)

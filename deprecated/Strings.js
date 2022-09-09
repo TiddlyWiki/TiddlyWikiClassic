@@ -44,8 +44,16 @@ String.prototype.unDash = function()
 };
 
 // @Deprecated: use tw.textUtils.getChunkRange instead
-String.prototype.getChunkRange = function(start, end)
+String.prototype.getChunkRange = function(startMarker, endMarker)
 {
-	return tw.textUtils.getChunkRange(this, start, end);
+	return tw.textUtils.getChunkRange(this, startMarker, endMarker);
+};
+
+// @Deprecated: no direct replacement, since not used in core code
+// Returns a chunk of a string between start and end markers, or undefined
+String.prototype.getChunk = function(startMarker, endMarker)
+{
+	var r = tw.textUtils.getChunkRange(this, startMarker, endMarker);
+	if(r) return this.substring(r[0], r[1]);
 };
 
