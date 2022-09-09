@@ -128,5 +128,20 @@ jQuery(document).ready(function(){
 		expected = "[[the title]]";
 		ok(actual == expected, 'String should correctly encodeTiddlyLink with spaces');
 	});
+
+	test("tw.textUtils", () => {
+		let textBefore = "text before "
+		let textAfter = " text after"
+		let textInside = "text inside"
+		let startMarker = "["
+		let endMarker = "]"
+		let wholeString = textBefore + startMarker + textInside + endMarker + textAfter
+		let actual = tw.textUtils.getChunkRange(wholeString, startMarker, endMarker)
+		let expected = [(textBefore + startMarker).length, (textBefore + startMarker + textInside).length]
+		ok(actual[0] === expected[0],
+			`tw.textUtils.getChunkRange("${wholeString}", "${startMarker}", "${endMarker}"): start index is ${expected[0]}`)
+		ok(actual[1] === expected[1],
+			`tw.textUtils.getChunkRange("${wholeString}", "${startMarker}", "${endMarker}"): end index is ${expected[1]}`)
+	})
 });
 

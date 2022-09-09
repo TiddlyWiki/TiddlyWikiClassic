@@ -1,5 +1,6 @@
 version: Version.js
 js: Guide.js
+js: Global.js
 js: Config.js
 js: ConfigBrowser.js
 js: Lingo.js

@@ -43,3 +43,9 @@ String.prototype.unDash = function()
 	return words.join("");
 };
 
+// @Deprecated: use tw.textUtils.getChunkRange instead
+String.prototype.getChunkRange = function(start, end)
+{
+	return tw.textUtils.getChunkRange(this, start, end);
+};
+
