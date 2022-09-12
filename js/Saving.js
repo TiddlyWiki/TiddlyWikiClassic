@@ -41,7 +41,7 @@ function updateLanguageAttribute(s)
 
 function updateMarkupBlock(s, blockName, tiddlerName)
 {
-	return s.replaceChunk(
+	return tw.textUtils.replaceChunk(s,
 		"<!--%0-START-->".format([blockName]),
 		"<!--%0-END-->".format([blockName]),
 		"\n" + store.getRecursiveTiddlerText(tiddlerName, "") + "\n");
@@ -58,7 +58,7 @@ function updateOriginal(original, posDiv, localPath)
 		store.allTiddlersAsHtml() + "\n" +
 		original.substr(posDiv[1]);
 	var newSiteTitle = getPageTitle().htmlEncode();
-	revised = revised.replaceChunk("<title" + ">", "</title" + ">", " " + newSiteTitle + " ");
+	revised = tw.textUtils.replaceChunk(revised, "<title" + ">", "</title" + ">", " " + newSiteTitle + " ");
 	revised = updateLanguageAttribute(revised);
 	revised = updateMarkupBlock(revised, "PRE-HEAD", "MarkupPreHead");
 	revised = updateMarkupBlock(revised, "POST-HEAD", "MarkupPostHead");

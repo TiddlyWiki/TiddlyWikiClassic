@@ -50,10 +50,16 @@ String.prototype.getChunkRange = function(startMarker, endMarker)
 };
 
 // @Deprecated: no direct replacement, since not used in core code
-// Returns a chunk of a string between start and end markers, or undefined
+// Get a chunk of a string between startMarker and endMarker, or undefined
 String.prototype.getChunk = function(startMarker, endMarker)
 {
 	var r = tw.textUtils.getChunkRange(this, startMarker, endMarker);
 	if(r) return this.substring(r[0], r[1]);
+};
+
+// @Deprecated: use tw.textUtils.replaceChunk instead
+String.prototype.replaceChunk = function(startMarker, endMarker, newValue)
+{
+	return tw.textUtils.replaceChunk(this, startMarker, endMarker, newValue);
 };
 

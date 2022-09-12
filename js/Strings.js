@@ -176,7 +176,7 @@ String.prototype.readBracketedList = function(unique)
 	return n;
 };
 
-// Returns array with start and end index of chunk between given start and end marker, or undefined.
+// Get [startIndex, endIndex] of chunk between given startMarker and endMarker inside text, or undefined.
 tw.textUtils.getChunkRange = function(text, startMarker, endMarker)
 {
 	var s = text.indexOf(startMarker);
@@ -187,10 +187,10 @@ tw.textUtils.getChunkRange = function(text, startMarker, endMarker)
 };
 
 // Replace a chunk of a string given start and end markers
-String.prototype.replaceChunk = function(start,end,sub)
+tw.textUtils.replaceChunk = function(text, startMarker, endMarker, newValue)
 {
-	var r = tw.textUtils.getChunkRange(this, start, end);
-	return r ? this.substring(0,r[0]) + sub + this.substring(r[1]) : this;
+	var r = this.getChunkRange(text, startMarker, endMarker);
+	return r ? text.substring(0, r[0]) + newValue + text.substring(r[1]) : text;
 };
 
 
