@@ -13,8 +13,9 @@ var endSaveAreaCaps = '</D' + 'IV>';
 function confirmExit()
 {
 	hadConfirmExit = true;
-	if((store && store.isDirty && store.isDirty()) || (story && story.areAnyDirty && story.areAnyDirty()))
-		return config.messages.confirmExit;
+	var hasDirtyStore = store && store.isDirty && store.isDirty();
+	var hasDirtyStory = story && story.areAnyDirty && story.areAnyDirty();
+	if(hasDirtyStore || hasDirtyStory) return config.messages.confirmExit;
 }
 
 // Give the user a chance to save changes before exitting
@@ -28,42 +29,38 @@ function checkUnsavedChanges()
 
 function updateLanguageAttribute(s)
 {
-	if(config.locale) {
-		var m = /(<html(?:.*?)?)(?: xml:lang\="([a-z]+)")?(?: lang\="([a-z]+)")?>/.exec(s);
-		if(m) {
-			var htmlTag = m[1];
-			if(m[2])
-				htmlTag += ' xml:lang="' + config.locale + '"';
-			if(m[3])
-				htmlTag += ' lang="' + config.locale + '"';
-			htmlTag += ">";
-			s = s.substr(0, m.index) + htmlTag + s.substr(m.index + m[0].length);
-		}
-	}
-	return s;
+	if(!config.locale) return s;
+	var m = /(<html(?:.*?)?)(?: xml:lang\="([a-z]+)")?(?: lang\="([a-z]+)")?>/.exec(s);
+	if(!m) return s;
+
+	var htmlTag = m[1];
+	if(m[2]) htmlTag += ' xml:lang="' + config.locale + '"';
+	if(m[3]) htmlTag += ' lang="' + config.locale + '"';
+	htmlTag += ">";
+
+	return s.substr(0, m.index) + htmlTag + s.substr(m.index + m[0].length);
 }
 
 function updateMarkupBlock(s, blockName, tiddlerName)
 {
 	return s.replaceChunk(
-			"<!--%0-START-->".format([blockName]),
-			"<!--%0-END-->".format([blockName]),
-			"\n" + store.getRecursiveTiddlerText(tiddlerName, "") + "\n");
+		"<!--%0-START-->".format([blockName]),
+		"<!--%0-END-->".format([blockName]),
+		"\n" + store.getRecursiveTiddlerText(tiddlerName, "") + "\n");
 }
 
 function updateOriginal(original, posDiv, localPath)
 {
-	if(!posDiv)
-		posDiv = locateStoreArea(original);
+	if(!posDiv) posDiv = locateStoreArea(original);
 	if(!posDiv) {
 		alert(config.messages.invalidFileError.format([localPath]));
 		return null;
 	}
 	var revised = original.substr(0, posDiv[0] + startSaveArea.length) + "\n" +
-				store.allTiddlersAsHtml() + "\n" +
-				original.substr(posDiv[1]);
+		store.allTiddlersAsHtml() + "\n" +
+		original.substr(posDiv[1]);
 	var newSiteTitle = getPageTitle().htmlEncode();
-	revised = revised.replaceChunk("<title"+">", "</title"+">", " " + newSiteTitle + " ");
+	revised = revised.replaceChunk("<title" + ">", "</title" + ">", " " + newSiteTitle + " ");
 	revised = updateLanguageAttribute(revised);
 	revised = updateMarkupBlock(revised, "PRE-HEAD", "MarkupPreHead");
 	revised = updateMarkupBlock(revised, "POST-HEAD", "MarkupPostHead");
@@ -75,12 +72,11 @@ function updateOriginal(original, posDiv, localPath)
 function locateStoreArea(original)
 {
 	// Locate the storeArea divs
-	if(!original)
-		return null;
+	if(!original) return null;
 	var posOpeningDiv = original.search(startSaveAreaRE);
-	var limitClosingDiv = original.indexOf("<"+"!--POST-STOREAREA--"+">");
+	var limitClosingDiv = original.indexOf("<" + "!--POST-STOREAREA--" + ">");
 	if(limitClosingDiv == -1)
-		limitClosingDiv = original.indexOf("<"+"!--POST-BODY-START--"+">");
+		limitClosingDiv = original.indexOf("<" + "!--POST-BODY-START--" + ">");
 	var start = limitClosingDiv == -1 ? original.length : limitClosingDiv;
 	var posClosingDiv = original.lastIndexOf(endSaveArea, start);
 	if(posClosingDiv == -1)
@@ -284,11 +280,12 @@ function getBackupPath(localPath, filenameSuffix, extension)
 		slash = "/";
 	}
 	var backupFolder = config.options.txtBackupFolder || ".";
-	var backupPath = localPath.substr(0, dirPathPos) + slash + backupFolder + localPath.substr(dirPathPos);
-	backupPath = backupPath.substr(0, backupPath.lastIndexOf(".")) + ".";
-	var illegalFilenameCharacterOrSpaceRE = /[\\\/\*\?\":<> ]/g;
-	if(filenameSuffix)
+	var backupPath = localPath.substring(0, dirPathPos) + slash + backupFolder + localPath.substring(dirPathPos);
+	backupPath = backupPath.substring(0, backupPath.lastIndexOf(".")) + ".";
+	if(filenameSuffix) {
+		var illegalFilenameCharacterOrSpaceRE = /[\\\/\*\?\":<> ]/g;
 		backupPath += filenameSuffix.replace(illegalFilenameCharacterOrSpaceRE, "_") + ".";
+	}
 	backupPath += (new Date()).convertToYYYYMMDDHHMMSSMMM() + "." + (extension || "html");
 	return backupPath;
 }
