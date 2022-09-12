@@ -2,8 +2,6 @@
 //-- Saving
 //--
 
-var saveUsingSafari = false;
-
 var startSaveArea = '<div id="' + 'storeArea">'; // Split up into two so that indexOf() of this source doesn't find it
 var startSaveAreaRE = /<((div)|(DIV)) ((id)|(ID))=["']?storeArea['"]?>/; // Used for IE6
 var endSaveArea = '</d' + 'iv>';
