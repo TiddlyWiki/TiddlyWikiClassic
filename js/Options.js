@@ -191,20 +191,15 @@ function decodeCookie(s)
 	return s.replace(re, function($0) { return String.fromCharCode(eval($0.replace(/[&#;]/g, ''))) });
 }
 
-config.macros.option.genericCreate = function(place,type,opt,className,desc)
+config.macros.option.genericCreate = function(place, type, opt, className, desc)
 {
 	var typeInfo = config.macros.option.types[type];
-	var c = document.createElement(typeInfo.elementType);
-	if(typeInfo.typeValue)
-		c.setAttribute('type',typeInfo.typeValue);
+	var text = desc != 'no' ? (config.optionsDesc[opt] || opt) : null;
+	var attributes = { option: opt };
+	if(typeInfo.typeValue) attributes.type = typeInfo.typeValue;
+	if(config.optionsDesc[opt]) attributes.title = config.optionsDesc[opt];
+	var c = createTiddlyElement(place, typeInfo.elementType, null, className || typeInfo.className, text, attributes);
 	c[typeInfo.eventName] = typeInfo.onChange;
-	c.setAttribute('option',opt);
-	c.className = className || typeInfo.className;
-	if(config.optionsDesc[opt])
-		c.setAttribute('title',config.optionsDesc[opt]);
-	place.appendChild(c);
-	if(desc != 'no')
-		createTiddlyText(place,config.optionsDesc[opt] || opt);
 	c[typeInfo.valueField] = config.options[opt];
 	return c;
 };
@@ -241,16 +236,14 @@ config.macros.option.types = {
 	}
 };
 
-config.macros.option.propagateOption = function(opt, valueField, value, elementType, elem)
+config.macros.option.propagateOption = function(opt, valueField, value, elementType, sourceEditor)
 {
 	config.options[opt] = value;
 	saveOption(opt);
-	var i, nodes = document.getElementsByTagName(elementType);
-	for(i = 0; i < nodes.length; i++) {
-		var optNode = nodes[i].getAttribute('option');
-		if(opt == optNode && nodes[i] != elem)
-			nodes[i][valueField] = value;
-	}
+
+	jQuery(elementType + '[option=' + opt + ']').each(function(i, editor) {
+		if(editor != sourceEditor) editor[valueField] = value;
+	});
 };
 
 config.macros.option.handler = function(place, macroName, params, wikifier, paramString)
@@ -286,13 +279,13 @@ config.macros.options.refreshOptions = function(listWrapper, showUnknown)
 {
 	var n, opts = [];
 	for(n in config.options) {
-		var opt = {};
-		opt.option = '';
-		opt.name = n;
-		opt.lowlight = !config.optionsDesc[n];
-		opt.description = opt.lowlight ? this.unknownDescription : config.optionsDesc[n];
-		if(!opt.lowlight || showUnknown)
-			opts.push(opt);
+		var isUnknown = !config.optionsDesc[n];
+		if(!isUnknown || showUnknown) opts.push({
+			option: '',
+			name: n,
+			lowlight: isUnknown,
+			description: config.optionsDesc[n] || this.unknownDescription
+		});
 	}
 	opts.sort(function(a, b) {
 		var nameA = a.name.substring(3);
