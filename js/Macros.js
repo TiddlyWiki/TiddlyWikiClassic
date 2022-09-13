@@ -169,14 +169,12 @@ merge(macro, {
 		var lastGroup = "", ul;
 		var last = params[1] ? tiddlers.length - Math.min(tiddlers.length, parseInt(params[1], 10)) : 0;
 
-		for(var t = tiddlers.length - 1; t >= last; t--) {
-			var tiddler = tiddlers[t];
-			var theGroup = wikifyPlainText(groupTemplate,0,tiddler);
-			if(typeof(ul) == "undefined" || theGroup != lastGroup) {
-				ul = document.createElement("ul");
-				jQuery(ul).addClass("timeline");
-				container.appendChild(ul);
-				createTiddlyElement(ul,"li",null,"listTitle",theGroup);
+		for(var i = tiddlers.length - 1; i >= last; i--) {
+			var tiddler = tiddlers[i];
+			var theGroup = wikifyPlainText(groupTemplate, 0, tiddler);
+			if(ul === undefined || theGroup != lastGroup) {
+				ul = createTiddlyElement(container, "ul", null, "timeline");
+				createTiddlyElement(ul, "li", null, "listTitle", theGroup);
 				lastGroup = theGroup;
 			}
 			var item = createTiddlyElement(ul, "li", null, "listLink");
@@ -277,13 +275,11 @@ config.macros.tags.handler = function(place, macroName, params, wikifier, paramS
 
 	for(var i = 0; i < tiddler.tags.length; i++) {
 		var tag = store.getTiddler(tiddler.tags[i]);
-		if(!tag || !tag.tags.contains("excludeLists")) {
-			if(!label)
-				label = createTiddlyElement(ul, "li", null, "listTitle", lingo.labelTags.format([tiddler.title]));
-			createTagButton(createTiddlyElement(ul, "li"), tiddler.tags[i], tiddler.title);
-			if(i < tiddler.tags.length - 1)
-				createTiddlyText(ul, sep);
-		}
+		if(tag && tag.tags.contains("excludeLists")) continue;
+		if(!label) label = createTiddlyElement(ul, "li", null, "listTitle", lingo.labelTags.format([tiddler.title]));
+		createTagButton(createTiddlyElement(ul, "li"), tiddler.tags[i], tiddler.title);
+		if(i < tiddler.tags.length - 1)
+			createTiddlyText(ul, sep);
 	}
 	if(!label)
 		createTiddlyElement(ul, "li", null, "listTitle", lingo.labelNoTags.format([tiddler.title]));
@@ -484,11 +480,10 @@ config.macros.edit.handler = function(place, macroName, params, wikifier, paramS
 	story.setDirty(tiddler.title, true);
 	var e, v;
 	if(field != "text" && !rows) {
-		e = createTiddlyElement(null, "input", null, null, null, {
+		e = createTiddlyElement(place, "input", null, null, null, {
 			type: "text", edit: field, size: "40", autocomplete: "off"
 		});
 		e.value = store.getValue(tiddler, field) || defVal;
-		place.appendChild(e);
 	} else {
 		var wrapper1 = createTiddlyElement(null, "fieldset", null, "fieldsetFix");
 		var wrapper2 = createTiddlyElement(wrapper1, "div");
@@ -496,7 +491,7 @@ config.macros.edit.handler = function(place, macroName, params, wikifier, paramS
 		e.value = v = store.getValue(tiddler, field) || defVal;
 		rows = rows || 10;
 		var lines = v.match(/\n/mg);
-		var maxLines = Math.max(parseInt(config.options.txtMaxEditRows, 10), 5);
+		var maxLines = Math.max(parseInt(config.options.txtMaxEditRows), 5);
 		if(lines != null && lines.length > rows)
 			rows = lines.length + 5;
 		rows = Math.min(rows, maxLines);
@@ -517,8 +512,6 @@ config.macros.tagChooser.onClick = function(ev)
 	var lingo = config.views.editor.tagChooser;
 	var popup = Popup.create(this);
 	var tags = store.getTags(this.getAttribute("tags"));
-	if(tags.length == 0)
-		jQuery("<li/>").addClass('disabled').text(lingo.popupNone).appendTo(popup);
 
 	for(var i = 0; i < tags.length; i++) {
 		var tag = createTiddlyButton(createTiddlyElement(popup, "li"), tags[i][0],
@@ -526,6 +519,8 @@ config.macros.tagChooser.onClick = function(ev)
 		tag.setAttribute("tag", tags[i][0]);
 		tag.setAttribute("tiddler", this.getAttribute("tiddler"));
 	}
+	if(tags.length == 0) jQuery("<li/>").addClass('disabled').text(lingo.popupNone).appendTo(popup);
+
 	Popup.show();
 	e.cancelBubble = true;
 	if(e.stopPropagation) e.stopPropagation();
@@ -545,12 +540,12 @@ config.macros.tagChooser.onTagClick = function(ev)
 
 config.macros.tagChooser.handler = function(place, macroName, params, wikifier, paramString, tiddler)
 {
-	if(tiddler instanceof Tiddler) {
-		var lingo = config.views.editor.tagChooser;
-		var btn = createTiddlyButton(place,lingo.text,lingo.tooltip,this.onClick);
-		btn.setAttribute("tiddler",tiddler.title);
-		btn.setAttribute("tags",params[0]);
-	}
+	if(!(tiddler instanceof Tiddler)) return;
+	var lingo = config.views.editor.tagChooser;
+	createTiddlyButton(place, lingo.text, lingo.tooltip, this.onClick, null, null, null, {
+		tiddler: tiddler.title,
+		tags: params[0]
+	});
 };
 
 config.macros.refreshDisplay.handler = function(place)
