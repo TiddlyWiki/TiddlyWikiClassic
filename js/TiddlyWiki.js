@@ -317,21 +317,23 @@ TiddlyWiki.prototype.addTiddlerFields = function(title, fields)
 //# NB: Does not trigger autoSaveChanges.
 TiddlyWiki.prototype.saveTiddler = function(title, newTitle, newBody, modifier, modified, tags, fields, clearChangeCount, created, creator)
 {
-	var tiddler;
-	if(title instanceof Tiddler) {
-		tiddler = this.resolveTiddler(title);
-		tiddler.fields = merge(merge({},tiddler.fields),config.defaultCustomFields,true);
+	var wasTiddlerProvided = title instanceof Tiddler;
+	var tiddler = this.resolveTiddler(title);
+	if(tiddler) {
 		title = tiddler.title;
-		newTitle = newTitle || title;
 	} else {
-		tiddler = this.resolveTiddler(title);
+		tiddler = new Tiddler();
+	}
+	if(wasTiddlerProvided) {
+		newTitle = newTitle || title;
+		tiddler.fields = merge(merge({},tiddler.fields),config.defaultCustomFields,true);
+	} else {
 		if(tiddler) {
 			created = created || tiddler.created; // Preserve created date
 			creator = creator || tiddler.creator;
 			this.deleteTiddler(title);
 		} else {
 			created = created || modified;
-			tiddler = new Tiddler();
 		}
 		fields = merge(merge({},fields),config.defaultCustomFields,true);
 		tiddler.set(newTitle,newBody,modifier,modified,tags,created,fields,creator);
