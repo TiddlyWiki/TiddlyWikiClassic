@@ -324,8 +324,8 @@ TiddlyWiki.prototype.saveTiddler = function(title, newTitle, newBody, modifier, 
 	} else {
 		tiddler = new Tiddler();
 	}
+	newTitle = newTitle || title;
 	if(wasTiddlerProvided) {
-		newTitle = newTitle || title;
 		tiddler.fields = merge(merge({},tiddler.fields),config.defaultCustomFields,true);
 	} else {
 		if(tiddler) {
