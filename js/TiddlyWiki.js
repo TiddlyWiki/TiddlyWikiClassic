@@ -332,10 +332,10 @@ TiddlyWiki.prototype.saveTiddler = function(titleOrTiddler, newTitle, newBody, m
 	}
 
 	if(wasTiddlerProvided) {
-		tiddler.fields = merge(merge({},tiddler.fields),config.defaultCustomFields,true);
+		tiddler.fields = merge(merge({}, tiddler.fields), config.defaultCustomFields, true);
 	} else {
-		fields = merge(merge({},fields),config.defaultCustomFields,true);
-		tiddler.set(newTitle,newBody,modifier,modified,tags,created,fields,creator);
+		fields = merge(merge({}, fields), config.defaultCustomFields, true);
+		tiddler.set(newTitle, newBody, modifier, modified, tags, created, fields, creator);
 	}
 	if(clearChangeCount)
 		tiddler.clearChangeCount();
