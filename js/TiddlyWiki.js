@@ -315,16 +315,17 @@ TiddlyWiki.prototype.addTiddlerFields = function(title, fields)
 //# fields should retain existing tiddler's extended fields
 //#
 //# NB: Does not trigger autoSaveChanges.
-TiddlyWiki.prototype.saveTiddler = function(title, newTitle, newBody, modifier, modified, tags, fields, clearChangeCount, created, creator)
+TiddlyWiki.prototype.saveTiddler = function(titleOrTiddler, newTitle, newBody, modifier, modified, tags, fields, clearChangeCount, created, creator)
 {
-	var wasTiddlerProvided = title instanceof Tiddler;
-	var tiddler = this.resolveTiddler(title);
+	var wasTiddlerProvided = titleOrTiddler instanceof Tiddler;
+	var tiddler = this.resolveTiddler(titleOrTiddler);
+	var title = tiddler ? tiddler.title : titleOrTiddler;
+	newTitle = newTitle || title;
+
 	if(tiddler) {
-		title = tiddler.title;
 	} else {
 		tiddler = new Tiddler();
 	}
-	newTitle = newTitle || title;
 	if(wasTiddlerProvided) {
 		tiddler.fields = merge(merge({},tiddler.fields),config.defaultCustomFields,true);
 	} else {
