@@ -323,19 +323,17 @@ TiddlyWiki.prototype.saveTiddler = function(titleOrTiddler, newTitle, newBody, m
 	newTitle = newTitle || title;
 
 	if(tiddler) {
+		this.deleteTiddler(title); //# clean up slices for title, make sure the tiddler is not copied when renamed
+		created = created || tiddler.created; // Preserve created date
+		creator = creator || tiddler.creator;
 	} else {
 		tiddler = new Tiddler();
+		created = created || modified;
 	}
+
 	if(wasTiddlerProvided) {
 		tiddler.fields = merge(merge({},tiddler.fields),config.defaultCustomFields,true);
 	} else {
-		if(tiddler) {
-			created = created || tiddler.created; // Preserve created date
-			creator = creator || tiddler.creator;
-			this.deleteTiddler(title);
-		} else {
-			created = created || modified;
-		}
 		fields = merge(merge({},fields),config.defaultCustomFields,true);
 		tiddler.set(newTitle,newBody,modifier,modified,tags,created,fields,creator);
 	}
@@ -344,7 +342,7 @@ TiddlyWiki.prototype.saveTiddler = function(titleOrTiddler, newTitle, newBody, m
 	else
 		tiddler.incChangeCount();
 
-	this.addTiddler(tiddler);
+	this.addTiddler(tiddler); //# clean up slices for newTitle, add/return the tiddler
 	if(title != newTitle) this.notify(title, true);
 	this.notify(newTitle, true);
 	this.setDirty(true);
