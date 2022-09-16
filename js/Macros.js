@@ -55,20 +55,20 @@ config.macros.list.refresh = function(list)
 	var params = paramString.readMacroParams();
 	var args = paramString.parseParams("anon", null, null)[0];
 	var type = args.anon ? args.anon[0] : "all";
-	jQuery(list).empty().addClass("list list-" + type);
 	var template = args.template ? store.getTiddlerText(args.template[0]) : false;
 	if(!template) {
 		template = config.macros.list.template;
 	}
-	if(this[type].prompt)
-		createTiddlyElement(list, "li", null, "listTitle", this[type].prompt);
 	var results;
 	if(this[type].handler)
 		results = this[type].handler(params);
 
+	jQuery(list).empty().addClass("list list-" + type);
+	if(this[type].prompt)
+		createTiddlyElement(list, "li", null, "listTitle", this[type].prompt);
+
 	for(var i = 0; i < results.length; i++) {
-		var li = document.createElement("li");
-		list.appendChild(li);
+		var li = createTiddlyElement(list, "li");
 		var tiddler = results[i];
 		if(typeof(tiddler) == 'string') { // deal with missing etc..
 			tiddler = store.getTiddler(tiddler) || new Tiddler(tiddler);
@@ -109,13 +109,10 @@ config.macros.list.touched.handler = function(params)
 config.macros.list.filter.handler = function(params)
 {
 	var filter = params[1];
-	var results = [];
-	if(filter) {
-		var tiddlers = store.filterTiddlers(filter);
-		for(var i = 0; i < tiddlers.length; i++)
-			results.push(tiddlers[i].title);
-	}
-	return results;
+	if(!filter) return [];
+	return store.filterTiddlers(filter).map(function(tiddler) {
+		return tiddler.title
+	});
 };
 
 config.macros.allTags.handler = function(place,macroName,params)
@@ -265,38 +262,38 @@ config.macros.tag.handler = function(place, macroName, params)
 config.macros.tags.handler = function(place, macroName, params, wikifier, paramString, tiddler)
 {
 	params = paramString.parseParams("anon", null, true, false, false);
-	var ul = createTiddlyElement(place, "ul");
 	var title = getParam(params, "anon", "");
 	if(title && store.tiddlerExists(title))
 		tiddler = store.getTiddler(title);
 	var sep = getParam(params, "sep", " ");
 	var lingo = config.views.wikified.tag;
-	var label = null;
 
+	var ul = createTiddlyElement(place, "ul");
+	createTiddlyElement(ul, "li", null, "listTitle",
+		(tiddler.tags.length ? lingo.labelTags : lingo.labelNoTags).format([tiddler.title])
+	);
 	for(var i = 0; i < tiddler.tags.length; i++) {
 		var tag = store.getTiddler(tiddler.tags[i]);
-		if(tag && tag.tags.contains("excludeLists")) continue;
-		if(!label) label = createTiddlyElement(ul, "li", null, "listTitle", lingo.labelTags.format([tiddler.title]));
+		if(tag && tag.tags.indexOf("excludeLists") != -1) continue;
 		createTagButton(createTiddlyElement(ul, "li"), tiddler.tags[i], tiddler.title);
 		if(i < tiddler.tags.length - 1)
 			createTiddlyText(ul, sep);
 	}
-	if(!label)
-		createTiddlyElement(ul, "li", null, "listTitle", lingo.labelNoTags.format([tiddler.title]));
 };
 
 config.macros.tagging.handler = function(place, macroName, params, wikifier, paramString, tiddler)
 {
 	params = paramString.parseParams("anon", null, true, false, false);
-	var ul = createTiddlyElement(place, "ul");
 	var title = getParam(params, "anon", "");
 	if(title == "" && tiddler instanceof Tiddler)
 		title = tiddler.title;
 	var sep = getParam(params, "sep", " ");
-	ul.setAttribute("title", this.tooltip.format([title]));
 	var sortby = getParam(params, "sortBy", false);
 	var tagged = store.getTaggedTiddlers(title, sortby);
 	var prompt = tagged.length == 0 ? this.labelNotTag : this.label;
+
+	var ul = createTiddlyElement(place, "ul");
+	ul.setAttribute("title", this.tooltip.format([title]));
 	createTiddlyElement(ul, "li", null, "listTitle", prompt.format([title, tagged.length]));
 
 	for(var i = 0; i < tagged.length; i++) {
@@ -474,27 +471,28 @@ config.macros.edit.handler = function(place, macroName, params, wikifier, paramS
 {
 	var field = params[0];
 	var rows = params[1] || 0;
-	var defVal = params[2] || '';
+	var defaultValue = params[2] || '';
 	if(!(tiddler instanceof Tiddler) || !field) return;
 
 	story.setDirty(tiddler.title, true);
-	var e, v;
+	var e, value = store.getValue(tiddler, field) || defaultValue;
 	if(field != "text" && !rows) {
 		e = createTiddlyElement(place, "input", null, null, null, {
 			type: "text", edit: field, size: "40", autocomplete: "off"
 		});
-		e.value = store.getValue(tiddler, field) || defVal;
+		e.value = value;
 	} else {
-		var wrapper1 = createTiddlyElement(null, "fieldset", null, "fieldsetFix");
-		var wrapper2 = createTiddlyElement(wrapper1, "div");
-		e = createTiddlyElement(wrapper2, "textarea");
-		e.value = v = store.getValue(tiddler, field) || defVal;
 		rows = rows || 10;
-		var lines = v.match(/\n/mg);
+		var lines = value.match(/\n/mg);
 		var maxLines = Math.max(parseInt(config.options.txtMaxEditRows), 5);
 		if(lines != null && lines.length > rows)
 			rows = lines.length + 5;
 		rows = Math.min(rows, maxLines);
+
+		var wrapper1 = createTiddlyElement(null, "fieldset", null, "fieldsetFix");
+		var wrapper2 = createTiddlyElement(wrapper1, "div");
+		e = createTiddlyElement(wrapper2, "textarea");
+		e.value = value;
 		e.setAttribute("rows", rows);
 		e.setAttribute("edit", field);
 		place.appendChild(wrapper1);
