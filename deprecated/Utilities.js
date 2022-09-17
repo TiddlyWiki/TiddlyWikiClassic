@@ -9,7 +9,7 @@ function removeChildren(e)
 	jQuery(e).empty();
 }
 
-// Remove a node and all it's children
+// Remove a node and all its children
 function removeNode(e)
 {
 	jQuery(e).remove();
@@ -21,17 +21,17 @@ function getPlainText(e)
 	return jQuery(e).text();
 }
 
-function addClass(e,className)
+function addClass(e, className)
 {
 	jQuery(e).addClass(className);
 }
 
-function removeClass(e,className)
+function removeClass(e, className)
 {
 	jQuery(e).removeClass(className);
 }
 
-function hasClass(e,className)
+function hasClass(e, className)
 {
 	return jQuery(e).hasClass(className);
 }
