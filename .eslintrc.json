@@ -3,7 +3,10 @@
         "browser": true
     },
     "rules": {
-        "indent": ["error", "tab"],
+        "indent": ["error", "tab", {
+        }],
+        "space-infix-ops": "error",
+        "semi-spacing": "error",
         "block-spacing": "error",
         "comma-spacing": "error",
         "object-curly-spacing": ["error", "always"],
