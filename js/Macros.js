@@ -115,24 +115,22 @@ config.macros.list.filter.handler = function(params)
 	});
 };
 
-config.macros.allTags.handler = function(place,macroName,params)
+config.macros.allTags.handler = function(place, macroName, params)
 {
 	var tags = store.getTags(params[0]);
 	var ul = createTiddlyElement(place, "ul");
-	if(tags.length == 0)
-		createTiddlyElement(ul, "li", null, "listTitle", this.noTags);
+	if(tags.length == 0) createTiddlyElement(ul, "li", null, "listTitle", this.noTags);
 
-	for(var t = 0; t < tags.length; t++) {
-		var title = tags[t][0];
+	for(var i = 0; i < tags.length; i++) {
+		var title = tags[i][0];
 		var info = getTiddlyLinkInfo(title);
-		var li = createTiddlyElement(ul,"li");
-		var btn = createTiddlyButton(li,title + " (" + tags[t][1] + ")",this.tooltip.format([title]),onClickTag,info.classes);
-		btn.setAttribute("tag",title);
-		btn.setAttribute("refresh","link");
-		btn.setAttribute("tiddlyLink",title);
-		if(params[1]) {
-			btn.setAttribute("sortby",params[1]);
-		}
+		var li = createTiddlyElement(ul, "li");
+		var btn = createTiddlyButton(li, title + " (" + tags[i][1] + ")",
+			this.tooltip.format([title]), onClickTag, info.classes);
+		btn.setAttribute("tag", title);
+		btn.setAttribute("refresh", "link");
+		btn.setAttribute("tiddlyLink", title);
+		if(params[1]) btn.setAttribute("sortby", params[1]);
 	}
 };
 
@@ -153,29 +151,26 @@ merge(macro, {
 		var prefix = field.charAt(0);
 		var no_prefix_field = prefix === "-" || prefix === "+" ? field.substr(1, field.length) : field;
 		var dateFormat = params[2] || this.dateFormat;
-		var groupTemplate = macro.groupTemplate.format(no_prefix_field, dateFormat);
-		groupTemplate = args.groupTemplate ? store.getTiddlerText(args.groupTemplate[0]) || groupTemplate :
-			groupTemplate;
 
-		var itemTemplate = macro.itemTemplate;
-		itemTemplate = args.template ? store.getTiddlerText(args.template[0]) || itemTemplate :
-			itemTemplate;
+		var groupTemplate = (args.groupTemplate ? store.getTiddlerText(args.groupTemplate[0]) : null)
+			|| macro.groupTemplate.format(no_prefix_field, dateFormat);
+		var itemTemplate = (args.template ? store.getTiddlerText(args.template[0]) : null)
+			|| macro.itemTemplate;
 
 		var tiddlers = args.filter ? store.sortTiddlers(store.filterTiddlers(args.filter[0]), field) :
 			store.reverseLookup("tags", "excludeLists", false, field);
-		var lastGroup = "", ul;
 		var last = params[1] ? tiddlers.length - Math.min(tiddlers.length, parseInt(params[1], 10)) : 0;
+		var lastGroup = "", ul;
 
 		for(var i = tiddlers.length - 1; i >= last; i--) {
-			var tiddler = tiddlers[i];
-			var theGroup = wikifyPlainText(groupTemplate, 0, tiddler);
+			var theGroup = wikifyPlainText(groupTemplate, 0, tiddlers[i]);
 			if(ul === undefined || theGroup != lastGroup) {
 				ul = createTiddlyElement(container, "ul", null, "timeline");
 				createTiddlyElement(ul, "li", null, "listTitle", theGroup);
 				lastGroup = theGroup;
 			}
 			var item = createTiddlyElement(ul, "li", null, "listLink");
-			wikify(itemTemplate, item, null, tiddler);
+			wikify(itemTemplate, item, null, tiddlers[i]);
 		}
 	},
 	groupTemplate: "<<view %0 date '%1'>>",
@@ -203,6 +198,7 @@ config.macros.tiddler.handler = function(place, macroName, params, wikifier, par
 	var tiddlerName = names[0];
 	var className = names[1] || null;
 	var args = params[0]["with"];
+
 	var wrapper = createTiddlyElement(place, "span", null, className, null, {
 		refresh: "content", tiddler: tiddlerName
 	});
@@ -214,26 +210,29 @@ config.macros.tiddler.handler = function(place, macroName, params, wikifier, par
 config.macros.tiddler.transclude = function(wrapper, tiddlerName, args)
 {
 	var text = store.getTiddlerText(tiddlerName);
-	if(!text)
-		return;
+	if(!text) return;
+
 	var stack = config.macros.tiddler.tiddlerStack;
-	if(stack.indexOf(tiddlerName) !== -1)
-		return;
+	if(stack.indexOf(tiddlerName) !== -1) return;
+
 	stack.push(tiddlerName);
 	try {
+		// substitute $1, $2, .. placeholders (markers)
 		if(typeof args == "string")
 			args = args.readBracketedList();
-		var n = args ? Math.min(args.length, 9) : 0;
-		for(var i = 0; i < n; i++) {
+		var maxSupportedPlaceholders = 9; // $1 - $9
+		var n = args ? args.length : 0;
+		for(var i = 0; i < maxSupportedPlaceholders; i++) {
 			var placeholderRE = new RegExp("\\$" + (i + 1), "mg");
-			text = text.replace(placeholderRE, args[i]);
+			if(i < n) {
+				text = text.replace(placeholderRE, args[i]);
+			}
+			// #162
+			else if(n && config.options.chkRemoveExtraMarkers) {
+				text = text.replace(placeholderRE, "");
+			}
 		}
-		// #162 start
-		if (n && config.options.chkRemoveExtraMarkers) for(i = n; i < 9; i++) {
-			var placeholderRE = new RegExp("\\$" + (i + 1), "mg");
-			text = text.replace(placeholderRE, "");
-		}
-		// #162 end
+
 		config.macros.tiddler.renderText(wrapper, text, tiddlerName);
 	} finally {
 		stack.pop();
@@ -254,9 +253,7 @@ config.macros.tiddler.tiddlerStack = [];
 config.macros.tag.handler = function(place, macroName, params)
 {
 	var btn = createTagButton(place, params[0], null, params[1], params[2]);
-	if(params[3]) {
-		btn.setAttribute('sortby', params[3]);
-	}
+	if(params[3]) btn.setAttribute('sortby', params[3]);
 };
 
 config.macros.tags.handler = function(place, macroName, params, wikifier, paramString, tiddler)
