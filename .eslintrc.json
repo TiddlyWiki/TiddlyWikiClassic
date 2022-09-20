@@ -4,6 +4,7 @@
     },
     "rules": {
         "indent": ["error", "tab", {
+            "SwitchCase": 1
         }],
         "space-infix-ops": "error",
         "semi-spacing": "error",

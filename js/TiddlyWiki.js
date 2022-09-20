@@ -606,13 +606,13 @@ TiddlyWiki.prototype.sortTiddlers = function(tiddlers, field)
 {
 	var asc = +1;
 	switch(field.substr(0, 1)) {
-	case "-":
-		asc = -1;
-		field = field.substr(1);
-		break;
-	case "+":
-		field = field.substr(1);
-		break;
+		case "-":
+			asc = -1;
+			field = field.substr(1);
+			break;
+		case "+":
+			field = field.substr(1);
+			break;
 	}
 	if(TiddlyWiki.standardFieldAccess[field]) {
 		if(field == "title") {

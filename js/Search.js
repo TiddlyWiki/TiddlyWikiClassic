@@ -46,16 +46,16 @@ config.macros.search.onKeyPress = function(ev)
 	var me = config.macros.search;
 	var e = ev || window.event;
 	switch(e.keyCode) {
-	case 9: // Tab
-		return;
-	case 13: // Ctrl-Enter
-	case 10: // Ctrl-Enter on IE PC
-		me.doSearch(this);
-		break;
-	case 27: // Escape
-		this.value = "";
-		clearMessage();
-		break;
+		case 9: // Tab
+			return;
+		case 13: // Ctrl-Enter
+		case 10: // Ctrl-Enter on IE PC
+			me.doSearch(this);
+			break;
+		case 27: // Escape
+			this.value = "";
+			clearMessage();
+			break;
 	}
 	if(config.options.chkIncrementalSearch) {
 		if(this.value.length > 2) {

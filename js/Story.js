@@ -116,12 +116,12 @@ Story.prototype.positionTiddler = function(srcElement)
 	var before = null;
 	if(typeof srcElement == "string") {
 		switch(srcElement) {
-		case "top":
-			before = place.firstChild;
-			break;
-		case "bottom":
-			before = null;
-			break;
+			case "top":
+				before = place.firstChild;
+				break;
+			case "bottom":
+				before = null;
+				break;
 		}
 	} else {
 		var after = this.findContainingTiddler(srcElement);
@@ -325,39 +325,39 @@ Story.prototype.onTiddlerKeyPress = function(ev)
 	var title = this.getAttribute("tiddler");
 	var target = resolveTarget(e);
 	switch(e.keyCode) {
-	case 9: // Tab
-		var editor = story.getTiddlerField(title, "text");
-		if(target.tagName.toLowerCase() == "input" && editor.value == config.views.editor.defaultText.format([title])) {
-			// moving from input field and editor still contains default text, so select it
-			editor.focus();
-			editor.select();
-			consume = true;
-		}
-		if(config.options.chkInsertTabs && !e.ctrlKey && target.tagName.toLowerCase() == "textarea") {
-			replaceSelection(target, String.fromCharCode(9));
-			consume = true;
-		}
-		if(config.isOpera) {
-			target.onblur = function() {
-				this.focus();
-				this.onblur = null;
-			};
-		}
-		break;
-	case 13: // Ctrl-Enter
-	case 10: // Ctrl-Enter on IE PC
-	case 77: // Ctrl-Enter is "M" on some platforms
-		if(e.ctrlKey) {
+		case 9: // Tab
+			var editor = story.getTiddlerField(title, "text");
+			if(target.tagName.toLowerCase() == "input" && editor.value == config.views.editor.defaultText.format([title])) {
+				// moving from input field and editor still contains default text, so select it
+				editor.focus();
+				editor.select();
+				consume = true;
+			}
+			if(config.options.chkInsertTabs && !e.ctrlKey && target.tagName.toLowerCase() == "textarea") {
+				replaceSelection(target, String.fromCharCode(9));
+				consume = true;
+			}
+			if(config.isOpera) {
+				target.onblur = function() {
+					this.focus();
+					this.onblur = null;
+				};
+			}
+			break;
+		case 13: // Ctrl-Enter
+		case 10: // Ctrl-Enter on IE PC
+		case 77: // Ctrl-Enter is "M" on some platforms
+			if(e.ctrlKey) {
+				blurElement(this);
+				config.macros.toolbar.invokeCommand(this, "defaultCommand", e);
+				consume = true;
+			}
+			break;
+		case 27: // Escape
 			blurElement(this);
-			config.macros.toolbar.invokeCommand(this, "defaultCommand", e);
+			config.macros.toolbar.invokeCommand(this, "cancelCommand", e);
 			consume = true;
-		}
-		break;
-	case 27: // Escape
-		blurElement(this);
-		config.macros.toolbar.invokeCommand(this, "cancelCommand", e);
-		consume = true;
-		break;
+			break;
 	}
 	e.cancelBubble = consume;
 	if(consume) {
@@ -603,10 +603,7 @@ Story.prototype.saveTiddler = function(title, minorUpdate)
 
 Story.prototype.getPermaViewHash = function(titles)
 {
-	var links = [];
-	for(var i = 0; i < titles.length; i++)
-		links.push(String.encodeTiddlyLink(titles[i]));
-	return '#' + encodeURIComponent(links.join(' '));
+	return '#' + encodeURIComponent(String.encodeTiddlyLinkList(titles));
 };
 
 Story.prototype.permaView = function()

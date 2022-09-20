@@ -110,39 +110,39 @@ config.macros.toolbar.handler = function(place, macroName, params, wikifier, par
 	for(var i = 0; i < params.length; i++) {
 		var commandName = params[i];
 		switch(commandName) {
-		case "!":
-			createTiddlyText(place, this.separator);
-			break;
-		case "*":
-			createTiddlyElement(place, "br");
-			break;
-		case "<":
-			createTiddlyButton(place, this.lessLabel, this.lessPrompt, config.macros.toolbar.onClickLess, "button lessCommand");
-			break;
-		case ">":
-			createTiddlyButton(place, this.moreLabel, this.morePrompt, config.macros.toolbar.onClickMore, "button moreCommand");
-			//# hidden container for more commands, put next commands there
-			place = createTiddlyElement(place, "span", null, "moreCommand");
-			place.style.display = "none";
-			break;
-		default:
-			var className = "";
-			switch(commandName.substring(0, 1)) {
-			case "+":
-				className = "defaultCommand";
-				commandName = commandName.substring(1);
+			case "!":
+				createTiddlyText(place, this.separator);
 				break;
-			case "-":
-				className = "cancelCommand";
-				commandName = commandName.substring(1);
+			case "*":
+				createTiddlyElement(place, "br");
 				break;
-			}
-			if(config.commands[commandName]) {
-				this.createCommand(place, commandName, tiddler, className);
-			} else {
-				this.customCommand(place, commandName, wikifier, tiddler);
-			}
-			break;
+			case "<":
+				createTiddlyButton(place, this.lessLabel, this.lessPrompt, config.macros.toolbar.onClickLess, "button lessCommand");
+				break;
+			case ">":
+				createTiddlyButton(place, this.moreLabel, this.morePrompt, config.macros.toolbar.onClickMore, "button moreCommand");
+				//# hidden container for more commands, put next commands there
+				place = createTiddlyElement(place, "span", null, "moreCommand");
+				place.style.display = "none";
+				break;
+			default:
+				var className = "";
+				switch(commandName.substring(0, 1)) {
+					case "+":
+						className = "defaultCommand";
+						commandName = commandName.substring(1);
+						break;
+					case "-":
+						className = "cancelCommand";
+						commandName = commandName.substring(1);
+						break;
+				}
+				if(config.commands[commandName]) {
+					this.createCommand(place, commandName, tiddler, className);
+				} else {
+					this.customCommand(place, commandName, wikifier, tiddler);
+				}
+				break;
 		}
 	}
 };
