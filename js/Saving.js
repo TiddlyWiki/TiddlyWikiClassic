@@ -149,6 +149,7 @@ function saveChanges(onlyIfDirty, tiddlers)
 			story.displayTiddler(null, msg.saveInstructions);
 		return;
 	}
+
 	// Load the original file
 	var originalPath = document.location.toString();
 	var localPath = getLocalPath(originalPath);
@@ -168,6 +169,7 @@ function saveChanges(onlyIfDirty, tiddlers)
 	var co = config.options; // abbreviation
 	config.saveByDownload = false;
 	config.saveByManualDownload = false;
+
 	saveMain(localPath, original, posDiv);
 	if (!config.saveByDownload && !config.saveByManualDownload) {
 		if(co.chkSaveBackups)
@@ -177,6 +179,7 @@ function saveChanges(onlyIfDirty, tiddlers)
 		if(co.chkGenerateAnRssFeed && saveRss instanceof Function)
 			saveRss(localPath);
 	}
+
 	if(co.chkDisplayInstrumentation)
 		displayMessage("saveChanges " + (new Date() - t0) + " ms");
 }
@@ -190,22 +193,24 @@ function saveMain(localPath, original, posDiv)
 	} catch (ex) {
 		showException(ex);
 	}
-	// report status to user
-	if(save) {
-		if (!config.saveByManualDownload) {
-			if (config.saveByDownload) { // set by HTML5DownloadSaveFile()
-				var link = getDataURI(revised);
-				var msg  = config.messages.mainDownload;
-			} else {
-				var link = "file://" + localPath;
-				var msg  = config.messages.mainSaved;
-			}
-			displayMessage(msg, link);
-		}
-		store.setDirty(false);
-	} else {
+
+	if(!save) {
 		alert(config.messages.mainFailed);
+		return;
 	}
+
+	if (!config.saveByManualDownload) {
+		if (config.saveByDownload) { // set by HTML5DownloadSaveFile()
+			var link = getDataURI(revised);
+			var msg  = config.messages.mainDownload;
+		} else {
+			var link = "file://" + localPath;
+			var msg  = config.messages.mainSaved;
+		}
+		displayMessage(msg, link);
+	}
+
+	store.setDirty(false);
 }
 
 function saveBackup(localPath, original)
