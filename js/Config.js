@@ -18,8 +18,11 @@ config.parsers = {};
 config.adaptors = {};
 config.defaultAdaptor = null;
 
-// Backstage tasks
+// defines the order of the backstage tasks
+config.backstageTasks = ["save", "importTask", "tweak", "upgrade", "plugins"];
+// map by names from config.backstageTasks, defines their content (see Lingo.js and Backstage.js)
 config.tasks = {};
+//# the two structures are not merged yet not to hurt backward compatibility
 
 config.annotations = {};
 
@@ -85,9 +88,6 @@ config.views = {
 		tagChooser: {}
 	}
 };
-
-// Backstage tasks
-config.backstageTasks = ["save", "importTask", "tweak", "upgrade", "plugins"];
 
 config.extensions = {};
 
