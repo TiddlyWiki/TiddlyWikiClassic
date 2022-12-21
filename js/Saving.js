@@ -186,31 +186,37 @@ function saveChanges(onlyIfDirty, tiddlers)
 
 function saveMain(localPath, original, posDiv)
 {
-	var save;
 	try {
 		var revised = updateOriginal(original, posDiv, localPath);
-		save = saveFile(localPath, revised);
+		var save = saveFile(localPath, revised);
 	} catch (ex) {
-		showException(ex);
+		tw.io.onSaveMainFail(ex);
 	}
 
 	if(!save) {
-		alert(config.messages.mainFailed);
+		tw.io.onSaveMainFail();
 		return;
 	}
 
+	tw.io.onSaveMainSuccess(config.saveByDownload ? getDataURI(revised) : "file://" + localPath)
+}
+
+tw.io.onSaveMainSuccess = function(urlSaved) {
 	if (!config.saveByManualDownload) {
-		if (config.saveByDownload) { // set by HTML5DownloadSaveFile()
-			var link = getDataURI(revised);
-			var msg  = config.messages.mainDownload;
-		} else {
-			var link = "file://" + localPath;
-			var msg  = config.messages.mainSaved;
-		}
-		displayMessage(msg, link);
+		displayMessage(
+			// set by HTML5DownloadSaveFile()
+			config.saveByDownload ?
+				config.messages.mainDownload :
+				config.messages.mainSaved,
+			urlSaved);
 	}
 
 	store.setDirty(false);
+}
+
+tw.io.onSaveMainFail = function(catchedExeption) {
+	alert(config.messages.mainFailed);
+	if(catchedExeption) showException(catchedExeption);
 }
 
 function saveBackup(localPath, original)
