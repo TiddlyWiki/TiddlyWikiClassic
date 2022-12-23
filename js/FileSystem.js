@@ -39,7 +39,46 @@ window.loadFile = window.loadFile || function(fileUrl)
 		r = ieLoadFile(fileUrl);
 	if((r === null) || (r === false))
 		r = javaLoadFile(fileUrl);
+	if((r === null) || (r === false))
+		r = tw.io.xhrLoadFile(fileUrl);
 	return r;
+}
+
+tw.io.xhrLoadFile = function(filePath, callback)
+{
+	try {
+		var isAsync = !!callback;
+		//# see https://github.com/pmario/file-backups/blob/d66599f3372de6163db847bf7da9cddcf3c3724d/assets/classic/inject.js#L51
+		//# TODO: document better (provide more direct links to the problem description and analysis)
+		var url = 'file://' + (filePath[0] != '/' ? '/' : '') + encodeURIComponent(filePath);
+		if(isAsync) {
+			httpReq('GET', url, function(status, params, responseText, url, xhr) {
+				callback(responseText, { xhr: xhr });
+			});
+		} else {
+			var xhr = new XMLHttpRequest();
+			xhr.open('GET', url, isAsync);
+			xhr.send(null);
+			return xhr.responseText;
+		}
+	} catch(ex) {
+		return callback ? callback(null) : null;
+	}
+}
+
+// if callback is set, tries to load in an async fashion and do callback(result, details)
+tw.io.loadFile = function(fileUrl, callback)
+{
+	if(!callback) return loadFile(fileUrl);
+
+	tw.io.xhrLoadFile(fileUrl, function(result, details) {
+		if(typeof result == 'string') {
+			callback(result, details);
+		} else {
+			result = loadFile(fileUrl);
+			callback(result);
+		}
+	});
 }
 
 
