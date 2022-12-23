@@ -198,10 +198,11 @@ function saveMain(localPath, original, posDiv)
 		return;
 	}
 
-	tw.io.onSaveMainSuccess(config.saveByDownload ? getDataURI(revised) : "file://" + localPath)
+	tw.io.onSaveMainSuccess(config.saveByDownload ? getDataURI(revised) : "file://" + localPath, revised, original)
 }
 
-tw.io.onSaveMainSuccess = function(urlSaved) {
+//# savedHtml, original are passed for additional hackability
+tw.io.onSaveMainSuccess = function(urlSaved, savedHtml, original) {
 	if (!config.saveByManualDownload) {
 		displayMessage(
 			// set by HTML5DownloadSaveFile()
