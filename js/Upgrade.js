@@ -80,24 +80,28 @@ config.macros.upgrade.onLoadCore = function(status, w, responseText, url, xhr)
 		alert(errMsg);
 		return;
 	}
-	var onStartUpgrade = function(e) {
 
-		w.setButtons([], me.statusSavingCore);
-		var localPath = getLocalPath(document.location.toString());
-		saveFile(localPath, responseText);
-
-		w.setButtons([], me.statusReloadingCore);
-		var backupPath = w.getValue("backupPath");
-		var newLoc = addUpgradePartsToURI(document.location.toString(), backupPath);
-		window.setTimeout(function () { window.location = newLoc; }, 10);
-	};
 	var step2 = [me.step2Html_downgrade, me.step2Html_restore, me.step2Html_upgrade][compareVersions(version, newVer) + 1];
 	w.addStep(me.step2Title, step2.format([formatVersion(newVer), formatVersion(version)]));
 	w.setButtons([
-		{ caption: me.startLabel,  tooltip: me.startPrompt,  onClick: onStartUpgrade },
+		{ caption: me.startLabel,  tooltip: me.startPrompt,  onClick: function() {
+			config.macros.upgrade.onStartUpgrade(w, responseText);
+		} },
 		{ caption: me.cancelLabel, tooltip: me.cancelPrompt, onClick: me.onCancel }
 	]);
 };
+
+config.macros.upgrade.onStartUpgrade = function(wizard, newCoreHtml)
+{
+	wizard.setButtons([], config.macros.upgrade.statusSavingCore);
+	var localPath = getLocalPath(document.location.toString());
+	saveFile(localPath, newCoreHtml);
+
+	wizard.setButtons([], config.macros.upgrade.statusReloadingCore);
+	var backupPath = wizard.getValue("backupPath");
+	var newLocation = addUpgradePartsToURI(document.location.toString(), backupPath);
+	window.setTimeout(function () { window.location = newLocation; }, 10);
+}
 
 config.macros.upgrade.onCancel = function(e)
 {
