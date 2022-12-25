@@ -68,16 +68,13 @@ config.macros.upgrade.onClickUpgrade = function(e)
 	return false;
 };
 
-config.macros.upgrade.onLoadCore = function(status, params, responseText, url, xhr)
+config.macros.upgrade.onLoadCore = function(status, w, responseText, url, xhr)
 {
 	var me = config.macros.upgrade;
-	var w = params;
 	var errMsg;
-	if(!status)
-		errMsg = me.errorLoadingCore;
+	if(!status) errMsg = me.errorLoadingCore;
 	var newVer = me.extractVersion(responseText);
-	if(!newVer)
-		errMsg = me.errorCoreFormat;
+	if(!newVer) errMsg = me.errorCoreFormat;
 	if(errMsg) {
 		w.setButtons([], errMsg);
 		alert(errMsg);
@@ -96,8 +93,10 @@ config.macros.upgrade.onLoadCore = function(status, params, responseText, url, x
 	};
 	var step2 = [me.step2Html_downgrade, me.step2Html_restore, me.step2Html_upgrade][compareVersions(version, newVer) + 1];
 	w.addStep(me.step2Title, step2.format([formatVersion(newVer), formatVersion(version)]));
-	w.setButtons([{ caption: me.startLabel, tooltip: me.startPrompt, onClick: onStartUpgrade },
-		{ caption: me.cancelLabel, tooltip: me.cancelPrompt, onClick: me.onCancel }]);
+	w.setButtons([
+		{ caption: me.startLabel,  tooltip: me.startPrompt,  onClick: onStartUpgrade },
+		{ caption: me.cancelLabel, tooltip: me.cancelPrompt, onClick: me.onCancel }
+	]);
 };
 
 config.macros.upgrade.onCancel = function(e)
