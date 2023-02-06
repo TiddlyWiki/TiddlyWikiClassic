@@ -23,10 +23,10 @@ function Slider(element, opening, unused, deleteMode)
 		props.push({ style: 'filter', start: 100, end: 0, template: 'alpha(opacity:%0)' });
 		switch(deleteMode) {
 			case "all":
-				callback = function(element, properties) { jQuery(element).remove(); };
+				callback = function(element, properties) { jQuery(element).remove() };
 				break;
 			case "children":
-				callback = function(element, properties) { jQuery(element).empty(); };
+				callback = function(element, properties) { jQuery(element).empty() };
 				break;
 		}
 	}

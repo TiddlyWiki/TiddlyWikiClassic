@@ -26,15 +26,15 @@ var backstage = {
 		this.button.style.display = "block";
 		var text = cmb.open.text + " " + glyph("bentArrowLeft");
 		this.showButton = createTiddlyButton(this.button, text, cmb.open.tooltip,
-			function(e) { backstage.show(); return false; }, null, "backstageShow");
+			function(e) { backstage.show(); return false }, null, "backstageShow");
 		text = glyph("bentArrowRight") + " " + cmb.close.text;
 		this.hideButton = createTiddlyButton(this.button, text, cmb.close.tooltip,
-			function(e) { backstage.hide(); return false; }, null, "backstageHide");
+			function(e) { backstage.hide(); return false }, null, "backstageHide");
 		this.cloak = document.getElementById("backstageCloak");
 		this.panel = document.getElementById("backstagePanel");
 		this.panelFooter = createTiddlyElement(this.panel, "div", null, "backstagePanelFooter");
 		this.panelBody = createTiddlyElement(this.panel, "div", null, "backstagePanelBody");
-		this.cloak.onmousedown = function(e) { backstage.switchTab(null); };
+		this.cloak.onmousedown = function(e) { backstage.switchTab(null) };
 		createTiddlyText(this.toolbar, cmb.prompt);
 		for(var i = 0; i < config.backstageTasks.length; i++)
 		{

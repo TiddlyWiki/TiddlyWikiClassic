@@ -111,7 +111,7 @@ config.macros.list.filter.handler = function(params)
 	var filter = params[1];
 	if(!filter) return [];
 	return store.filterTiddlers(filter).map(function(tiddler) {
-		return tiddler.title
+		return tiddler.title;
 	});
 };
 

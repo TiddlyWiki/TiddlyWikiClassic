@@ -275,7 +275,7 @@ config.macros.importTiddlers.onGetTiddlerList = function(context, wizard)
 			});
 		}
 	}
-	listedTiddlers.sort(function(a, b) { return a.title < b.title ? -1 : (a.title == b.title ? 0 : +1); });
+	listedTiddlers.sort(function(a, b) { return a.title < b.title ? -1 : (a.title == b.title ? 0 : +1) });
 
 	// Display the listview
 	wizard.addStep(me.step3Title, me.step3Html);

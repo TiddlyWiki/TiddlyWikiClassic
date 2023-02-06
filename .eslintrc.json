@@ -15,7 +15,11 @@
             "mode": "minimum",
             "afterColon": true
         }],
-        "no-trailing-spaces": "error"
+        "no-trailing-spaces": "error",
+
+        "semi": ["error", "always", {
+            "omitLastInOneLineBlock": true
+        }]
     },
     "overrides": [
         {

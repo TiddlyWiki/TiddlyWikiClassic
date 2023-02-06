@@ -442,7 +442,7 @@ TiddlyWiki.prototype.search = function(searchRegExp, sortField, excludeTag, matc
 			results.push(candidates[i]);
 	}
 	if(!sortField) sortField = "title";
-	results.sort(function(a, b) { return a[sortField] < b[sortField] ? -1 : (a[sortField] == b[sortField] ? 0 : +1); });
+	results.sort(function(a, b) { return a[sortField] < b[sortField] ? -1 : (a[sortField] == b[sortField] ? 0 : +1) });
 	return results;
 };
 
@@ -529,8 +529,7 @@ TiddlyWiki.prototype.getTiddlers = function(field, excludeTag)
 		if(excludeTag == undefined || !tiddler.isTagged(excludeTag))
 			results.push(tiddler);
 	});
-	if(field)
-		results.sort(function(a, b) { return a[field] < b[field] ? -1 : (a[field] == b[field] ? 0 : +1); });
+	if(field) results.sort(function(a, b) { return a[field] < b[field] ? -1 : (a[field] == b[field] ? 0 : +1) });
 	return results;
 };
 

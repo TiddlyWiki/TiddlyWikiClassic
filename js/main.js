@@ -22,13 +22,13 @@ window.allowSave = window.allowSave || function(l)
 	//# allow save from ANYWHERE (TW280+ uses fallback HTML5 download from data:// URI)
 	//#	return (document.location.protocol == "file:");
 	return true;
-}
+};
 
 // Whether this file is being viewed locally
 window.isLocal = function()
 {
 	return (document.location.protocol == "file:");
-}
+};
 
 // Whether to use the JavaSaver applet
 var useJavaSaver = window.isLocal() && (config.browser.isSafari || config.browser.isOpera);
@@ -37,7 +37,7 @@ var useJavaSaver = window.isLocal() && (config.browser.isSafari || config.browse
 if (window.tweakConfig) window.tweakConfig();
 
 if(!window || !window.console) {
-	console = { tiddlywiki: true, log: function(message) { displayMessage(message); } };
+	console = { tiddlywiki: true, log: function(message) { displayMessage(message) } };
 }
 
 // Starting up
@@ -50,7 +50,7 @@ function main()
 	startingUp = true;
 	var doc = jQuery(document);
 	jQuery.noConflict();
-	window.onbeforeunload = function(e) { if(window.confirmExit) return confirmExit() };
+	window.onbeforeunload = function(e) { if(window.confirmExit) return confirmExit(); };
 	params = getParameters();
 	if(params) params = params.parseParams("open", null, false);
 	store = new TiddlyWiki({ config: config });

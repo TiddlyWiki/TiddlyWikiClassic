@@ -19,8 +19,8 @@ config.browser = {
 
 merge(config.glyphs, {
 	browsers: [
-		function() { return config.browser.isIE; },
-		function() { return true; }
+		function() { return config.browser.isIE },
+		function() { return true }
 	],
 	codes: {
 		downTriangle: ["\u25BC", "\u25BE"],

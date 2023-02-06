@@ -290,7 +290,7 @@ Story.prototype.refreshAllTiddlers = function(force)
 		if(template && element.getAttribute("dirty") != "true") {
 			this.refreshTiddler(title, force ? null : template, true);
 		}
-	})
+	});
 };
 
 Story.prototype.onTiddlerMouseOver = function()

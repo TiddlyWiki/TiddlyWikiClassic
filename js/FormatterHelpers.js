@@ -31,7 +31,7 @@ config.formatterHelpers = {
 						word.charAt(0).toUpperCase() + word.slice(1);
 				})
 				.join("");
-		}
+		};
 		var styles = [];
 		config.textPrimitives.cssLookaheadRegExp.lastIndex = w.nextMatch;
 		var lookaheadMatch = config.textPrimitives.cssLookaheadRegExp.exec(w.source);

@@ -47,7 +47,7 @@ FileAdaptor.prototype.getWorkspaceList = function(context, userParams, callback)
 	context.workspaces = [{ title: "(default)" }];
 	context.status = true;
 	if(callback)
-		window.setTimeout(function() { callback(context, userParams); }, 10);
+		window.setTimeout(function() { callback(context, userParams) }, 10);
 	return true;
 };
 
@@ -96,7 +96,7 @@ FileAdaptor.getTiddlerListComplete = function(context, userParams)
 			context.tiddlers = context.adaptor.store.filterTiddlers(context.filter);
 		} else {
 			context.tiddlers = [];
-			context.adaptor.store.forEachTiddler(function(title, tiddler) { context.tiddlers.push(tiddler); });
+			context.adaptor.store.forEachTiddler(function(title, tiddler) { context.tiddlers.push(tiddler) });
 		}
 		for(var i = 0; i < context.tiddlers.length; i++) {
 			context.tiddlers[i].fields['server.type'] = FileAdaptor.serverType;
@@ -106,7 +106,7 @@ FileAdaptor.getTiddlerListComplete = function(context, userParams)
 		context.status = true;
 	}
 	if(context.callback) {
-		window.setTimeout(function() { context.callback(context, userParams); }, 10);
+		window.setTimeout(function() { context.callback(context, userParams) }, 10);
 	}
 	return true;
 };
@@ -169,7 +169,7 @@ FileAdaptor.getTiddlerComplete = function(context, userParams)
 		context.isSynchronous = true;
 		context.callback(context, userParams);
 	} else {
-		window.setTimeout(function() { context.callback(context, userParams); }, 10);
+		window.setTimeout(function() { context.callback(context, userParams) }, 10);
 	}
 	return true;
 };

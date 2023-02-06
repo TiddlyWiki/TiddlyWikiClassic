@@ -14,7 +14,7 @@
 window.copyFile = window.copyFile || function(dest, source)
 {
 	return config.browser.isIE ? ieCopyFile(dest, source) : false;
-}
+};
 
 // Save a file in filesystem [Preemption]
 window.saveFile = window.saveFile || function(fileUrl, content)
@@ -29,7 +29,7 @@ window.saveFile = window.saveFile || function(fileUrl, content)
 	if(!r)
 		r = manualSaveFile(fileUrl, content);
 	return r;
-}
+};
 
 // Load a file from filesystem [Preemption]
 window.loadFile = window.loadFile || function(fileUrl)
@@ -42,7 +42,7 @@ window.loadFile = window.loadFile || function(fileUrl)
 	if((r === null) || (r === false))
 		r = tw.io.xhrLoadFile(fileUrl);
 	return r;
-}
+};
 
 tw.io.xhrLoadFile = function(filePath, callback)
 {
@@ -64,7 +64,7 @@ tw.io.xhrLoadFile = function(filePath, callback)
 	} catch(ex) {
 		return callback ? callback(null) : null;
 	}
-}
+};
 
 // if callback is set, tries to load in an async fashion and do callback(result, details)
 tw.io.loadFile = function(fileUrl, callback)
@@ -79,7 +79,7 @@ tw.io.loadFile = function(fileUrl, callback)
 			callback(result);
 		}
 	});
-}
+};
 
 
 function ieCreatePath(path)
@@ -251,13 +251,13 @@ function javaDebugInformation()
 		try {
 			 result = String(method.call(applet));
 		} catch (ex) {
-			 result = String(ex)
+			 result = String(ex);
 		}
-		return description + ": " + result
+		return description + ": " + result;
 	}
 
 	return jQuery.map(what, function (item) { return formatItem.apply(this, item) })
-		.join('\n\n')
+		.join('\n\n');
 }
 
 function javaSaveFile(filePath, content)

@@ -6,5 +6,5 @@ window.tw = {
 	//# in/out methods (loading, saving)
 	io: {},
 	textUtils: {}
-}
+};
 

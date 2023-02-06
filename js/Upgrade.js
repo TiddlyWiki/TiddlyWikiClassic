@@ -18,7 +18,7 @@ config.macros.upgrade.loadLatestCore = function(onSuccess, onError)
 		success: onSuccess,
 		error: onError
 	});
-}
+};
 
 config.macros.upgrade.handler = function(place)
 {
@@ -100,8 +100,8 @@ config.macros.upgrade.onStartUpgrade = function(wizard, newCoreHtml)
 	wizard.setButtons([], config.macros.upgrade.statusReloadingCore);
 	var backupPath = wizard.getValue("backupPath");
 	var newLocation = addUpgradePartsToURI(document.location.toString(), backupPath);
-	window.setTimeout(function () { window.location = newLocation; }, 10);
-}
+	window.setTimeout(function () { window.location = newLocation }, 10);
+};
 
 config.macros.upgrade.onCancel = function(e)
 {
@@ -118,7 +118,7 @@ config.macros.upgrade.extractVersion = function(upgradeFile)
 	var m = re.exec(upgradeFile);
 	return !m ? null : {
 		title: m[1], major: m[2], minor: m[3], revision: m[4], beta: m[6], date: new Date(m[7])
-	}
+	};
 };
 
 // a helper, splits uri into parts, passes the map of parts to modify and glues parts back
@@ -172,7 +172,7 @@ function stripUpgradePartsFromURI(uri)
 
 		uriParts.query = queryParts.join('&');
 		uriParts.hash = hashParts.join('%20') || undefined;
-	})
+	});
 }
 
 function upgradeFrom(path)

@@ -101,7 +101,7 @@ function recreateOriginal()
 	var content = "<!DOCTYPE ";
 	var t = document.doctype;
 	if (!t)
-		content += "html"
+		content += "html";
 	else {
 		content += t.name;
 		if(t.publicId)
@@ -127,10 +127,10 @@ function recreateOriginal()
 	content = content.replace(/(<(meta) [^\>]*[^\/])>/g, '$1 />');
 	// decode LT/GT entities in noscript
 	content = content.replace(/<noscript>[^\<]*<\/noscript>/,
-		function(m){ return m.replace(/&lt;/g, '<').replace(/&gt;/g, '>'); });
+		function(m){ return m.replace(/&lt;/g, '<').replace(/&gt;/g, '>') });
 	// encode copyright symbols (UTF-8 to HTML entity)
 	content = content.replace(/<div id="copyright">[^\<]*<\/div>/,
-		function(m){ return m.replace(/\xA9/g, '&copy;'); });
+		function(m){ return m.replace(/\xA9/g, '&copy;') });
 
 	return content;
 }
@@ -213,12 +213,12 @@ tw.io.onSaveMainSuccess = function(urlSaved, savedHtml, original) {
 	}
 
 	store.setDirty(false);
-}
+};
 
 tw.io.onSaveMainFail = function(catchedExeption) {
 	alert(config.messages.mainFailed);
 	if(catchedExeption) showException(catchedExeption);
-}
+};
 
 function saveBackup(localPath, original)
 {
@@ -240,6 +240,7 @@ function saveEmpty(localPath, original, posDiv)
 	else
 		emptyPath = localPath + ".";
 	emptyPath += "empty.html";
+
 	var empty = original.substr(0, posDiv[0] + startSaveArea.length) + original.substr(posDiv[1]);
 	var emptySave = saveFile(emptyPath, empty);
 	if(emptySave)
@@ -279,7 +280,7 @@ window.getLocalPath = window.getLocalPath || function(origPath)
 	else // pc network file
 		localPath = "\\\\" + unescape(originalPath.substr(7)).replace(new RegExp("/", "g"), "\\");
 	return localPath;
-}
+};
 
 function getBackupPath(localPath, filenameSuffix, extension)
 {

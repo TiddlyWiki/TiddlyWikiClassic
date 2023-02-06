@@ -17,7 +17,7 @@ function Zoomer(text, startElement, targetElement, unused)
 		  end: Math.min(targetElement.scrollHeight, winHeight), template: '%0px', atEnd: 'auto' },
 		{ style: 'fontSize', start: 8, end: 24, template: '%0pt' }
 	];
-	var c = function(element) { jQuery(element).remove(); };
+	var c = function(element) { jQuery(element).remove() };
 	return new Morpher(e, config.animDuration, p, c);
 }
 

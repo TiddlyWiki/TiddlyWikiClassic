@@ -23,8 +23,8 @@ function localAjax(args)
 
 	if (args.file) try { // HTML5 FileReader (Chrome, FF20+, Safari, etc.)
 		var reader = new FileReader();
-		reader.onload = function(e)  { success(e.target.result); }
-		reader.onerror = function(e) { failure("FileReader"); }
+		reader.onload = function(e)  { success(e.target.result) };
+		reader.onerror = function(e) { failure("FileReader") };
 		reader.readAsText(args.file);
 		return true;
 	} catch (ex) { ; }
