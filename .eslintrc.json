@@ -16,6 +16,7 @@
             "afterColon": true
         }],
         "no-trailing-spaces": "error",
+        "space-before-blocks": "error",
 
         "semi": ["error", "always", {
             "omitLastInOneLineBlock": true

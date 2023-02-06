@@ -127,10 +127,10 @@ function recreateOriginal()
 	content = content.replace(/(<(meta) [^\>]*[^\/])>/g, '$1 />');
 	// decode LT/GT entities in noscript
 	content = content.replace(/<noscript>[^\<]*<\/noscript>/,
-		function(m){ return m.replace(/&lt;/g, '<').replace(/&gt;/g, '>') });
+		function(m) { return m.replace(/&lt;/g, '<').replace(/&gt;/g, '>') });
 	// encode copyright symbols (UTF-8 to HTML entity)
 	content = content.replace(/<div id="copyright">[^\<]*<\/div>/,
-		function(m){ return m.replace(/\xA9/g, '&copy;') });
+		function(m) { return m.replace(/\xA9/g, '&copy;') });
 
 	return content;
 }

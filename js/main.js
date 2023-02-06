@@ -138,7 +138,7 @@ function loadShadowTiddlers()
 {
 	var shadows = new TiddlyWiki();
 	shadows.loadFromDiv("shadowArea", "shadows", true);
-	shadows.forEachTiddler(function(title, tiddler){ config.shadowTiddlers[title] = tiddler.text });
+	shadows.forEachTiddler(function(title, tiddler) { config.shadowTiddlers[title] = tiddler.text });
 }
 
 function loadPlugins(tag)

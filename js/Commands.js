@@ -98,7 +98,7 @@ config.commands.fields.handlePopup = function(popup, title)
 	var tiddler = store.fetchTiddler(title);
 	if(!tiddler) return;
 	var items = [];
-	store.forEachField(tiddler, function(tiddler, fieldName, value){ items.push({ field: fieldName, value: value }) }, true);
+	store.forEachField(tiddler, function(tiddler, fieldName, value) { items.push({ field: fieldName, value: value }) }, true);
 	items.sort(function(a, b) { return a.field < b.field ? -1 : (a.field == b.field ? 0 : +1) });
 	if(items.length > 0)
 		ListView.create(popup, items, this.listViewTemplate);
