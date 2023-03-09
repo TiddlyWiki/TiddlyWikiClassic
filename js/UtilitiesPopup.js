@@ -97,8 +97,9 @@ function onClickError(ev)
 	var e = ev || window.event;
 	var popup = Popup.create(this);
 	var lines = this.getAttribute("errorText").split("\n");
-	for(var t = 0; t < lines.length; t++)
-		createTiddlyElement(popup, "li", null, null, lines[t]);
+	for(var i = 0; i < lines.length; i++) {
+		createTiddlyElement(popup, "li", null, "popupMessage", lines[i]);
+	}
 	Popup.show();
 	e.cancelBubble = true;
 	if(e.stopPropagation) e.stopPropagation();
