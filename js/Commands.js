@@ -103,6 +103,6 @@ config.commands.fields.handlePopup = function(popup, title)
 	if(items.length > 0)
 		ListView.create(popup, items, this.listViewTemplate);
 	else
-		createTiddlyElement(popup, "div", null, null, this.emptyText);
+		createTiddlyElement(popup, "li", null, "disabled", this.emptyText);
 };
 
