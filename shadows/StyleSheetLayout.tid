@@ -124,6 +124,7 @@ a.tiddlyLinkNonExisting.shadow {font-weight:bold;}
 .tagged {margin:0.5em; float:right;}
 .tagging, .tagged {font-size:0.9em; padding:0.25em;}
 .tagging ul, .tagged ul {list-style:none; margin:0.25em; padding:0;}
+.tagged li, .tagging li { margin: 0.3em 0; }
 .tagClear {clear:both;}
 
 .footer {font-size:.9em;}
