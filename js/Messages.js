@@ -35,7 +35,7 @@ function displayMessage(text, link)
 		return;
 	}
 	if(!link) {
-		e.appendChild(document.createTextNode(text));
+		createTiddlyText(e, text);
 	} else {
 		createTiddlyElement(e, "a", null, null, text, { href: link, target: "_blank" });
 	}
