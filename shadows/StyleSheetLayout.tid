@@ -137,7 +137,7 @@ a.tiddlyLinkNonExisting.shadow {font-weight:bold;}
 .viewer blockquote {line-height:1.5em; padding-left:0.8em;margin-left:2.5em;}
 .viewer ul, .viewer ol {margin-left:0.5em; padding-left:1.5em;}
 
-.viewer table, table.twtable {border-collapse:collapse; margin:0.8em 1.0em;}
+.viewer table, table.twtable { border-collapse: collapse; margin: 0.8em 0; }
 .viewer th, .viewer td, .viewer tr, .viewer caption, .twtable th, .twtable td, .twtable tr, .twtable caption { padding: 0.2em 0.4em; }
 table.listView {font-size:0.85em; margin:0.8em 1.0em;}
 table.listView th, table.listView td, table.listView tr { padding: 0 0.4em; }
