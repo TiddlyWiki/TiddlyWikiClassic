@@ -103,7 +103,8 @@ config.formatters = [
 						cell = createTiddlyElement(e, "th");
 						w.nextMatch++;
 					} else {
-						cell = createTiddlyElement(e, "td");
+						var isInsideHeader = e.parentElement.tagName.toLocaleLowerCase() === 'thead';
+						cell = createTiddlyElement(e, isInsideHeader ? "th" : "td");
 					}
 					prevCell = cell;
 					prevColumns[col] = { rowSpanCount: 1, element: cell };
