@@ -15,7 +15,10 @@ h2,h3 {border-bottom:1px solid [[ColorPalette::TertiaryLight]];}
 .button:hover {color:[[ColorPalette::PrimaryDark]]; background:[[ColorPalette::SecondaryLight]]; border-color:[[ColorPalette::SecondaryMid]];}
 .button:active {color:[[ColorPalette::Background]]; background:[[ColorPalette::SecondaryMid]]; border:1px solid [[ColorPalette::SecondaryDark]];}
 
-.header {background:[[ColorPalette::PrimaryMid]];}
+.header {
+	background: -moz-linear-gradient(to bottom, [[ColorPalette::PrimaryLight]], [[ColorPalette::PrimaryMid]]);
+	background: linear-gradient(to bottom, [[ColorPalette::PrimaryLight]], [[ColorPalette::PrimaryMid]]);
+}
 .header a:hover {background:transparent;}
 .headerShadow {color:[[ColorPalette::Foreground]];}
 .headerShadow a {font-weight:normal; color:[[ColorPalette::Foreground]];}
