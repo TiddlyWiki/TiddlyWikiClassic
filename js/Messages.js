@@ -5,8 +5,8 @@
 function getMessageDiv()
 {
 	var msgArea = document.getElementById("messageArea");
-	if(!msgArea)
-		return null;
+	if(!msgArea) return null;
+
 	if(!msgArea.hasChildNodes()) {
 		var toolbar = createTiddlyElement(msgArea, "div", null, "messageArea__toolbar messageToolbar");
 		var btn = createTiddlyButton(toolbar, '', config.messages.messageClose.tooltip, clearMessage,
