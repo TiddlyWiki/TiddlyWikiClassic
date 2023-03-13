@@ -44,10 +44,8 @@ config.formatterHelpers = {
 				s = unDash(lookaheadMatch[3]);
 				v = lookaheadMatch[4];
 			}
-			if(s == "bgcolor")
-				s = "backgroundColor";
-			if(s == "float")
-				s = "cssFloat";
+			if(s == "bgcolor") s = "backgroundColor";
+			if(s == "float") s = "cssFloat";
 			styles.push({ style: s, value: v });
 			w.nextMatch = lookaheadMatch.index + lookaheadMatch[0].length;
 			config.textPrimitives.cssLookaheadRegExp.lastIndex = w.nextMatch;

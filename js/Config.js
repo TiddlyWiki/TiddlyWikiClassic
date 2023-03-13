@@ -155,13 +155,15 @@ config.commands = {
 config.evaluateMacroParameters = "all";
 
 // Basic regular expressions
+var isBadSafari = !((new RegExp("[\u0150\u0170]", "g")).test("\u0150")); //# see 52678d4 and #22  ..remove at all?
 config.textPrimitives = {
 	upperLetter: "[A-Z\u00c0-\u00de\u0150\u0170]",
 	lowerLetter: "[a-z0-9_\\-\u00df-\u00ff\u0151\u0171]",
 	anyLetter:   "[A-Za-z0-9_\\-\u00c0-\u00de\u00df-\u00ff\u0150\u0170\u0151\u0171]",
 	anyLetterStrict: "[A-Za-z0-9\u00c0-\u00de\u00df-\u00ff\u0150\u0170\u0151\u0171]"
 };
-if(!((new RegExp("[\u0150\u0170]", "g")).test("\u0150"))) {
+// Moved navigator dependent code out of Config.js into a separate module. Helps with https://github.com/TiddlyWiki/tiddlywiki/issues/22
+if(isBadSafari) {
 	config.textPrimitives = {
 		upperLetter: "[A-Z\u00c0-\u00de]",
 		lowerLetter: "[a-z0-9_\\-\u00df-\u00ff]",
