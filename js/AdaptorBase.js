@@ -17,7 +17,7 @@ AdaptorBase.prototype.close = function()
 AdaptorBase.prototype.fullHostName = function(host)
 {
 	if(!host) return '';
-	host = host.trim();
+	host = jQuery.trim(host);
 	if(!host.match(/:\/\//))
 		host = 'http://' + host;
 	if(host.substr(host.length - 1) == '/')

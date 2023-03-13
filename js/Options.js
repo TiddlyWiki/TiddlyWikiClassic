@@ -45,8 +45,8 @@ function getCookies()
 	for(i = 0; i < cookieList.length; i++) {
 		var p = cookieList[i].indexOf('=');
 		if(p != -1) {
-			var name = cookieList[i].substring(0, p).trim();
-			var value = cookieList[i].substring(p + 1).trim();
+			var name = jQuery.trim(cookieList[i].substring(0, p));
+			var value = jQuery.trim(cookieList[i].substring(p + 1));
 			cookies[name] = value;
 		}
 	}

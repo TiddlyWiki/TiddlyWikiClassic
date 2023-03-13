@@ -566,7 +566,7 @@ Story.prototype.saveTiddler = function(title, minorUpdate)
 	this.gatherSaveFields(tiddlerElem, fields);
 	var newTitle = fields.title || title;
 	if(!store.tiddlerExists(newTitle)) {
-		newTitle = newTitle.trim();
+		newTitle = jQuery.trim(newTitle);
 		var creator = config.options.txtUserName;
 	}
 	if(store.tiddlerExists(newTitle) && newTitle != title) {
