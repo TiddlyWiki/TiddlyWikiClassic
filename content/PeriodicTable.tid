@@ -1,7 +1,7 @@
 created: 20110211110600000
 creator: psd
-modified: 20110211131000000
-modifier: blaine
+modified: 20230313115700000
+modifier: Yakov Litvin
 tags: formatting
 title: PeriodicTable
 type: text/x-tiddlywiki
@@ -19,19 +19,15 @@ type: text/x-tiddlywiki
 | !Lanthanides^^*1^^|bgcolor(#ffbfff): La |bgcolor(#ffbfff): Ce |bgcolor(#ffbfff): Pr |bgcolor(#ffbfff): Nd |bgcolor(#ffbfff): Pm |bgcolor(#ffbfff): Sm |bgcolor(#ffbfff): Eu |bgcolor(#ffbfff): Gd |bgcolor(#ffbfff): Tb |bgcolor(#ffbfff): Dy |bgcolor(#ffbfff): Ho |bgcolor(#ffbfff): Er |bgcolor(#ffbfff): Tm |bgcolor(#ffbfff): Yb |
 | !Actinides^^*2^^|bgcolor(#ff99cc): Ac |bgcolor(#ff99cc): Th |bgcolor(#ff99cc): Pa |bgcolor(#ff99cc): U |bgcolor(#ff99cc): Np |bgcolor(#ff99cc): Pu |bgcolor(#ff99cc): Am |bgcolor(#ff99cc): Cm |bgcolor(#ff99cc): Bk |bgcolor(#ff99cc): Cf |bgcolor(#ff99cc): Es |bgcolor(#ff99cc): Fm |bgcolor(#ff99cc): Md |bgcolor(#ff99cc): No |
 
-*Chemical Series of the Periodic Table
-**@@bgcolor(#ff6666): Alkali metals@@
-**@@bgcolor(#ffdead): Alkaline earth metals@@
-**@@bgcolor(#ffbfff): Lanthanides@@
-**@@bgcolor(#ff99cc): Actinides@@
-**@@bgcolor(#ffc0c0): Transition metals@@
-**@@bgcolor(#cccccc): Poor metals@@
-**@@bgcolor(#cccc99): Metalloids@@
-**@@bgcolor(#a0ffa0): Nonmetals@@
-**@@bgcolor(#ffff99): Halogens@@
-**@@bgcolor(#c0ffff): Noble gases@@
-
-*State at standard temperature and pressure
-**those in @@color(red):red@@ are gases
-**those in @@color(green):green@@ are liquids
-**those in black are solids
+|used notation|c
+|Chemical Series of the Periodic Table|State at standard temperature and pressure|
+|bgcolor(#ff6666): Alkali metals|color(red):gases|
+|bgcolor(#ffdead): Alkaline earth metals|color(green):liquids|
+|bgcolor(#ffbfff): Lanthanides|solids|
+|bgcolor(#ff99cc): Actinides|
+|bgcolor(#ffc0c0): Transition metals|
+|bgcolor(#cccccc): Poor metals|
+|bgcolor(#cccc99): Metalloids|
+|bgcolor(#a0ffa0): Nonmetals|
+|bgcolor(#ffff99): Halogens|
+|bgcolor(#c0ffff): Noble gases|
