@@ -5,8 +5,8 @@ jQuery(document).ready(function(){
 	test("String functions", function() {
 		expect(4);
 
-		actual = " abcdef ".trim();
-		expected = "abcdef";
+		let actual = " abcdef ".trim();
+		let expected = "abcdef";
 		ok(actual == expected, 'String trim');
 
 		actual = " abc def ".trim();
@@ -41,7 +41,7 @@ jQuery(document).ready(function(){
 		expected = "";
 		ok(actual == expected, 'String.encodeTiddlyLinkList with empty array as parameter should return null string');
 
-		var linksArray = ["tag", "TagName", "tag with spaces"];
+		const linksArray = ["tag", "TagName", "tag with spaces"];
 		actual = String.encodeTiddlyLinkList(linksArray);
 		expected = "tag TagName [[tag with spaces]]";
 		ok(actual == expected, `String.encodeTiddlyLinkList should turn [${linksArray}] array into "${expected}" string`);
@@ -60,24 +60,24 @@ jQuery(document).ready(function(){
 	});
 
 	test("Strings: html encoding/decoding", function() {
-		var actual = '&<>"'.htmlEncode();
-		var expected = '&amp;&lt;&gt;&quot;';
+		let actual = '&<>"'.htmlEncode();
+		let expected = '&amp;&lt;&gt;&quot;';
 		ok(actual == expected, 'String should correctly htmlEncode &<>"');
 
 		actual = '&amp;&lt;&gt;&quot;'.htmlDecode();
 		expected = '&<>"';
 		ok(actual == expected, 'String should correctly htmlDecode &amp;&lt;&gt;&quot;');
 
-		var s = '&&&""<">>&>&"';
+		const s = '&&&""<">>&>&"';
 		actual = s.htmlEncode().htmlDecode();
 		expected = s;
 		ok(actual == expected, 'htmlEncode followed by htmlDecode of complex string should leave string unchanged');
 	});
 
 	test("readMacroParams", function() {
-		var params = "foo bar dum".readMacroParams(false);
-		var params2 = "foo bar 'tweedle de' dum".readMacroParams(false);
-		var params3 = "foo bar 'tweedle dum' dum test:foo test: 'bar' [[check brackets]]".readMacroParams(false);
+		const params = "foo bar dum".readMacroParams(false);
+		const params2 = "foo bar 'tweedle de' dum".readMacroParams(false);
+		const params3 = "foo bar 'tweedle dum' dum test:foo test: 'bar' [[check brackets]]".readMacroParams(false);
 
 		strictEqual(params.length, 3, "There are 3 parameters");
 		strictEqual(params2.length, 4, "There are 4 parameters");
@@ -89,16 +89,16 @@ jQuery(document).ready(function(){
 	});
 
 	test("parseParams", function() {
-		var args = "foo [[bar dum]] test:foo test: bar hello:[[goodbye]] x: [[bar dum]] what:[['fun']] why:'[[test]]'".
-			parseParams();
-		var args2 = "foo [[bar dum]] test:foo test: bar hello:[[goodbye]] x: [[bar dum]] what:[['fun']] why:'[[test]]'".
-			parseParams("anon");
-		var map = args[0];
-		var map2 = args2[0];
+		const args = "foo [[bar dum]] test:foo test: bar hello:[[goodbye]] x: [[bar dum]] what:[['fun']] why:'[[test]]'"
+			.parseParams();
+		const args2 = "foo [[bar dum]] test:foo test: bar hello:[[goodbye]] x: [[bar dum]] what:[['fun']] why:'[[test]]'"
+			.parseParams("anon");
+		const summary = args[0];
+		const summary2 = args2[0];
 
-		strictEqual(map.anon, undefined, "no unnamed parameters matched");
-		strictEqual(map.what.length, 1, "what only matched once");
-		strictEqual(map.test.length, 2, "test is a named parameter twice");
+		strictEqual(summary.anon, undefined, "no unnamed parameters matched");
+		strictEqual(summary.what.length, 1, "what only matched once");
+		strictEqual(summary.test.length, 2, "test is a named parameter twice");
 		strictEqual(args[2].name, "bar dum", "unnamed parameters are collected in resulting array");
 		strictEqual(args[2].value, undefined, "no value for unnamed parameters");
 		strictEqual(args[3].value, "foo", "test matches foo");
@@ -108,7 +108,7 @@ jQuery(document).ready(function(){
 		strictEqual(args[7].value, "'fun'", "checking the quotes are kept");
 		strictEqual(args[8].value, "[[test]]", "checking the brackets are kept in this special case");
 
-		strictEqual(map2.anon.length, 2, "foo and bar dum matched");
+		strictEqual(summary2.anon.length, 2, "foo and bar dum matched");
 		strictEqual(args2[1].name, "anon",
 			"unnamed parameters collect as anonymous");
 		strictEqual(args2[1].value, "foo",
@@ -120,8 +120,8 @@ jQuery(document).ready(function(){
 	});
 
 	test("Strings: encodeTiddlyLink", function() {
-		var actual = String.encodeTiddlyLink("title");
-		var expected = "title";
+		let actual = String.encodeTiddlyLink("title");
+		let expected = "title";
 		ok(actual == expected, 'String should correctly encodeTiddlyLink with no spaces');
 
 		actual = String.encodeTiddlyLink("the title");
