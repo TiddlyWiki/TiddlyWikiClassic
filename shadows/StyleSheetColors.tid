@@ -124,6 +124,7 @@ h2,h3 {border-bottom:1px solid [[ColorPalette::TertiaryLight]];}
 
 .viewer th, .viewer thead td, .twtable th, .twtable thead td { background: [[ColorPalette::SecondaryMid]]; color: [[ColorPalette::Background]]; }
 .viewer td, .viewer tr, .twtable td, .twtable tr { border: 1px solid [[ColorPalette::TertiaryLight]]; }
+.twtable caption { color: [[ColorPalette::TertiaryMid]]; }
 
 .viewer pre {background:[[ColorPalette::SecondaryPale]];}
 .viewer code {color:[[ColorPalette::SecondaryDark]];}
