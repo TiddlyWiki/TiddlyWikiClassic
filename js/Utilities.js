@@ -23,16 +23,13 @@ function compareVersions(v1, v2)
 	{
 		x1 = v1[a[i]] || 0;
 		x2 = v2[a[i]] || 0;
-		if(x1 < x2)
-			return 1;
-		if(x1 > x2)
-			return -1;
+		if(x1 < x2) return +1;
+		if(x1 > x2) return -1;
 	}
-	x1 = v1.beta || 9999;
-	x2 = v2.beta || 9999;
-	if(x1 < x2)
-		return 1;
-	return x1 > x2 ? -1 : 0;
+	x1 = v1.beta || Infinity;
+	x2 = v2.beta || Infinity;
+	return x1 < x2 ? +1 :
+	       x1 > x2 ? -1 : 0;
 }
 
 function merge(dst, src, preserveExisting)

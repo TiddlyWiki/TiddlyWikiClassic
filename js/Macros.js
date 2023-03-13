@@ -8,9 +8,11 @@ function invokeMacro(place, macro, params, wikifier, tiddler)
 		var m = config.macros[macro];
 		if(m && m.handler) {
 			var tiddlerElem = story.findContainingTiddler(place);
+
 			//# Provide context for evaluated macro parameters (eg <<myMacro {{tiddler.title}}>>)
 			window.tiddler = tiddlerElem ? store.getTiddler(tiddlerElem.getAttribute("tiddler")) : null;
 			window.place = place;
+
 			var allowEval = true;
 			if(config.evaluateMacroParameters == "system") {
 				if(!tiddler || tiddler.tags.indexOf("systemAllowEval") == -1) {
