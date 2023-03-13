@@ -46,14 +46,14 @@ Displays as:
 A caption can be added above or below a table by adding a special row marked with a 'c':
 {{{
 |A caption above the table|c
-|North West|North|North East|
+|North West|North|North East|h
 |West|Here|East|
-|South West|South|South East|
+|South West|South|South East|f
 }}}
 {{{
-|North West|North|North East|
+|North West|North|North East|h
 |West|Here|East|
-|South West|South|South East|
+|South West|South|South East|f
 |A caption below the table|c
 }}}
 Displays as:
