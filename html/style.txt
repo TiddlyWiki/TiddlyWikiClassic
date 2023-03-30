@@ -2,9 +2,8 @@
 	display: none;
 }
 #javascriptWarning {
-	width: 100%;
 	text-align: center;
-	padding: 1em 0;
+	padding: 1em;
 	font-weight: bold;
 	background-color: #dd1100;
 	color: #fff;
