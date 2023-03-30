@@ -122,7 +122,7 @@ function recreateOriginal()
 	// newline before head tag
 	content = content.replace(/><head>/, '>\n<head>');
 	// newlines before/after end of body/html tags
-	content = content.replace(/\n\n<\/body><\/html>$/, '</'+'body>\n</'+'html>\n'); // #170
+	content = content.replace(/\n\n<\/body><\/html>$/, '</' + 'body>\n</' + 'html>\n'); // #170
 	// meta tag terminators
 	content = content.replace(/(<(meta) [^\>]*[^\/])>/g, '$1 />');
 	// decode LT/GT entities in noscript
