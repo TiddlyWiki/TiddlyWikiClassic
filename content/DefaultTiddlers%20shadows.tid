@@ -1,7 +1,7 @@
 created: 20110211143600000
 creator: matt
-modified: 20120127133100000
-modifier: jon
+modified: 20230412142700000
+modifier: Yakov Litvin
 tags: shadow
 title: DefaultTiddlers shadows
 type: text/x-tiddlywiki
@@ -18,7 +18,7 @@ An example could be:
 [[Reference]]
 [[Features]]
 }}}
-Note you can also put filters into your DefaultTiddlers tiddler. For instance to open all tiddlers tagged with blog on startup:
+Note you can also put [[filters|Filters]] into your DefaultTiddlers tiddler. For instance to open all tiddlers tagged with "blog" on startup:
 {{{
 [tag[blog]]
 }}}
