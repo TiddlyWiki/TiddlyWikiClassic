@@ -60,6 +60,7 @@ config.macros.upgrade.onClickUpgrade = function(e)
 	w.setValue("backupPath", backupPath);
 
 	w.setButtons([], me.statusLoadingCore);
+	var sourceURL = me.getSourceURL();
 	me.loadLatestCore(function(data, textStatus, jqXHR) {
 		me.onLoadCore(true, w, jqXHR.responseText, sourceURL, jqXHR);
 	}, function(jqXHR, textStatus, errorThrown) {
