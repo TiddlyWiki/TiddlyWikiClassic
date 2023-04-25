@@ -74,8 +74,8 @@ a.tiddlyLinkNonExisting.shadow {font-weight:bold;}
 .wizard__subtitle { font-size:1.2em; }
 .wizard__title, .wizard__subtitle { font-weight:bold; background:none; padding:0; margin:0.4em 0 0.2em; }
 .wizardStep { padding:1em; }
-.wizardFooter { padding:0.8em 0.4em 0.8em 0; }
-.wizardFooter .status { padding:0.2em 0.7em; margin-left:0.3em; }
+.wizardFooter { padding: 0.8em 0; }
+.wizardFooter .status { padding: 0.3em 1em; }
 .wizardFooter .button { margin:0.5em 0 0; font-size:1.2em; padding:0.2em 0.5em; }
 
 #messageArea { position:fixed; top:2em; right:0; margin:0.5em; padding:0.7em 1em; z-index:2000; }
