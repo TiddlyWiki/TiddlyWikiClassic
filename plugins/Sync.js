@@ -62,7 +62,10 @@ merge(config.macros.sync, {
 merge(config.commands.syncing, {
 	text: "syncing",
 	tooltip: "Control synchronisation of this tiddler with a server or external file",
-	currentlySyncing: "<div>Currently syncing via <span class='popupHighlight'>'%0'</span> to:</"+"div><div>host: <span class='popupHighlight'>%1</span></"+"div><div>workspace: <span class='popupHighlight'>%2</span></"+"div>", // Note escaping of closing <div> tag
+	// escaping of closing <div> tag is deliberate
+	currentlySyncing: "<div>Currently syncing via <span class='popupHighlight'>'%0'</span> to:</" +
+		"div><div>host: <span class='popupHighlight'>%1</span></" +
+		"div><div>workspace: <span class='popupHighlight'>%2</span></" + "div>",
 	notCurrentlySyncing: "Not currently syncing",
 	captionUnSync: "Stop synchronising this tiddler",
 	chooseServer: "Synchronise this tiddler with another server:",
@@ -82,8 +85,8 @@ config.commands.syncing.handlePopup = function(popup, title)
 	if(!serverWorkspace)
 		serverWorkspace = "";
 	if(serverType) {
-		var e = createTiddlyElement(popup,"li",null,"popupMessage");
-		e.innerHTML = me.currentlySyncing.format([serverType,serverHost,serverWorkspace]);
+		var e = createTiddlyElement(popup, "li", null, "popupMessage");
+		e.innerHTML = me.currentlySyncing.format([serverType, serverHost, serverWorkspace]);
 	} else {
 		createTiddlyElement(popup, "li", null, "popupMessage", me.notCurrentlySyncing);
 	}
@@ -155,8 +158,7 @@ config.macros.sync.cancelSync = function()
 
 config.macros.sync.startSync = function(place)
 {
-	if(currSync)
-		config.macros.sync.cancelSync();
+	if(currSync) config.macros.sync.cancelSync();
 	currSync = {};
 	currSync.syncList = this.getSyncableTiddlers();
 	currSync.syncTasks = this.createSyncTasks(currSync.syncList);
@@ -192,7 +194,7 @@ config.macros.sync.getSyncableTiddlers = function()
 		syncItem.status = syncItem.syncStatus.text;
 		list.push(syncItem);
 	});
-	list.sort(function(a, b) { return a.title < b.title ? -1 : (a.title == b.title ? 0 : +1); });
+	list.sort(function(a, b) { return a.title < b.title ? -1 : (a.title == b.title ? 0 : +1) });
 	return list;
 };
 
@@ -245,7 +247,7 @@ config.macros.sync.createSyncTask = function(syncItem)
 	st.serverWorkspace = syncItem.serverWorkspace;
 	st.syncItems = [syncItem];
 
-	var getTiddlerListCallback = function(context,sycnItems) {
+	var getTiddlerListCallback = function(context, sycnItems) {
 		var me = config.macros.sync;
 		if(!context.status) {
 			displayMessage(context.statusText);
@@ -255,7 +257,7 @@ config.macros.sync.createSyncTask = function(syncItem)
 		var i, tiddlers = context.tiddlers;
 		for(i = 0; i < syncItems.length; i++) {
 			var si = syncItems[i];
-			var f = tiddlers.findByField("title",si.title);
+			var f = tiddlers.findByField("title", si.title);
 			if(f !== null) {
 				if(tiddlers[f].fields['server.page.revision'] > si.tiddler.fields['server.page.revision']) {
 					si.syncStatus = me.syncStatusList[si.isTouched ? 'changedBoth' : 'changedServer'];
@@ -312,8 +314,8 @@ config.macros.sync.doSync = function(e)
 	};
 
 	var rowNames = ListView.getSelectedRows(currSync.listView);
-	var i,sl = me.syncStatusList;
-	for(i=0; i<currSync.syncList.length; i++) {
+	var i, sl = me.syncStatusList;
+	for(i = 0; i < currSync.syncList.length; i++) {
 		var si = currSync.syncList[i];
 		if(rowNames.indexOf(si.title) != -1) {
 			var errorMsg = "Error in doSync: ";
@@ -332,8 +334,7 @@ config.macros.sync.doSync = function(e)
 				default:
 					break;
 				}
-				if(!r)
-					displayMessage(errorMsg + r);
+				if(!r) displayMessage(errorMsg + r);
 			} catch(ex) {
 				if(ex.name == "TypeError")
 					displayMessage("sync operation unsupported: " + ex.message);
