@@ -101,15 +101,9 @@ config.commands.syncing.handlePopup = function(popup, title)
 	var feeds = store.getTaggedTiddlers("systemServer", "title");
 	for(var i = 0; i < feeds.length; i++) {
 		var f = feeds[i];
-		var feedServerType = store.getTiddlerSlice(f.title, "Type");
-		if(!feedServerType)
-			feedServerType = "file";
-		var feedServerHost = store.getTiddlerSlice(f.title, "URL");
-		if(!feedServerHost)
-			feedServerHost = "";
-		var feedServerWorkspace = store.getTiddlerSlice(f.title, "Workspace");
-		if(!feedServerWorkspace)
-			feedServerWorkspace = "";
+		var feedServerType = store.getTiddlerSlice(f.title, "Type") || "file";
+		var feedServerHost = store.getTiddlerSlice(f.title, "URL") || "";
+		var feedServerWorkspace = store.getTiddlerSlice(f.title, "Workspace") || "";
 		var caption = f.title;
 		if(serverType == feedServerType && serverHost == feedServerHost && serverWorkspace == feedServerWorkspace) {
 			caption = me.currServerMarker + caption;
