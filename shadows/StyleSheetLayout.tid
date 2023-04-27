@@ -52,8 +52,8 @@ a.tiddlyLinkNonExisting.shadow {font-weight:bold;}
 
 
 .header {position:relative;}
-.headerShadow {position:relative; padding:4.5em 0 1em 1em; left:-1px; top:-1px;}
-.headerForeground {position:absolute; padding:4.5em 0 1em 1em; left:0; top:0;}
+.headerShadow {position:relative; padding:3em 0 1em 1em; left:-1px; top:-1px;}
+.headerForeground {position:absolute; padding:3em 0 1em 1em; left:0; top:0;}
 
 .siteTitle {font-size:3em;}
 .siteSubtitle {font-size:1.2em;}
