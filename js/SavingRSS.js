@@ -31,10 +31,11 @@ function generateRss()
 	s.push("<" + "?xml version=\"1.0\"?" + ">");
 	s.push("<rss version=\"2.0\">");
 	s.push("<channel>");
-	s.push("<title" + ">" + wikifyPlainText(store.getTiddlerText("SiteTitle", ""), null, tiddler).htmlEncode() + "</title" + ">");
-	if(u)
-		s.push("<link>" + u.htmlEncode() + "</link>");
-	s.push("<description>" + wikifyPlainText(store.getTiddlerText("SiteSubtitle", ""), null, tiddler).htmlEncode() + "</description>");
+	s.push("<title" + ">" + wikifyPlainText(store.getTiddlerText("SiteTitle", ""),
+		null, tiddler).htmlEncode() + "</title" + ">");
+	if(u) s.push("<link>" + u.htmlEncode() + "</link>");
+	s.push("<description>" + wikifyPlainText(store.getTiddlerText("SiteSubtitle", ""),
+		null, tiddler).htmlEncode() + "</description>");
 	s.push("<language>" + config.locale + "</language>");
 	s.push("<copyright>Copyright " + d.getFullYear() + " " + config.options.txtUserName.htmlEncode() + "</copyright>");
 	s.push("<pubDate>" + d.toGMTString() + "</pubDate>");

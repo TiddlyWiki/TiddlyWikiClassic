@@ -51,7 +51,7 @@ Tiddler.prototype.clearChangeCount = function()
 	}
 };
 
-//# returns true when this tiddler has the field 'temporary', meaning it is a temporary tiddler (i.e. must not be saved).
+//# Returns true when it is a temporary tiddler (i.e. must not be saved)
 Tiddler.prototype.doNotSave = function()
 {
 	return this.fields['doNotSave'];
@@ -134,7 +134,8 @@ Tiddler.prototype.changed = function()
 		if(t == 0 && formatMatch[1] && formatMatch[1] != this.title) {
 			// wikiWordLink
 			if(formatMatch.index > 0) {
-				var preRegExp = new RegExp(config.textPrimitives.unWikiLink + "|" + config.textPrimitives.anyLetter, "mg");
+				var preRegExp = new RegExp(config.textPrimitives.unWikiLink + "|" +
+					config.textPrimitives.anyLetter, "mg");
 				preRegExp.lastIndex = formatMatch.index - 1;
 				var preMatch = preRegExp.exec(text);
 				if(preMatch.index != formatMatch.index - 1)
@@ -143,7 +144,8 @@ Tiddler.prototype.changed = function()
 				this.links.pushUnique(formatMatch[1]);
 			}
 		}
-		else if(formatMatch[2 - t] && !config.formatterHelpers.isExternalLink(formatMatch[3 - t])) // titledBrackettedLink
+		else if(formatMatch[2 - t] && !config.formatterHelpers.isExternalLink(formatMatch[3 - t]))
+			// titledBrackettedLink
 			this.links.pushUnique(formatMatch[3 - t]);
 		else if(formatMatch[4 - t] && formatMatch[4 - t] != this.title) // brackettedLink
 			this.links.pushUnique(formatMatch[4 - t]);

@@ -57,8 +57,8 @@ ListView.create = function(place, listObject, listTemplate, callback, className)
 	if(callback && listTemplate.buttons) {
 		for(i = 0; i < listTemplate.buttons.length; i++) {
 			var b = listTemplate.buttons[i];
-			if(b && b.name != "")
-				createTiddlyButton(place, b.caption, null, ListView.getCommandHandler(callback, b.name, b.allowEmptySelection));
+			if(b && b.name != "") createTiddlyButton(place, b.caption, null,
+				ListView.getCommandHandler(callback, b.name, b.allowEmptySelection));
 		}
 	}
 	return table;

@@ -34,7 +34,8 @@ FileAdaptor.loadTiddlyWikiError = function(context, jqXHR)
 //   context - passed on as a parameter to the callback function
 //   userParams - user settable object object that is passed on unchanged to the callback function
 //   callback - function to be called on completion
-// Return value is true if the request was successfully issued, false if this connector doesn't support getWorkspaceList(),
+// Return value is true if the request was successfully issued,
+//   false if this connector doesn't support getWorkspaceList(),
 //   or an error description string if there was a problem
 // The callback parameters are callback(context, userParams)
 //   context.status - true if OK, false if error

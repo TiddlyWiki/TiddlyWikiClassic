@@ -183,7 +183,8 @@ config.textPrimitives.wikiLink = "(?:(?:" + config.textPrimitives.upperLetter + 
 	config.textPrimitives.upperLetter + "{2,}" +
 	config.textPrimitives.lowerLetter + "+))";
 
-config.textPrimitives.cssLookahead = "(?:(" + config.textPrimitives.anyLetter + "+)\\(([^\\)\\|\\n]+)(?:\\):))|(?:(" + config.textPrimitives.anyLetter + "+):([^;\\|\\n]+);)";
+config.textPrimitives.cssLookahead = "(?:(" + config.textPrimitives.anyLetter +
+	"+)\\(([^\\)\\|\\n]+)(?:\\):))|(?:(" + config.textPrimitives.anyLetter + "+):([^;\\|\\n]+);)";
 config.textPrimitives.cssLookaheadRegExp = new RegExp(config.textPrimitives.cssLookahead, "mg");
 
 config.textPrimitives.brackettedLink = "\\[\\[([^\\]]+)\\]\\]";

@@ -44,7 +44,8 @@ config.macros.sparkline.handler = function(place, macroName, params)
 		tick.border = 0;
 		tick.className = "sparktick";
 		tick.style.position = "absolute";
-		tick.src = "data:image/gif,GIF89a%01%00%01%00%91%FF%00%FF%FF%FF%00%00%00%C0%C0%C0%00%00%00!%F9%04%01%00%00%02%00%2C%00%00%00%00%01%00%01%00%40%02%02T%01%00%3B";
+		tick.src = "data:image/gif,GIF89a%01%00%01%00%91%FF%00%FF%FF%FF%00%00%00%C0%C0%C0" +
+			"%00%00%00!%F9%04%01%00%00%02%00%2C%00%00%00%00%01%00%01%00%40%02%02T%01%00%3B";
 		tick.style.left = d * 2 + "px";
 		tick.style.width = "2px";
 		v = Math.floor(((data[d] - min) / (max - min)) * h);

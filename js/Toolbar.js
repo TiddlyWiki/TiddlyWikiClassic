@@ -117,10 +117,12 @@ config.macros.toolbar.handler = function(place, macroName, params, wikifier, par
 				createTiddlyElement(place, "br");
 				break;
 			case "<":
-				createTiddlyButton(place, this.lessLabel, this.lessPrompt, config.macros.toolbar.onClickLess, "button lessCommand");
+				createTiddlyButton(place, this.lessLabel, this.lessPrompt,
+					config.macros.toolbar.onClickLess, "button lessCommand");
 				break;
 			case ">":
-				createTiddlyButton(place, this.moreLabel, this.morePrompt, config.macros.toolbar.onClickMore, "button moreCommand");
+				createTiddlyButton(place, this.moreLabel, this.morePrompt,
+					config.macros.toolbar.onClickMore, "button moreCommand");
 				//# hidden container for more commands, put next commands there
 				place = createTiddlyElement(place, "span", null, "moreCommand");
 				place.style.display = "none";

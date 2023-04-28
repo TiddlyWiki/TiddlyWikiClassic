@@ -81,7 +81,8 @@ String.prototype.parseParams = function(defaultName, defaultValue, allowEval, no
 	var unQuoted = noNames ? "([^\"'\\s]\\S*)" : "([^\"':\\s][^\\s:]*)";
 	var emptyQuote = "((?:\"\")|(?:''))";
 	var skipSpace = "(?:\\s*)";
-	var token = "(?:" + dblQuote + "|" + sngQuote + "|" + dblSquare + "|" + dblBrace + "|" + unQuoted + "|" + emptyQuote + ")";
+	var token = "(?:" + dblQuote + "|" + sngQuote + "|" + dblSquare + "|" +
+		dblBrace + "|" + unQuoted + "|" + emptyQuote + ")";
 	var re = noNames ? new RegExp(token, "mg") :
 		new RegExp(skipSpace + token + skipSpace + "(?:(\\:)" + skipSpace + token + ")?", "mg");
 

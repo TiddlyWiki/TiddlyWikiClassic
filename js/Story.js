@@ -65,7 +65,8 @@ Story.prototype.forEachTiddler = function(handleTiddler)
 //#  toggle - if true, causes the tiddler to be closed if it is already opened
 //#  animationSrc - optional. If provided, this will specify the element which is to act as the start of the animation -or-
 //#                 the source of the animation will be the srcElement.
-Story.prototype.displayTiddler = function(srcElement, tiddler, template, animate, unused, customFields, toggle, animationSrc)
+Story.prototype.displayTiddler = function(srcElement, tiddler,
+	template, animate, unused, customFields, toggle, animationSrc)
 {
 	var title = (tiddler instanceof Tiddler) ? tiddler.title : tiddler;
 	var tiddlerElem = this.getTiddler(title);
@@ -232,7 +233,8 @@ Story.prototype.refreshTiddler = function(title, template, force, customFields, 
 		tiddler = new Tiddler();
 		if(store.isShadowTiddler(title)) {
 			var tags = [];
-			tiddler.set(title, store.getTiddlerText(title), config.views.wikified.shadowModifier, version.date, tags, version.date);
+			tiddler.set(title, store.getTiddlerText(title),
+				config.views.wikified.shadowModifier, version.date, tags, version.date);
 		} else {
 			var text = template == config.tiddlerTemplates[DEFAULT_EDIT_TEMPLATE] // #166
 				? config.views.editor.defaultText.format([title])
@@ -327,7 +329,8 @@ Story.prototype.onTiddlerKeyPress = function(ev)
 	switch(e.keyCode) {
 		case 9: // Tab
 			var editor = story.getTiddlerField(title, "text");
-			if(target.tagName.toLowerCase() == "input" && editor.value == config.views.editor.defaultText.format([title])) {
+			if(target.tagName.toLowerCase() == "input"
+			   && editor.value == config.views.editor.defaultText.format([title])) {
 				// moving from input field and editor still contains default text, so select it
 				editor.focus();
 				editor.select();
@@ -666,11 +669,13 @@ Story.prototype.switchTheme = function(theme)
 	config.tiddlerTemplates[vi] = getSlice(theme, "ViewTemplate");
 	config.tiddlerTemplates[ei] = getSlice(theme, "EditTemplate");
 	if(!startingUp) {
-		if(config.refresherData.pageTemplate != pt || config.tiddlerTemplates[vi] != vt || config.tiddlerTemplates[ei] != et) {
+		if(config.refresherData.pageTemplate != pt || config.tiddlerTemplates[vi] != vt
+		   || config.tiddlerTemplates[ei] != et) {
 			refreshAll();
 			this.refreshAllTiddlers(true);
 		} else {
-			setStylesheet(store.getRecursiveTiddlerText(config.refresherData.styleSheet, "", 10), config.refreshers.styleSheet);
+			setStylesheet(store.getRecursiveTiddlerText(config.refresherData.styleSheet, "", 10),
+				config.refreshers.styleSheet);
 		}
 		config.options.txtTheme = theme;
 		saveOption("txtTheme");

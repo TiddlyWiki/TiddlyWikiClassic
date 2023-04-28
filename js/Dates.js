@@ -33,7 +33,8 @@ Date.prototype.formatString = function(template)
 		.replace(/0DD/g, String.zeroPad(this.getDate(), 2))
 		.replace(/DDth/g, this.getDate() + this.daySuffix())
 		.replace(/DD/g, this.getDate())
-		.replace(/TZD/g, (tz < 0 ? '+' : '-') + String.zeroPad(Math.floor(atz / 60), 2) + ':' + String.zeroPad(atz % 60, 2))
+		.replace(/TZD/g, (tz < 0 ? '+' : '-') + String.zeroPad(Math.floor(atz / 60), 2) +
+			':' + String.zeroPad(atz % 60, 2))
 		.replace(/\\/g, "");
 	return t;
 };
@@ -94,9 +95,10 @@ Date.prototype.convertToYYYYMMDDHHMM = function()
 // Convert to UTC YYYYMMDD.HHMMSSMMM format string
 Date.prototype.convertToYYYYMMDDHHMMSSMMM = function()
 {
-	return this.getUTCFullYear() + String.zeroPad(this.getUTCMonth() + 1, 2) + String.zeroPad(this.getUTCDate(), 2) + "." +
-		String.zeroPad(this.getUTCHours(), 2) + String.zeroPad(this.getUTCMinutes(), 2) +
-		String.zeroPad(this.getUTCSeconds(), 2) + String.zeroPad(this.getUTCMilliseconds(), 3) + "0";
+	return this.getUTCFullYear() + String.zeroPad(this.getUTCMonth() + 1, 2) +
+		String.zeroPad(this.getUTCDate(), 2) + "." + String.zeroPad(this.getUTCHours(), 2) +
+		String.zeroPad(this.getUTCMinutes(), 2) + String.zeroPad(this.getUTCSeconds(), 2) +
+		String.zeroPad(this.getUTCMilliseconds(), 3) + "0";
 };
 
 // Static. Create a date from a UTC YYYYMMDDHHMM format string

@@ -60,7 +60,8 @@ function onClickTag(ev)
 //# title and tooltip arguments are optional
 function createTagButton(place, tag, excludeTiddler, title, tooltip)
 {
-	var btn = createTiddlyButton(place, title || tag, (tooltip || config.views.wikified.tag.tooltip).format([tag]), onClickTag);
+	var btn = createTiddlyButton(place, title || tag,
+		(tooltip || config.views.wikified.tag.tooltip).format([tag]), onClickTag);
 	btn.setAttribute("tag", tag);
 	if(excludeTiddler)
 		btn.setAttribute("tiddler", excludeTiddler);

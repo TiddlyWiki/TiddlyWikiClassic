@@ -170,7 +170,8 @@ function saveSystemSetting(name, saveFile)
 		tiddler.text = text;
 		tiddler = store.saveTiddler(tiddler);
 	} else {
-		tiddler = store.saveTiddler(title, title, text, 'System', new Date(), ['excludeLists'], config.defaultCustomFields);
+		tiddler = store.saveTiddler(title, title, text, 'System',
+			new Date(), ['excludeLists'], config.defaultCustomFields);
 	}
 	if(saveFile) {
 		commitSystemSettings(storeWasDirty);
@@ -211,7 +212,8 @@ config.macros.option.genericOnChange = function(e)
 		var optType = opt.substring(0, 3);
 		var handler = config.macros.option.types[optType];
 		if(handler.elementType && handler.valueField)
-			config.macros.option.propagateOption(opt, handler.valueField, this[handler.valueField], handler.elementType, this);
+			config.macros.option.propagateOption(opt, handler.valueField,
+				this[handler.valueField], handler.elementType, this);
 	}
 	return true;
 };

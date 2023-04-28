@@ -10,7 +10,8 @@ merge(config.options, {
 
 merge(config.tasks, {
 	save: { text: "save", tooltip: "Save your changes to this TiddlyWiki" },
-	importTask: { text: "import", tooltip: "Import tiddlers and plugins from other TiddlyWiki files and servers", content: '<<importTiddlers>>' },
+	importTask: { text: "import", tooltip: "Import tiddlers and plugins " +
+		"from other TiddlyWiki files and servers", content: '<<importTiddlers>>' },
 	tweak: { text: "tweak", tooltip: "Tweak the appearance and behaviour of TiddlyWiki", content: '<<options>>' },
 	upgrade: { text: "upgrade", tooltip: "Upgrade TiddlyWiki core code", content: '<<upgrade>>' },
 	plugins: { text: "plugins", tooltip: "Manage installed plugins", content: '<<plugins>>' }
@@ -223,7 +224,8 @@ merge(config.macros.newJournal, {
 merge(config.macros.options, {
 	wizardTitle: "Tweak advanced options",
 	step1Title: "These options are saved in cookies in your browser",
-	step1Html: "<input type='hidden' name='markList'></input><br><input type='checkbox' checked='false' name='chkUnknown'>Show unknown options</input>",
+	step1Html: "<input type='hidden' name='markList'></input><br>" +
+		"<input type='checkbox' checked='false' name='chkUnknown'>Show unknown options</input>",
 	unknownDescription: "//(unknown)//",
 	listViewTemplate: {
 		columns: [

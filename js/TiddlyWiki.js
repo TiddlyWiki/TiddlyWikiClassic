@@ -315,7 +315,8 @@ TiddlyWiki.prototype.addTiddlerFields = function(title, fields)
 //# fields should retain existing tiddler's extended fields
 //#
 //# NB: Does not trigger autoSaveChanges.
-TiddlyWiki.prototype.saveTiddler = function(titleOrTiddler, newTitle, newBody, modifier, modified, tags, fields, clearChangeCount, created, creator)
+TiddlyWiki.prototype.saveTiddler = function(titleOrTiddler, newTitle, newBody,
+	modifier, modified, tags, fields, clearChangeCount, created, creator)
 {
 	var wasTiddlerProvided = titleOrTiddler instanceof Tiddler;
 	var tiddler = this.resolveTiddler(titleOrTiddler);

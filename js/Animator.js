@@ -4,9 +4,12 @@
 
 function Animator()
 {
-	this.running = 0; // Incremented at start of each animation, decremented afterwards. If zero, the interval timer is disabled
-	this.timerID = 0; // ID of the timer used for animating
-	this.animations = []; // List of animations in progress
+	// Incremented at start of each animation, decremented afterwards. If zero, the interval timer is disabled
+	this.running = 0;
+	// ID of the timer used for animating
+	this.timerID = 0;
+	// List of animations in progress
+	this.animations = [];
 	return this;
 }
 

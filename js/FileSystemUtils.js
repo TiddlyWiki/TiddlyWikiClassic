@@ -86,7 +86,8 @@ function convertUriToUTF8(uri, charSet)
 		return uri;
 	try {
 		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		var converter = Components.classes["@mozilla.org/intl/utf8converterservice;1"].getService(Components.interfaces.nsIUTF8ConverterService);
+		var converter = Components.classes["@mozilla.org/intl/utf8converterservice;1"]
+			.getService(Components.interfaces.nsIUTF8ConverterService);
 	} catch(ex) {
 		return uri;
 	}
