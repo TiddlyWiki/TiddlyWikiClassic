@@ -198,7 +198,7 @@ function saveMain(localPath, original, posDiv)
 		return;
 	}
 
-	tw.io.onSaveMainSuccess(config.saveByDownload ? getDataURI(revised) : "file://" + localPath, revised, original)
+	tw.io.onSaveMainSuccess(config.saveByDownload ? getDataURI(revised) : "file://" + localPath, revised, original);
 }
 
 //# savedHtml, original are passed for additional hackability
