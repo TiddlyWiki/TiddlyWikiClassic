@@ -142,6 +142,7 @@ a.tiddlyLinkNonExisting.shadow {font-weight:bold;}
 .twtable caption { font-size: 0.9em; }
 table.listView { margin: 0.8em 1.0em; }
 table.listView th, table.listView td, table.listView tr { text-align: left; }
+.listView > thead { position: sticky; top: 0; }
 
 * html .viewer pre {width:99%; padding:0 0 1em 0;}
 .viewer pre {padding:0.5em; overflow:auto;}
