@@ -27,8 +27,7 @@ Tiddler.prototype.getLinks = function()
 Tiddler.prototype.getInheritedFields = function()
 {
 	var f = {};
-	var i;
-	for(i in this.fields) {
+	for(var i in this.fields) {
 		if(i == "server.host" || i == "server.workspace" || i == "wikiformat" || i == "server.type") {
 			f[i] = this.fields[i];
 		}
@@ -117,12 +116,12 @@ Tiddler.prototype.changed = function()
 	this.links = [];
 	var text = this.text;
 	// remove 'quoted' text before scanning tiddler source
-	text = text.replace(/\/%((?:.|\n)*?)%\//g, "").
-		replace(/\{{3}((?:.|\n)*?)\}{3}/g, "").
-		replace(/"""((?:.|\n)*?)"""/g, "").
-		replace(/<nowiki\>((?:.|\n)*?)<\/nowiki\>/g, "").
-		replace(/<html\>((?:.|\n)*?)<\/html\>/g, "").
-		replace(/<script((?:.|\n)*?)<\/script\>/g, "");
+	text = text.replace(/\/%((?:.|\n)*?)%\//g, "")
+		.replace(/\{{3}((?:.|\n)*?)\}{3}/g, "")
+		.replace(/"""((?:.|\n)*?)"""/g, "")
+		.replace(/<nowiki\>((?:.|\n)*?)<\/nowiki\>/g, "")
+		.replace(/<html\>((?:.|\n)*?)<\/html\>/g, "")
+		.replace(/<script((?:.|\n)*?)<\/script\>/g, "");
 	var t = this.autoLinkWikiWords() ? 0 : 1;
 	var tiddlerLinkRegExp = t == 0 ?
 		config.textPrimitives.tiddlerAnyLinkRegExp :
@@ -179,8 +178,7 @@ Tiddler.prototype.autoLinkWikiWords = function()
 Tiddler.prototype.getServerType = function()
 {
 	var serverType = this.fields['server.type'] || this.fields['wikiformat'];
-	if(serverType && !config.adaptors[serverType])
-		return null;
+	if(serverType && !config.adaptors[serverType]) return null;
 	return serverType;
 };
 
