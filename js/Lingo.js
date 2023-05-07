@@ -225,7 +225,7 @@ merge(config.macros.options, {
 	wizardTitle: "Tweak advanced options",
 	step1Title: "These options are saved in cookies in your browser",
 	step1Html: "<input type='hidden' name='markList'></input><br>" +
-		"<input type='checkbox' checked='false' name='chkUnknown'>Show unknown options</input>",
+		"<label><input type='checkbox' checked='false' name='chkUnknown'>Show unknown options</label>",
 	unknownDescription: "//(unknown)//",
 	listViewTemplate: {
 		columns: [
