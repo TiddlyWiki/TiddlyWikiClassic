@@ -321,8 +321,10 @@ merge(config.macros.importTiddlers, {
 	statusGetTiddlerList: "Getting the list of available tiddlers",
 	errorGettingTiddlerList: "Error getting list of tiddlers, click Cancel to try again",
 	errorGettingTiddlerListHttp404: "Error retrieving tiddlers from url, please ensure the url exists. Click Cancel to try again.",
-	errorGettingTiddlerListHttp: "Error retrieving tiddlers from url, please ensure this url exists and is <a href='http://enable-cors.org/'>CORS</a> enabled",
-	errorGettingTiddlerListFile: "Error retrieving tiddlers from local file, please make sure the file is in the same directory as your TiddlyWiki. Click Cancel to try again.",
+	errorGettingTiddlerListHttp: "Error retrieving tiddlers from url, please " +
+		"ensure this url exists and is <a href='http://enable-cors.org/'>CORS</a> enabled",
+	errorGettingTiddlerListFile: "Error retrieving tiddlers from local file, " +
+		"please make sure the file is in the same directory as your TiddlyWiki. Click Cancel to try again.",
 	step3Title: "Step 3: Choose the tiddlers to import",
 	step3Html: "<input type='hidden' name='markList'></input><br><input type='checkbox' checked='true' name='chkSync'>" +
 		"Keep these tiddlers linked to this server so that you can synchronise subsequent changes</input><br>" +
@@ -338,8 +340,10 @@ merge(config.macros.importTiddlers, {
 	statusDoneImport: "All tiddlers imported",
 	systemServerNamePattern: "%2 on %1",
 	systemServerNamePatternNoWorkspace: "%1",
-	confirmOverwriteSaveTiddler: "The tiddler '%0' already exists. Click 'OK' to overwrite it with the details of this server, or 'Cancel' to leave it unchanged",
-	serverSaveTemplate: "|''Type:''|%0|\n|''URL:''|%1|\n|''Workspace:''|%2|\n\nThis tiddler was automatically created to record the details of this server",
+	confirmOverwriteSaveTiddler: "The tiddler '%0' already exists. Click 'OK' " +
+		"to overwrite it with the details of this server, or 'Cancel' to leave it unchanged",
+	serverSaveTemplate: "|''Type:''|%0|\n|''URL:''|%1|\n|''Workspace:''|%2|\n\n" +
+		"This tiddler was automatically created to record the details of this server",
 	serverSaveModifier: "(System)",
 	listViewTemplate: {
 		columns: [
