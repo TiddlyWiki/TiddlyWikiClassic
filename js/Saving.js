@@ -138,8 +138,8 @@ function recreateOriginal()
 // Save this tiddlywiki with the pending changes
 function saveChanges(onlyIfDirty, tiddlers)
 {
-	if(onlyIfDirty && !store.isDirty())
-		return;
+	if(onlyIfDirty && !store.isDirty()) return;
+
 	clearMessage();
 	var t0 = new Date();
 	var msg = config.messages;
@@ -172,12 +172,9 @@ function saveChanges(onlyIfDirty, tiddlers)
 
 	saveMain(localPath, original, posDiv);
 	if (!config.saveByDownload && !config.saveByManualDownload) {
-		if(co.chkSaveBackups)
-			saveBackup(localPath, original);
-		if(co.chkSaveEmptyTemplate)
-			saveEmpty(localPath, original, posDiv);
-		if(co.chkGenerateAnRssFeed)
-			saveRss(localPath);
+		if(co.chkSaveBackups) saveBackup(localPath, original);
+		if(co.chkSaveEmptyTemplate) saveEmpty(localPath, original, posDiv);
+		if(co.chkGenerateAnRssFeed) saveRss(localPath);
 	}
 
 	if(co.chkDisplayInstrumentation)
