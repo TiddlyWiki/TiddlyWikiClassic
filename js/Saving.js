@@ -176,7 +176,7 @@ function saveChanges(onlyIfDirty, tiddlers)
 			saveBackup(localPath, original);
 		if(co.chkSaveEmptyTemplate)
 			saveEmpty(localPath, original, posDiv);
-		if(co.chkGenerateAnRssFeed && saveRss instanceof Function)
+		if(co.chkGenerateAnRssFeed)
 			saveRss(localPath);
 	}
 
