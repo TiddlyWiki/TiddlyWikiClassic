@@ -150,7 +150,6 @@ function saveChanges(onlyIfDirty, tiddlers)
 		return;
 	}
 
-	// Load the original file
 	var originalPath = document.location.toString();
 	var localPath = getLocalPath(originalPath);
 	var original = loadOriginal(localPath);
@@ -160,17 +159,18 @@ function saveChanges(onlyIfDirty, tiddlers)
 			story.displayTiddler(null, msg.saveInstructions);
 		return;
 	}
-	// Locate the storeArea div's
+
 	var posDiv = locateStoreArea(original);
 	if(!posDiv) {
 		alert(msg.invalidFileError.format([localPath]));
 		return;
 	}
-	var co = config.options; // abbreviation
+
 	config.saveByDownload = false;
 	config.saveByManualDownload = false;
-
 	saveMain(localPath, original, posDiv);
+
+	var co = config.options;
 	if (!config.saveByDownload && !config.saveByManualDownload) {
 		if(co.chkSaveBackups) saveBackup(localPath, original);
 		if(co.chkSaveEmptyTemplate) saveEmpty(localPath, original, posDiv);
