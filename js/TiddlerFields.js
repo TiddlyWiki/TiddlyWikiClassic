@@ -84,7 +84,6 @@ TiddlyWiki.prototype.setValue = function(tiddlerOrTitle, fieldName, value)
 	if(accessor) {
 		// don't remove StandardFields
 		if(isRemove) return;
-		var accessor = TiddlyWiki.standardFieldAccess[fieldName];
 		if(!accessor.set(t, value)) return;
 	} else {
 		var oldValue = t.fields[fieldName];
