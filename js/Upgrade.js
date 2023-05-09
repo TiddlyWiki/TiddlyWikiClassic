@@ -178,17 +178,19 @@ function stripUpgradePartsFromURI(uri)
 
 function upgradeFrom(path)
 {
-	var importStore = new TiddlyWiki();
-	var tw = loadFile(path);
-	importStore.importTiddlyWiki(tw);
-	importStore.forEachTiddler(function(title, tiddler) {
-		if(!store.getTiddler(title)) {
-			store.addTiddler(tiddler);
-		}
+	tw.io.loadFile(path, function(oldTw) {
+		var importStore = new TiddlyWiki();
+		importStore.importTiddlyWiki(oldTw);
+		importStore.forEachTiddler(function(title, tiddler) {
+			if(!store.getTiddler(title)) {
+				store.addTiddler(tiddler);
+			}
+		});
+
+		refreshDisplay();
+		saveChanges();
+		alert(config.messages.upgradeDone.format([formatVersion()]));
+		window.location = stripUpgradePartsFromURI(window.location.toString());
 	});
-	refreshDisplay();
-	saveChanges(); //# To create appropriate Markup* sections
-	alert(config.messages.upgradeDone.format([formatVersion()]));
-	window.location = stripUpgradePartsFromURI(window.location.toString());
 }
 
