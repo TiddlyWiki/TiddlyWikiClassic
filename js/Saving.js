@@ -89,9 +89,18 @@ function autoSaveChanges(onlyIfDirty, tiddlers)
 }
 
 // get the full HTML of the original file
-function loadOriginal(localPath)
+function loadOriginal(localPath, callback)
 {
-	return loadFile(localPath) || window.originalHTML || recreateOriginal();
+	if(!callback) return loadFile(localPath) || window.originalHTML || recreateOriginal();
+
+	tw.io.loadFile(localPath, function(result, details) {
+		if(typeof result == 'string') {
+			callback(result, details);
+		} else {
+			var original = window.originalHTML || recreateOriginal();
+			callback(original);
+		}
+	});
 }
 
 // reconstruct original HTML file content from current document memory
