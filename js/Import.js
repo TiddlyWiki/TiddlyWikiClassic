@@ -377,21 +377,20 @@ config.macros.importTiddlers.onGetTiddler = function(context, wizard)
 		store.setValue(tiddler.title, 'server', null);
 	}
 	store.resumeNotifications();
-	if(!context.isSynchronous)
-		store.notify(tiddler.title, true);
+	if(!context.isSynchronous) store.notify(tiddler.title, true);
 
-	var me = config.macros.importTiddlers;
 	var remainingImports = wizard.getValue("remainingImports") - 1;
 	wizard.setValue("remainingImports", remainingImports);
-	if(remainingImports == 0) {
-		if(context.isSynchronous) {
-			store.notifyAll();
-			refreshDisplay();
-		}
-		wizard.setButtons([
-			{ caption: me.doneLabel, tooltip: me.donePrompt, onClick: me.onClose }
-		], me.statusDoneImport);
-		autoSaveChanges();
+
+	if(remainingImports != 0) return;
+	if(context.isSynchronous) {
+		store.notifyAll();
+		refreshDisplay();
 	}
+	var me = config.macros.importTiddlers;
+	wizard.setButtons([
+		{ caption: me.doneLabel, tooltip: me.donePrompt, onClick: me.onClose }
+	], me.statusDoneImport);
+	autoSaveChanges();
 };
 
