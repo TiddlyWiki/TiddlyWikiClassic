@@ -48,6 +48,7 @@ config.options = {
 	chkIncrementalSearch: true,
 	chkInsertTabs: false,
 	chkOpenInNewWindow: true,
+	chkPreventAsyncSaving: true,
 	chkRegExpSearch: false,
 	chkRemoveExtraMarkers: false, // #162
 	chkSaveBackups: true,

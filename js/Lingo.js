@@ -29,6 +29,7 @@ merge(config.optionsDesc, {
 	chkGenerateAnRssFeed: "Generate an RSS feed when saving changes",
 	chkHttpReadOnly: "Hide editing features when viewed over HTTP",
 	chkOpenInNewWindow: "Open external links in a new window",
+	chkPreventAsyncSaving: "Disable attempting async saving (may be needed by old plugins)",
 	chkRegExpSearch: "Enable regular expressions for searches",
 	chkSaveBackups: "Keep backup file when saving changes",
 	chkSaveEmptyTemplate: "Generate an empty template when saving changes",

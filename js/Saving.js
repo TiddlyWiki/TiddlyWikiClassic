@@ -161,33 +161,43 @@ function saveChanges(onlyIfDirty, tiddlers)
 
 	var originalPath = document.location.toString();
 	var localPath = getLocalPath(originalPath);
-	var original = loadOriginal(localPath);
-	if(original == null) {
-		alert(msg.cantSaveError);
-		if(store.tiddlerExists(msg.saveInstructions))
-			story.displayTiddler(null, msg.saveInstructions);
-		return;
+	var onLoadOriginal = function(original) {
+		if(original == null) {
+			alert(msg.cantSaveError);
+			if(store.tiddlerExists(msg.saveInstructions))
+				story.displayTiddler(null, msg.saveInstructions);
+			return;
+		}
+
+		var posDiv = locateStoreArea(original);
+		if(!posDiv) {
+			alert(msg.invalidFileError.format([localPath]));
+			return;
+		}
+
+		config.saveByDownload = false;
+		config.saveByManualDownload = false;
+		saveMain(localPath, original, posDiv);
+
+		var co = config.options;
+		if (!config.saveByDownload && !config.saveByManualDownload) {
+			if(co.chkSaveBackups) saveBackup(localPath, original);
+			if(co.chkSaveEmptyTemplate) saveEmpty(localPath, original, posDiv);
+			if(co.chkGenerateAnRssFeed) saveRss(localPath);
+		}
+
+		if(co.chkDisplayInstrumentation)
+			displayMessage("saveChanges " + (new Date() - t0) + " ms");
+	};
+
+	if(!config.options.chkPreventAsyncSaving) {
+		loadOriginal(localPath, onLoadOriginal);
+	} else {
+		// useful when loadOriginal is overwritten without support of callback
+		// or when an extension relies saveChanges being a sync function
+		var original = loadOriginal(localPath);
+		onLoadOriginal(original);
 	}
-
-	var posDiv = locateStoreArea(original);
-	if(!posDiv) {
-		alert(msg.invalidFileError.format([localPath]));
-		return;
-	}
-
-	config.saveByDownload = false;
-	config.saveByManualDownload = false;
-	saveMain(localPath, original, posDiv);
-
-	var co = config.options;
-	if (!config.saveByDownload && !config.saveByManualDownload) {
-		if(co.chkSaveBackups) saveBackup(localPath, original);
-		if(co.chkSaveEmptyTemplate) saveEmpty(localPath, original, posDiv);
-		if(co.chkGenerateAnRssFeed) saveRss(localPath);
-	}
-
-	if(co.chkDisplayInstrumentation)
-		displayMessage("saveChanges " + (new Date() - t0) + " ms");
 }
 
 function saveMain(localPath, original, posDiv)
