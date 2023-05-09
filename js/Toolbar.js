@@ -28,8 +28,7 @@ config.macros.toolbar.createCommand = function(place, commandName, tiddler, clas
 		commandName: commandName,
 		tiddler: tiddler.title
 	});
-	if(className)
-		jQuery(btn).addClass(className);
+	if(className) jQuery(btn).addClass(className);
 };
 
 config.macros.toolbar.isCommandEnabled = function(command, tiddler)
