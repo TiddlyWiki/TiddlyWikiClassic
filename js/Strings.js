@@ -104,7 +104,7 @@ String.prototype.parseParams = function(defaultName, defaultValue, allowEval, no
 						value = window.eval(value);
 					}
 				} catch(ex) {
-					throw "Unable to evaluate {{" + match[p + 3] + "}}: " + exceptionText(ex);
+					throw "Unable to evaluate {{" + value + "}}: " + exceptionText(ex);
 				}
 			}
 			return value;
