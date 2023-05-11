@@ -32,7 +32,7 @@
         {
             "files": ["build/*.js", "test/*.js"],
             "env": {
-                "es7": true
+                "es2016": true
             }
         }
     ]
