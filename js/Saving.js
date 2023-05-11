@@ -205,13 +205,12 @@ function saveMain(localPath, original, posDiv)
 	try {
 		var revised = updateOriginal(original, posDiv, localPath);
 		var save = saveFile(localPath, revised);
+		if(!save) {
+			tw.io.onSaveMainFail();
+			return;
+		}
 	} catch (ex) {
 		tw.io.onSaveMainFail(ex);
-	}
-
-	if(!save) {
-		tw.io.onSaveMainFail();
-		return;
 	}
 
 	tw.io.onSaveMainSuccess(config.saveByDownload ? getDataURI(revised) : "file://" + localPath, revised, original);
