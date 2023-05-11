@@ -586,7 +586,6 @@ Story.prototype.saveTiddler = function(title, minorUpdate)
 		minorUpdate = !minorUpdate;
 	if(!store.tiddlerExists(newTitle))
 		minorUpdate = false;
-	var newDate = new Date();
 	if(store.tiddlerExists(title)) {
 		var t = store.fetchTiddler(title);
 		var extendedFields = t.fields;
@@ -599,7 +598,7 @@ Story.prototype.saveTiddler = function(title, minorUpdate)
 			extendedFields[n] = fields[n];
 	}
 	var tiddler = store.saveTiddler(title, newTitle, fields.text, minorUpdate ? undefined : config.options.txtUserName,
-		minorUpdate ? undefined : newDate, fields.tags, extendedFields, null, null, creator);
+		minorUpdate ? undefined : new Date(), fields.tags, extendedFields, null, null, creator);
 	autoSaveChanges(null, [tiddler]);
 	return newTitle;
 };
