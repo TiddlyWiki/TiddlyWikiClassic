@@ -204,16 +204,15 @@ function saveMain(localPath, original, posDiv)
 {
 	try {
 		var revised = updateOriginal(original, posDiv, localPath);
-		var save = saveFile(localPath, revised);
-		if(!save) {
+		var saved = saveFile(localPath, revised);
+		if(!saved) {
 			tw.io.onSaveMainFail();
-			return;
+		} else {
+			tw.io.onSaveMainSuccess(config.saveByDownload ? getDataURI(revised) : "file://" + localPath, revised, original);
 		}
 	} catch (ex) {
 		tw.io.onSaveMainFail(ex);
 	}
-
-	tw.io.onSaveMainSuccess(config.saveByDownload ? getDataURI(revised) : "file://" + localPath, revised, original);
 }
 
 //# savedHtml, original are passed for additional hackability
