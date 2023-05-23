@@ -7,7 +7,7 @@ a {color:[[ColorPalette::PrimaryMid]];}
 a:hover {background-color:[[ColorPalette::PrimaryMid]]; color:[[ColorPalette::Background]];}
 a img {border:0;}
 
-h1,h2,h3,h4,h5,h6 {color:[[ColorPalette::SecondaryDark]]; background:transparent;}
+h1, h2, h3, h4, h5, h6 { color: [[ColorPalette::SecondaryDark]]; }
 h1 {border-bottom:2px solid [[ColorPalette::TertiaryLight]];}
 h2,h3 {border-bottom:1px solid [[ColorPalette::TertiaryLight]];}
 
@@ -15,7 +15,10 @@ h2,h3 {border-bottom:1px solid [[ColorPalette::TertiaryLight]];}
 .button:hover {color:[[ColorPalette::PrimaryDark]]; background:[[ColorPalette::SecondaryLight]]; border-color:[[ColorPalette::SecondaryMid]];}
 .button:active {color:[[ColorPalette::Background]]; background:[[ColorPalette::SecondaryMid]]; border:1px solid [[ColorPalette::SecondaryDark]];}
 
-.header {background:[[ColorPalette::PrimaryMid]];}
+.header {
+	background: -moz-linear-gradient(to bottom, [[ColorPalette::PrimaryLight]], [[ColorPalette::PrimaryMid]]);
+	background: linear-gradient(to bottom, [[ColorPalette::PrimaryLight]], [[ColorPalette::PrimaryMid]]);
+}
 .header a:hover {background:transparent;}
 .headerShadow {color:[[ColorPalette::Foreground]];}
 .headerShadow a {font-weight:normal; color:[[ColorPalette::Foreground]];}
@@ -72,14 +75,18 @@ h2,h3 {border-bottom:1px solid [[ColorPalette::TertiaryLight]];}
 .messageToolbar__icon { fill:[[ColorPalette::TertiaryDark]]; }
 .messageToolbar__icon:hover { fill:[[ColorPalette::Foreground]]; }
 
-.popup { background:[[ColorPalette::TertiaryPale]]; color:[[ColorPalette::TertiaryDark]]; box-shadow: 1px 2px 5px [[ColorPalette::TertiaryMid]]; }
+.popup {
+	background: [[ColorPalette::Background]];
+	color: [[ColorPalette::TertiaryDark]];
+	box-shadow: 1px 2px 5px [[ColorPalette::TertiaryMid]];
+}
 .popup li a, .popup li a:visited, .popup li a:hover, .popup li a:active {
 	color:[[ColorPalette::Foreground]]; border: none;
 }
 .popup li a:hover { background:[[ColorPalette::SecondaryLight]]; }
 .popup li a:active { background:[[ColorPalette::SecondaryPale]]; }
 .popup li.disabled { color:[[ColorPalette::TertiaryMid]]; }
-.popupHighlight {background:[[ColorPalette::Background]]; color:[[ColorPalette::Foreground]];}
+.popupHighlight {color:[[ColorPalette::Foreground]];}
 .popup hr {color:[[ColorPalette::PrimaryDark]]; background:[[ColorPalette::PrimaryDark]]; border-bottom:1px;}
 .listBreak div {border-bottom:1px solid [[ColorPalette::TertiaryDark]];}
 
@@ -119,9 +126,9 @@ h2,h3 {border-bottom:1px solid [[ColorPalette::TertiaryLight]];}
 .viewer .button {border:1px solid [[ColorPalette::SecondaryMid]];}
 .viewer blockquote {border-left:3px solid [[ColorPalette::TertiaryDark]];}
 
-.viewer table, table.twtable {border:2px solid [[ColorPalette::TertiaryDark]];}
-.viewer th, .viewer thead td, .twtable th, .twtable thead td {background:[[ColorPalette::SecondaryMid]]; border:1px solid [[ColorPalette::TertiaryDark]]; color:[[ColorPalette::Background]];}
-.viewer td, .viewer tr, .twtable td, .twtable tr {border:1px solid [[ColorPalette::TertiaryDark]];}
+.viewer th, .viewer thead td, .twtable th, .twtable thead td { background: [[ColorPalette::SecondaryMid]]; color: [[ColorPalette::Background]]; }
+.viewer td, .viewer tr, .twtable td, .twtable tr { border: 1px solid [[ColorPalette::TertiaryLight]]; }
+.twtable caption { color: [[ColorPalette::TertiaryMid]]; }
 
 .viewer pre {background:[[ColorPalette::SecondaryPale]];}
 .viewer code {color:[[ColorPalette::SecondaryDark]];}

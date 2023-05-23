@@ -2,7 +2,7 @@
 //-- TiddlyWiki-specific utility functions
 //--
 
-// Returns TiddlyWiki version string
+// Return TiddlyWiki version string
 function formatVersion(v)
 {
 	v = v || version;
@@ -11,62 +11,60 @@ function formatVersion(v)
 		(v.beta ? " (beta " + v.beta + ")" : "");
 }
 
-//# Compares two TiddlyWiki version objects
+//# Compare two TiddlyWiki version objects
 //# Returns +1 if v2 is later than v1
 //#          0 if v2 is the same as v1
 //#         -1 if v2 is earlier than v1
 //# version without a beta number is later than a version with a beta number
-function compareVersions(v1,v2)
+function compareVersions(v1, v2)
 {
-	var x1,x2,i,a = ["major","minor","revision"];
+	var x1, x2, i, a = ["major", "minor", "revision"];
 	for(i = 0; i < a.length; i++)
 	{
 		x1 = v1[a[i]] || 0;
 		x2 = v2[a[i]] || 0;
-		if(x1 < x2)
-			return 1;
-		if(x1 > x2)
-			return -1;
+		if(x1 < x2) return +1;
+		if(x1 > x2) return -1;
 	}
-	x1 = v1.beta || 9999;
-	x2 = v2.beta || 9999;
-	if(x1 < x2)
-		return 1;
-	return x1 > x2 ? -1 : 0;
+	x1 = v1.beta || Infinity;
+	x2 = v2.beta || Infinity;
+	return x1 < x2 ? +1 :
+	       x1 > x2 ? -1 : 0;
 }
 
-function merge(dst,src,preserveExisting)
+function merge(dst, src, preserveExisting)
 {
-	for(var i in src) {
-		if(!preserveExisting || dst[i] === undefined)
-			dst[i] = src[i];
-	}
+	for(var key in src)
+		if(!preserveExisting || dst[key] === undefined)
+			dst[key] = src[key];
+
 	return dst;
 }
 
-// Resolve the target object of an event
-function resolveTarget(e)
+// Get the target of an event
+function resolveTarget(event)
 {
-	var obj = e.target || e.srcElement;
+	var obj = event.target || event.srcElement;
 	// defeat Safari bug
 	if(obj.nodeType == 3)
 		obj = obj.parentNode;
 	return obj;
 }
 
-// Returns a string containing the description of an exception, optionally prepended by a message
-function exceptionText(e,message)
+// Return the description of an exception (string)
+function exceptionText(ex, prependedMessage)
 {
-	var s = e.description || e.toString();
-	return message ? "%0:\n%1".format([message,s]) : s;
+	var s = ex.description || ex.toString();
+	return prependedMessage ? (prependedMessage + ":\n" + s) : s;
 }
 
-// Displays an alert of an exception description with optional message
-function showException(e,message)
+// Display an alert of an exception description with optional message
+function showException(e, prependedMessage)
 {
-	alert(exceptionText(e,message));
+	alert(exceptionText(e, prependedMessage));
 }
 
+//# deprecated
 function alertAndThrow(m)
 {
 	alert(m);
@@ -76,52 +74,48 @@ function alertAndThrow(m)
 function glyph(name)
 {
 	var g = config.glyphs;
-	var b = g.currBrowser;
-	if(b == null) {
-		b = 0;
-		while(b < g.browsers.length-1 && !g.browsers[b]())
-			b++;
-		g.currBrowser = b;
+	if(!g.codes[name]) return "";
+	if(g.currBrowser == null) {
+		var i = 0;
+		while(i < g.browsers.length - 1 && !g.browsers[i]())
+			i++;
+		g.currBrowser = i;
 	}
-	if(!g.codes[name])
-		return "";
-	return g.codes[name][b];
+	return g.codes[name][g.currBrowser];
 }
 
-function createTiddlyText(parent,text)
+function createTiddlyText(parent, text)
 {
 	return parent.appendChild(document.createTextNode(text));
 }
 
-function createTiddlyCheckbox(parent,caption,checked,onChange)
+function createTiddlyCheckbox(parent, caption, checked, onChange)
 {
 	var cb = document.createElement("input");
-	cb.setAttribute("type","checkbox");
+	cb.setAttribute("type", "checkbox");
 	cb.onclick = onChange;
 	parent.appendChild(cb);
 	cb.checked = checked;
 	cb.className = "chkOptionInput";
 	if(caption)
-		wikify(caption,parent);
+		wikify(caption, parent);
 	return cb;
 }
 
-function createTiddlyElement(parent,element,id,className,text,attribs)
+function createTiddlyElement(parent, element, id, className, text, attribs)
 {
 	var n, e = document.createElement(element);
 	if(className != null) e.className = className;
-	if(       id != null) e.setAttribute('id',id);
-	if(     text != null) createTiddlyText(e,text);
+	if(       id != null) e.setAttribute('id', id);
+	if(     text != null) createTiddlyText(e, text);
 	if(attribs) {
-		for(n in attribs) {
-			e.setAttribute(n,attribs[n]);
-		}
+		for(n in attribs) e.setAttribute(n, attribs[n]);
 	}
 	if(parent != null) parent.appendChild(e);
 	return e;
 }
 
-function createTiddlyButton(parent,text,tooltip,action,className,id,accessKey,customAttributes)
+function createTiddlyButton(parent, text, tooltip, action, className, id, accessKey, customAttributes)
 {
 	var attributes = { href: 'javascript:;' };
 	if(tooltip)   attributes.title = tooltip;
@@ -137,7 +131,7 @@ function createTiddlyButton(parent,text,tooltip,action,className,id,accessKey,cu
 //#   place - element where the link should be created
 //#   url - link target
 //#   label - link text (optional)
-function createExternalLink(place,url,label)
+function createExternalLink(place, url, label)
 {
 	var tooltip = config.messages.externalLinkTooltip;
 	var link = createTiddlyElement(place, 'a', null, 'externalLink', label, {
@@ -149,7 +143,7 @@ function createExternalLink(place,url,label)
 	return link;
 }
 
-function getTiddlyLinkInfo(title,currClasses)
+function getTiddlyLinkInfo(title, currClasses)
 {
 	var classes = currClasses ? currClasses.split(" ") : [];
 	classes.pushUnique("tiddlyLink");
@@ -173,9 +167,9 @@ function getTiddlyLinkInfo(title,currClasses)
 		}
 		subTitle = f ? f.format([title]) : "";
 	}
-	if(typeof config.annotations[title]=="string")
+	if(typeof config.annotations[title] == "string")
 		subTitle = config.annotations[title];
-	return {classes: classes.join(" "),subTitle: subTitle};
+	return { classes: classes.join(" "), subTitle: subTitle };
 }
 
 // Event handler for clicking on a tiddly link
@@ -195,7 +189,7 @@ function onClickTiddlerLink(ev)
 	} while(title == null && link != null);
 	if(!store.isShadowTiddler(title)) {
 		var f = fields ? fields.decodeHashMap() : {};
-		fields = String.encodeHashMap(merge(f,config.defaultCustomFields,true));
+		fields = String.encodeHashMap(merge(f, config.defaultCustomFields, true));
 	}
 	if(title) {
 		var toggling = e.metaKey || e.ctrlKey;
@@ -205,7 +199,7 @@ function onClickTiddlerLink(ev)
 			toggling = false;
 		if(store.getTiddler(title))
 			fields = null;
-		story.displayTiddler(target,title,null,true,null,fields,toggling);
+		story.displayTiddler(target, title, null, true, null, fields, toggling);
 	}
 	clearMessage();
 	return false;
@@ -213,7 +207,7 @@ function onClickTiddlerLink(ev)
 
 function getTiddlerLinkHref(title)
 {
-	return window.location.toString().replace(/#.*$/,'') + story.getPermaViewHash([title]);
+	return window.location.toString().replace(/#.*$/, '') + story.getPermaViewHash([title]);
 }
 
 //# Create a link to a particular tiddler
@@ -223,48 +217,48 @@ function getTiddlerLinkHref(title)
 //#   className - custom CSS class for the link
 //#   linkedFromTiddler - tiddler from which to inherit extended fields
 //#   noToggle - flag to force the link to open the target, even if chkToggleLinks is on
-function createTiddlyLink(place,title,includeText,className,isStatic,linkedFromTiddler,noToggle)
+function createTiddlyLink(place, title, includeText, className, isStatic, linkedFromTiddler, noToggle)
 {
 	var title = jQuery.trim(title);
 	var text = includeText ? title : null;
-	var i = getTiddlyLinkInfo(title,className);
+	var info = getTiddlyLinkInfo(title, className);
 	var btn = isStatic ?
-		createExternalLink(place, store.getTiddlerText("SiteUrl",null) + story.getPermaViewHash([title])) :
-		createTiddlyButton(place, text, i.subTitle, onClickTiddlerLink, i.classes, '', '', {
+		createExternalLink(place, store.getTiddlerText("SiteUrl", null) + story.getPermaViewHash([title])) :
+		createTiddlyButton(place, text, info.subTitle, onClickTiddlerLink, info.classes, '', '', {
 			href: getTiddlerLinkHref(title)
 		});
 	if(isStatic)
 		btn.className += ' ' + className;
-	btn.setAttribute("refresh","link");
-	btn.setAttribute("tiddlyLink",title);
+	btn.setAttribute("refresh", "link");
+	btn.setAttribute("tiddlyLink", title);
 	if(noToggle)
-		btn.setAttribute("noToggle","true");
+		btn.setAttribute("noToggle", "true");
 	if(linkedFromTiddler)
 	{
 		var fields = linkedFromTiddler.getInheritedFields();
 		if(fields)
-			btn.setAttribute("tiddlyFields",fields);
+			btn.setAttribute("tiddlyFields", fields);
 	}
 	return btn;
 }
 
-function refreshTiddlyLink(e,title)
+function refreshTiddlyLink(e, title)
 {
-	var i = getTiddlyLinkInfo(title,e.className);
-	e.className = i.classes;
-	e.title = i.subTitle;
+	var info = getTiddlyLinkInfo(title, e.className);
+	e.className = info.classes;
+	e.title = info.subTitle;
 }
 
-function createTiddlyDropDown(place,onchange,options,defaultValue)
+function createTiddlyDropDown(place, onchange, options, defaultValue)
 {
-	var sel = createTiddlyElement(place,"select");
+	var sel = createTiddlyElement(place, "select");
 	sel.onchange = onchange;
 
-	for(var t = 0; t < options.length; t++)
+	for(var i = 0; i < options.length; i++)
 	{
-		var e = createTiddlyElement(sel,"option",null,null,options[t].caption);
-		e.value = options[t].name;
-		if(options[t].name == defaultValue)
+		var e = createTiddlyElement(sel, "option", null, null, options[i].caption);
+		e.value = options[i].name;
+		if(e.value == defaultValue)
 			e.selected = true;
 	}
 	return sel;

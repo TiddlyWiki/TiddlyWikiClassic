@@ -1,0 +1,23 @@
+created: 20230412141700000
+creator: Yakov Litvin
+modified: 20230412141700000
+modifier: Yakov Litvin
+title: Filters
+type: text/x-tiddlywiki
+
+Filters are expressions describing how to collect a number of tiddlers. This example describes "all tiddlers tagged {{{notes}}} sorted by their {{{modified}}} date:
+{{{
+[tag[notes]] [sort[modified]]
+}}}
+Typically, they are used in macros like [[list|list macro]], but also are supported in [[DefaultTiddlers|DefaultTiddlers shadows]] and other places:
+{{{
+<<list filter "[tag[notes]] [sort[modified]]">>
+}}}
+
+Here are the filters available by default:
+|Syntax					|Action			|h
+|{{{[[title]]}}}, {{{TitleWithoutSpaces}}}, or {{{[tiddler[title]]}}}	|add a tiddler by title|
+|{{{[tag[tag title]]}}}	|add tiddlers tagged with {{{tag title}}}|
+|{{{[field[value]]}}}	|add tiddlers that have the specified [[field|Fields]] with the specified value: like, {{{[creator[ericshulman]]}}}|
+|{{{[limit[number]]}}}	|keep only the first {{{number}}} of tiddlers, like {{{[tag[notes]] [limit[10]]}}}|
+|{{{[sort[fieldAnd]]}}}	|sort tiddlers by the specified field: ascending by default (if {{{fieldAnd}}} is just field name); if {{{fieldAnd}}} is {{{-fieldName}}}, descending; you may also use {{{+fieldName}}} for ascending|

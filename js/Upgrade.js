@@ -18,7 +18,7 @@ config.macros.upgrade.loadLatestCore = function(onSuccess, onError)
 		success: onSuccess,
 		error: onError
 	});
-}
+};
 
 config.macros.upgrade.handler = function(place)
 {
@@ -60,6 +60,7 @@ config.macros.upgrade.onClickUpgrade = function(e)
 	w.setValue("backupPath", backupPath);
 
 	w.setButtons([], me.statusLoadingCore);
+	var sourceURL = me.getSourceURL();
 	me.loadLatestCore(function(data, textStatus, jqXHR) {
 		me.onLoadCore(true, w, jqXHR.responseText, sourceURL, jqXHR);
 	}, function(jqXHR, textStatus, errorThrown) {
@@ -68,36 +69,39 @@ config.macros.upgrade.onClickUpgrade = function(e)
 	return false;
 };
 
-config.macros.upgrade.onLoadCore = function(status, params, responseText, url, xhr)
+config.macros.upgrade.onLoadCore = function(status, w, responseText, url, xhr)
 {
 	var me = config.macros.upgrade;
-	var w = params;
 	var errMsg;
-	if(!status)
-		errMsg = me.errorLoadingCore;
+	if(!status) errMsg = me.errorLoadingCore;
 	var newVer = me.extractVersion(responseText);
-	if(!newVer)
-		errMsg = me.errorCoreFormat;
+	if(!newVer) errMsg = me.errorCoreFormat;
 	if(errMsg) {
 		w.setButtons([], errMsg);
 		alert(errMsg);
 		return;
 	}
-	var onStartUpgrade = function(e) {
 
-		w.setButtons([], me.statusSavingCore);
-		var localPath = getLocalPath(document.location.toString());
-		saveFile(localPath, responseText);
-
-		w.setButtons([], me.statusReloadingCore);
-		var backupPath = w.getValue("backupPath");
-		var newLoc = addUpgradePartsToURI(document.location.toString(), backupPath);
-		window.setTimeout(function () { window.location = newLoc; }, 10);
-	};
 	var step2 = [me.step2Html_downgrade, me.step2Html_restore, me.step2Html_upgrade][compareVersions(version, newVer) + 1];
 	w.addStep(me.step2Title, step2.format([formatVersion(newVer), formatVersion(version)]));
-	w.setButtons([{ caption: me.startLabel, tooltip: me.startPrompt, onClick: onStartUpgrade },
-		{ caption: me.cancelLabel, tooltip: me.cancelPrompt, onClick: me.onCancel }]);
+	w.setButtons([
+		{ caption: me.startLabel,  tooltip: me.startPrompt,  onClick: function() {
+			config.macros.upgrade.onStartUpgrade(w, responseText);
+		} },
+		{ caption: me.cancelLabel, tooltip: me.cancelPrompt, onClick: me.onCancel }
+	]);
+};
+
+config.macros.upgrade.onStartUpgrade = function(wizard, newCoreHtml)
+{
+	wizard.setButtons([], config.macros.upgrade.statusSavingCore);
+	var localPath = getLocalPath(document.location.toString());
+	saveFile(localPath, newCoreHtml);
+
+	wizard.setButtons([], config.macros.upgrade.statusReloadingCore);
+	var backupPath = wizard.getValue("backupPath");
+	var newLocation = addUpgradePartsToURI(document.location.toString(), backupPath);
+	window.setTimeout(function () { window.location = newLocation }, 10);
 };
 
 config.macros.upgrade.onCancel = function(e)
@@ -115,7 +119,7 @@ config.macros.upgrade.extractVersion = function(upgradeFile)
 	var m = re.exec(upgradeFile);
 	return !m ? null : {
 		title: m[1], major: m[2], minor: m[3], revision: m[4], beta: m[6], date: new Date(m[7])
-	}
+	};
 };
 
 // a helper, splits uri into parts, passes the map of parts to modify and glues parts back
@@ -169,22 +173,24 @@ function stripUpgradePartsFromURI(uri)
 
 		uriParts.query = queryParts.join('&');
 		uriParts.hash = hashParts.join('%20') || undefined;
-	})
+	});
 }
 
 function upgradeFrom(path)
 {
-	var importStore = new TiddlyWiki();
-	var tw = loadFile(path);
-	importStore.importTiddlyWiki(tw);
-	importStore.forEachTiddler(function(title, tiddler) {
-		if(!store.getTiddler(title)) {
-			store.addTiddler(tiddler);
-		}
+	tw.io.loadFile(path, function(oldTw) {
+		var importStore = new TiddlyWiki();
+		importStore.importTiddlyWiki(oldTw);
+		importStore.forEachTiddler(function(title, tiddler) {
+			if(!store.getTiddler(title)) {
+				store.addTiddler(tiddler);
+			}
+		});
+
+		refreshDisplay();
+		saveChanges();
+		alert(config.messages.upgradeDone.format([formatVersion()]));
+		window.location = stripUpgradePartsFromURI(window.location.toString());
 	});
-	refreshDisplay();
-	saveChanges(); //# To create appropriate Markup* sections
-	alert(config.messages.upgradeDone.format([formatVersion()]));
-	window.location = stripUpgradePartsFromURI(window.location.toString());
 }
 

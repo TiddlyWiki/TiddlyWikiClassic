@@ -77,7 +77,7 @@ function mozConvertUnicodeToUTF8(s)
 function convertUnicodeToHtmlEntities(s)
 {
 	var re = /[^\u0000-\u007F]/g;
-	return s.replace(re, function($0) { return "&#" + $0.charCodeAt(0).toString() + ";"; });
+	return s.replace(re, function($0) { return "&#" + $0.charCodeAt(0).toString() + ";" });
 }
 
 function convertUriToUTF8(uri, charSet)
@@ -86,7 +86,8 @@ function convertUriToUTF8(uri, charSet)
 		return uri;
 	try {
 		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		var converter = Components.classes["@mozilla.org/intl/utf8converterservice;1"].getService(Components.interfaces.nsIUTF8ConverterService);
+		var converter = Components.classes["@mozilla.org/intl/utf8converterservice;1"]
+			.getService(Components.interfaces.nsIUTF8ConverterService);
 	} catch(ex) {
 		return uri;
 	}

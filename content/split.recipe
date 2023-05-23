@@ -37,6 +37,8 @@ tiddler: Code%20Formatting.tid
 
 tiddler: ColorPalette.tid
 
+tiddler: ColorPaletteDark.tid
+
 tiddler: ColorPalette%20shadows.tid
 
 tiddler: Community.tid
@@ -54,6 +56,8 @@ tiddler: CustomMarkup.tid
 tiddler: CustomStyleSheet.tid
 
 tiddler: Customisation.tid
+
+tiddler: DarkModePlugin.tid
 
 tiddler: Date%20Formats.tid
 
@@ -110,6 +114,8 @@ tiddler: Examples.tid
 tiddler: Feedback.tid
 
 tiddler: Firefox.tid
+
+tiddler: Filters.tid
 
 tiddler: FlickrBadge.tid
 

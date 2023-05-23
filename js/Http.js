@@ -15,7 +15,7 @@ function ajaxReq(args)
 function localAjax(args)
 {
 	var success = function(data) {
-		args.success(data, "success", { responseText:data });
+		args.success(data, "success", { responseText: data });
 	};
 	var failure = function(who) {
 		args.error({ message: who + ": cannot read local file" }, "error", 0);
@@ -23,8 +23,8 @@ function localAjax(args)
 
 	if (args.file) try { // HTML5 FileReader (Chrome, FF20+, Safari, etc.)
 		var reader = new FileReader();
-		reader.onload = function(e)  { success(e.target.result); }
-		reader.onerror = function(e) { failure("FileReader"); }
+		reader.onload = function(e)  { success(e.target.result) };
+		reader.onerror = function(e) { failure("FileReader") };
 		reader.readAsText(args.file);
 		return true;
 	} catch (ex) { ; }
@@ -97,7 +97,8 @@ function httpReq(type, url, callback, params, headers, data, contentType, userna
 	if(password)
 		options.password = password;
 	try {
-		if(window.Components && window.netscape && window.netscape.security && document.location.protocol.indexOf("http") == -1)
+		if(window.Components && window.netscape && window.netscape.security
+		   && document.location.protocol.indexOf("http") == -1)
 			window.netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
 	} catch (ex) {
 		//# showException(ex); // SUPPRESS MESSAGE DISPLAY

@@ -1,7 +1,6 @@
 jquery: Animator.js
 jquery: SavingRSS.js
-jquery: Numbers.js
-jquery: Arrays.js
+jquery: BasicTypes.js
 jquery: Crypto.js
 jquery: DOM.js
 jquery: Dates.js

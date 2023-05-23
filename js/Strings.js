@@ -2,27 +2,12 @@
 //-- Augmented methods for the JavaScript String() object
 //--
 
-// Get characters from the right end of a string
-String.prototype.right = function(n)
-{
-	return n < this.length ? this.slice(this.length-n) : this;
-};
+// todo: create functions substituting String augmenting methods, use in the core; deprecate all String augmenting methods
 
 // Trim whitespace from both ends of a string
 String.prototype.trim = function()
 {
-	return this.replace(/^\s*|\s*$/g,"");
-};
-
-// Convert a string from a CSS style property name to a JavaScript style name ("background-color" -> "backgroundColor")
-String.prototype.unDash = function()
-{
-	var t,s = this.split("-");
-	if(s.length > 1) {
-		for(t=1; t<s.length; t++)
-			s[t] = s[t].substr(0,1).toUpperCase() + s[t].substr(1);
-	}
-	return s.join("");
+	return this.replace(/^\s*|\s*$/g, "");
 };
 
 // Substitute substrings from an array into a format string that includes '%1'-type specifiers
@@ -31,49 +16,47 @@ String.prototype.format = function(s)
 	var substrings = s && s.constructor == Array ? s : arguments;
 	var subRegExp = /(?:%(\d+))/mg;
 	var currPos = 0;
-	var match,r = [];
-	do {
-		match = subRegExp.exec(this);
-		if(match && match[1]) {
-			if(match.index > currPos)
-				r.push(this.substring(currPos,match.index));
-			r.push(substrings[parseInt(match[1],10)]);
-			currPos = subRegExp.lastIndex;
-		}
-	} while(match);
+	var match, r = [];
+	while(match = subRegExp.exec(this)) {
+		if(!match[1]) continue;
+		if(match.index > currPos)
+			r.push(this.substring(currPos, match.index));
+		r.push(substrings[parseInt(match[1], 10)]);
+		currPos = subRegExp.lastIndex;
+	}
 	if(currPos < this.length)
-		r.push(this.substring(currPos,this.length));
+		r.push(this.substring(currPos, this.length));
 	return r.join("");
 };
 
 // Escape any special RegExp characters with that character preceded by a backslash
 String.prototype.escapeRegExp = function()
 {
-    return this.replace(/[\-\/\\\^\$\*\+\?\.\(\)\|\[\]\{\}]/g, '\\$&'); // #157
+	return this.replace(/[\-\/\\\^\$\*\+\?\.\(\)\|\[\]\{\}]/g, '\\$&'); // #157
 };
 
 // Convert "\" to "\s", newlines to "\n" (and remove carriage returns)
 String.prototype.escapeLineBreaks = function()
 {
-	return this.replace(/\\/mg,"\\s").replace(/\n/mg,"\\n").replace(/\r/mg,"");
+	return this.replace(/\\/mg, "\\s").replace(/\n/mg, "\\n").replace(/\r/mg, "");
 };
 
 // Convert "\n" to newlines, "\b" to " ", "\s" to "\" (and remove carriage returns)
 String.prototype.unescapeLineBreaks = function()
 {
-	return this.replace(/\\n/mg,"\n").replace(/\\b/mg," ").replace(/\\s/mg,"\\").replace(/\r/mg,"");
+	return this.replace(/\\n/mg, "\n").replace(/\\b/mg, " ").replace(/\\s/mg, "\\").replace(/\r/mg, "");
 };
 
 // Convert & to "&amp;", < to "&lt;", > to "&gt;" and " to "&quot;"
 String.prototype.htmlEncode = function()
 {
-	return this.replace(/&/mg,"&amp;").replace(/</mg,"&lt;").replace(/>/mg,"&gt;").replace(/\"/mg,"&quot;");
+	return this.replace(/&/mg, "&amp;").replace(/</mg, "&lt;").replace(/>/mg, "&gt;").replace(/\"/mg, "&quot;");
 };
 
 // Convert "&amp;" to &, "&lt;" to <, "&gt;" to > and "&quot;" to "
 String.prototype.htmlDecode = function()
 {
-	return this.replace(/&lt;/mg,"<").replace(/&gt;/mg,">").replace(/&quot;/mg,"\"").replace(/&amp;/mg,"&");
+	return this.replace(/&lt;/mg, "<").replace(/&gt;/mg, ">").replace(/&quot;/mg, "\"").replace(/&amp;/mg, "&");
 };
 
 // Parse a space-separated string of name:value parameters
@@ -89,38 +72,8 @@ String.prototype.htmlDecode = function()
 // The result is an array of objects:
 //   result[0] = object with a member for each parameter name, value of that member being an array of values
 //   result[1..n] = one object for each parameter, with 'name' and 'value' members
-String.prototype.parseParams = function(defaultName,defaultValue,allowEval,noNames,cascadeDefaults)
+String.prototype.parseParams = function(defaultName, defaultValue, allowEval, noNames, cascadeDefaults)
 {
-	var parseToken = function(match,p) {
-		var n;
-		if(match[p]) // Double quoted
-			n = match[p].replace(/\\"/g,'"');
-		else if(match[p+1]) // Single quoted
-			n = match[p+1].replace(/\\'/g,"'");
-		else if(match[p+2]) // Double-square-bracket quoted
-			n = match[p+2];
-		else if(match[p+3]) // Double-brace quoted
-			try {
-				n = match[p+3];
-				if(allowEval && config.evaluateMacroParameters != "none") {
-					if(config.evaluateMacroParameters == "restricted") {
-						if(window.restrictedEval) {
-							n = window.restrictedEval(n);
-						}
-					} else {
-						n = window.eval(n);
-					}
-				}
-			} catch(ex) {
-				throw "Unable to evaluate {{" + match[p+3] + "}}: " + exceptionText(ex);
-			}
-		else if(match[p+4]) // Unquoted
-			n = match[p+4];
-		else if(match[p+5]) // empty quote
-			n = "";
-		return n;
-	};
-	var r = [{}];
 	var dblQuote = "(?:\"((?:(?:\\\\\")|[^\"])+)\")";
 	var sngQuote = "(?:'((?:(?:\\\\\')|[^'])+)')";
 	var dblSquare = "(?:\\[\\[((?:\\s|\\S)*?)\\]\\])";
@@ -128,40 +81,79 @@ String.prototype.parseParams = function(defaultName,defaultValue,allowEval,noNam
 	var unQuoted = noNames ? "([^\"'\\s]\\S*)" : "([^\"':\\s][^\\s:]*)";
 	var emptyQuote = "((?:\"\")|(?:''))";
 	var skipSpace = "(?:\\s*)";
-	var token = "(?:" + dblQuote + "|" + sngQuote + "|" + dblSquare + "|" + dblBrace + "|" + unQuoted + "|" + emptyQuote + ")";
-	var re = noNames ? new RegExp(token,"mg") : new RegExp(skipSpace + token + skipSpace + "(?:(\\:)" + skipSpace + token + ")?","mg");
-	var match;
-	do {
-		match = re.exec(this);
-		if(match) {
-			var n = parseToken(match,1);
-			if(noNames) {
-				r.push({name:"",value:n});
-			} else {
-				var v = parseToken(match,8);
-				if(v == null && defaultName) {
-					v = n;
-					n = defaultName;
-				} else if(v == null && defaultValue) {
-					v = defaultValue;
-				}
-				r.push({name:n,value:v});
-				if(cascadeDefaults) {
-					defaultName = n;
-					defaultValue = v;
+	var token = "(?:" + dblQuote + "|" + sngQuote + "|" + dblSquare + "|" +
+		dblBrace + "|" + unQuoted + "|" + emptyQuote + ")";
+	var re = noNames ? new RegExp(token, "mg") :
+		new RegExp(skipSpace + token + skipSpace + "(?:(\\:)" + skipSpace + token + ")?", "mg");
+
+	var parseToken = function(match, p) {
+		// Double quoted
+		if(match[p])     return match[p].replace(/\\"/g, '"');
+		// Single quoted
+		if(match[p + 1]) return match[p + 1].replace(/\\'/g, "'");
+		// Double-square-bracket quoted
+		if(match[p + 2]) return match[p + 2];
+		// Double-brace quoted
+		if(match[p + 3]) {
+			var value = match[p + 3];
+			if(allowEval && config.evaluateMacroParameters != "none") {
+				try {
+					if(config.evaluateMacroParameters == "restricted") {
+						if(window.restrictedEval) value = window.restrictedEval(value);
+					} else {
+						value = window.eval(value);
+					}
+				} catch(ex) {
+					throw "Unable to evaluate {{" + value + "}}: " + exceptionText(ex);
 				}
 			}
+			return value;
 		}
-	} while(match);
-	// Summarise parameters into first element
-	var t;
-	for(t=1; t<r.length; t++) {
-		if(r[0][r[t].name])
-			r[0][r[t].name].push(r[t].value);
-		else
-			r[0][r[t].name] = [r[t].value];
+		// Unquoted
+		if(match[p + 4]) return match[p + 4];
+		// Empty quote
+		if(match[p + 5]) return "";
+	};
+
+	var summary = {};
+	var results = [summary], match;
+	while(match = re.exec(this)) {
+		// matched bit is like  firstToken  or  firstToken:tokenAfterColon  (like "param":{{evaluated expression}})
+		var firstToken = parseToken(match, 1);
+		if(noNames) {
+			results.push({ name: "", value: firstToken });
+			continue;
+		}
+
+		var tokenAfterColon = parseToken(match, 8);
+		var newItem = {
+			name: firstToken,
+			value: tokenAfterColon
+		};
+		if(newItem.value == null) {
+			if(defaultName) {
+				newItem.value = firstToken;
+				newItem.name = defaultName;
+			}
+			else if(defaultValue) newItem.value = defaultValue;
+		}
+
+		results.push(newItem);
+		if(cascadeDefaults) {
+			defaultName = newItem.name;
+			defaultValue = newItem.value;
+		}
 	}
-	return r;
+
+	for(var i = 1; i < results.length; i++) {
+		var name = results[i].name;
+		var value = results[i].value;
+		if(!summary[name])
+			summary[name] = [value];
+		else
+			summary[name].push(value);
+	}
+	return results;
 };
 
 // Process a string list of macro parameters into an array. Parameters can be quoted with "", '',
@@ -169,50 +161,37 @@ String.prototype.parseParams = function(defaultName,defaultValue,allowEval,noNam
 // an *evaluated* parameter: e.g. {{config.options.txtUserName}} results in the current user's name.
 String.prototype.readMacroParams = function(notAllowEval)
 {
-	var p = this.parseParams("list",null,!notAllowEval,true);
-	var t,n = [];
-	for(t=1; t<p.length; t++)
-		n.push(p[t].value);
-	return n;
+	var p = this.parseParams("list", null, !notAllowEval, true);
+	return p.slice(1).map(function(param) { return param.value });
 };
 
 // Process a string list of unique tiddler names into an array. Tiddler names that have spaces in them must be [[bracketed]]
 String.prototype.readBracketedList = function(unique)
 {
-	var p = this.parseParams("list",null,false,true);
-	var t,n = [];
-	for(t=1; t<p.length; t++) {
-		if(p[t].value)
-			n.pushUnique(p[t].value,unique);
+	var p = this.parseParams("list", null, false, true);
+	var i, n = [];
+	for(i = 1; i < p.length; i++) {
+		if(p[i].value)
+			n.pushUnique(p[i].value, unique);
 	}
 	return n;
 };
 
-// Returns array with start and end index of chunk between given start and end marker, or undefined.
-String.prototype.getChunkRange = function(start,end)
+// Get [startIndex, endIndex] of chunk between given startMarker and endMarker inside text, or undefined.
+tw.textUtils.getChunkRange = function(text, startMarker, endMarker)
 {
-	var s = this.indexOf(start);
-	if(s != -1) {
-		s += start.length;
-		var e = this.indexOf(end,s);
-		if(e != -1)
-			return [s,e];
-	}
+	var s = text.indexOf(startMarker);
+	if(s == -1) return;
+	s += startMarker.length;
+	var e = text.indexOf(endMarker, s);
+	if(e != -1) return [s, e];
 };
 
 // Replace a chunk of a string given start and end markers
-String.prototype.replaceChunk = function(start,end,sub)
+tw.textUtils.replaceChunk = function(text, startMarker, endMarker, newValue)
 {
-	var r = this.getChunkRange(start,end);
-	return r ? this.substring(0,r[0]) + sub + this.substring(r[1]) : this;
-};
-
-// Returns a chunk of a string between start and end markers, or undefined
-String.prototype.getChunk = function(start,end)
-{
-	var r = this.getChunkRange(start,end);
-	if(r)
-		return this.substring(r[0],r[1]);
+	var r = this.getChunkRange(text, startMarker, endMarker);
+	return r ? text.substring(0, r[0]) + newValue + text.substring(r[1]) : text;
 };
 
 
@@ -225,47 +204,40 @@ String.encodeTiddlyLink = function(title)
 // Static method to encodeTiddlyLink for every item in an array and join them with spaces
 String.encodeTiddlyLinkList = function(list)
 {
-	if(list) {
-		var t,results = [];
-		for(t=0; t<list.length; t++)
-			results.push(String.encodeTiddlyLink(list[t]));
-		return results.join(" ");
-	} else {
-		return "";
-	}
+	if(!list) return "";
+	return list.map(function(item) { return String.encodeTiddlyLink(item) }).join(" ");
 };
 
 // Convert a string as a sequence of name:"value" pairs into a hashmap
 String.prototype.decodeHashMap = function()
 {
-	var fields = this.parseParams("anon","",false);
-	var t,r = {};
-	for(t=1; t<fields.length; t++)
-		r[fields[t].name] = fields[t].value;
-	return r;
+	var fields = this.parseParams("anon", "", false);
+	var i, hashmap = {};
+	for(i = 1; i < fields.length; i++)
+		hashmap[fields[i].name] = fields[i].value;
+	return hashmap;
 };
 
 // Static method to encode a hashmap into a name:"value"... string
 String.encodeHashMap = function(hashmap)
 {
-	var t,r = [];
-	for(t in hashmap)
-		r.push(t + ':"' + hashmap[t] + '"');
+	var name, r = [];
+	for(name in hashmap)
+		r.push(name + ':"' + hashmap[name] + '"');
 	return r.join(" ");
 };
 
 // Static method to left-pad a string with 0s to a certain width
-String.zeroPad = function(n,d)
+String.zeroPad = function(n, width)
 {
 	var s = n.toString();
-	if(s.length < d)
-		s = "000000000000000000000000000".substr(0,d-s.length) + s;
-	return s;
+	if(s.length >= width) return s;
+	return "000000000000000000000000000".substring(0, width - s.length) + s;
 };
 
 String.prototype.startsWith = function(prefix)
 {
-	return !prefix || this.substring(0,prefix.length) == prefix;
+	return !prefix || this.substring(0, prefix.length) == prefix;
 };
 
 // Returns the first value of the given named parameter.
@@ -274,10 +246,9 @@ String.prototype.startsWith = function(prefix)
 //#         as returned by parseParams or null/undefined
 //# @return [may be null/undefined]
 //#
-function getParam(params,name,defaultValue)
+function getParam(params, name, defaultValue)
 {
-	if(!params)
-		return defaultValue;
+	if(!params) return defaultValue;
 	var p = params[0][name];
 	return p ? p[0] : defaultValue;
 }
@@ -287,8 +258,8 @@ function getParam(params,name,defaultValue)
 //# @param params
 //#         as returned by parseParams or null/undefined
 //#
-function getFlag(params,name,defaultValue)
+function getFlag(params, name, defaultValue)
 {
-	return !!getParam(params,name,defaultValue);
+	return !!getParam(params, name, defaultValue);
 }
 

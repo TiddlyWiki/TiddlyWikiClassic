@@ -22,13 +22,13 @@ window.allowSave = window.allowSave || function(l)
 	//# allow save from ANYWHERE (TW280+ uses fallback HTML5 download from data:// URI)
 	//#	return (document.location.protocol == "file:");
 	return true;
-}
+};
 
 // Whether this file is being viewed locally
 window.isLocal = function()
 {
 	return (document.location.protocol == "file:");
-}
+};
 
 // Whether to use the JavaSaver applet
 var useJavaSaver = window.isLocal() && (config.browser.isSafari || config.browser.isOpera);
@@ -37,20 +37,20 @@ var useJavaSaver = window.isLocal() && (config.browser.isSafari || config.browse
 if (window.tweakConfig) window.tweakConfig();
 
 if(!window || !window.console) {
-	console = { tiddlywiki: true, log: function(message) { displayMessage(message); } };
+	console = { tiddlywiki: true, log: function(message) { displayMessage(message) } };
 }
 
 // Starting up
 function main()
 {
 //#	save loaded document HTML before making changes
-	window.originalHTML=recreateOriginal();
+	window.originalHTML = recreateOriginal();
 
 	var t10, t9, t8, t7, t6, t5, t4, t3, t2, t1, t0 = new Date();
 	startingUp = true;
 	var doc = jQuery(document);
 	jQuery.noConflict();
-	window.onbeforeunload = function(e) { if(window.confirmExit) return confirmExit() };
+	window.onbeforeunload = function(e) { if(window.confirmExit) return confirmExit(); };
 	params = getParameters();
 	if(params) params = params.parseParams("open", null, false);
 	store = new TiddlyWiki({ config: config });
@@ -79,9 +79,9 @@ function main()
 	story.switchTheme(config.options.txtTheme);
 	showBackstage = showBackstage !== undefined ? showBackstage : !readOnly;
 	t6 = new Date();
-	for(var m in config.macros) {
-		if(config.macros[m].init)
-			config.macros[m].init();
+	for(var name in config.macros) {
+		if(config.macros[name].init)
+			config.macros[name].init();
 	}
 	t7 = new Date();
 	store.notifyAll();
@@ -138,7 +138,7 @@ function loadShadowTiddlers()
 {
 	var shadows = new TiddlyWiki();
 	shadows.loadFromDiv("shadowArea", "shadows", true);
-	shadows.forEachTiddler(function(title, tiddler){ config.shadowTiddlers[title] = tiddler.text });
+	shadows.forEachTiddler(function(title, tiddler) { config.shadowTiddlers[title] = tiddler.text });
 }
 
 function loadPlugins(tag)

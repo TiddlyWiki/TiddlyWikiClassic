@@ -26,7 +26,7 @@ Appearence modernizing, more helpful messages:
 
 Fixes:
 * more flexible version detection and make sure (fix) any previous TW will detect version of the new core
-* revert of {{{messageArea}}} class and {{{.messageArea}}} selectors in CSS to restore backward compability
+* revert of {{{messageArea}}} class and {{{.messageArea}}} selectors in CSS to restore backward compatibility
 
 Infrastructure:
 * introduce SuggestChangesPlugin, adapt docs for easier contributing to docs

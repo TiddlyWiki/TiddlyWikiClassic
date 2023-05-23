@@ -48,12 +48,19 @@ RGB.prototype.mix = function(c, f)
 // Return an rgb colour as a #rrggbb format hex string
 RGB.prototype.toString = function()
 {
-	var clamp = function(x, min, max) {
-		return x < min ? min : (x > max ? max : x);
+	var to255Range = function(value) {
+		var clamped = value < 0 ? 0 : value > 1 ? 1 : value;
+		return clamped * 255;
 	};
+
+	var to2DigitString = function(value) {
+		var s = Math.floor(value).toString(16);
+		return ("0" + s).slice(-2);
+	};
+
 	return "#" +
-			("0" + Math.floor(clamp(this.r, 0, 1) * 255).toString(16)).right(2) +
-			("0" + Math.floor(clamp(this.g, 0, 1) * 255).toString(16)).right(2) +
-			("0" + Math.floor(clamp(this.b, 0, 1) * 255).toString(16)).right(2);
+		to2DigitString(to255Range(this.r)) +
+		to2DigitString(to255Range(this.g)) +
+		to2DigitString(to255Range(this.b));
 };
 

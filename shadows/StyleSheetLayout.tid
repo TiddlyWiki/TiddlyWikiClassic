@@ -52,8 +52,8 @@ a.tiddlyLinkNonExisting.shadow {font-weight:bold;}
 
 
 .header {position:relative;}
-.headerShadow {position:relative; padding:4.5em 0 1em 1em; left:-1px; top:-1px;}
-.headerForeground {position:absolute; padding:4.5em 0 1em 1em; left:0; top:0;}
+.headerShadow {position:relative; padding:3em 0 1em 1em; left:-1px; top:-1px;}
+.headerForeground {position:absolute; padding:3em 0 1em 1em; left:0; top:0;}
 
 .siteTitle {font-size:3em;}
 .siteSubtitle {font-size:1.2em;}
@@ -74,8 +74,8 @@ a.tiddlyLinkNonExisting.shadow {font-weight:bold;}
 .wizard__subtitle { font-size:1.2em; }
 .wizard__title, .wizard__subtitle { font-weight:bold; background:none; padding:0; margin:0.4em 0 0.2em; }
 .wizardStep { padding:1em; }
-.wizardFooter { padding:0.8em 0.4em 0.8em 0; }
-.wizardFooter .status { padding:0.2em 0.7em; margin-left:0.3em; }
+.wizardFooter { padding: 0.8em 0; }
+.wizardFooter .status { padding: 0.3em 1em; }
 .wizardFooter .button { margin:0.5em 0 0; font-size:1.2em; padding:0.2em 0.5em; }
 
 #messageArea { position:fixed; top:2em; right:0; margin:0.5em; padding:0.7em 1em; z-index:2000; }
@@ -124,6 +124,7 @@ a.tiddlyLinkNonExisting.shadow {font-weight:bold;}
 .tagged {margin:0.5em; float:right;}
 .tagging, .tagged {font-size:0.9em; padding:0.25em;}
 .tagging ul, .tagged ul {list-style:none; margin:0.25em; padding:0;}
+.tagged li, .tagging li { margin: 0.3em 0; }
 .tagClear {clear:both;}
 
 .footer {font-size:.9em;}
@@ -136,10 +137,12 @@ a.tiddlyLinkNonExisting.shadow {font-weight:bold;}
 .viewer blockquote {line-height:1.5em; padding-left:0.8em;margin-left:2.5em;}
 .viewer ul, .viewer ol {margin-left:0.5em; padding-left:1.5em;}
 
-.viewer table, table.twtable {border-collapse:collapse; margin:0.8em 1.0em;}
-.viewer th, .viewer td, .viewer tr,.viewer caption,.twtable th, .twtable td, .twtable tr,.twtable caption {padding:3px;}
-table.listView {font-size:0.85em; margin:0.8em 1.0em;}
-table.listView th, table.listView td, table.listView tr {padding:0 3px 0 3px;}
+.viewer table, table.twtable { border-collapse: collapse; margin: 0.8em 0; }
+.viewer th, .viewer td, .viewer tr, .viewer caption, .twtable th, .twtable td, .twtable tr, .twtable caption { padding: 0.2em 0.4em; }
+.twtable caption { font-size: 0.9em; }
+table.listView { margin: 0.8em 1.0em; }
+table.listView th, table.listView td, table.listView tr { text-align: left; }
+.listView > thead { position: sticky; top: 0; }
 
 * html .viewer pre {width:99%; padding:0 0 1em 0;}
 .viewer pre {padding:0.5em; overflow:auto;}

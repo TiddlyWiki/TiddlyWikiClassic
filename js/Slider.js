@@ -22,12 +22,12 @@ function Slider(element, opening, unused, deleteMode)
 		props.push({ style: 'opacity', start: 1, end: 0, template: '%0' });
 		props.push({ style: 'filter', start: 100, end: 0, template: 'alpha(opacity:%0)' });
 		switch(deleteMode) {
-		case "all":
-			callback = function(element, properties) { jQuery(element).remove(); };
-			break;
-		case "children":
-			callback = function(element, properties) { jQuery(element).empty(); };
-			break;
+			case "all":
+				callback = function(element, properties) { jQuery(element).remove() };
+				break;
+			case "children":
+				callback = function(element, properties) { jQuery(element).empty() };
+				break;
 		}
 	}
 	return new Morpher(element, config.animDuration, props, callback);

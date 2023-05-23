@@ -25,24 +25,24 @@ var backstage = {
 		this.button = jQuery("#backstageButton").empty()[0];
 		this.button.style.display = "block";
 		var text = cmb.open.text + " " + glyph("bentArrowLeft");
-		this.showButton = createTiddlyButton(this.button,text,cmb.open.tooltip,
-			function(e) { backstage.show(); return false; },null,"backstageShow");
+		this.showButton = createTiddlyButton(this.button, text, cmb.open.tooltip,
+			function(e) { backstage.show(); return false }, null, "backstageShow");
 		text = glyph("bentArrowRight") + " " + cmb.close.text;
-		this.hideButton = createTiddlyButton(this.button,text,cmb.close.tooltip,
-			function(e) { backstage.hide(); return false; },null,"backstageHide");
+		this.hideButton = createTiddlyButton(this.button, text, cmb.close.tooltip,
+			function(e) { backstage.hide(); return false }, null, "backstageHide");
 		this.cloak = document.getElementById("backstageCloak");
 		this.panel = document.getElementById("backstagePanel");
-		this.panelFooter = createTiddlyElement(this.panel,"div",null,"backstagePanelFooter");
-		this.panelBody = createTiddlyElement(this.panel,"div",null,"backstagePanelBody");
-		this.cloak.onmousedown = function(e) { backstage.switchTab(null); };
-		createTiddlyText(this.toolbar,cmb.prompt);
-		for(var t = 0; t < config.backstageTasks.length; t++)
+		this.panelFooter = createTiddlyElement(this.panel, "div", null, "backstagePanelFooter");
+		this.panelBody = createTiddlyElement(this.panel, "div", null, "backstagePanelBody");
+		this.cloak.onmousedown = function(e) { backstage.switchTab(null) };
+		createTiddlyText(this.toolbar, cmb.prompt);
+		for(var i = 0; i < config.backstageTasks.length; i++)
 		{
-			var taskName = config.backstageTasks[t];
+			var taskName = config.backstageTasks[i];
 			var task = config.tasks[taskName];
 			var handler = task.action ? this.onClickCommand : this.onClickTab;
 			var text = task.text + (task.action ? "" : glyph("downTriangle"));
-			var btn = createTiddlyButton(this.toolbar,text,task.tooltip,handler,"backstageTab");
+			var btn = createTiddlyButton(this.toolbar, text, task.tooltip, handler, "backstageTab");
 			jQuery(btn).addClass(task.action ? "backstageAction" : "backstageTask");
 			btn.setAttribute("task", taskName);
 		}
@@ -61,8 +61,9 @@ var backstage = {
 		this.area.style.display = "block";
 		if(anim && config.options.chkAnimate) {
 			backstage.toolbar.style.left = findWindowWidth() + "px";
-			var p = [{style: "left", start: findWindowWidth(), end: 0, template: "%0px"}];
-			anim.startAnimating(new Morpher(backstage.toolbar,config.animDuration,p));
+			anim.startAnimating(new Morpher(backstage.toolbar, config.animDuration, [
+				{ style: "left", start: findWindowWidth(), end: 0, template: "%0px" }
+			]));
 		} else {
 			backstage.area.style.left = "0px";
 		}
@@ -75,22 +76,25 @@ var backstage = {
 
 	hide: function() {
 		if(this.currTabElem) {
+			// close current tab, not backstage
 			this.switchTab(null);
-		} else {
-			backstage.toolbar.style.left = "0px";
-			if(anim && config.options.chkAnimate) {
-				var p = [{style: "left", start: 0, end: findWindowWidth(), template: "%0px"}];
-				var c = function(element,properties) {backstage.area.style.display = "none";};
-				anim.startAnimating(new Morpher(backstage.toolbar,config.animDuration,p,c));
-			} else {
-				this.area.style.display = "none";
-			}
-			this.showButton.style.display = "block";
-			this.hideButton.style.display = "none";
-			config.options.chkBackstage = false;
-			saveOption("chkBackstage");
-			jQuery(this.content).removeClass("backstageVisible");
+			return;
 		}
+
+		backstage.toolbar.style.left = "0px";
+		var hide = function() { backstage.area.style.display = "none" };
+		if(anim && config.options.chkAnimate) {
+			anim.startAnimating(new Morpher(backstage.toolbar, config.animDuration, [
+				{ style: "left", start: 0, end: findWindowWidth(), template: "%0px" }
+			], hide));
+		} else {
+			hide();
+		}
+		this.showButton.style.display = "block";
+		this.hideButton.style.display = "none";
+		config.options.chkBackstage = false;
+		saveOption("chkBackstage");
+		jQuery(this.content).removeClass("backstageVisible");
 	},
 
 	onClickCommand: function(e) {
@@ -116,24 +120,24 @@ var backstage = {
 				tabElem = e;
 			e = e.nextSibling;
 		}
-		if(tabName == backstage.currTabName) {
-			backstage.hidePanel();
+		if(tabName == this.currTabName) {
+			this.hidePanel();
 			return;
 		}
-		if(backstage.currTabElem) {
+		if(this.currTabElem) {
 			jQuery(this.currTabElem).removeClass("backstageSelTab");
 		}
 		if(tabElem && tabName) {
-			backstage.preparePanel();
+			this.preparePanel();
 			jQuery(tabElem).addClass("backstageSelTab");
 			var task = config.tasks[tabName];
-			wikify(task.content,backstage.panelBody,null,null);
-			backstage.showPanel();
-		} else if(backstage.currTabElem) {
-			backstage.hidePanel();
+			wikify(task.content, this.panelBody, null, null);
+			this.showPanel();
+		} else if(this.currTabElem) {
+			this.hidePanel();
 		}
-		backstage.currTabName = tabName;
-		backstage.currTabElem = tabElem;
+		this.currTabName = tabName;
+		this.currTabElem = tabElem;
 	},
 
 	isPanelVisible: function() {
@@ -151,8 +155,9 @@ var backstage = {
 		backstage.panel.style.display = "block";
 		if(anim && config.options.chkAnimate) {
 			backstage.panel.style.top = (-backstage.panel.offsetHeight) + "px";
-			var p = [{style: "top", start: -backstage.panel.offsetHeight, end: 0, template: "%0px"}];
-			anim.startAnimating(new Morpher(backstage.panel,config.animDuration,p),new Scroller(backstage.panel,false));
+			anim.startAnimating(new Morpher(backstage.panel, config.animDuration, [
+				{ style: "top", start: -backstage.panel.offsetHeight, end: 0, template: "%0px" }
+			]), new Scroller(backstage.panel, false));
 		} else {
 			backstage.panel.style.top = "0px";
 		}
@@ -165,26 +170,26 @@ var backstage = {
 		backstage.currTabElem = null;
 		backstage.currTabName = null;
 		if(anim && config.options.chkAnimate) {
-			var p = [
-				{style: "top", start: 0, end: -(backstage.panel.offsetHeight), template: "%0px"},
-				{style: "display", atEnd: "none"}
-			];
-			var c = function(element,properties) { backstage.cloak.style.display = "none"; };
-			anim.startAnimating(new Morpher(backstage.panel,config.animDuration,p,c));
+			var callback = function() { backstage.cloak.style.display = "none" };
+			anim.startAnimating(new Morpher(backstage.panel, config.animDuration, [
+				{ style: "top", start: 0, end: -(backstage.panel.offsetHeight), template: "%0px" },
+				{ style: "display", atEnd: "none" }
+			], callback));
 		} else {
-			jQuery([backstage.panel,backstage.cloak]).hide();
+			jQuery([backstage.panel, backstage.cloak]).hide();
 		}
 	}
 };
 
 config.macros.backstage = {};
 
-config.macros.backstage.handler = function(place,macroName,params)
+config.macros.backstage.handler = function(place, macroName, params)
 {
 	var backstageTask = config.tasks[params[0]];
-	if(backstageTask)
-		createTiddlyButton(place,backstageTask.text,backstageTask.tooltip,function(e) {
-			backstage.switchTab(params[0]); return false;
-		});
+	if(!backstageTask) return;
+	createTiddlyButton(place, backstageTask.text, backstageTask.tooltip, function(e) {
+		backstage.switchTab(params[0]);
+		return false;
+	});
 };
 

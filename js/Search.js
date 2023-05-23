@@ -2,37 +2,37 @@
 //-- Search macro
 //--
 
-config.macros.search.handler = function(place,macroName,params,wikifier,paramString,tiddler)
+config.macros.search.handler = function(place, macroName, params, wikifier, paramString, tiddler)
 {
-	params = paramString.parseParams("anon",null,false,false,false);
-	createTiddlyButton(place,this.label,this.prompt,this.onClick,"searchButton");
-	var txt = createTiddlyElement(null,"input",null,"txtOptionInput searchField");
-	txt.value = getParam(params,"anon","");
+	params = paramString.parseParams("anon", null, false, false, false);
+	createTiddlyButton(place, this.label, this.prompt, this.onClick, "searchButton");
+	var attributes = {
+		size: this.sizeTextbox,
+		accessKey: getParam(params, "accesskey", this.accessKey),
+		autocomplete: "off",
+		lastSearchText: "",
+		placeholder: getParam(params, "placeholder", this.placeholder)
+	};
 	if(config.browser.isSafari) {
-		txt.setAttribute("type","search");
-		txt.setAttribute("results","5");
+		attributes.type = "search";
+		attributes.results = "5";
 	} else {
-		txt.setAttribute("type","text");
+		attributes.type = "text";
 	}
-	place.appendChild(txt);
-	txt.onkeyup = this.onKeyPress;
-	txt.onfocus = this.onFocus;
-	txt.setAttribute("size",this.sizeTextbox);
-	txt.setAttribute("accessKey",getParam(params,"accesskey",this.accessKey));
-	txt.setAttribute("autocomplete","off");
-	txt.setAttribute("lastSearchText","");
-	txt.setAttribute("placeholder",getParam(params,"placeholder",this.placeholder));
+	var input = createTiddlyElement(place, "input", null, "txtOptionInput searchField", null, attributes);
+	input.value = getParam(params, "anon", "");
+	input.onkeyup = this.onKeyPress;
+	input.onfocus = this.onFocus;
 };
 
 // Global because there's only ever one outstanding incremental search timer
 config.macros.search.timeout = null;
 
-config.macros.search.doSearch = function(txt)
+config.macros.search.doSearch = function(input)
 {
-	if(txt.value.length > 0) {
-		story.search(txt.value,config.options.chkCaseSensitiveSearch,config.options.chkRegExpSearch);
-		txt.setAttribute("lastSearchText",txt.value);
-	}
+	if(input.value.length == 0) return;
+	story.search(input.value, config.options.chkCaseSensitiveSearch, config.options.chkRegExpSearch);
+	input.setAttribute("lastSearchText", input.value);
 };
 
 config.macros.search.onClick = function(e)
@@ -60,16 +60,12 @@ config.macros.search.onKeyPress = function(ev)
 	if(config.options.chkIncrementalSearch) {
 		if(this.value.length > 2) {
 			if(this.value != this.getAttribute("lastSearchText")) {
-				if(me.timeout) {
-					clearTimeout(me.timeout);
-				}
-				var txt = this;
-				me.timeout = setTimeout(function() {me.doSearch(txt);},500);
+				if(me.timeout) clearTimeout(me.timeout);
+				var input = this;
+				me.timeout = setTimeout(function() { me.doSearch(input) }, 500);
 			}
 		} else {
-			if(me.timeout) {
-				clearTimeout(me.timeout);
-			}
+			if(me.timeout) clearTimeout(me.timeout);
 		}
 	}
 };

@@ -15,20 +15,20 @@ var config = {
 // Hashmap of alternative parsers for the wikifier
 config.parsers = {};
 
-// Adaptors
 config.adaptors = {};
 config.defaultAdaptor = null;
 
-// Backstage tasks
+// defines the order of the backstage tasks
+config.backstageTasks = ["save", "importTask", "tweak", "upgrade", "plugins"];
+// map by names from config.backstageTasks, defines their content (see Lingo.js and Backstage.js)
 config.tasks = {};
+//# the two structures are not merged yet not to hurt backward compatibility
 
-// Annotations
 config.annotations = {};
 
 // Custom fields to be automatically added to new tiddlers
 config.defaultCustomFields = {};
 
-// Messages
 config.messages = {
 	messageClose: {},
 	dates: {},
@@ -48,6 +48,7 @@ config.options = {
 	chkIncrementalSearch: true,
 	chkInsertTabs: false,
 	chkOpenInNewWindow: true,
+	chkPreventAsyncSaving: true,
 	chkRegExpSearch: false,
 	chkRemoveExtraMarkers: false, // #162
 	chkSaveBackups: true,
@@ -61,7 +62,7 @@ config.options = {
 	txtMaxEditRows: "30",
 	txtMoreTab: "moreTabAll",
 	txtTheme: ""
-	};
+};
 config.optionsDesc = {};
 
 //# config.optionSource["chkAnimate"] can be:
@@ -89,10 +90,6 @@ config.views = {
 	}
 };
 
-// Backstage tasks
-config.backstageTasks = ["save", "importTask", "tweak", "upgrade", "plugins"];
-
-// Extensions
 config.extensions = {};
 
 // Macros; each has a 'handler' member that is inserted later
@@ -159,13 +156,15 @@ config.commands = {
 config.evaluateMacroParameters = "all";
 
 // Basic regular expressions
+var isBadSafari = !((new RegExp("[\u0150\u0170]", "g")).test("\u0150")); //# see 52678d4 and #22  ..remove at all?
 config.textPrimitives = {
 	upperLetter: "[A-Z\u00c0-\u00de\u0150\u0170]",
 	lowerLetter: "[a-z0-9_\\-\u00df-\u00ff\u0151\u0171]",
 	anyLetter:   "[A-Za-z0-9_\\-\u00c0-\u00de\u00df-\u00ff\u0150\u0170\u0151\u0171]",
 	anyLetterStrict: "[A-Za-z0-9\u00c0-\u00de\u00df-\u00ff\u0150\u0170\u0151\u0171]"
 };
-if(!((new RegExp("[\u0150\u0170]","g")).test("\u0150"))) {
+// Moved navigator dependent code out of Config.js into a separate module. Helps with https://github.com/TiddlyWiki/tiddlywiki/issues/22
+if(isBadSafari) {
 	config.textPrimitives = {
 		upperLetter: "[A-Z\u00c0-\u00de]",
 		lowerLetter: "[a-z0-9_\\-\u00df-\u00ff]",
@@ -185,7 +184,8 @@ config.textPrimitives.wikiLink = "(?:(?:" + config.textPrimitives.upperLetter + 
 	config.textPrimitives.upperLetter + "{2,}" +
 	config.textPrimitives.lowerLetter + "+))";
 
-config.textPrimitives.cssLookahead = "(?:(" + config.textPrimitives.anyLetter + "+)\\(([^\\)\\|\\n]+)(?:\\):))|(?:(" + config.textPrimitives.anyLetter + "+):([^;\\|\\n]+);)";
+config.textPrimitives.cssLookahead = "(?:(" + config.textPrimitives.anyLetter +
+	"+)\\(([^\\)\\|\\n]+)(?:\\):))|(?:(" + config.textPrimitives.anyLetter + "+):([^;\\|\\n]+);)";
 config.textPrimitives.cssLookaheadRegExp = new RegExp(config.textPrimitives.cssLookahead, "mg");
 
 config.textPrimitives.brackettedLink = "\\[\\[([^\\]]+)\\]\\]";
@@ -195,7 +195,7 @@ config.textPrimitives.tiddlerForcedLinkRegExp =
 	config.textPrimitives.brackettedLink + ")|(?:" +
 	config.textPrimitives.urlPattern + ")", "mg");
 config.textPrimitives.tiddlerAnyLinkRegExp =
-	new RegExp("("+ config.textPrimitives.wikiLink + ")|(?:" +
+	new RegExp("(" + config.textPrimitives.wikiLink + ")|(?:" +
 	config.textPrimitives.titledBrackettedLink + ")|(?:" +
 	config.textPrimitives.brackettedLink + ")|(?:" +
 	config.textPrimitives.urlPattern + ")", "mg");
@@ -225,7 +225,7 @@ config.shadowTiddlers = {
 	AdvancedOptions: '<<options>>',
 	PluginManager: '<<plugins>>',
 	SystemSettings: '',
-	ToolbarCommands: '|~ViewToolbar|closeTiddler closeOthers +editTiddler > fields permalink references jump|\n'+
+	ToolbarCommands: '|~ViewToolbar|closeTiddler closeOthers +editTiddler > fields permalink references jump|\n' +
 		'|~EditToolbar|+saveTiddler -cancelTiddler deleteTiddler|', // #160
 	WindowTitle: '<<tiddler SiteTitle>> - <<tiddler SiteSubtitle>>'
 };

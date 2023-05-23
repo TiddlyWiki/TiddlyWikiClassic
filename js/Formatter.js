@@ -10,7 +10,7 @@ config.formatters = [
 		rowTermRegExp: /(\|(?:[fhck]?)$\n?)/mg,
 		cellRegExp: /(?:\|([^\n\|]*)\|)|(\|[fhck]?$\n?)/mg,
 		cellTermRegExp: /((?:\x20*)\|)/mg,
-		rowTypes: { "c":"caption", "h":"thead", "":"tbody", "f":"tfoot" },
+		rowTypes: { "c": "caption", "h": "thead", "": "tbody", "f": "tfoot" },
 		handler: function(w)
 		{
 			var table = createTiddlyElement(w.output, "table", null, "twtable");
@@ -18,8 +18,8 @@ config.formatters = [
 			var currRowType = null;
 			var rowContainer;
 			var rowCount = 0;
-			var onmouseover = function() { jQuery(this).addClass("hoverRow"); };
-			var onmouseout = function() { jQuery(this).removeClass("hoverRow"); };
+			var onmouseover = function() { jQuery(this).addClass("hoverRow") };
+			var onmouseout = function() { jQuery(this).removeClass("hoverRow") };
 			w.nextMatch = w.matchStart;
 			this.lookaheadRegExp.lastIndex = w.nextMatch;
 			var lookaheadMatch = this.lookaheadRegExp.exec(w.source);
@@ -103,10 +103,11 @@ config.formatters = [
 						cell = createTiddlyElement(e, "th");
 						w.nextMatch++;
 					} else {
-						cell = createTiddlyElement(e, "td");
+						var isInsideHeader = e.parentElement.tagName.toLocaleLowerCase() === 'thead';
+						cell = createTiddlyElement(e, isInsideHeader ? "th" : "td");
 					}
 					prevCell = cell;
-					prevColumns[col] = { rowSpanCount:1, element:cell };
+					prevColumns[col] = { rowSpanCount: 1, element: cell };
 					if(colSpanCount > 1) {
 						cell.setAttribute("colspan", colSpanCount);
 						cell.setAttribute("colSpan", colSpanCount); // Needed for IE
@@ -253,20 +254,20 @@ config.formatters = [
 		handler: function(w)
 		{
 			switch(w.matchText) {
-			case "/*{{{*/\n": // CSS
-				this.lookaheadRegExp = /\/\*\{\{\{\*\/\n*((?:^[^\n]*\n)+?)(\n*^\f*\/\*\}\}\}\*\/$\n?)/mg;
-				break;
-			case "{{{\n": // monospaced block
-				this.lookaheadRegExp = /^\{\{\{\n((?:^[^\n]*\n)+?)(^\f*\}\}\}$\n?)/mg;
-				break;
-			case "//{{{\n": // plugin
-				this.lookaheadRegExp = /^\/\/\{\{\{\n\n*((?:^[^\n]*\n)+?)(\n*^\f*\/\/\}\}\}$\n?)/mg;
-				break;
-			case "<!--{{{-->\n": //template
-				this.lookaheadRegExp = /<!--\{\{\{-->\n*((?:^[^\n]*\n)+?)(\n*^\f*<!--\}\}\}-->$\n?)/mg;
-				break;
-			default:
-				break;
+				case "/*{{{*/\n": // CSS
+					this.lookaheadRegExp = /\/\*\{\{\{\*\/\n*((?:^[^\n]*\n)+?)(\n*^\f*\/\*\}\}\}\*\/$\n?)/mg;
+					break;
+				case "{{{\n": // monospaced block
+					this.lookaheadRegExp = /^\{\{\{\n((?:^[^\n]*\n)+?)(^\f*\}\}\}$\n?)/mg;
+					break;
+				case "//{{{\n": // plugin
+					this.lookaheadRegExp = /^\/\/\{\{\{\n\n*((?:^[^\n]*\n)+?)(\n*^\f*\/\/\}\}\}$\n?)/mg;
+					break;
+				case "<!--{{{-->\n": //template
+					this.lookaheadRegExp = /<!--\{\{\{-->\n*((?:^[^\n]*\n)+?)(\n*^\f*<!--\}\}\}-->$\n?)/mg;
+					break;
+				default:
+					break;
 			}
 			config.formatterHelpers.enclosedTextHelper.call(this, w);
 		}
@@ -427,33 +428,33 @@ config.formatters = [
 		handler: function(w)
 		{
 			switch(w.matchText) {
-			case "''":
-				w.subWikifyTerm(w.output.appendChild(document.createElement("strong")), /('')/mg);
-				break;
-			case "//":
-				w.subWikifyTerm(createTiddlyElement(w.output, "em"), /(\/\/)/mg);
-				break;
-			case "__":
-				w.subWikifyTerm(createTiddlyElement(w.output, "u"), /(__)/mg);
-				break;
-			case "^^":
-				w.subWikifyTerm(createTiddlyElement(w.output, "sup"), /(\^\^)/mg);
-				break;
-			case "~~":
-				w.subWikifyTerm(createTiddlyElement(w.output, "sub"), /(~~)/mg);
-				break;
-			case "--":
-				w.subWikifyTerm(createTiddlyElement(w.output, "strike"), /(--)/mg);
-				break;
-			case "{{{":
-				var lookaheadRegExp = /\{\{\{((?:.|\n)*?)\}\}\}/mg;
-				lookaheadRegExp.lastIndex = w.matchStart;
-				var lookaheadMatch = lookaheadRegExp.exec(w.source);
-				if(lookaheadMatch && lookaheadMatch.index == w.matchStart) {
-					createTiddlyElement(w.output, "code", null, null, lookaheadMatch[1]);
-					w.nextMatch = lookaheadRegExp.lastIndex;
-				}
-				break;
+				case "''":
+					w.subWikifyTerm(w.output.appendChild(document.createElement("strong")), /('')/mg);
+					break;
+				case "//":
+					w.subWikifyTerm(createTiddlyElement(w.output, "em"), /(\/\/)/mg);
+					break;
+				case "__":
+					w.subWikifyTerm(createTiddlyElement(w.output, "u"), /(__)/mg);
+					break;
+				case "^^":
+					w.subWikifyTerm(createTiddlyElement(w.output, "sup"), /(\^\^)/mg);
+					break;
+				case "~~":
+					w.subWikifyTerm(createTiddlyElement(w.output, "sub"), /(~~)/mg);
+					break;
+				case "--":
+					w.subWikifyTerm(createTiddlyElement(w.output, "strike"), /(--)/mg);
+					break;
+				case "{{{":
+					var lookaheadRegExp = /\{\{\{((?:.|\n)*?)\}\}\}/mg;
+					lookaheadRegExp.lastIndex = w.matchStart;
+					var lookaheadMatch = lookaheadRegExp.exec(w.source);
+					if(lookaheadMatch && lookaheadMatch.index == w.matchStart) {
+						createTiddlyElement(w.output, "code", null, null, lookaheadMatch[1]);
+						w.nextMatch = lookaheadRegExp.lastIndex;
+					}
+					break;
 			}
 		}
 	},
@@ -464,25 +465,25 @@ config.formatters = [
 		handler: function(w)
 		{
 			switch(w.matchText) {
-			case "@@":
-				var e = createTiddlyElement(w.output, "span");
-				var styles = config.formatterHelpers.inlineCssHelper(w);
-				if(styles.length == 0)
-					e.className = "marked";
-				else
-					config.formatterHelpers.applyCssHelper(e, styles);
-				w.subWikifyTerm(e, /(@@)/mg);
-				break;
-			case "{{":
-				var lookaheadRegExp = /\{\{[\s]*([\w]+[\s\w]*)[\s]*\{(\n?)/mg;
-				lookaheadRegExp.lastIndex = w.matchStart;
-				var lookaheadMatch = lookaheadRegExp.exec(w.source);
-				if(lookaheadMatch) {
-					w.nextMatch = lookaheadRegExp.lastIndex;
-					e = createTiddlyElement(w.output, lookaheadMatch[2] == "\n" ? "div" : "span", null, lookaheadMatch[1]);
-					w.subWikifyTerm(e, /(\}\}\})/mg);
-				}
-				break;
+				case "@@":
+					var e = createTiddlyElement(w.output, "span");
+					var styles = config.formatterHelpers.inlineCssHelper(w);
+					if(styles.length == 0)
+						e.className = "marked";
+					else
+						config.formatterHelpers.applyCssHelper(e, styles);
+					w.subWikifyTerm(e, /(@@)/mg);
+					break;
+				case "{{":
+					var lookaheadRegExp = /\{\{[\s]*([\w]+[\s\w]*)[\s]*\{(\n?)/mg;
+					lookaheadRegExp.lastIndex = w.matchStart;
+					var lookaheadMatch = lookaheadRegExp.exec(w.source);
+					if(lookaheadMatch) {
+						w.nextMatch = lookaheadRegExp.lastIndex;
+						e = createTiddlyElement(w.output, lookaheadMatch[2] == "\n" ? "div" : "span", null, lookaheadMatch[1]);
+						w.subWikifyTerm(e, /(\}\}\})/mg);
+					}
+					break;
 			}
 		}
 	},
@@ -522,7 +523,10 @@ config.formatters = [
 
 	{
 		name: "htmlEntitiesEncoding",
-		match: "(?:(?:&#?[a-zA-Z0-9]{2,8};|.)(?:&#?(?:x0*(?:3[0-6][0-9a-fA-F]|1D[c-fC-F][0-9a-fA-F]|20[d-fD-F][0-9a-fA-F]|FE2[0-9a-fA-F])|0*(?:76[89]|7[7-9][0-9]|8[0-7][0-9]|761[6-9]|76[2-7][0-9]|84[0-3][0-9]|844[0-7]|6505[6-9]|6506[0-9]|6507[0-1]));)+|&#?[a-zA-Z0-9]{2,8};)",
+		match: "(?:(?:&#?[a-zA-Z0-9]{2,8};|.)" +
+			"(?:&#?(?:x0*(?:3[0-6][0-9a-fA-F]|1D[c-fC-F][0-9a-fA-F]|20[d-fD-F][0-9a-fA-F]|FE2[0-9a-fA-F])|0*" +
+			"(?:76[89]|7[7-9][0-9]|8[0-7][0-9]|761[6-9]|76[2-7][0-9]|84[0-3][0-9]|844[0-7]|6505[6-9]|6506[0-9]|6507[0-1]));)+" +
+			"|&#?[a-zA-Z0-9]{2,8};)",
 		handler: function(w)
 		{
 			createTiddlyElement(w.output, "span").innerHTML = w.matchText;

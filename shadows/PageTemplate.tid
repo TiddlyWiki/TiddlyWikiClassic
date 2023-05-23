@@ -1,7 +1,7 @@
 title: PageTemplate
 
 <!--{{{-->
-<div class='header' role='banner' macro='gradient vert [[ColorPalette::PrimaryLight]] [[ColorPalette::PrimaryMid]]'>
+<div class='header' role='banner'>
   <div class='headerShadow'>
     <span class='siteTitle' refresh='content' tiddler='SiteTitle'></span>&nbsp;
     <span class='siteSubtitle' refresh='content' tiddler='SiteSubtitle'></span>

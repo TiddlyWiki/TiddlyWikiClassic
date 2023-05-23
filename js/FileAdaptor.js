@@ -34,7 +34,8 @@ FileAdaptor.loadTiddlyWikiError = function(context, jqXHR)
 //   context - passed on as a parameter to the callback function
 //   userParams - user settable object object that is passed on unchanged to the callback function
 //   callback - function to be called on completion
-// Return value is true if the request was successfully issued, false if this connector doesn't support getWorkspaceList(),
+// Return value is true if the request was successfully issued,
+//   false if this connector doesn't support getWorkspaceList(),
 //   or an error description string if there was a problem
 // The callback parameters are callback(context, userParams)
 //   context.status - true if OK, false if error
@@ -44,10 +45,10 @@ FileAdaptor.loadTiddlyWikiError = function(context, jqXHR)
 FileAdaptor.prototype.getWorkspaceList = function(context, userParams, callback)
 {
 	context = this.setContext(context, userParams, callback);
-	context.workspaces = [{title:"(default)"}];
+	context.workspaces = [{ title: "(default)" }];
 	context.status = true;
 	if(callback)
-		window.setTimeout(function() { callback(context, userParams); }, 10);
+		window.setTimeout(function() { callback(context, userParams) }, 10);
 	return true;
 };
 
@@ -96,7 +97,7 @@ FileAdaptor.getTiddlerListComplete = function(context, userParams)
 			context.tiddlers = context.adaptor.store.filterTiddlers(context.filter);
 		} else {
 			context.tiddlers = [];
-			context.adaptor.store.forEachTiddler(function(title, tiddler) { context.tiddlers.push(tiddler); });
+			context.adaptor.store.forEachTiddler(function(title, tiddler) { context.tiddlers.push(tiddler) });
 		}
 		for(var i = 0; i < context.tiddlers.length; i++) {
 			context.tiddlers[i].fields['server.type'] = FileAdaptor.serverType;
@@ -106,7 +107,7 @@ FileAdaptor.getTiddlerListComplete = function(context, userParams)
 		context.status = true;
 	}
 	if(context.callback) {
-		window.setTimeout(function() { context.callback(context, userParams); }, 10);
+		window.setTimeout(function() { context.callback(context, userParams) }, 10);
 	}
 	return true;
 };
@@ -169,7 +170,7 @@ FileAdaptor.getTiddlerComplete = function(context, userParams)
 		context.isSynchronous = true;
 		context.callback(context, userParams);
 	} else {
-		window.setTimeout(function() { context.callback(context, userParams); }, 10);
+		window.setTimeout(function() { context.callback(context, userParams) }, 10);
 	}
 	return true;
 };

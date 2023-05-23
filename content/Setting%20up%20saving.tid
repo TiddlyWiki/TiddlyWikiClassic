@@ -1,7 +1,7 @@
 created: 20191013001900000
 creator: Yakov Litvin
-modified: 20191015001900000
-modifier: mkerrigan
+modified: 20230313095000000
+modifier: Yakov Litvin
 tags: gettingstarted
 title: Setting up saving
 type: text/x-tiddlywiki
@@ -40,7 +40,7 @@ Android
 * [[AndTidWiki|https://play.google.com/store/apps/details?id=de.mgsimon.android.andtidwiki]]
 > a closed source app (the first to support TW on Android)
 * [[MainTiddlyServer|https://yakovl.github.io/MainTiddlyServer/]]
-> Along with [[Server for PHP|https://play.google.com/store/apps/details?id=com.esminis.server.php&hl=en]]. ([[may not work|https://bitbucket.org/esminis/server]] in Android 10)
+> Along with [[AWebServer|https://play.google.com/store/apps/details?id=com.sylkat.apache]].
 iOS
 * [[Quine|https://appadvice.com/app/quine/1228682923]]
 > Paid app by Chris Hunt allowing users to open, edit, and save ~TiddlyWiki files. Works with local storage, Dropbox, and iCloud. Requires iOS 12+.

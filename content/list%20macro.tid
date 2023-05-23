@@ -1,7 +1,7 @@
 created: 20110211143900000
 creator: colmbritton
-modified: 20111214164400000
-modifier: jermolene
+modified: 20230412142200000
+modifier: Yakov Litvin
 tags: macro
 title: list macro
 type: text/x-tiddlywiki
@@ -24,7 +24,7 @@ To list all tiddlers
 <<list all>>
 }}}
 !filter
-List tiddlers that match a certain [[filter|filters syntax]]. The following example lists all plugins.
+List [[filtered|Filters]] tiddlers. The following example lists all plugins:
 {{{
 <<list filter [tag[systemConfig]]>>
 }}}

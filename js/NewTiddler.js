@@ -2,7 +2,8 @@
 //-- NewTiddler and NewJournal macros
 //--
 
-config.macros.newTiddler.createNewTiddlerButton = function(place, title, params, label, prompt, accessKey, newFocus, isJournal)
+config.macros.newTiddler.createNewTiddlerButton = function(place,
+	title, params, label, prompt, accessKey, newFocus, isJournal)
 {
 	label = getParam(params, "label", label);
 	prompt = getParam(params, "prompt", prompt);
@@ -74,6 +75,7 @@ config.macros.newJournal.handler = function(place, macroName, params, wikifier, 
 	params = paramString.parseParams("anon", null, true, false, false);
 	var title = params[1] && params[1].name == "anon" ? params[1].value : config.macros.timeline.dateFormat;
 	title = getParam(params, "title", title);
-	config.macros.newTiddler.createNewTiddlerButton(place, title, params, this.label, this.prompt, this.accessKey, "text", true);
+	config.macros.newTiddler.createNewTiddlerButton(place, title,
+		params, this.label, this.prompt, this.accessKey, "text", true);
 };
 

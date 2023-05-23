@@ -1,0 +1,27 @@
+created: 202303131636
+creator: Yakov Litvin
+modified: 202303131636
+modifier: Yakov Litvin
+tags: 
+title: ColorPaletteDark
+type: text/x-tiddlywiki
+
+Background: #000
+Foreground: #ddd
+~PrimaryPale: #730
+~PrimaryLight: #e70
+~PrimaryMid: #fb4
+~PrimaryDark: #feb
+~SecondaryPale: #003
+~SecondaryLight: #017
+~SecondaryMid: #24b
+~SecondaryDark: #7be
+~TertiaryPale: #111
+~TertiaryLight: #333
+~TertiaryMid: #666
+~TertiaryDark: #999
+~QuaternaryPale: 
+~QuaternaryLight: 
+~QuaternaryMid: #3a0
+~QuaternaryDark: #2b0
+Error: #f44

@@ -3,11 +3,24 @@
         "browser": true
     },
     "rules": {
-        "indent": ["error", "tab"],
+        "indent": ["error", "tab", {
+            "SwitchCase": 1
+        }],
+        "space-infix-ops": "error",
+        "semi-spacing": "error",
         "block-spacing": "error",
         "comma-spacing": "error",
         "object-curly-spacing": ["error", "always"],
-        "no-trailing-spaces": "error"
+        "key-spacing": ["error", {
+            "mode": "minimum",
+            "afterColon": true
+        }],
+        "no-trailing-spaces": "error",
+        "space-before-blocks": "error",
+
+        "semi": ["error", "always", {
+            "omitLastInOneLineBlock": true
+        }]
     },
     "overrides": [
         {
@@ -17,9 +30,9 @@
             }
         },
         {
-            "files": ["build/*.js"],
+            "files": ["build/*.js", "test/*.js"],
             "env": {
-                "es6": true
+                "es2016": true
             }
         }
     ]
