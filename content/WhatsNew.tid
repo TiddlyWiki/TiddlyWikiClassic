@@ -1,11 +1,52 @@
 created: 20120916031100000
 creator: ericshulman
-modified: 20220710221000000
+modified: 20230525121900000
 modifier: Yakov Litvin
 tags: gettingstarted welcome
 title: WhatsNew
 type: text/x-tiddlywiki
 
+The [[release 2.9.4|https://github.com/TiddlyWiki/TiddlyWiki/releases/edit/v2.9.4]] continues modernizing ~TiddlyWiki appearence and its infrastructure. Here's the summary of changes:
+
+Behavior improvements:
+* introduce async loading into saving (disabled by default: unset {{{chkPreventAsyncSaving}}} to enable)
+** [[reportedly|https://groups.google.com/g/tiddlywikiclassic/c/X4Ip2RW9bNo/m/TlcCP032AAAJ]], it also improves performance of saving in some cases
+* add async loading into upgrading, stage 2 ({{{upgradeFrom}}})
+
+Appearence modernizing:
+* update styles of tables, popups (better paddings, colors, font sizes etc)
+* reduce page header height
+* various other minor updates, see visual summary [[here|https://github.com/TiddlyWiki/TiddlyWikiClassic/pull/284#issuecomment-1544536323]]
+
+Fixes:
+* saving a tiddler from story when renaming to an existing one shouldn't result in 2 tiddlers ([[#146|https://github.com/TiddlyWiki/TiddlyWikiClassic/issues/146]])
+* {{{store.saveTiddler}}} should rename tiddler when {{{newTitle}}} is provided
+* {{{store.saveTiddler}}} should allow falsy {{{newTitle}}} (meaning "don't update")
+* upgrading should start correctly (was broken in 2.9.3)
+
+Hackability:
+* introduce {{{tw.io.xhrLoadFile}}}, {{{tw.io.loadFile}}}, extend {{{loadFile}}}, {{{loadOriginal}}} to support async loading (when the second param, {{{callback}}}, is passed)
+* extract end of saving main (messages of success/failure) into {{{tw.io.onSaveMainFail}}} and {{{tw.io.onSaveMainSuccess}}}
+** //warning:// savers like Timimi (async ones that don't "call back") call these //before// saving and give false positive behavior (as it was previously)
+* turn {{{onStartUpgrade}}} into a {{{config.macros.upgrade}}} method
+[[Summary|https://github.com/TiddlyWiki/TiddlyWikiClassic/pull/284#issuecomment-1544337558]] of changes that affect lingo (translations), backward compatibility (tiny details, presumably of no importance), and deprecations.
+
+Infrastructure:
+* fix: make build tools work when project path has spaces
+* clean up some duplicated/unused autotests
+* more linter rules, including for tests and building scripts
+This release finishes the "first wave" of codestyle updates which involved almost the whole core and, supposedly, made some of its parts much clearer. Some of them are now covered with ~ESLint rules to keep the codestyle consistend, {{{npm run lint}}} shows no errors. Still, linting rules are work in progress.
+
+Docs updates include added [[Filters]] description, DarkModePlugin, adjustments in [[PeriodicTable]] and [[Tables Formatting]] (showcasing new table styles), [[PHP server recommendation|Setting up saving]] for Android 10+, and others. These are small updates; much more yet to come.
+
+The full changelog is available [[on github|https://github.com/TiddlyWiki/TiddlyWikiClassic/pull/284#issuecomment-1540492980]].
+
+<<slider "" [[WhatsNew##2.9.3]] "Release 2.9.3">>
+
+!!!Upgrading
+See the updated HowToUpgrade instructions.
+/%
+!2.9.3
 The [[release 2.9.3|https://github.com/TiddlyWiki/TiddlyWiki/releases/edit/v2.9.3]] starts the process of modernizing ~TiddlyWiki appearence and its infrastructure. Here's the summary of changes:
 
 Behavior improvements:
@@ -44,3 +85,4 @@ There's also many codestyle and refactoring updates and more upcoming.
 Overall, this release creates a more solid ground for future improvements.
 
 The full changelog is available [[on github|https://github.com/TiddlyWiki/TiddlyWiki/pull/274#issuecomment-1166461319]].
+!%/

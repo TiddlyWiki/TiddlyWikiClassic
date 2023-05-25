@@ -1,16 +1,24 @@
 created: 20110211110600000
 creator: psd
-modified: 20110211131000000
-modifier: blaine
+modified: 20230525121200000
+modifier: Yakov Litvin
 tags: instructions
 title: HowToUpgrade
 type: text/x-tiddlywiki
 
-The core TiddlyWiki code is regularly updated with bug fixes and new features. If you're using an earlier revision of TiddlyWiki, you should consider upgrading to the latest version.
+To check if a new ~TiddlyWiki version is available or to upgrade to the new version, one can use the "upgrade" wizard in the backstage (or from the {{{<<upgrade>>}}} macro).
 
-The steps you need to take depend on which version of TiddlyWiki you are upgrading from. From version 2.4.0 onwards, you can upgrade to the latest version using the 'Upgrade' tab in the BackstageArea, as described below. If you're using an earlier version of TiddlyWiki, you'll need to follow [[these instructions|HowToUpgradeOlderTiddlyWikis]] instead.
+⚠️ Currently, the upgrading mechanism works only with some savers, while with others it may result in an empty TW. To avoid problems and upgrade easily, it is recommended to
+# always create a backup before upgrading, and
+# install the [[SimplifiedUpgradingPlugin|https://github.com/YakovL/TiddlyWiki_SimplifiedUpgradingPlugin/blob/master/SimplifiedUpgradingPlugin.js]] (and then use the upgrade wizard as usual) – it helps at least with Timimi and ~MainTiddlyServer.
+If ~SimplifiedUpgradingPlugin doesn't work for you, please
+* provide feedback (either on Github or in the [[community discussions|DiscussionForums]]): it will help make sure it works in the future and, ultimately, will be used to make ~TiddlyWiki upgrade correctly without any plugin;
+* use the import fallback described below.
 
-! Upgrading from ~TiddlyWiki 2.4.0+ to the most recent version
-* Open the BackstageArea by clicking the 'backstage' button at the top right
-* Click on the 'Upgrade' tab
-* Click on the 'Upgrade' button, and follow the prompts
+!!!The import fallback
+This method of upgrading is known  to be 100% reliable and works even with old ~TiddlyWikis (below 2.4.0). In two words,
+* download the new TW version,
+* open it, open backstage, and click "import",
+* import your non-upgraded TW and save,
+* use this TW as an upgraded one (and keep your old one as a backup).
+You may also want to check out [[this older, more detailed instruction|HowToUpgradeOlderTiddlyWikis]].
