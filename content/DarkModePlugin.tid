@@ -11,7 +11,7 @@ type: text/x-tiddlywiki
 |''Description''|This plugin introduces "dark mode" (changes styles) and switching it by the {{{darkMode}}} macro and operating system settings|
 |''Documentation''|https://yakovl.github.io/TiddlyWiki_DarkModePlugin/|
 |''Author''|Yakov Litvin|
-|''Version''|1.3.1|
+|''Version''|1.3.2|
 |''Source''|https://github.com/YakovL/TiddlyWiki_DarkModePlugin/blob/master/DarkModePlugin.js|
 |''License''|[[MIT|https://github.com/YakovL/TiddlyWiki_DarkModePlugin/blob/master/LICENSE]]|
 !!!Demo
@@ -163,12 +163,21 @@ config.macros.darkMode = {
 	macro.followOsMode(false)
 	macro.restoreSavedMode()
 
-	// Detect OS mode change, apply (install only once)
-	if(window.matchMedia && !macro.isOsModeWatcherSet) {
-		macro.isOsModeWatcherSet = true
-		window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(event) {
-			macro.followOsMode(true)
-		})
+	// install only once
+	if(!config.extensions.DarkModePlugin) {
+		// prevent sites to ask about unsaved changes after switching mode
+		config.extensions.DarkModePlugin = {
+			orig_confirmExit: confirmExit
+		}
+		window.confirmExit = function() {
+			if(readOnly) return
+			return config.extensions.DarkModePlugin.orig_confirmExit ?
+				config.extensions.DarkModePlugin.orig_confirmExit() : undefined
+		}
+
+		// Detect OS mode change, apply
+		if(window.matchMedia) window.matchMedia('(prefers-color-scheme: dark)')
+			.addEventListener('change', function(event) { macro.followOsMode(true) })
 	}
 })(config.macros.darkMode)
 //}}}
