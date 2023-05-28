@@ -7,7 +7,7 @@ jQuery(document).ready(function(){
 
 		var w = new Wizard();
 		var actual = w.formElem===null && w.bodyElem===null && w.footElem===null;
-		ok(actual==true,'properties should be null when constructed with no parameters');
+		same(actual, true, 'properties should be null when constructed with no parameters');
 	});
 
 	test("Wizard: setValue / getValue (no formEl)", function() {

@@ -433,17 +433,17 @@ jQuery(document).ready(function(){
 	});
 
 	test("Date: conversions", function() {
-		same(typeof Date.convertFromYYYYMMDDHHMMSSMMM,"function",'should parse define a function');
-		same(typeof Date.convertFromYYYYMMDDHHMMSSMMM("20070228"),"object",'should return an object');
+		same(typeof Date.convertFromYYYYMMDDHHMMSSMMM,"function", 'should parse define a function');
+		same(typeof Date.convertFromYYYYMMDDHHMMSSMMM("20070228"), "object", 'should return an object');
 
 		var actual = Date.convertFromYYYYMMDDHHMMSSMMM();
-		ok(actual=="Invalid Date"||isNaN(actual),'should parse null value should be invalid');
-		actual = Date.convertFromYYYYMMDDHHMMSSMMM("2006"),
-		ok(actual=="Invalid Date"||isNaN(actual),'should parse year only should be invalid');
-		actual = Date.convertFromYYYYMMDDHHMMSSMMM("20061"),
-		ok(actual=="Invalid Date"||isNaN(actual),'should parse year, short month only should be invalid');
-		actual = Date.convertFromYYYYMMDDHHMMSSMMM("200601")
-		ok(actual=="Invalid Date"||isNaN(actual),'should parse year,month only should be invalid');
+		ok(actual == "Invalid Date" || isNaN(actual), 'should parse null value should be invalid');
+		actual = Date.convertFromYYYYMMDDHHMMSSMMM("2006");
+		ok(actual == "Invalid Date" || isNaN(actual), 'should parse year only should be invalid');
+		actual = Date.convertFromYYYYMMDDHHMMSSMMM("20061");
+		ok(actual == "Invalid Date" || isNaN(actual), 'should parse year, short month only should be invalid');
+		actual = Date.convertFromYYYYMMDDHHMMSSMMM("200601");
+		ok(actual == "Invalid Date" || isNaN(actual), 'should parse year, month only should be invalid');
 
 		same(Date.convertFromYYYYMMDDHHMMSSMMM("20070228"),new Date(Date.UTC(2007,1,28)),'should parse date only');
 		same(Date.convertFromYYYYMMDDHHMMSSMMM("19691103"),new Date(Date.UTC(1969,10,3)),'should parse 1969 date only');

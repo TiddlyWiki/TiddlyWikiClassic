@@ -13,7 +13,7 @@ jQuery(document).ready(function(){
 
 		var actual = saver.externalizeTiddler(store,tiddler);
 		var expected = "<div title=\"test\">\n<pre></pre>\n</div>";
-		ok(actual==expected,'Saving empty tiddler with no dates');
+		same(actual, expected, 'Saving empty tiddler with no dates');
 
 		delete tiddler;
 		tiddler = new Tiddler("test");
@@ -23,7 +23,7 @@ jQuery(document).ready(function(){
 
 		actual = saver.externalizeTiddler(store,tiddler);
 		expected = "<div title=\"test\" created=\"200804161234\">\n<pre></pre>\n</div>";
-		ok(actual==expected,'Saving empty tiddler with created date');
+		same(actual, expected, 'Saving empty tiddler with created date');
 
 		delete tiddler;
 		tiddler = new Tiddler("test");
@@ -33,7 +33,7 @@ jQuery(document).ready(function(){
 
 		actual = saver.externalizeTiddler(store,tiddler);
 		expected = "<div title=\"test\" created=\"200804161234\" modified=\"200804171234\">\n<pre></pre>\n</div>";
-		ok(actual==expected,'Saving empty tiddler with created and modified dates');
+		same(actual, expected, 'Saving empty tiddler with created and modified dates');
 
 		delete tiddler;
 		tiddler = new Tiddler("test");
@@ -43,7 +43,7 @@ jQuery(document).ready(function(){
 
 		actual = saver.externalizeTiddler(store,tiddler);
 		expected = "<div title=\"test\">\n<pre>text</pre>\n</div>";
-		ok(actual==expected,'Saving tiddler with text');
+		same(actual, expected, 'Saving tiddler with text');
 	});
 });
 
