@@ -9,3 +9,5 @@ type: text/x-tiddlywiki
 TiddlyWiki developer documentation was built up at tiddlywikidev [[TiddlySpace|HostedOptions]] and now is backed up [[here|./dev/docs_from_TiddlyWikiDev.tiddlyspace.com.html]].
 
 Michael Mahemoff has written a very helpful outline of the architecture of ~TiddlyWiki: [[Part 1|http://softwareas.com/tiddlywiki-internals-1-of-3-architectural-concepts]], [[Part 2|http://softwareas.com/tiddlywiki-internals-2-of-3-list-of-javascript-files]] and [[Part 3|http://softwareas.com/tiddlywiki-internals-3-of-3-key-javascript-classes-and-files]].
+
+Up-to-date docs regarding building the core can be found [[in the TW repository|https://github.com/TiddlyWiki/TiddlyWikiClassic/blob/master/build/README.md]].
