@@ -90,9 +90,7 @@ function refreshElements(root, changeList)
 
 function applyHtmlMacros(root, tiddler)
 {
-	var e = root.firstChild;
-	while(e) {
-		var nextChild = e.nextSibling;
+	for(var e = root.firstChild; !!e; e = e.nextSibling) {
 		if(e.getAttribute) {
 			var macro = e.getAttribute("macro");
 			if(macro) {
@@ -106,9 +104,7 @@ function applyHtmlMacros(root, tiddler)
 				invokeMacro(e, macro, params, null, tiddler);
 			}
 		}
-		if(e.hasChildNodes())
-			applyHtmlMacros(e, tiddler);
-		e = nextChild;
+		if(e.hasChildNodes()) applyHtmlMacros(e, tiddler);
 	}
 }
 
