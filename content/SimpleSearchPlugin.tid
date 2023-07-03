@@ -7,15 +7,16 @@ title: SimpleSearchPlugin
 type: text/x-tiddlywiki
 
 /***
-|''Name''|SimpleSearchPlugin|
-|''Description''|displays search results as a simple list of matching tiddlers|
-|''Authors''|FND, Yakov Litvin|
-|''Version''|0.4.2|
-|''Status''|stable|
-|''Source''|https://github.com/TiddlyWiki/TiddlyWiki/blob/master/content/SimpleSearchPlugin.tid|
-|''Original Source''|http://devpad.tiddlyspot.com/#SimpleSearchPlugin|
-|''License''|[[Creative Commons Attribution-ShareAlike 3.0 License|http://creativecommons.org/licenses/by-sa/3.0/]]|
-|''Keywords''|search|
+|Name            |SimpleSearchPlugin|
+|Description     |displays search results as a simple list of matching tiddlers|
+|Author          |Yakov Litvin|
+|Original Authors|FND|
+|Version         |0.4.2|
+|Status          |stable|
+|Source          |https://github.com/YakovL/TiddlyWiki_Extensions/blob/master/FND/SimpleSearchPlugin.js|
+|Original Source |http://devpad.tiddlyspot.com/#SimpleSearchPlugin|
+|License         |[[Creative Commons Attribution-ShareAlike 3.0 License|http://creativecommons.org/licenses/by-sa/3.0/]]|
+|Keywords        |search|
 !Revision History
 !!v0.2.0 (2008-08-18)
 * initial release
@@ -24,7 +25,7 @@ type: text/x-tiddlywiki
 * sorting by relevance (title matches before content matches)
 !!v0.4.0 (2008-08-26)
 * added tag matching
-!!v0.4.2 (2022-12-02)
+!!v0.4.2 (2022-12-02, forked by Yakov Litvin)
 * added recalculating styles on ColorPalette change (including dark mode)
 !To Do
 * tag matching optional
