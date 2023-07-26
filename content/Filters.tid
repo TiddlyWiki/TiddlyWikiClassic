@@ -1,6 +1,6 @@
 created: 20230412141700000
 creator: Yakov Litvin
-modified: 20230412141700000
+modified: 20230726114400000
 modifier: Yakov Litvin
 title: Filters
 type: text/x-tiddlywiki
@@ -21,3 +21,9 @@ Here are the filters available by default:
 |{{{[field[value]]}}}	|add tiddlers that have the specified [[field|Fields]] with the specified value: like, {{{[creator[ericshulman]]}}}|
 |{{{[limit[number]]}}}	|keep only the first {{{number}}} of tiddlers, like {{{[tag[notes]] [limit[10]]}}}|
 |{{{[sort[fieldAnd]]}}}	|sort tiddlers by the specified field: ascending by default (if {{{fieldAnd}}} is just field name); if {{{fieldAnd}}} is {{{-fieldName}}}, descending; you may also use {{{+fieldName}}} for ascending|
+
+Vairous plugins introduce additional filters, for instance you can check
+* [[ExtraFiltersPlugin|https://yakovl.github.io/TiddlyWiki_ExtraFilters]],
+* [[MatchTagsPlugin|https://tiddlytools.com/Classic/#MatchTagsPlugin]],
+* [[GetPlugin|https://github.com/tobibeer/TiddlyWikiPlugins/blob/master/plugins/GetPlugin.js]] ([[docs|http://web.archive.org/web/20140222203941/http://get.tiddlyspace.com/#GettingStarted]]),
+* [[some filters|http://web.archive.org/web/20140713204307/http://filters.tiddlyspace.com/#NumberSortFilterPlugin%20RandomSortFilter%20StoryFiltersPlugin%20ExtraFiltersPlugin]] by Jon Robson.
