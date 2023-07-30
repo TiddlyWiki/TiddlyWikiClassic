@@ -29,13 +29,20 @@ config.macros.br.handler = function(place)
 	createTiddlyElement(place, "br");
 };
 
-// Find an entry in an array. Returns the array index or null
+// Find an entry in an array, returns the array index or null
 // @Deprecated: Use indexOf instead
-Array.prototype.find = function(item)
-{
-	var i = this.indexOf(item);
-	return i == -1 ? null : i;
-};
+// Change by Okido, 29-07-2023:
+// The native Array.prototype.find method is modified if it natively exists, do not modify Array.prototype.find if it natively exists
+// This gives unwanted side-effects, method return is nowadays not the array index but the array element value
+// Array.prototype.find is in browsers since versions Chrome 45, Edge 12, Firefox 25
+if(!Array.prototype.find.toString().includes("[native code]")) {
+
+	Array.prototype.find = function(item)
+	{
+		var i = this.indexOf(item);		
+		return i == -1 ? null : i;
+	};
+}
 
 // Load a tiddler from an HTML DIV. The caller should make sure to later call Tiddler.changed()
 // @Deprecated: Use store.getLoader().internalizeTiddler instead
