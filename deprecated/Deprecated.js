@@ -29,11 +29,14 @@ config.macros.br.handler = function(place)
 	createTiddlyElement(place, "br");
 };
 
-// Find an entry in an array. Returns the array index or null
+// Find an item in an array. If a predicate is provided, use the native Array.find (return the item);
+// otherwise (for backwards compatibility) treat the argument as an item to find (return the index or null)
 // @Deprecated: Use indexOf instead
-Array.prototype.find = function(item)
+Array.prototype.orig_find = Array.prototype.find;
+Array.prototype.find = function(itemOrPredicate)
 {
-	var i = this.indexOf(item);
+	if(itemOrPredicate instanceof Function) return Array.prototype.orig_find.apply(this, arguments);
+	var i = this.indexOf(itemOrPredicate);
 	return i == -1 ? null : i;
 };
 
