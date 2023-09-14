@@ -1,21 +1,24 @@
 jQuery(document).ready(function(){
 	
-	var numSaves, _autoSaveChanges;
+	var numSaves, _autoSaveChanges, _readOnly;
 	module("TiddlyWiki options", {
 		setup: function() {
 			config.options.chkAutoSave = true;
 			systemSettingSave = 0;
-			_autoSaveChanges = autoSaveChanges;
 			numSaves = 0;
+			_autoSaveChanges = autoSaveChanges;
 			autoSaveChanges = function() {
 				numSaves += 1;
 				return _autoSaveChanges.apply(this, arguments);
 			}
+			_readOnly = readOnly;
+			readOnly = false;
 		},
 		teardown: function() {
 			numSaves = null;
 			config.options.chkAutoSave = false;
 			autoSaveChanges = _autoSaveChanges;
+			readOnly = _readOnly;
 		}
 	});
 

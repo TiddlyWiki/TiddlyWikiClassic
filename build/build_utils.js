@@ -14,7 +14,7 @@ module.exports = {
 		for(const file of files) {
 			fs.unlink(joinPath(path, file), err => {
 				if (err) throw err
-			});
+			})
 		}
 	},
 	//# saving into folder should be separated from cooking instead (limitation of TW5)
@@ -31,4 +31,4 @@ module.exports = {
 		return htmlAsString.replace(/(<(div|DIV) (?:id|ID)=["']?storeArea['"]?>)(\n+)<\/\2>/,
 			(wholeThing, openTag, tagName) => `${openTag}</${tagName}>`)
 	},
-};
+}

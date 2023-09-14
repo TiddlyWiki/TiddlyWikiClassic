@@ -5,10 +5,6 @@ modifier: jermolene
 title: TiddlyWiki5
 type: text/x-tiddlywiki
 
-TiddlyWiki5 is a complete rewrite of TiddlyWiki to take advantage of HTML5 and node.js. It is under development on GitHub:
+"~TiddlyWiki5" is a complete rewrite of ~TiddlyWiki to take advantage of ~HTML5 and node.js. It was completed late 2013 and is maintained on ~GitHub at https://github.com/Jermolene/TiddlyWiki5
 
-https://github.com/Jermolene/TiddlyWiki5
-
-There is also an online demo you can play with:
-
-http://tiddlywiki.com/tiddlywiki5
+You can find more details at https://tiddlywiki.com

@@ -40,3 +40,11 @@ Building index.html and generating RSS for classic.tiddlywiki.com
 -----------------------------------------------------------------
 `npm run build-site` builds index.html and also generates the RSS file
 (index.xml) with content for the main site.
+
+Releasing and updating the site
+-------------------------------
+This involves a number actions and files to update. The procedure should be steamlined more,
+but here are useful references:
+
+* steps of releases [2.9.4](https://github.com/TiddlyWiki/TiddlyWikiClassic/pull/284) and [2.9.3](https://github.com/TiddlyWiki/TiddlyWikiClassic/pull/274);
+* a [GitHub Action](https://github.com/TiddlyWiki/tiddlywiki.github.com/blob/master/.github/workflows/update-site-new-release.yaml) to update all the files on the site.
