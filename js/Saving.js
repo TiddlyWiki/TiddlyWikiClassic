@@ -19,10 +19,8 @@ function confirmExit()
 // Give the user a chance to save changes before exitting
 function checkUnsavedChanges()
 {
-	if(store && store.isDirty && store.isDirty() && window.hadConfirmExit === false) {
-		if(confirm(config.messages.unsavedChangesWarning))
-			saveChanges();
-	}
+	if(!(store && store.isDirty && store.isDirty()) || window.hadConfirmExit !== false) return;
+	if(confirm(config.messages.unsavedChangesWarning)) saveChanges();
 }
 
 function updateLanguageAttribute(s)
