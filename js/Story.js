@@ -412,7 +412,15 @@ Story.prototype.setTiddlerField = function(title, tag, mode, field)
 {
 	var editor = this.getTiddlerField(title, field);
 	var tags = editor.value.readBracketedList();
-	tags.setItem(tag, mode);
+
+	var i = this.indexOf(tag);
+	if(mode == 0) mode = (i == -1) ? +1 : -1;
+	if(mode == +1) {
+		if(i == -1) this.push(tag);
+	} else if(mode == -1) {
+		if(i != -1) this.splice(i, 1);
+	}
+
 	editor.value = String.encodeTiddlyLinkList(tags);
 };
 

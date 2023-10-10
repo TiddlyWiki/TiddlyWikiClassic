@@ -31,22 +31,6 @@ Array.prototype.contains = function(item)
 	return this.indexOf(item) != -1;
 };
 
-//# todo: get rid of usages in core, deprecate
-// Adds, removes or toggles a particular value within an array
-//  value - value to add
-//  mode - +1 to add value, -1 to remove value, 0 to toggle it
-Array.prototype.setItem = function(value, mode)
-{
-	var p = this.indexOf(value);
-	if(mode == 0)
-		mode = (p == -1) ? +1 : -1;
-	if(mode == +1) {
-		if(p == -1) this.push(value);
-	} else if(mode == -1) {
-		if(p != -1) this.splice(p, 1);
-	}
-};
-
 //# todo: deprecate (is not used in the core already)
 // Return whether one of a list of values exists in an array
 Array.prototype.containsAny = function(items)

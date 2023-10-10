@@ -156,50 +156,6 @@ jQuery(document).ready(function() {
 		same(actual, expected, "does not modify original array if given item is an object (deep comparison is not supported)"); // XXX: not actually desired!? -- cf. #606
 	});
 
-	test("Array setItem", function() {
-		var actual, expected;
-
-		actual = ["foo", "bar", "baz"];
-		actual.setItem();
-		expected = ["foo", "bar", "baz"];
-		same(actual, expected, "does not modify array if no arguments are specified");
-
-		actual = ["foo", "bar", "baz"];
-		actual.setItem("foo");
-		expected = ["foo", "bar", "baz"];
-		same(actual, expected, "does not modify original array if mode is not specified");
-
-		actual = ["foo", "bar"];
-		actual.setItem("baz", 0);
-		expected = ["foo", "bar", "baz"];
-		same(actual, expected, "appends given item to original array if mode is 0 and element is not present");
-
-		actual = ["foo", "bar", "baz"];
-		actual.setItem("bar", 0);
-		expected = ["foo", "baz"];
-		same(actual, expected, "removes given item from original array if mode 0 and element is present");
-
-		actual = ["foo", "bar"];
-		actual.setItem("baz", +1);
-		expected = ["foo", "bar", "baz"];
-		same(actual, expected, "appends given item to original array if mode is +1 and element is not present");
-
-		actual = ["foo", "bar"];
-		actual.setItem("bar", +1);
-		expected = ["foo", "bar"];
-		same(actual, expected, "does not modify original array if mode is +1 and element is present");
-
-		actual = ["foo", "bar", "baz"];
-		actual.setItem("bar", -1);
-		expected = ["foo", "baz"];
-		same(actual, expected, "removes given item from original array if mode is -1 and element is present");
-
-		actual = ["foo", "bar"];
-		actual.setItem("baz", -1);
-		expected = ["foo", "bar"];
-		same(actual, expected, "does not modify original array if mode is -1 and element is not present");
-	});
-
 	test("Array map", function() {
 		var actual, expected, L;
 
