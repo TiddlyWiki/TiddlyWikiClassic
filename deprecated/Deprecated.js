@@ -55,6 +55,31 @@ Array.prototype.setItem = function(value, mode)
 	}
 };
 
+// For IE up to 8 (https://caniuse.com/?search=indexOf)
+if(!Array.prototype.map) {
+	Array.prototype.map = function(fn, thisObj)
+	{
+		var scope = thisObj || window;
+		var i, j, a = [];
+		for(i = 0, j = this.length; i < j; ++i) {
+			a.push(fn.call(scope, this[i], i, this));
+		}
+		return a;
+	};
+}
+
+// For IE up to 8 (https://caniuse.com/?search=indexOf)
+if(!Array.prototype.indexOf) {
+	Array.prototype.indexOf = function(item, from)
+	{
+		if(!from) from = 0;
+		for(var i = from; i < this.length; i++) {
+			if(this[i] === item) return i;
+		}
+		return -1;
+	};
+}
+
 // Load a tiddler from an HTML DIV. The caller should make sure to later call Tiddler.changed()
 // @Deprecated: Use store.getLoader().internalizeTiddler instead
 Tiddler.prototype.loadFromDiv = function(divRef, title)
