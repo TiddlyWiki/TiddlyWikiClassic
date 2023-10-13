@@ -1,21 +1,31 @@
 created: 20110211143900000
 creator: colmbritton
-modified: 20110211144600000
-modifier: colmbritton
+modified: 20231013224900000
+modifier: mkerrigan
 tags: macro
 title: slider macro
 type: text/x-tiddlywiki
 
-The slider macro allows embedding tiddlers within another tiddler, with the option to toggle the visibility of the [[transclusion|transcluded]] content:
+The slider macro provides a button to toggle the visibility of entire tiddlers, slices, or sections of text by using [[transclusion|Transclusion]].
+!Usage
 {{{
-<<slider cookie tiddler label tooltip>>
+<<slider chkUniqueCookieName tiddler label tooltip>>
 }}}
-* {{{cookie}}}: variable to save the state of the slider (e.g. {{{chkFooSlider}}})
-* {{{tiddler}}}: name of the tiddler to include in the slider
+* {{{cookie}}}: unique cookie name starting with {{{chk}}} to track the toggle state; the state is reapplied when the tiddler is reopened. Omit {{{chk}}} to make the slider not remember its state.
+* {{{tiddler}}}: a reference to a tiddler-title, section or slice to be content of the slider.
 * {{{label}}}: title text of the slider
 * {{{tooltip}}}: tooltip text of the slider
-
-For example: 
+The slider macro is used to toggle the visibility of the ~OptionsPanel in [[SideBarOptions|SideBarOptions shadows]].
 {{{
-<<slider chkTestSlider [[OptionsPanel]] "Options" "Open advanced options">>
+<<slider chkSliderOptionsPanel OptionsPanel "options »" "Change TiddlyWiki advanced options">>
 }}}
+You can also use a slider to toggle the visibility of [[Hidden Text]].
+{{{
+<<slider chkHiddenText [[slider macro##hidden]] "hidden title" "Click to show hidden text...">>
+}}}
+<<slider chkHiddenText [[slider macro##hidden]] "hidden title" "Click to show hidden text...">>
+See also the [[NestedSliderPlugin|https://tiddlytools.com/Classic/#NestedSlidersPluginInfo]] adding an extra wikitext syntax to write slider panels.
+/%
+!hidden
+hello world
+!end%/
