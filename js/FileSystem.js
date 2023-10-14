@@ -31,6 +31,32 @@ window.saveFile = window.saveFile || function(fileUrl, content)
 	return r;
 };
 
+// A placeholder method that can be overwritten/decorated by savers.
+// In such a case, it's required to call callback on both success and fail.
+// See details about the callback in tw.io.saveFile.
+tw.io.asyncSaveFile = tw.io.asyncSaveFile || function(fileUrl, content, callback)
+{
+	callback(false, { reason: 'Async saving is not implemented' });
+};
+
+// The general save method to use
+// ==============================
+// If callback is set, tries to save in an async fashion and do callback(success: boolean, details: object)
+// ⚠️ Some savers within window.saveFile, like download saving or Timimi don't care about the callback,
+// so it can be called before actual saving is done (or even give false positives).
+tw.io.saveFile = function(fileUrl, content, callback)
+{
+	if(!callback) return saveFile(fileUrl, content);
+
+	tw.io.asyncSaveFile(fileUrl, content, function(success, details) {
+		if(success) callback(success, details);
+		else {
+			result = saveFile(fileUrl, content);
+			callback(result, {});
+		}
+	})
+};
+
 // Load a file from filesystem [Preemption]
 window.loadFile = window.loadFile || function(fileUrl)
 {
@@ -66,7 +92,9 @@ tw.io.xhrLoadFile = function(filePath, callback)
 	}
 };
 
-// if callback is set, tries to load in an async fashion and do callback(result, details)
+// The general load method to use
+// ==============================
+// If callback is set, tries to load in an async fashion and do callback(result, details)
 tw.io.loadFile = function(fileUrl, callback)
 {
 	if(!callback) return loadFile(fileUrl);
