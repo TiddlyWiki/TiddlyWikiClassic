@@ -6,26 +6,28 @@ tags: macro
 title: slider macro
 type: text/x-tiddlywiki
 
-The slider macro provides a button to toggle the visibility of entire tiddlers, slices, or sections of text by using [[transclusion|Transclusion]].
+The slider macro provides a button to toggle the visibility of entire tiddlers, slices, or sections of text by using [[transclusion|Transclusion]]. <<slider "" [[slider macro##hidden]] "Example" "click me to learn more">>
 !Usage
 {{{
 <<slider chkUniqueCookieName tiddler label tooltip>>
 }}}
-* {{{cookie}}}: unique cookie name starting with {{{chk}}} to track the toggle state; the state is reapplied when the tiddler is reopened. Omit {{{chk}}} to make the slider not remember its state.
-* {{{tiddler}}}: a reference to a tiddler-title, section or slice to be content of the slider.
-* {{{label}}}: title text of the slider
-* {{{tooltip}}}: tooltip text of the slider
+|{{{cookie}}} |unique cookie name starting with {{{chk}}} to track the toggle state; the state is reapplied when the tiddler is reopened. Omit this (use {{{""}}} instead of a name) to make the slider not remember its state.|
+|{{{tiddler}}}|a reference to a tiddler-title, section or slice to be content of the slider (see [[tiddler macro]])|
+|{{{label}}}  |title text of the slider|
+|{{{tooltip}}}|tooltip text of the slider|
+!Examples and tricks
 The slider macro is used to toggle the visibility of the ~OptionsPanel in [[SideBarOptions|SideBarOptions shadows]].
 {{{
 <<slider chkSliderOptionsPanel OptionsPanel "options »" "Change TiddlyWiki advanced options">>
 }}}
-You can also use a slider to toggle the visibility of [[Hidden Text]].
+You can also use a slider to toggle the visibility of [[hidden text|Basic Formatting]].
 {{{
 <<slider chkHiddenText [[slider macro##hidden]] "hidden title" "Click to show hidden text...">>
 }}}
 <<slider chkHiddenText [[slider macro##hidden]] "hidden title" "Click to show hidden text...">>
+
 See also the [[NestedSliderPlugin|https://tiddlytools.com/Classic/#NestedSlidersPluginInfo]] adding an extra wikitext syntax to write slider panels.
 /%
 !hidden
-hello world
+You've just opened a slider! Click again to close
 !end%/
