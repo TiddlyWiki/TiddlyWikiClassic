@@ -1,21 +1,33 @@
 created: 20110211143900000
 creator: colmbritton
-modified: 20110211144600000
-modifier: colmbritton
+modified: 20231013224900000
+modifier: mkerrigan
 tags: macro
 title: slider macro
 type: text/x-tiddlywiki
 
-The slider macro allows embedding tiddlers within another tiddler, with the option to toggle the visibility of the [[transclusion|transcluded]] content:
+The slider macro provides a button to toggle the visibility of entire tiddlers, slices, or sections of text by using [[transclusion|Transclusion]]. <<slider "" [[slider macro##hidden]] "Example" "click me to learn more">>
+!Usage
 {{{
-<<slider cookie tiddler label tooltip>>
+<<slider chkUniqueCookieName tiddler label tooltip>>
 }}}
-* {{{cookie}}}: variable to save the state of the slider (e.g. {{{chkFooSlider}}})
-* {{{tiddler}}}: name of the tiddler to include in the slider
-* {{{label}}}: title text of the slider
-* {{{tooltip}}}: tooltip text of the slider
+|{{{cookie}}} |unique cookie name starting with {{{chk}}} to track the toggle state; the state is reapplied when the tiddler is reopened. Omit this (use {{{""}}} instead of a name) to make the slider not remember its state.|
+|{{{tiddler}}}|a reference to a tiddler-title, section or slice to be content of the slider (see [[tiddler macro]])|
+|{{{label}}}  |title text of the slider|
+|{{{tooltip}}}|tooltip text of the slider|
+!Examples and tricks
+The slider macro is used to toggle the visibility of the ~OptionsPanel in [[SideBarOptions|SideBarOptions shadows]].
+{{{
+<<slider chkSliderOptionsPanel OptionsPanel "options »" "Change TiddlyWiki advanced options">>
+}}}
+You can also use a slider to toggle the visibility of [[hidden text|Basic Formatting]].
+{{{
+<<slider chkHiddenText [[slider macro##hidden]] "hidden title" "Click to show hidden text...">>
+}}}
+<<slider chkHiddenText [[slider macro##hidden]] "hidden title" "Click to show hidden text...">>
 
-For example: 
-{{{
-<<slider chkTestSlider [[OptionsPanel]] "Options" "Open advanced options">>
-}}}
+See also the [[NestedSliderPlugin|https://tiddlytools.com/Classic/#NestedSlidersPluginInfo]] adding an extra wikitext syntax to write slider panels.
+/%
+!hidden
+You've just opened a slider! Click again to close
+!end%/
