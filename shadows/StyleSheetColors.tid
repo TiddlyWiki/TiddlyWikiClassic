@@ -26,14 +26,14 @@ h2,h3 {border-bottom:1px solid [[ColorPalette::TertiaryLight]];}
 .headerForeground a {font-weight:normal; color:[[ColorPalette::PrimaryPale]];}
 
 .tabSelected {
-	color:[[ColorPalette::PrimaryDark]];
-	background:[[ColorPalette::TertiaryPale]];
+	color:[[ColorPalette::Foreground]];
+	background:[[ColorPalette::Background]];
 	border-left:1px solid [[ColorPalette::TertiaryLight]];
 	border-top:1px solid [[ColorPalette::TertiaryLight]];
 	border-right:1px solid [[ColorPalette::TertiaryLight]];
 }
 .tabUnselected {color:[[ColorPalette::Background]]; background:[[ColorPalette::TertiaryMid]];}
-.tabContents {color:[[ColorPalette::PrimaryDark]]; background:[[ColorPalette::TertiaryPale]]; border:1px solid [[ColorPalette::TertiaryLight]];}
+.tabContents {border:1px solid [[ColorPalette::TertiaryLight]];}
 .tabContents .button {border:0;}
 
 #sidebar {}
