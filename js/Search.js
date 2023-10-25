@@ -5,7 +5,7 @@
 config.macros.search.handler = function(place, macroName, params, wikifier, paramString, tiddler)
 {
 	params = paramString.parseParams("anon", null, false, false, false);
-	createTiddlyButton(place, this.label, this.prompt, this.onClick, "searchButton");
+	createTiddlyButton(place, this.label, this.prompt, this.onClick, "button searchButton");
 	var attributes = {
 		size: this.sizeTextbox,
 		accessKey: getParam(params, "accesskey", this.accessKey),
