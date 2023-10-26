@@ -118,6 +118,19 @@ function displayTiddler(srcElement, title, template, unused1, unused2, animate, 
 	story.displayTiddler(srcElement, title, template, animate);
 }
 
+// @Deprecated: Java IO is no longer supported;
+// these "empty" versions are only left for the tiny chance of backwards
+// compatibility issues and will be removed completely in the future
+function javaSaveFile(filePath, content)
+{
+	return null;
+}
+
+function javaLoadFile(filePath)
+{
+	return null;
+}
+
 // @Deprecated: Use functions on right hand side directly instead
 var createTiddlerPopup = Popup.create;
 var scrollToTiddlerPopup = Popup.show;
