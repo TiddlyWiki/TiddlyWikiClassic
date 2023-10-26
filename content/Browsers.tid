@@ -1,19 +1,20 @@
 created: 20110211110600000
 creator: psd
-modified: 20130426084600000
-modifier: jermolene
+modified: 20230426084600000
+modifier: Yakov Litvin
 tags: features
 title: Browsers
 type: text/x-tiddlywiki
 
-Here is a table of web browsers that work with ~TiddlyWiki:
+~TiddlyWiki works in any browser; however, the ability of saving (TW itself and other files) and loading (other files) are nuanced.
 
-|!Browser |!Version |!Allows changes to be saved locally?|
-|InternetExplorer |6.0+ |Yes |
-|[[Firefox]] |1.0+ |Yes, with the TiddlyFox extension |
-|[[Safari]] |1.0+ |Yes, using TiddlySaver plugin|
-|[[Opera]] |? |Yes, using TiddlySaver plugin|
-|[[Chrome]] |All |Yes, using TiddlySaver plugin|
+Firefox has the best support of saving via browser extensions: TiddlyFox and its successor Timimi make it almost limitless; for extended loading capabilities, you can set {{{security.fileuri.strict_origin_policy}}} setting to {{{false}}}. The ancient versions of Firefox (3.x) can save TW without any manual interaction or extensions or other savers.
+
+Internet Explorer supports saving without manual interaction or other savers thanks to Active X. There's also an [[.hta trick for windows|https://github.com/TiddlyWiki/TiddlyWikiClassic/issues/275]] that's not fully supported out of box.
+
+[[Chrome]], [[Opera]], and other Cromium-based browsers may support {{{--allow-file-access-from-files}}} option for loading files; however, it's presumably more insecure than the option for Firefox mentioned above as it probably allows to load files even to sites from the Internet, so use it only if you know what you're doing.
+
+See also [[TiddlyWiki Browser Compatibility]].
 
 See also the [[TiddlyWiki apps available for smartphones|MobileDevices]].
 
