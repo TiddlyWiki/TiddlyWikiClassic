@@ -8,10 +8,8 @@ type: text/x-tiddlywiki
 
 When you click on the [[download|Download]] button it will download an empty ~TiddlyWiki file. This is version <<version>> of ~TiddlyWiki.
 
-Advanced users may find these download options helpful (right click the link and select "Save as" to download):
-* [[A copy of this website|#]] (~TiddlyWiki.com) minus images.
-* [[A zip archive|./empty.zip]] containing an empty ~TiddlyWiki file plus a TiddlySaver file.
-* [[The TiddlySaver.jar file|./TiddlySaver.jar]] on its own.
-Finally, these links may be useful:
+If you want to download a copy of this website (without images), right click [[this link|#]] and select "Save as" to download.
+
+These links may be useful:
 * [[Setting up saving]]
 * Older ~TiddlyWiki versions in the [[archive|./archive/]]
