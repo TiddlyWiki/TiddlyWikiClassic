@@ -29,7 +29,8 @@ function localAjax(args)
 		return true;
 	} catch (ex) { ; }
 
-	try { // local file I/O (IE, FF with TiddlyFox, Chrome/Safari with TiddlySaver, etc.)
+	// local file I/O (IE, FF with security.fileuri.strict_origin_policy:false, etc.)
+	try {
 		var data = loadFile(getLocalPath(args.url));
 		if (data) success(data);
 		else failure("loadFile");
