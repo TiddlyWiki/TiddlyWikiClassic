@@ -408,17 +408,18 @@ Story.prototype.blurTiddler = function(title)
 //#  tag - value of field, without any [[brackets]]
 //#  mode - +1 to add the tag, -1 to remove it, 0 to toggle it
 //#  field - name of field (eg "tags")
+//# 2023-10-23 Okido: this is not the correct variable, it must be tags
 Story.prototype.setTiddlerField = function(title, tag, mode, field)
 {
 	var editor = this.getTiddlerField(title, field);
 	var tags = editor.value.readBracketedList();
 
-	var i = this.indexOf(tag);
+	var i = tags.indexOf(tag);
 	if(mode == 0) mode = (i == -1) ? +1 : -1;
 	if(mode == +1) {
-		if(i == -1) this.push(tag);
+		if(i == -1) tags.push(tag);
 	} else if(mode == -1) {
-		if(i != -1) this.splice(i, 1);
+		if(i != -1) tags.splice(i, 1);
 	}
 
 	editor.value = String.encodeTiddlyLinkList(tags);
