@@ -408,7 +408,6 @@ Story.prototype.blurTiddler = function(title)
 //#  tag - value of field, without any [[brackets]]
 //#  mode - +1 to add the tag, -1 to remove it, 0 to toggle it
 //#  field - name of field (eg "tags")
-//# 2023-10-23 Okido: this is not the correct variable, it must be tags
 Story.prototype.setTiddlerField = function(title, tag, mode, field)
 {
 	var editor = this.getTiddlerField(title, field);
