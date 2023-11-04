@@ -200,20 +200,27 @@ function saveChanges(onlyIfDirty, tiddlers)
 
 function saveMain(localPath, original, posDiv)
 {
+	var reportStatusAndHandle = function(successOrPending, localPath, revised) {
+		if(successOrPending) {
+			//# TODO: if possible, separate the success and pending cases
+			tw.io.onSaveMainSuccess(config.saveByDownload ?
+				getDataURI(revised) : "file://" + localPath,
+				revised, original);
+		} else {
+			tw.io.onSaveMainFail();
+		}
+	};
 	try {
 		var revised = updateOriginal(original, posDiv, localPath);
-		var saved = saveFile(localPath, revised);
-		if(!saved) {
-			tw.io.onSaveMainFail();
-		} else {
-			tw.io.onSaveMainSuccess(config.saveByDownload ? getDataURI(revised) : "file://" + localPath, revised, original);
-		}
+		var savedOrPending = saveFile(localPath, revised);
+		reportStatusAndHandle(savedOrPending, localPath, revised);
 	} catch (ex) {
 		tw.io.onSaveMainFail(ex);
 	}
 }
 
 //# savedHtml, original are passed for additional hackability
+//# in fact, this is "on save main success or pending"
 tw.io.onSaveMainSuccess = function(urlSaved, savedHtml, original) {
 	if (!config.saveByManualDownload) {
 		displayMessage(
