@@ -216,6 +216,7 @@ function saveMain(localPath, original, posDiv, callback)
 		if(!callback || config.options.chkPreventAsyncSaving) {
 			var savedOrPending = tw.io.saveFile(localPath, revised);
 			reportStatusAndHandle(savedOrPending, localPath, revised);
+			if(callback) callback(savedOrPending);
 		} else tw.io.saveFile(localPath, revised, function(success, details) {
 			reportStatusAndHandle(success, localPath, revised);
 			callback(success, details);
