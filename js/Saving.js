@@ -198,7 +198,7 @@ function saveChanges(onlyIfDirty, tiddlers)
 	}
 }
 
-function saveMain(localPath, original, posDiv)
+function saveMain(localPath, original, posDiv, callback)
 {
 	var reportStatusAndHandle = function(successOrPending, localPath, revised) {
 		if(successOrPending) {
@@ -212,8 +212,14 @@ function saveMain(localPath, original, posDiv)
 	};
 	try {
 		var revised = updateOriginal(original, posDiv, localPath);
-		var savedOrPending = saveFile(localPath, revised);
-		reportStatusAndHandle(savedOrPending, localPath, revised);
+
+		if(!callback || config.options.chkPreventAsyncSaving) {
+			var savedOrPending = saveFile(localPath, revised);
+			reportStatusAndHandle(savedOrPending, localPath, revised);
+		} else tw.io.saveFile(localPath, revised, function(success, details) {
+			reportStatusAndHandle(success, localPath, revised);
+			callback(success, details);
+		});
 	} catch (ex) {
 		tw.io.onSaveMainFail(ex);
 	}
