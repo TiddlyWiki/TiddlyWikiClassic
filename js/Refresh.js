@@ -80,9 +80,7 @@ function refreshElements(root, changeList)
 		if(e.getAttribute && (e.tagName ? e.tagName != "IFRAME" : true))
 			type = e.getAttribute("refresh");
 		var refresher = config.refreshers[type];
-		var refreshed = false;
-		if(refresher != undefined)
-			refreshed = refresher(e, changeList);
+		var refreshed = refresher ? refresher(e, changeList) : false;
 		if(e.hasChildNodes() && !refreshed)
 			refreshElements(e, changeList);
 	}
