@@ -175,17 +175,19 @@ function saveChanges(onlyIfDirty, tiddlers)
 
 		config.saveByDownload = false;
 		config.saveByManualDownload = false;
-		saveMain(localPath, original, posDiv);
+		var postSave = function() {
+			var co = config.options;
+			if (!config.saveByDownload && !config.saveByManualDownload) {
+				if(co.chkSaveBackups) saveBackup(localPath, original);
+				if(co.chkSaveEmptyTemplate) saveEmpty(localPath, original, posDiv);
+				if(co.chkGenerateAnRssFeed) saveRss(localPath);
+			}
 
-		var co = config.options;
-		if (!config.saveByDownload && !config.saveByManualDownload) {
-			if(co.chkSaveBackups) saveBackup(localPath, original);
-			if(co.chkSaveEmptyTemplate) saveEmpty(localPath, original, posDiv);
-			if(co.chkGenerateAnRssFeed) saveRss(localPath);
-		}
-
-		if(co.chkDisplayInstrumentation)
-			displayMessage("saveChanges " + (new Date() - t0) + " ms");
+			if(co.chkDisplayInstrumentation)
+				displayMessage("saveChanges " + (new Date() - t0) + " ms");
+		};
+		// chkPreventAsyncSaving is checked inside saveMain
+		saveMain(localPath, original, posDiv, postSave);
 	};
 
 	if(!config.options.chkPreventAsyncSaving) {
