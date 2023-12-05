@@ -24,7 +24,9 @@ config.macros.plugins.refresh = function(listWrapper, paramString)
 		if(e.checked) selectedRows.push(e.getAttribute("rowName"));
 	});
 	jQuery(listWrapper).empty();
+
 	var plugins = installedPlugins.slice(0);
+	// not all plugins are installed, gather info about those, too
 	var i, tiddler, p;
 	var configTiddlers = store.getTaggedTiddlers("systemConfig");
 	for(i = 0; i < configTiddlers.length; i++) {
@@ -34,11 +36,15 @@ config.macros.plugins.refresh = function(listWrapper, paramString)
 		p = getPluginInfo(tiddler);
 		p.executed = false;
 		p.log.splice(0, 0, this.skippedText);
+		plugins.push(p);
+	}
+
+	for(i = 0; i < plugins.length; i++) {
+		p = plugins[i];
 		p.size = p.tiddler.text ? p.tiddler.text.length : 0;
 		p.forced = p.tiddler.isTagged("systemConfigForce");
 		p.disabled = p.tiddler.isTagged("systemConfigDisable");
-		p.Selected = selectedRows.indexOf(p.title) != -1;
-		plugins.push(p);
+		p.Selected = selectedRows.indexOf(plugins[i].title) != -1;
 	}
 
 	if(plugins.length == 0) {
