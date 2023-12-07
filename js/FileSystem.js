@@ -52,7 +52,7 @@ tw.io.saveFile = function(fileUrl, content, callback)
 			result = saveFile(fileUrl, content);
 			callback(result, {});
 		}
-	})
+	});
 };
 
 // Load a file from filesystem [Preemption]
