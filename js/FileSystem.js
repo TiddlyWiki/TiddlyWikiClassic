@@ -1,14 +1,12 @@
 //--
 //-- Filesystem code
 //--
+//# This code made it through several TW eras, including
+//# native saving by IE and FF, TiddlyFox, Timimi, and other solutions.
 //#
-//# This code is designed to be reusable, but please take care,
-//# there are some intricacies that make it tricky to use these
-//# functions with full UTF-8 files. For more details, see:
-//#
-//# http://trac.tiddlywiki.org/ticket/99
-//#
-//#
+//# The "contemporary" methods are those of tw.io, but global functions
+//# like saveFile are kept for backwards compatibility:
+//# some extensions and savers may decorate or override them.
 
 // Copy a file in filesystem [Preemption]
 window.copyFile = window.copyFile || function(dest, source)
