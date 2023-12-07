@@ -272,12 +272,13 @@ function manualSaveFile(filePath, content)
 // construct data URI (using base64 encoding to preserve multi-byte encodings)
 function getDataURI(data)
 {
-	if (config.browser.isIE)
-		return "data:text/html," + encodeURIComponent(data);
-	else
+	return config.browser.isIE ?
+		"data:text/html," + encodeURIComponent(data) :
+
 		// manualConvertUnicodeToUTF8 was moved here from convertUnicodeToFileFormat
-		// in 2.9.1 it was used only for FireFox but happened to fix download saving non-ASCII in Chrome & Safari as well
-		return "data:text/html;base64," + encodeBase64(manualConvertUnicodeToUTF8(data));
+		// In 2.9.1, it was used only for FireFox but happened to fix
+		// download saving non-ASCII in Chrome & Safari as well (see 949aff6)
+		"data:text/html;base64," + encodeBase64(manualConvertUnicodeToUTF8(data));
 }
 
 function encodeBase64(data)
