@@ -88,7 +88,9 @@ function refreshElements(root, changeList)
 
 function applyHtmlMacros(root, tiddler)
 {
-	for(var e = root.firstChild; !!e; e = e.nextSibling) {
+	for(var e = root.firstChild; !!e; e = nextChild) {
+		// macros can manipulate DOM, so we remember nextChild before invokeMacro
+		var nextChild = e.nextSibling;
 		if(e.getAttribute) {
 			var macro = e.getAttribute("macro");
 			if(macro) {
