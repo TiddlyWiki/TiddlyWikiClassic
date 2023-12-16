@@ -3,6 +3,9 @@
 //--
 
 window.tw = {
+	assets: {
+		icons: {}
+	},
 	//# in/out methods (loading, saving)
 	io: {},
 	textUtils: {}
