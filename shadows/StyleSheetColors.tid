@@ -72,8 +72,8 @@ h2,h3 {border-bottom:1px solid [[ColorPalette::TertiaryLight]];}
 .messageToolbar__button { color:[[ColorPalette::PrimaryMid]]; background:[[ColorPalette::SecondaryPale]]; border:none; }
 .messageToolbar__button_withIcon { background:inherit; }
 .messageToolbar__button_withIcon:active { background:inherit; border:none; }
-.messageToolbar__icon { fill:[[ColorPalette::TertiaryDark]]; }
-.messageToolbar__icon:hover { fill:[[ColorPalette::Foreground]]; }
+.tw-icon line { stroke: [[ColorPalette::TertiaryDark]]; }
+.messageToolbar__button:hover .tw-icon line { stroke: [[ColorPalette::Foreground]]; }
 
 .popup {
 	background: [[ColorPalette::Background]];

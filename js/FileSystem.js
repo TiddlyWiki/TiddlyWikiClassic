@@ -1,14 +1,12 @@
 //--
 //-- Filesystem code
 //--
+//# This code made it through several TW eras, including
+//# native saving by IE and FF, TiddlyFox, Timimi, and other solutions.
 //#
-//# This code is designed to be reusable, but please take care,
-//# there are some intricacies that make it tricky to use these
-//# functions with full UTF-8 files. For more details, see:
-//#
-//# http://trac.tiddlywiki.org/ticket/99
-//#
-//#
+//# The "contemporary" methods are those of tw.io, but global functions
+//# like saveFile are kept for backwards compatibility:
+//# some extensions and savers may decorate or override them.
 
 // Copy a file in filesystem [Preemption]
 window.copyFile = window.copyFile || function(dest, source)
@@ -54,7 +52,7 @@ tw.io.saveFile = function(fileUrl, content, callback)
 			result = saveFile(fileUrl, content);
 			callback(result, {});
 		}
-	})
+	});
 };
 
 // Load a file from filesystem [Preemption]
@@ -272,12 +270,13 @@ function manualSaveFile(filePath, content)
 // construct data URI (using base64 encoding to preserve multi-byte encodings)
 function getDataURI(data)
 {
-	if (config.browser.isIE)
-		return "data:text/html," + encodeURIComponent(data);
-	else
+	return config.browser.isIE ?
+		"data:text/html," + encodeURIComponent(data) :
+
 		// manualConvertUnicodeToUTF8 was moved here from convertUnicodeToFileFormat
-		// in 2.9.1 it was used only for FireFox but happened to fix download saving non-ASCII in Chrome & Safari as well
-		return "data:text/html;base64," + encodeBase64(manualConvertUnicodeToUTF8(data));
+		// In 2.9.1, it was used only for FireFox but happened to fix
+		// download saving non-ASCII in Chrome & Safari as well (see 949aff6)
+		"data:text/html;base64," + encodeBase64(manualConvertUnicodeToUTF8(data));
 }
 
 function encodeBase64(data)

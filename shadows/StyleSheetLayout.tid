@@ -81,7 +81,9 @@ a.tiddlyLinkNonExisting.shadow {font-weight:bold;}
 #messageArea { position:fixed; top:2em; right:0; margin:0.5em; padding:0.7em 1em; z-index:2000; }
 .messageToolbar { text-align:right; padding:0.2em 0; }
 .messageToolbar__button { text-decoration:underline; }
-.messageToolbar__icon { height: 1em; width: 1em; } /* width for IE */
+.messageToolbar__button_withIcon { display: inline-block; }
+.tw-icon { height: 1em; width: 1em; } /* width for IE */
+.tw-icon line { stroke-width: 1; stroke-linecap: round; }
 .messageArea__text a { text-decoration:underline; }
 
 .popup {position:absolute; z-index:300; font-size:.9em; padding:0.3em 0; list-style:none; margin:0;}
@@ -95,7 +97,7 @@ a.tiddlyLinkNonExisting.shadow {font-weight:bold;}
 .popupTiddler {position: absolute; z-index:300; padding:1em; margin:0;}
 
 .tabset {padding:1em 0 0 0.5em;}
-.tab {margin: 0 0.25em 0 0; padding:0.2em;}
+.tab {display: inline-block; position: relative; bottom: -0.7px; margin: 0 0.25em 0 0; padding:0.2em;}
 .tabContents {padding:0.5em;}
 .tabContents ul, .tabContents ol {margin:0; padding:0;}
 .txtMainTab .tabContents li {list-style:none;}
