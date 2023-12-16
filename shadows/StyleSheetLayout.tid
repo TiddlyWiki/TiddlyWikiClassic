@@ -83,6 +83,7 @@ a.tiddlyLinkNonExisting.shadow {font-weight:bold;}
 .messageToolbar__button { text-decoration:underline; }
 .messageToolbar__button_withIcon { display: inline-block; }
 .tw-icon { height: 1em; width: 1em; } /* width for IE */
+.tw-icon line { stroke-width: 1; stroke-linecap: round; }
 .messageArea__text a { text-decoration:underline; }
 
 .popup {position:absolute; z-index:300; font-size:.9em; padding:0.3em 0; list-style:none; margin:0;}
