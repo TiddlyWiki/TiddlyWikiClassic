@@ -112,12 +112,11 @@ a.tiddlyLinkNonExisting.shadow {font-weight:bold;}
 
 .tiddler { padding: 1em; }
 
-.missing .viewer,.missing .title {font-style:italic;}
+.title { font-size: 1.6em; font-weight: bold; }
+.subtitle { font-size: 1.1em; }
 
-.title {font-size:1.6em; font-weight:bold;}
-
-.missing .subtitle {display:none;}
-.subtitle {font-size:1.1em;}
+.missing .viewer, .missing .title { font-style: italic; }
+.missing .subtitle { display: none; }
 
 .tiddler .button {padding:0.2em 0.4em;}
 
