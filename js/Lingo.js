@@ -376,6 +376,11 @@ merge(config.macros.upgrade, {
 	statusPreparingBackup: "Preparing backup",
 	statusSavingBackup: "Saving backup file",
 	errorSavingBackup: "There was a problem saving the backup file",
+	errorVerifyingBackup: "Failed to verify the backup was saved. " +
+		"This is either because it wasn't saved to the moment of the check or " +
+		"loading file doesn't work with your saver (and it is needed for " +
+		"the next step of upgrading). To upgrade your TiddlyWiki, you can use " +
+		"other methods listed at <a href='%0' class='externalLink' target='_blank'>%0</a>",
 	statusLoadingCore: "Loading core code",
 	errorLoadingCore: "Error loading the core code",
 	errorCoreFormat: "Error with the new core code",

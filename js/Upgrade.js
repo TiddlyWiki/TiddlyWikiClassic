@@ -2,6 +2,8 @@
 //-- Upgrade macro
 //--
 
+config.macros.upgrade.docsUrl = 'https://classic.tiddlywiki.com/#HowToUpgrade';
+
 config.macros.upgrade.getSourceURL = function()
 {
 	return config.options.txtUpgradeCoreURI || config.macros.upgrade.source;
@@ -51,21 +53,31 @@ config.macros.upgrade.onClickUpgrade = function(e)
 	var original = loadOriginal(localPath);
 
 	w.setButtons([], me.statusSavingBackup);
-	var backupSuccess = copyFile(backupPath, localPath) || saveFile(backupPath, original);
-	if(!backupSuccess) {
+	var backupSuccessOrPending = copyFile(backupPath, localPath) || saveFile(backupPath, original);
+	if(!backupSuccessOrPending) {
 		w.setButtons([], me.errorSavingBackup);
 		alert(me.errorSavingBackup);
 		return false;
 	}
-	w.setValue("backupPath", backupPath);
 
-	w.setButtons([], me.statusLoadingCore);
-	var sourceURL = me.getSourceURL();
-	me.loadLatestCore(function(data, textStatus, jqXHR) {
-		me.onLoadCore(true, w, jqXHR.responseText, sourceURL, jqXHR);
-	}, function(jqXHR, textStatus, errorThrown) {
-		me.onLoadCore(false, w, null, sourceURL, jqXHR);
+	// make sure both the backup is saved and tw.io.loadFile works before proceeding
+	tw.io.loadFile(backupPath, function(backupContent) {
+		if(!backupContent) {
+			w.setButtons([], me.errorVerifyingBackup.format([me.docsUrl]));
+			return;
+		}
+
+		w.setValue("backupPath", backupPath);
+
+		w.setButtons([], me.statusLoadingCore);
+		var sourceURL = me.getSourceURL();
+		me.loadLatestCore(function(data, textStatus, jqXHR) {
+			me.onLoadCore(true, w, jqXHR.responseText, sourceURL, jqXHR);
+		}, function(jqXHR, textStatus, errorThrown) {
+			me.onLoadCore(false, w, null, sourceURL, jqXHR);
+		});
 	});
+
 	return false;
 };
 
