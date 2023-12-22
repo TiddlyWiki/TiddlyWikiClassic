@@ -47,7 +47,7 @@ Wizard.prototype.setButtons = function(buttonInfo, status)
 		insertSpacer(this.footElem);
 	}
 	if(typeof status == "string") {
-		createTiddlyElement(this.footElem, "span", null, "status", status);
+		createTiddlyElement(this.footElem, "span", null, "status").innerHTML = status;
 	}
 };
 
