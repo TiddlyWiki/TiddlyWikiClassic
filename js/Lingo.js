@@ -360,10 +360,12 @@ merge(config.macros.importTiddlers, {
 merge(config.macros.upgrade, {
 	wizardTitle: "Upgrade TiddlyWiki core code",
 	step1Title: "Update or repair this TiddlyWiki to the latest release",
-	step1Html: "You are about to upgrade to the latest release of the TiddlyWiki core code " +
-		"(from <a href='%0' class='externalLink' target='_blank'>%1</a>). Your content will be preserved across the upgrade.<br><br>" +
-		"Note that core upgrades have been known to interfere with older plugins. If you run into problems with upgrading, " +
-		"see <a href='http://www.tiddlywiki.org/wiki/CoreUpgrades' class='externalLink' target='_blank'>http://www.tiddlywiki.org/wiki/CoreUpgrades</a>",
+	step1Html: "You are about to upgrade TiddlyWiki core to the latest release " +
+		"(from <a href='%0' class='externalLink' target='_blank'>%1</a>). " +
+		"Your content will be preserved across the upgrade.<br><br>" +
+		"Note that core upgrades have been known to interfere with older plugins. " +
+		"If you run into problems with upgrading, read how to handle them " +
+		"<a href='%2' class='externalLink' target='_blank'>here</a>.",
 	errorCantUpgrade: "Unable to upgrade this TiddlyWiki. You can only perform upgrades on TiddlyWiki files stored locally",
 	errorNotSaved: "You must save changes before you can perform an upgrade",
 	step2Title: "Confirm the upgrade details",
