@@ -19,10 +19,8 @@ function confirmExit()
 // Give the user a chance to save changes before exitting
 function checkUnsavedChanges()
 {
-	if(store && store.isDirty && store.isDirty() && window.hadConfirmExit === false) {
-		if(confirm(config.messages.unsavedChangesWarning))
-			saveChanges();
-	}
+	if(!(store && store.isDirty && store.isDirty()) || window.hadConfirmExit !== false) return;
+	if(confirm(config.messages.unsavedChangesWarning)) saveChanges();
 }
 
 function updateLanguageAttribute(s)
@@ -144,7 +142,53 @@ function recreateOriginal()
 	return content;
 }
 
+// Save tiddlywiki (but not backup or anything else)
+tw.io.knownSaveMainFailures = {
+	failedToLoadOriginal: 1,
+	invalidFile: 2
+};
+
 // Save this tiddlywiki with the pending changes
+tw.io.saveMainAndReport = function(callback)
+{
+	var originalPath = document.location.toString();
+	var localPath = getLocalPath(originalPath);
+	var onLoadOriginal = function(original) {
+		if(original == null) {
+			alert(msg.cantSaveError);
+			if(store.tiddlerExists(msg.saveInstructions))
+				story.displayTiddler(null, msg.saveInstructions);
+
+			return callback(false, {
+				reason: tw.io.knownSaveMainFailures.failedToLoadOriginal
+			});
+		}
+
+		var posDiv = locateStoreArea(original);
+		if(!posDiv) {
+			alert(msg.invalidFileError.format([localPath]));
+
+			return callback(false, {
+				reason: tw.io.knownSaveMainFailures.invalidFile
+			});
+		}
+
+		config.saveByDownload = false;
+		config.saveByManualDownload = false;
+		// chkPreventAsyncSaving is checked inside saveMain
+		saveMain(localPath, original, posDiv, callback);
+	};
+
+	if(!config.options.chkPreventAsyncSaving) {
+		loadOriginal(localPath, onLoadOriginal);
+	} else {
+		// useful when loadOriginal is overwritten without support of callback
+		// or when an extension relies saveChanges being a sync function
+		var original = loadOriginal(localPath);
+		onLoadOriginal(original);
+	}
+};
+
 function saveChanges(onlyIfDirty, tiddlers)
 {
 	if(onlyIfDirty && !store.isDirty()) return;
@@ -159,26 +203,7 @@ function saveChanges(onlyIfDirty, tiddlers)
 		return;
 	}
 
-	var originalPath = document.location.toString();
-	var localPath = getLocalPath(originalPath);
-	var onLoadOriginal = function(original) {
-		if(original == null) {
-			alert(msg.cantSaveError);
-			if(store.tiddlerExists(msg.saveInstructions))
-				story.displayTiddler(null, msg.saveInstructions);
-			return;
-		}
-
-		var posDiv = locateStoreArea(original);
-		if(!posDiv) {
-			alert(msg.invalidFileError.format([localPath]));
-			return;
-		}
-
-		config.saveByDownload = false;
-		config.saveByManualDownload = false;
-		saveMain(localPath, original, posDiv);
-
+	tw.io.saveMainAndReport(function postSave() {
 		var co = config.options;
 		if (!config.saveByDownload && !config.saveByManualDownload) {
 			if(co.chkSaveBackups) saveBackup(localPath, original);
@@ -188,34 +213,39 @@ function saveChanges(onlyIfDirty, tiddlers)
 
 		if(co.chkDisplayInstrumentation)
 			displayMessage("saveChanges " + (new Date() - t0) + " ms");
-	};
-
-	if(!config.options.chkPreventAsyncSaving) {
-		loadOriginal(localPath, onLoadOriginal);
-	} else {
-		// useful when loadOriginal is overwritten without support of callback
-		// or when an extension relies saveChanges being a sync function
-		var original = loadOriginal(localPath);
-		onLoadOriginal(original);
-	}
+	});
 }
 
-function saveMain(localPath, original, posDiv)
+function saveMain(localPath, original, posDiv, callback)
 {
+	var reportStatusAndHandle = function(successOrPending, localPath, revised) {
+		if(successOrPending) {
+			//# TODO: if possible, separate the success and pending cases
+			tw.io.onSaveMainSuccess(config.saveByDownload ?
+				getDataURI(revised) : "file://" + localPath,
+				revised, original);
+		} else {
+			tw.io.onSaveMainFail();
+		}
+	};
 	try {
 		var revised = updateOriginal(original, posDiv, localPath);
-		var saved = saveFile(localPath, revised);
-		if(!saved) {
-			tw.io.onSaveMainFail();
-		} else {
-			tw.io.onSaveMainSuccess(config.saveByDownload ? getDataURI(revised) : "file://" + localPath, revised, original);
-		}
+
+		if(!callback || config.options.chkPreventAsyncSaving) {
+			var savedOrPending = tw.io.saveFile(localPath, revised);
+			reportStatusAndHandle(savedOrPending, localPath, revised);
+			if(callback) callback(savedOrPending);
+		} else tw.io.saveFile(localPath, revised, function(success, details) {
+			reportStatusAndHandle(success, localPath, revised);
+			callback(success, details);
+		});
 	} catch (ex) {
 		tw.io.onSaveMainFail(ex);
 	}
 }
 
 //# savedHtml, original are passed for additional hackability
+//# in fact, this is "on save main success or pending"
 tw.io.onSaveMainSuccess = function(urlSaved, savedHtml, original) {
 	if (!config.saveByManualDownload) {
 		displayMessage(

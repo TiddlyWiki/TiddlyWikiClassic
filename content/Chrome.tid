@@ -1,10 +1,11 @@
 created: 20110211110600000
 creator: psd
-modified: 20110211131000000
-modifier: blaine
-tags: browsers issues
+modified: 20231026100300000
+modifier: Yakov Litvin
+tags: browsers
 title: Chrome
 type: text/x-tiddlywiki
 
-~TiddlyWiki works well in Google Chrome and Chromium using [[TiddlySaver]].
-However, due to Chrome's [[lack of Java support on Mac OS and Linux|http://groups.google.com/group/tiddlywiki/browse_thread/thread/1f0e299198573e89]], it currently cannot save on those platforms.
+See [[Setting up saving]], including savetiddlers, file-backups, Serverside applications, and Hosted Options. If you're interested in using Timimi in Chrome, [[ask the community|https://groups.google.com/g/TiddlyWikiClassic]] (it's possible, but requires some additional steps for now).
+
+For advanced loading options (loading external files), see [[TiddlyWiki Browser Compatibility]].

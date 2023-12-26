@@ -26,14 +26,14 @@ h2,h3 {border-bottom:1px solid [[ColorPalette::TertiaryLight]];}
 .headerForeground a {font-weight:normal; color:[[ColorPalette::PrimaryPale]];}
 
 .tabSelected {
-	color:[[ColorPalette::PrimaryDark]];
-	background:[[ColorPalette::TertiaryPale]];
+	color:[[ColorPalette::Foreground]];
+	background:[[ColorPalette::Background]];
 	border-left:1px solid [[ColorPalette::TertiaryLight]];
 	border-top:1px solid [[ColorPalette::TertiaryLight]];
 	border-right:1px solid [[ColorPalette::TertiaryLight]];
 }
 .tabUnselected {color:[[ColorPalette::Background]]; background:[[ColorPalette::TertiaryMid]];}
-.tabContents {color:[[ColorPalette::PrimaryDark]]; background:[[ColorPalette::TertiaryPale]]; border:1px solid [[ColorPalette::TertiaryLight]];}
+.tabContents {border:1px solid [[ColorPalette::TertiaryLight]];}
 .tabContents .button {border:0;}
 
 #sidebar {}
@@ -50,6 +50,7 @@ h2,h3 {border-bottom:1px solid [[ColorPalette::TertiaryLight]];}
 .wizardStep.wizardStepDone {background:[[ColorPalette::TertiaryLight]];}
 .wizardFooter {background:[[ColorPalette::PrimaryPale]];}
 .wizardFooter .status {background:[[ColorPalette::PrimaryDark]]; color:[[ColorPalette::Background]];}
+.wizardFooter .status a { color: [[ColorPalette::PrimaryPale]]; }
 .wizard .button {
 	color:[[ColorPalette::Foreground]]; background:[[ColorPalette::SecondaryLight]]; border: 1px solid;
 	border-color:[[ColorPalette::SecondaryPale]] [[ColorPalette::SecondaryDark]] [[ColorPalette::SecondaryDark]] [[ColorPalette::SecondaryPale]];
@@ -72,8 +73,8 @@ h2,h3 {border-bottom:1px solid [[ColorPalette::TertiaryLight]];}
 .messageToolbar__button { color:[[ColorPalette::PrimaryMid]]; background:[[ColorPalette::SecondaryPale]]; border:none; }
 .messageToolbar__button_withIcon { background:inherit; }
 .messageToolbar__button_withIcon:active { background:inherit; border:none; }
-.messageToolbar__icon { fill:[[ColorPalette::TertiaryDark]]; }
-.messageToolbar__icon:hover { fill:[[ColorPalette::Foreground]]; }
+.tw-icon line { stroke: [[ColorPalette::TertiaryDark]]; }
+.messageToolbar__button:hover .tw-icon line { stroke: [[ColorPalette::Foreground]]; }
 
 .popup {
 	background: [[ColorPalette::Background]];

@@ -2,18 +2,6 @@
 //-- Augmented methods for the JavaScript Array() object
 //--
 
-// For IE up to 8 (https://caniuse.com/?search=indexOf)
-if(!Array.indexOf) {
-	Array.prototype.indexOf = function(item, from)
-	{
-		if(!from) from = 0;
-		for(var i = from; i < this.length; i++) {
-			if(this[i] === item) return i;
-		}
-		return -1;
-	};
-}
-
 //# todo: get rid of usages in core, deprecate
 // Find an entry in a given field of the members of an array
 Array.prototype.findByField = function(field, value)
@@ -29,22 +17,6 @@ Array.prototype.findByField = function(field, value)
 Array.prototype.contains = function(item)
 {
 	return this.indexOf(item) != -1;
-};
-
-//# todo: get rid of usages in core, deprecate
-// Adds, removes or toggles a particular value within an array
-//  value - value to add
-//  mode - +1 to add value, -1 to remove value, 0 to toggle it
-Array.prototype.setItem = function(value, mode)
-{
-	var p = this.indexOf(value);
-	if(mode == 0)
-		mode = (p == -1) ? +1 : -1;
-	if(mode == +1) {
-		if(p == -1) this.push(value);
-	} else if(mode == -1) {
-		if(p != -1) this.splice(p, 1);
-	}
 };
 
 //# todo: deprecate (is not used in the core already)
@@ -84,17 +56,4 @@ Array.prototype.remove = function(item)
 	var p = this.indexOf(item);
 	if(p != -1) this.splice(p, 1);
 };
-
-// For IE up to 8 (https://caniuse.com/?search=indexOf)
-if(!Array.prototype.map) {
-	Array.prototype.map = function(fn, thisObj)
-	{
-		var scope = thisObj || window;
-		var i, j, a = [];
-		for(i = 0, j = this.length; i < j; ++i) {
-			a.push(fn.call(scope, this[i], i, this));
-		}
-		return a;
-	};
-}
 

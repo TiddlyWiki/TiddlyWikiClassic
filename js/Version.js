@@ -1,1 +1,1 @@
-var version = {title: "TiddlyWiki", major: 2, minor: 9, revision: 4, date: new Date("May 11, 2023"), extensions: {}};
+var version = {title: "TiddlyWiki", major: 2, minor: 10, revision: 0, date: new Date("December 26, 2023"), extensions: {}};

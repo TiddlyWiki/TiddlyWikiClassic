@@ -30,8 +30,8 @@ window.isLocal = function()
 	return (document.location.protocol == "file:");
 };
 
-// Whether to use the JavaSaver applet
-var useJavaSaver = window.isLocal() && (config.browser.isSafari || config.browser.isOpera);
+//# Use of the JavaSaver applet is removed from the core; this is only kept for backwards compatibility
+var useJavaSaver = false;
 
 // Allow preemption code a chance to tweak config and useJavaSaver [Preemption]
 if (window.tweakConfig) window.tweakConfig();

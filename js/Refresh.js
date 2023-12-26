@@ -80,9 +80,7 @@ function refreshElements(root, changeList)
 		if(e.getAttribute && (e.tagName ? e.tagName != "IFRAME" : true))
 			type = e.getAttribute("refresh");
 		var refresher = config.refreshers[type];
-		var refreshed = false;
-		if(refresher != undefined)
-			refreshed = refresher(e, changeList);
+		var refreshed = refresher ? refresher(e, changeList) : false;
 		if(e.hasChildNodes() && !refreshed)
 			refreshElements(e, changeList);
 	}
@@ -90,7 +88,9 @@ function refreshElements(root, changeList)
 
 function applyHtmlMacros(root, tiddler)
 {
-	for(var e = root.firstChild; !!e; e = e.nextSibling) {
+	for(var e = root.firstChild; !!e; e = nextChild) {
+		// macros can manipulate DOM, so we remember nextChild before invokeMacro
+		var nextChild = e.nextSibling;
 		if(e.getAttribute) {
 			var macro = e.getAttribute("macro");
 			if(macro) {

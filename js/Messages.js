@@ -12,10 +12,7 @@ function getMessageDiv()
 		var btn = createTiddlyButton(toolbar, '', config.messages.messageClose.tooltip, clearMessage,
 			"button messageToolbar__button");
 
-		btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10" class="messageToolbar__icon">' +
-		'	<rect width="1" height="13.1" x="4.5" y="-1.6" transform="rotate(-45 5 5)"/>' +
-		'	<rect width="1" height="13.1" x="4.5" y="-1.6" transform="rotate(+45 5 5)"/>' +
-		'</svg>';
+		btn.innerHTML = tw.assets.icons.closeSvg;
 		// inline SVG is unsupported in old FireFox
 		if(window.HTMLUnknownElement && btn.firstChild instanceof window.HTMLUnknownElement) {
 			btn.innerHTML = config.messages.messageClose.text;

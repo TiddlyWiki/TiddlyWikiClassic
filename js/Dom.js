@@ -2,6 +2,12 @@
 //-- DOM utilities - many derived from www.quirksmode.org
 //--
 
+tw.assets.icons.closeSvg =
+	'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10" class="tw-icon">' +
+	'	<line x1="1" y1="1" x2="9" y2="9" rx="1" ry="1"/>' +
+	'	<line x1="9" y1="1" x2="1" y2="9" rx="1" ry="1"/>' +
+	'</svg>';
+
 function drawGradient(place, horiz, loColors, hiColors)
 {
 	if(!hiColors) hiColors = loColors;

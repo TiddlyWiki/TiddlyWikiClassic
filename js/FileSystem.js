@@ -1,14 +1,12 @@
 //--
 //-- Filesystem code
 //--
+//# This code made it through several TW eras, including
+//# native saving by IE and FF, TiddlyFox, Timimi, and other solutions.
 //#
-//# This code is designed to be reusable, but please take care,
-//# there are some intricacies that make it tricky to use these
-//# functions with full UTF-8 files. For more details, see:
-//#
-//# http://trac.tiddlywiki.org/ticket/99
-//#
-//#
+//# The "contemporary" methods are those of tw.io, but global functions
+//# like saveFile are kept for backwards compatibility:
+//# some extensions and savers may decorate or override them.
 
 // Copy a file in filesystem [Preemption]
 window.copyFile = window.copyFile || function(dest, source)
@@ -29,6 +27,32 @@ window.saveFile = window.saveFile || function(fileUrl, content)
 	if(!r)
 		r = manualSaveFile(fileUrl, content);
 	return r;
+};
+
+// A placeholder method that can be overwritten/decorated by savers.
+// In such a case, it's required to call callback on both success and fail.
+// See details about the callback in tw.io.saveFile.
+tw.io.asyncSaveFile = tw.io.asyncSaveFile || function(fileUrl, content, callback)
+{
+	callback(false, { reason: 'Async saving is not implemented' });
+};
+
+// The general save method to use
+// ==============================
+// If callback is set, tries to save in an async fashion and do callback(success: boolean, details: object)
+// ⚠️ Some savers within window.saveFile, like download saving or Timimi don't care about the callback,
+// so it can be called before actual saving is done (or even give false positives).
+tw.io.saveFile = function(fileUrl, content, callback)
+{
+	if(!callback) return saveFile(fileUrl, content);
+
+	tw.io.asyncSaveFile(fileUrl, content, function(success, details) {
+		if(success) callback(success, details);
+		else {
+			result = saveFile(fileUrl, content);
+			callback(result, {});
+		}
+	});
 };
 
 // Load a file from filesystem [Preemption]
@@ -66,7 +90,9 @@ tw.io.xhrLoadFile = function(filePath, callback)
 	}
 };
 
-// if callback is set, tries to load in an async fashion and do callback(result, details)
+// The general load method to use
+// ==============================
+// If callback is set, tries to load in an async fashion and do callback(result, details)
 tw.io.loadFile = function(fileUrl, callback)
 {
 	if(!callback) return loadFile(fileUrl);
@@ -92,10 +118,8 @@ function ieCreatePath(path)
 
 	// Remove the filename, if present. Use trailing slash (i.e. "foo\bar\") if no filename.
 	var pos = path.lastIndexOf("\\");
-	if(pos == -1)
-		pos = path.lastIndexOf("/");
-	if(pos != -1)
-		path = path.substring(0, pos + 1);
+	if(pos == -1) pos = path.lastIndexOf("/");
+	if(pos != -1) path = path.substring(0, pos + 1);
 
 	// Walk up the path until we find a folder that exists
 	var scan = [path];
@@ -210,102 +234,6 @@ function mozillaLoadFile(filePath)
 	}
 }
 
-function javaUrlToFilename(url)
-{
-	var f = "//localhost";
-	if(url.indexOf(f) == 0)
-		return url.substring(f.length);
-	var i = url.indexOf(":");
-	return i > 0 ? url.substring(i - 1) : url;
-}
-
-/*
- * in between when the applet has been started
- * and the user has given permission to run the applet
- * we get an applet object, but it doesn't have the methods
- * we expect yet.
- */
-var LOG_TIDDLYSAVER = true;
-function logTiddlySaverException(msg, ex)
-{
-	var applet = document.applets['TiddlySaver'];
-	console.log(msg + ": " + ex);
-	if (LOG_TIDDLYSAVER && applet) {
-		try {
-			console.log(msg + ": " + applet.getLastErrorMsg());
-			console.log(msg + ": " + applet.getLastErrorStackTrace());
-		} catch (ex) {}
-	}
-}
-
-function javaDebugInformation()
-{
-	var applet = document.applets['TiddlySaver'];
-	var what = [
-		["Java Version", applet.getJavaVersion],
-		["Last Exception", applet.getLastErrorMsg], // #156
-		["Last Exception Stack Trace", applet.getLastErrorStackTrace],
-		["System Properties", applet.getSystemProperties] ];
-
-	function formatItem (description, method) {
-		try {
-			 result = String(method.call(applet));
-		} catch (ex) {
-			 result = String(ex);
-		}
-		return description + ": " + result;
-	}
-
-	return jQuery.map(what, function (item) { return formatItem.apply(this, item) })
-		.join('\n\n');
-}
-
-function javaSaveFile(filePath, content)
-{
-	if(!filePath) return null;
-	var applet = document.applets['TiddlySaver'];
-	if(applet) {
-		try {
-			return applet.saveFile(javaUrlToFilename(filePath), "UTF-8", content);
-		} catch(ex) {
-			logTiddlySaverException("javaSaveFile", ex);
-		}
-	}
-	try {
-		var s = new java.io.PrintStream(new java.io.FileOutputStream(javaUrlToFilename(filePath)));
-		s.print(content);
-		s.close();
-	} catch(ex2) {
-		return null;
-	}
-	return true;
-}
-
-function javaLoadFile(filePath)
-{
-	if(!filePath) return null;
-	var applet = document.applets['TiddlySaver'];
-	if(applet) {
-		try {
-			var value = applet.loadFile(javaUrlToFilename(filePath), "UTF-8");
-			return !value ? null : String(value);
-		} catch(ex) {
-			logTiddlySaverException("javaLoadFile", ex);
-		}
-	}
-	var content = [];
-	try {
-		var r = new java.io.BufferedReader(new java.io.FileReader(javaUrlToFilename(filePath)));
-		var line;
-		while((line = r.readLine()) != null)
-			content.push(String(line));
-		r.close();
-	} catch(ex2) {
-		return null;
-	}
-	return content.join("\n");
-}
-
 function HTML5DownloadSaveFile(filePath, content)
 {
 	var link = document.createElement("a");
@@ -342,12 +270,13 @@ function manualSaveFile(filePath, content)
 // construct data URI (using base64 encoding to preserve multi-byte encodings)
 function getDataURI(data)
 {
-	if (config.browser.isIE)
-		return "data:text/html," + encodeURIComponent(data);
-	else
+	return config.browser.isIE ?
+		"data:text/html," + encodeURIComponent(data) :
+
 		// manualConvertUnicodeToUTF8 was moved here from convertUnicodeToFileFormat
-		// in 2.9.1 it was used only for FireFox but happened to fix download saving non-ASCII in Chrome & Safari as well
-		return "data:text/html;base64," + encodeBase64(manualConvertUnicodeToUTF8(data));
+		// In 2.9.1, it was used only for FireFox but happened to fix
+		// download saving non-ASCII in Chrome & Safari as well (see 949aff6)
+		"data:text/html;base64," + encodeBase64(manualConvertUnicodeToUTF8(data));
 }
 
 function encodeBase64(data)
