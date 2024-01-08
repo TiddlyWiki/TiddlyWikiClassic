@@ -276,6 +276,12 @@ function saveBackup(localPath, original)
 
 function saveEmpty(localPath, original, posDiv)
 {
+	posDiv = posDiv || locateStoreArea(original);
+	if(!posDiv) {
+		alert(config.messages.emptyFailed);
+		return;
+	}
+
 	var emptyPath, slashPosition;
 	if((slashPosition = localPath.lastIndexOf("/")) != -1)
 		emptyPath = localPath.substr(0, slashPosition) + "/";
