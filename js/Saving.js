@@ -240,13 +240,17 @@ function saveMain(localPath, original, posDiv, callback)
 		if(!callback || config.options.chkPreventAsyncSaving) {
 			var savedOrPending = tw.io.saveFile(localPath, revised);
 			reportStatusAndHandle(savedOrPending, localPath, revised);
-			if(callback) callback(savedOrPending);
+			if(callback) callback(savedOrPending, {
+				original: original
+			});
 		} else tw.io.saveFile(localPath, revised, function(success, details) {
 			reportStatusAndHandle(success, localPath, revised);
+			details.original = original;
 			callback(success, details);
 		});
 	} catch (ex) {
 		tw.io.onSaveMainFail(ex);
+		if(callback) callback(false, { original: original });
 	}
 }
 
