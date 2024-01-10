@@ -208,12 +208,12 @@ function saveChanges(onlyIfDirty, tiddlers)
 		return;
 	}
 
-	tw.io.saveMainAndReport(function postSave() {
+	tw.io.saveMainAndReport(function postSave(savedOrPending, details) {
 		var co = config.options;
-		if (!config.saveByDownload && !config.saveByManualDownload) {
+		if (!config.saveByDownload && !config.saveByManualDownload && details && details.original) {
 			var localPath = tw.io.getOriginalLocalPath();
-			if(co.chkSaveBackups) saveBackup(localPath, original);
-			if(co.chkSaveEmptyTemplate) saveEmpty(localPath, original, posDiv);
+			if(co.chkSaveBackups) saveBackup(localPath, details.original);
+			if(co.chkSaveEmptyTemplate) saveEmpty(localPath, details.original);
 			if(co.chkGenerateAnRssFeed) saveRss(localPath);
 		}
 
