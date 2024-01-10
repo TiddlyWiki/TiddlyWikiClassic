@@ -142,6 +142,12 @@ function recreateOriginal()
 	return content;
 }
 
+// reconstruct the local path to TW itself
+tw.io.getOriginalLocalPath = function()
+{
+	return getLocalPath(document.location.toString());
+};
+
 // Save tiddlywiki (but not backup or anything else)
 tw.io.knownSaveMainFailures = {
 	failedToLoadOriginal: 1,
@@ -151,8 +157,7 @@ tw.io.knownSaveMainFailures = {
 // Save this tiddlywiki with the pending changes
 tw.io.saveMainAndReport = function(callback)
 {
-	var originalPath = document.location.toString();
-	var localPath = getLocalPath(originalPath);
+	var localPath = tw.io.getOriginalLocalPath();
 	var onLoadOriginal = function(original) {
 		if(original == null) {
 			alert(msg.cantSaveError);
@@ -206,6 +211,7 @@ function saveChanges(onlyIfDirty, tiddlers)
 	tw.io.saveMainAndReport(function postSave() {
 		var co = config.options;
 		if (!config.saveByDownload && !config.saveByManualDownload) {
+			var localPath = tw.io.getOriginalLocalPath();
 			if(co.chkSaveBackups) saveBackup(localPath, original);
 			if(co.chkSaveEmptyTemplate) saveEmpty(localPath, original, posDiv);
 			if(co.chkGenerateAnRssFeed) saveRss(localPath);

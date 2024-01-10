@@ -48,7 +48,7 @@ config.macros.upgrade.onClickUpgrade = function(e)
 	}
 
 	w.setButtons([], me.statusPreparingBackup);
-	var localPath = getLocalPath(document.location.toString());
+	var localPath = tw.io.getOriginalLocalPath();
 	var backupPath = getBackupPath(localPath, me.backupExtension);
 	var original = loadOriginal(localPath);
 
@@ -107,7 +107,7 @@ config.macros.upgrade.onLoadCore = function(status, w, responseText, url, xhr)
 config.macros.upgrade.onStartUpgrade = function(wizard, newCoreHtml)
 {
 	wizard.setButtons([], config.macros.upgrade.statusSavingCore);
-	var localPath = getLocalPath(document.location.toString());
+	var localPath = tw.io.getOriginalLocalPath();
 	saveFile(localPath, newCoreHtml);
 
 	wizard.setButtons([], config.macros.upgrade.statusReloadingCore);
