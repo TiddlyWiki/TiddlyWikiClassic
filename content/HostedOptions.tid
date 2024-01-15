@@ -16,7 +16,7 @@ Many people use [[DropBox|http://dropbox.com]] to synchronise their TiddlyWiki d
 !~TiddlyWeb & ~TiddlySpace
 [[TiddlyWeb|http://tiddlyweb.com]] is a flexible architecture for putting tiddlers on the web. On top of it ~TiddlySpace was created in 2010 by the Osmosoft team at BT, and generously operated for the community by them and their successors until December 9th 2016.
 
-[<img[TiddlySpace|./images/shinyspace.png][http://tiddlyspace.com]] [[TiddlySpace|http://tiddlyspace.com]] was a full hosted service for TiddlyWiki that allowed multiple people to edit the same wiki at the same time. It was particularly focused on sharing tiddlers.
+[[TiddlySpace|http://tiddlyspace.com]] was a full hosted service for TiddlyWiki that allowed multiple people to edit the same wiki at the same time. It was particularly focused on sharing tiddlers.
 
 !TiddlyWiki Server for node.js (TWS)
 [[TWS|https://github.com/PoulStaugaard/TWS]] by Poul Staugaard is a simple node.js based serverside for TiddlyWiki.
