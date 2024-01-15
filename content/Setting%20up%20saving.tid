@@ -32,6 +32,7 @@ All of solutions above should work in most desktop ~OSs like Windows, Mac or oth
 |~|[[MainTiddlyServer|https://yakovl.github.io/MainTiddlyServer/]] + ~AWebServer| {{icon{[img[AWebServer on Google Play|https://cdn.simpleicons.org/googleplay][https://play.google.com/store/apps/details?id=com.sylkat.apache]]}}} |MTS works with some PHP servers on Android; the best server option may change with time|
 |iOS|Quine| {{icon{[img[Quine on AppStore|https://cdn.simpleicons.org/appstore/black][https://apps.apple.com/us/app/quine/id1450128957]]}}} |a paid closed source app by Chris Hunt, works with local storage, Dropbox, and iCloud. Requires iOS 12+.|
 !Hosted Options
-Also, you can store your TW(s) on a server:
-* [[TiddlySpot|http://tiddlyspot.com/]], a free hosting for ~TiddlyWiki
-* (this list should be expanded, you can suggest edits by clicking "suggest edits" and following the instructions)
+Also, you can store your TW(s) on a server, for example:
+* [[Tiddlyhost|https://tiddlyhost.com/]], a free hosting service for ~TiddlyWiki
+* (This list should be expanded, you can suggest edits by clicking "suggest edits" and following the instructions)
+* (See also HostedOptions, but some of them are outdated)
