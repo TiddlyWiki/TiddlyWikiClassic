@@ -14,7 +14,9 @@
     "test":       "echo 'not implemented yet, see build-test'",
     "build":      "echo 'not implemented yet'"
   },
-  "dependencies": {},
+  "dependencies": {
+    "jquery": "1.9.1"
+  },
   "devDependencies": {
     "eslint": "^8.2.0",
     "phantomjs": "^2.1.7",
