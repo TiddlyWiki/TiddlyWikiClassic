@@ -168,7 +168,7 @@ pre, code { font-family: monospace, monospace; font-size: 1em; }
 #backstageButton {display:none; position:absolute; z-index:175; top:0; right:0;}
 #backstageButton a {padding: 0.3em 0.5em; display: inline-block;}
 #backstage {position:relative; width:100%; z-index:50;}
-#backstagePanel { display:none; z-index:100; position:absolute; width:90%; margin-left:3em; }
+#backstagePanel { display:none; z-index:100; position:absolute; width:90%; margin:0 5%; }
 .backstagePanelFooter {padding-top:0.2em; float:right;}
 .backstagePanelFooter a {padding:0.2em 0.4em;}
 #backstageCloak {display:none; z-index:20; position:absolute; width:100%; height:100px;}
