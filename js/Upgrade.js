@@ -26,7 +26,11 @@ config.macros.upgrade.handler = function(place)
 {
 	var w = new Wizard();
 	w.createWizard(place, this.wizardTitle);
-	w.addStep(this.step1Title, this.step1Html.format([this.getSourceURL(), this.getSourceURL(), this.docsUrl]));
+	w.addStep(this.step1Title, this.step1Html.format([
+		this.getSourceURL(),
+		this.getSourceURL().replace(/^https:\/\//, ''),
+		this.docsUrl
+	]));
 	w.setButtons([{
 		caption: this.upgradeLabel,
 		tooltip: this.upgradePrompt,
