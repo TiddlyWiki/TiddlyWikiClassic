@@ -1,6 +1,6 @@
-jQuery(document).ready(function(){
+jQuery(document).ready(function() {
 
-	module("jQuery.encoding.digests.sha1.js");
+	module("Encoding (jQuery.encoding.digests.sha1.js)");
 
 	test("SHA-1 digest", function() {
 		expect(5);
@@ -24,7 +24,6 @@ jQuery(document).ready(function(){
 		actual = jQuery.encoding.digests.hexSha1Str("12345678901234567890123456789012345678901234567890123456789012345678901234567890");
 		expected = "50ABF5706A150990A08B2C5EA40FA0E585554732";
 		same(actual, expected, 'SHA-1 hash of test vector 4 should be correct');
-
 	});
 });
 
