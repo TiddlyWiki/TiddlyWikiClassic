@@ -29,6 +29,9 @@ config.macros.toolbar.createCommand = function(place, commandName, tiddler, clas
 		tiddler: tiddler.title
 	});
 	if(className) jQuery(btn).addClass(className);
+	if(commandName === 'permalink') {
+		jQuery(btn).attr('href', config.commands.permalink.getUrl(tiddler.title));
+	}
 };
 
 config.macros.toolbar.isCommandEnabled = function(command, tiddler)
