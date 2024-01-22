@@ -1,6 +1,6 @@
 created: 201102111107
 creator: psd
-modified: 202309151115
+modified: 202401221233
 modifier: Yakov Litvin
 tags: features translations
 title: Translations
@@ -8,4 +8,4 @@ type: text/x-tiddlywiki
 
 ~TiddlyWiki is available in around 20 languages.
 
-Translations are packaged as plugins which are stored at https://github.com/TiddlyWiki/translations
+Translations are packaged as [[plugins|InstallingPlugins]] which are stored at https://github.com/TiddlyWiki/translations
