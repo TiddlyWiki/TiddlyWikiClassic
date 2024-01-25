@@ -137,8 +137,8 @@ h2,h3 {border-bottom:1px solid [[ColorPalette::TertiaryLight]];}
 
 .highlight, .marked {background:[[ColorPalette::SecondaryLight]];}
 
-.editor input {border:1px solid [[ColorPalette::PrimaryMid]];}
-.editor textarea {border:1px solid [[ColorPalette::PrimaryMid]]; width:100%;}
+.editor input {border:1px solid [[ColorPalette::PrimaryMid]]; background:[[ColorPalette::Background]]; color:[[ColorPalette::Foreground]];}
+.editor textarea {border:1px solid [[ColorPalette::PrimaryMid]]; width:100%; background:[[ColorPalette::Background]]; color:[[ColorPalette::Foreground]];}
 .editorFooter {color:[[ColorPalette::TertiaryMid]];}
 .readOnly {background:[[ColorPalette::TertiaryPale]];}
 
