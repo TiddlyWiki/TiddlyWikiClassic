@@ -11,6 +11,8 @@ h1, h2, h3, h4, h5, h6 { color: [[ColorPalette::SecondaryDark]]; }
 h1 {border-bottom:2px solid [[ColorPalette::TertiaryLight]];}
 h2,h3 {border-bottom:1px solid [[ColorPalette::TertiaryLight]];}
 
+.txtOptionInput {background:[[ColorPalette::Background]]; color:[[ColorPalette::Foreground]];}
+
 .button {color:[[ColorPalette::PrimaryDark]]; border:1px solid [[ColorPalette::Background]];}
 .button:hover {color:[[ColorPalette::PrimaryDark]]; background:[[ColorPalette::SecondaryLight]]; border-color:[[ColorPalette::SecondaryMid]];}
 .button:active {color:[[ColorPalette::Background]]; background:[[ColorPalette::SecondaryMid]]; border:1px solid [[ColorPalette::SecondaryDark]];}
