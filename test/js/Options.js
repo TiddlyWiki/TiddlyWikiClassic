@@ -1,5 +1,5 @@
-jQuery(document).ready(function(){
-	
+jQuery(document).ready(function() {
+
 	var numSaves, _autoSaveChanges, _readOnly;
 	module("TiddlyWiki options", {
 		setup: function() {
@@ -10,7 +10,7 @@ jQuery(document).ready(function(){
 			autoSaveChanges = function() {
 				numSaves += 1;
 				return _autoSaveChanges.apply(this, arguments);
-			}
+			};
 			_readOnly = readOnly;
 			readOnly = false;
 		},
@@ -28,6 +28,6 @@ jQuery(document).ready(function(){
 		saveSystemSetting("foo", true);
 		strictEqual(numSaves, 0, "The save is asynchronous so no saves have yet been made");
 		strictEqual(systemSettingSave > 0, true, "However there should be a timeout in progress");
-	});	
+	});
 });
 
