@@ -2,6 +2,24 @@
 //-- Option handling
 //--
 
+tw.options = {
+	defaults: {},
+	define: function(name, defaultValue, description) {
+		this.defaults[name] = defaultValue;
+		if(config.options[name] === undefined) config.options[name] = defaultValue;
+		if(description) config.optionsDesc[name] = description;
+	},
+	hasDefaultValue: function(name) {
+		return config.options[name] == this.defaults[name] ||
+		       config.options[name] === undefined;
+	}
+};
+
+//# set defaults for core options (can't set it in Config.js as tw.options is defined later)
+for(var name in config.options) {
+	tw.options.define(name, config.options[name], config.optionsDesc[name]);
+}
+
 config.optionHandlers = {
 	'txt': {
 		get: function(name) { return encodeCookie(config.options[name].toString()) },
@@ -114,6 +132,7 @@ function saveCookie(name)
 {
 	var key, cookies = {};
 	for(key in config.options) {
+		if(tw.options.hasDefaultValue(key)) continue;
 		var value = getOption(key);
 		value = value == null ? 'false' : value;
 		cookies[key] = value;
@@ -160,6 +179,7 @@ function saveSystemSetting(name, saveFile)
 
 	var text = [];
 	for(key in slices) {
+		if(tw.options.hasDefaultValue(key)) continue;
 		text.push('%0: %1'.format([key, slices[key]]));
 	}
 	text = text.sort().join('\n');
