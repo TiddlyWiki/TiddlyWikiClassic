@@ -26,7 +26,7 @@ ol ol ol ol ol {list-style-type:lower-alpha;}
 ol ol ol ol ol ol {list-style-type:lower-roman;}
 ol ol ol ol ol ol ol {list-style-type:decimal;}
 
-.txtOptionInput {width:11em;}
+.txtOptionInput {width:11em; border-width: 1px; }
 
 #contentWrapper .chkOptionInput {border:0;}
 
