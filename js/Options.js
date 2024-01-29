@@ -179,7 +179,6 @@ function saveSystemSetting(name, saveFile)
 
 	var text = [];
 	for(key in slices) {
-		if(tw.options.hasDefaultValue(key)) continue;
 		text.push('%0: %1'.format([key, slices[key]]));
 	}
 	text = text.sort().join('\n');
