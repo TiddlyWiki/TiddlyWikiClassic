@@ -38,9 +38,9 @@ Infrastructure:
 
 [[Lingo updates|https://github.com/TiddlyWiki/translations/blob/master/Core%20lingo%20history.md]] (for translations)
 
-Docs updates include added steps of [[releasing|https://github.com/TiddlyWiki/TiddlyWikiClassic/blob/master/build/README.md#releasing-and-updating-the-site]], minor links and styles updates, removing mentions of the (long gone) Wii browser, and the update of the ~GettingStarted shadow mentioned above.
+Docs updates include added steps of [[releasing|https://github.com/TiddlyWiki/TiddlyWikiClassic/blob/master/build/README.md#releasing-and-updating-the-site]], replacing Tiddlyspot with Tiddlyhost, minor links and styles updates, removing mentions of the (long gone) Wii browser, and the update of the ~GettingStarted shadow mentioned above.
 
-Acknowledgements for contributions: to Pengju Yan.
+Acknowledgements for contributions: to Pengju Yan, Simon Baird.
 
 The full changelog is available [[on github|https://github.com/TiddlyWiki/TiddlyWikiClassic/pull/299#issuecomment-1914697675]].
 
