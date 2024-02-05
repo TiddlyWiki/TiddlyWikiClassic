@@ -43,7 +43,7 @@ output = cookTwIntoFolder(recipePath, destinationPath, 'twcore.js', 'tiddlywiki2
 console.log(output)
 
 console.log(`BUILD: copying JQUERY.JS`)
-fs.copyFileSync(joinPath(__dirname, '../jquery/jquery.js'), joinPath(destinationPath, 'jquery.js'))
+fs.copyFileSync(joinPath(__dirname, '../node_modules/jquery/jquery.min.js'), joinPath(destinationPath, 'jquery.js'))
 console.log(`BUILD: copying JQUERY.TWSTYLESHEET.JS`)
 fs.copyFileSync(joinPath(__dirname, '../jquery/plugins/jQuery.twStylesheet.js'),
 	joinPath(destinationPath, 'jQuery.twStylesheet.js'))
