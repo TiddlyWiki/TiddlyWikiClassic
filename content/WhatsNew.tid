@@ -6,13 +6,13 @@ tags: gettingstarted welcome
 title: WhatsNew
 type: text/x-tiddlywiki
 
-The [[release 2.10.1|https://github.com/TiddlyWiki/TiddlyWiki/releases/edit/v2.10.1]] introduces default options, fixes saving backups, updates some UI bits, including a more instructive ~GettingStarted shadow, improves permalink buttons, and more. Here's the summary of changes:
+The [[release 2.10.1|https://github.com/TiddlyWiki/TiddlyWiki/releases/tag/v2.10.1]] introduces default options, fixes saving backups, updates some UI bits, including a more instructive ~GettingStarted shadow, improves permalink buttons, and more. Here's the summary of changes:
 
 Behavior improvements:
 * Default option values are no longer stored in cookies;
 * Permalink buttons support context menus (to copy url/open in a new tab/...).
 
-UI updates (see the [[visual summary|https://github.com/TiddlyWiki/TiddlyWikiClassic/pull/299#issuecomment-1914724537]]):
+UI updates (see the [[visual summary|https://github.com/TiddlyWiki/TiddlyWiki/pull/299#issuecomment-1914724537]]):
 * Colors of inputs are now based on ColorPalette (Background, Foreground);
 * Ugrade wizard now looks better (on mobile devices in the first place, when using with a proper {{{viewport}}} tag):
 ** Symmetrical margin for backstage panels (avoid viewport overflow);
@@ -38,11 +38,11 @@ Infrastructure:
 
 [[Lingo updates|https://github.com/TiddlyWiki/translations/blob/master/Core%20lingo%20history.md]] (for translations)
 
-Docs updates include added steps of [[releasing|https://github.com/TiddlyWiki/TiddlyWikiClassic/blob/master/build/README.md#releasing-and-updating-the-site]], replacing Tiddlyspot with Tiddlyhost, minor links and styles updates, removing mentions of the (long gone) Wii browser, and the update of the ~GettingStarted shadow mentioned above.
+Docs updates include added steps of [[releasing|https://github.com/TiddlyWiki/TiddlyWiki/blob/master/build/README.md#releasing-and-updating-the-site]], replacing Tiddlyspot with Tiddlyhost, minor links and styles updates, removing mentions of the (long gone) Wii browser, and the update of the ~GettingStarted shadow mentioned above.
 
 Acknowledgements for contributions: to Pengju Yan, Simon Baird.
 
-The full changelog is available [[on github|https://github.com/TiddlyWiki/TiddlyWikiClassic/pull/299#issuecomment-1914697675]].
+The full changelog is available [[on github|https://github.com/TiddlyWiki/TiddlyWiki/pull/299#issuecomment-1914697675]].
 
 <<slider "" [[WhatsNew##2.10.0]] "Release 2.10.0">>
 <<slider "" [[WhatsNew##2.9.4]] "Release 2.9.4">>
@@ -58,7 +58,7 @@ Behavior improvements:
 * Upgrading wizard is now more instructive and prevents losing content when trying to upgrade with some savers;
 * {{{<<version>>}}} now also shows the number of a "nightly" build.
 
-UI updates (see the [[visual summary|https://github.com/TiddlyWiki/TiddlyWikiClassic/pull/294#issuecomment-1868458899]] below the changelog):
+UI updates (see the [[visual summary|https://github.com/TiddlyWiki/TiddlyWiki/pull/294#issuecomment-1868458899]] below the changelog):
 * Tabs now use common background (instead of gray), don't "sink" into the content and are not broken into 2 lines;
 * Remove an excessive link in GettingStarted;
 * Search button now looks the same as other buttons in the sidebar;
@@ -88,11 +88,11 @@ Infrastructure:
 
 Docs updates include repairing links in [[Examples]] and TutorialsAndGuides and adding the Volvo page and Dutch usermanual there, more compact and accurate [[Setting up saving]] and related tiddlers ([[Advanced download options]], details for some browsers), up-to-date instructions for updating (both inside TW and in HowToUpgrade here), rewrite of [[slider macro]], mentions of plugins introducing additional [[filters|Filters]], updates of HelloThere and TiddlyWiki5, and updates of DarkModePlugin (prevent unwanted exit confirmations) and SimpleSearchPlugin.
 
-Dev docs updates include several new articles about [[using git and GitHub|./dev/docs_from_TiddlyWikiDev.tiddlyspace.com.html#%5B%5BUsing%20git%20and%20GitHub%5D%5D]] and contributing, new 'Releasing and updating the site' section in the [[build readme|https://github.com/TiddlyWiki/TiddlyWikiClassic/blob/master/build/README.md]], clean up of DeveloperDocumentation, updating links, and also various updates of the [[dev space|./dev/docs_from_TiddlyWikiDev.tiddlyspace.com.html]] for its further editing.
+Dev docs updates include several new articles about [[using git and GitHub|./dev/docs_from_TiddlyWikiDev.tiddlyspace.com.html#%5B%5BUsing%20git%20and%20GitHub%5D%5D]] and contributing, new 'Releasing and updating the site' section in the [[build readme|https://github.com/TiddlyWiki/TiddlyWiki/blob/master/build/README.md]], clean up of DeveloperDocumentation, updating links, and also various updates of the [[dev space|./dev/docs_from_TiddlyWikiDev.tiddlyspace.com.html]] for its further editing.
 
 Acknowledgements for contributions: to Okido, Mark.
 
-The full changelog is available [[on github|https://github.com/TiddlyWiki/TiddlyWikiClassic/pull/294#issuecomment-1868458899]].
+The full changelog is available [[on github|https://github.com/TiddlyWiki/TiddlyWiki/pull/294#issuecomment-1868458899]].
 
 !2.9.4
 The [[release 2.9.4|https://github.com/TiddlyWiki/TiddlyWiki/releases/edit/v2.9.4]] continues modernizing ~TiddlyWiki appearence and its infrastructure. Here's the summary of changes:
@@ -105,10 +105,10 @@ Behavior improvements:
 Appearence modernizing:
 * update styles of tables, popups (better paddings, colors, font sizes etc)
 * reduce page header height
-* various other minor updates, see visual summary [[here|https://github.com/TiddlyWiki/TiddlyWikiClassic/pull/284#issuecomment-1544536323]]
+* various other minor updates, see visual summary [[here|https://github.com/TiddlyWiki/TiddlyWiki/pull/284#issuecomment-1544536323]]
 
 Fixes:
-* saving a tiddler from story when renaming to an existing one shouldn't result in 2 tiddlers ([[#146|https://github.com/TiddlyWiki/TiddlyWikiClassic/issues/146]])
+* saving a tiddler from story when renaming to an existing one shouldn't result in 2 tiddlers ([[#146|https://github.com/TiddlyWiki/TiddlyWiki/issues/146]])
 * {{{store.saveTiddler}}} should rename tiddler when {{{newTitle}}} is provided
 * {{{store.saveTiddler}}} should allow falsy {{{newTitle}}} (meaning "don't update")
 * upgrading should start correctly (was broken in 2.9.3)
@@ -118,7 +118,7 @@ Hackability:
 * extract end of saving main (messages of success/failure) into {{{tw.io.onSaveMainFail}}} and {{{tw.io.onSaveMainSuccess}}}
 ** //warning:// savers like Timimi (async ones that don't "call back") call these //before// saving and give false positive behavior (as it was previously)
 * turn {{{onStartUpgrade}}} into a {{{config.macros.upgrade}}} method
-[[Summary|https://github.com/TiddlyWiki/TiddlyWikiClassic/pull/284#issuecomment-1544337558]] of changes that affect lingo (translations), backward compatibility (tiny details, presumably of no importance), and deprecations.
+[[Summary|https://github.com/TiddlyWiki/TiddlyWiki/pull/284#issuecomment-1544337558]] of changes that affect lingo (translations), backward compatibility (tiny details, presumably of no importance), and deprecations.
 
 Infrastructure:
 * fix: make build tools work when project path has spaces
@@ -128,7 +128,7 @@ This release finishes the "first wave" of codestyle updates which involved almos
 
 Docs updates include added [[Filters]] description, DarkModePlugin, adjustments in [[PeriodicTable]] and [[Tables Formatting]] (showcasing new table styles), [[PHP server recommendation|Setting up saving]] for Android 10+, and others. These are small updates; much more yet to come.
 
-The full changelog is available [[on github|https://github.com/TiddlyWiki/TiddlyWikiClassic/pull/284#issuecomment-1540492980]].
+The full changelog is available [[on github|https://github.com/TiddlyWiki/TiddlyWiki/pull/284#issuecomment-1540492980]].
 
 !2.9.3
 The [[release 2.9.3|https://github.com/TiddlyWiki/TiddlyWiki/releases/edit/v2.9.3]] starts the process of modernizing ~TiddlyWiki appearence and its infrastructure. Here's the summary of changes:
