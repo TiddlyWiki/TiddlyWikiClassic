@@ -142,6 +142,12 @@ function recreateOriginal()
 	return content;
 }
 
+// reconstruct the local path to TW itself
+tw.io.getOriginalLocalPath = function()
+{
+	return getLocalPath(document.location.toString());
+};
+
 // Save tiddlywiki (but not backup or anything else)
 tw.io.knownSaveMainFailures = {
 	failedToLoadOriginal: 1,
@@ -151,8 +157,7 @@ tw.io.knownSaveMainFailures = {
 // Save this tiddlywiki with the pending changes
 tw.io.saveMainAndReport = function(callback)
 {
-	var originalPath = document.location.toString();
-	var localPath = getLocalPath(originalPath);
+	var localPath = tw.io.getOriginalLocalPath();
 	var onLoadOriginal = function(original) {
 		if(original == null) {
 			alert(msg.cantSaveError);
@@ -203,11 +208,12 @@ function saveChanges(onlyIfDirty, tiddlers)
 		return;
 	}
 
-	tw.io.saveMainAndReport(function postSave() {
+	tw.io.saveMainAndReport(function postSave(savedOrPending, details) {
 		var co = config.options;
-		if (!config.saveByDownload && !config.saveByManualDownload) {
-			if(co.chkSaveBackups) saveBackup(localPath, original);
-			if(co.chkSaveEmptyTemplate) saveEmpty(localPath, original, posDiv);
+		if (!config.saveByDownload && !config.saveByManualDownload && details && details.original) {
+			var localPath = tw.io.getOriginalLocalPath();
+			if(co.chkSaveBackups) saveBackup(localPath, details.original);
+			if(co.chkSaveEmptyTemplate) saveEmpty(localPath, details.original);
 			if(co.chkGenerateAnRssFeed) saveRss(localPath);
 		}
 
@@ -234,13 +240,17 @@ function saveMain(localPath, original, posDiv, callback)
 		if(!callback || config.options.chkPreventAsyncSaving) {
 			var savedOrPending = tw.io.saveFile(localPath, revised);
 			reportStatusAndHandle(savedOrPending, localPath, revised);
-			if(callback) callback(savedOrPending);
+			if(callback) callback(savedOrPending, {
+				original: original
+			});
 		} else tw.io.saveFile(localPath, revised, function(success, details) {
 			reportStatusAndHandle(success, localPath, revised);
+			details.original = original;
 			callback(success, details);
 		});
 	} catch (ex) {
 		tw.io.onSaveMainFail(ex);
+		if(callback) callback(false, { original: original });
 	}
 }
 
@@ -276,6 +286,12 @@ function saveBackup(localPath, original)
 
 function saveEmpty(localPath, original, posDiv)
 {
+	posDiv = posDiv || locateStoreArea(original);
+	if(!posDiv) {
+		alert(config.messages.emptyFailed);
+		return;
+	}
+
 	var emptyPath, slashPosition;
 	if((slashPosition = localPath.lastIndexOf("/")) != -1)
 		emptyPath = localPath.substr(0, slashPosition) + "/";

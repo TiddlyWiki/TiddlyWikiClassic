@@ -105,7 +105,7 @@ config.macros.importTiddlers.onBrowseChange = function(e)
 			file = this.files[0].fileName; // REQUIRES PRIVILEGES.. NULL otherwise
 		} catch (ex) {
 			// non-priv fallback: combine filename with path to current document
-			var path = getLocalPath(document.location.href);
+			var path = tw.io.getOriginalLocalPath();
 			var slashpos = path.lastIndexOf('/');
 			if (slashpos == -1) slashpos = path.lastIndexOf('\\');
 			if (slashpos != -1) path = path.substr(0, slashpos + 1); // remove filename, leave trailing slash

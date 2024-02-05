@@ -26,7 +26,7 @@ ol ol ol ol ol {list-style-type:lower-alpha;}
 ol ol ol ol ol ol {list-style-type:lower-roman;}
 ol ol ol ol ol ol ol {list-style-type:decimal;}
 
-.txtOptionInput {width:11em;}
+.txtOptionInput {width:11em; border-width: 1px; }
 
 #contentWrapper .chkOptionInput {border:0;}
 
@@ -97,7 +97,7 @@ a.tiddlyLinkNonExisting.shadow {font-weight:bold;}
 .popupTiddler {position: absolute; z-index:300; padding:1em; margin:0;}
 
 .tabset {padding:1em 0 0 0.5em;}
-.tab {display: inline-block; position: relative; bottom: -0.7px; margin: 0 0.25em 0 0; padding:0.2em;}
+.tab {display: inline-block; white-space: nowrap; position: relative; bottom: -0.7px; margin: 0 0.25em 0 0; padding:0.2em;}
 .tabContents {padding:0.5em;}
 .tabContents ul, .tabContents ol {margin:0; padding:0;}
 .txtMainTab .tabContents li {list-style:none;}
@@ -168,7 +168,7 @@ pre, code { font-family: monospace, monospace; font-size: 1em; }
 #backstageButton {display:none; position:absolute; z-index:175; top:0; right:0;}
 #backstageButton a {padding: 0.3em 0.5em; display: inline-block;}
 #backstage {position:relative; width:100%; z-index:50;}
-#backstagePanel { display:none; z-index:100; position:absolute; width:90%; margin-left:3em; }
+#backstagePanel { display:none; z-index:100; position:absolute; width:90%; margin:0 5%; }
 .backstagePanelFooter {padding-top:0.2em; float:right;}
 .backstagePanelFooter a {padding:0.2em 0.4em;}
 #backstageCloak {display:none; z-index:20; position:absolute; width:100%; height:100px;}

@@ -13,7 +13,7 @@ merge(config.tasks, {
 	importTask: { text: "import", tooltip: "Import tiddlers and plugins " +
 		"from other TiddlyWiki files and servers", content: '<<importTiddlers>>' },
 	tweak: { text: "tweak", tooltip: "Tweak the appearance and behaviour of TiddlyWiki", content: '<<options>>' },
-	upgrade: { text: "upgrade", tooltip: "Upgrade TiddlyWiki core code", content: '<<upgrade>>' },
+	upgrade: { text: "upgrade", tooltip: "Upgrade TiddlyWiki core", content: '<<upgrade>>' },
 	plugins: { text: "plugins", tooltip: "Manage installed plugins", content: '<<plugins>>' }
 });
 
@@ -358,8 +358,8 @@ merge(config.macros.importTiddlers, {
 });
 
 merge(config.macros.upgrade, {
-	wizardTitle: "Upgrade TiddlyWiki core code",
-	step1Title: "Update or repair this TiddlyWiki to the latest release",
+	wizardTitle: "Upgrade TiddlyWiki",
+	step1Title: "Update or repair TiddlyWiki core to the latest release",
 	step1Html: "You are about to upgrade TiddlyWiki core to the latest release " +
 		"(from <a href='%0' class='externalLink' target='_blank'>%1</a>). " +
 		"Your content will be preserved across the upgrade.<br><br>" +

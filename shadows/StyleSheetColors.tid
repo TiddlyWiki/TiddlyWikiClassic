@@ -11,6 +11,8 @@ h1, h2, h3, h4, h5, h6 { color: [[ColorPalette::SecondaryDark]]; }
 h1 {border-bottom:2px solid [[ColorPalette::TertiaryLight]];}
 h2,h3 {border-bottom:1px solid [[ColorPalette::TertiaryLight]];}
 
+.txtOptionInput {background:[[ColorPalette::Background]]; color:[[ColorPalette::Foreground]];}
+
 .button {color:[[ColorPalette::PrimaryDark]]; border:1px solid [[ColorPalette::Background]];}
 .button:hover {color:[[ColorPalette::PrimaryDark]]; background:[[ColorPalette::SecondaryLight]]; border-color:[[ColorPalette::SecondaryMid]];}
 .button:active {color:[[ColorPalette::Background]]; background:[[ColorPalette::SecondaryMid]]; border:1px solid [[ColorPalette::SecondaryDark]];}
@@ -53,7 +55,7 @@ h2,h3 {border-bottom:1px solid [[ColorPalette::TertiaryLight]];}
 .wizardFooter .status a { color: [[ColorPalette::PrimaryPale]]; }
 .wizard .button {
 	color:[[ColorPalette::Foreground]]; background:[[ColorPalette::SecondaryLight]]; border: 1px solid;
-	border-color:[[ColorPalette::SecondaryPale]] [[ColorPalette::SecondaryDark]] [[ColorPalette::SecondaryDark]] [[ColorPalette::SecondaryPale]];
+	border-color:[[ColorPalette::SecondaryDark]];
 }
 .wizard .button:hover {color:[[ColorPalette::Foreground]]; background:[[ColorPalette::Background]];}
 .wizard .button:active {
@@ -105,10 +107,10 @@ h2,h3 {border-bottom:1px solid [[ColorPalette::TertiaryLight]];}
 .selected .toolbar a {color:[[ColorPalette::TertiaryMid]];}
 .selected .toolbar a:hover {color:[[ColorPalette::Foreground]];}
 
-.tagging, .tagged { border: 1px solid [[ColorPalette::TertiaryPale]]; background-color: [[ColorPalette::TertiaryPale]]; }
-.selected .tagging, .selected .tagged { background-color: [[ColorPalette::TertiaryLight]]; border: 1px solid [[ColorPalette::TertiaryLight]]; }
+.tagging, .tagged { border: 2px solid [[ColorPalette::TertiaryPale]]; }
+.selected .tagging, .selected .tagged { border: 2px solid [[ColorPalette::TertiaryLight]]; }
 .tagging .listTitle, .tagged .listTitle {color:[[ColorPalette::PrimaryDark]];}
-.tagging .button, .tagged .button {border:none;}
+.tagging .button, .tagged .button { border:none; }
 
 .footer {color:[[ColorPalette::TertiaryLight]];}
 .selected .footer {color:[[ColorPalette::TertiaryMid]];}
@@ -137,8 +139,8 @@ h2,h3 {border-bottom:1px solid [[ColorPalette::TertiaryLight]];}
 
 .highlight, .marked {background:[[ColorPalette::SecondaryLight]];}
 
-.editor input {border:1px solid [[ColorPalette::PrimaryMid]];}
-.editor textarea {border:1px solid [[ColorPalette::PrimaryMid]]; width:100%;}
+.editor input {border:1px solid [[ColorPalette::PrimaryMid]]; background:[[ColorPalette::Background]]; color:[[ColorPalette::Foreground]];}
+.editor textarea {border:1px solid [[ColorPalette::PrimaryMid]]; width:100%; background:[[ColorPalette::Background]]; color:[[ColorPalette::Foreground]];}
 .editorFooter {color:[[ColorPalette::TertiaryMid]];}
 .readOnly {background:[[ColorPalette::TertiaryPale]];}
 

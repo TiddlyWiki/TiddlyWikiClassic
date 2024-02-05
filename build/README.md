@@ -43,8 +43,17 @@ Building index.html and generating RSS for classic.tiddlywiki.com
 
 Releasing and updating the site
 -------------------------------
-This involves a number actions and files to update. The procedure should be steamlined more,
-but here are useful references:
+This involves a number actions and files to update (after development), including:
 
-* steps of releases [2.9.4](https://github.com/TiddlyWiki/TiddlyWikiClassic/pull/284) and [2.9.3](https://github.com/TiddlyWiki/TiddlyWikiClassic/pull/274);
+1. testing, publishing a beta for testing, fixing issues;
+2. gathering changelog;
+3. bumping version (Version.js, package.json, git tag), merging `dev` into `master`;
+4. creating a Github release;
+5. updating the site;
+6. announcing.
+
+Later, the procedure will be explained here in more details, including the post-release parts (updating translations, servers, ...)
+and streamlined/automated where possible; for now, check these references:
+
+* steps of the releases [2.10.0](https://github.com/TiddlyWiki/TiddlyWikiClassic/pull/294), [2.9.4](https://github.com/TiddlyWiki/TiddlyWikiClassic/pull/284) and [2.9.3](https://github.com/TiddlyWiki/TiddlyWikiClassic/pull/274);
 * a [GitHub Action](https://github.com/TiddlyWiki/tiddlywiki.github.com/blob/master/.github/workflows/update-site-new-release.yaml) to update all the files on the site.

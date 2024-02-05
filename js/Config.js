@@ -39,6 +39,7 @@ config.messages = {
 config.options = {
 	chkAnimate: true,
 	chkAutoSave: false,
+	chkBackstage: false,
 	chkCaseSensitiveSearch: false,
 	chkConfirmDelete: true,
 	chkDisplayInstrumentation: false,
@@ -53,6 +54,7 @@ config.options = {
 	chkRemoveExtraMarkers: false, // #162
 	chkSaveBackups: true,
 	chkSaveEmptyTemplate: false,
+	chkSliderOptionsPanel: false,
 	chkToggleLinks: false,
 	chkUsePreForStorage: true, // Whether to use <pre> format for storage
 	txtBackupFolder: "",
@@ -61,7 +63,8 @@ config.options = {
 	txtMainTab: "tabTimeline",
 	txtMaxEditRows: "30",
 	txtMoreTab: "moreTabAll",
-	txtTheme: ""
+	txtTheme: "",
+	txtUpgradeCoreURI: ""
 };
 config.optionsDesc = {};
 

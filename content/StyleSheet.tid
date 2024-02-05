@@ -56,4 +56,8 @@ body {
 	box-shadow: 0 0 0 1px [[ColorPalette::QuaternaryDark]];
 }
 
+.icon img {
+	max-height: 24px;
+}
+
 /*}}}*/

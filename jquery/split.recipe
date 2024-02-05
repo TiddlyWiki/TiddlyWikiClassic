@@ -1,2 +1,2 @@
-jslib: jquery.js
+jslib: ../node_modules/jquery/jquery.min.js
 recipe: plugins/split.recipe
