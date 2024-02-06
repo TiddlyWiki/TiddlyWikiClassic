@@ -407,8 +407,6 @@ tiddler: closeAll%20macro.tid
 
 tiddler: example.tid
 
-tiddler: favicon.ico.tid
-
 tiddler: list%20macro.tid
 
 tiddler: luakit.tid
