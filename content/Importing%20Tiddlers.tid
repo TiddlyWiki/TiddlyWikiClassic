@@ -1,13 +1,12 @@
 created: 20110301151400000
 creator: psd
-modified: 20111020135100000
-modifier: jermolene
+modified: 20211020135100000
+modifier: Yakov Litvin
 title: Importing Tiddlers
 type: text/x-tiddlywiki
 
-To import tiddlers from another ~TiddlyWiki file, or from an external website, follow these instructions.
-# If the tiddler is on an external site, first copy the URL of the site which includes the tiddler you'd like to download into your clipboard (eg http://tiddlytools.github.io)
-# Open your local ~TiddlyWiki file from your computer.
-# Click on the 'Backstage' link that you can see at the very top right hand side of the page.
-# In the menu, click on 'Import'. You will then see a window that looks like this - and you can follow the guidance from there. Note that you may need to grant authorisation to your ~TiddlyWiki file to import tiddlers - this is fine and expected.
-<<importTiddlers>>
+You can import tiddlers from another ~TiddlyWiki file, or from an external website this way:
+# If the tiddler is on an external site, first copy the URL of that site (like https://tiddlytools.com/Classic/);
+# In your ~TiddlyWiki, click on the 'Backstage' button at the top right of the page;
+# In the menu, click on 'Import' and follow the guidance from there. Note that you may need to grant authorisation to your ~TiddlyWiki file to import tiddlers – this is fine and expected.
+Alternatively, you can use {{{<<importTiddlers>>}}} macro to show the import wizard outside the backstage.
