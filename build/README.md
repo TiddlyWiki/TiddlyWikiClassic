@@ -55,5 +55,5 @@ This involves a number actions and files to update (after development), includin
 Later, the procedure will be explained here in more details, including the post-release parts (updating translations, servers, ...)
 and streamlined/automated where possible; for now, check these references:
 
-* steps of the releases [2.10.0](https://github.com/TiddlyWiki/TiddlyWikiClassic/pull/294), [2.9.4](https://github.com/TiddlyWiki/TiddlyWikiClassic/pull/284) and [2.9.3](https://github.com/TiddlyWiki/TiddlyWikiClassic/pull/274);
+* steps of the releases [2.10.1](https://github.com/TiddlyWiki/TiddlyWikiClassic/pull/299), [2.10.0](https://github.com/TiddlyWiki/TiddlyWikiClassic/pull/294), [2.9.4](https://github.com/TiddlyWiki/TiddlyWikiClassic/pull/284) and [2.9.3](https://github.com/TiddlyWiki/TiddlyWikiClassic/pull/274);
 * a [GitHub Action](https://github.com/TiddlyWiki/tiddlywiki.github.com/blob/master/.github/workflows/update-site-new-release.yaml) to update all the files on the site.
