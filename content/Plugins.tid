@@ -1,15 +1,18 @@
 created: 20110211110600000
 creator: psd
-modified: 20111103182500000
-modifier: jermolene
+modified: 20240222114500000
+modifier: Yakov Litvin
 tags: community concepts gettingstarted
 title: Plugins
 type: text/x-tiddlywiki
 
-~TiddlyWiki can be extended by [[installing plugins|InstallingPlugins]] that implement a wide variety of features (including [[Macros]], [[themes|http://tiddlythemes.com/]] or tweaks).
+~TiddlyWiki can be extended by [[installing plugins|InstallingPlugins]] (and [[other extensions|Customisation]]) that implement a wide variety of features (like adding [[better search|Search]], formulas support, additional [[Macros]], etc).
 
-Community member Dave Gifford oversees an extensive catalogue of available plugins at [[TiddlyVault|http://tiddlyvault.tiddlyspot.com/]], and Eric Shulman maintains his own impressive collection of plugins at [[TiddlyTools|http://tiddlytools.github.io]]. More recently, Saq Imtiaz has built a service which lists plugins from all around the web in a single place, at [[plugins.tiddlywiki.org|http://plugins.tiddlywiki.org/]]
+There are several catalogues of plugins and other extensions, for instance:
+* [[TiddlyVault|https://tiddlyvault.tiddlyspot.com/]] by Dave Gifford,
+* [[TiddlyTools|https://tiddlytools.com/Classic/]] (contains mostly extensions by Eric Shulman, but there are lots of them),
+* servers of some other authors are tagged [[systemServer]] here (but it's not a comprehensive list),
+* [[Customize Space Archive|https://yakovlitvin.pro/TW/TS_backups/customize.tiddlyspace.com%20(24.02.2016).html]] (a comprehensive catalogue of its time).
+As many of them were not maintained for a while, some links got broken, so sometimes you'll need to use [[Web Archive|https://archive.org/web]] to get an extension.
 
-When you've chosen the plugin you'd like to import, follow the directions in ImportTiddlers (just make sure to tag the plugin {{{systemConfig}}}).
-
-See http://tiddlywikidev.tiddlyspace.com/ for information on writing plugins for TiddlyWiki.
+For information on writing plugins, see DeveloperDocumentation.
