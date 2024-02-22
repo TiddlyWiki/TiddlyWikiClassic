@@ -1,13 +1,13 @@
 created: 20111114122100000
 creator: jermolene
-modified: 20111114122800000
-modifier: jermolene
+modified: 20240222134800000
+modifier: Yakov Litvin
 tags: niche
 title: Mathematics
 type: text/x-tiddlywiki
 
-There are several ways to incorporate mathematical formulae into TiddlyWiki, both of which let you to type ordinary LaTeX into a tiddler:
-1. Use the [[jsMath|http://www.math.union.edu/~dpvc/jsMath/]] library via Bob McElrath's [[TiddlyJsMath|http://bob.mcelrath.org/tiddlyjsmath.html]] plugin
-2. Use the [[MathJax|http://www.mathjax.org/]] library via [[PluginMathJax|http://math-template.tiddlyspace.com/#%5B%5BPluginMathJax%20v1.3%5D%5D]]
+There are several ways to incorporate mathematical formulae into ~TiddlyWiki and use ~LaTeX in tiddlers:
+# The latest solution is [[TwFormulaPlugin|https://yakovlitvin.pro/TW/pre-releases/TwFormulaPlugin/]], allowing to use ~KaTeX and other libraries like ~MathJax, jqMath, and ~MathQuill.
+# It's worth mentioning some of its predecessors: [[PluginMathJax|http://math-template.tiddlyspace.com/#%5B%5BPluginMathJax%20v1.3%5D%5D]], [[TiddlyJsMath|http://bob.mcelrath.org/tiddlyjsmath.html]], and [[MathSVGPlugin|https://web.archive.org/web/20130707161357/http://www.math.ist.utl.pt/~psoares/mathsvg.html]]; but it's unlikely that you'll need them.
 
-An alternative is to use a service like [[CodeCogs|http://www.codecogs.com/latex/eqneditor.php]] that enables you to generate images of equations from LaTeX source that can be manually inserted into TiddlyWiki. Some examples of this technique are http://twmath.tiddlyspot.com/ and http://twequation.tiddlyspot.com/
+An alternative is to use a service like [[CodeCogs|http://www.codecogs.com/latex/eqneditor.php]] that enables you to generate images of equations from ~LaTeX source that can be manually inserted into ~TiddlyWiki. Some examples of this technique are https://twmath.tiddlyspot.com and https://twequation.tiddlyspot.com

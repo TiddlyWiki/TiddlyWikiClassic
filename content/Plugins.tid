@@ -6,7 +6,7 @@ tags: community concepts gettingstarted
 title: Plugins
 type: text/x-tiddlywiki
 
-~TiddlyWiki can be extended by [[installing plugins|InstallingPlugins]] (and [[other extensions|Customisation]]) that implement a wide variety of features (like adding [[better search|Search]], formulas support, additional [[Macros]], etc).
+~TiddlyWiki can be extended by [[installing plugins|InstallingPlugins]] (and [[other extensions|Customisation]]) that implement a wide variety of features (like adding [[better search|Search]], [[formulas support|Mathematics]], additional [[Macros]], etc).
 
 There are several catalogues of plugins and other extensions, for instance:
 * [[TiddlyVault|https://tiddlyvault.tiddlyspot.com/]] by Dave Gifford,
