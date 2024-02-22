@@ -1,16 +1,19 @@
 created: 20111004124700000
 creator: jon
-modified: 20130426084300000
-modifier: jermolene
+modified: 20230426084300000
+modifier: Yakov Litvin
 tags: browsers issues
 title: TiddlyWiki Browser Compatibility
 type: text/x-tiddlywiki
 
-!!!Known Problems with Upgrading TiddlyWiki
-* Versions of TiddlyWiki before and including 2.6.3 are known to have an issue with the upgrade function. To upgrade these versions you will need to [[download|Downloading]] the latest version of an empty TiddlyWiki and import your content into it using the [[import function|Import Tiddlers]] in the backstage.
-!!!Known Problems with Importing in TiddlyWiki
-* It is not possible to import from TiddlyWiki's on servers which are not [[CORS|http://en.wikipedia.org/wiki/Cross-Origin_Resource_Sharing]] enabled.  Although many popular sites, such as [[TiddlyTools|http://tiddlytools.github.io/]], are currently CORS enabled, some are not. Fortunately this is fixable - webmasters can enable CORS on their sites by following the instructions [[here|http://enable-cors.org]] and if a website is not CORS enabled you can e-mail the owner to tell them the problem.
-* Some browsers will only allow you to import from other TiddlyWikis in the same directory as your TiddlyWiki. If you use Chrome you can enable this by modifying the Chrome shortcut to include the following parameter
+~TiddlyWiki relies on loading and saving files in some of its functionality, but as loading and saving files got more and more restricted for security reasons, such functionality may work differently with different browsers and savers.
+
+!!!Upgrading
+See HowToUpgrade. Starting from TW 2.10.0, TW itself helps you with upgrading, providing instructions if something doesn't work and making sure your data is safe.
+
+!!!Known Problems with Importing in ~TiddlyWiki
+* It is not possible to import from ~TiddlyWiki's on servers which are not [[CORS|http://en.wikipedia.org/wiki/Cross-Origin_Resource_Sharing]] enabled.  Although many popular sites, such as [[TiddlyTools|https://tiddlytools.com/Classic/]], are currently CORS enabled, some are not. Fortunately this is fixable - webmasters can enable CORS on their sites by following the instructions [[here|http://enable-cors.org]] and if a website is not CORS enabled you can e-mail the owner to tell them the problem.
+* Some browsers will only allow you to import from other TiddlyWikis in the same directory as your ~TiddlyWiki. If you use Chrome you can enable this by modifying the Chrome shortcut to include the following parameter
 {{{
 --allow-file-access-from-files
 }}}
