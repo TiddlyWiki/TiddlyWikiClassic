@@ -1,17 +1,18 @@
 created: 20110211110600000
 creator: psd
-modified: 20111103173300000
-modifier: jermolene
+modified: 20240222111100000
+modifier: Yakov Litvin
 title: Customisation
 type: text/x-tiddlywiki
 
 You can customise the appearance and behaviour of TiddlyWiki to almost any degree you want:
 * Install [[Plugins]] to extend the core functionality
-* Use the ColorPalette to change the basic colour scheme
-* Use built in [[Formatting|Basic Formatting]] techniques
-* Create a CustomStyleSheet for finer grained control over the appearance
-* Customise the PageTemplate, ViewTemplate or EditTemplate to change the composition of the page and the layout of individual tiddlers
-* Further SpecialTiddlers
+** Including [[translations|https://github.com/TiddlyWiki/translations]]
 * Use off-the-shelf themes from [[TiddlyThemes|http://tiddlythemes.com/]]
-* Visit the [[Configuration]] summary to see all the special configuration tiddlers
-* Use TiddlyBookmarklets for low level hacking of TiddlyWiki documents
+* Another extension type is transclusions, like those in the "transclusions" tab [[in TiddlyTools|https://tiddlytools.com/Classic/#CatalogTabs]]
+* Use the ColorPalette to change the basic colour scheme
+* Create a CustomStyleSheet to customize styles further
+* Change the page composition and the individual tiddlers layout in PageTemplate, ViewTemplate, or EditTemplate
+* See also other SpecialTiddlers and the [[Configuration]] summary
+* Use TiddlyBookmarklets to interact with ~TiddlyWikis that you open (including those you don't own). This is an advanced technique that may require some hacking
+Also, it's useful to know built-in [[Formatting|Basic Formatting]] techniques
