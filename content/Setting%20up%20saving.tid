@@ -1,12 +1,14 @@
 created: 20191013001900000
 creator: Yakov Litvin
-modified: 20231201095000000
+modified: 20240220195500000
 modifier: Yakov Litvin
 tags: gettingstarted
 title: Setting up saving
 type: text/x-tiddlywiki
 
 Since version 2.8.1, ~TiddlyWiki has a fallback saver. If no saver method is configured, pressing "save changes" will display a download dialog. The browser may prompt for the location to save the file. Select the existing version of the file to replace it. This method works on most major browsers, but does not provide an ideal user experience as it requires manual intervention for each save. Below are various tools that remove this routine from saving.
+!Another native saver
+[[ContinuousSavingPlugin|https://github.com/YakovL/TiddlyWiki_ContinuousSavingPlugin/]] allows to reduce the manual steps of saving to just one file picking per session. However, it has a limited browser support (currently, desktop Chrome, Chromium-based browsers, and Edge; see more details in the plugin repository). Presumably, it will be included in the future versions of TW.
 !Browser Plugins
 Plugins are simple to install and provide smooth user experience, but they are also platform- and browser-specific to some extent. Mobile browsers don't support them.
 |extension|author|supported browsers|comments|

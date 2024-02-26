@@ -107,7 +107,7 @@ h2,h3 {border-bottom:1px solid [[ColorPalette::TertiaryLight]];}
 .selected .toolbar a {color:[[ColorPalette::TertiaryMid]];}
 .selected .toolbar a:hover {color:[[ColorPalette::Foreground]];}
 
-.tagging, .tagged { border: 2px solid [[ColorPalette::TertiaryPale]]; }
+.tagging, .tagged { background: [[ColorPalette::Background]]; border: 2px solid [[ColorPalette::TertiaryPale]]; }
 .selected .tagging, .selected .tagged { border: 2px solid [[ColorPalette::TertiaryLight]]; }
 .tagging .listTitle, .tagged .listTitle {color:[[ColorPalette::PrimaryDark]];}
 .tagging .button, .tagged .button { border:none; }

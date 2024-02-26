@@ -1,11 +1,15 @@
 created: 20110211110600000
 creator: psd
-modified: 20110211131000000
-modifier: blaine
+modified: 20240222113700000
+modifier: Yakov Litvin
 tags: features
 title: InstallingPlugins
 type: text/x-tiddlywiki
 
-[[Plugins]] are just tiddlers containing ~JavaScript code that is tagged with <<tag systemConfig>>. TiddlyWiki executes any [[Plugins]] as it loads; they can add [[Macros]] or otherwise extend and enhance the base code.
+[[Plugins]] are just tiddlers containing ~JavaScript code and tagged with <<tag systemConfig>>. ~TiddlyWiki executes any plugin as it loads (unless it is tagged with {{{systemConfigDisable}}}).
 
-The recommended way to install a plugin into your own copy of TiddlyWiki is to use ImportTiddlers (there are instructions for ManuallyInstallIngPlugins when required).
+Typical ways to install a plugin are:
+* importing (see the "import" panel in backstage of your TW);
+* copying (the title, the text, and adding the {{{systemConfig}}} tag; see also ManuallyInstallIngPlugins);
+* using [[ExtensionsExplorerPlugin|https://github.com/YakovL/TiddlyWiki_ExtensionsExplorerPlugin]] (it also can check for updates when you open your ~TiddlyWiki).
+Usually, these methods require reloading after the plugin is added and the ~TiddlyWiki is saved.
