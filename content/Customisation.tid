@@ -12,7 +12,7 @@ You can customise the appearance and behaviour of TiddlyWiki to almost any degre
 * Another extension type is transclusions, like those in the "transclusions" tab [[in TiddlyTools|https://tiddlytools.com/Classic/#CatalogTabs]]
 * Use the ColorPalette to change the basic colour scheme
 * Create a CustomStyleSheet to customize styles further
-* Change the page composition and the individual tiddlers layout in PageTemplate, ViewTemplate, or EditTemplate
-* See also other SpecialTiddlers and the [[Configuration]] summary
+* Change the page composition and the individual tiddlers layout in PageTemplate, ViewTemplate, or EditTemplate (see also [[Configuration]] summary)
+** See also explanations in SpecialTiddlers
 * Use TiddlyBookmarklets to interact with ~TiddlyWikis that you open (including those you don't own). This is an advanced technique that may require some hacking
 Also, it's useful to know built-in [[Formatting|Basic Formatting]] techniques
