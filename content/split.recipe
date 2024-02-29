@@ -403,8 +403,6 @@ tiddler: anotherTiddlerToTransclude.tid
 
 tiddler: closeAll%20macro.tid
 
-tiddler: example.tid
-
 tiddler: list%20macro.tid
 
 tiddler: luakit.tid
