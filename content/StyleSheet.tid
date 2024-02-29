@@ -10,16 +10,18 @@ This fixes a problem with the tabs slider
 ***/
 /*{{{*/
 #sidebarTabs .button {
-margin:0em 0.2em;
-padding:0.2em 0.3em;
-display:block;
+	margin: 0em 0.2em;
+	padding: 0.2em 0.3em;
+	display: block;
 }
 /*}}}*/
 /***
 This is a sample style definition to demonstrate [[CustomCssClass|CSS Formatting]] formatting
 ***/
 /*{{{*/
-.wrappingClass {color: #666; background: #bbb;}
+.wrappingClass {
+	color: #666; background: #bbb;
+}
 /*}}}*/
 /***
 Prettyify
