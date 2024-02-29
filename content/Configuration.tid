@@ -1,8 +1,7 @@
 created: 20110211110600000
 creator: psd
-modified: 20111020135100000
-modifier: jermolene
-tags: includeNew
+modified: 20211020135100000
+modifier: Yakov Litvin
 title: Configuration
 type: text/x-tiddlywiki
 
@@ -11,12 +10,18 @@ PageTemplate
 |MainMenu|DefaultTiddlers<br><br><br><br>ViewTemplate<br><br>EditTemplate|SideBarOptions|
 |~|~|OptionsPanel|
 |~|~|AdvancedOptions|
-|~|~|<<tiddler Configuration.SideBarTabs>>|
+|~|~|<<tiddler [[Configuration##SideBarTabs]]>>|
 
-''StyleSheet:'' StyleSheetColors - StyleSheetLayout - StyleSheetPrint
+StyleSheet (see also StyleSheetColors, StyleSheetLayout, and StyleSheetPrint, but don't edit them)
 
 InterfaceOptions
 
 SiteUrl
 
 Extensive StartupParameters to control the startup beahviour of ~TiddlyWiki through specially crafted ~URLs
+/%
+!SideBarTabs
+SideBarTabs
+|[[Timeline|TabTimeline]]|[[All|TabAll]]|[[Tags|TabTags]]|>|>|[[More|TabMore]] |
+|>|>||[[Missing|TabMoreMissing]]|[[Orphans|TabMoreOrphans]]|[[Shadowed|TabMoreShadowed]]|
+!%/
