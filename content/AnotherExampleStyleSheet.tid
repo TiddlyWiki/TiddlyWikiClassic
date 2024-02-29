@@ -6,7 +6,7 @@ tags: examples
 title: AnotherExampleStyleSheet
 type: text/x-tiddlywiki
 
-This tiddler shows some more complex effects that can be obtained with cunning use of CSS. Not all of these will work properly on all browsers because of differences in CSS implementation, but they should fail gracefully.
+This tiddler shows some more complex effects that can be obtained with cunning use of CSS.
 
 You can have special formatting for a specific, named tiddler like this:
 {{{
@@ -14,6 +14,7 @@ You can have special formatting for a specific, named tiddler like this:
     background-color: #99aaee;
 }
 }}}
+(spaces in tiddler title should be substituted with "_", like "Hello There" → "~Hello_There"; "_" – with "__", like "~Hello_There" → "~Hello__There")
 
 Or for the first displayed tiddler:
 {{{
