@@ -15,7 +15,7 @@
     "build":      "echo 'not implemented yet'"
   },
   "dependencies": {
-    "jquery": "1.9.1"
+    "jquery": "3.5.0"
   },
   "devDependencies": {
     "eslint": "^8.2.0",
