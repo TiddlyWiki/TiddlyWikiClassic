@@ -68,6 +68,7 @@ a.tiddlyLinkNonExisting.shadow {font-weight:bold;}
 #sidebarOptions .sliderPanel a {font-weight:bold; display:inline; padding:0;}
 #sidebarOptions .sliderPanel input {margin:0 0 0.3em 0;}
 #sidebarTabs .tabContents {width:15em; overflow:hidden;}
+#sidebarTabs li:not(:last-child) { margin-bottom: 0.3em; }
 
 .wizard { padding:0.1em 2em 0; }
 .wizard__title    { font-size:2em; }
@@ -84,6 +85,7 @@ a.tiddlyLinkNonExisting.shadow {font-weight:bold;}
 .messageToolbar__button_withIcon { display: inline-block; }
 .tw-icon { height: 1em; width: 1em; } /* width for IE */
 .tw-icon line { stroke-width: 1; stroke-linecap: round; }
+.messageArea__text:not(:last-child) { margin-bottom: 0.3em; }
 .messageArea__text a { text-decoration:underline; }
 
 .popup {position:absolute; z-index:300; font-size:.9em; padding:0.3em 0; list-style:none; margin:0;}
