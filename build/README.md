@@ -16,13 +16,13 @@ one should run `npm install` (or `npm i` as a shortcut) to install dependencies.
 Finally, before building, one may want to adjust `build/build_settings.js`
 (destination folder, etc) and package.json (version number).
 
-Building TiddlyWIki
+Building TiddlyWiki
 -------------------
 Building is done in a terminal by simply running `npm run build-core`.
 
 Before using the resulting core, one may want to test it (see below).
 
-Building TiddlyWIki with externalized JavaScript
+Building TiddlyWiki with externalized JavaScript
 ------------------------------------------------
 Similarly, one can use `npm run build-external-core` to get a TiddlyWiki "storage" html
 with JavaScript in separate files (twcore.js, jquery.js and jQuery.twStylesheet.js).
