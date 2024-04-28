@@ -8,7 +8,7 @@ type: text/x-tiddlywiki
 You can customise the appearance and behaviour of TiddlyWiki to almost any degree you want:
 * Install [[Plugins]] to extend the core functionality
 ** Including [[translations|https://github.com/TiddlyWiki/translations]]
-* Use off-the-shelf themes from [[TiddlyThemes|http://tiddlythemes.com/]]
+* Use off-the-shelf themes from [[TiddlyThemes|https://yakovl.github.io/TiddlyThemes/]]
 * Another extension type is transclusions, like those in the "transclusions" tab [[in TiddlyTools|https://tiddlytools.com/Classic/#CatalogTabs]]
 * Use the ColorPalette to change the basic colour scheme
 * Create a CustomStyleSheet to customize styles further
