@@ -50,7 +50,6 @@ h2,h3 {border-bottom:1px solid [[ColorPalette::TertiaryLight]];}
 .wizard__subtitle { color:[[ColorPalette::Foreground]]; border:none; }
 .wizardStep { background:[[ColorPalette::Background]]; color:[[ColorPalette::Foreground]]; }
 .wizardStep.wizardStepDone {background:[[ColorPalette::TertiaryLight]];}
-.wizardFooter {background:[[ColorPalette::PrimaryPale]];}
 .wizardFooter .status {background:[[ColorPalette::PrimaryDark]]; color:[[ColorPalette::Background]];}
 .wizardFooter .status a { color: [[ColorPalette::PrimaryPale]]; }
 .wizard .button {
