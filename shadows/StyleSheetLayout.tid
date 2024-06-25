@@ -153,7 +153,7 @@ pre, code { font-family: monospace, monospace; font-size: 1em; }
 .viewer pre, .viewer code { line-height: 1.4em; }
 
 .editor {font-size:1.1em; line-height:1.4em;}
-.editor input, .editor textarea {display:block; width:100%; box-sizing: border-box; font:inherit;}
+.editor input, .editor textarea { display: block; width: 100%; box-sizing: border-box; font: inherit; padding: 0.1em 0.4em; }
 .editorFooter {padding:0.25em 0; font-size:.9em;}
 .editorFooter .button {padding-top:0; padding-bottom:0;}
 
