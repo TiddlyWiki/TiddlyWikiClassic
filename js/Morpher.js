@@ -17,8 +17,7 @@
 //#       atEnd - final value (taking priority over the end value) (eg, for switching style.display)
 //#       template - template for formatString() for setting the property (eg "%0em", or "#%0")
 //#       callback - function to call when the animation has completed as callback(element,properties);
-function Morpher(element, duration, properties, callback)
-{
+function Morpher(element, duration, properties, callback) {
 	this.element = element;
 	this.duration = duration;
 	this.properties = properties;
@@ -29,8 +28,7 @@ function Morpher(element, duration, properties, callback)
 	return this;
 }
 
-Morpher.prototype.assignStyle = function(element, style, value)
-{
+Morpher.prototype.assignStyle = function(element, style, value) {
 	switch(style) {
 		case "-tw-vertScroll":
 			window.scrollTo(findScrollX(), value);
@@ -44,8 +42,7 @@ Morpher.prototype.assignStyle = function(element, style, value)
 	}
 };
 
-Morpher.prototype.stop = function()
-{
+Morpher.prototype.stop = function() {
 	for(var i = 0; i < this.properties.length; i++) {
 		var p = this.properties[i];
 		if(p.atEnd !== undefined) {
@@ -56,8 +53,7 @@ Morpher.prototype.stop = function()
 		this.callback(this.element, this.properties);
 };
 
-Morpher.prototype.tick = function()
-{
+Morpher.prototype.tick = function() {
 	var currTime = Number(new Date());
 	var i, progress = Animator.slowInSlowOut(Math.min(1, (currTime - this.startTime) / this.duration));
 	for(i = 0; i < this.properties.length; i++) {

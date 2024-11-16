@@ -2,13 +2,11 @@
 //-- Paramifiers
 //--
 
-function getParameters()
-{
+function getParameters() {
 	return window.location.hash ? decodeURIComponent(window.location.hash.substr(1)) : null;
 }
 
-function invokeParamifier(params, handler)
-{
+function invokeParamifier(params, handler) {
 	if(!params || params.length == undefined || params.length <= 1)
 		return;
 

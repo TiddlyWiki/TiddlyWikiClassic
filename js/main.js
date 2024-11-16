@@ -17,16 +17,14 @@ var startingUp = false; // Whether we're in the process of starting up
 var pluginInfo, tiddler; // Used to pass information to plugins in loadPlugins()
 
 // Whether this file can be saved back to the same location [Preemption]
-window.allowSave = window.allowSave || function(l)
-{
+window.allowSave = window.allowSave || function(l) {
 	//# allow save from ANYWHERE (TW280+ uses fallback HTML5 download from data:// URI)
 	//#	return (document.location.protocol == "file:");
 	return true;
 };
 
 // Whether this file is being viewed locally
-window.isLocal = function()
-{
+window.isLocal = function() {
 	return (document.location.protocol == "file:");
 };
 
@@ -41,8 +39,7 @@ if(!window || !window.console) {
 }
 
 // Starting up
-function main()
-{
+function main() {
 //#	save loaded document HTML before making changes
 	window.originalHTML = recreateOriginal();
 
@@ -110,15 +107,13 @@ function main()
 }
 
 // Called on unload. Functions may get unloaded too, so they are called conditionally.
-function unload()
-{
+function unload() {
 	if(window.checkUnsavedChanges) checkUnsavedChanges();
 	if(window.scrubNodes) scrubNodes(document.body);
 }
 
 // Restarting
-function restart()
-{
+function restart() {
 	invokeParamifier(params, "onstart");
 	if(story.isEmpty()) {
 		story.displayDefaultTiddlers();
@@ -126,28 +121,25 @@ function restart()
 	window.scrollTo(0, 0);
 }
 
-function saveTest()
-{
+function saveTest() {
 	var s = document.getElementById("saveTest");
 	if(s.hasChildNodes())
 		alert(config.messages.savedSnapshotError);
 	s.appendChild(document.createTextNode("savetest"));
 }
 
-function loadShadowTiddlers()
-{
+function loadShadowTiddlers() {
 	var shadows = new TiddlyWiki();
 	shadows.loadFromDiv("shadowArea", "shadows", true);
 	shadows.forEachTiddler(function(title, tiddler) { config.shadowTiddlers[title] = tiddler.text });
 }
 
-function loadPlugins(tag)
-{
-	if(safeMode)
-		return false;
+function loadPlugins(tag) {
+	if(safeMode) return false;
 	var tiddlers = store.getTaggedTiddlers(tag);
 	//# ensure the plugins are sorted into case sensitive order
 	tiddlers.sort(function(a, b) { return a.title < b.title ? -1 : (a.title == b.title ? 0 : 1) });
+
 	var toLoad = [];
 	var nLoaded = 0;
 	var map = {};
@@ -183,8 +175,7 @@ function loadPlugins(tag)
 				p.executed = true;
 				var startTime = new Date();
 				try {
-					if(tiddler.text)
-						window.eval(tiddler.text);
+					if(tiddler.text) window.eval(tiddler.text);
 					nLoaded++;
 				} catch(ex) {
 					p.log.push(config.messages.pluginError.format([exceptionText(ex)]));
@@ -204,8 +195,7 @@ function loadPlugins(tag)
 	return nLoaded != nPlugins;
 }
 
-function getPluginInfo(tiddler)
-{
+function getPluginInfo(tiddler) {
 	var p = store.getTiddlerSlices(tiddler.title, ["Name", "Description", "Version",
 		"Requires", "CoreVersion", "Date", "Source", "Author", "License", "Browsers"]);
 	p.tiddler = tiddler;
@@ -215,8 +205,7 @@ function getPluginInfo(tiddler)
 }
 
 // Check that a particular plugin is valid for execution
-function isPluginExecutable(plugin)
-{
+function isPluginExecutable(plugin) {
 	if(plugin.tiddler.isTagged("systemConfigForce")) {
 		plugin.log.push(config.messages.pluginForced);
 		return true;
@@ -236,8 +225,7 @@ function isPluginExecutable(plugin)
 	return true;
 }
 
-function isPluginEnabled(plugin)
-{
+function isPluginEnabled(plugin) {
 	if(plugin.tiddler.isTagged("systemConfigDisable")) {
 		plugin.log.push(config.messages.pluginDisabled);
 		return false;
