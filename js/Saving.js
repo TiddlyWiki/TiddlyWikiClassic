@@ -215,8 +215,7 @@ function saveMain(localPath, original, posDiv, callback) {
 		if(successOrPending) {
 			//# TODO: if possible, separate the success and pending cases
 			tw.io.onSaveMainSuccess(config.saveByDownload ?
-				getDataURI(revised) : "file://" + localPath,
-				revised, original);
+				getDataURI(revised) : "file://" + localPath, revised, original);
 		} else {
 			tw.io.onSaveMainFail();
 		}

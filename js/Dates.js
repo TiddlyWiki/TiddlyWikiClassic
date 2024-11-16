@@ -3,8 +3,7 @@
 //--
 
 // Substitute date components into a string
-Date.prototype.formatString = function(template)
-{
+Date.prototype.formatString = function(template) {
 	var tz = this.getTimezoneOffset();
 	var atz = Math.abs(tz);
 	var t = template
@@ -39,8 +38,7 @@ Date.prototype.formatString = function(template)
 	return t;
 };
 
-Date.prototype.getWeek = function()
-{
+Date.prototype.getWeek = function() {
 	var dt = new Date(this.getTime());
 	var d = dt.getDay();
 	// JavaScript Sun=0, ISO Sun=7
@@ -51,8 +49,7 @@ Date.prototype.getWeek = function()
 	return Math.floor(n / 7) + 1;
 };
 
-Date.prototype.getYearForWeekNo = function()
-{
+Date.prototype.getYearForWeekNo = function() {
 	var dt = new Date(this.getTime());
 	var d = dt.getDay();
 	// JavaScript Sun=0, ISO Sun=7
@@ -62,39 +59,33 @@ Date.prototype.getYearForWeekNo = function()
 	return dt.getFullYear();
 };
 
-Date.prototype.getHours12 = function()
-{
+Date.prototype.getHours12 = function() {
 	var h = this.getHours();
 	return h > 12 ? h - 12 : ( h > 0 ? h : 12 );
 };
 
-Date.prototype.getAmPm = function()
-{
+Date.prototype.getAmPm = function() {
 	return this.getHours() >= 12 ? config.messages.dates.pm : config.messages.dates.am;
 };
 
-Date.prototype.daySuffix = function()
-{
+Date.prototype.daySuffix = function() {
 	return config.messages.dates.daySuffixes[this.getDate() - 1];
 };
 
 // Convert to local YYYYMMDDHHMM format string
-Date.prototype.convertToLocalYYYYMMDDHHMM = function()
-{
+Date.prototype.convertToLocalYYYYMMDDHHMM = function() {
 	return this.getFullYear() + String.zeroPad(this.getMonth() + 1, 2) + String.zeroPad(this.getDate(), 2) +
 		String.zeroPad(this.getHours(), 2) + String.zeroPad(this.getMinutes(), 2);
 };
 
 // Convert to UTC YYYYMMDDHHMM format string
-Date.prototype.convertToYYYYMMDDHHMM = function()
-{
+Date.prototype.convertToYYYYMMDDHHMM = function() {
 	return this.getUTCFullYear() + String.zeroPad(this.getUTCMonth() + 1, 2) + String.zeroPad(this.getUTCDate(), 2) +
 		String.zeroPad(this.getUTCHours(), 2) + String.zeroPad(this.getUTCMinutes(), 2);
 };
 
 // Convert to UTC YYYYMMDD.HHMMSSMMM format string
-Date.prototype.convertToYYYYMMDDHHMMSSMMM = function()
-{
+Date.prototype.convertToYYYYMMDDHHMMSSMMM = function() {
 	return this.getUTCFullYear() + String.zeroPad(this.getUTCMonth() + 1, 2) +
 		String.zeroPad(this.getUTCDate(), 2) + "." + String.zeroPad(this.getUTCHours(), 2) +
 		String.zeroPad(this.getUTCMinutes(), 2) + String.zeroPad(this.getUTCSeconds(), 2) +
@@ -102,22 +93,19 @@ Date.prototype.convertToYYYYMMDDHHMMSSMMM = function()
 };
 
 // Static. Create a date from a UTC YYYYMMDDHHMM format string
-Date.convertFromYYYYMMDDHHMM = function(d)
-{
+Date.convertFromYYYYMMDDHHMM = function(d) {
 	d = d ? d.replace(/[^0-9]/g, "") : "";
 	return Date.convertFromYYYYMMDDHHMMSSMMM(d.substr(0, 12));
 };
 
 // Static. Create a date from a UTC YYYYMMDDHHMMSS format string
-Date.convertFromYYYYMMDDHHMMSS = function(d)
-{
+Date.convertFromYYYYMMDDHHMMSS = function(d) {
 	d = d ? d.replace(/[^0-9]/g, "") : "";
 	return Date.convertFromYYYYMMDDHHMMSSMMM(d.substr(0, 14));
 };
 
 // Static. Create a date from a UTC YYYYMMDDHHMMSSMMM format string
-Date.convertFromYYYYMMDDHHMMSSMMM = function(d)
-{
+Date.convertFromYYYYMMDDHHMMSSMMM = function(d) {
 	d = d ? d.replace(/[^0-9]/g, "") : "";
 	return new Date(Date.UTC(parseInt(d.substr(0, 4), 10),
 		parseInt(d.substr(4, 2), 10) - 1,

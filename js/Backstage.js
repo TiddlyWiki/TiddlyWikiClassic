@@ -36,8 +36,7 @@ var backstage = {
 		this.panelBody = createTiddlyElement(this.panel, "div", null, "backstagePanelBody");
 		this.cloak.onmousedown = function(e) { backstage.switchTab(null) };
 		createTiddlyText(this.toolbar, cmb.prompt);
-		for(var i = 0; i < config.backstageTasks.length; i++)
-		{
+		for(var i = 0; i < config.backstageTasks.length; i++) {
 			var taskName = config.backstageTasks[i];
 			var task = config.tasks[taskName];
 			var handler = task.action ? this.onClickCommand : this.onClickTab;
@@ -183,8 +182,7 @@ var backstage = {
 
 config.macros.backstage = {};
 
-config.macros.backstage.handler = function(place, macroName, params)
-{
+config.macros.backstage.handler = function(place, macroName, params) {
 	var backstageTask = config.tasks[params[0]];
 	if(!backstageTask) return;
 	createTiddlyButton(place, backstageTask.text, backstageTask.tooltip, function(e) {

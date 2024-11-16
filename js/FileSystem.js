@@ -9,14 +9,12 @@
 //# some extensions and savers may decorate or override them.
 
 // Copy a file in filesystem [Preemption]
-window.copyFile = window.copyFile || function(dest, source)
-{
+window.copyFile = window.copyFile || function(dest, source) {
 	return config.browser.isIE ? ieCopyFile(dest, source) : false;
 };
 
 // Save a file in filesystem [Preemption]
-window.saveFile = window.saveFile || function(fileUrl, content)
-{
+window.saveFile = window.saveFile || function(fileUrl, content) {
 	var r = mozillaSaveFile(fileUrl, content);
 	if(!r)
 		r = ieSaveFile(fileUrl, content);
@@ -32,8 +30,7 @@ window.saveFile = window.saveFile || function(fileUrl, content)
 // A placeholder method that can be overwritten/decorated by savers.
 // In such a case, it's required to call callback on both success and fail.
 // See details about the callback in tw.io.saveFile.
-tw.io.asyncSaveFile = tw.io.asyncSaveFile || function(fileUrl, content, callback)
-{
+tw.io.asyncSaveFile = tw.io.asyncSaveFile || function(fileUrl, content, callback) {
 	callback(false, { reason: 'Async saving is not implemented' });
 };
 
@@ -42,8 +39,7 @@ tw.io.asyncSaveFile = tw.io.asyncSaveFile || function(fileUrl, content, callback
 // If callback is set, tries to save in an async fashion and do callback(success: boolean, details: object)
 // ⚠️ Some savers within window.saveFile, like download saving or Timimi don't care about the callback,
 // so it can be called before actual saving is done (or even give false positives).
-tw.io.saveFile = function(fileUrl, content, callback)
-{
+tw.io.saveFile = function(fileUrl, content, callback) {
 	if(!callback) return saveFile(fileUrl, content);
 
 	tw.io.asyncSaveFile(fileUrl, content, function(success, details) {
@@ -56,8 +52,7 @@ tw.io.saveFile = function(fileUrl, content, callback)
 };
 
 // Load a file from filesystem [Preemption]
-window.loadFile = window.loadFile || function(fileUrl)
-{
+window.loadFile = window.loadFile || function(fileUrl) {
 	var r = mozillaLoadFile(fileUrl);
 	if((r === null) || (r === false))
 		r = ieLoadFile(fileUrl);
@@ -68,8 +63,7 @@ window.loadFile = window.loadFile || function(fileUrl)
 	return r;
 };
 
-tw.io.xhrLoadFile = function(filePath, callback)
-{
+tw.io.xhrLoadFile = function(filePath, callback) {
 	try {
 		var isAsync = !!callback;
 		//# see https://github.com/pmario/file-backups/blob/d66599f3372de6163db847bf7da9cddcf3c3724d/assets/classic/inject.js#L51
@@ -93,8 +87,7 @@ tw.io.xhrLoadFile = function(filePath, callback)
 // The general load method to use
 // ==============================
 // If callback is set, tries to load in an async fashion and do callback(result, details)
-tw.io.loadFile = function(fileUrl, callback)
-{
+tw.io.loadFile = function(fileUrl, callback) {
 	if(!callback) return loadFile(fileUrl);
 
 	tw.io.xhrLoadFile(fileUrl, function(result, details) {
@@ -108,8 +101,7 @@ tw.io.loadFile = function(fileUrl, callback)
 };
 
 
-function ieCreatePath(path)
-{
+function ieCreatePath(path) {
 	try {
 		var fso = new ActiveXObject("Scripting.FileSystemObject");
 	} catch(ex) {
@@ -139,8 +131,7 @@ function ieCreatePath(path)
 }
 
 // Returns null if it can't do it, false if there's an error, true if it saved OK
-function ieSaveFile(filePath, content)
-{
+function ieSaveFile(filePath, content) {
 	ieCreatePath(filePath);
 	try {
 		var fso = new ActiveXObject("Scripting.FileSystemObject");
@@ -155,8 +146,7 @@ function ieSaveFile(filePath, content)
 }
 
 // Returns null if it can't do it, false if there's an error, or a string of the content if successful
-function ieLoadFile(filePath)
-{
+function ieLoadFile(filePath) {
 	try {
 		var fso = new ActiveXObject("Scripting.FileSystemObject");
 		var file = fso.OpenTextFile(filePath, 1);
@@ -169,8 +159,7 @@ function ieLoadFile(filePath)
 	return content;
 }
 
-function ieCopyFile(dest, source)
-{
+function ieCopyFile(dest, source) {
 	ieCreatePath(dest);
 	try {
 		var fso = new ActiveXObject("Scripting.FileSystemObject");
@@ -182,8 +171,7 @@ function ieCopyFile(dest, source)
 }
 
 // Returns null if it can't do it, false if there's an error, true if it saved OK
-function mozillaSaveFile(filePath, content)
-{
+function mozillaSaveFile(filePath, content) {
 	if(!window.Components) return null;
 
 	content = mozConvertUnicodeToUTF8(content);
@@ -208,8 +196,7 @@ function mozillaSaveFile(filePath, content)
 }
 
 // Returns null if it can't do it, false if there's an error, or a string of the content if successful
-function mozillaLoadFile(filePath)
-{
+function mozillaLoadFile(filePath) {
 	if(!window.Components) return null;
 
 	try {
@@ -234,8 +221,7 @@ function mozillaLoadFile(filePath)
 	}
 }
 
-function HTML5DownloadSaveFile(filePath, content)
-{
+function HTML5DownloadSaveFile(filePath, content) {
 	var link = document.createElement("a");
 	if(link.download === undefined)
 		return null;
@@ -255,8 +241,7 @@ function HTML5DownloadSaveFile(filePath, content)
 }
 
 // Returns null if it can't do it, false if there's an error, true if it saved OK
-function manualSaveFile(filePath, content)
-{
+function manualSaveFile(filePath, content) {
 	// FALLBACK for showing a link to data: URI
 	config.saveByManualDownload = true;
 	var slashpos = filePath.lastIndexOf("/");
@@ -268,8 +253,7 @@ function manualSaveFile(filePath, content)
 }
 
 // construct data URI (using base64 encoding to preserve multi-byte encodings)
-function getDataURI(data)
-{
+function getDataURI(data) {
 	return config.browser.isIE ?
 		"data:text/html," + encodeURIComponent(data) :
 
@@ -279,15 +263,13 @@ function getDataURI(data)
 		"data:text/html;base64," + encodeBase64(manualConvertUnicodeToUTF8(data));
 }
 
-function encodeBase64(data)
-{
+function encodeBase64(data) {
 	if (!data) return "";
 	var keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
 	var out = "";
 	var chr1, chr2, chr3 = "";
 	var enc1, enc2, enc3, enc4 = "";
-	for (var i = 0; i < data.length; )
-	{
+	for (var i = 0; i < data.length; ) {
 		chr1 = data.charCodeAt(i++);
 		chr2 = data.charCodeAt(i++);
 		chr3 = data.charCodeAt(i++);

@@ -2,8 +2,7 @@
 //- Animation engine
 //-
 
-function Animator()
-{
+function Animator() {
 	// Incremented at start of each animation, decremented afterwards. If zero, the interval timer is disabled
 	this.running = 0;
 	// ID of the timer used for animating
@@ -14,8 +13,7 @@ function Animator()
 }
 
 // Start animation engine
-Animator.prototype.startAnimating = function() //# Variable number of arguments
-{
+Animator.prototype.startAnimating = function() { //# Variable number of arguments
 	for(var i = 0; i < arguments.length; i++)
 		this.animations.push(arguments[i]);
 	if(this.running == 0) {
@@ -26,8 +24,7 @@ Animator.prototype.startAnimating = function() //# Variable number of arguments
 };
 
 // Perform an animation engine tick, calling each of the known animation modules
-Animator.prototype.doAnimate = function(me)
-{
+Animator.prototype.doAnimate = function(me) {
 	var i = 0;
 	while(i < me.animations.length) {
 		if(me.animations[i].tick()) {
@@ -40,8 +37,7 @@ Animator.prototype.doAnimate = function(me)
 	}
 };
 
-Animator.slowInSlowOut = function(progress)
-{
+Animator.slowInSlowOut = function(progress) {
 	return 1 - ((Math.cos(progress * Math.PI) + 1) / 2);
 };
 
