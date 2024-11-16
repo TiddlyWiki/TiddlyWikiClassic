@@ -475,7 +475,7 @@ config.formatters = [
 					w.subWikifyTerm(e, /(@@)/mg);
 					break;
 				case "{{":
-					var lookaheadRegExp = /\{\{[\s]*([\w]+[\s\w]*)[\s]*\{(\n?)/mg;
+					var lookaheadRegExp = /\{\{[\s]*([\w]+[\s\w-]*)[\s]*\{(\n?)/mg;
 					lookaheadRegExp.lastIndex = w.matchStart;
 					var lookaheadMatch = lookaheadRegExp.exec(w.source);
 					if(lookaheadMatch) {
