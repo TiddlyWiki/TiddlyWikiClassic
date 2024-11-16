@@ -8,8 +8,7 @@ var endSaveArea = '</d' + 'iv>';
 var endSaveAreaCaps = '</D' + 'IV>';
 
 // If there are unsaved changes, force the user to confirm before exitting
-function confirmExit()
-{
+function confirmExit() {
 	hadConfirmExit = true;
 	var hasDirtyStore = store && store.isDirty && store.isDirty();
 	var hasDirtyStory = story && story.areAnyDirty && story.areAnyDirty();
@@ -17,14 +16,12 @@ function confirmExit()
 }
 
 // Give the user a chance to save changes before exitting
-function checkUnsavedChanges()
-{
+function checkUnsavedChanges() {
 	if(!(store && store.isDirty && store.isDirty()) || window.hadConfirmExit !== false) return;
 	if(confirm(config.messages.unsavedChangesWarning)) saveChanges();
 }
 
-function updateLanguageAttribute(s)
-{
+function updateLanguageAttribute(s) {
 	if(!config.locale) return s;
 	var m = /(<html(?:.*?)?)(?: xml:lang\="([a-z]+)")?(?: lang\="([a-z]+)")?>/.exec(s);
 	if(!m) return s;
@@ -37,16 +34,14 @@ function updateLanguageAttribute(s)
 	return s.substr(0, m.index) + htmlTag + s.substr(m.index + m[0].length);
 }
 
-function updateMarkupBlock(s, blockName, tiddlerName)
-{
+function updateMarkupBlock(s, blockName, tiddlerName) {
 	return tw.textUtils.replaceChunk(s,
 		"<!--%0-START-->".format([blockName]),
 		"<!--%0-END-->".format([blockName]),
 		"\n" + store.getRecursiveTiddlerText(tiddlerName, "") + "\n");
 }
 
-function updateOriginal(original, posDiv, localPath)
-{
+function updateOriginal(original, posDiv, localPath) {
 	if(!posDiv) posDiv = locateStoreArea(original);
 	if(!posDiv) {
 		alert(config.messages.invalidFileError.format([localPath]));
@@ -65,8 +60,7 @@ function updateOriginal(original, posDiv, localPath)
 	return revised;
 }
 
-function locateStoreArea(original)
-{
+function locateStoreArea(original) {
 	// Locate the storeArea divs
 	if(!original) return null;
 	var posOpeningDiv = original.search(startSaveAreaRE);
@@ -80,15 +74,13 @@ function locateStoreArea(original)
 	return (posOpeningDiv != -1 && posClosingDiv != -1) ? [posOpeningDiv, posClosingDiv] : null;
 }
 
-function autoSaveChanges(onlyIfDirty, tiddlers)
-{
+function autoSaveChanges(onlyIfDirty, tiddlers) {
 	if(config.options.chkAutoSave)
 		saveChanges(onlyIfDirty, tiddlers);
 }
 
 // get the full HTML of the original file
-function loadOriginal(localPath, callback)
-{
+function loadOriginal(localPath, callback) {
 	if(!callback) return loadFile(localPath) || window.originalHTML || recreateOriginal();
 
 	tw.io.loadFile(localPath, function(result, details) {
@@ -102,8 +94,7 @@ function loadOriginal(localPath, callback)
 }
 
 // reconstruct original HTML file content from current document memory
-function recreateOriginal()
-{
+function recreateOriginal() {
 	// construct doctype
 	var content = "<!DOCTYPE ";
 	var t = document.doctype;
@@ -143,8 +134,7 @@ function recreateOriginal()
 }
 
 // reconstruct the local path to TW itself
-tw.io.getOriginalLocalPath = function()
-{
+tw.io.getOriginalLocalPath = function() {
 	return getLocalPath(document.location.toString());
 };
 
@@ -155,8 +145,7 @@ tw.io.knownSaveMainFailures = {
 };
 
 // Save this tiddlywiki with the pending changes
-tw.io.saveMainAndReport = function(callback)
-{
+tw.io.saveMainAndReport = function(callback) {
 	var localPath = tw.io.getOriginalLocalPath();
 	var onLoadOriginal = function(original) {
 		if(original == null) {
@@ -194,8 +183,7 @@ tw.io.saveMainAndReport = function(callback)
 	}
 };
 
-function saveChanges(onlyIfDirty, tiddlers)
-{
+function saveChanges(onlyIfDirty, tiddlers) {
 	if(onlyIfDirty && !store.isDirty()) return;
 
 	clearMessage();
@@ -222,8 +210,7 @@ function saveChanges(onlyIfDirty, tiddlers)
 	});
 }
 
-function saveMain(localPath, original, posDiv, callback)
-{
+function saveMain(localPath, original, posDiv, callback) {
 	var reportStatusAndHandle = function(successOrPending, localPath, revised) {
 		if(successOrPending) {
 			//# TODO: if possible, separate the success and pending cases
@@ -274,8 +261,7 @@ tw.io.onSaveMainFail = function(catchedExeption) {
 	if(catchedExeption) showException(catchedExeption);
 };
 
-function saveBackup(localPath, original)
-{
+function saveBackup(localPath, original) {
 	var backupPath = getBackupPath(localPath);
 	var backupSuccess = copyFile(backupPath, localPath) || saveFile(backupPath, original);
 	if(backupSuccess)
@@ -284,8 +270,7 @@ function saveBackup(localPath, original)
 		alert(config.messages.backupFailed);
 }
 
-function saveEmpty(localPath, original, posDiv)
-{
+function saveEmpty(localPath, original, posDiv) {
 	posDiv = posDiv || locateStoreArea(original);
 	if(!posDiv) {
 		alert(config.messages.emptyFailed);
@@ -310,8 +295,7 @@ function saveEmpty(localPath, original, posDiv)
 }
 
 // Translate URL to local path [Preemption]
-window.getLocalPath = window.getLocalPath || function(origPath)
-{
+window.getLocalPath = window.getLocalPath || function(origPath) {
 	var originalPath = convertUriToUTF8(origPath, config.options.txtFileSystemCharSet);
 	// Remove any location or query part of the URL
 	var argPos = originalPath.indexOf("?");
@@ -342,8 +326,7 @@ window.getLocalPath = window.getLocalPath || function(origPath)
 	return localPath;
 };
 
-function getBackupPath(localPath, filenameSuffix, extension)
-{
+function getBackupPath(localPath, filenameSuffix, extension) {
 	var slash = "\\";
 	var dirPathPos = localPath.lastIndexOf("\\");
 	if(dirPathPos == -1) {

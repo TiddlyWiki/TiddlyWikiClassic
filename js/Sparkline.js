@@ -17,8 +17,7 @@ config.shadowTiddlers.StyleSheetSparklines = "/*{{{*/\n" +
 	"/*}}}*/";
 store.addNotification("StyleSheetSparklines", refreshStyles);
 
-config.macros.sparkline.handler = function(place, macroName, params)
-{
+config.macros.sparkline.handler = function(place, macroName, params) {
 	var data = [];
 	var min = 0;
 	var max = 0;
@@ -31,8 +30,8 @@ config.macros.sparkline.handler = function(place, macroName, params)
 			max = v;
 		data.push(v);
 	}
-	if(data.length < 1)
-		return;
+	if(data.length < 1) return;
+
 	var box = createTiddlyElement(place, "span", null, "sparkline", String.fromCharCode(160));
 	box.title = data.join(",");
 	var w = box.offsetWidth;

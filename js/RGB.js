@@ -3,8 +3,7 @@
 //--
 
 // Construct an RGB colour object from a '#rrggbb', '#rgb' or 'rgb(n,n,n)' string or from separate r,g,b values
-function RGB(r, g, b)
-{
+function RGB(r, g, b) {
 	this.r = 0;
 	this.g = 0;
 	this.b = 0;
@@ -40,14 +39,12 @@ function RGB(r, g, b)
 // c = other colour to mix
 // f = 0..1 where 0 is this colour and 1 is the new colour
 // Returns an RGB object
-RGB.prototype.mix = function(c, f)
-{
+RGB.prototype.mix = function(c, f) {
 	return new RGB(this.r + (c.r - this.r) * f, this.g + (c.g - this.g) * f, this.b + (c.b - this.b) * f);
 };
 
 // Return an rgb colour as a #rrggbb format hex string
-RGB.prototype.toString = function()
-{
+RGB.prototype.toString = function() {
 	var to255Range = function(value) {
 		var clamped = value < 0 ? 0 : value > 1 ? 1 : value;
 		return clamped * 255;

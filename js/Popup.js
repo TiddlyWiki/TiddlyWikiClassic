@@ -6,8 +6,7 @@ var Popup = {
 	stack: [] // Array of objects with members root: and popup:
 };
 
-Popup.create = function(root, elem, className)
-{
+Popup.create = function(root, elem, className) {
 	var stackPosition = this.find(root, "popup");
 	Popup.remove(stackPosition + 1);
 	var popup = createTiddlyElement(document.body, elem || "ol", "popup", className || "popup");
@@ -16,8 +15,7 @@ Popup.create = function(root, elem, className)
 	return popup;
 };
 
-Popup.onDocumentClick = function(ev)
-{
+Popup.onDocumentClick = function(ev) {
 	var e = ev || window.event;
 	if(e.eventPhase == undefined)
 		Popup.remove();
@@ -32,8 +30,7 @@ Popup.onDocumentClick = function(ev)
 //#   defaults to "left" for regular popups, "right" for nested popups
 //# offset : { x: number, y: number } (optional)
 //#   defaults to { x: 0, y: 0 }
-Popup.show = function(valign, halign, offset)
-{
+Popup.show = function(valign, halign, offset) {
 	var curr = Popup.stack[Popup.stack.length - 1];
 	this.place(curr.root, curr.popup, valign, halign, offset);
 	jQuery(curr.root).addClass("highlight");
@@ -43,8 +40,7 @@ Popup.show = function(valign, halign, offset)
 		window.scrollTo(0, ensureVisible(curr.popup));
 };
 
-Popup.place = function(root, popup, valign, halign, offset)
-{
+Popup.place = function(root, popup, valign, halign, offset) {
 	if(!offset)
 		offset = { x: 0, y: 0 };
 	if(popup.stackPosition >= 0 && !valign && !halign) {
@@ -73,8 +69,7 @@ Popup.place = function(root, popup, valign, halign, offset)
 	popup.style.display = "block";
 };
 
-Popup.find = function(e)
-{
+Popup.find = function(e) {
 	var i, pos = -1;
 	for(i = this.stack.length - 1; i >= 0; i--) {
 		if(isDescendant(e, this.stack[i].popup))
@@ -83,16 +78,14 @@ Popup.find = function(e)
 	return pos;
 };
 
-Popup.remove = function(pos)
-{
+Popup.remove = function(pos) {
 	if(!pos) pos = 0;
 	if(Popup.stack.length > pos) {
 		Popup.removeFrom(pos);
 	}
 };
 
-Popup.removeFrom = function(from)
-{
+Popup.removeFrom = function(from) {
 	for(var i = Popup.stack.length - 1; i >= from; i--) {
 		var p = Popup.stack[i];
 		jQuery(p.root).removeClass("highlight");

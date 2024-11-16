@@ -2,8 +2,7 @@
 //-- RSS Saving
 //--
 
-function saveRss(localPath)
-{
+function saveRss(localPath) {
 	var rssPath = localPath.substr(0, localPath.lastIndexOf(".")) + ".xml";
 	if(saveFile(rssPath, generateRss()))
 		displayMessage(config.messages.rssSaved, "file://" + rssPath);
@@ -11,8 +10,7 @@ function saveRss(localPath)
 		alert(config.messages.rssFailed);
 }
 
-tiddlerToRssItem = function(tiddler, uri)
-{
+tiddlerToRssItem = function(tiddler, uri) {
 	var s = "<title" + ">" + tiddler.title.htmlEncode() + "</title" + ">\n";
 	s += "<description>" + wikifyStatic(tiddler.text, null, tiddler).htmlEncode() + "</description>\n";
 	for(var i = 0; i < tiddler.tags.length; i++)
@@ -22,8 +20,7 @@ tiddlerToRssItem = function(tiddler, uri)
 	return s;
 };
 
-function generateRss()
-{
+function generateRss() {
 	var s = [];
 	var d = new Date();
 	var u = store.getTiddlerText("SiteUrl");
