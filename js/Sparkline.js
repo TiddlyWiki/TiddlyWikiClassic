@@ -21,13 +21,10 @@ config.macros.sparkline.handler = function(place, macroName, params) {
 	var data = [];
 	var min = 0;
 	var max = 0;
-	var v;
 	for(var i = 0; i < params.length; i++) {
-		v = parseInt(params[i], 10);
-		if(v < min)
-			min = v;
-		if(v > max)
-			max = v;
+		var v = parseInt(params[i], 10);
+		if(v < min) min = v;
+		if(v > max) max = v;
 		data.push(v);
 	}
 	if(data.length < 1) return;
