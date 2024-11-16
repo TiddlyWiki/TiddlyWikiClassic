@@ -8,4 +8,4 @@ When getting started, you may want to:
 ** It will be shown in the Timeline (usually on the right), but you may want to link it in the MainMenu (usually on the left)
 ** and/or make it open when the ~TiddlyWiki is opened by editing the list of [[DefaultTiddlers]] (separate links with spaces or linebreaks)
 * Save your ~TiddlyWiki
-** Although "download saving" works in any browser, it's not that convenient, so you'll probably want to use [[a dedicated saver|https://classic.tiddlywiki.com/#%5B%5BSetting up saving%5D%5D]]
+** Although "download saving" works in any browser, it may be not that convenient, so you'll probably want to use [[a dedicated saver|https://classic.tiddlywiki.com/#%5B%5BSetting up saving%5D%5D]]
