@@ -6,8 +6,7 @@ function TW21Saver() {}
 
 TW21Saver.prototype = new SaverBase();
 
-TW21Saver.prototype.externalizeTiddler = function(store, tiddler)
-{
+TW21Saver.prototype.externalizeTiddler = function(store, tiddler) {
 	try {
 		var usePre = config.options.chkUsePreForStorage;
 		var created = tiddler.created;

@@ -6,8 +6,7 @@ function TW21Loader() {}
 
 TW21Loader.prototype = new LoaderBase();
 
-TW21Loader.prototype.getTitle = function(store, node)
-{
+TW21Loader.prototype.getTitle = function(store, node) {
 	var title = null;
 	if(node.getAttribute) {
 		title = node.getAttribute("title") || node.getAttribute("tiddler");
@@ -20,8 +19,7 @@ TW21Loader.prototype.getTitle = function(store, node)
 	return title;
 };
 
-TW21Loader.prototype.internalizeTiddler = function(store, tiddler, title, node)
-{
+TW21Loader.prototype.internalizeTiddler = function(store, tiddler, title, node) {
 	var e = node.firstChild;
 	var text = null;
 	if(node.getAttribute && node.getAttribute("tiddler")) {

@@ -3,8 +3,7 @@
 //--
 
 //# "parser" = "custom or default formatter" (should be just 1 term actually)
-function getParser(tiddler, format)
-{
+function getParser(tiddler, format) {
 	if(tiddler) {
 		if(!format) format = tiddler.fields["wikiformat"];
 		var i;
@@ -27,8 +26,7 @@ function getParser(tiddler, format)
 //# formatter - Formatter() object containing the list of formatters to be used
 //# highlightRegExp - regular expression of the text string to highlight
 //# tiddler - reference to the tiddler that's taken to be the container for this wikification
-function Wikifier(source, formatter, highlightRegExp, tiddler)
-{
+function Wikifier(source, formatter, highlightRegExp, tiddler) {
 	this.source = source;
 	this.output = null;
 	this.formatter = formatter;
@@ -44,8 +42,7 @@ function Wikifier(source, formatter, highlightRegExp, tiddler)
 	this.tiddler = tiddler;
 }
 
-Wikifier.prototype.wikifyPlain = function()
-{
+Wikifier.prototype.wikifyPlain = function() {
 	var e = createTiddlyElement(document.body, "div");
 	e.style.display = "none";
 	this.subWikify(e);
@@ -54,8 +51,7 @@ Wikifier.prototype.wikifyPlain = function()
 	return text;
 };
 
-Wikifier.prototype.subWikify = function(output, terminator)
-{
+Wikifier.prototype.subWikify = function(output, terminator) {
 	//# Handle the terminated and unterminated cases separately, this speeds up wikifikation by about 30%
 	try {
 		if(terminator)
@@ -67,8 +63,7 @@ Wikifier.prototype.subWikify = function(output, terminator)
 	}
 };
 
-Wikifier.prototype.subWikifyUnterm = function(output)
-{
+Wikifier.prototype.subWikifyUnterm = function(output) {
 	//# subWikify can be indirectly recursive, so we need to save the old output pointer
 	var oldOutput = this.output;
 	this.output = output;
@@ -102,8 +97,7 @@ Wikifier.prototype.subWikifyUnterm = function(output)
 	this.output = oldOutput;
 };
 
-Wikifier.prototype.subWikifyTerm = function(output, terminatorRegExp)
-{
+Wikifier.prototype.subWikifyTerm = function(output, terminatorRegExp) {
 	//# subWikify can be indirectly recursive, so we need to save the old output pointer
 	var oldOutput = this.output;
 	this.output = output;
@@ -159,8 +153,7 @@ Wikifier.prototype.subWikifyTerm = function(output, terminatorRegExp)
 	this.output = oldOutput;
 };
 
-Wikifier.prototype.outputText = function(place, startPos, endPos)
-{
+Wikifier.prototype.outputText = function(place, startPos, endPos) {
 	//# Check for highlights
 	while(this.highlightMatch && (this.highlightRegExp.lastIndex > startPos) &&
 		  (this.highlightMatch.index < endPos) && (startPos < endPos)) {
@@ -183,8 +176,7 @@ Wikifier.prototype.outputText = function(place, startPos, endPos)
 	}
 };
 
-function wikify(source, output, highlightRegExp, tiddler)
-{
+function wikify(source, output, highlightRegExp, tiddler) {
 	if(!source) return;
 	var wikifier = new Wikifier(source, getParser(tiddler), highlightRegExp, tiddler);
 	var t0 = new Date();
@@ -194,8 +186,7 @@ function wikify(source, output, highlightRegExp, tiddler)
 }
 
 //# get static html for RSS and alike
-function wikifyStatic(source, highlightRegExp, tiddler, format)
-{
+function wikifyStatic(source, highlightRegExp, tiddler, format) {
 	if(!source) return "";
 	if(!tiddler) tiddler = new Tiddler("temp");
 	var wikifier = new Wikifier(source, getParser(tiddler, format), highlightRegExp, tiddler);
@@ -213,8 +204,7 @@ function wikifyStatic(source, highlightRegExp, tiddler, format)
 //#   text - text to wikify
 //#   limit - maximum number of characters to generate
 //#   tiddler - optional reference to the tiddler containing this text
-function wikifyPlainText(text, limit, tiddler)
-{
+function wikifyPlainText(text, limit, tiddler) {
 	if(limit > 0)
 		text = text.substr(0, limit);
 	var wikifier = new Wikifier(text, formatter, null, tiddler);
@@ -222,8 +212,7 @@ function wikifyPlainText(text, limit, tiddler)
 }
 
 //# Highlight plain text into an element
-function highlightify(source, output, highlightRegExp, tiddler)
-{
+function highlightify(source, output, highlightRegExp, tiddler) {
 	if(!source) return;
 	var wikifier = new Wikifier(source, formatter, highlightRegExp, tiddler);
 	wikifier.outputText(output, 0, source.length);

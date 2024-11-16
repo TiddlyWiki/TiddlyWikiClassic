@@ -2,8 +2,7 @@
 //-- Wizard support
 //--
 
-function Wizard(place)
-{
+function Wizard(place) {
 	if(place) {
 		this.formElem = findRelated(place, "wizard", "className");
 		this.bodyElem = findRelated(this.formElem.firstChild, "wizardBody", "className", "nextSibling");
@@ -15,18 +14,15 @@ function Wizard(place)
 	}
 }
 
-Wizard.prototype.setValue = function(name, value)
-{
+Wizard.prototype.setValue = function(name, value) {
 	jQuery(this.formElem).data(name, value);
 };
 
-Wizard.prototype.getValue = function(name)
-{
+Wizard.prototype.getValue = function(name) {
 	return this.formElem ? jQuery(this.formElem).data(name) : null;
 };
 
-Wizard.prototype.createWizard = function(place, title)
-{
+Wizard.prototype.createWizard = function(place, title) {
 	this.formElem = createTiddlyElement(place, "form", null, "wizard");
 	createTiddlyElement(this.formElem, "h1", null, "wizard__title", title);
 	this.bodyElem = createTiddlyElement(this.formElem, "div", null, "wizardBody");
@@ -34,13 +30,11 @@ Wizard.prototype.createWizard = function(place, title)
 	return this.formElem;
 };
 
-Wizard.prototype.clear = function()
-{
+Wizard.prototype.clear = function() {
 	jQuery(this.bodyElem).empty();
 };
 
-Wizard.prototype.setButtons = function(buttonInfo, status)
-{
+Wizard.prototype.setButtons = function(buttonInfo, status) {
 	jQuery(this.footElem).empty();
 	for(var i = 0; i < buttonInfo.length; i++) {
 		createTiddlyButton(this.footElem, buttonInfo[i].caption, buttonInfo[i].tooltip, buttonInfo[i].onClick);
@@ -52,8 +46,7 @@ Wizard.prototype.setButtons = function(buttonInfo, status)
 };
 
 //# in fact updates content; wrapper looks unnecessary (may be removed presumably)
-Wizard.prototype.addStep = function(stepTitle, htmlString)
-{
+Wizard.prototype.addStep = function(stepTitle, htmlString) {
 	jQuery(this.bodyElem).empty();
 	var wrapper = createTiddlyElement(this.bodyElem, "div");
 	createTiddlyElement(wrapper, "h2", null, "wizard__subtitle", stepTitle);
@@ -62,8 +55,7 @@ Wizard.prototype.addStep = function(stepTitle, htmlString)
 	applyHtmlMacros(step, tiddler);
 };
 
-Wizard.prototype.getElement = function(name)
-{
+Wizard.prototype.getElement = function(name) {
 	return this.formElem.elements[name];
 };
 
