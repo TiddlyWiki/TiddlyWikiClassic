@@ -2,12 +2,15 @@
 //-- RSS Saving
 //--
 
-function saveRss(localPath) {
+function saveRss(localPath, callback) {
 	var rssPath = localPath.substr(0, localPath.lastIndexOf(".")) + ".xml";
-	if(saveFile(rssPath, generateRss()))
-		displayMessage(config.messages.rssSaved, "file://" + rssPath);
-	else
-		alert(config.messages.rssFailed);
+
+	tw.io.saveFile(rssPath, generateRss(), callback || function(result, details) {
+		if(result)
+			displayMessage(config.messages.rssSaved, "file://" + rssPath);
+		else
+			alert(config.messages.rssFailed);
+	});
 }
 
 tiddlerToRssItem = function(tiddler, uri) {
