@@ -13,7 +13,7 @@ function saveRss(localPath, callback) {
 	});
 }
 
-tiddlerToRssItem = function(tiddler, uri) {
+function tiddlerToRssItem(tiddler, uri) {
 	var s = "<title" + ">" + tiddler.title.htmlEncode() + "</title" + ">\n";
 	s += "<description>" + wikifyStatic(tiddler.text, null, tiddler).htmlEncode() + "</description>\n";
 	for(var i = 0; i < tiddler.tags.length; i++)
@@ -21,7 +21,7 @@ tiddlerToRssItem = function(tiddler, uri) {
 	s += "<link>" + uri + "#" + encodeURIComponent(String.encodeTiddlyLink(tiddler.title)) + "</link>\n";
 	s += "<pubDate>" + tiddler.modified.toGMTString() + "</pubDate>\n";
 	return s;
-};
+}
 
 function generateRss() {
 	var s = [];
