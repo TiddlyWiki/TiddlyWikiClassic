@@ -148,6 +148,7 @@ tw.io.knownSaveMainFailures = {
 tw.io.saveMainAndReport = function(callback) {
 	var localPath = tw.io.getOriginalLocalPath();
 	var onLoadOriginal = function(original) {
+		var msg = config.messages;
 		if(original == null) {
 			alert(msg.cantSaveError);
 			if(store.tiddlerExists(msg.saveInstructions))
