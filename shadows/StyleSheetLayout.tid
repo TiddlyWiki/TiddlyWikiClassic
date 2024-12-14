@@ -69,6 +69,7 @@ a.tiddlyLinkNonExisting.shadow {font-weight:bold;}
 #sidebarOptions .sliderPanel input {margin:0 0 0.3em 0;}
 #sidebarTabs .tabContents {width:15em; overflow:hidden;}
 #sidebarTabs li:not(:last-child) { margin-bottom: 0.3em; }
+#sidebarTabs ul:not(:last-child) { margin-bottom: 0.5em; }
 
 .wizard { padding:0.1em 2em 0; }
 .wizard__title    { font-size:2em; }
