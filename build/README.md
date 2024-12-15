@@ -47,7 +47,7 @@ This involves a number actions and files to update (after development), includin
 
 1. testing, publishing a beta for testing, fixing issues;
 2. gathering changelog;
-3. bumping version (Version.js, package.json, git tag), merging `dev` into `master`;
+3. bumping version (use `npm run bump-version`), merging `dev` into `master`;
 4. creating a Github release;
 5. updating the site;
 6. announcing.
