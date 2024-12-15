@@ -22,6 +22,7 @@ const updateVersion = (version) => {
 	packageData.version = versionString
 	fs.writeFileSync(packagePath, JSON.stringify(packageData, null, 2))
 	console.log(`✅ updated package.json`)
+
 	console.log(`\nNow please:`)
 	console.log(`🔲 Update package-lock.json accordingly`)
 	console.log(`🔲 Stage these changes; commit:  git commit -m "infra: bump version to ${versionString}"`)
