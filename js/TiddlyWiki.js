@@ -2,8 +2,7 @@
 //-- TiddlyWiki instance contains TiddlerS
 //--
 
-function TiddlyWiki(params)
-{
+function TiddlyWiki(params) {
 	var tiddlers = {}; // Hashmap by name of tiddlers
 	if(params && params.config) {
 		this.config = config;
@@ -38,23 +37,19 @@ function TiddlyWiki(params)
 }
 
 //# Set the dirty flag
-TiddlyWiki.prototype.setDirty = function(dirty)
-{
+TiddlyWiki.prototype.setDirty = function(dirty) {
 	this.dirty = dirty;
 };
 
-TiddlyWiki.prototype.isDirty = function()
-{
+TiddlyWiki.prototype.isDirty = function() {
 	return this.dirty;
 };
 
-TiddlyWiki.prototype.tiddlerExists = function(title)
-{
+TiddlyWiki.prototype.tiddlerExists = function(title) {
 	return this.fetchTiddler(title) != undefined;
 };
 
-TiddlyWiki.prototype.isShadowTiddler = function(title)
-{
+TiddlyWiki.prototype.isShadowTiddler = function(title) {
 	return config.shadowTiddlers[title] === undefined ? false : true;
 };
 
@@ -65,8 +60,7 @@ TiddlyWiki.prototype.isAvailable = function(title) {
 	return this.tiddlerExists(title) || this.isShadowTiddler(title);
 };
 
-TiddlyWiki.prototype.createTiddler = function(title)
-{
+TiddlyWiki.prototype.createTiddler = function(title) {
 	var tiddler = this.fetchTiddler(title);
 	if(!tiddler) {
 		tiddler = new Tiddler(title);
@@ -76,13 +70,11 @@ TiddlyWiki.prototype.createTiddler = function(title)
 	return tiddler;
 };
 
-TiddlyWiki.prototype.getTiddler = function(title)
-{
+TiddlyWiki.prototype.getTiddler = function(title) {
 	return this.fetchTiddler(title) || null;
 };
 
-TiddlyWiki.prototype.getShadowTiddlerText = function(title)
-{
+TiddlyWiki.prototype.getShadowTiddlerText = function(title) {
 	return (typeof config.shadowTiddlers[title] == "string")
 		? config.shadowTiddlers[title]
 		: "";
@@ -91,8 +83,7 @@ TiddlyWiki.prototype.getShadowTiddlerText = function(title)
 // Retrieve tiddler contents
 //# Supports tiddler slices or sections, encoded in {{{title}}} argument using
 //# the respective separator characters ({{{::}}} or {{{##}}}).
-TiddlyWiki.prototype.getTiddlerText = function(title, defaultText)
-{
+TiddlyWiki.prototype.getTiddlerText = function(title, defaultText) {
 	if(!title) return defaultText;
 
 	var pos = title.indexOf(config.textPrimitives.sectionSeparator);
@@ -130,8 +121,7 @@ TiddlyWiki.prototype.getTiddlerText = function(title, defaultText)
 		t.substr(0, match.index - 1);
 };
 
-TiddlyWiki.prototype.getRecursiveTiddlerText = function(title, defaultText, depth)
-{
+TiddlyWiki.prototype.getRecursiveTiddlerText = function(title, defaultText, depth) {
 	var text = this.getTiddlerText(title, null);
 	if(text == null) return defaultText;
 
@@ -157,8 +147,7 @@ TiddlyWiki.prototype.getRecursiveTiddlerText = function(title, defaultText, dept
 //TiddlyWiki.prototype.slicesRE = /(?:^([\'\/]{0,2})~?([\.\w]+)\:\1[\t\x20]*([^\n]+)[\t\x20]*$)|(?:^\|([\'\/]{0,2})~?([\.\w]+)\:?\4\|[\t\x20]*([^\n]+)[\t\x20]*\|$)/gm;
 TiddlyWiki.prototype.slicesRE = /(?:^([\'\/]{0,2})~?([\.\w]+)\:\1[\t\x20]*([^\n]+)[\t\x20]*$)|(?:^\|\x20?([\'\/]{0,2})~?([^\|\s\:\~\'\/]|(?:[^\|\s~\'\/][^\|\n\f\r]*[^\|\s\:\'\/]))\:?\4[\x20\t]*\|[\t\x20]*([^\n\t\x20](?:[^\n]*[^\n\t\x20])?)[\t\x20]*\|$)/gm; // #112
 // @internal
-TiddlyWiki.prototype.calcAllSlices = function(title)
-{
+TiddlyWiki.prototype.calcAllSlices = function(title) {
 	var text = this.getTiddlerText(title, "");
 	this.slicesRE.lastIndex = 0;
 	var slices = {}, m;
@@ -188,8 +177,7 @@ TiddlyWiki.prototype.calcAllSlices = function(title)
 //#
 //# @param name should only contain "word characters" (i.e. "a-ZA-Z_0-9")
 //# @return [may be undefined] the (trimmed) text of the specified slice.
-TiddlyWiki.prototype.getTiddlerSlice = function(title, sliceName)
-{
+TiddlyWiki.prototype.getTiddlerSlice = function(title, sliceName) {
 	var slices = this.slices[title];
 	if(!slices) {
 		slices = this.calcAllSlices(title);
@@ -199,8 +187,7 @@ TiddlyWiki.prototype.getTiddlerSlice = function(title, sliceName)
 };
 
 // Build an hashmap of the specified named slices of a tiddler
-TiddlyWiki.prototype.getTiddlerSlices = function(title, sliceNames)
-{
+TiddlyWiki.prototype.getTiddlerSlices = function(title, sliceNames) {
 	var i, r = {};
 	for(i = 0; i < sliceNames.length; i++) {
 		var slice = this.getTiddlerSlice(title, sliceNames[i]);
@@ -209,19 +196,16 @@ TiddlyWiki.prototype.getTiddlerSlices = function(title, sliceNames)
 	return r;
 };
 
-TiddlyWiki.prototype.suspendNotifications = function()
-{
+TiddlyWiki.prototype.suspendNotifications = function() {
 	this.notificationLevel--;
 };
 
-TiddlyWiki.prototype.resumeNotifications = function()
-{
+TiddlyWiki.prototype.resumeNotifications = function() {
 	this.notificationLevel++;
 };
 
 // Invoke the notification handlers for a particular tiddler
-TiddlyWiki.prototype.notify = function(title, doBlanket)
-{
+TiddlyWiki.prototype.notify = function(title, doBlanket) {
 	if(this.notificationLevel) return;
 	for(var i = 0; i < this.namedNotifications.length; i++) {
 		var n = this.namedNotifications[i];
@@ -231,8 +215,7 @@ TiddlyWiki.prototype.notify = function(title, doBlanket)
 };
 
 // Invoke the notification handlers for all tiddlers
-TiddlyWiki.prototype.notifyAll = function()
-{
+TiddlyWiki.prototype.notifyAll = function() {
 	if(this.notificationLevel) return;
 	for(var i = 0; i < this.namedNotifications.length; i++) {
 		var n = this.namedNotifications[i];
@@ -242,8 +225,7 @@ TiddlyWiki.prototype.notifyAll = function()
 };
 
 // Add a notification handler to a tiddler unless it's already set
-TiddlyWiki.prototype.addNotification = function(title, fn)
-{
+TiddlyWiki.prototype.addNotification = function(title, fn) {
 	for(var i = 0; i < this.namedNotifications.length; i++) {
 		if((this.namedNotifications[i].name == title) && (this.namedNotifications[i].notify == fn))
 			return this;
@@ -252,8 +234,7 @@ TiddlyWiki.prototype.addNotification = function(title, fn)
 	return this;
 };
 
-TiddlyWiki.prototype.removeTiddler = function(title)
-{
+TiddlyWiki.prototype.removeTiddler = function(title) {
 	var tiddler = this.fetchTiddler(title);
 	if(tiddler) {
 		this.deleteTiddler(title);
@@ -263,8 +244,7 @@ TiddlyWiki.prototype.removeTiddler = function(title)
 };
 
 // Reset the sync status of a freshly synced tiddler
-TiddlyWiki.prototype.resetTiddler = function(title)
-{
+TiddlyWiki.prototype.resetTiddler = function(title) {
 	var tiddler = this.fetchTiddler(title);
 	if(tiddler) {
 		tiddler.clearChangeCount();
@@ -273,8 +253,7 @@ TiddlyWiki.prototype.resetTiddler = function(title)
 	}
 };
 
-TiddlyWiki.prototype.setTiddlerTag = function(title, status, tag)
-{
+TiddlyWiki.prototype.setTiddlerTag = function(title, status, tag) {
 	var tiddler = this.fetchTiddler(title);
 	if(!tiddler) return;
 
@@ -290,8 +269,7 @@ TiddlyWiki.prototype.setTiddlerTag = function(title, status, tag)
 	this.setDirty(true);
 };
 
-TiddlyWiki.prototype.addTiddlerFields = function(title, fields)
-{
+TiddlyWiki.prototype.addTiddlerFields = function(title, fields) {
 	var tiddler = this.fetchTiddler(title);
 	if(!tiddler) return;
 
@@ -316,8 +294,7 @@ TiddlyWiki.prototype.addTiddlerFields = function(title, fields)
 //#
 //# NB: Does not trigger autoSaveChanges.
 TiddlyWiki.prototype.saveTiddler = function(titleOrTiddler, newTitle, newBody,
-	modifier, modified, tags, fields, clearChangeCount, created, creator)
-{
+	modifier, modified, tags, fields, clearChangeCount, created, creator) {
 	var wasTiddlerProvided = titleOrTiddler instanceof Tiddler;
 	var tiddler = this.resolveTiddler(titleOrTiddler);
 	var title = tiddler ? tiddler.title : titleOrTiddler;
@@ -351,36 +328,31 @@ TiddlyWiki.prototype.saveTiddler = function(titleOrTiddler, newTitle, newBody,
 	return tiddler;
 };
 
-TiddlyWiki.prototype.incChangeCount = function(title)
-{
+TiddlyWiki.prototype.incChangeCount = function(title) {
 	var tiddler = this.fetchTiddler(title);
 	if(tiddler)
 		tiddler.incChangeCount();
 };
 
-TiddlyWiki.prototype.getLoader = function()
-{
+TiddlyWiki.prototype.getLoader = function() {
 	if(!this.loader)
 		this.loader = new TW21Loader();
 	return this.loader;
 };
 
-TiddlyWiki.prototype.getSaver = function()
-{
+TiddlyWiki.prototype.getSaver = function() {
 	if(!this.saver)
 		this.saver = new TW21Saver();
 	return this.saver;
 };
 
 // Return all tiddlers formatted as an HTML string
-TiddlyWiki.prototype.allTiddlersAsHtml = function()
-{
+TiddlyWiki.prototype.allTiddlersAsHtml = function() {
 	return this.getSaver().externalize(store);
 };
 
 // Load contents of a TiddlyWiki from an HTML DIV
-TiddlyWiki.prototype.loadFromDiv = function(src, idPrefix, noUpdate)
-{
+TiddlyWiki.prototype.loadFromDiv = function(src, idPrefix, noUpdate) {
 	var storeElem = (typeof src == "string") ? document.getElementById(src) : src;
 	if(!storeElem) return;
 
@@ -396,8 +368,7 @@ TiddlyWiki.prototype.loadFromDiv = function(src, idPrefix, noUpdate)
 
 // Load contents of a TiddlyWiki from a string
 // Returns null if there's an error
-TiddlyWiki.prototype.importTiddlyWiki = function(text)
-{
+TiddlyWiki.prototype.importTiddlyWiki = function(text) {
 	var posDiv = locateStoreArea(text);
 	if(!posDiv) return null;
 	var content = "<" + "html><" + "body>" + text.substring(posDiv[0], posDiv[1] + endSaveArea.length) + "<" + "/body><" + "/html>";
@@ -425,8 +396,7 @@ TiddlyWiki.prototype.importTiddlyWiki = function(text)
 	return this;
 };
 
-TiddlyWiki.prototype.updateTiddlers = function()
-{
+TiddlyWiki.prototype.updateTiddlers = function() {
 	this.tiddlersUpdated = true;
 	this.forEachTiddler(function(title, tiddler) {
 		tiddler.changed();
@@ -434,8 +404,7 @@ TiddlyWiki.prototype.updateTiddlers = function()
 };
 
 // Return an array of tiddlers matching a search regular expression
-TiddlyWiki.prototype.search = function(searchRegExp, sortField, excludeTag, match)
-{
+TiddlyWiki.prototype.search = function(searchRegExp, sortField, excludeTag, match) {
 	var candidates = this.reverseLookup("tags", excludeTag, !!match);
 	var i, results = [];
 	for(i = 0; i < candidates.length; i++) {
@@ -449,8 +418,7 @@ TiddlyWiki.prototype.search = function(searchRegExp, sortField, excludeTag, matc
 
 // Returns a list of all tags in use (in the form of an array of [tagName, numberOfOccurances] "tuples")
 //   excludeTag - if present, excludes tags that are themselves tagged with excludeTag
-TiddlyWiki.prototype.getTags = function(excludeTag)
-{
+TiddlyWiki.prototype.getTags = function(excludeTag) {
 	var results = [];
 	this.forEachTiddler(function(title, tiddler) {
 	    var i, j;
@@ -479,19 +447,16 @@ TiddlyWiki.prototype.getTags = function(excludeTag)
 };
 
 // Return an array of the tiddlers that are tagged with a given tag
-TiddlyWiki.prototype.getTaggedTiddlers = function(tag, sortField)
-{
+TiddlyWiki.prototype.getTaggedTiddlers = function(tag, sortField) {
 	return this.reverseLookup("tags", tag, true, sortField);
 };
 
-TiddlyWiki.prototype.getValueTiddlers = function(field, value, sortField)
-{
+TiddlyWiki.prototype.getValueTiddlers = function(field, value, sortField) {
 	return this.reverseLookup(field, value, true, sortField);
 };
 
 // Return an array of the tiddlers that link to a given tiddler
-TiddlyWiki.prototype.getReferringTiddlers = function(title, unusedParameter, sortField)
-{
+TiddlyWiki.prototype.getReferringTiddlers = function(title, unusedParameter, sortField) {
 	if(!this.tiddlersUpdated)
 		this.updateTiddlers();
 	return this.reverseLookup("links", title, true, sortField);
@@ -499,8 +464,7 @@ TiddlyWiki.prototype.getReferringTiddlers = function(title, unusedParameter, sor
 
 // Return an array of the tiddlers that have a specified entry (lookupValue) in the specified field (lookupField, like "links" or "tags")
 // if shouldMatch == true, or don't have such entry (if shouldMatch == false)
-TiddlyWiki.prototype.reverseLookup = function(lookupField, lookupValue, shouldMatch, sortField)
-{
+TiddlyWiki.prototype.reverseLookup = function(lookupField, lookupValue, shouldMatch, sortField) {
 	var results = [];
 	this.forEachTiddler(function(title, tiddler) {
 		var values;
@@ -523,8 +487,7 @@ TiddlyWiki.prototype.reverseLookup = function(lookupField, lookupValue, shouldMa
 };
 
 // Return the tiddlers as a sorted array
-TiddlyWiki.prototype.getTiddlers = function(field, excludeTag)
-{
+TiddlyWiki.prototype.getTiddlers = function(field, excludeTag) {
 	var results = [];
 	this.forEachTiddler(function(title, tiddler) {
 		if(excludeTag == undefined || !tiddler.isTagged(excludeTag))
@@ -535,8 +498,7 @@ TiddlyWiki.prototype.getTiddlers = function(field, excludeTag)
 };
 
 // Return array of names of tiddlers that are referred to but not defined
-TiddlyWiki.prototype.getMissingLinks = function()
-{
+TiddlyWiki.prototype.getMissingLinks = function() {
 	if(!this.tiddlersUpdated) this.updateTiddlers();
 
 	var results = [];
@@ -555,8 +517,7 @@ TiddlyWiki.prototype.getMissingLinks = function()
 };
 
 // Return an array of names of tiddlers that are defined but not referred to
-TiddlyWiki.prototype.getOrphans = function()
-{
+TiddlyWiki.prototype.getOrphans = function() {
 	var results = [];
 	this.forEachTiddler(function (title, tiddler) {
 		if(this.getReferringTiddlers(title).length == 0 && !tiddler.isTagged("excludeLists"))
@@ -567,8 +528,7 @@ TiddlyWiki.prototype.getOrphans = function()
 };
 
 // Return an array of names of all the shadow tiddlers
-TiddlyWiki.prototype.getShadowed = function()
-{
+TiddlyWiki.prototype.getShadowed = function() {
 	var t, results = [];
 	for(t in config.shadowTiddlers) {
 		if(this.isShadowTiddler(t))
@@ -579,8 +539,7 @@ TiddlyWiki.prototype.getShadowed = function()
 };
 
 // Return an array of tiddlers that have been touched since they were downloaded or created
-TiddlyWiki.prototype.getTouched = function()
-{
+TiddlyWiki.prototype.getTouched = function() {
 	var results = [];
 	this.forEachTiddler(function(title, tiddler) {
 		if(tiddler.isTouched())
@@ -591,8 +550,7 @@ TiddlyWiki.prototype.getTouched = function()
 };
 
 // Resolves a Tiddler reference or tiddler title into a Tiddler object, or null if it doesn't exist
-TiddlyWiki.prototype.resolveTiddler = function(tiddler)
-{
+TiddlyWiki.prototype.resolveTiddler = function(tiddler) {
 	var t = (typeof tiddler == "string") ? this.getTiddler(tiddler) : tiddler;
 	return t instanceof Tiddler ? t : null;
 };
@@ -602,8 +560,7 @@ TiddlyWiki.prototype.resolveTiddler = function(tiddler)
 //# field - name of field (or extended field) to sort by;
 //#         precede with "+" for ascending sort (the default)
 //#			or "-" for descending sort
-TiddlyWiki.prototype.sortTiddlers = function(tiddlers, field)
-{
+TiddlyWiki.prototype.sortTiddlers = function(tiddlers, field) {
 	var asc = +1;
 	switch(field.substr(0, 1)) {
 		case "-":

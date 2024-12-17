@@ -1,20 +1,17 @@
 // Returns true if path is a valid field name (path),
 // i.e. a sequence of identifiers, separated by "."
-TiddlyWiki.isValidFieldName = function(name)
-{
+TiddlyWiki.isValidFieldName = function(name) {
 	var match = /[a-zA-Z_]\w*(\.[a-zA-Z_]\w*)*/.exec(name);
 	return match && (match[0] == name);
 };
 
 // Throws an exception when name is not a valid field name.
-TiddlyWiki.checkFieldName = function(name)
-{
+TiddlyWiki.checkFieldName = function(name) {
 	if(!TiddlyWiki.isValidFieldName(name))
 		throw config.messages.invalidFieldName.format([name]);
 };
 
-function StringFieldAccess(fName, readOnly)
-{
+function StringFieldAccess(fName, readOnly) {
 	this.set = readOnly ?
 		function(tiddler, newValue) {
 			if(newValue != tiddler[fName]) throw config.messages.fieldCannotBeChanged.format([fName]);
@@ -27,8 +24,7 @@ function StringFieldAccess(fName, readOnly)
 	this.get = function(tiddler) { return tiddler[fName] };
 }
 
-function DateFieldAccess(fName)
-{
+function DateFieldAccess(fName) {
 	this.set = function(tiddler, newValue) {
 		var d = newValue instanceof Date ? newValue : Date.convertFromYYYYMMDDHHMM(newValue);
 		if(d == tiddler[fName]) return;
@@ -38,8 +34,7 @@ function DateFieldAccess(fName)
 	this.get = function(tiddler) { return tiddler[fName].convertToYYYYMMDDHHMM() };
 }
 
-function LinksFieldAccess(fName)
-{
+function LinksFieldAccess(fName) {
 	this.set = function(tiddler, newValue) {
 		var items = (typeof newValue == "string") ? newValue.readBracketedList() : newValue;
 		if(items.toString() == tiddler[fName].toString()) return;
@@ -62,8 +57,7 @@ TiddlyWiki.standardFieldAccess = {
 	"tags":     new LinksFieldAccess("tags")
 };
 
-TiddlyWiki.isStandardField = function(name)
-{
+TiddlyWiki.isStandardField = function(name) {
 	return TiddlyWiki.standardFieldAccess[name] != undefined;
 };
 
@@ -72,8 +66,7 @@ TiddlyWiki.isStandardField = function(name)
 // Setting a namespace to undefined removes all fields of that namespace.
 // The fieldName is case-insensitive.
 // All values will be converted to a string value.
-TiddlyWiki.prototype.setValue = function(tiddlerOrTitle, fieldName, value)
-{
+TiddlyWiki.prototype.setValue = function(tiddlerOrTitle, fieldName, value) {
 	TiddlyWiki.checkFieldName(fieldName);
 	var t = this.resolveTiddler(tiddlerOrTitle);
 	if(!t) return;
@@ -123,8 +116,7 @@ TiddlyWiki.prototype.setValue = function(tiddlerOrTitle, fieldName, value)
 // Returns the value of the given field of the tiddler.
 // The fieldName is case-insensitive.
 // Will only return String values (or undefined).
-TiddlyWiki.prototype.getValue = function(tiddlerOrTitle, fieldName)
-{
+TiddlyWiki.prototype.getValue = function(tiddlerOrTitle, fieldName) {
 	var t = this.resolveTiddler(tiddlerOrTitle);
 	if(!t) return undefined;
 
@@ -147,8 +139,7 @@ TiddlyWiki.prototype.getValue = function(tiddlerOrTitle, fieldName)
 // and that value is returned.
 // The order of the fields is not defined.
 // @param callback a function(tiddler, fieldName, value).
-TiddlyWiki.prototype.forEachField = function(tiddlerOrTitle, callback, onlyExtendedFields)
-{
+TiddlyWiki.prototype.forEachField = function(tiddlerOrTitle, callback, onlyExtendedFields) {
 	var t = this.resolveTiddler(tiddlerOrTitle);
 	if(!t) return undefined;
 

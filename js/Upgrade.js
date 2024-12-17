@@ -4,15 +4,13 @@
 
 config.macros.upgrade.docsUrl = 'https://classic.tiddlywiki.com/#HowToUpgrade';
 
-config.macros.upgrade.getSourceURL = function()
-{
+config.macros.upgrade.getSourceURL = function() {
 	return config.options.txtUpgradeCoreURI || config.macros.upgrade.source;
 };
 
 //# onSuccess: function(coreAsText, textStatus, jqXHR)
 //# onError:   function(jqXHR, textStatus, errorThrown)
-config.macros.upgrade.loadLatestCore = function(onSuccess, onError)
-{
+config.macros.upgrade.loadLatestCore = function(onSuccess, onError) {
 	ajaxReq({
 		type: "GET",
 		url: this.getSourceURL(),
@@ -22,8 +20,7 @@ config.macros.upgrade.loadLatestCore = function(onSuccess, onError)
 	});
 };
 
-config.macros.upgrade.handler = function(place)
-{
+config.macros.upgrade.handler = function(place) {
 	var w = new Wizard();
 	w.createWizard(place, this.wizardTitle);
 	w.addStep(this.step1Title, this.step1Html.format([
@@ -38,8 +35,7 @@ config.macros.upgrade.handler = function(place)
 	}]);
 };
 
-config.macros.upgrade.onClickUpgrade = function(e)
-{
+config.macros.upgrade.onClickUpgrade = function(e) {
 	var me = config.macros.upgrade;
 	var w = new Wizard(this);
 	if(!window.allowSave()) {
@@ -85,8 +81,7 @@ config.macros.upgrade.onClickUpgrade = function(e)
 	return false;
 };
 
-config.macros.upgrade.onLoadCore = function(status, w, responseText, url, xhr)
-{
+config.macros.upgrade.onLoadCore = function(status, w, responseText, url, xhr) {
 	var me = config.macros.upgrade;
 	var errMsg;
 	if(!status) errMsg = me.errorLoadingCore;
@@ -108,8 +103,7 @@ config.macros.upgrade.onLoadCore = function(status, w, responseText, url, xhr)
 	]);
 };
 
-config.macros.upgrade.onStartUpgrade = function(wizard, newCoreHtml)
-{
+config.macros.upgrade.onStartUpgrade = function(wizard, newCoreHtml) {
 	wizard.setButtons([], config.macros.upgrade.statusSavingCore);
 	var localPath = tw.io.getOriginalLocalPath();
 	saveFile(localPath, newCoreHtml);
@@ -120,8 +114,7 @@ config.macros.upgrade.onStartUpgrade = function(wizard, newCoreHtml)
 	window.setTimeout(function () { window.location = newLocation }, 10);
 };
 
-config.macros.upgrade.onCancel = function(e)
-{
+config.macros.upgrade.onCancel = function(e) {
 	var me = config.macros.upgrade;
 	var w = new Wizard(this);
 	w.addStep(me.step3Title, me.step3Html);
@@ -129,8 +122,7 @@ config.macros.upgrade.onCancel = function(e)
 	return false;
 };
 
-config.macros.upgrade.extractVersion = function(upgradeFile)
-{
+config.macros.upgrade.extractVersion = function(upgradeFile) {
 	var re = /version = \{\s*title: "([^"]+)", major: (\d+), minor: (\d+), revision: (\d+)(, beta: (\d+)){0,1}, date: new Date\("([^"]+)"\)/mg;
 	var m = re.exec(upgradeFile);
 	return !m ? null : {
@@ -139,8 +131,7 @@ config.macros.upgrade.extractVersion = function(upgradeFile)
 };
 
 // a helper, splits uri into parts, passes the map of parts to modify and glues parts back
-function changeUri(uri, modify)
-{
+function changeUri(uri, modify) {
 	var uriPartsRE = /^(?:([\w:]+)\/\/)?([^\/\?#]+)?([^\?#]+)?(?:\?([^#]*))?(?:#(.*))?$/;
 	var match = uriPartsRE.exec(uri) || [null, '', '', '', '', ''];
 	var parts = {
@@ -159,10 +150,8 @@ function changeUri(uri, modify)
 	return newScheme + newHost + newPath + newQuery + newHash;
 }
 
-function addUpgradePartsToURI(uri, backupPath)
-{
-	return changeUri(uri, function(uriParts)
-	{
+function addUpgradePartsToURI(uri, backupPath) {
+	return changeUri(uri, function(uriParts) {
 		var newParamifier = 'upgrade:[[' + encodeURI(backupPath) + ']]';
 		uriParts.hash = (uriParts.hash ? uriParts.hash + '%20' : '') + newParamifier;
 
@@ -171,10 +160,8 @@ function addUpgradePartsToURI(uri, backupPath)
 	});
 }
 
-function stripUpgradePartsFromURI(uri)
-{
-	return changeUri(uri, function(uriParts)
-	{
+function stripUpgradePartsFromURI(uri) {
+	return changeUri(uri, function(uriParts) {
 		var queryParts = uriParts.query.split('&'),
 		    hashParts = uriParts.hash.split('%20'); // splits paramifiers with a space in argument
 
@@ -192,8 +179,7 @@ function stripUpgradePartsFromURI(uri)
 	});
 }
 
-function upgradeFrom(path)
-{
+function upgradeFrom(path) {
 	tw.io.loadFile(path, function(oldTw) {
 		var importStore = new TiddlyWiki();
 		importStore.importTiddlyWiki(oldTw);

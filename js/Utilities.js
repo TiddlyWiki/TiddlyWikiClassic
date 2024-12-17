@@ -3,8 +3,7 @@
 //--
 
 // Return TiddlyWiki version string
-function formatVersion(v)
-{
+function formatVersion(v) {
 	v = v || version;
 	return v.major + "." + v.minor + "." + v.revision +
 		(v.alpha ? " (alpha " + v.alpha + ")" : "") +
@@ -17,11 +16,9 @@ function formatVersion(v)
 //#          0 if v2 is the same as v1
 //#         -1 if v2 is earlier than v1
 //# version without a beta number is later than a version with a beta number
-function compareVersions(v1, v2)
-{
+function compareVersions(v1, v2) {
 	var x1, x2, i, a = ["major", "minor", "revision"];
-	for(i = 0; i < a.length; i++)
-	{
+	for(i = 0; i < a.length; i++) {
 		x1 = v1[a[i]] || 0;
 		x2 = v2[a[i]] || 0;
 		if(x1 < x2) return +1;
@@ -33,8 +30,7 @@ function compareVersions(v1, v2)
 	       x1 > x2 ? -1 : 0;
 }
 
-function merge(dst, src, preserveExisting)
-{
+function merge(dst, src, preserveExisting) {
 	for(var key in src)
 		if(!preserveExisting || dst[key] === undefined)
 			dst[key] = src[key];
@@ -43,8 +39,7 @@ function merge(dst, src, preserveExisting)
 }
 
 // Get the target of an event
-function resolveTarget(event)
-{
+function resolveTarget(event) {
 	var obj = event.target || event.srcElement;
 	// defeat Safari bug
 	if(obj.nodeType == 3)
@@ -53,27 +48,23 @@ function resolveTarget(event)
 }
 
 // Return the description of an exception (string)
-function exceptionText(ex, prependedMessage)
-{
+function exceptionText(ex, prependedMessage) {
 	var s = ex.description || ex.toString();
 	return prependedMessage ? (prependedMessage + ":\n" + s) : s;
 }
 
 // Display an alert of an exception description with optional message
-function showException(e, prependedMessage)
-{
+function showException(e, prependedMessage) {
 	alert(exceptionText(e, prependedMessage));
 }
 
 //# deprecated
-function alertAndThrow(m)
-{
+function alertAndThrow(m) {
 	alert(m);
 	throw(m);
 }
 
-function glyph(name)
-{
+function glyph(name) {
 	var g = config.glyphs;
 	if(!g.codes[name]) return "";
 	if(g.currBrowser == null) {
@@ -85,13 +76,11 @@ function glyph(name)
 	return g.codes[name][g.currBrowser];
 }
 
-function createTiddlyText(parent, text)
-{
+function createTiddlyText(parent, text) {
 	return parent.appendChild(document.createTextNode(text));
 }
 
-function createTiddlyCheckbox(parent, caption, checked, onChange)
-{
+function createTiddlyCheckbox(parent, caption, checked, onChange) {
 	var cb = document.createElement("input");
 	cb.setAttribute("type", "checkbox");
 	cb.onclick = onChange;
@@ -103,8 +92,7 @@ function createTiddlyCheckbox(parent, caption, checked, onChange)
 	return cb;
 }
 
-function createTiddlyElement(parent, element, id, className, text, attribs)
-{
+function createTiddlyElement(parent, element, id, className, text, attribs) {
 	var n, e = document.createElement(element);
 	if(className != null) e.className = className;
 	if(       id != null) e.setAttribute('id', id);
@@ -116,8 +104,7 @@ function createTiddlyElement(parent, element, id, className, text, attribs)
 	return e;
 }
 
-function createTiddlyButton(parent, text, tooltip, action, className, id, accessKey, customAttributes)
-{
+function createTiddlyButton(parent, text, tooltip, action, className, id, accessKey, customAttributes) {
 	var attributes = { href: 'javascript:;' };
 	if(tooltip)   attributes.title = tooltip;
 	if(accessKey) attributes.accessKey = accessKey;
@@ -132,8 +119,7 @@ function createTiddlyButton(parent, text, tooltip, action, className, id, access
 //#   place - element where the link should be created
 //#   url - link target
 //#   label - link text (optional)
-function createExternalLink(place, url, label)
-{
+function createExternalLink(place, url, label) {
 	var tooltip = config.messages.externalLinkTooltip;
 	var link = createTiddlyElement(place, 'a', null, 'externalLink', label, {
 		href: url,
@@ -144,8 +130,7 @@ function createExternalLink(place, url, label)
 	return link;
 }
 
-function getTiddlyLinkInfo(title, currClasses)
-{
+function getTiddlyLinkInfo(title, currClasses) {
 	var classes = currClasses ? currClasses.split(" ") : [];
 	classes.pushUnique("tiddlyLink");
 	var tiddler = store.fetchTiddler(title);
@@ -174,8 +159,7 @@ function getTiddlyLinkInfo(title, currClasses)
 }
 
 // Event handler for clicking on a tiddly link
-function onClickTiddlerLink(ev)
-{
+function onClickTiddlerLink(ev) {
 	var e = ev || window.event;
 	var target = resolveTarget(e);
 	var link = target;
@@ -206,8 +190,7 @@ function onClickTiddlerLink(ev)
 	return false;
 }
 
-function getTiddlerLinkHref(title)
-{
+function getTiddlerLinkHref(title) {
 	return window.location.toString().replace(/#.*$/, '') + story.getPermaViewHash([title]);
 }
 
@@ -218,8 +201,7 @@ function getTiddlerLinkHref(title)
 //#   className - custom CSS class for the link
 //#   linkedFromTiddler - tiddler from which to inherit extended fields
 //#   noToggle - flag to force the link to open the target, even if chkToggleLinks is on
-function createTiddlyLink(place, title, includeText, className, isStatic, linkedFromTiddler, noToggle)
-{
+function createTiddlyLink(place, title, includeText, className, isStatic, linkedFromTiddler, noToggle) {
 	var title = jQuery.trim(title);
 	var text = includeText ? title : null;
 	var info = getTiddlyLinkInfo(title, className);
@@ -234,8 +216,7 @@ function createTiddlyLink(place, title, includeText, className, isStatic, linked
 	btn.setAttribute("tiddlyLink", title);
 	if(noToggle)
 		btn.setAttribute("noToggle", "true");
-	if(linkedFromTiddler)
-	{
+	if(linkedFromTiddler) {
 		var fields = linkedFromTiddler.getInheritedFields();
 		if(fields)
 			btn.setAttribute("tiddlyFields", fields);
@@ -243,20 +224,17 @@ function createTiddlyLink(place, title, includeText, className, isStatic, linked
 	return btn;
 }
 
-function refreshTiddlyLink(e, title)
-{
+function refreshTiddlyLink(e, title) {
 	var info = getTiddlyLinkInfo(title, e.className);
 	e.className = info.classes;
 	e.title = info.subTitle;
 }
 
-function createTiddlyDropDown(place, onchange, options, defaultValue)
-{
+function createTiddlyDropDown(place, onchange, options, defaultValue) {
 	var sel = createTiddlyElement(place, "select");
 	sel.onchange = onchange;
 
-	for(var i = 0; i < options.length; i++)
-	{
+	for(var i = 0; i < options.length; i++) {
 		var e = createTiddlyElement(sel, "option", null, null, options[i].caption);
 		e.value = options[i].name;
 		if(e.value == defaultValue)

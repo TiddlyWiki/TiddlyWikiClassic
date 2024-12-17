@@ -68,6 +68,8 @@ a.tiddlyLinkNonExisting.shadow {font-weight:bold;}
 #sidebarOptions .sliderPanel a {font-weight:bold; display:inline; padding:0;}
 #sidebarOptions .sliderPanel input {margin:0 0 0.3em 0;}
 #sidebarTabs .tabContents {width:15em; overflow:hidden;}
+#sidebarTabs li:not(:last-child) { margin-bottom: 0.3em; }
+#sidebarTabs ul:not(:last-child) { margin-bottom: 0.5em; }
 
 .wizard { padding:0.1em 2em 0; }
 .wizard__title    { font-size:2em; }
@@ -84,6 +86,7 @@ a.tiddlyLinkNonExisting.shadow {font-weight:bold;}
 .messageToolbar__button_withIcon { display: inline-block; }
 .tw-icon { height: 1em; width: 1em; } /* width for IE */
 .tw-icon line { stroke-width: 1; stroke-linecap: round; }
+.messageArea__text:not(:last-child) { margin-bottom: 0.3em; }
 .messageArea__text a { text-decoration:underline; }
 
 .popup {position:absolute; z-index:300; font-size:.9em; padding:0.3em 0; list-style:none; margin:0;}
@@ -151,7 +154,7 @@ pre, code { font-family: monospace, monospace; font-size: 1em; }
 .viewer pre, .viewer code { line-height: 1.4em; }
 
 .editor {font-size:1.1em; line-height:1.4em;}
-.editor input, .editor textarea {display:block; width:100%; box-sizing: border-box; font:inherit;}
+.editor input, .editor textarea { display: block; width: 100%; box-sizing: border-box; font: inherit; padding: 0.1em 0.4em; }
 .editorFooter {padding:0.25em 0; font-size:.9em;}
 .editorFooter .button {padding-top:0; padding-bottom:0;}
 

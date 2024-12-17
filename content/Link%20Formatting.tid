@@ -47,8 +47,8 @@ Similar to pretty links alternative text can be used to link to external sites:
 }}}
 Displays as:
 [[Visit the Osmosoft site|http://osmosoft.com]]
-!Links to Other Spaces
-Link to a space by preceding it with {{{@}}}:
+!~TiddlySpace: Links to Other Spaces
+In [[TiddlySpace|HostedOptions]], it was possible to link to a space by preceding it with {{{@}}}:
 {{{
 @about
 }}}

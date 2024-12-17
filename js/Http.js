@@ -4,16 +4,14 @@
 
 // Perform an http request using the jQuery ajax function
 // fallback to privileged file I/O or HTML5 FileReader
-function ajaxReq(args)
-{
+function ajaxReq(args) {
 	if (args.file || args.url.startsWith("file"))  // LOCAL FILE
 		return localAjax(args);
 	return jQuery.ajax(args);
 }
 
 // perform local I/O and FAKE a minimal XHR response object
-function localAjax(args)
-{
+function localAjax(args) {
 	var success = function(data) {
 		args.success(data, "success", { responseText: data });
 	};
@@ -59,8 +57,7 @@ function localAjax(args)
 //     responseText - the text of the file
 //     url - requested URL
 //     xhr - the underlying XMLHttpRequest object
-function httpReq(type, url, callback, params, headers, data, contentType, username, password, allowCache)
-{
+function httpReq(type, url, callback, params, headers, data, contentType, username, password, allowCache) {
 	var httpSuccess = function(xhr) {
 		try {
 			// IE error sometimes returns 1223 when it should be 204 so treat it as success, see #1450

@@ -2,17 +2,18 @@
 //-- RSS Saving
 //--
 
-function saveRss(localPath)
-{
+function saveRss(localPath, callback) {
 	var rssPath = localPath.substr(0, localPath.lastIndexOf(".")) + ".xml";
-	if(saveFile(rssPath, generateRss()))
-		displayMessage(config.messages.rssSaved, "file://" + rssPath);
-	else
-		alert(config.messages.rssFailed);
+
+	tw.io.saveFile(rssPath, generateRss(), callback || function(result, details) {
+		if(result)
+			displayMessage(config.messages.rssSaved, "file://" + rssPath);
+		else
+			alert(config.messages.rssFailed);
+	});
 }
 
-tiddlerToRssItem = function(tiddler, uri)
-{
+function tiddlerToRssItem(tiddler, uri) {
 	var s = "<title" + ">" + tiddler.title.htmlEncode() + "</title" + ">\n";
 	s += "<description>" + wikifyStatic(tiddler.text, null, tiddler).htmlEncode() + "</description>\n";
 	for(var i = 0; i < tiddler.tags.length; i++)
@@ -20,10 +21,9 @@ tiddlerToRssItem = function(tiddler, uri)
 	s += "<link>" + uri + "#" + encodeURIComponent(String.encodeTiddlyLink(tiddler.title)) + "</link>\n";
 	s += "<pubDate>" + tiddler.modified.toGMTString() + "</pubDate>\n";
 	return s;
-};
+}
 
-function generateRss()
-{
+function generateRss() {
 	var s = [];
 	var d = new Date();
 	var u = store.getTiddlerText("SiteUrl");

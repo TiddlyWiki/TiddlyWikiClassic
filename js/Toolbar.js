@@ -7,8 +7,7 @@
 //#  command - reference to config.commands[] member -or- name of member
 //#  tiddler - reference to tiddler that toolbar applies to
 //#  className - the class to give the button
-config.macros.toolbar.createCommand = function(place, commandName, tiddler, className)
-{
+config.macros.toolbar.createCommand = function(place, commandName, tiddler, className) {
 	if(!(tiddler instanceof Tiddler)) return;
 	if(typeof commandName != "string") {
 		for(var name in config.commands) {
@@ -34,8 +33,7 @@ config.macros.toolbar.createCommand = function(place, commandName, tiddler, clas
 	}
 };
 
-config.macros.toolbar.isCommandEnabled = function(command, tiddler)
-{
+config.macros.toolbar.isCommandEnabled = function(command, tiddler) {
 	var title = tiddler.title;
 	var shadow = store.isShadowTiddler(title) && !store.tiddlerExists(title);
 	if(shadow && command.hideShadow) return false;
@@ -43,18 +41,15 @@ config.macros.toolbar.isCommandEnabled = function(command, tiddler)
 	return !ro || (ro && !command.hideReadOnly);
 };
 
-config.macros.toolbar.getCommandText = function(command, tiddler)
-{
+config.macros.toolbar.getCommandText = function(command, tiddler) {
 	return (tiddler.isReadOnly() && command.readOnlyText) || command.text;
 };
 
-config.macros.toolbar.getCommandTooltip = function(command, tiddler)
-{
+config.macros.toolbar.getCommandTooltip = function(command, tiddler) {
 	return (tiddler.isReadOnly() && command.readOnlyTooltip) || command.tooltip;
 };
 
-config.macros.toolbar.onClickCommand = function(ev)
-{
+config.macros.toolbar.onClickCommand = function(ev) {
 	var e = ev || window.event;
 	e.cancelBubble = true;
 	if(e.stopPropagation) e.stopPropagation();
@@ -62,8 +57,7 @@ config.macros.toolbar.onClickCommand = function(ev)
 	return command.handler(e, this, this.getAttribute("tiddler"));
 };
 
-config.macros.toolbar.onClickPopup = function(ev)
-{
+config.macros.toolbar.onClickPopup = function(ev) {
 	var e = ev || window.event;
 	e.cancelBubble = true;
 	if(e.stopPropagation) e.stopPropagation();
@@ -77,8 +71,7 @@ config.macros.toolbar.onClickPopup = function(ev)
 };
 
 // Invoke the first command encountered from a given place that is tagged with a specified class
-config.macros.toolbar.invokeCommand = function(place, className, event)
-{
+config.macros.toolbar.invokeCommand = function(place, className, event) {
 	var children = place.getElementsByTagName("a");
 	for(var i = 0; i < children.length; i++) {
 		var c = children[i];
@@ -90,16 +83,14 @@ config.macros.toolbar.invokeCommand = function(place, className, event)
 	}
 };
 
-config.macros.toolbar.onClickMore = function(ev)
-{
+config.macros.toolbar.onClickMore = function(ev) {
 	var e = this.nextSibling;
 	e.style.display = "inline";
 	this.style.display = "none";
 	return false;
 };
 
-config.macros.toolbar.onClickLess = function(ev)
-{
+config.macros.toolbar.onClickLess = function(ev) {
 	var e = this.parentNode;
 	var m = e.previousSibling;
 	e.style.display = "none";
@@ -107,8 +98,7 @@ config.macros.toolbar.onClickLess = function(ev)
 	return false;
 };
 
-config.macros.toolbar.handler = function(place, macroName, params, wikifier, paramString, tiddler)
-{
+config.macros.toolbar.handler = function(place, macroName, params, wikifier, paramString, tiddler) {
 	for(var i = 0; i < params.length; i++) {
 		var commandName = params[i];
 		switch(commandName) {
@@ -152,7 +142,6 @@ config.macros.toolbar.handler = function(place, macroName, params, wikifier, par
 };
 
 // Overrideable function to extend toolbar handler
-config.macros.toolbar.customCommand = function(place, command, wikifier, tiddler)
-{
+config.macros.toolbar.customCommand = function(place, command, wikifier, tiddler) {
 };
 

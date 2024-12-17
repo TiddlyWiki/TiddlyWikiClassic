@@ -2,17 +2,14 @@
 //-- Server adaptor for talking to static TiddlyWiki files
 //--
 
-function FileAdaptor()
-{
-}
+function FileAdaptor() {}
 
 FileAdaptor.prototype = new AdaptorBase();
 
 FileAdaptor.serverType = 'file';
 FileAdaptor.serverLabel = 'TiddlyWiki';
 
-FileAdaptor.loadTiddlyWikiSuccess = function(context, jqXHR)
-{
+FileAdaptor.loadTiddlyWikiSuccess = function(context, jqXHR) {
 	context.status = true;
 	//# Load the content into a TiddlyWiki() object
 	context.adaptor.store = new TiddlyWiki();
@@ -23,8 +20,7 @@ FileAdaptor.loadTiddlyWikiSuccess = function(context, jqXHR)
 	context.complete(context, context.userParams);
 };
 
-FileAdaptor.loadTiddlyWikiError = function(context, jqXHR)
-{
+FileAdaptor.loadTiddlyWikiError = function(context, jqXHR) {
 	context.status = false;
 	context.statusText = jqXHR.message;
 	context.complete(context, context.userParams);
@@ -42,8 +38,7 @@ FileAdaptor.loadTiddlyWikiError = function(context, jqXHR)
 //   context.statusText - error message if there was an error
 //   context.adaptor - reference to this adaptor object
 //   userParams - parameters as originally passed into the getWorkspaceList function
-FileAdaptor.prototype.getWorkspaceList = function(context, userParams, callback)
-{
+FileAdaptor.prototype.getWorkspaceList = function(context, userParams, callback) {
 	context = this.setContext(context, userParams, callback);
 	context.workspaces = [{ title: "(default)" }];
 	context.status = true;
@@ -65,8 +60,7 @@ FileAdaptor.prototype.getWorkspaceList = function(context, userParams, callback)
 //   context.adaptor - reference to this adaptor object
 //   context.tiddlers - array of tiddler objects
 //   userParams - parameters as originally passed into the getTiddlerList function
-FileAdaptor.prototype.getTiddlerList = function(context, userParams, callback, filter)
-{
+FileAdaptor.prototype.getTiddlerList = function(context, userParams, callback, filter) {
 	context = this.setContext(context, userParams, callback);
 	if(!context.filter)
 		context.filter = filter;
@@ -90,8 +84,7 @@ FileAdaptor.prototype.getTiddlerList = function(context, userParams, callback, f
 	return ajaxReq(options);
 };
 
-FileAdaptor.getTiddlerListComplete = function(context, userParams)
-{
+FileAdaptor.getTiddlerListComplete = function(context, userParams) {
 	if(context.status) {
 		if(context.filter) {
 			context.tiddlers = context.adaptor.store.filterTiddlers(context.filter);
@@ -112,8 +105,7 @@ FileAdaptor.getTiddlerListComplete = function(context, userParams)
 	return true;
 };
 
-FileAdaptor.prototype.generateTiddlerInfo = function(tiddler)
-{
+FileAdaptor.prototype.generateTiddlerInfo = function(tiddler) {
 	return {
 		uri: tiddler.fields['server.host'] + "#" + tiddler.title
 	};
@@ -132,8 +124,7 @@ FileAdaptor.prototype.generateTiddlerInfo = function(tiddler)
 //   context.adaptor - reference to this adaptor object
 //   context.tiddler - the retrieved tiddler, or null if it cannot be found
 //   userParams - parameters as originally passed into the getTiddler function
-FileAdaptor.prototype.getTiddler = function(title, context, userParams, callback)
-{
+FileAdaptor.prototype.getTiddler = function(title, context, userParams, callback) {
 	context = this.setContext(context, userParams, callback);
 	context.title = title;
 	context.complete = FileAdaptor.getTiddlerComplete;
@@ -154,8 +145,7 @@ FileAdaptor.prototype.getTiddler = function(title, context, userParams, callback
 	return ajaxReq(options);
 };
 
-FileAdaptor.getTiddlerComplete = function(context, userParams)
-{
+FileAdaptor.getTiddlerComplete = function(context, userParams) {
 	var t = context.adaptor.store.fetchTiddler(context.title);
 	if(t) {
 		t.fields['server.type'] = FileAdaptor.serverType;
@@ -175,8 +165,7 @@ FileAdaptor.getTiddlerComplete = function(context, userParams)
 	return true;
 };
 
-FileAdaptor.prototype.close = function()
-{
+FileAdaptor.prototype.close = function() {
 	this.store = null;
 };
 

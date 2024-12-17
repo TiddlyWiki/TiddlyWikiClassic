@@ -12,8 +12,7 @@
 //#			function createTiddler(title)
 function LoaderBase() {}
 
-LoaderBase.prototype.loadTiddler = function(store, node, tiddlers)
-{
+LoaderBase.prototype.loadTiddler = function(store, node, tiddlers) {
 	var title = this.getTitle(store, node);
 	if(!title) return;
 	if(safeMode && store.isShadowTiddler(title)) return;
@@ -23,8 +22,7 @@ LoaderBase.prototype.loadTiddler = function(store, node, tiddlers)
 	tiddlers.push(tiddler);
 };
 
-LoaderBase.prototype.loadTiddlers = function(store, nodes)
-{
+LoaderBase.prototype.loadTiddlers = function(store, nodes) {
 	var i, tiddlers = [];
 	for(i = 0; i < nodes.length; i++) {
 		try {
@@ -45,8 +43,7 @@ LoaderBase.prototype.loadTiddlers = function(store, nodes)
 //#			function getTiddlers(sortByFieldName)
 function SaverBase() {}
 
-SaverBase.prototype.externalize = function(store)
-{
+SaverBase.prototype.externalize = function(store) {
 	var results = [];
 	var i, tiddlers = store.getTiddlers("title");
 	for(i = 0; i < tiddlers.length; i++) {

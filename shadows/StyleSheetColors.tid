@@ -50,7 +50,6 @@ h2,h3 {border-bottom:1px solid [[ColorPalette::TertiaryLight]];}
 .wizard__subtitle { color:[[ColorPalette::Foreground]]; border:none; }
 .wizardStep { background:[[ColorPalette::Background]]; color:[[ColorPalette::Foreground]]; }
 .wizardStep.wizardStepDone {background:[[ColorPalette::TertiaryLight]];}
-.wizardFooter {background:[[ColorPalette::PrimaryPale]];}
 .wizardFooter .status {background:[[ColorPalette::PrimaryDark]]; color:[[ColorPalette::Background]];}
 .wizardFooter .status a { color: [[ColorPalette::PrimaryPale]]; }
 .wizard .button {
@@ -129,6 +128,7 @@ h2,h3 {border-bottom:1px solid [[ColorPalette::TertiaryLight]];}
 .viewer .button {border:1px solid [[ColorPalette::SecondaryMid]];}
 .viewer blockquote {border-left:3px solid [[ColorPalette::TertiaryDark]];}
 
+.twtable { background: [[ColorPalette::Background]]; }
 .viewer th, .viewer thead td, .twtable th, .twtable thead td { background: [[ColorPalette::SecondaryMid]]; color: [[ColorPalette::Background]]; }
 .viewer td, .viewer tr, .twtable td, .twtable tr { border: 1px solid [[ColorPalette::TertiaryLight]]; }
 .twtable caption { color: [[ColorPalette::TertiaryMid]]; }

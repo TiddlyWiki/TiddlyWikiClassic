@@ -2,8 +2,7 @@
 //-- Manager UI for groups of tiddlers
 //--
 
-config.macros.plugins.handler = function(place, macroName, params, wikifier, paramString)
-{
+config.macros.plugins.handler = function(place, macroName, params, wikifier, paramString) {
 	var wizard = new Wizard();
 	wizard.createWizard(place, this.wizardTitle);
 	wizard.addStep(this.step1Title, this.step1Html);
@@ -16,8 +15,7 @@ config.macros.plugins.handler = function(place, macroName, params, wikifier, par
 	this.refresh(listWrapper, paramString);
 };
 
-config.macros.plugins.refresh = function(listWrapper, paramString)
-{
+config.macros.plugins.refresh = function(listWrapper, paramString) {
 	var wizard = new Wizard(listWrapper);
 	var selectedRows = [];
 	ListView.forEachSelector(listWrapper, function(e, rowName) {
@@ -64,8 +62,7 @@ config.macros.plugins.refresh = function(listWrapper, paramString)
 	}
 };
 
-config.macros.plugins.doRemoveTag = function(e)
-{
+config.macros.plugins.doRemoveTag = function(e) {
 	var wizard = new Wizard(this);
 	var listView = wizard.getValue("listView");
 	var rowNames = ListView.getSelectedRows(listView);
@@ -79,8 +76,7 @@ config.macros.plugins.doRemoveTag = function(e)
 	}
 };
 
-config.macros.plugins.doDelete = function(e)
-{
+config.macros.plugins.doDelete = function(e) {
 	var wizard = new Wizard(this);
 	var listView = wizard.getValue("listView");
 	var rowNames = ListView.getSelectedRows(listView);

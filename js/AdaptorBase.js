@@ -2,20 +2,17 @@
 //-- Server adaptor base class
 //--
 
-function AdaptorBase()
-{
+function AdaptorBase() {
 	this.host = null;
 	this.store = null;
 	return this;
 }
 
-AdaptorBase.prototype.close = function()
-{
+AdaptorBase.prototype.close = function() {
 	return true;
 };
 
-AdaptorBase.prototype.fullHostName = function(host)
-{
+AdaptorBase.prototype.fullHostName = function(host) {
 	if(!host) return '';
 	host = jQuery.trim(host);
 	if(!host.match(/:\/\//))
@@ -25,13 +22,11 @@ AdaptorBase.prototype.fullHostName = function(host)
 	return host;
 };
 
-AdaptorBase.minHostName = function(host)
-{
+AdaptorBase.minHostName = function(host) {
 	return host;
 };
 
-AdaptorBase.prototype.setContext = function(context, userParams, callback)
-{
+AdaptorBase.prototype.setContext = function(context, userParams, callback) {
 	if(!context) context = {};
 	context.userParams = userParams;
 	if(callback) context.callback = callback;
@@ -55,8 +50,7 @@ AdaptorBase.prototype.setContext = function(context, userParams, callback)
 //   context.status - true if OK, string if error
 //   context.adaptor - reference to this adaptor object
 //   userParams - parameters as originally passed into the openHost function
-AdaptorBase.prototype.openHost = function(host, context, userParams, callback)
-{
+AdaptorBase.prototype.openHost = function(host, context, userParams, callback) {
 	this.host = host;
 	context = this.setContext(context, userParams, callback);
 	context.status = true;
@@ -77,8 +71,7 @@ AdaptorBase.prototype.openHost = function(host, context, userParams, callback)
 //   context.statusText - error message if there was an error
 //   context.adaptor - reference to this adaptor object
 //   userParams - parameters as originally passed into the openWorkspace function
-AdaptorBase.prototype.openWorkspace = function(workspace, context, userParams, callback)
-{
+AdaptorBase.prototype.openWorkspace = function(workspace, context, userParams, callback) {
 	this.workspace = workspace;
 	context = this.setContext(context, userParams, callback);
 	context.status = true;

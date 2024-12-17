@@ -31,24 +31,21 @@ config.optionHandlers = {
 	}
 };
 
-function setOption(name, value)
-{
+function setOption(name, value) {
 	var optType = name.substr(0, 3);
 	if(config.optionHandlers[optType] && config.optionHandlers[optType].set)
 		config.optionHandlers[optType].set(name, value);
 }
 
 // Gets the value of an option as a string. Most code should just read from config.options.* directly
-function getOption(name)
-{
+function getOption(name) {
 	var optType = name.substring(0, 3);
 	return config.optionHandlers[optType] && config.optionHandlers[optType].get ?
 		config.optionHandlers[optType].get(name) : null;
 }
 
 //# Loads config.options from cookies and SystemSettings
-function loadOptions()
-{
+function loadOptions() {
 	if(safeMode) return;
 	loadCookies();
 	loadSystemSettings();
@@ -56,8 +53,7 @@ function loadOptions()
 // @Deprecated; retained for backwards compatibility
 var loadOptionsCookie = loadOptions;
 
-function getCookies()
-{
+function getCookies() {
 	var cookieList = document.cookie.split(';');
 	var i, cookies = {};
 	for(i = 0; i < cookieList.length; i++) {
@@ -71,8 +67,7 @@ function getCookies()
 	return cookies;
 }
 
-function loadCookies()
-{
+function loadCookies() {
 	var i, cookies = getCookies();
 	if(cookies['TiddlyWikiClassicOptions']) // TW291 and later //#159
 		cookies = cookies['TiddlyWikiClassicOptions'].replace(/%22/g, '"').replace(/%25/g, '%').decodeHashMap(); // #159
@@ -89,8 +84,7 @@ function loadCookies()
 	}
 }
 
-function loadSystemSettings()
-{
+function loadSystemSettings() {
 	var key, settings = store.calcAllSlices('SystemSettings');
 	config.optionsSource = {};
 	for(key in settings) {
@@ -100,15 +94,11 @@ function loadSystemSettings()
 }
 
 //# called back from SystemSettings notifier
-function onSystemSettingsChange()
-{
-	if(!startingUp) {
-		loadSystemSettings();
-	}
+function onSystemSettingsChange() {
+	if(!startingUp) loadSystemSettings();
 }
 
-function saveOption(name)
-{
+function saveOption(name) {
 	if(safeMode) return;
 	if(name.match(/[()\s]/g, '_')) {
 		alert(config.messages.invalidCookie.format([name]));
@@ -123,13 +113,11 @@ function saveOption(name)
 // @Deprecated; retained for backwards compatibility
 var saveOptionCookie = saveOption;
 
-function removeCookie(name)
-{
+function removeCookie(name) {
 	document.cookie = name + '=; expires=Thu, 01-Jan-1970 00:00:01 UTC; path=/;';
 }
 
-function saveCookie(name)
-{
+function saveCookie(name) {
 	var key, cookies = {};
 	for(key in config.options) {
 		if(tw.options.hasDefaultValue(key)) continue;
@@ -151,8 +139,7 @@ function saveCookie(name)
 }
 
 var systemSettingSave;
-function commitSystemSettings(storeWasDirty)
-{
+function commitSystemSettings(storeWasDirty) {
 	if(systemSettingSave) {
 		window.clearTimeout(systemSettingSave);
 	}
@@ -162,8 +149,7 @@ function commitSystemSettings(storeWasDirty)
 	}, 1000);
 }
 
-function saveSystemSetting(name, saveFile)
-{
+function saveSystemSetting(name, saveFile) {
 	var title = 'SystemSettings';
 	var slice = store.getTiddlerSlice(title, name);
 	var isUnchanged = slice === getOption(name);
@@ -198,21 +184,18 @@ function saveSystemSetting(name, saveFile)
 }
 
 //# Flatten cookies to ANSI character set by substituting html character entities for non-ANSI characters
-function encodeCookie(s)
-{
+function encodeCookie(s) {
 	return escape(convertUnicodeToHtmlEntities(s));
 }
 
 //# Decode any html character entities to their unicode equivalent
-function decodeCookie(s)
-{
+function decodeCookie(s) {
 	s = unescape(s);
 	var re = /&#[0-9]{1,5};/g;
 	return s.replace(re, function($0) { return String.fromCharCode(eval($0.replace(/[&#;]/g, ''))) });
 }
 
-config.macros.option.genericCreate = function(place, type, opt, className, desc)
-{
+config.macros.option.genericCreate = function(place, type, opt, className, desc) {
 	var typeInfo = config.macros.option.types[type];
 	var text = desc != 'no' ? (config.optionsDesc[opt] || opt) : null;
 	var attributes = { option: opt };
@@ -224,8 +207,7 @@ config.macros.option.genericCreate = function(place, type, opt, className, desc)
 	return c;
 };
 
-config.macros.option.genericOnChange = function(e)
-{
+config.macros.option.genericOnChange = function(e) {
 	var opt = this.getAttribute('option');
 	if(opt) {
 		var optType = opt.substring(0, 3);
@@ -257,8 +239,7 @@ config.macros.option.types = {
 	}
 };
 
-config.macros.option.propagateOption = function(opt, valueField, value, elementType, sourceEditor)
-{
+config.macros.option.propagateOption = function(opt, valueField, value, elementType, sourceEditor) {
 	config.options[opt] = value;
 	saveOption(opt);
 
@@ -267,8 +248,7 @@ config.macros.option.propagateOption = function(opt, valueField, value, elementT
 	});
 };
 
-config.macros.option.handler = function(place, macroName, params, wikifier, paramString)
-{
+config.macros.option.handler = function(place, macroName, params, wikifier, paramString) {
 	params = paramString.parseParams('anon', null, true, false, false);
 	var opt = (params[1] && params[1].name == 'anon') ? params[1].value : getParam(params, 'name', null);
 	var className = (params[2] && params[2].name == 'anon') ? params[2].value : getParam(params, 'class', null);
@@ -279,10 +259,10 @@ config.macros.option.handler = function(place, macroName, params, wikifier, para
 		h.create(place, type, opt, className, desc);
 };
 
-config.macros.options.handler = function(place, macroName, params, wikifier, paramString)
-{
+config.macros.options.handler = function(place, macroName, params, wikifier, paramString) {
 	params = paramString.parseParams('anon', null, true, false, false);
 	var showUnknown = getParam(params, 'showUnknown', 'no');
+
 	var wizard = new Wizard();
 	wizard.createWizard(place, this.wizardTitle);
 	wizard.addStep(this.step1Title, this.step1Html);
@@ -296,8 +276,7 @@ config.macros.options.handler = function(place, macroName, params, wikifier, par
 	this.refreshOptions(listWrapper, showUnknown == 'yes');
 };
 
-config.macros.options.refreshOptions = function(listWrapper, showUnknown)
-{
+config.macros.options.refreshOptions = function(listWrapper, showUnknown) {
 	var n, opts = [];
 	for(n in config.options) {
 		var isUnknown = !config.optionsDesc[n];
@@ -324,8 +303,7 @@ config.macros.options.refreshOptions = function(listWrapper, showUnknown)
 	}
 };
 
-config.macros.options.onChangeUnknown = function(e)
-{
+config.macros.options.onChangeUnknown = function(e) {
 	var wizard = new Wizard(this);
 	var listWrapper = wizard.getValue('listWrapper');
 	jQuery(listWrapper).empty();

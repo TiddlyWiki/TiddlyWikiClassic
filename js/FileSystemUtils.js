@@ -2,8 +2,7 @@
 //-- Filesystem utilities
 //--
 
-function convertUTF8ToUnicode(u)
-{
+function convertUTF8ToUnicode(u) {
 	return config.browser.isOpera || !window.netscape ? manualConvertUTF8ToUnicode(u) : mozConvertUTF8ToUnicode(u);
 }
 
@@ -12,8 +11,7 @@ function convertUTF8ToUnicode(u)
 //# 0x0080 - 0x07FF:  110xxxxx 10xxxxxx
 //# 0x0800 - 0xFFFF:  1110xxxx 10xxxxxx 10xxxxxx
 
-function manualConvertUTF8ToUnicode(utf)
-{
+function manualConvertUTF8ToUnicode(utf) {
 	var uni = utf;
 	var src = 0;
 	var dst = 0;
@@ -37,8 +35,7 @@ function manualConvertUTF8ToUnicode(utf)
 	return uni;
 }
 
-function mozConvertUTF8ToUnicode(u)
-{
+function mozConvertUTF8ToUnicode(u) {
 	try {
 		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 		var converter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
@@ -54,13 +51,11 @@ function mozConvertUTF8ToUnicode(u)
 
 //# convert unicode string to a format suitable for saving to file
 //# this should be UTF8, unless the browser does not support saving non-ASCII characters
-function manualConvertUnicodeToUTF8(s)
-{
+function manualConvertUnicodeToUTF8(s) {
 	return unescape(encodeURIComponent(s));
 }
 
-function mozConvertUnicodeToUTF8(s)
-{
+function mozConvertUnicodeToUTF8(s) {
 	try {
 		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 		var converter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
@@ -74,14 +69,12 @@ function mozConvertUnicodeToUTF8(s)
 	return fin.length > 0 ? u + fin : u;
 }
 
-function convertUnicodeToHtmlEntities(s)
-{
+function convertUnicodeToHtmlEntities(s) {
 	var re = /[^\u0000-\u007F]/g;
 	return s.replace(re, function($0) { return "&#" + $0.charCodeAt(0).toString() + ";" });
 }
 
-function convertUriToUTF8(uri, charSet)
-{
+function convertUriToUTF8(uri, charSet) {
 	if(window.netscape == undefined || charSet == undefined || charSet == "")
 		return uri;
 	try {
@@ -96,14 +89,12 @@ function convertUriToUTF8(uri, charSet)
 
 // deprecated helper for backward-compatibility with elder extensions
 // (browser/saving method-specific convertion is only needed in browser-specific savers)
-function convertUnicodeToFileFormat(s)
-{
+function convertUnicodeToFileFormat(s) {
 	return s;
 }
 
 // deprecated helper for backward-compatibility with elder extensions
-function convertUnicodeToUTF8(s)
-{
+function convertUnicodeToUTF8(s) {
 	return s;
 }
 

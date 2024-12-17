@@ -11,8 +11,7 @@ config.formatters = [
 		cellRegExp: /(?:\|([^\n\|]*)\|)|(\|[fhck]?$\n?)/mg,
 		cellTermRegExp: /((?:\x20*)\|)/mg,
 		rowTypes: { "c": "caption", "h": "thead", "": "tbody", "f": "tfoot" },
-		handler: function(w)
-		{
+		handler: function(w) {
 			var table = createTiddlyElement(w.output, "table", null, "twtable");
 			var prevColumns = [];
 			var currRowType = null;
@@ -52,8 +51,7 @@ config.formatters = [
 				lookaheadMatch = this.lookaheadRegExp.exec(w.source);
 			}
 		},
-		rowHandler: function(w, e, prevColumns)
-		{
+		rowHandler: function(w, e, prevColumns) {
 			var col = 0;
 			var colSpanCount = 1;
 			var prevCell = null;
@@ -132,8 +130,7 @@ config.formatters = [
 		name: "heading",
 		match: "^!{1,6}",
 		termRegExp: /(\n)/mg,
-		handler: function(w)
-		{
+		handler: function(w) {
 			w.subWikifyTerm(createTiddlyElement(w.output, "h" + w.matchLength), this.termRegExp);
 		}
 	},
@@ -143,8 +140,7 @@ config.formatters = [
 		match: "^(?:[\\*#;:]+)",
 		lookaheadRegExp: /^(?:(?:(\*)|(#)|(;)|(:))+)/mg,
 		termRegExp: /(\n)/mg,
-		handler: function(w)
-		{
+		handler: function(w) {
 			// stack holds nested elements to which (nested) lists are appended
 			var stack = [w.output];
 			var currLevel = 0, currType = null;
@@ -210,8 +206,7 @@ config.formatters = [
 		lookaheadRegExp: /^>+/mg,
 		termRegExp: /(\n)/mg,
 		element: "blockquote",
-		handler: function(w)
-		{
+		handler: function(w) {
 			var stack = [w.output];
 			var currLevel = 0;
 			var newLevel = w.matchLength;
@@ -241,8 +236,7 @@ config.formatters = [
 	{
 		name: "rule",
 		match: "^----+$\\n?|<hr ?/?>\\n?",
-		handler: function(w)
-		{
+		handler: function(w) {
 			createTiddlyElement(w.output, "hr");
 		}
 	},
@@ -251,8 +245,7 @@ config.formatters = [
 		name: "monospacedByLine",
 		match: "^(?:/\\*\\{\\{\\{\\*/|\\{\\{\\{|//\\{\\{\\{|<!--\\{\\{\\{-->)\\n",
 		element: "pre",
-		handler: function(w)
-		{
+		handler: function(w) {
 			switch(w.matchText) {
 				case "/*{{{*/\n": // CSS
 					this.lookaheadRegExp = /\/\*\{\{\{\*\/\n*((?:^[^\n]*\n)+?)(\n*^\f*\/\*\}\}\}\*\/$\n?)/mg;
@@ -276,8 +269,7 @@ config.formatters = [
 	{
 		name: "wikifyComment",
 		match: "^(?:/\\*\\*\\*|<!---)\\n",
-		handler: function(w)
-		{
+		handler: function(w) {
 			var termRegExp = (w.matchText == "/***\n") ? (/(^\*\*\*\/\n)/mg) : (/(^--->\n)/mg);
 			w.subWikifyTerm(w.output, termRegExp);
 		}
@@ -287,8 +279,7 @@ config.formatters = [
 		name: "macro",
 		match: "<<",
 		lookaheadRegExp: /<<([^>\s]+)(?:\s*)((?:[^>]|(?:>(?!>)))*)>>/mg,
-		handler: function(w)
-		{
+		handler: function(w) {
 			this.lookaheadRegExp.lastIndex = w.matchStart;
 			var lookaheadMatch = this.lookaheadRegExp.exec(w.source);
 			if(lookaheadMatch && lookaheadMatch.index == w.matchStart && lookaheadMatch[1]) {
@@ -302,8 +293,7 @@ config.formatters = [
 		name: "prettyLink",
 		match: "\\[\\[",
 		lookaheadRegExp: /\[\[(.*?)(?:\|(~)?(.*?))?\]\]/mg,
-		handler: function(w)
-		{
+		handler: function(w) {
 			this.lookaheadRegExp.lastIndex = w.matchStart;
 			var lookaheadMatch = this.lookaheadRegExp.exec(w.source);
 			if(lookaheadMatch && lookaheadMatch.index == w.matchStart) {
@@ -328,8 +318,7 @@ config.formatters = [
 	{
 		name: "wikiLink",
 		match: config.textPrimitives.unWikiLink + "?" + config.textPrimitives.wikiLink,
-		handler: function(w)
-		{
+		handler: function(w) {
 			if(w.matchText.substr(0, 1) == config.textPrimitives.unWikiLink) {
 				w.outputText(w.output, w.matchStart + 1, w.nextMatch);
 				return;
@@ -355,8 +344,7 @@ config.formatters = [
 	{
 		name: "urlLink",
 		match: config.textPrimitives.urlPattern,
-		handler: function(w)
-		{
+		handler: function(w) {
 			w.outputText(createExternalLink(w.output, w.matchText), w.matchStart, w.nextMatch);
 		}
 	},
@@ -366,8 +354,7 @@ config.formatters = [
 		match: "\\[[<>]?[Ii][Mm][Gg]\\[",
 		//# [<] sequence below is to avoid lessThan-questionMark sequence so TiddlyWikis can be included in PHP files
 		lookaheadRegExp: /\[([<]?)(>?)[Ii][Mm][Gg]\[(?:([^\|\]]+)\|)?([^\[\]\|]+)\](?:\[([^\]]*)\])?\]/mg,
-		handler: function(w)
-		{
+		handler: function(w) {
 			this.lookaheadRegExp.lastIndex = w.matchStart;
 			var lookaheadMatch = this.lookaheadRegExp.exec(w.source);
 			if(lookaheadMatch && lookaheadMatch.index == w.matchStart) {
@@ -398,8 +385,7 @@ config.formatters = [
 		name: "html",
 		match: "<[Hh][Tt][Mm][Ll]>",
 		lookaheadRegExp: /<[Hh][Tt][Mm][Ll]>((?:.|\n)*?)<\/[Hh][Tt][Mm][Ll]>/mg,
-		handler: function(w)
-		{
+		handler: function(w) {
 			this.lookaheadRegExp.lastIndex = w.matchStart;
 			var lookaheadMatch = this.lookaheadRegExp.exec(w.source);
 			if(lookaheadMatch && lookaheadMatch.index == w.matchStart) {
@@ -413,8 +399,7 @@ config.formatters = [
 		name: "commentByBlock",
 		match: "/%",
 		lookaheadRegExp: /\/%((?:.|\n)*?)%\//mg,
-		handler: function(w)
-		{
+		handler: function(w) {
 			this.lookaheadRegExp.lastIndex = w.matchStart;
 			var lookaheadMatch = this.lookaheadRegExp.exec(w.source);
 			if(lookaheadMatch && lookaheadMatch.index == w.matchStart)
@@ -425,8 +410,7 @@ config.formatters = [
 	{
 		name: "characterFormat",
 		match: "''|//|__|\\^\\^|~~|--(?!\\s|$)|\\{\\{\\{",
-		handler: function(w)
-		{
+		handler: function(w) {
 			switch(w.matchText) {
 				case "''":
 					w.subWikifyTerm(w.output.appendChild(document.createElement("strong")), /('')/mg);
@@ -462,8 +446,7 @@ config.formatters = [
 	{
 		name: "customFormat",
 		match: "@@|\\{\\{",
-		handler: function(w)
-		{
+		handler: function(w) {
 			switch(w.matchText) {
 				case "@@":
 					var e = createTiddlyElement(w.output, "span");
@@ -475,7 +458,7 @@ config.formatters = [
 					w.subWikifyTerm(e, /(@@)/mg);
 					break;
 				case "{{":
-					var lookaheadRegExp = /\{\{[\s]*([\w]+[\s\w]*)[\s]*\{(\n?)/mg;
+					var lookaheadRegExp = /\{\{[\s]*([\w]+[\s\w-]*)[\s]*\{(\n?)/mg;
 					lookaheadRegExp.lastIndex = w.matchStart;
 					var lookaheadMatch = lookaheadRegExp.exec(w.source);
 					if(lookaheadMatch) {
@@ -491,8 +474,7 @@ config.formatters = [
 	{
 		name: "mdash",
 		match: "--",
-		handler: function(w)
-		{
+		handler: function(w) {
 			createTiddlyElement(w.output, "span").innerHTML = "&mdash;";
 		}
 	},
@@ -500,8 +482,7 @@ config.formatters = [
 	{
 		name: "lineBreak",
 		match: "\\n|<br ?/?>",
-		handler: function(w)
-		{
+		handler: function(w) {
 			createTiddlyElement(w.output, "br");
 		}
 	},
@@ -510,8 +491,7 @@ config.formatters = [
 		name: "rawText",
 		match: "\"{3}|<nowiki>",
 		lookaheadRegExp: /(?:\"{3}|<nowiki>)((?:.|\n)*?)(?:\"{3}|<\/nowiki>)/mg,
-		handler: function(w)
-		{
+		handler: function(w) {
 			this.lookaheadRegExp.lastIndex = w.matchStart;
 			var lookaheadMatch = this.lookaheadRegExp.exec(w.source);
 			if(lookaheadMatch && lookaheadMatch.index == w.matchStart) {
@@ -527,8 +507,7 @@ config.formatters = [
 			"(?:&#?(?:x0*(?:3[0-6][0-9a-fA-F]|1D[c-fC-F][0-9a-fA-F]|20[d-fD-F][0-9a-fA-F]|FE2[0-9a-fA-F])|0*" +
 			"(?:76[89]|7[7-9][0-9]|8[0-7][0-9]|761[6-9]|76[2-7][0-9]|84[0-3][0-9]|844[0-7]|6505[6-9]|6506[0-9]|6507[0-1]));)+" +
 			"|&#?[a-zA-Z0-9]{2,8};)",
-		handler: function(w)
-		{
+		handler: function(w) {
 			createTiddlyElement(w.output, "span").innerHTML = w.matchText;
 		}
 	}

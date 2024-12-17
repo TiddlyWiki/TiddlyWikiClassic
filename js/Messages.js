@@ -2,8 +2,7 @@
 //-- Message area
 //--
 
-function getMessageDiv()
-{
+function getMessageDiv() {
 	var msgArea = document.getElementById("messageArea");
 	if(!msgArea) return null;
 
@@ -24,8 +23,7 @@ function getMessageDiv()
 	return createTiddlyElement(msgArea, "div", null, "messageArea__text");
 }
 
-function displayMessage(text, link)
-{
+function displayMessage(text, link) {
 	var e = getMessageDiv();
 	if(!e) {
 		alert(text);
@@ -38,8 +36,7 @@ function displayMessage(text, link)
 	}
 }
 
-function clearMessage()
-{
+function clearMessage() {
 	var msgArea = document.getElementById("messageArea");
 	if(msgArea) {
 		jQuery(msgArea).empty();

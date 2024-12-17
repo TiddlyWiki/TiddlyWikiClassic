@@ -2,9 +2,9 @@
 //-- NewTiddler and NewJournal macros
 //--
 
-config.macros.newTiddler.createNewTiddlerButton = function(place,
-	title, params, label, prompt, accessKey, newFocus, isJournal)
-{
+config.macros.newTiddler.createNewTiddlerButton = function(
+	place, title, params, label, prompt, accessKey, newFocus, isJournal
+) {
 	label = getParam(params, "label", label);
 	prompt = getParam(params, "prompt", prompt);
 	accessKey = getParam(params, "accessKey", accessKey);
@@ -33,8 +33,7 @@ config.macros.newTiddler.createNewTiddlerButton = function(place,
 	return btn;
 };
 
-config.macros.newTiddler.onClickNewTiddler = function()
-{
+config.macros.newTiddler.onClickNewTiddler = function() {
 	var title = this.getAttribute("newTitle");
 	if(this.getAttribute("isJournal") == "true") {
 		title = new Date().formatString(title.trim());
@@ -60,8 +59,7 @@ config.macros.newTiddler.onClickNewTiddler = function()
 	return false;
 };
 
-config.macros.newTiddler.handler = function(place, macroName, params, wikifier, paramString)
-{
+config.macros.newTiddler.handler = function(place, macroName, params, wikifier, paramString) {
 	if(readOnly) return;
 	params = paramString.parseParams("anon", null, true, false, false);
 	var title = params[1] && params[1].name == "anon" ? params[1].value : this.title;
@@ -69,8 +67,7 @@ config.macros.newTiddler.handler = function(place, macroName, params, wikifier, 
 	this.createNewTiddlerButton(place, title, params, this.label, this.prompt, this.accessKey, "title", false);
 };
 
-config.macros.newJournal.handler = function(place, macroName, params, wikifier, paramString)
-{
+config.macros.newJournal.handler = function(place, macroName, params, wikifier, paramString) {
 	if(readOnly) return;
 	params = paramString.parseParams("anon", null, true, false, false);
 	var title = params[1] && params[1].name == "anon" ? params[1].value : config.macros.timeline.dateFormat;

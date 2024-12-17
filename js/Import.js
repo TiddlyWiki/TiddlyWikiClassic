@@ -2,8 +2,7 @@
 //-- ImportTiddlers macro
 //--
 
-config.macros.importTiddlers.handler = function(place, macroName, params, wikifier, paramString, tiddler)
-{
+config.macros.importTiddlers.handler = function(place, macroName, params, wikifier, paramString, tiddler) {
 	if(readOnly) {
 		createTiddlyElement(place, "div", null, "marked", this.readOnlyWarning);
 		return;
@@ -13,30 +12,29 @@ config.macros.importTiddlers.handler = function(place, macroName, params, wikifi
 	this.restart(w);
 };
 
-config.macros.importTiddlers.onCancel = function(e)
-{
+config.macros.importTiddlers.onCancel = function(e) {
 	var wizard = new Wizard(this);
 	wizard.clear();
 	config.macros.importTiddlers.restart(wizard);
 	return false;
 };
 
-config.macros.importTiddlers.onClose = function(e)
-{
+config.macros.importTiddlers.onClose = function(e) {
 	backstage.hidePanel();
 	return false;
 };
 
-config.macros.importTiddlers.restart = function(wizard)
-{
+config.macros.importTiddlers.restart = function(wizard) {
 	var me = config.macros.importTiddlers;
 	wizard.addStep(this.step1Title, this.step1Html);
+
 	var name, s = wizard.getElement("selTypes");
 	for(name in config.adaptors) {
 		var e = createTiddlyElement(s, "option", null, null, config.adaptors[name].serverLabel || name);
 		e.value = name;
 	}
 	if(config.defaultAdaptor) s.value = config.defaultAdaptor;
+
 	s = wizard.getElement("selFeeds");
 	var feeds = this.getFeeds();
 	for(name in feeds) {
@@ -45,6 +43,7 @@ config.macros.importTiddlers.restart = function(wizard)
 	}
 	wizard.setValue("feeds", feeds);
 	s.onchange = me.onFeedChange;
+
 	var fileInput = wizard.getElement("txtBrowse");
 	fileInput.onchange = me.onBrowseChange;
 	fileInput.onkeyup = me.onBrowseChange;
@@ -56,8 +55,7 @@ config.macros.importTiddlers.restart = function(wizard)
 	};
 };
 
-config.macros.importTiddlers.getFeeds = function()
-{
+config.macros.importTiddlers.getFeeds = function() {
 	var feeds = {};
 	var i, tagged = store.getTaggedTiddlers("systemServer", "title");
 	for(i = 0; i < tagged.length; i++) {
@@ -75,8 +73,7 @@ config.macros.importTiddlers.getFeeds = function()
 	return feeds;
 };
 
-config.macros.importTiddlers.onFeedChange = function(e)
-{
+config.macros.importTiddlers.onFeedChange = function(e) {
 	var wizard = new Wizard(this);
 	var selTypes = wizard.getElement("selTypes");
 	var fileInput = wizard.getElement("txtPath");
@@ -94,8 +91,7 @@ config.macros.importTiddlers.onFeedChange = function(e)
 	return false;
 };
 
-config.macros.importTiddlers.onBrowseChange = function(e)
-{
+config.macros.importTiddlers.onBrowseChange = function(e) {
 	var wizard = new Wizard(this);
 	var file = this.value;
 	file = file.replace(/^C:\\fakepath\\/i, ''); // remove fakepath (chrome/opera/safari)
@@ -119,8 +115,7 @@ config.macros.importTiddlers.onBrowseChange = function(e)
 	return true;
 };
 
-config.macros.importTiddlers.getURLFromLocalPath = function(path)
-{
+config.macros.importTiddlers.getURLFromLocalPath = function(path) {
 	if(!path) return path;
 	// use "/" for cross-platform consistency
 	path = path.replace(/\\/g, "/");
@@ -145,8 +140,7 @@ config.macros.importTiddlers.getURLFromLocalPath = function(path)
 	return c + "/" + p;
 };
 
-config.macros.importTiddlers.onOpen = function(e)
-{
+config.macros.importTiddlers.onOpen = function(e) {
 	var me = config.macros.importTiddlers;
 	var wizard = new Wizard(this);
 	var fileInput = wizard.getElement("txtPath");
@@ -161,8 +155,7 @@ config.macros.importTiddlers.onOpen = function(e)
 	return false;
 };
 
-config.macros.importTiddlers.onOpenHost = function(context, wizard)
-{
+config.macros.importTiddlers.onOpenHost = function(context, wizard) {
 	var me = config.macros.importTiddlers;
 	var adaptor = wizard.getValue("adaptor");
 	if(context.status !== true)
@@ -171,8 +164,7 @@ config.macros.importTiddlers.onOpenHost = function(context, wizard)
 	wizard.setButtons([{ caption: me.cancelLabel, tooltip: me.cancelPrompt, onClick: me.onCancel }], me.statusGetWorkspaceList);
 };
 
-config.macros.importTiddlers.onGetWorkspaceList = function(context, wizard)
-{
+config.macros.importTiddlers.onGetWorkspaceList = function(context, wizard) {
 	var me = config.macros.importTiddlers;
 	if(context.status !== true)
 		displayMessage("Error in importTiddlers.onGetWorkspaceList: " + context.statusText);
@@ -210,16 +202,14 @@ config.macros.importTiddlers.onGetWorkspaceList = function(context, wizard)
 	wizard.setButtons([{ caption: me.openLabel, tooltip: me.openPrompt, onClick: me.onChooseWorkspace }]);
 };
 
-config.macros.importTiddlers.onWorkspaceChange = function(e)
-{
+config.macros.importTiddlers.onWorkspaceChange = function(e) {
 	var wizard = new Wizard(this);
 	wizard.getElement("txtWorkspace").value = this.value;
 	this.selectedIndex = 0;
 	return false;
 };
 
-config.macros.importTiddlers.onChooseWorkspace = function(e)
-{
+config.macros.importTiddlers.onChooseWorkspace = function(e) {
 	var me = config.macros.importTiddlers;
 	var wizard = new Wizard(this);
 	var adaptor = wizard.getValue("adaptor");
@@ -231,8 +221,7 @@ config.macros.importTiddlers.onChooseWorkspace = function(e)
 	return false;
 };
 
-config.macros.importTiddlers.onOpenWorkspace = function(context, wizard)
-{
+config.macros.importTiddlers.onOpenWorkspace = function(context, wizard) {
 	var me = config.macros.importTiddlers;
 	if(context.status !== true)
 		displayMessage("Error in importTiddlers.onOpenWorkspace: " + context.statusText);
@@ -243,8 +232,7 @@ config.macros.importTiddlers.onOpenWorkspace = function(context, wizard)
 	wizard.setButtons([{ caption: me.cancelLabel, tooltip: me.cancelPrompt, onClick: me.onCancel }], me.statusGetTiddlerList);
 };
 
-config.macros.importTiddlers.onGetTiddlerList = function(context, wizard)
-{
+config.macros.importTiddlers.onGetTiddlerList = function(context, wizard) {
 	var me = config.macros.importTiddlers;
 	if(context.status !== true) {
 		var error = context.statusText || me.errorGettingTiddlerList;
@@ -293,8 +281,7 @@ config.macros.importTiddlers.onGetTiddlerList = function(context, wizard)
 	]);
 };
 
-config.macros.importTiddlers.generateSystemServerName = function(wizard)
-{
+config.macros.importTiddlers.generateSystemServerName = function(wizard) {
 	var serverType = wizard.getValue("serverType");
 	var host = wizard.getValue("host");
 	var workspace = wizard.getValue("workspace");
@@ -302,8 +289,7 @@ config.macros.importTiddlers.generateSystemServerName = function(wizard)
 	return pattern.format([serverType, host, workspace]);
 };
 
-config.macros.importTiddlers.saveServerTiddler = function(wizard)
-{
+config.macros.importTiddlers.saveServerTiddler = function(wizard) {
 	var me = config.macros.importTiddlers;
 	var txtSaveTiddler = wizard.getElement("txtSaveTiddler").value;
 	if(store.tiddlerExists(txtSaveTiddler)) {
@@ -320,8 +306,7 @@ config.macros.importTiddlers.saveServerTiddler = function(wizard)
 	store.saveTiddler(txtSaveTiddler, txtSaveTiddler, text, me.serverSaveModifier, new Date(), ["systemServer"]);
 };
 
-config.macros.importTiddlers.doImport = function(e)
-{
+config.macros.importTiddlers.doImport = function(e) {
 	var me = config.macros.importTiddlers;
 	var wizard = new Wizard(this);
 	if(wizard.getElement("chkSave").checked)
@@ -365,8 +350,7 @@ config.macros.importTiddlers.doImport = function(e)
 	return false;
 };
 
-config.macros.importTiddlers.onGetTiddler = function(context, wizard)
-{
+config.macros.importTiddlers.onGetTiddler = function(context, wizard) {
 	if(!context.status)
 		displayMessage("Error in importTiddlers.onGetTiddler: " + context.statusText);
 	var tiddler = context.tiddler;

@@ -2,8 +2,7 @@
 //-- Formatter helpers
 //--
 
-function Formatter(formatters)
-{
+function Formatter(formatters) {
 	this.formatters = [];
 	var pattern = [];
 	for(var n = 0; n < formatters.length; n++) {
@@ -15,13 +14,11 @@ function Formatter(formatters)
 
 config.formatterHelpers = {
 
-	createElementAndWikify: function(w)
-	{
+	createElementAndWikify: function(w) {
 		w.subWikifyTerm(createTiddlyElement(w.output, this.element), this.termRegExp);
 	},
 
-	inlineCssHelper: function(w)
-	{
+	inlineCssHelper: function(w) {
 		// Convert CSS property name to a JavaScript style name ("background-color" -> "backgroundColor")
 		var unDash = function(name) {
 			return name
@@ -54,8 +51,7 @@ config.formatterHelpers = {
 		return styles;
 	},
 
-	applyCssHelper: function(e, styles)
-	{
+	applyCssHelper: function(e, styles) {
 		for(var i = 0; i < styles.length; i++) {
 			try {
 				e.style[styles[i].style] = styles[i].value;
@@ -63,8 +59,7 @@ config.formatterHelpers = {
 		}
 	},
 
-	enclosedTextHelper: function(w)
-	{
+	enclosedTextHelper: function(w) {
 		this.lookaheadRegExp.lastIndex = w.matchStart;
 		var lookaheadMatch = this.lookaheadRegExp.exec(w.source);
 		if(lookaheadMatch && lookaheadMatch.index == w.matchStart) {
@@ -76,8 +71,7 @@ config.formatterHelpers = {
 		}
 	},
 
-	isExternalLink: function(link)
-	{
+	isExternalLink: function(link) {
 		if(store.tiddlerExists(link) || store.isShadowTiddler(link)) {
 			return false;
 		}

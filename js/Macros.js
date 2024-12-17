@@ -2,8 +2,7 @@
 //-- Macro definitions
 //--
 
-function invokeMacro(place, macro, params, wikifier, tiddler)
-{
+function invokeMacro(place, macro, params, wikifier, tiddler) {
 	try {
 		var m = config.macros[macro];
 		if(m && m.handler) {
@@ -30,29 +29,25 @@ function invokeMacro(place, macro, params, wikifier, tiddler)
 	}
 }
 
-config.macros.version.handler = function(place)
-{
+config.macros.version.handler = function(place) {
 	jQuery("<span/>").text(formatVersion()).appendTo(place);
 };
 
-config.macros.today.handler = function(place, macroName, params)
-{
+config.macros.today.handler = function(place, macroName, params) {
 	var now = new Date();
 	var text = params[0] ? now.formatString(params[0].trim()) : now.toLocaleString();
 	jQuery("<span/>").text(text).appendTo(place);
 };
 
 config.macros.list.template = "<<view title link>>";
-config.macros.list.handler = function(place, macroName, params, wikifier, paramString)
-{
+config.macros.list.handler = function(place, macroName, params, wikifier, paramString) {
 	var list = document.createElement("ul");
 	jQuery(list).attr({ refresh: "macro", macroName: macroName }).data("params", paramString);
 	place.appendChild(list);
 	this.refresh(list);
 };
 
-config.macros.list.refresh = function(list)
-{
+config.macros.list.refresh = function(list) {
 	var paramString = jQuery(list).data("params");
 	var params = paramString.readMacroParams();
 	var args = paramString.parseParams("anon", null, null)[0];
@@ -83,33 +78,27 @@ config.macros.list.refresh = function(list)
 	}
 };
 
-config.macros.list.all.handler = function(params)
-{
+config.macros.list.all.handler = function(params) {
 	return store.reverseLookup("tags", "excludeLists", false, "title");
 };
 
-config.macros.list.missing.handler = function(params)
-{
+config.macros.list.missing.handler = function(params) {
 	return store.getMissingLinks();
 };
 
-config.macros.list.orphans.handler = function(params)
-{
+config.macros.list.orphans.handler = function(params) {
 	return store.getOrphans();
 };
 
-config.macros.list.shadowed.handler = function(params)
-{
+config.macros.list.shadowed.handler = function(params) {
 	return store.getShadowed();
 };
 
-config.macros.list.touched.handler = function(params)
-{
+config.macros.list.touched.handler = function(params) {
 	return store.getTouched();
 };
 
-config.macros.list.filter.handler = function(params)
-{
+config.macros.list.filter.handler = function(params) {
 	var filter = params[1];
 	if(!filter) return [];
 	return store.filterTiddlers(filter).map(function(tiddler) {
@@ -117,8 +106,7 @@ config.macros.list.filter.handler = function(params)
 	});
 };
 
-config.macros.allTags.handler = function(place, macroName, params)
-{
+config.macros.allTags.handler = function(place, macroName, params) {
 	var tags = store.getTags(params[0]);
 	var ul = createTiddlyElement(place, "ul");
 	if(tags.length == 0) createTiddlyElement(ul, "li", null, "listTitle", this.noTags);
@@ -179,8 +167,7 @@ merge(macro, {
 	itemTemplate: "<<view title link>>"
 });
 
-config.macros.tiddler.handler = function(place, macroName, params, wikifier, paramString, tiddler)
-{
+config.macros.tiddler.handler = function(place, macroName, params, wikifier, paramString, tiddler) {
 	var allowEval = true;
 	var stack = config.macros.tiddler.tiddlerStack;
 	if(stack.length > 0 && config.evaluateMacroParameters == "system") {
@@ -209,8 +196,7 @@ config.macros.tiddler.handler = function(place, macroName, params, wikifier, par
 	this.transclude(wrapper, tiddlerName, args);
 };
 
-config.macros.tiddler.transclude = function(wrapper, tiddlerName, args)
-{
+config.macros.tiddler.transclude = function(wrapper, tiddlerName, args) {
 	var text = store.getTiddlerText(tiddlerName);
 	if(!text) return;
 
@@ -241,8 +227,7 @@ config.macros.tiddler.transclude = function(wrapper, tiddlerName, args)
 	}
 };
 
-config.macros.tiddler.renderText = function(place, text, tiddlerName)
-{
+config.macros.tiddler.renderText = function(place, text, tiddlerName) {
 	wikify(text, place, null, store.getTiddler(tiddlerName));
 };
 
@@ -252,14 +237,12 @@ config.macros.tiddler.tiddlerStack = [];
 //# params[1] - title (optional)
 //# params[2] - tooltip (optional)
 //# params[3] - sortby (optional)
-config.macros.tag.handler = function(place, macroName, params)
-{
+config.macros.tag.handler = function(place, macroName, params) {
 	var btn = createTagButton(place, params[0], null, params[1], params[2]);
 	if(params[3]) btn.setAttribute('sortby', params[3]);
 };
 
-config.macros.tags.handler = function(place, macroName, params, wikifier, paramString, tiddler)
-{
+config.macros.tags.handler = function(place, macroName, params, wikifier, paramString, tiddler) {
 	params = paramString.parseParams("anon", null, true, false, false);
 	var title = getParam(params, "anon", "");
 	if(title && store.tiddlerExists(title))
@@ -280,8 +263,7 @@ config.macros.tags.handler = function(place, macroName, params, wikifier, paramS
 	}
 };
 
-config.macros.tagging.handler = function(place, macroName, params, wikifier, paramString, tiddler)
-{
+config.macros.tagging.handler = function(place, macroName, params, wikifier, paramString, tiddler) {
 	params = paramString.parseParams("anon", null, true, false, false);
 	var title = getParam(params, "anon", "");
 	if(title == "" && tiddler instanceof Tiddler)
@@ -302,42 +284,35 @@ config.macros.tagging.handler = function(place, macroName, params, wikifier, par
 	}
 };
 
-config.macros.closeAll.handler = function(place)
-{
+config.macros.closeAll.handler = function(place) {
 	createTiddlyButton(place, this.label, this.prompt, this.onClick);
 };
 
-config.macros.closeAll.onClick = function(e)
-{
+config.macros.closeAll.onClick = function(e) {
 	story.closeAllTiddlers();
 	return false;
 };
 
-config.macros.permaview.handler = function(place)
-{
+config.macros.permaview.handler = function(place) {
 	createTiddlyButton(place, this.label, this.prompt, this.onClick);
 };
 
-config.macros.permaview.onClick = function(e)
-{
+config.macros.permaview.onClick = function(e) {
 	story.permaView();
 	return false;
 };
 
-config.macros.saveChanges.handler = function(place, macroName, params)
-{
+config.macros.saveChanges.handler = function(place, macroName, params) {
 	if(!readOnly)
 		createTiddlyButton(place, params[0] || this.label, params[1] || this.prompt, this.onClick, null, null, this.accessKey);
 };
 
-config.macros.saveChanges.onClick = function(e)
-{
+config.macros.saveChanges.onClick = function(e) {
 	saveChanges();
 	return false;
 };
 
-config.macros.slider.onClickSlider = function(ev)
-{
+config.macros.slider.onClickSlider = function(ev) {
 	var n = this.nextSibling;
 	var cookie = n.getAttribute("cookie");
 	var isOpen = n.style.display != "none";
@@ -350,8 +325,7 @@ config.macros.slider.onClickSlider = function(ev)
 	return false;
 };
 
-config.macros.slider.createSlider = function(place, cookie, title, tooltip)
-{
+config.macros.slider.createSlider = function(place, cookie, title, tooltip) {
 	var c = cookie || "";
 	createTiddlyButton(place, title, tooltip, this.onClickSlider);
 	var panel = createTiddlyElement(null, "div", null, "sliderPanel");
@@ -361,8 +335,7 @@ config.macros.slider.createSlider = function(place, cookie, title, tooltip)
 	return panel;
 };
 
-config.macros.slider.handler = function(place, macroName, params)
-{
+config.macros.slider.handler = function(place, macroName, params) {
 	var panel = this.createSlider(place, params[0], params[2], params[3]);
 	var text = store.getTiddlerText(params[1]);
 	panel.setAttribute("refresh", "content");
@@ -372,8 +345,7 @@ config.macros.slider.handler = function(place, macroName, params)
 };
 
 // <<gradient [[tiddler name]] vert|horiz rgb rgb rgb rgb... >>
-config.macros.gradient.handler = function(place, macroName, params, wikifier, paramString, tiddler)
-{
+config.macros.gradient.handler = function(place, macroName, params, wikifier, paramString, tiddler) {
 	var panel = wikifier ? createTiddlyElement(place, "div", null, "gradient") : place;
 	panel.style.position = "relative";
 	panel.style.overflow = "hidden";
@@ -403,8 +375,7 @@ config.macros.gradient.handler = function(place, macroName, params, wikifier, pa
 	}
 };
 
-config.macros.message.handler = function(place, macroName, params)
-{
+config.macros.message.handler = function(place, macroName, params) {
 	if(!params[0]) return;
 
 	var names = params[0].split(".");
@@ -454,8 +425,7 @@ config.macros.view.views = {
 	}
 };
 
-config.macros.view.handler = function(place, macroName, params, wikifier, paramString, tiddler)
-{
+config.macros.view.handler = function(place, macroName, params, wikifier, paramString, tiddler) {
 	if(!(tiddler instanceof Tiddler) || !params[0]) return;
 	var value = store.getValue(tiddler, params[0]);
 	if(!value) return;
@@ -466,8 +436,7 @@ config.macros.view.handler = function(place, macroName, params, wikifier, paramS
 		handler(value, place, params, wikifier, paramString, tiddler);
 };
 
-config.macros.edit.handler = function(place, macroName, params, wikifier, paramString, tiddler)
-{
+config.macros.edit.handler = function(place, macroName, params, wikifier, paramString, tiddler) {
 	var field = params[0];
 	var rows = params[1] || 0;
 	var defaultValue = params[2] || '';
@@ -503,8 +472,7 @@ config.macros.edit.handler = function(place, macroName, params, wikifier, paramS
 	return e;
 };
 
-config.macros.tagChooser.onClick = function(ev)
-{
+config.macros.tagChooser.onClick = function(ev) {
 	var e = ev || window.event;
 	var lingo = config.views.editor.tagChooser;
 	var popup = Popup.create(this);
@@ -524,19 +492,16 @@ config.macros.tagChooser.onClick = function(ev)
 	return false;
 };
 
-config.macros.tagChooser.onTagClick = function(ev)
-{
+config.macros.tagChooser.onTagClick = function(ev) {
 	var e = ev || window.event;
 	if(e.metaKey || e.ctrlKey) stopEvent(e); //# keep popup open on CTRL-click
 	var tag = this.getAttribute("tag");
 	var title = this.getAttribute("tiddler");
-	if(!readOnly)
-		story.setTiddlerTag(title, tag, 0);
+	if(!readOnly) story.setTiddlerTag(title, tag, 0);
 	return false;
 };
 
-config.macros.tagChooser.handler = function(place, macroName, params, wikifier, paramString, tiddler)
-{
+config.macros.tagChooser.handler = function(place, macroName, params, wikifier, paramString, tiddler) {
 	if(!(tiddler instanceof Tiddler)) return;
 	var lingo = config.views.editor.tagChooser;
 	createTiddlyButton(place, lingo.text, lingo.tooltip, this.onClick, null, null, null, {
@@ -545,19 +510,16 @@ config.macros.tagChooser.handler = function(place, macroName, params, wikifier, 
 	});
 };
 
-config.macros.refreshDisplay.handler = function(place)
-{
+config.macros.refreshDisplay.handler = function(place) {
 	createTiddlyButton(place, this.label, this.prompt, this.onClick);
 };
 
-config.macros.refreshDisplay.onClick = function(e)
-{
+config.macros.refreshDisplay.onClick = function(e) {
 	refreshAll();
 	return false;
 };
 
-config.macros.annotations.handler = function(place, macroName, params, wikifier, paramString, tiddler)
-{
+config.macros.annotations.handler = function(place, macroName, params, wikifier, paramString, tiddler) {
 	var title = tiddler ? tiddler.title : null;
 	var annotation = title ? config.annotations[title] : null;
 	if(!tiddler || !title || !annotation) return;

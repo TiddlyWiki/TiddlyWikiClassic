@@ -19,15 +19,13 @@ config.notifyTiddlers = [
 
 //# refresher functions
 config.refreshers = {
-	link: function(e, changeList)
-	{
+	link: function(e, changeList) {
 		var title = e.getAttribute("tiddlyLink");
 		refreshTiddlyLink(e, title);
 		return true;
 	},
 
-	tiddler: function(e, changeList)
-	{
+	tiddler: function(e, changeList) {
 		if (startingUp) return true; // #147
 		var title = e.getAttribute("tiddler");
 		var template = e.getAttribute("template");
@@ -38,8 +36,7 @@ config.refreshers = {
 		return true;
 	},
 
-	content: function(e, changeList)
-	{
+	content: function(e, changeList) {
 		var title = e.getAttribute("tiddler");
 		var force = e.getAttribute("force");
 		var args = e.macroArgs; // #154
@@ -51,8 +48,7 @@ config.refreshers = {
 			return false;
 	},
 
-	macro: function(e, changeList)
-	{
+	macro: function(e, changeList) {
 		var macro = e.getAttribute("macroName");
 		var params = e.getAttribute("params");
 		if(macro)
@@ -72,8 +68,7 @@ config.refresherData = {
 	defaultColorPalette: "ColorPalette"
 };
 
-function refreshElements(root, changeList)
-{
+function refreshElements(root, changeList) {
 	var i, nodes = root.childNodes;
 	for(i = 0; i < nodes.length; i++) {
 		var e = nodes[i], type = null;
@@ -86,8 +81,7 @@ function refreshElements(root, changeList)
 	}
 }
 
-function applyHtmlMacros(root, tiddler)
-{
+function applyHtmlMacros(root, tiddler) {
 	for(var e = root.firstChild; !!e; e = nextChild) {
 		// macros can manipulate DOM, so we remember nextChild before invokeMacro
 		var nextChild = e.nextSibling;
@@ -108,8 +102,7 @@ function applyHtmlMacros(root, tiddler)
 	}
 }
 
-function refreshPageTemplate(title)
-{
+function refreshPageTemplate(title) {
 	var stash = jQuery("<div/>").appendTo("body").hide()[0];
 	var display = story.getContainer();
 	var nodes, i;
@@ -139,8 +132,7 @@ function refreshPageTemplate(title)
 	jQuery(stash).remove();
 }
 
-function refreshDisplay(hint)
-{
+function refreshDisplay(hint) {
 	if(typeof hint == "string")
 		hint = [hint];
 	var e = document.getElementById("contentWrapper");
@@ -151,29 +143,24 @@ function refreshDisplay(hint)
 	}
 }
 
-function refreshPageTitle()
-{
+function refreshPageTitle() {
 	document.title = getPageTitle();
 }
 
-function getPageTitle()
-{
+function getPageTitle() {
 	return wikifyPlainText(store.getTiddlerText("WindowTitle", ""), null, tiddler);
 }
 
-function refreshStyles(title, doc)
-{
+function refreshStyles(title, doc) {
 	setStylesheet(title == null ? "" : store.getRecursiveTiddlerText(title, "", 10), title, doc || document);
 }
 
-function refreshColorPalette(title)
-{
+function refreshColorPalette(title) {
 	if(!startingUp)
 		refreshAll();
 }
 
-function refreshAll()
-{
+function refreshAll() {
 	refreshPageTemplate();
 	refreshDisplay();
 	refreshStyles("StyleSheetLayout");

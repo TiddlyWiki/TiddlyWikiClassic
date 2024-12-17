@@ -2,8 +2,7 @@
 //-- Tabs macro
 //--
 
-config.macros.tabs.handler = function(place, macroName, params)
-{
+config.macros.tabs.handler = function(place, macroName, params) {
 	var cookie = params[0];
 	var numTabs = (params.length - 1) / 3;
 	var wrapper = createTiddlyElement(null, "div", null, "tabsetWrapper " + cookie);
@@ -28,14 +27,12 @@ config.macros.tabs.handler = function(place, macroName, params)
 	this.switchTab(tabset, config.options[cookie]);
 };
 
-config.macros.tabs.onClickTab = function(e)
-{
+config.macros.tabs.onClickTab = function(e) {
 	config.macros.tabs.switchTab(this.parentNode, this.getAttribute("tab"));
 	return false;
 };
 
-config.macros.tabs.switchTab = function(tabset, tab)
-{
+config.macros.tabs.switchTab = function(tabset, tab) {
 	var cookie = tabset.getAttribute("cookie");
 	var theTab = null;
 	var nodes = tabset.childNodes;

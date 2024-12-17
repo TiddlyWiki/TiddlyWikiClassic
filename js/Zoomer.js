@@ -2,8 +2,7 @@
 //-- Zoomer animation
 //--
 
-function Zoomer(text, startElement, targetElement, unused)
-{
+function Zoomer(text, startElement, targetElement, unused) {
 	var e = createTiddlyElement(document.body, "div", null, "zoomer");
 	createTiddlyElement(e, "div", null, null, text);
 	var winWidth = findWindowWidth();

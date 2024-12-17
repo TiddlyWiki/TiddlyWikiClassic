@@ -3,8 +3,7 @@
 //--
 
 // Event handler for 'open all' on a tiddler popup
-function onClickTagOpenAll(ev)
-{
+function onClickTagOpenAll(ev) {
 	var tiddlers = store.getTaggedTiddlers(this.getAttribute("tag"));
 	var sortby = this.getAttribute("sortby");
 	if(sortby && sortby.length) {
@@ -15,8 +14,7 @@ function onClickTagOpenAll(ev)
 }
 
 // Event handler for clicking on a tiddler tag
-function onClickTag(ev)
-{
+function onClickTag(ev) {
 	var e = ev || window.event;
 	var popup = Popup.create(this);
 	jQuery(popup).addClass("taggedTiddlerList");
@@ -58,8 +56,7 @@ function onClickTag(ev)
 
 // Create a button for a tag with a popup listing all the tiddlers that it tags
 //# title and tooltip arguments are optional
-function createTagButton(place, tag, excludeTiddler, title, tooltip)
-{
+function createTagButton(place, tag, excludeTiddler, title, tooltip) {
 	var btn = createTiddlyButton(place, title || tag,
 		(tooltip || config.views.wikified.tag.tooltip).format([tag]), onClickTag);
 	btn.setAttribute("tag", tag);
@@ -68,8 +65,7 @@ function createTagButton(place, tag, excludeTiddler, title, tooltip)
 	return btn;
 }
 
-function onClickTiddlyPopup(ev)
-{
+function onClickTiddlyPopup(ev) {
 	var e = ev || window.event;
 	var tiddler = this.tiddler;
 	if(tiddler.text) {
@@ -82,8 +78,7 @@ function onClickTiddlyPopup(ev)
 	return false;
 }
 
-function createTiddlyPopup(place, caption, tooltip, tiddler)
-{
+function createTiddlyPopup(place, caption, tooltip, tiddler) {
 	if(tiddler.text) {
 		createTiddlyLink(place, caption, true);
 		var btn = createTiddlyButton(place, glyph("downArrow"), tooltip, onClickTiddlyPopup, "tiddlerPopupButton");
@@ -93,8 +88,7 @@ function createTiddlyPopup(place, caption, tooltip, tiddler)
 	}
 }
 
-function onClickError(ev)
-{
+function onClickError(ev) {
 	var e = ev || window.event;
 	var popup = Popup.create(this);
 	var lines = this.getAttribute("errorText").split("\n");
@@ -107,8 +101,7 @@ function onClickError(ev)
 	return false;
 }
 
-function createTiddlyError(place, title, text)
-{
+function createTiddlyError(place, title, text) {
 	var btn = createTiddlyButton(place, title, null, onClickError, "errorButton");
 	if(text) btn.setAttribute("errorText", text);
 }

@@ -3,8 +3,7 @@
 //--
 
 // deleteMode - "none", "all" [delete target element and it's children], [only] "children" [but not the target element]
-function Slider(element, opening, unused, deleteMode)
-{
+function Slider(element, opening, unused, deleteMode) {
 	element.style.overflow = 'hidden';
 	// Workaround a Firefox flashing bug
 	if(opening) element.style.height = '0px';
