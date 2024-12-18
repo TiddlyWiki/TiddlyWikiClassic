@@ -14,7 +14,7 @@ Behavior improvements:
 
 UI updates (see the [[visual summary|https://github.com/TiddlyWiki/TiddlyWikiClassic/pull/312#issuecomment-2543065605]]):
 * Tags blocks now have non-transparent background (and don't interfere with headers/tabs);
-* Tables now also have non-transparent background, reducing interference  when they overflow the container:
+* Tables now also have non-transparent background, reducing interference when they overflow the container;
 * Lists in sidebar and messages got more space between items (and group multiline ones visually);
 * Editor inputs and textareas got better paddings.
 
@@ -31,7 +31,7 @@ Infrastructure:
 
 [[Lingo updates|https://github.com/TiddlyWiki/translations/blob/master/Core%20lingo%20history.md]] (for translations)
 
-Docs updates include clarifying/updating InstallingPlugins, [[Customisation]], [[Importing Tiddlers]], [[Plugins]], [[TiddlyWiki Browser Compatibility]], [[Mathematics]], SpecialTiddlers, [[Editing]], various links, and mentioning ContinuousSavingPlugin.
+Docs updates include clarifying/updating InstallingPlugins, [[Customisation]], [[Importing Tiddlers]], [[Plugins]], [[TiddlyWiki Browser Compatibility]], [[Mathematics]], SpecialTiddlers, [[Editing]], various links, and mentioning ~ContinuousSavingPlugin.
 
 The full changelog is available [[on github|https://github.com/TiddlyWiki/TiddlyWikiClassic/pull/312#issuecomment-2541417355]].
 
